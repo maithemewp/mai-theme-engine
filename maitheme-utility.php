@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: 	Mai Theme Utility Plugin
  * Plugin URI: 		https://bizbudding.com
@@ -46,7 +47,6 @@ final class Mai_Theme_Utility {
             // Methods
             self::$instance->setup_constants();
             self::$instance->includes();
-            self::$instance->setup();
         }
         return self::$instance;
     }
@@ -142,8 +142,6 @@ final class Mai_Theme_Utility {
         // Includes
         foreach ( glob( MAITHEME_UTILITY_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include $file; }
     }
-
-
 
 }
 endif; // End if class_exists check.
