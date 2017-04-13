@@ -166,4 +166,4 @@ function Mai_Theme_Utility() {
 }
 
 // Get Mai_Theme_Utility Running.
-Mai_Theme_Utility();
+// Mai_Theme_Utility();
