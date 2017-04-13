@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: 	Mai Theme Utility Plugin
+ * Plugin Name: 	Mai Theme Utility
  * Plugin URI: 		https://bizbudding.com
  * Description: 	The Mai Theme engine
  * Version: 		0.0.1
@@ -146,6 +146,11 @@ final class Mai_Theme_Utility {
 }
 endif; // End if class_exists check.
 
+// function mai_get_suffix() {
+//     $debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+//     return $debug ? '' : '.min';
+// }
+
 /**
  * The main function for that returns Mai_Theme_Utility
  *
@@ -166,4 +171,4 @@ function Mai_Theme_Utility() {
 }
 
 // Get Mai_Theme_Utility Running.
-// Mai_Theme_Utility();
+Mai_Theme_Utility();
