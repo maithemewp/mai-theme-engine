@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: 	Mai Theme Utility
- * Plugin URI: 		https://bizbudding.com
+ * Plugin URI: 		https://github.com/bizbudding/maitheme-utility/
  * Description: 	The Mai Theme engine
  * Version: 		0.0.1
  *
