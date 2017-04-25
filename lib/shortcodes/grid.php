@@ -12,38 +12,40 @@
  */
 
 /**
- * Main Mai_Content_Grid Class.
+ * Main Mai_Grid_Shortcode Class.
  *
  * @since 1.0.0
  */
-final class Mai_Content_Grid {
+final class Mai_Grid_Shortcode {
 
 	/**
 	 * Singleton
-	 * @var   Mai_Content_Grid The one true Mai_Content_Grid
+	 * @var   Mai_Grid_Shortcode The one true Mai_Grid_Shortcode
 	 * @since 1.0.0
 	 */
 	private static $instance;
 
 	/**
-	 * Main Mai_Content_Grid Instance.
+	 * Main Mai_Grid_Shortcode Instance.
 	 *
-	 * Insures that only one instance of Mai_Content_Grid exists in memory at any one
+	 * Insures that only one instance of Mai_Grid_Shortcode exists in memory at any one
 	 * time. Also prevents needing to define globals all over the place.
 	 *
 	 * @since   1.0.0
 	 * @static  var array $instance
-	 * @return  object | Mai_Content_Grid The one true Mai_Content_Grid
+	 * @return  object | Mai_Grid_Shortcode The one true Mai_Grid_Shortcode
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
 			// Setup the setup
-			self::$instance = new Mai_Content_Grid;
+			self::$instance = new Mai_Grid_Shortcode;
+            // Initialize
+            self::$instance->init();
 		}
 		return self::$instance;
 	}
 
-	function __construct() {
+	function init() {
 		add_shortcode( 'grid', array( $this, 'get_grid' ) );
 	}
 
@@ -80,7 +82,7 @@ final class Mai_Content_Grid {
 			'link'					=> true,
 			'meta_key'				=> '',
 			'meta_value'			=> '',
-			'middle'				=> false, // Slider
+			'middle'				=> false,
 			'more_link_text'		=> apply_filters( 'mai_more_link_text', __( 'Read More', 'maitheme' ) ),
 			'no_content_message'	=> '',
 			'number'				=> '12',
@@ -118,7 +120,7 @@ final class Mai_Content_Grid {
 			'slidestoscroll' 		=> 1, 	  // (slider only) The amount of posts to scroll
 		), $atts, 'grid' );
 
-		$atts = apply_filters( 'mai_grid_default_atts', $atts );
+		$atts = apply_filters( 'mai_grid_shortcode_defaults', $atts );
 
 		$atts = array(
 			'authors'				=> $atts['authors'], // Validated later
@@ -1057,41 +1059,21 @@ final class Mai_Content_Grid {
 		return intval( $number );
 	}
 
-	// function build_attrs( $attributes = array() ) {
-	// 	$output	= '';
-	// 	// Cycle through attributes, build tag attribute string.
-	// 	foreach ( $attributes as $key => $value ) {
-	// 		if ( ! $value ) {
-	// 			continue;
-	// 		}
-	// 		*
-	// 		 * if true (not 'true')
-	// 		 * some params, like 'log_in' we want the value to be "true"
-
-	// 		if ( true === $value ) {
-	// 			$output .= esc_html( $key ) . ' ';
-	// 		} else {
-	// 			$output .= sprintf( '%s="%s" ', esc_html( $key ), esc_attr( $value ) );
-	// 		}
-	// 	}
-	// 	return trim( $output );
-	// }
-
 }
 
 /**
- * The main function for that returns Mai_Content_Grid
+ * The main function for that returns Mai_Grid_Shortcode
  *
- * The main function responsible for returning the one true Mai_Content_Grid
+ * The main function responsible for returning the one true Mai_Grid_Shortcode
  * Instance to functions everywhere.
  *
  * @since 1.0.0
  *
- * @return object|Mai_Content_Grid The one true Mai_Content_Grid Instance.
+ * @return object|Mai_Grid_Shortcode The one true Mai_Grid_Shortcode Instance.
  */
-function Mai_Content_Grid() {
-	return Mai_Content_Grid::instance();
+function Mai_Grid_Shortcode() {
+	return Mai_Grid_Shortcode::instance();
 }
 
-// Get Mai_Content_Grid Running.
-Mai_Content_Grid();
+// Get Mai_Grid_Shortcode Running.
+Mai_Grid_Shortcode();
