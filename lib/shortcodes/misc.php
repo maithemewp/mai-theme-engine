@@ -30,7 +30,7 @@ add_shortcode( 'section', 'mai_get_section_shortcode' );
 function mai_get_section_shortcode( $atts, $content = null ) {
 
     // Bail if no content
-    if ( ! trim($content) ) {
+    if ( null == $content ) {
         return;
     }
 
