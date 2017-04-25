@@ -8,7 +8,7 @@
  *
  * @author   Mike Hemberger
  *
- * @version  1.0.4
+ * @version  1.0.5
  */
 
 /**
@@ -445,60 +445,6 @@ function mai_get_flex_entry_image_size_by_columns( $columns ) {
 }
 
 /**
- * Get a type of content main image ID
- *
- * @param  string  $type  The type of content, either 'post', 'term', or 'user'
- * @param  int     $id    The content ID, either post id, term id, or user id
- *
- * @return int            The image ID
- */
-function mai_get_thumbnail_id_by_content_type( $type, $id ) {
-
-    switch ( $type ) {
-        case 'post':
-            $image_id = get_post_thumbnail_id( $id );
-            break;
-        case 'term':
-            $image_id = get_term_meta( $id, 'thumbnail_id', true );
-            break;
-        case 'user':
-            $image_id = get_user_meta( $id, 'banner_id', true );
-            break;
-        default:
-            $image_id = '';
-            break;
-    }
-
-    return $image_id;
-
-    if ( 'post' == $type ) {
-        $image_id = get_post_thumbnail_id( $id );
-    } elseif ( 'term' == $type ) {
-        // if ( is_tax( array( 'product_cat' ) ) ) {
-            $image_id = get_term_meta( get_queried_object()->term_id, 'thumbnail_id', true );
-        // } else {
-            // $image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
-        // }
-    }
-    // elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-        // No option to easily add image upload fields to Genesis CPT archives :(
-        // For now we have to use mai_banner_area_args
-    // }
-    elseif ( is_author() ) {
-        $author   = get_user_by( 'slug', get_query_var( 'author_name' ) );
-        $image_id = get_user_meta( $author->ID, 'banner_id', true );
-    }
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-        $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
-        if ( ! ( $image_id || $default_id ) ) {
-            $image_id = get_post_thumbnail_id();
-        }
-    } else {
-        return;
-    }
-}
-
-/**
  * Helper function to get a read more link for a post or term
  *
  * @param  int|WP_Post|WP_term?  $object
@@ -526,7 +472,7 @@ function mai_get_read_more_link( $object = '', $text = '' ) {
         return;
     }
     $text = $text ? sanitize_text_field($text) : __( 'Read More', 'maitheme' );
-    return sprintf( '<p class="more-link-wrap"><a class="more-link" href="%s">%s</a></p>', $link, sanitize_text_field( apply_filters( 'mai_read_more_text', $text ) ) );
+    return sprintf( '<p class="more-link-wrap"><a class="more-link" href="%s">%s</a></p>', $link, sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) ) );
 }
 
 /**
@@ -551,6 +497,9 @@ function mai_is_fixed_header_enabled() {
 /**
  * Check if banner area is enabled
  *
+ * Force this in a template via:
+ * add_filter( 'theme_mod_enable_banner_area', '__return_true' );
+ *
  * @return bool
  */
 function mai_is_banner_area_enabled() {
@@ -559,6 +508,9 @@ function mai_is_banner_area_enabled() {
 
 /**
  * Check if boxed content is enabled
+ *
+ * Force this in a template via:
+ * add_filter( 'theme_mod_enable_boxed_content', '__return_true' );
  *
  * @return bool
  */

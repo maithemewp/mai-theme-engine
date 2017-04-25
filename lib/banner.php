@@ -48,6 +48,7 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 	remove_action( 'genesis_before_loop', 'genesis_do_date_archive_title' );
 	remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
+	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
 	// Set defaults
 	$image_id = $image = $image_url = $style = '';
@@ -93,9 +94,10 @@ function mai_do_banner_area() {
 		$image_id = get_user_meta( $author->ID, 'banner_id', true );
 	}
 	elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		$image_id = get_post_meta( get_the_ID(), 'banner_id', true );
+		$shop_id  = get_option( 'woocommerce_shop_page_id' );
+		$image_id = get_post_meta( $shop_id, 'banner_id', true );
 		if ( ! ( $image_id || $default_id ) ) {
-			$image_id = get_post_thumbnail_id();
+			$image_id = get_post_thumbnail_id( $shop_id );
 		}
 	}
 
@@ -226,6 +228,10 @@ function mai_do_banner_content() {
 		else {
 			genesis_do_author_title_description();
 		}
+	}
+
+	if ( is_search() ) {
+		genesis_do_search_title();
 	}
 
 	// Remove the filter so it doesn't affect anything later
