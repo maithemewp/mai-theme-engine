@@ -29,7 +29,7 @@ function mai_css() {
 	$settings = array();
 
 	foreach( $opts as $opt ) {
-		$settings[$opt]['image'] = preg_replace( '/^https?:/', '', get_option( $opt .'-mai-image', sprintf( '%s/images/bg-%s.jpg', get_stylesheet_directory_uri(), $opt ) ) );
+		$settings[$opt]['image'] = preg_replace( '/^https?:/', '', get_option( $opt .'-mai-image', sprintf( '%s/images/bg-%s.jpg', MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR, $opt ) ) );
 	}
 
 	$css = '';

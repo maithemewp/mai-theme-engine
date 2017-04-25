@@ -1,38 +1,5 @@
 <?php
 
-// Enqueue and Dequeue WooCommerce styles
-add_action( 'wp_enqueue_scripts', 'mai_enqueue_woocommerce_scripts' );
-function mai_enqueue_woocommerce_scripts() {
-
-	// Bail if WooCommerce is not active
-	if ( ! class_exists( 'WooCommerce' ) ) {
-		return;
-	}
-
-	// Use minified files if script debug is not being used
-	$suffix = mai_get_suffix();
-
-	// Register woocommerce script for later enqueuing
-	wp_register_style( 'mai-woocommerce', get_stylesheet_directory_uri() . "/assets/css/woo{$suffix}.css", array(), CHILD_THEME_VERSION );
-
-	// Bail if account, cart, or checkout pages. We need layout stuff here
-	if ( is_account_page() || is_cart() || is_checkout() ) {
-		return;
-	}
-
-	/**
-	 * Remove Woo layout script
-	 * @link https://gregrickaby.com/remove-woocommerce-styles-and-scripts/
-	 */
-	wp_dequeue_style( 'woocommerce-layout' );
-}
-
-// Enqueue the mai-woocommerce stylesheet if a woo template is used
-add_action( 'woocommerce_before_template_part', 'mai_enqueue_woocommerce_styles' );
-function mai_enqueue_woocommerce_styles() {
-	wp_enqueue_style( 'mai-woocommerce' );
-}
-
 /**
  * Set default WooCommerce layouts.
  * We need to hook in later to make give

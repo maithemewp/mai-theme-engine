@@ -135,6 +135,8 @@ final class Mai_Theme_Engine {
      * @return  void
      */
     private function includes() {
+        // Includes
+        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include $file; }
         // Lib
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'archives/*.php' ) as $file ) { include_once $file; }
@@ -142,8 +144,6 @@ final class Mai_Theme_Engine {
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'integrations/*.php' ) as $file ) { include_once $file; }
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'layouts/*.php' ) as $file ) { include_once $file; }
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
-        // Includes
-        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include $file; }
     }
 
 }

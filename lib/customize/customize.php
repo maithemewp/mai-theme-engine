@@ -151,7 +151,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	// foreach( $images as $image ) {
 
 	// 	$wp_customize->add_setting( $image .'-mai-image', array(
-	// 		'default'           => sprintf( '%s/images/bg-%s.jpg', get_stylesheet_directory_uri(), $image ),
+	// 		'default'           => sprintf( '%s/images/bg-%s.jpg', MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR, $image ),
 	// 		'sanitize_callback' => 'esc_url_raw',
 	// 		'type'              => 'option',
 	// 	) );
