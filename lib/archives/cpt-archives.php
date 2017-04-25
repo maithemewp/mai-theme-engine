@@ -1,7 +1,5 @@
 <?php
 
-<?php
-
 /**
  * Add CMB2 metabox and fields to Genesis CPT Archive Settings pages
  *
