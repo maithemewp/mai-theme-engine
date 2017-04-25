@@ -5,7 +5,7 @@
  * Plugin URI:      https://github.com/bizbudding/maitheme-engine/
  * Description:     The Mai Theme engine
  *
- * Version:         0.0.2
+ * Version:         0.0.3
  *
  * GitHub URI:      bizbudding/maitheme-engine
  *
