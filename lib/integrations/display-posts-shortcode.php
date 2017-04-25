@@ -15,7 +15,7 @@
  *
  * Hooks in really late to make sure the plugin has a chance to register the shortcode first
  */
-add_action( 'genesis_before', 'mai_display_posts_shortcode' );
+// add_action( 'genesis_before', 'mai_display_posts_shortcode' );
 function mai_display_posts_shortcode() {
     if ( ! shortcode_exists( 'display-posts' ) ) {
 		require_once( get_stylesheet_directory() . '/lib/vendor/display-posts-shortcode.php' );
