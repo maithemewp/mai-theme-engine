@@ -1,5 +1,29 @@
 <?php
 
+add_action( 'cmb2_before_form', 'mai_before_banner_image_metabox', 10, 4 );
+function mai_before_banner_image_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
+
+	if ( ! in_array( $cmb_id, array( 'mai_post_banner', 'mai_term_banner', 'mai_user_banner' ) ) ) {
+		return;
+	}
+    echo '<style type="text/css">
+        #cmb2-metabox-mai_post_banner .cmb-row,
+        #cmb2-metabox-mai_term_banner .cmb-row,
+        #cmb2-metabox-mai_user_banner .cmb-row {
+	        padding: 10px 0 0 !important;
+		    border: none !important;
+		    margin-bottom: 0 !important;
+		}
+		#cmb2-metabox-mai_post_banner span.cmb2-metabox-description,
+		#cmb2-metabox-mai_term_banner span.cmb2-metabox-description,
+		#cmb2-metabox-mai_user_banner span.cmb2-metabox-description {
+		    color: inherit !important;
+		    font-style: inherit !important;
+		}
+        </style>';
+
+}
+
 /**
  * Add banner image field
  *
@@ -30,21 +54,20 @@ function mai_banner_image_metabox() {
 
 	// Posts/Pages/CPTs
     $post = new_cmb2_box( array(
-        'id'               => 'post_banner_edit',
+        'id'               => 'mai_post_banner',
         'title'            => __( 'Banner Image', 'maitheme' ),
         'object_types'     => $post_types,
         'context' 		   => 'side',
         'priority' 		   => 'low',
     ) );
     $post->add_field( array(
-    	'name'			=> __( 'Hide', 'maitheme' ),
 		'desc'			=> __( 'Hide banner on this post', 'maitheme' ),
 		'id'			=> 'mai_hide_banner',
 		'type'			=> 'checkbox',
     ) );
     $post->add_field( array(
 		'name'			=> __( 'Banner Image', 'maitheme' ),
-		'desc'			=> __( 'Leave empty to use Featured Image', 'maitheme' ),
+		'show_names' 	=> false,
 		'id'			=> 'banner',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
@@ -52,13 +75,13 @@ function mai_banner_image_metabox() {
 	        'url' => false, // Hide the text input for the url
 	    ),
 	    'text' 			=> array(
-	        'add_upload_file_text' => __( 'Add Image', 'maitheme' ),
+	        'add_upload_file_text' => __( 'Add Banner Image', 'maitheme' ),
 	    ),
     ) );
 
     // Taxonomy Terms
     $term = new_cmb2_box( array(
-        'id'               => 'term_banner_edit',
+        'id'               => 'mai_term_banner',
         'title'            => __( 'Banner Image', 'maitheme' ),
         'object_types'     => array( 'term' ),
         'taxonomies'       => $taxonomies,
@@ -67,7 +90,7 @@ function mai_banner_image_metabox() {
     ) );
     $term->add_field( array(
 		'name'			=> __( 'Banner Image', 'maitheme' ),
-		'desc'			=> __( 'Add banner image', 'maitheme' ),
+		'show_names' 	=> false,
 		'id'			=> 'banner',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
@@ -75,20 +98,20 @@ function mai_banner_image_metabox() {
 	        'url' => false,
 	    ),
 	    'text' 			=> array(
-	        'add_upload_file_text' => __( 'Add Image', 'maitheme' ),
+	        'add_upload_file_text' => __( 'Add Banner Image', 'maitheme' ),
 	    ),
     ) );
 
     // User Profiles
     $user = new_cmb2_box( array(
-        'id'               => 'user_banner_edit',
+        'id'               => 'mai_user_banner',
         'title'            => __( 'Banner Image', 'maitheme' ),
         'object_types'     => array( 'user' ),
         'context' 		   => 'normal',
     ) );
     $user->add_field( array(
 		'name'			=> __( 'Banner Image', 'maitheme' ),
-		'desc'			=> __( 'Add banner image', 'maitheme' ),
+		'show_names' 	=> false,
 		'id'			=> 'banner',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
@@ -96,7 +119,7 @@ function mai_banner_image_metabox() {
 	        'url' => false,
 	    ),
 	    'text' 			=> array(
-	        'add_upload_file_text' => __( 'Add Image', 'maitheme' ),
+	        'add_upload_file_text' => __( 'Add Banner Image', 'maitheme' ),
 	    ),
     ) );
 
