@@ -58,18 +58,6 @@ function mai_do_custom_logo( $title, $inside, $wrap ) {
 add_action( 'genesis_meta', 'mai_do_header' );
 function mai_do_header() {
 
-	$utility 	  = genesis_get_nav_menu( array( 'theme_location' => 'utility' ) );
-	$left_widget  = is_active_sidebar('header_left');
-	$right_widget = is_active_sidebar('header_right');
-	$left_menu	  = has_nav_menu('header_left');
-	$right_menu	  = has_nav_menu('header_right');
-	$left_hook 	  = _mai_get_header_left_content();  // Uses 'mai_header_left' action hook
-	$right_hook   = _mai_get_header_right_content(); // Uses 'mai_header_right' action hook
-	$mobile 	  = mai_get_mobile_menu();
-
-	$left	= $left_widget || $left_menu || ! empty( $left_hook );
-	$right	= $right_widget || $right_menu || ! empty( $right_hook );
-
 	/**
 	 * Allow templates to hijack and remove the header content via a filter
 	 *
@@ -80,10 +68,10 @@ function mai_do_header() {
 	 *
 	 * @return  bool
 	 */
-	$utility = apply_filters( 'mai_utility_nav', $utility );
-	$left 	 = apply_filters( 'mai_header_left_content', $left );
-	$right 	 = apply_filters( 'mai_header_right_content', $right );
-	$mobile  = apply_filters( 'mai_mobile_menu', $mobile );
+	$utility = apply_filters( 'mai_utility_nav', genesis_get_nav_menu( array( 'theme_location' => 'utility' ) ) );
+	$left 	 = apply_filters( 'mai_header_left_content', '' );
+	$right 	 = apply_filters( 'mai_header_right_content', '' );
+	$mobile  = apply_filters( 'mai_mobile_menu', mai_get_mobile_menu() );
 
 	/**
 	 * Filter the (site) header context of the genesis_structural_wrap
@@ -154,7 +142,7 @@ function mai_do_header() {
 		 * Add header left and right widget areas and menus
 		 * with Flexington classes
 		 */
-		add_action( 'genesis_header', function() use ( $left, $right, $left_widget, $right_widget, $left_menu, $right_menu, $left_hook, $right_hook ) {
+		add_action( 'genesis_header', function() use ( $left, $right ) {
 
 			if ( $left ) {
 
@@ -164,23 +152,7 @@ function mai_do_header() {
 					$left_atts['class'] .= ' text-xs-right';
 				}
 
-				printf( '<div %s>', genesis_attr( 'header-left', $left_atts ) );
-
-					if ( $left_widget ) {
-						_mai_add_header_menu_args();
-						genesis_widget_area( 'header_left' );
-						_mai_remove_header_menu_args();
-					}
-
-					if ( $left_menu ) {
-						genesis_nav_menu( array( 'theme_location' => 'header_left' ) );
-					}
-
-					if ( ! empty( $left_hook ) ) {
-						echo $left_hook;
-					}
-
-				echo '</div>';
+				printf( '<div %s>%s</div>', genesis_attr( 'header-left', $left_atts ), $left );
 
 			}
 
@@ -194,52 +166,12 @@ function mai_do_header() {
 
 				$right_atts['class'] = 'header-right col col-xs ' . $classes;
 
-				printf( '<div %s>', genesis_attr( 'header-right', $right_atts ) );
-
-					if ( $right_widget ) {
-						_mai_add_header_menu_args();
-						genesis_widget_area( 'header_right' );
-						_mai_remove_header_menu_args();
-					}
-
-					if ( $right_menu ) {
-						genesis_nav_menu( array( 'theme_location' => 'header_right' ) );
-					}
-
-					if ( ! empty( $right_hook ) ) {
-						echo $right_hook;
-					}
-
-				echo '</div>';
+				printf( '<div %s>%s</div>', genesis_attr( 'header-right', $right_atts ), $right );
 
 			}
 
 		});
 
-	}
-
-	/**
-	 * Gets header left content via hook.
-	 * Helper function to return content from a hook.
-	 *
-	 * @return  string|HTML
-	 */
-	function _mai_get_header_left_content() {
-	    ob_start();
-	    do_action( 'mai_header_left' );
-	    return ob_get_clean();
-	}
-
-	/**
-	 * Gets header right content via hook.
-	 * Helper function to return content from a hook.
-	 *
-	 * @return  string|HTML
-	 */
-	function _mai_get_header_right_content() {
-	    ob_start();
-	    do_action( 'mai_header_right' );
-	    return ob_get_clean();
 	}
 
 	// Use Genesis header menu filter (taken from G)
@@ -254,4 +186,50 @@ function mai_do_header() {
 		remove_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
 	}
 
+}
+
+/**
+ * Run the filter to get the header left content.
+ *
+ * @return  string|HTML  The content
+ */
+add_filter( 'mai_header_left_content', 'mai_get_header_left_content' );
+function mai_get_header_left_content( $content ) {
+	// Header Left widget area
+	if ( is_active_sidebar('header_left') ) {
+		ob_start();
+		_mai_add_header_menu_args();
+		genesis_widget_area( 'header_left' );
+		_mai_remove_header_menu_args();
+		$content .= ob_get_clean();
+	}
+	// Header Left menu
+	if ( has_nav_menu('header_left') ) {
+		$content .= genesis_get_nav_menu( array( 'theme_location' => 'header_left' ) );
+	}
+
+	return $content;
+}
+
+/**
+ * Run the filter to get the header right content.
+ *
+ * @return  string|HTML  The content
+ */
+add_filter( 'mai_header_right_content', 'mai_get_header_right_content' );
+function mai_get_header_right_content( $content ) {
+	// Header Right widget area
+	if ( is_active_sidebar('header_right') ) {
+		ob_start();
+		_mai_add_header_menu_args();
+		genesis_widget_area( 'header_right' );
+		_mai_remove_header_menu_args();
+		$content .= ob_get_clean();
+	}
+	// Header Right menu
+	if ( has_nav_menu('header_right') ) {
+		$content .= genesis_get_nav_menu( array( 'theme_location' => 'header_right' ) );
+	}
+
+	return $content;
 }
