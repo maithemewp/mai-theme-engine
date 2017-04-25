@@ -120,11 +120,8 @@ final class Mai_Col_Shortcodes {
 
 	function get_col_by_fraction( $fraction, $atts, $content ) {
 
-		// Get popup content, while parsing shortcodes
-		$col_content = do_shortcode(trim($content));
-
 		// Bail if no content
-		if ( empty( $col_content ) ) {
+		if ( null == $content ) {
 			return;
 		}
 
@@ -158,7 +155,7 @@ final class Mai_Col_Shortcodes {
 	     * Return the content with col wrap.
 	     * With flex-col attr so devs can filter elsewhere.
 	     */
-	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), wpautop( $content ) );
+	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), wpautop( do_shortcode( trim($content) ) ) );
 
 	}
 
