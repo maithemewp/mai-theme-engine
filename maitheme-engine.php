@@ -136,7 +136,7 @@ final class Mai_Theme_Engine {
      */
     private function includes() {
         // Includes
-        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include $file; }
+        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
         // Lib
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'archives/*.php' ) as $file ) { include_once $file; }
@@ -144,15 +144,12 @@ final class Mai_Theme_Engine {
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'integrations/*.php' ) as $file ) { include_once $file; }
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'layouts/*.php' ) as $file ) { include_once $file; }
         foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
+        // Vendor
+        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
     }
 
 }
 endif; // End if class_exists check.
-
-// function mai_get_suffix() {
-//     $debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-//     return $debug ? '' : '.min';
-// }
 
 /**
  * The main function for that returns Mai_Theme_Engine

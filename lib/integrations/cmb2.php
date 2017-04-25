@@ -32,7 +32,7 @@ function mai_banner_image_metabox() {
     $post = new_cmb2_box( array(
         'id'               => 'post_banner_edit',
         'title'            => __( 'Banner Image', 'maitheme' ),
-        'object_types'     => array( 'post', 'page' ),
+        'object_types'     => $post_types,
         'context' 		   => 'side',
         'priority' 		   => 'low',
     ) );
