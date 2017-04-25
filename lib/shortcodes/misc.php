@@ -71,8 +71,27 @@ function mai_get_section_shortcode( $atts, $content = null ) {
 add_filter( 'the_content', 'mai_shortcode_content_filter' );
 function mai_shortcode_content_filter( $content ) {
 
+    $shortcodes = array(
+        'section',
+        'grid',
+        'col',
+        'col_auto',
+        'col_one_twelfth',
+        'col_one_sixth',
+        'col_one_fourth',
+        'col_one_third',
+        'col_five_twelfths',
+        'col_one_half',
+        'col_seven_twelfths',
+        'col_two_thirds',
+        'col_three_fourths',
+        'col_five_sixths',
+        'col_eleven_twelfths',
+        'col_one_whole',
+    );
+
     // Array of custom shortcodes requiring the fix
-    $shortcodes = join( '|', array( 'display-posts', 'section' ) );
+    $shortcodes = join( '|', $shortcodes );
 
     // Opening tag
     $rep = preg_replace( "/(<p>)?\[($shortcodes)(\s[^\]]+)?\](<\/p>|<br \/>)?/", "[$2$3]", $content );
