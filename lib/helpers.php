@@ -362,7 +362,7 @@ function mai_get_flex_entry_classes_by_columns( $columns ) {
 function mai_get_flex_entry_classes_by_fraction( $fraction ) {
     switch ( $fraction ) {
         case 'col':
-            $classes = 'flex-entry column col col-xs-12 col-sm';
+            $classes = 'flex-entry column col col-xs-12 col-sm-6 col-md';
             break;
         case 'col-auto':
             $classes = 'flex-entry column col col-xs-12 col-sm-auto';
