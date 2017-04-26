@@ -8,7 +8,7 @@
  *
  * @author   Mike Hemberger
  *
- * @version  1.0.2
+ * @version  1.0.3
  */
 
 
@@ -17,31 +17,36 @@
  *
  * The custom logo is then added via the Customiser
  *
- * @param  string  $title 	All the mark up title.
- * @param  string  $inside  Mark up inside the title.
- * @param  string  $wrap 	Mark up on the title.
+ * @param  	string  $title 	 All the mark up title.
+ * @param  	string  $inside  Mark up inside the title.
+ * @param  	string  $wrap 	 Mark up on the title.
+ *
+ * @return  string|HTML  The title markup
  */
 add_filter( 'genesis_seo_title','mai_do_custom_logo', 10, 3 );
 function mai_do_custom_logo( $title, $inside, $wrap ) {
 
 	$site_title	= get_bloginfo( 'name' );
 
-	// Check to see if the Custom Logo function exists and set what goes inside the wrapping tags.
+	// If the custom logo function and custom logo exist, set the logo image element inside the wrapping tags.
 	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
 		$inside = sprintf( '<span class="screen-reader-text">%s</span>%s' , esc_html( $site_title ), get_custom_logo() );
 	} else {
-		// Use this wrap if no custom logo - wrap around the site name
+		// If no custom logo, wrap around the site name.
 		$inside	= sprintf( '<a href="%s" title="%s">%s</a>', trailingslashit( home_url() ), esc_attr( $site_title ), esc_html( $site_title ) );
 	}
 
-	// Determine which wrapping tags to use - changed is_home to is_front_page to fix Genesis bug.
-	$wrap  = is_front_page() && 'title' === genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : 'p';
+	// Determine which wrapping tags to use.
+	$wrap = genesis_is_root_page() && 'title' === genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : 'p';
 
-	// A little fallback, in case an SEO plugin is active - changed is_home to is_front_page to fix Genesis bug.
-	$wrap  = is_front_page() && ! genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : $wrap;
+	// A little fallback, in case a SEO plugin is active.
+	$wrap = genesis_is_root_page() && ! genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : $wrap;
+
+	// Wrap homepage site title in p tags if static front page.
+	$wrap = is_front_page() && ! is_home() ? 'p' : $wrap;
 
 	// And finally, $wrap in h1 if HTML5 & semantic headings enabled.
-	$wrap  = genesis_html5() && genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
+	$wrap = genesis_html5() && genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
 
 	// Rebuild the markup
 	$title = sprintf( '<%s %s>%s</%s>', $wrap, genesis_attr( 'site-title' ), $inside, $wrap );
@@ -50,10 +55,29 @@ function mai_do_custom_logo( $title, $inside, $wrap ) {
 }
 
 /**
- * Do the Flexington header
- * This is all wrapped in one function so we can pass $left and $right variables easier
+ * Add class for screen readers to site description.
+ * This will keep the site description markup but will not have any visual presence on the page
+ * This runs if there is a logo image set in the Customizer.
+ *
+ * @param 	array  $attributes Current attributes.
+ *
+ * @return  array  The attributes.
+ */
+add_filter( 'genesis_attr_site-description', 'mai_maybe_hide_site_description' );
+function mai_maybe_hide_site_description( $attributes ) {
+	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
+		$attributes['class'] .= ' screen-reader-text';
+	}
+	return $attributes;
+}
+
+/**
+ * Do the Flexington header.
+ * This is all wrapped in one function so we can pass $left and $right variables easier.
  *
  * @version  1.0.1
+ *
+ * @return   void
  */
 add_action( 'genesis_meta', 'mai_do_header' );
 function mai_do_header() {
