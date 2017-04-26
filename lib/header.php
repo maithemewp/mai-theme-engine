@@ -125,8 +125,10 @@ function mai_do_header() {
 		}
 		if ( $left || $right ) {
 			$classes .= ' start-xs';
-			if ( $left ) {
+			if ( $left && $right ) {
 				$classes .= ' col-md-12 col-lg-auto';
+			} elseif ( $left && ! $right ) {
+				$classes .= ' last-xs';
 			}
 		} else {
 			$classes .= ' center-xs';
@@ -146,10 +148,12 @@ function mai_do_header() {
 
 			if ( $left ) {
 
-				$left_atts['class'] = 'header-left col col-xs col-md-6 col-lg first-lg';
+				$left_atts['class'] = 'header-left col col-xs';
 
 				if ( $right ) {
-					$left_atts['class'] .= ' text-xs-right';
+					$left_atts['class'] .= ' col-md-6 col-lg first-lg text-xs-right';
+				} else {
+					$left_atts['class'] .= ' first-xs';
 				}
 
 				printf( '<div %s>%s</div>', genesis_attr( 'header-left', $left_atts ), $left );
@@ -158,13 +162,13 @@ function mai_do_header() {
 
 			if ( $right ) {
 
-				$classes = 'text-xs-right';
+				$right_atts['class'] = 'header-right col col-xs';
 
 				if ( $left ) {
-					$classes = 'col-md-6 col-lg text-xs-left';
+					$right_atts['class'] .= ' col-md-6 col-lg text-xs-left';
+				} else {
+					$right_atts['class'] .= ' text-xs-right';
 				}
-
-				$right_atts['class'] = 'header-right col col-xs ' . $classes;
 
 				printf( '<div %s>%s</div>', genesis_attr( 'header-right', $right_atts ), $right );
 
