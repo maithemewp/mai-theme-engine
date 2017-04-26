@@ -52,25 +52,27 @@ function mai_banner_image_metabox() {
 	$taxonomies = apply_filters( 'mai_banner_taxonomies', $taxonomies );
 
 	$metabox_title = __( 'Banner Area', 'maitheme' );
-	$upload_label  = __( 'Banner Image', 'maitheme' ); // Hidden since show_names is false
+	$upload_label  = __( 'Banner Image', 'maitheme' ); // Hidden on posts since show_names is false
 	$button_text   = __( 'Add Banner Image', 'maitheme' );
 
 	// Posts/Pages/CPTs
     $post = new_cmb2_box( array(
-        'id'               => 'mai_post_banner',
-        'title'            => $metabox_title,
-        'object_types'     => $post_types,
-        'context' 		   => 'side',
-        'priority' 		   => 'low',
+		'id'			=> 'mai_post_banner',
+		'title'			=> $metabox_title,
+		'object_types'	=> $post_types,
+		'context'		=> 'side',
+		'priority'		=> 'low',
     ) );
     $post->add_field( array(
+		'name'			=> __( 'Banner Visibility', 'maitheme' ),
+		'show_names'	=> false,
 		'desc'			=> __( 'Hide banner on this post', 'maitheme' ),
 		'id'			=> 'mai_hide_banner',
 		'type'			=> 'checkbox',
     ) );
     $post->add_field( array(
 		'name'			=> $upload_label,
-		'show_names' 	=> false,
+		'show_names'	=> false,
 		'id'			=> 'banner',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
@@ -92,8 +94,13 @@ function mai_banner_image_metabox() {
         'context' 		   => 'normal',
     ) );
     $term->add_field( array(
+    	'name'			=> __( 'Banner Visibility', 'maitheme' ),
+		'desc'			=> __( 'Hide banner on this term\'s archive', 'maitheme' ),
+		'id'			=> 'mai_hide_banner',
+		'type'			=> 'checkbox',
+    ) );
+    $term->add_field( array(
 		'name'			=> $upload_label,
-		'show_names' 	=> false,
 		'id'			=> 'banner',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
@@ -107,14 +114,20 @@ function mai_banner_image_metabox() {
 
     // User Profiles
     $user = new_cmb2_box( array(
-        'id'               => 'mai_user_banner',
-        'title'            => $metabox_title,
-        'object_types'     => array( 'user' ),
-        'context' 		   => 'normal',
+		'id'			=> 'mai_user_banner',
+		'title'			=> $metabox_title,
+		'object_types'	=> array( 'user' ),
+		'context'		=> 'normal',
+		'show_on_cb' 	=> 'mai_cmb_show_if_user_is_author_or_above',
+    ) );
+    $user->add_field( array(
+		'name'	=> __( 'Banner Visibility', 'maitheme' ),
+		'desc'	=> __( 'Hide banner on this user\'s archive', 'maitheme' ),
+		'id'	=> 'mai_hide_banner',
+		'type'	=> 'checkbox',
     ) );
     $user->add_field( array(
 		'name'			=> $upload_label,
-		'show_names' 	=> false,
 		'id'			=> 'banner',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
@@ -126,4 +139,18 @@ function mai_banner_image_metabox() {
 	    ),
     ) );
 
+}
+
+/**
+ * User metabox callback function to check if the
+ * banner metabox should show for a user.
+ *
+ * @return bool
+ */
+function mai_cmb_show_if_user_is_author_or_above() {
+	global $user_id;
+	if ( user_can( $user_id, 'publish_posts' ) ) {
+		return true;
+	}
+	return false;
 }

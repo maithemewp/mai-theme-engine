@@ -25,8 +25,19 @@ function mai_maybe_do_banner_area() {
 		return;
 	}
 
+	// Get the banner visibility meta
+	if ( is_singular() ) {
+		$hide_banner = get_post_meta( get_the_ID(), 'mai_hide_banner', true );
+	} elseif ( is_tax() ) {
+		$hide_banner = get_term_meta( get_queried_object_id(), 'mai_hide_banner', true );
+	} elseif ( is_author() ) {
+		$hide_banner = get_user_meta( get_queried_object_id(), 'mai_hide_banner', true );
+	} else {
+		$hide_banner = false;
+	}
+
 	// Disable banner if checkbox is checked
-	if ( is_singular() && get_post_meta( get_the_ID(), 'mai_hide_banner', true ) ) {
+	if ( $hide_banner ) {
 		return;
 	}
 
