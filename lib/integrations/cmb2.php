@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Add some inline styles to make the banner metabox a little more streamlined.
+ *
+ * @return  void
+ */
 add_action( 'cmb2_before_form', 'mai_before_banner_image_metabox', 10, 4 );
 function mai_before_banner_image_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 
@@ -30,6 +35,8 @@ function mai_before_banner_image_metabox( $cmb_id, $object_id, $object_type, $cm
  * $post_banner_image = wp_get_attachment_image( get_post_meta( $post_id, 'banner_id', true ), 'banner' );
  * $term_banner_image = wp_get_attachment_image( get_term_meta( $term_id, 'banner_id', true ), 'banner' );
  * $user_banner_image = wp_get_attachment_image( get_user_meta( $user_id, 'banner_id', true ), 'banner' );
+ *
+ * @return  void
  */
 add_action( 'cmb2_admin_init', 'mai_banner_image_metabox' );
 function mai_banner_image_metabox() {
