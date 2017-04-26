@@ -96,7 +96,7 @@ function __mai_return_flex_loop_2_sidebar_content() {
 add_action( 'init', 'mai_register_layouts' );
 function mai_register_layouts() {
 
-    $dir = MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR . '/assets/images/layouts/';
+    $dir = MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . '/assets/images/layouts/';
 
     // Medium Content
     genesis_register_layout( 'md-content', array(
