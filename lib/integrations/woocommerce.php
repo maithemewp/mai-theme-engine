@@ -1,6 +1,19 @@
 <?php
 
 /**
+ * WooCommerce product gallery support.
+ *
+ * Remove these by adding any of the following in functions.php:
+ *
+ * remove_theme_support( 'wc-product-gallery-zoom' );
+ * remove_theme_support( 'wc-product-gallery-lightbox' );
+ * remove_theme_support( 'wc-product-gallery-slider' );
+ */
+add_theme_support( 'wc-product-gallery-zoom' );
+add_theme_support( 'wc-product-gallery-lightbox' );
+add_theme_support( 'wc-product-gallery-slider' );
+
+/**
  * Load WooCommerce templates in the plugin,
  * while still allowing the theme to override.
  *
