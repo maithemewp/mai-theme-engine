@@ -1,6 +1,63 @@
 <?php
 
 /**
+ * Load WooCommerce templates in the plugin,
+ * while still allowing the theme to override.
+ *
+ * @return  string  The template file location
+ */
+add_filter( 'wc_get_template', 'mai_wc_get_template', 10, 4 );
+function mai_wc_get_template( $template, $template_name, $args, $template_path ) {
+
+	if ( ! $template_path ) {
+		$template_path = WC()->template_path();
+	}
+
+	// Look for the file in the theme - this is priority
+	$_template = locate_template( array( $template_path . $template_name, $template_name ) );
+
+	if ( $_template ) {
+		// Use theme template
+		$template = $_template;
+	} else {
+		// Use our plugin template
+		$plugin_path = MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR . 'templates/woocommerce/';
+		if ( file_exists( $plugin_path . $template_name ) ) {
+			$template = $plugin_path . $template_name;
+		}
+	}
+	return $template;
+}
+
+/**
+ * Load WooCommerce templates in the plugin,
+ * while still allowing the theme to override.
+ *
+ * @return  string  The template file location
+ */
+add_filter( 'wc_get_template_part', 'mai_wc_get_template_part', 10, 3 );
+function mai_wc_get_template_part( $template, $slug, $name ) {
+
+	$template_path = WC()->template_path();
+	$template_name = "{$slug}-{$name}.php";
+
+	// Look within passed path within the theme - this is priority
+	$_template = locate_template( array( $template_path . $template_name, $template_name ) );
+
+	if ( $_template ) {
+		// Use theme template
+		$template = $_template;
+	} else {
+		// Use our plugin template
+		$plugin_path = MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR . 'templates/woocommerce/';
+		if ( file_exists( $plugin_path . $template_name ) ) {
+			$template = $plugin_path . $template_name;
+		}
+	}
+	return $template;
+}
+
+/**
  * Set default WooCommerce layouts.
  * We need to hook in later to make give
  * a chance for template to exist.
