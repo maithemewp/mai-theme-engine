@@ -81,7 +81,7 @@ function mai_flex_entry_image_size( $size ) {
  *
  * @return  array  The altered array
  */
-add_filter( 'genesis_options', 'mai_flex_loop_genesis_options' );
+// add_filter( 'genesis_options', 'mai_flex_loop_genesis_options' );
 function mai_flex_loop_genesis_options( $args ) {
     $args['content_archive_thumbnail'] = true;
     $args['image_alignment']           = 'none';

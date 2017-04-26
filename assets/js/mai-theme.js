@@ -21,8 +21,6 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
     'use strict';
 
-    // Make our menus unique if there's more than one instance on the page.
-
     var maiMenu             = {},
         maiMenuClass        = 'mai-menu',
         maiButtonClass      = 'mai-toggle',
