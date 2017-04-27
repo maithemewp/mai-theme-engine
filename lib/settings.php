@@ -50,7 +50,6 @@ function mai_do_boxed_content_class( $classes ) {
 }
 
 // Add boxed class to all elements affected by box styling
-// add_filter( 'genesis_attr_entry', 'mai_do_boxed_content_attributes' );
 add_filter( 'genesis_attr_sidebar-primary', 'mai_do_boxed_content_attributes' );
 add_filter( 'genesis_attr_sidebar-secondary', 'mai_do_boxed_content_attributes' );
 add_filter( 'genesis_attr_author-box', 'mai_do_boxed_content_attributes' );
