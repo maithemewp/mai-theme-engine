@@ -17,40 +17,13 @@
  *
  * @return  void
  */
-add_action( 'genesis_before_content_sidebar_wrap', 'mai_maybe_do_banner_area' );
-function mai_maybe_do_banner_area() {
-
-	// Bail if banner area is not enabled
-	if ( ! mai_is_banner_area_enabled() ) {
-		return;
-	}
-
-	// Get the banner visibility meta
-	if ( is_singular() ) {
-		$hide_banner = get_post_meta( get_the_ID(), 'mai_hide_banner', true );
-	} elseif ( is_tax() ) {
-		$hide_banner = get_term_meta( get_queried_object_id(), 'mai_hide_banner', true );
-	} elseif ( is_author() ) {
-		$hide_banner = get_user_meta( get_queried_object_id(), 'mai_hide_banner', true );
-	} else {
-		$hide_banner = false;
-	}
-
-	// Disable banner if checkbox is checked
-	if ( $hide_banner ) {
-		return;
-	}
-
-	mai_do_banner_area();
-
-}
-
-/**
- * Main function to display the banner area
- *
- * @return void
- */
+add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_banner_area' );
 function mai_do_banner_area() {
+
+	// Bail if banner area is not enabled or banner is hidden on this page
+	if ( ! mai_is_banner_area_enabled() || mai_is_hide_banner_enabled() ) {
+		return;
+	}
 
 	// Remove archive titles/descriptions, we'll add them back later in the banner area
 	remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
@@ -62,63 +35,10 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
 	// Set defaults
-	$image_id = $image = $image_url = $style = '';
+	$image = $image_url = $style = '';
 
-	$default_id = get_option( 'banner_id' );
-
-	// TODO: Convert all the following to helper function mai_get_banner_id()
-
-	if ( is_front_page() ) {
-		$image_id = get_post_meta( get_the_ID(), 'banner_id', true );
-		if ( ! ( $image_id || $default_id ) ) {
-			$image_id = get_post_thumbnail_id();
-		}
-	}
-	elseif ( is_home() ) {
-		$home_id  = get_option( 'page_for_posts' );
-		if ( $home_id ) {
-			$image_id = get_post_meta( $home_id, 'banner_id', true );
-		}
-		if ( ! ( $image_id || $default_id ) ) {
-			$image_id = get_post_thumbnail_id( $home_id );
-		}
-	}
-	elseif ( is_singular() && ! is_front_page() ) {
-		$image_id = get_post_meta( get_the_ID(), 'banner_id', true );
-		if ( ! ( $image_id || $default_id ) ) {
-			$image_id = get_post_thumbnail_id();
-		}
-	}
-	elseif ( is_category() || is_tag() || is_tax() ) {
-		if ( is_tax( array( 'product_cat' ) ) ) {
-		    $image_id = get_term_meta( get_queried_object()->term_id, 'thumbnail_id', true );
-		} else {
-			$image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
-		}
-	}
-	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-		// No option to easily add image upload fields to Genesis CPT archives :(
-		// For now we have to use mai_banner_area_args
-	// }
-	elseif ( is_author() ) {
-		$author	  = get_user_by( 'slug', get_query_var( 'author_name' ) );
-		$image_id = get_user_meta( $author->ID, 'banner_id', true );
-	}
-	elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		$shop_id  = get_option( 'woocommerce_shop_page_id' );
-		$image_id = get_post_meta( $shop_id, 'banner_id', true );
-		if ( ! ( $image_id || $default_id ) ) {
-			$image_id = get_post_thumbnail_id( $shop_id );
-		}
-	}
-
-	/**
-	 * If no banner override use the default banner image
-	 * Banner image may be false
-	 */
-	if ( ! $image_id && get_option( 'banner_id' ) ) {
-		$image_id = absint( $default_id );
-	}
+	// Get the image ID
+	$image_id = mai_get_banner_id();
 
     $args = array(
 		'class'		=> 'banner-area',
@@ -128,7 +48,7 @@ function mai_do_banner_area() {
 		'inner'		=> false,
     );
 
-    // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
+    // Add a filter so devs can change these defaults
     $args = apply_filters( 'mai_banner_area_args', $args );
 
     // Opening markup
@@ -148,6 +68,8 @@ function mai_do_banner_area() {
 /**
  * Output default Genesis content in the banner
  * These won't fire if banner area is not enabled since that hook won't exist
+ *
+ * @return  void
  */
 add_action( 'mai_banner_content', 'mai_do_banner_content' );
 function mai_do_banner_content() {
