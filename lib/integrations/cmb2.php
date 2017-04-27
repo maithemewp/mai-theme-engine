@@ -8,22 +8,26 @@
 add_action( 'cmb2_before_form', 'mai_before_banner_image_metabox', 10, 4 );
 function mai_before_banner_image_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 
-	if ( ! in_array( $cmb_id, array( 'mai_post_banner', 'mai_term_banner', 'mai_user_banner' ) ) ) {
+	if ( ! in_array( $cmb_id, array( 'mai_post_banner', 'mai_term_banner', 'mai_user_banner' ) )
+		&& ( strpos( $cmb_id, 'mai-cpt-archive-settings-' ) === false ) ) {
 		return;
 	}
+
     echo '<style type="text/css">
-        #cmb2-metabox-mai_post_banner .cmb-row,
-        #cmb2-metabox-mai_term_banner .cmb-row,
-        #cmb2-metabox-mai_user_banner .cmb-row {
+        .mai-banner-metabox .cmb-row {
 	        padding: 10px 0 0 !important;
 		    border: none !important;
 		    margin-bottom: 0 !important;
 		}
-		#cmb2-metabox-mai_post_banner span.cmb2-metabox-description,
-		#cmb2-metabox-mai_term_banner span.cmb2-metabox-description,
-		#cmb2-metabox-mai_user_banner span.cmb2-metabox-description {
+		.mai-banner-metabox span.cmb2-metabox-description {
 		    color: inherit !important;
 		    font-style: inherit !important;
+		}
+		.mai-banner-metabox .cmb-th {
+			margin-top: -5px !important;
+		}
+		.mai-banner-metabox .cmb-type-checkbox .cmb-th {
+			margin-top: -10px !important;
 		}
         </style>';
 
@@ -69,6 +73,7 @@ function mai_banner_image_metabox() {
 		'object_types'	=> $post_types,
 		'context'		=> 'side',
 		'priority'		=> 'low',
+		'classes' 		=> 'mai-banner-metabox',
     ) );
     $post->add_field( array(
 		'name'			=> __( 'Banner Visibility', 'maitheme' ),
@@ -99,6 +104,7 @@ function mai_banner_image_metabox() {
         'taxonomies'       => $taxonomies,
         'new_term_section' => true,
         'context' 		   => 'normal',
+        'classes' 		   => 'mai-banner-metabox',
     ) );
     $term->add_field( array(
     	'name'			=> __( 'Banner Visibility', 'maitheme' ),
@@ -126,6 +132,7 @@ function mai_banner_image_metabox() {
 		'object_types'	=> array( 'user' ),
 		'context'		=> 'normal',
 		'show_on_cb' 	=> 'mai_cmb_show_if_user_is_author_or_above',
+		'classes' 		=> 'mai-banner-metabox',
     ) );
     $user->add_field( array(
 		'name'	=> __( 'Banner Visibility', 'maitheme' ),
