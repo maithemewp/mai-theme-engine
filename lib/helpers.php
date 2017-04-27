@@ -64,7 +64,7 @@ function mai_get_banner_id() {
     }
     // Static blog page
     elseif ( is_home() ) {
-        $home_id  = get_option( 'page_for_posts' );
+        $home_id = get_option( 'page_for_posts' );
         if ( $home_id ) {
             $image_id = get_post_meta( $home_id, 'banner_id', true );
         }
@@ -116,7 +116,7 @@ function mai_get_banner_id() {
     }
 
     // Filter so devs can force a specific image ID
-    $image_id = apply_filter( 'mai_banner_image_id', $image_id );
+    $image_id = apply_filters( 'mai_banner_image_id', $image_id );
 
     return $image_id;
 }
@@ -640,7 +640,7 @@ function mai_is_banner_area_enabled() {
  *
  * @return bool
  */
-function mai_is_hide_banner_enabled() {
+function mai_is_hide_banner() {
     if ( is_singular() ) {
         $hide_banner = get_post_meta( get_the_ID(), 'mai_hide_banner', true );
     } elseif ( is_tax() ) {
