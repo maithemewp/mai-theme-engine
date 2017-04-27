@@ -7,7 +7,7 @@
  *
  * @return  void
  */
-// add_action( 'wp_loaded', 'mai_do_cpt_archive_settings_metaboxes' );
+add_action( 'wp_loaded', 'mai_do_cpt_archive_settings_metaboxes' );
 function mai_do_cpt_archive_settings_metaboxes() {
 
 	// Bail if not admin
@@ -48,7 +48,7 @@ class Mai_Genesis_CPT_Settings_Metabox {
  	 * Mmetabox id
  	 * @var string
  	 */
-	protected $metabox_id = 'mai-cpt-archive-settings-metabox-%1$s';
+	protected $metabox_id = 'mai-cpt-archive-settings-%1$s';
 
 	/**
  	 * CPT slug
@@ -188,11 +188,12 @@ class Mai_Genesis_CPT_Settings_Metabox {
 
 	    $this->cmb = cmb2_get_metabox( array(
 			'id'			=> $this->metabox_id,
-			'title'			=> __( 'Banner Image', 'maitheme' ),
+			'title'			=> __( 'Banner Area', 'maitheme' ),
+			'classes' 		=> 'mai-banner-metabox',
 			'hookup'		=> false, 	// We'll handle ourselves. ( add_sanitized_values() )
 			'cmb_styles'	=> false, 	// We'll handle ourselves. ( admin_hooks() )
 			'context'		=> 'main', 	// Important for Genesis.
-			'priority'		=> 'low', 		// Defaults to 'high'.
+			'priority'		=> 'low', 	// Defaults to 'high'.
 			'object_types'	=> array( $this->admin_hook ),
 			'show_on'		=> array(
 				// These are important, don't remove
@@ -202,32 +203,25 @@ class Mai_Genesis_CPT_Settings_Metabox {
 		), $this->key, 'options-page' );
 
 	    $this->cmb->add_field( array(
+			'name'			=> __( 'Banner Visibility', 'maitheme' ),
+			'desc'			=> __( 'Hide banner on this cpt\'s archive', 'maitheme' ),
+			'id'			=> 'mai_hide_banner',
+			'type'			=> 'checkbox',
+	    ) );
+	    $this->cmb->add_field( array(
 			'name'			=> __( 'Banner Image', 'maitheme' ),
 			'id'			=> 'banner',
 			'type'			=> 'file',
 			'preview_size'	=> 'one-third',
 			'options'		=> array(
-		        'url' => false, // Hide the text input for the url
+		        'url' => false,
 		    ),
 		    'text' 			=> array(
 		        'add_upload_file_text' => __( 'Add Image', 'maitheme' ),
 		    ),
 	    ) );
 
-	    // Rebuild the genesis-cpt-archives-settings.php fields!
-
-	  //   $this->cmb->add_field( array(
-			// 'name'			=> __( 'Display', 'maitheme' ),
-			// 'id'			=> 'content_archive',
-			// 'type'			=> 'select',
-			// 'preview_size'	=> 'one-third',
-			// 'options'		=> array(
-		 //        'url' => false, // Hide the text input for the url
-		 //    ),
-		 //    'text' 			=> array(
-		 //        'add_upload_file_text' => __( 'Add Image', 'maitheme' ),
-		 //    ),
-	  //   ) );
+	    // TODO: Rebuild the genesis-cpt-archives-settings.php fields!
 
 		return $this->cmb;
 	}
