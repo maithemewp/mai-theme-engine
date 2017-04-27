@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Add Flexington classes for comments.
+ */
+
 add_filter( 'genesis_attr_comment', 'mai_markup_comment' );
 function mai_markup_comment( $attributes ) {
 	$attributes['class'] .= ' row';
