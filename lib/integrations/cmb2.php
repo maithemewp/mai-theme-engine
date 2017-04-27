@@ -78,7 +78,7 @@ function mai_banner_image_metabox() {
     $post->add_field( array(
 		'name'			=> __( 'Banner Visibility', 'maitheme' ),
 		'show_names'	=> false,
-		'desc'			=> __( 'Hide banner on this post', 'maitheme' ),
+		'desc'			=> __( 'Hide banner area', 'maitheme' ),
 		'id'			=> 'mai_hide_banner',
 		'type'			=> 'checkbox',
     ) );
@@ -108,7 +108,7 @@ function mai_banner_image_metabox() {
     ) );
     $term->add_field( array(
     	'name'			=> __( 'Banner Visibility', 'maitheme' ),
-		'desc'			=> __( 'Hide banner on this term\'s archive', 'maitheme' ),
+		'desc'			=> __( 'Hide banner area', 'maitheme' ),
 		'id'			=> 'mai_hide_banner',
 		'type'			=> 'checkbox',
     ) );
@@ -136,7 +136,7 @@ function mai_banner_image_metabox() {
     ) );
     $user->add_field( array(
 		'name'	=> __( 'Banner Visibility', 'maitheme' ),
-		'desc'	=> __( 'Hide banner on this user\'s archive', 'maitheme' ),
+		'desc'	=> __( 'Hide banner area', 'maitheme' ),
 		'id'	=> 'mai_hide_banner',
 		'type'	=> 'checkbox',
     ) );
