@@ -8,7 +8,7 @@
  *
  * @author   Mike Hemberger
  *
- * @version  1.0.2
+ * @version  1.0.3
  */
 
 
@@ -94,6 +94,8 @@ function __mai_return_flex_loop_2_sidebar_content() {
 
 /**
  * Add 'archive' type to all default Genesis layouts.
+ * If we don't do this, none of the default layouts will show up on archives, but we want them to.
+ *
  * This needs to run before mai_register_layouts() or it will be modifying our new layouts as well.
  *
  * @uses    global  $_genesis_layouts
@@ -119,7 +121,11 @@ function mai_update_initial_layouts () {
 
 }
 
-// Add new layout options
+/**
+ * Add new layout options.
+ *
+ * @return  void
+ */
 add_action( 'admin_init', 'mai_register_layouts' );
 function mai_register_layouts() {
 
@@ -149,7 +155,7 @@ function mai_register_layouts() {
     genesis_register_layout( 'flex-loop-4', array(
         'label' => __( 'Grid Archive - 4 column', 'baseline' ),
         'img'   => $dir . 'ga4.gif',
-        'type'  => array( 'site', 'archive' ),
+        'type'  => array( 'archive' ),
     ) );
     // Grid Archive - 3 column
     genesis_register_layout( 'flex-loop-3', array(
@@ -241,17 +247,25 @@ function mai_register_layouts() {
 
 }
 
-// $layouts = apply_filters( 'genesis_initial_layouts', array(
-
+/**
+ * Add archive layout types to the static blog page and WooCommerce shop page.
+ *
+ * @return  array  The layouts to show.
+ */
 add_filter( 'genesis_get_layouts', 'mai_get_layouts', 10, 2 );
 function mai_get_layouts( $layouts, $type ) {
+
+    // Bail early if not in admin
+    if ( ! is_admin() ) {
+        return $layouts;
+    }
 
     $post_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
     $posts_page_id = get_option('page_for_posts');
     $shop_page_id  = get_option('woocommerce_shop_page_id');
 
     // If static blog page or WooCommerce shop page
-    if ( in_array( $post_id, array( $posts_page_id, $shop_page_id ) ) ) {
+    if ( ( $post_id == $posts_page_id ) || ( class_exists('WooCommerce') && ( $post_id == $shop_page_id ) ) ) {
         global $_genesis_layouts;
         foreach ( (array) $_genesis_layouts as $id => $data ) {
             // If the layout type contains 'archive'
@@ -263,121 +277,13 @@ function mai_get_layouts( $layouts, $type ) {
 
     return $layouts;
 
-
-    // LEAVING THIS FOR REFERENCE, TO CLEANUP LATER
-
-
-    // Bail early if not in admin
-    if ( ! is_admin() ) {
-        return;
-    }
-
-    if ( PARENT_THEME_VERSION > '2.5.0' ) {
-
-
-
-    } else {
-
-        global $pagenow, $_genesis_layouts;
-
-        // If genesis theme settings
-        if ( 'admin.php' == $pagenow ) {
-
-            if ( 'genesis' == filter_input( INPUT_GET, 'post', FILTER_SANITIZE_STRING ) ) {
-                // Unset the layouts from the global
-                unset($_genesis_layouts['flex-loop-4']);
-                unset($_genesis_layouts['flex-loop-3']);
-                unset($_genesis_layouts['flex-loop-2']);
-
-                unset($_genesis_layouts['flex-loop-4md']);
-                unset($_genesis_layouts['flex-loop-3md']);
-                unset($_genesis_layouts['flex-loop-2md']);
-
-                unset($_genesis_layouts['flex-loop-4sm']);
-                unset($_genesis_layouts['flex-loop-3sm']);
-                unset($_genesis_layouts['flex-loop-2sm']);
-
-                unset($_genesis_layouts['flex-loop-4-content-sidebar']);
-                unset($_genesis_layouts['flex-loop-3-content-sidebar']);
-                unset($_genesis_layouts['flex-loop-2-content-sidebar']);
-
-                unset($_genesis_layouts['flex-loop-4-sidebar-content']);
-                unset($_genesis_layouts['flex-loop-3-sidebar-content']);
-                unset($_genesis_layouts['flex-loop-2-sidebar-content']);
-            }
-        }
-
-        // If editing a post
-        if ( 'post.php' == $pagenow ) {
-
-            $post_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-            $posts_page_id = get_option('page_for_posts');
-            $shop_page_id  = get_option('woocommerce_shop_page_id');
-
-            // If editing any post/page that is not the page that shows your latest posts
-            if ( ! in_array( $post_id, array( $posts_page_id, $shop_page_id ) ) ){
-                // Unset the layouts from the global
-                unset($_genesis_layouts['flex-loop-4']);
-                unset($_genesis_layouts['flex-loop-3']);
-                unset($_genesis_layouts['flex-loop-2']);
-
-                unset($_genesis_layouts['flex-loop-4md']);
-                unset($_genesis_layouts['flex-loop-3md']);
-                unset($_genesis_layouts['flex-loop-2md']);
-
-                unset($_genesis_layouts['flex-loop-4sm']);
-                unset($_genesis_layouts['flex-loop-3sm']);
-                unset($_genesis_layouts['flex-loop-2sm']);
-
-                unset($_genesis_layouts['flex-loop-4-content-sidebar']);
-                unset($_genesis_layouts['flex-loop-3-content-sidebar']);
-                unset($_genesis_layouts['flex-loop-2-content-sidebar']);
-
-                unset($_genesis_layouts['flex-loop-4-sidebar-content']);
-                unset($_genesis_layouts['flex-loop-3-sidebar-content']);
-                unset($_genesis_layouts['flex-loop-2-sidebar-content']);
-            }
-            // If eding the shop page
-            elseif ( $post_id == $shop_page_id ) {
-                unset($_genesis_layouts['md-content']);
-                unset($_genesis_layouts['sm-content']);
-                unset($_genesis_layouts['xs-content']);
-
-                unset($_genesis_layouts['content-sidebar']);
-                unset($_genesis_layouts['sidebar-content']);
-
-                unset($_genesis_layouts['content-sidebar-sidebar']);
-                unset($_genesis_layouts['sidebar-sidebar-content']);
-                unset($_genesis_layouts['sidebar-content-sidebar']);
-
-                unset($_genesis_layouts['full-width-content']);
-            }
-        }
-
-        // If editing a term
-        if ( 'term.php' == $pagenow ) {
-            // If editing a WooCommerce product category or product tag
-            if ( in_array( filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING ), array( 'product_cat', 'product_tag' ) ) ) {
-                unset($_genesis_layouts['md-content']);
-                unset($_genesis_layouts['sm-content']);
-                unset($_genesis_layouts['xs-content']);
-
-                unset($_genesis_layouts['content-sidebar']);
-                unset($_genesis_layouts['sidebar-content']);
-
-                unset($_genesis_layouts['content-sidebar-sidebar']);
-                unset($_genesis_layouts['sidebar-sidebar-content']);
-                unset($_genesis_layouts['sidebar-content-sidebar']);
-
-                unset($_genesis_layouts['full-width-content']);
-            }
-        }
-    }
-
-
 }
 
-// Use Flexington for all layouts
+/**
+ * Use Flexington for the main content and sidebar layout.
+ *
+ * @return  void
+ */
 add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_layout' );
 function mai_do_layout() {
 
