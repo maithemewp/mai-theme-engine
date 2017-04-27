@@ -41,7 +41,84 @@ function mai_color_contrast( $color ) {
     $luminosity = ( ( $red * 0.2126 ) + ( $green * 0.7152 ) + ( $blue * 0.0722 ) );
 
     return ( $luminosity > 128 ) ? '#000000' : '#ffffff';
+}
 
+/**
+ * Get the banner image ID.
+ *
+ * If single post/page/cpt does not have a specific banner image set,
+ * and no default banner is set, the featured image will be used.
+ *
+ * @return int|false
+ */
+function mai_get_banner_id() {
+
+    $default_id = get_option( 'banner_id' );
+
+    // Static front page
+    if ( is_front_page() ) {
+        $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
+        if ( ! ( $image_id || $default_id ) ) {
+            $image_id = get_post_thumbnail_id();
+        }
+    }
+    // Static blog page
+    elseif ( is_home() ) {
+        $home_id  = get_option( 'page_for_posts' );
+        if ( $home_id ) {
+            $image_id = get_post_meta( $home_id, 'banner_id', true );
+        }
+        if ( ! ( $image_id || $default_id ) ) {
+            $image_id = get_post_thumbnail_id( $home_id );
+        }
+    }
+    // Single page/post/cpt, but not static front page or static home page
+    elseif ( is_singular() && ! ( is_front_page() || is_home() ) ) {
+        $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
+        if ( ! ( $image_id || $default_id ) ) {
+            $image_id = get_post_thumbnail_id();
+        }
+    }
+    // Term archive
+    elseif ( is_category() || is_tag() || is_tax() ) {
+        // If WooCommerce product category
+        if ( class_exists( 'WooCommerce' ) && is_tax( array( 'product_cat' ) ) ) {
+            // Woo uses it's own image field/key
+            $image_id = get_term_meta( get_queried_object()->term_id, 'thumbnail_id', true );
+        } else {
+            $image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
+        }
+    }
+    // CPT archive
+    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+        $image_id = genesis_get_cpt_option( 'banner_id' );
+    }
+    // Author archive
+    elseif ( is_author() ) {
+        $author   = get_user_by( 'slug', get_query_var( 'author_name' ) );
+        $image_id = get_user_meta( $author->ID, 'banner_id', true );
+    }
+    // WooCommerce shop page
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
+        $shop_id  = get_option( 'woocommerce_shop_page_id' );
+        $image_id = get_post_meta( $shop_id, 'banner_id', true );
+        if ( ! ( $image_id || $default_id ) ) {
+            $image_id = get_post_thumbnail_id( $shop_id );
+        }
+    }
+
+    /**
+     * If no banner, but we have a default,
+     * use the default banner image.
+     */
+    if ( ! $image_id && $default_id ) {
+        $image_id = absint( $default_id );
+    }
+
+    // Filter so devs can force a specific image ID
+    $image_id = apply_filter( 'mai_banner_image_id', $image_id );
+
+    return $image_id;
 }
 
 /**
@@ -556,6 +633,26 @@ function mai_is_fixed_header_enabled() {
  */
 function mai_is_banner_area_enabled() {
     return filter_var( get_theme_mod( 'enable_banner_area', 1 ), FILTER_VALIDATE_BOOLEAN );
+}
+
+/**
+ * Check if the banner should be hidden on this page.
+ *
+ * @return bool
+ */
+function mai_is_hide_banner_enabled() {
+    if ( is_singular() ) {
+        $hide_banner = get_post_meta( get_the_ID(), 'mai_hide_banner', true );
+    } elseif ( is_tax() ) {
+        $hide_banner = get_term_meta( get_queried_object_id(), 'mai_hide_banner', true );
+    } elseif ( is_post_type_archive() ) {
+        $hide_banner = genesis_get_cpt_option( 'mai_hide_banner' );
+    } elseif ( is_author() ) {
+        $hide_banner = get_user_meta( get_queried_object_id(), 'mai_hide_banner', true );
+    } else {
+        $hide_banner = false;
+    }
+    return $hide_banner;
 }
 
 /**
