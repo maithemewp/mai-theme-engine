@@ -279,6 +279,9 @@ function mai_get_layouts( $layouts, $type ) {
 
 }
 
+// Reposition secondary sidebar, we'll add it back later where we need it
+remove_action( 'genesis_after_content_sidebar_wrap', 'genesis_get_sidebar_alt' );
+
 /**
  * Use Flexington for the main content and sidebar layout.
  *
@@ -404,4 +407,56 @@ function mai_do_layout() {
         return $attributes;
     });
 
+}
+
+/**
+ * Filter the footer-widgets context of the genesis_structural_wrap to add a div before the closing wrap div.
+ *
+ * @param   string  $output             The markup to be returned
+ * @param   string  $original_output    Set to either 'open' or 'close'
+ *
+ * @return  string  The footer markup
+ */
+add_filter( 'genesis_structural_wrap-footer-widgets', 'mai_footer_widgets_flexington_row', 10, 2 );
+function mai_footer_widgets_flexington_row( $output, $original_output ) {
+    if ( 'open' == $original_output ) {
+        $output = $output . '<div class="row gutter-30">';
+    }
+    elseif ( 'close' == $original_output ) {
+        $output = '</div>' . $output;
+    }
+    return $output;
+}
+
+/**
+ * Filter the footer-widget markup to add flexington column classes
+ *
+ * @param   array   $attributes  The array of attributes to be added to the footer widget wrap.
+ *
+ * @return  array  The attributes
+ */
+add_filter( 'genesis_attr_footer-widget-area', 'alsdkfjklsajflksa' );
+function alsdkfjklsajflksa( $attributes ) {
+    switch ( mai_get_footer_widgets_count() ) {
+        case '1':
+            $classes = ' col col-xs-12 center-xs';
+            break;
+        case '2':
+            $classes = ' col col-xs-12 col-sm-6';
+            break;
+        case '3':
+            $classes = ' col col-xs-12 col-sm-6 col-md-4';
+            break;
+        case '4':
+            $classes = ' col col-xs-12 col-sm-6 col-md-3';
+            break;
+        case '6':
+            $classes = ' col col-xs-6 col-sm-4 col-md-2';
+            break;
+        default:
+            $classes = ' col col-xs';
+
+    }
+    $attributes['class'] .= $classes;
+    return $attributes;
 }
