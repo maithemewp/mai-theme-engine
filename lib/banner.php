@@ -8,7 +8,7 @@
  *
  * @author   Mike Hemberger
  *
- * @version  1.0.7
+ * @version  1.0.8
  */
 
 
@@ -34,19 +34,20 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
-	// Set defaults
-	$image = $image_url = $style = '';
-
-	// Get the image ID
-	$image_id = mai_get_banner_id();
-
     $args = array(
 		'class'		=> 'banner-area',
-		'image'		=> $image_id,
 		'overlay'	=> true,
 		'wrap'		=> true,
 		'inner'		=> false,
     );
+
+	// Get the image ID
+	$image_id = mai_get_banner_id();
+
+	// Maybe add image background
+	if ( $image_id ) {
+		$args['image'] = $image_id;
+	}
 
     // Add a filter so devs can change these defaults
     $args = apply_filters( 'mai_banner_area_args', $args );
@@ -79,8 +80,63 @@ function mai_do_banner_content() {
 	genesis_do_cpt_archive_title_description();
 	genesis_do_date_archive_title();
 
+	// Add static front page banner content
+	if ( is_front_page() && $front_page = get_option( 'page_on_front' ) ) {
+
+		// Use an h2 on front page, since the site title/logo is h1
+		add_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
+		function mai_filter_entry_title_wrap( $wrap ) {
+			return 'h2';
+		}
+
+		genesis_do_post_title( $front_page );
+		genesis_do_post_content( $front_page );
+
+	}
+
+	// Do static blog banner content
+	elseif ( is_home() && $posts_page = get_option( 'page_for_posts' ) ) {
+		printf( '<div %s>', genesis_attr( 'posts-page-description' ) );
+			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page ) );
+			echo apply_filters( 'genesis_cpt_archive_intro_text_output', get_post( $posts_page )->post_content );
+		echo '</div>';
+	}
+
+	// Do singular banner content
+	elseif ( is_singular() && ! is_front_page() ) {
+
+		// Remove post title
+		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+
+		global $post;
+		genesis_do_post_title();
+		echo apply_filters( 'genesis_cpt_archive_intro_text_output', $post->post_excerpt );
+	}
+
+	// Do author archive banner content
+	elseif ( is_author() ) {
+		// If author box is enabled, show it
+		if ( get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
+
+			// Return only the name for the author box, not "About {name}"
+			add_filter( 'genesis_author_box_title', function() {
+				return get_the_author();
+			});
+
+			genesis_do_author_box_archive();
+		}
+		// Otherwise, show the default title and description
+		else {
+			genesis_do_author_title_description();
+		}
+	}
+
+	elseif ( is_search() ) {
+		genesis_do_search_title();
+	}
+
 	// Bail if WooCommerce is not active
-	if ( class_exists( 'WooCommerce' ) ) {
+	elseif ( class_exists( 'WooCommerce' ) ) {
 
 		 if ( is_shop() ) {
 		    // Get our new data
@@ -101,70 +157,6 @@ function mai_do_banner_content() {
 			}
 		}
 
-	}
-
-	// Add front page banner content
-	if ( is_front_page() ) {
-
-		// Use an h2 on front page, since the site title/logo is h1
-		add_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
-		function mai_filter_entry_title_wrap( $wrap ) {
-			return 'h2';
-		}
-
-		// We have to create a loop, so these functions get the right data
-		if ( have_posts() ) {
-	        while ( have_posts() ) : the_post();
-				genesis_do_post_title();
-				genesis_do_post_content();
-			endwhile;
-		}
-
-	}
-
-	// Do home (blog) banner content
-	if ( is_home() ) {
-		$posts_page = get_option( 'page_for_posts' );
-		if ( is_null( $posts_page ) ) {
-			return;
-		}
-		printf( '<div %s>', genesis_attr( 'posts-page-description' ) );
-			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page ) );
-			echo apply_filters( 'genesis_cpt_archive_intro_text_output', get_post( $posts_page )->post_content );
-		echo '</div>';
-	}
-
-	// Do singular banner content
-	if ( is_singular() && ! is_front_page() ) {
-
-		// Remove post title
-		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
-
-		global $post;
-		genesis_do_post_title();
-		echo apply_filters( 'genesis_cpt_archive_intro_text_output', $post->post_excerpt );
-	}
-
-	// Do author archive banner content
-	if ( is_author() ) {
-		// If author box is enabled, show it
-		if ( get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
-
-			// Return only the name for the author box, not "About {name}"
-			add_filter( 'genesis_author_box_title', function() {
-				return get_the_author();
-			});
-
-			genesis_do_author_box_archive();
-		}
-		// Otherwise, show the default title and description
-		else {
-			genesis_do_author_title_description();
-		}
-	}
-
-	if ( is_search() ) {
-		genesis_do_search_title();
 	}
 
 	// Remove the filter so it doesn't affect anything later
