@@ -12,18 +12,6 @@
 
 
 /**
- * Register custom javascript file for the customizer.
- *
- * @see 	add_action( 'customize_preview_init', $func )
- *
- * @return  void
- */
-// add_action( 'customize_preview_init', 'mai_enqueue_customizer_scripts' );
-function mai_enqueue_customizer_scripts() {
-	wp_enqueue_script( 'mai-customizer', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "/assets/js/mai-customizer{$suffix}.js", array( 'jquery', 'customize-preview' ), CHILD_THEME_VERSION, true );
-}
-
-/**
  * Register settings and controls with the Customizer.
  *
  * @since 	1.0.0
@@ -69,17 +57,17 @@ function mai_register_customizer_general( $wp_customize ) {
 		'priority' => 5,
 	) );
 
-	// $wp_customize->add_setting( 'enable_singular_image', array(
-	// 	'default'           => 1,
-	// 	'sanitize_callback' => 'absint',
-	// ) );
+	$wp_customize->add_setting( 'enable_singular_image', array(
+		'default'           => 1,
+		'sanitize_callback' => 'absint',
+	) );
 
-	// $wp_customize->add_control( 'enable_singular_image', array(
-	// 	'label'    => __( 'Auto-display the featured image on single posts/pages', 'maitheme' ),
-	// 	'section'  => $section,
-	// 	'type'     => 'checkbox',
-	// 	'priority' => 5,
-	// ) );
+	$wp_customize->add_control( 'enable_singular_image', array(
+		'label'    => __( 'Automatically display the featured image on single posts/pages', 'maitheme' ),
+		'section'  => $section,
+		'type'     => 'checkbox',
+		'priority' => 5,
+	) );
 
 	$wp_customize->add_setting( 'mobile_menu_style', array(
 		'default'           => 'standard',
