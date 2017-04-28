@@ -92,45 +92,133 @@ function __mai_return_flex_loop_2_sidebar_content() {
     return 'flex-loop-2-sidebar-content';
 }
 
-/**
- * Add 'archive' type to all default Genesis layouts.
- * If we don't do this, none of the default layouts will show up on archives, but we want them to.
- *
- * This needs to run before mai_register_layouts() or it will be modifying our new layouts as well.
- *
- * @uses    global  $_genesis_layouts
- *
- * @return  void
- */
-add_action( 'admin_init', 'mai_update_initial_layouts', 1 );
-function mai_update_initial_layouts () {
 
-    // Create new array to store updated layouts
-    $update_layouts = array();
 
-    global $_genesis_layouts;
-    foreach ( $_genesis_layouts as $layout ) {
-        // Add archive to the layout type
-        $layout['type'][] = 'archive';
-        // Update our new array
-        $update_layouts[] = $layout;
-    }
+    // *
+    //  * Add new layout options.
+    //  *
+    //  * @return  void
 
-    // Set the global to our new layouts array
-    $_genesis_layouts = $update_layouts;
-
-}
-
-/**
- * Add new layout options.
- *
- * @return  void
- */
-add_action( 'admin_init', 'mai_register_layouts' );
+add_action( 'genesis_setup', 'mai_register_layouts', 20 );
 function mai_register_layouts() {
 
     // Layout image directory
     $dir = MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . '/assets/images/layouts/';
+
+    // // Medium Content
+    // $layouts['md-content'] = array(
+    //     'label' => __( 'Medium Content', 'baseline' ),
+    //     'img'   => $dir . 'mdc.gif',
+    //     'type'  => array( 'site', 'archive' ),
+    // );
+    // // Small Content
+    // $layouts['sm-content'] = array(
+    //     'label' => __( 'Small Content', 'baseline' ),
+    //     'img'   => $dir . 'smc.gif',
+    //     'type'  => array( 'site', 'archive' ),
+    // );
+    // // Extra Small Content
+    // $layouts['xs-content'] = array(
+    //     'label' => __( 'Extra Small Content', 'baseline' ),
+    //     'img'   => $dir . 'xsc.gif',
+    //     'type'  => array( 'site', 'archive' ),
+    // );
+
+    // // Grid Archive - 4 column
+    // $layouts['flex-loop-4'] = array(
+    //     'label' => __( 'Grid Archive - 4 column', 'baseline' ),
+    //     'img'   => $dir . 'ga4.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 3 column
+    // $layouts['flex-loop-3'] = array(
+    //     'label' => __( 'Grid Archive - 3 column', 'baseline' ),
+    //     'img'   => $dir . 'ga3.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 2 column
+    // $layouts['flex-loop-2'] = array(
+    //     'label' => __( 'Grid Archive - 2 column', 'baseline' ),
+    //     'img'   => $dir . 'ga2.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+
+    // // Grid Archive - 4 column Medium
+    // $layouts['flex-loop-4md'] = array(
+    //     'label' => __( 'Grid Archive - 4 column', 'baseline' ),
+    //     'img'   => $dir . 'ga4md.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 3 column Medium
+    // $layouts['flex-loop-3md'] = array(
+    //     'label' => __( 'Grid Archive - 3 column', 'baseline' ),
+    //     'img'   => $dir . 'ga3md.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 2 column Medium
+    // $layouts['flex-loop-2md'] = array(
+    //     'label' => __( 'Grid Archive - 2 column', 'baseline' ),
+    //     'img'   => $dir . 'ga2md.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+
+    // // Grid Archive - 4 column Small
+    // $layouts['flex-loop-4sm'] = array(
+    //     'label' => __( 'Grid Archive - 4 column', 'baseline' ),
+    //     'img'   => $dir . 'ga4sm.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 3 column Small
+    // $layouts['flex-loop-3sm'] = array(
+    //     'label' => __( 'Grid Archive - 3 column', 'baseline' ),
+    //     'img'   => $dir . 'ga3sm.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 2 column Small
+    // $layouts['flex-loop-2sm'] = array(
+    //     'label' => __( 'Grid Archive - 2 column', 'baseline' ),
+    //     'img'   => $dir . 'ga2sm.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+
+    // // Grid Archive - 4 column - Content/Sidebar
+    // $layouts['flex-loop-4-content-sidebar'] = array(
+    //     'label' => __( 'Grid Archive - 4 column - Sidebar/Content', 'baseline' ),
+    //     'img'   => $dir . 'ga4cs.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 4 column - Sidebar/Content
+    // $layouts['flex-loop-4-sidebar-content'] = array(
+    //     'label' => __( 'Grid Archive - 4 column - Sidebar/Content', 'baseline' ),
+    //     'img'   => $dir . 'ga4sc.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 3 column - Content/Sidebar
+    // $layouts['flex-loop-3-content-sidebar'] = array(
+    //     'label' => __( 'Grid Archive - 3 column - Sidebar/Content', 'baseline' ),
+    //     'img'   => $dir . 'ga3cs.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 3 column - Sidebar/Content
+    // $layouts['flex-loop-3-sidebar-content'] = array(
+    //     'label' => __( 'Grid Archive - 3 column - Sidebar/Content', 'baseline' ),
+    //     'img'   => $dir . 'ga3sc.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 2 column - Content/Sidebar
+    // $layouts['flex-loop-2-content-sidebar'] = array(
+    //     'label' => __( 'Grid Archive - 2 column - Sidebar/Content', 'baseline' ),
+    //     'img'   => $dir . 'ga2cs.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+    // // Grid Archive - 2 column - Sidebar/Content
+    // $layouts['flex-loop-2-sidebar-content'] = array(
+    //     'label' => __( 'Grid Archive - 2 column - Sidebar/Content', 'baseline' ),
+    //     'img'   => $dir . 'ga2sc.gif',
+    //     'type'  => array( 'archive' ),
+    // );
+
+    // return $layouts;
 
     // Medium Content
     genesis_register_layout( 'md-content', array(
@@ -252,8 +340,8 @@ function mai_register_layouts() {
  *
  * @return  array  The layouts to show.
  */
-add_filter( 'genesis_get_layouts', 'mai_get_layouts', 10, 2 );
-function mai_get_layouts( $layouts, $type ) {
+// add_filter( 'genesis_get_layouts', 'mai_maybe_add_layouts_to_static_pages', 10, 2 );
+function mai_maybe_add_layouts_to_static_pages( $layouts, $type ) {
 
     // Bail early if not in admin
     if ( ! is_admin() ) {
@@ -279,8 +367,36 @@ function mai_get_layouts( $layouts, $type ) {
 
 }
 
-// Reposition secondary sidebar, we'll add it back later where we need it
-remove_action( 'genesis_after_content_sidebar_wrap', 'genesis_get_sidebar_alt' );
+/**
+ * Add custom body class to the head
+ */
+add_filter( 'body_class', 'mai_sidebars_body_class' );
+function mai_sidebars_body_class( $classes ) {
+
+   $layout = genesis_site_layout();
+
+    // No sidebars
+    $no_sidebars = array(
+        'full-width-content',
+        'md-content',
+        'sm-content',
+        'xs-content',
+        'flex-loop-4',
+        'flex-loop-3',
+        'flex-loop-2',
+        'flex-loop-4md',
+        'flex-loop-3md',
+        'flex-loop-2md',
+        'flex-loop-4sm',
+        'flex-loop-3sm',
+        'flex-loop-2sm',
+    );
+    // Add .no-sidebar body class if don't have any sidebars
+    if ( in_array( genesis_site_layout(), $no_sidebars ) ) {
+        $classes[] = ' no-sidebars';
+    }
+    return $classes;
+}
 
 /**
  * Use Flexington for the main content and sidebar layout.
@@ -292,8 +408,10 @@ function mai_do_layout() {
 
     $layout = genesis_site_layout();
 
+    d( $layout );
+
     // No sidebars
-    $nosidebars = array(
+    $no_sidebars = array(
         'full-width-content',
         'md-content',
         'sm-content',
@@ -340,9 +458,12 @@ function mai_do_layout() {
     $sidebars        = array_merge( $single_sidebars, $double_sidebars );
 
     // Remove primary sidebar
-    if ( in_array( $layout, $nosidebars ) ) {
+    if ( in_array( $layout, $no_sidebars ) ) {
         remove_action( 'genesis_after_content', 'genesis_get_sidebar' );
     }
+
+    // Reposition secondary sidebar, we'll add it back later where we need it
+    remove_action( 'genesis_after_content_sidebar_wrap', 'genesis_get_sidebar_alt' );
 
     // Add back the secondary sidebary where flexington needs it
     if ( in_array( $layout, $double_sidebars ) ) {
@@ -369,11 +490,16 @@ function mai_do_layout() {
      * The breakpoint classes here need to match with the sidebar classes and total 12
      * to avoid flash of full-width containers on page load
      */
-    add_filter( 'genesis_attr_content', function( $attributes ) use ( $layout, $double_sidebars, $double_secondary_first_content_last ) {
-        $classes = ' col col-xs-12 col-md';
+    add_filter( 'genesis_attr_content', function( $attributes ) use ( $layout, $no_sidebars, $double_sidebars, $double_secondary_first_content_last ) {
+        $classes = '';
+        // Add .content-no-sidebar class if don't have any sidebars
+        if ( in_array( $layout, $no_sidebars ) ) {
+            $classes .= ' content-no-sidebars';
+        }
+        $classes .= ' col col-xs-12 col-md';
         if ( in_array( $layout, $double_sidebars ) ) {
             // Break to full width earlier when there are 2 sidebars
-            $classes = ' col col-xs-12 col-lg-6';
+            $classes .= ' col col-xs-12 col-lg-6';
         }
         if ( in_array( $layout, $double_secondary_first_content_last ) ) {
             $classes .= ' last-lg';

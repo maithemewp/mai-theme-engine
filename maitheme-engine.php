@@ -136,11 +136,89 @@ final class Mai_Theme_Engine {
      */
     private function includes() {
 
-        // Include files after theme is loaded, to mimic being run in a child theme
-        add_action( 'after_setup_theme', function(){
+        // Vendor
+        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
 
-            // Includes
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
+        // Includes
+        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
+
+        /**
+         * Add 'archive' type to all default Genesis layouts.
+         * If we don't do this, none of the default layouts will show up on archives, but we want them to.
+         *
+         * @param   array  The default G layouts
+         *
+         * @return  array  Modified layouts
+         */
+        add_filter( 'genesis_initial_layouts', 'mai_update_initial_layouts' );
+        function mai_update_initial_layouts( $layouts ) {
+            foreach ( $layouts as $index => $data ) {
+                $layouts[$index]['type'][] = 'archive';
+            }
+            return $layouts;
+        }
+
+        /**
+         * Include files after theme is loaded, to mimic being run in a child theme.
+         * Priority must be earlier than 10 to make sure 'genesis_initial_layouts' filter fires.
+         */
+        add_action( 'genesis_setup', function(){
+
+            // Do not load old stuff
+            add_filter( 'genesis_load_deprecated', '__return_false' );
+
+            // Add HTML5 markup structure
+            add_theme_support( 'html5' );
+
+            // Add title tag support
+            add_theme_support( 'title-tag' );
+
+            // Add viewport meta tag for mobile browsers
+            add_theme_support( 'genesis-responsive-viewport' );
+
+            add_theme_support( 'genesis-menus', array(
+                'utility'       => __( 'Top (Utility) Menu', 'maitheme' ),
+                'primary'       => __( 'Primary Menu', 'maitheme' ),
+                'header_left'   => __( 'Header Left Menu', 'maitheme' ),
+                'header_right'  => __( 'Header Right Menu', 'maitheme' ),
+                'secondary'     => __( 'Footer Menu', 'maitheme' ),
+                'mobile'        => __( 'Mobile Menu', 'maitheme' ),
+            ) );
+
+            // Add support for structural wraps
+            add_theme_support( 'genesis-structural-wraps', array(
+                'archive-description',
+                'breadcrumb',
+                'header',
+                'menu-utility',
+                'menu-primary',
+                'menu-secondary',
+                'footer-widgets',
+                'footer',
+            ) );
+
+            // Add Accessibility support
+            add_theme_support( 'genesis-accessibility', array(
+                '404-page',
+                'drop-down-menu',
+                'headings',
+                'search-form',
+                'skip-links',
+            ) );
+
+            // Add custom logo support
+            add_theme_support( 'custom-logo', array(
+                'height'        => '',
+                'width'         => '',
+                'flex-height'   => true,
+                'flex-width'    => true,
+            ) );
+
+            // Add excerpt support for pages
+            add_post_type_support( 'page', 'excerpt' );
+
+
+        // add_action( 'after_setup_theme', function(){
             // Lib
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'archives/*.php' ) as $file ) { include_once $file; }
@@ -148,10 +226,10 @@ final class Mai_Theme_Engine {
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'integrations/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'layouts/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
-            // Vendor
-            require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
+        // });
 
-        });
+        }, 15 );
+
     }
 
 }

@@ -1,5 +1,18 @@
 <?php
 
+// If debug mode
+if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+	/**
+	 * Update CMB2 URL cause JS/CSS files 404
+	 * when using the plugin via symlink
+	 * in local dev environments.
+	 */
+	add_filter( 'cmb2_meta_box_url', 'mai_update_cmb2_meta_box_url' );
+	function mai_update_cmb2_meta_box_url( $url ) {
+	    return MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . 'includes/vendor/CMB2';
+	}
+}
+
 /**
  * Add some inline styles to make the banner metabox a little more streamlined.
  *

@@ -1,3 +1,373 @@
+/* # HTML5 Reset
+---------------------------------------------------------------------------------------------------- */
+
+/* Normalize */
+/* normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
+progress,sub,sup{vertical-align:baseline}button,hr,input{overflow:visible}[type=checkbox],[type=radio],legend{box-sizing:border-box;padding:0}html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}svg:not(:root){overflow:hidden}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}figure{margin:1em 40px}hr{box-sizing:content-box;height:0}button,input,optgroup,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,select{text-transform:none}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:ButtonText dotted 1px}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;white-space:normal}textarea{overflow:auto}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-input-placeholder{color:inherit;opacity:.54}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
+
+/* ## Box Sizing
+--------------------------------------------- */
+
+html,
+input[type="search"]{
+	box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+/* ## Screen reader text
+--------------------------------------------- */
+
+.screen-reader-text,
+.screen-reader-text span,
+.screen-reader-shortcut {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	width: 1px;
+	border: 0;
+	overflow: hidden;
+}
+
+.screen-reader-text:focus,
+.screen-reader-shortcut:focus,
+.widget_search input[type="submit"]:focus,
+.mai-menu .search-form input[type="submit"]:focus {
+	clip: auto !important;
+	height: auto;
+	width: auto;
+	display: block;
+	font-size: 1em;
+	font-weight: bold;
+	padding: 15px 23px 14px;
+	color: #323232;
+	background: #fff;
+	z-index: 100000; /* Above WP toolbar. */
+	text-decoration: none;
+	box-shadow: 0 0 2px 2px rgba(0,0,0,.6);
+}
+
+.more-link {
+    position: relative;
+}
+
+/* ## Skip Links
+---------------------------------------------------------------------------------------------------- */
+
+.genesis-skip-link {
+	margin: 0;
+}
+
+.genesis-skip-link li {
+	height: 0;
+	width: 0;
+	list-style: none;
+}
+
+.genesis-skip-link .skip-link-hidden {
+	display: none;
+	visibility: hidden;
+}
+
+/* ## Accessible Menu
+--------------------------------------------- */
+
+.menu .menu-item:focus {
+	position: static;
+}
+
+.menu .menu-item > a:focus + ul.sub-menu,
+.menu .menu-item.sfHover > ul.sub-menu {
+	left: 0;
+	opacity: 1;
+}
+
+/* ## Objects
+--------------------------------------------- */
+
+embed,
+iframe,
+img,
+object,
+video,
+.wp-caption {
+	max-width: 100%;
+}
+
+img {
+	height: auto;
+	width: auto; /* IE8 */
+}
+
+figure {
+	margin: 0;
+}
+
+/* ## Forms
+--------------------------------------------- */
+
+input,
+textarea {
+	width: 100%;
+}
+
+select {
+	width: auto;
+}
+
+::-moz-placeholder {
+	opacity: 1;
+}
+
+input[type="checkbox"] {
+   -webkit-appearance: checkbox;-moz-appearance: checkbox;appearance: checkbox;
+}
+
+input[type="radio"] {
+   -webkit-appearance: radio;-moz-appearance: radio;appearance: radio;
+}
+
+select {
+   -webkit-appearance: menulist;-moz-appearance: menulist;appearance: menulist;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button {
+	display: none;
+}
+
+/* ### Buttons
+--------------------------------------------- */
+
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+.button,
+.entry-content .button,
+.menu-item.highlight a,
+.more-link {
+	display: -webkit-inline-flex;display: -ms-inline-flexbox;display: inline-flex;
+	-webkit-justify-content: center;-ms-flex-pack: center;justify-content: center;
+	-webkit-align-items: center;-ms-flex-align: center;align-items: center;
+	cursor: pointer;
+	width: auto;
+	white-space: normal;
+}
+
+.site-container button:disabled,
+.site-container button:disabled:hover,
+.site-container input:disabled,
+.site-container input:disabled:hover,
+.site-container input[type="button"]:disabled,
+.site-container input[type="button"]:disabled:hover,
+.site-container input[type="reset"]:disabled,
+.site-container input[type="reset"]:disabled:hover,
+.site-container input[type="submit"]:disabled,
+.site-container input[type="submit"]:disabled:hover {
+	cursor: not-allowed;
+	opacity: 0.8;
+}
+
+/* ## Tables
+--------------------------------------------- */
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	line-height: 2;
+	width: 100%;
+}
+
+/* # Structure and Layout
+---------------------------------------------------------------------------------------------------- */
+
+/* ## Site Containers
+--------------------------------------------- */
+
+.site-container {
+	display: -webkit-flex;display: -ms-flexbox;display: flex;
+	-webkit-flex-direction: column;-ms-flex-direction: column;flex-direction: column;
+	min-height: 100vh; /* forces footer to bottom when not enough content to fill the window */
+	overflow: hidden;  /* keeps mai-slider in check */
+}
+
+.admin-bar .site-container {
+	min-height: calc(100vh - 32px);
+}
+
+.site-inner,
+.wrap {
+	width: 100%;
+}
+
+.site-inner {
+	-webkit-flex: 1 1 auto;-ms-flex: 1 1 auto;flex: 1 1 auto;
+	word-wrap: break-word;
+}
+
+.wrap {
+	margin: 0 auto;
+}
+
+/* ## Content Widths
+--------------------------------------------- */
+
+/* .content,
+.xs-content .content,
+.xs-content .breadcrumb,
+.sm-content .content,
+.sm-content .breadcrumb,
+.md-content .content,
+.md-content .breadcrumb,
+.flex-loop-4sm .content,
+.flex-loop-4sm .breadcrumb,
+.flex-loop-3sm .content,
+.flex-loop-3sm .breadcrumb,
+.flex-loop-2sm .content,
+.flex-loop-2sm .breadcrumb,
+.flex-loop-4md .content,
+.flex-loop-4md .breadcrumb,
+.flex-loop-3md .content,
+.flex-loop-3md .breadcrumb,
+.flex-loop-2md .content,
+.flex-loop-2md .breadcrumb { */
+.content,
+.content.nosidebars {
+	-ms-flex-negative: 1;-webkit-flex-shrink: 1;flex-shrink: 1;
+	width: 100%;
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* # Common Classes
+---------------------------------------------------------------------------------------------------- */
+
+/* ## Image Backgrounds & Sections
+--------------------------------------------- */
+
+.image-bg {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.content-no-sidebars .section,
+.no-sidebars .section .overlay {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+}
+
+.image-bg .overlay :not(.boxed.entry) {
+}
+
+.image-bg .overlay .entry-title,
+.image-bg .overlay .entry-title a,
+.image-bg .overlay .widget-title,
+.image-bg .overlay h1,
+.image-bg .overlay h2,
+.image-bg .overlay h3,
+.image-bg .overlay h4,
+.image-bg .overlay h5,
+.image-bg .overlay h6 {
+	color: #fff;
+	text-shadow: 0 0 6px #3f3f3f;
+}
+
+.image-bg .overlay .boxed.entry,
+.image-bg .overlay .boxed.entry .entry-title,
+.image-bg .overlay .boxed.entry .entry-title a,
+.image-bg .overlay .boxed.entry .widget-title,
+.image-bg .overlay .boxed.entry h1,
+.image-bg .overlay .boxed.entry h2,
+.image-bg .overlay .boxed.entry h3,
+.image-bg .overlay .boxed.entry h4,
+.image-bg .overlay .boxed.entry h5,
+.image-bg .overlay .boxed.entry h6,
+.image-bg .overlay .inner .entry-title,
+.image-bg .overlay .inner .entry-title a,
+.image-bg .overlay .inner .widget-title,
+.image-bg .overlay .inner h1,
+.image-bg .overlay .inner h2,
+.image-bg .overlay .inner h3,
+.image-bg .overlay .inner h4,
+.image-bg .overlay .inner h5,
+.image-bg .overlay .inner h6 {
+	color: #323232;
+	text-shadow: none;
+}
+
+.section .wrap {
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.section .wrap p:last-of-type {
+	margin-bottom: 16px;
+}
+
+.image-bg .inner,
+.image-bg .overlay .inner {
+	display: inline-block;
+	color: #323232;
+	text-shadow: none;
+}
+
+.image-bg .inner {
+	background-color: rgba(255, 255, 255, 0.7);
+	color: #323232;
+	padding: 30px;
+	border: 6px solid rgba(0,0,0,0.075);
+	box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
+}
+
+.light-content,
+.light-content .entry-title a {
+	color: #fff;
+}
+
+/* ## Search Form
+--------------------------------------------- */
+
+.search-form {
+	overflow: hidden;
+}
+
+.entry-content .search-form {
+	margin-bottom: 40px;
+	width: 50%;
+}
+
+.post-password-form input[type="submit"],
+.search-form input[type="submit"] {
+	margin-top: 10px;
+}
+
+.search-form input:focus::-webkit-input-placeholder,
+.search-form input:focus:-moz-input-placeholder,
+.search-form input:focus::-moz-input-placeholder,
+.search-form input:focus:-ms-input-placeholder {
+	color: transparent;
+}
+
+.site-inner .search-form input[type="submit"],
+.mai-menu .search-form input[type="submit"],
+.widget_search input[type="submit"],
+.footer-widgets .search-form input[type="submit"] {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
 /* ## Mobile Navigation
 --------------------------------------------- */
 
