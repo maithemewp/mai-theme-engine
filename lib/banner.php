@@ -59,7 +59,7 @@ function mai_do_banner_area() {
      * Custom hook for banner content
      * Won't get used if banner area is not displayed
      */
-	do_action( 'mai_banner_content' );
+	do_action( 'mai_banner_content', $args );
 
     // Closing markup
     echo mai_get_section_close( $args );
