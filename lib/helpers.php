@@ -53,31 +53,22 @@ function mai_color_contrast( $color ) {
  */
 function mai_get_banner_id() {
 
-    $default_id = get_option( 'banner_id' );
+    // Start of without an image
+    $image_id = false;
 
     // Static front page
     if ( is_front_page() ) {
         $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
-        if ( ! ( $image_id || $default_id ) ) {
-            $image_id = get_post_thumbnail_id();
-        }
     }
     // Static blog page
     elseif ( is_home() ) {
-        $home_id = get_option( 'page_for_posts' );
-        if ( $home_id ) {
+        if ( $home_id = get_option( 'page_for_posts' ) ) {
             $image_id = get_post_meta( $home_id, 'banner_id', true );
-        }
-        if ( ! ( $image_id || $default_id ) ) {
-            $image_id = get_post_thumbnail_id( $home_id );
         }
     }
     // Single page/post/cpt, but not static front page or static home page
     elseif ( is_singular() && ! ( is_front_page() || is_home() ) ) {
         $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
-        if ( ! ( $image_id || $default_id ) ) {
-            $image_id = get_post_thumbnail_id();
-        }
     }
     // Term archive
     elseif ( is_category() || is_tag() || is_tax() ) {
@@ -102,17 +93,16 @@ function mai_get_banner_id() {
     elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
         $shop_id  = get_option( 'woocommerce_shop_page_id' );
         $image_id = get_post_meta( $shop_id, 'banner_id', true );
-        if ( ! ( $image_id || $default_id ) ) {
-            $image_id = get_post_thumbnail_id( $shop_id );
-        }
     }
 
     /**
      * If no banner, but we have a default,
      * use the default banner image.
      */
-    if ( ! $image_id && $default_id ) {
-        $image_id = absint( $default_id );
+    if ( ! $image_id ) {
+        if ( $default_id = get_option( 'banner_id' ) ) {
+            $image_id = absint( $default_id );
+        }
     }
 
     // Filter so devs can force a specific image ID
@@ -273,7 +263,7 @@ function mai_get_section_close( $args ) {
         $inner,
         $wrap,
         $overlay,
-        $wrapper
+        sanitize_text_field( $args['wrapper'] )
     );
 
 }
