@@ -125,6 +125,8 @@ function mai_get_banner_id() {
  * Echo the section opening markup
  * Share variable with mai_section_close()
  *
+ * @see    mai_get_section_open() for full args
+ *
  * @return string|HTML
  */
 function mai_section_open( $args ) {
@@ -134,6 +136,8 @@ function mai_section_open( $args ) {
 /**
  * Echo the section closing markup
  * Share variable with mai_section_close()
+ *
+ * @see    mai_get_section_close() for full args
  *
  * @return string|HTML
  */
@@ -145,9 +149,11 @@ function mai_section_close( $args ) {
  * Get opening section wrap
  * To be used in front-page.php and [section] shortcode
  *
- * @param  array  $args  Options for the wrapping markup
+ * @version  1.0.1
  *
- * @return string|HTML
+ * @param    array  $args  Options for the wrapping markup
+ *
+ * @return   string|HTML
  */
 function mai_get_section_open( $args ) {
 
@@ -162,20 +168,23 @@ function mai_get_section_open( $args ) {
     );
     $args = wp_parse_args( $args, $defaults );
 
-    $style = $id = $overlay = $wrap = $inner = '';
+    // Start all element variables as empty string
+    $overlay = $wrap = $inner = '';
 
-    $wrapper = $args['wrapper'];
+    // Start all attributes as empty array
+    $section_atts = $overlay_atts = $wrap_atts = $inner_atts = array();
 
-    // Build our wrapping id
+    // Maybe add section id
     if ( $args['id'] ) {
-        $id .= 'id="' . esc_attr( $args['id'] ) . '" ';
+        $section_atts['id'] = sanitize_html_class( $args['id'] );
     }
 
-    $class = 'section';
+    // Default section class
+    $section_atts['class'] = 'section';
 
-    // Build our wrapping classes
+    // Maybe add section classes
     if ( $args['class'] ) {
-        $class .= ' ' . esc_attr( $args['class'] );
+        $section_atts['class'] .= ' ' . sanitize_html_class( $args['class'] );
     }
 
     // If we have an image ID
@@ -184,33 +193,34 @@ function mai_get_section_open( $args ) {
         // Get the attachment image
         $image = wp_get_attachment_image_src( absint($args['image']), 'banner', true );
         if ( $image ) {
-            $class .= ' image-bg';
-            $style = sprintf( ' style="background-image: url(%s)"', $image[0] );
+            $section_atts['class'] .= ' image-bg';
+            $section_atts['style'] = sprintf( 'background-image: url(%s);', $image[0] );
         }
 
     }
 
-    // Maybe add an overlay, typically for image overlay
+    // Maybe add an overlay, typically for image tint/style
     if ( filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $overlay = '<div class="overlay">';
+        $overlay_atts['class'] = 'overlay';
+        $overlay               = sprintf( '<div %s>', genesis_attr( 'mai-overlay', $overlay_atts ) );
     }
 
-    // Maybe add a wrap, typically for image overlay
+    // Maybe add a wrap, typically to contain content over the image
     if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $wrap = '<div class="wrap">';
+        $wrap_atts['class'] = 'wrap';
+        $wrap               = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
     }
 
     // Maybe add an inner wrap, typically for content width/style
     if ( filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $inner = '<div class="inner">';
+        $inner_atts['class'] = 'inner';
+        $inner               = sprintf( '<div %s>', genesis_attr( 'mai-inner', $inner_atts ) );
     }
 
-    // TODO: Convert to genesis_attr mai-section
-    return sprintf( '<%s %sclass="%s"%s>%s%s%s',
-        $wrapper,
-        $id,
-        $class,
-        $style,
+    // Build the opening markup
+    return sprintf( '<%s %s>%s%s%s',
+        sanitize_text_field( $args['wrapper'] ),
+        genesis_attr( 'mai-section', $section_atts ),
         $overlay,
         $wrap,
         $inner
@@ -224,9 +234,11 @@ function mai_get_section_open( $args ) {
  *
  * This should share the same $args variable as opening function
  *
- * @param  array  $args  Options for the wrapping markup
+ * @version  1.0.1
  *
- * @return string|HTML
+ * @param    array  $args  Options for the wrapping markup
+ *
+ * @return   string|HTML
  */
 function mai_get_section_close( $args ) {
 
@@ -238,31 +250,32 @@ function mai_get_section_close( $args ) {
     );
     $args = wp_parse_args( $args, $defaults );
 
+    // Start all element variables as empty string
     $overlay = $wrap = $inner = '';
 
-    $wrapper = $args['wrapper'];
-
-    // Maybe add an overlay, typically for image overlay
+    // Maybe close overlay
     if ( filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ) ) {
         $overlay = '</div>';
     }
 
-    // Maybe add a wrap, typically for image overlay
+    // Maybe close wrap
     if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
         $wrap = '</div>';
     }
 
-    // Maybe add an inner wrap, typically for content width/style
+    // Maybe close inner wrap
     if ( filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ) ) {
         $outer = '</div>';
     }
 
+    // Build the closing markup, in reverse order so the close appropriately
     return sprintf( '%s%s%s</%s>',
-        $overlay,
-        $wrap,
         $inner,
+        $wrap,
+        $overlay,
         $wrapper
     );
+
 }
 
 /**
