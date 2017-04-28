@@ -25,12 +25,19 @@ function mai_register_customizer_general( $wp_customize ) {
 
 	$section = 'mai-settings';
 
+	/*****************************************************
+	 * Mai Theme Settings section
+	 */
+
 	$wp_customize->add_section( $section, array(
 		'description' => __( 'Customize your theme with sitewide changes.', 'maitheme' ),
 		'title'       => __( 'Mai Theme Settings', 'maitheme' ),
 		'priority'    => 35,
 	) );
 
+	/*****************************************************
+	 * Enable Fixed Header setting
+	 */
 
 	$wp_customize->add_setting( 'enable_fixed_header', array(
 		'default'           => 0,
@@ -44,6 +51,9 @@ function mai_register_customizer_general( $wp_customize ) {
 		'priority' => 5,
 	) );
 
+	/*****************************************************
+	 * Enable Boxed Content setting
+	 */
 
 	$wp_customize->add_setting( 'enable_boxed_content', array(
 		'default'           => 1,
@@ -57,6 +67,10 @@ function mai_register_customizer_general( $wp_customize ) {
 		'priority' => 5,
 	) );
 
+	/*****************************************************
+	 * Enable Auto Display of featured image setting
+	 */
+
 	$wp_customize->add_setting( 'enable_singular_image', array(
 		'default'           => 1,
 		'sanitize_callback' => 'absint',
@@ -68,6 +82,10 @@ function mai_register_customizer_general( $wp_customize ) {
 		'type'     => 'checkbox',
 		'priority' => 5,
 	) );
+
+	/*****************************************************
+	 * Mobile Menu Style setting
+	 */
 
 	$wp_customize->add_setting( 'mobile_menu_style', array(
 		'default'           => 'standard',
@@ -86,6 +104,9 @@ function mai_register_customizer_general( $wp_customize ) {
 		),
 	) );
 
+	/*****************************************************
+	 * Footer Widget Count setting
+	 */
 
 	$wp_customize->add_setting( 'footer_widget_count', array(
 		'default'           => '2',
@@ -121,11 +142,18 @@ function mai_register_customizer_settings( $wp_customize ) {
 
 	$section = 'mai-banner-area';
 
+	/*****************************************************
+	 * Banner Area section
+	 */
+
 	$wp_customize->add_section( $section, array(
 		'title'       => __( 'Banner Area', 'maitheme' ),
 		'priority'    => 35,
 	) );
 
+	/*****************************************************
+	 * Enabe Banner Area setting
+	 */
 
 	$wp_customize->add_setting( 'enable_banner_area', array(
 		'default'           => 1,
@@ -139,6 +167,9 @@ function mai_register_customizer_settings( $wp_customize ) {
 		'priority' => 5,
 	) );
 
+	/*****************************************************
+	 * Default Banner Image setting
+	 */
 
 	$wp_customize->add_setting( 'banner_id', array(
 		'default'           => '',
@@ -148,7 +179,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 
 	$wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'banner_id', array(
 		'label'			=> __( 'Banner Image', 'maitheme' ),
-		'description'	=> __( 'Set a default banner image. Leave empty to use Featured Image. Can be overidden per post/page.', 'maitheme' ),
+		'description'	=> __( 'Set a default banner image. Can be overridden per post/page.', 'maitheme' ),
 		'section'		=> $section,
 		'settings'		=> 'banner_id',
 		'priority'		=> 5,
