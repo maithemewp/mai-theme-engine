@@ -1,5 +1,14 @@
 <?php
 
+add_action( 'admin_enqueue_scripts', 'mai_enqueue_admin_scripts' );
+function mai_enqueue_admin_scripts() {
+
+	// Use minified files if script debug is not being used
+	$suffix = mai_get_suffix();
+
+	wp_register_script( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "assets/js/mai-cmb2{$suffix}.js", array( 'jquery' ), MAITHEME_ENGINE_PLUGIN_VERSION, true );
+}
+
 // Enqueue Javascript files
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_scripts' );
 function mai_enqueue_scripts() {

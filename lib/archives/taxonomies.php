@@ -9,7 +9,7 @@
  *
  * @return  void
  */
-add_action( 'genesis_meta', 'mai_taxonomy_default_layouts' );
+// add_action( 'genesis_meta', 'mai_taxonomy_default_layouts' );
 function mai_taxonomy_default_layouts() {
     // Run filter
     add_filter( 'genesis_pre_get_option_site_layout', 'mai_taxonomy_default_layout' );

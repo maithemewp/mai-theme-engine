@@ -11,8 +11,8 @@
  * @version  1.0.1
  */
 
-// add_action( 'genesis_setup', 'mai_widgetize', 20 );
-// function mai_widgetize() {
+add_action( 'genesis_setup', 'mai_widgetize' );
+function mai_widgetize() {
 
 	// Register widget areas
 	genesis_register_sidebar( array(
@@ -37,4 +37,4 @@
 	// Activate After Entry widget area and display it on single posts
 	add_theme_support( 'genesis-after-entry-widget-area' );
 
-// }
+}

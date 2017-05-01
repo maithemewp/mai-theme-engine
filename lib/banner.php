@@ -81,7 +81,7 @@ function mai_do_banner_content() {
 	genesis_do_date_archive_title();
 
 	// Add static front page banner content
-	if ( is_front_page() && $front_page = get_option( 'page_on_front' ) ) {
+	if ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
 
 		// Use an h2 on front page, since the site title/logo is h1
 		add_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
@@ -89,21 +89,21 @@ function mai_do_banner_content() {
 			return 'h2';
 		}
 
-		genesis_do_post_title( $front_page );
-		genesis_do_post_content( $front_page );
+		genesis_do_post_title( $front_page_id );
+		genesis_do_post_content( $front_page_id );
 
 	}
 
 	// Do static blog banner content
-	elseif ( is_home() && $posts_page = get_option( 'page_for_posts' ) ) {
+	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		printf( '<div %s>', genesis_attr( 'posts-page-description' ) );
-			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page ) );
-			echo apply_filters( 'genesis_cpt_archive_intro_text_output', get_post( $posts_page )->post_content );
+			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page_id ) );
+			echo apply_filters( 'genesis_cpt_archive_intro_text_output', get_post( $posts_page_id )->post_content );
 		echo '</div>';
 	}
 
 	// Do singular banner content
-	elseif ( is_singular() && ! is_front_page() ) {
+	elseif ( is_singular() && ! is_front_page() && ! is_home() ) {
 
 		// Remove post title
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );

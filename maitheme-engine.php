@@ -49,7 +49,7 @@ final class Mai_Theme_Engine {
             self::$instance = new Mai_Theme_Engine;
             // Methods
             self::$instance->setup_constants();
-            self::$instance->includes();
+            self::$instance->setup();
         }
         return self::$instance;
     }
@@ -134,29 +134,7 @@ final class Mai_Theme_Engine {
      * @since   1.0.0
      * @return  void
      */
-    private function includes() {
-
-        // Vendor
-        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
-
-        // Includes
-        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
-
-        /**
-         * Add 'archive' type to all default Genesis layouts.
-         * If we don't do this, none of the default layouts will show up on archives, but we want them to.
-         *
-         * @param   array  The default G layouts
-         *
-         * @return  array  Modified layouts
-         */
-        add_filter( 'genesis_initial_layouts', 'mai_update_initial_layouts' );
-        function mai_update_initial_layouts( $layouts ) {
-            foreach ( $layouts as $index => $data ) {
-                $layouts[$index]['type'][] = 'archive';
-            }
-            return $layouts;
-        }
+    private function setup() {
 
         /**
          * Include files after theme is loaded, to mimic being run in a child theme.
@@ -217,8 +195,16 @@ final class Mai_Theme_Engine {
             // Add excerpt support for pages
             add_post_type_support( 'page', 'excerpt' );
 
+        }, 15 );
 
-        // add_action( 'after_setup_theme', function(){
+        // Vendor
+        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
+
+        // Includes
+        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
+
+        add_action( 'after_setup_theme', function(){
+
             // Lib
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'archives/*.php' ) as $file ) { include_once $file; }
@@ -226,10 +212,8 @@ final class Mai_Theme_Engine {
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'integrations/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'layouts/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
-        // });
 
-        }, 15 );
-
+        });
     }
 
 }

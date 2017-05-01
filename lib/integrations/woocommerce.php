@@ -130,15 +130,13 @@ function mai_woocommerce_default_layout( $layout ) {
 add_filter( 'product_cat_class', 'mai_do_product_cat_flex_entry_classes' );
 function mai_do_product_cat_flex_entry_classes( $classes ) {
 
-    $layout = genesis_site_layout();
-
     // Bail if not a flex loop
-    if ( ! mai_is_flex_loop_layout( $layout ) ) {
+    if ( ! mai_is_flex_loop() ) {
         return $classes;
     }
 
-    // Get our classes by layout
-    $classes[] = mai_get_flex_entry_classes_by( 'layout', $layout );
+    // Get our classes by columns
+    $classes[] = mai_get_flex_entry_classes_by_columns( mai_get_columns() );
 
     return $classes;
 }
@@ -159,8 +157,13 @@ function mai_do_woo_flex_loop( $template_name, $template_path, $located, $args )
     	return;
     }
 
+    // Bail if not a flex loop
+    if ( ! mai_is_flex_loop() ) {
+        return $classes;
+    }
+
     // Filter and add our flex classes
-	mai_do_flex_entry_classes_by_layout( genesis_site_layout() );
+	mai_do_flex_entry_classes_by_columns( mai_get_columns() );
 }
 
 /**

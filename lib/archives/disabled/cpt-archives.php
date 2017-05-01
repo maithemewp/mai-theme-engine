@@ -1,0 +1,248 @@
+<?php
+
+/**
+ * Add CMB2 metabox and fields to Genesis CPT Archive Settings pages
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
+add_action( 'wp_loaded', 'mai_do_cpt_archive_settings_metaboxes' );
+function mai_do_cpt_archive_settings_metaboxes() {
+
+	// Bail if not admin
+	if ( ! is_admin() ) {
+		return;
+	}
+
+    $post_types = genesis_get_cpt_archive_types();
+    foreach( $post_types as $post_type ) {
+        if ( genesis_has_post_type_archive_support( $post_type->name ) ) {
+        	mai_do_genesis_cpt_settings( $post_type->name );
+        }
+    }
+
+}
+
+/**
+ * Helper function to get/return the Mai_Genesis_CPT_Settings_Metabox object.
+ *
+ * @since  0.1.0
+ *
+ * @param  string $post_type Post type slug
+ *
+ * @return Mai_Genesis_CPT_Settings_Metabox object
+ */
+function mai_do_genesis_cpt_settings( $post_type ) {
+	return Mai_Genesis_CPT_Settings_Metabox::get_instance( $post_type );
+}
+
+/**
+ * CMB2 Genesis CPT Archive Metabox
+ *
+ * @version 0.1.0
+ */
+class Mai_Genesis_CPT_Settings_Metabox {
+
+	/**
+ 	 * Mmetabox id
+ 	 * @var string
+ 	 */
+	protected $metabox_id = 'mai-cpt-archive-settings-%1$s';
+
+	/**
+ 	 * CPT slug
+ 	 * @var string
+ 	 */
+	protected $post_type = '';
+
+	/**
+ 	 * CPT slug
+ 	 * @var string
+ 	 */
+	protected $admin_hook = '%1$s_page_genesis-cpt-archive-%1$s';
+
+	/**
+ 	 * Option key, and option page slug
+ 	 * @var string
+ 	 */
+	protected $key = 'genesis-cpt-archive-settings-%1$s';
+
+	/**
+	 * Holds an instance of CMB2
+	 *
+	 * @var CMB2
+	 */
+	protected $cmb = null;
+
+	/**
+	 * Holds all instances of this class.
+	 *
+	 * @var Mai_Genesis_CPT_Settings_Metabox
+	 */
+	protected static $instances = array();
+
+	/**
+	 * Returns an instance.
+	 *
+	 * @since  0.1.0
+	 *
+	 * @param  string $post_type Post type slug
+	 *
+	 * @return Mai_Genesis_CPT_Settings_Metabox
+	 */
+	public static function get_instance( $post_type ) {
+		if ( empty( self::$instances[ $post_type ] ) ) {
+			self::$instances[ $post_type ] = new self( $post_type );
+			self::$instances[ $post_type ]->hooks();
+		}
+
+		return self::$instances[ $post_type ];
+	}
+
+	/**
+	 * Constructor
+	 * @since 0.1.0
+	 */
+	protected function __construct( $post_type ) {
+		$this->post_type  = $post_type;
+		$this->admin_hook = sprintf( $this->admin_hook, $post_type );
+		$this->key        = sprintf( $this->key, $post_type );
+		$this->metabox_id = sprintf( $this->metabox_id, $post_type );
+	}
+
+	/**
+	 * Initiate our hooks
+	 * @since 0.1.0
+	 */
+	public function hooks() {
+		add_action( 'admin_menu', array( $this, 'admin_hooks' ) );
+		add_action( 'cmb2_admin_init', array( $this, 'init_metabox' ) );
+	}
+
+	/**
+	 * Add admin hooks.
+	 * @since 0.1.0
+	 */
+	public function admin_hooks() {
+		// Include CMB CSS in the head to avoid FOUC
+		add_action( "admin_print_styles-{$this->admin_hook}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
+
+		// Hook into the genesis cpt setttings save and add in the CMB2 sanitized values.
+		add_filter( "sanitize_option_genesis-cpt-archive-settings-{$this->post_type}", array( $this, 'add_sanitized_values' ), 999, 2 );
+
+		// Hook up our Genesis metabox.
+		add_action( 'genesis_cpt_archives_settings_metaboxes', array( $this, 'add_meta_box' ) );
+	}
+
+	/**
+	 * Hook up our Genesis metabox.
+	 * @since 0.1.0
+	 */
+	public function add_meta_box() {
+		$cmb = $this->init_metabox();
+		add_meta_box(
+			$cmb->cmb_id,
+			$cmb->prop( 'title' ),
+			array( $this, 'output_metabox' ),
+			$this->admin_hook,
+			$cmb->prop( 'context' ),
+			$cmb->prop( 'priority' )
+		);
+	}
+
+	/**
+	 * Output our Genesis metabox.
+	 * @since  0.1.0
+	 */
+	public function output_metabox() {
+		$cmb = $this->init_metabox();
+		$cmb->show_form( $cmb->object_id(), $cmb->object_type() );
+	}
+
+	public function add_sanitized_values( $new_value, $option ) {
+		if ( ! empty( $_POST ) ) {
+			$cmb = $this->init_metabox();
+
+			$new_value = array_merge(
+				$new_value,
+				$cmb->get_sanitized_values( $_POST )
+			);
+		}
+
+		return $new_value;
+	}
+
+	/**
+	 * Register our Genesis metabox and return the CMB2 instance.
+	 *
+	 * @since  0.1.0
+	 *
+	 * @return CMB2 instance.
+	 */
+	public function init_metabox() {
+
+		if ( null !== $this->cmb ) {
+			return $this->cmb;
+		}
+
+	    $this->cmb = cmb2_get_metabox( array(
+			'id'			=> $this->metabox_id,
+			'title'			=> __( 'Banner Area', 'maitheme' ),
+			'classes' 		=> 'mai-metabox',
+			'hookup'		=> false, 	// We'll handle ourselves. ( add_sanitized_values() )
+			'cmb_styles'	=> false, 	// We'll handle ourselves. ( admin_hooks() )
+			'context'		=> 'main', 	// Important for Genesis.
+			'priority'		=> 'low', 	// Defaults to 'high'.
+			'object_types'	=> array( $this->admin_hook ),
+			'show_on'		=> array(
+				// These are important, don't remove
+				'key'   => 'options-page',
+				'value' => array( $this->key, )
+			),
+		), $this->key, 'options-page' );
+
+	    $this->cmb->add_field( array(
+			'name'			=> __( 'Banner Visibility', 'maitheme' ),
+			'desc'			=> __( 'Hide banner on this cpt\'s archive', 'maitheme' ),
+			'id'			=> 'mai_hide_banner',
+			'type'			=> 'checkbox',
+	    ) );
+	    $this->cmb->add_field( array(
+			'name'			=> __( 'Banner Image', 'maitheme' ),
+			'id'			=> 'banner',
+			'type'			=> 'file',
+			'preview_size'	=> 'one-third',
+			'options'		=> array(
+		        'url' => false,
+		    ),
+		    'text' 			=> array(
+		        'add_upload_file_text' => __( 'Add Image', 'maitheme' ),
+		    ),
+	    ) );
+
+	    // TODO: Rebuild the genesis-cpt-archives-settings.php fields!
+
+		return $this->cmb;
+	}
+
+	/**
+	 * Public getter method for retrieving protected/private variables
+	 * @since  0.1.0
+	 * @param  string  $field Field to retrieve
+	 * @return mixed          Field value or exception is thrown
+	 */
+	public function __get( $field ) {
+		// Allowed fields to retrieve
+		if ( 'cmb' === $field ) {
+			return $this->init_metabox();
+		}
+
+		if ( in_array( $field, array( 'metabox_id', 'post_type', 'admin_hook', 'key' ), true ) ) {
+			return $this->{$field};
+		}
+
+		throw new Exception( 'Invalid property: ' . $field );
+	}
+
+}

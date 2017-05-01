@@ -57,14 +57,12 @@ function mai_get_banner_id() {
     $image_id = false;
 
     // Static front page
-    if ( is_front_page() ) {
-        $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
+    if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
+        $image_id = get_post_meta( $front_page_id, 'banner_id', true );
     }
     // Static blog page
-    elseif ( is_home() ) {
-        if ( $home_id = get_option( 'page_for_posts' ) ) {
-            $image_id = get_post_meta( $home_id, 'banner_id', true );
-        }
+    elseif ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+        $image_id = get_post_meta( $posts_page_id, 'banner_id', true );
     }
     // Single page/post/cpt, but not static front page or static home page
     elseif ( is_singular() && ! ( is_front_page() || is_home() ) ) {
@@ -268,36 +266,140 @@ function mai_get_section_close( $args ) {
 
 }
 
+function mai_get_columns() {
+
+    // Single post/page/cpt
+    if ( is_singular() ) {
+        // If static front page
+        if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
+            $post_id = $front_page_id;
+        }
+        // If static blog page
+        elseif ( is_home() && ( $home_id = get_option( 'page_for_posts' ) ) ) {
+            $post_id = $home_id;
+        }
+        // If WooCommerce shop page
+        elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+            $post_id = $shop_id;
+        }
+        // Regular old single post/page/cpt
+        else {
+            $post_id = get_the_ID();
+        }
+        // Get the column count
+        $columns = get_post_meta( $post_id, 'columns', true );
+    }
+
+    // Term archive
+    elseif ( is_category() || is_tag() || is_tax() ) {
+        // Get the column count
+        $columns = get_term_meta( get_queried_object()->term_id, 'columns', true );
+        // If columns not set for this term
+        if ( ! $columns ) {
+            // If post taxonomy
+            if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
+                $columns = get_post_meta( get_option( 'page_for_posts' ), 'columns', true );
+            }
+            // If Woo product taxonomy
+            elseif ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+                $columns = get_post_meta( get_option( 'woocommerce_shop_page_id' ), 'columns', true );
+            }
+            // Must be custom taxonomy archive
+            else {
+                // global $wp_taxonomies;
+                // $tax = get_queried_object()->taxonomy;
+                $tax = get_taxonomy( get_queried_object()->taxonomy );
+                if ( $tax ) {
+                    /**
+                     * If we have a tax, get the first one.
+                     * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
+                     */
+                    // $post_type = isset( $wp_taxonomies[$tax] ) ? reset($wp_taxonomies[$tax]->object_type) : '';
+                    $post_type = reset( $tax->object_type );
+                    // If we have a post type and it supports genesis-cpt-archive-settings
+                    if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+                        $columns = genesis_get_cpt_option( 'columns', $post_type );
+                    }
+                }
+            }
+        }
+
+    }
+
+    // CPT archive
+    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+        $columns = genesis_get_cpt_option( 'columns' );
+    }
+
+    // Author archive
+    elseif ( is_author() ) {
+        $columns = get_the_author_meta( 'columns', get_query_var( 'author' ) );
+    }
+
+    return absint($columns);
+}
+
+function mai_admin_get_columns() {
+
+    global $pagenow;
+
+    $columns = '';
+
+    if ( 'post.php' == $pagenow ) {
+
+        $post_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+        $posts_page_id = get_option('page_for_posts');
+        $shop_page_id  = get_option('woocommerce_shop_page_id');
+
+        // If static blog page or WooCommerce shop page
+        if ( ( $post_id == $posts_page_id ) || ( class_exists('WooCommerce') && ( $post_id == $shop_page_id ) ) ) {
+            $columns = get_post_meta( $post_id, 'columns', true );
+        }
+
+    }
+
+    elseif ( 'term.php' == $pagenow ) {
+        $taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
+        // If we have the right data
+        if ( $taxonomy ) {
+            // If post taxonomy
+            if ( in_array( $taxonomy, get_object_taxonomies( 'post', 'names' ) ) ) {
+                $columns = get_post_meta( get_option( 'page_for_posts' ), 'columns', true );
+            }
+            // If Woo product taxonomy
+            elseif ( class_exists( 'WooCommerce' ) && in_array( $taxonomy, get_object_taxonomies( 'product', 'names' ) ) ) {
+                $columns = get_post_meta( get_option( 'woocommerce_shop_page_id' ), 'columns', true );
+            }
+            // Must be custom taxonomy archive
+            else {
+                $tax = get_taxonomy( $taxonomy );
+                if ( $tax ) {
+                    /**
+                     * If we have a tax, get the first one.
+                     * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
+                     */
+                    $post_type = reset( $tax->object_type );
+                    // // If we have a post type and it supports genesis-cpt-archive-settings
+                    if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+                        $columns = genesis_get_cpt_option( 'columns', $post_type );
+                    }
+                }
+            }
+        }
+    }
+
+    return absint($columns);
+}
+
 /**
- * Helper function to check if the site layout is a grid archive
+ * Helper function to check if archive is a flex loop
  * This doesn't check if viewing an actual archive, but this layout should not be an option if ! is_archive()
- *
- * @param  string $layout The optional layout to check if an archive
  *
  * @return bool   Whether the layout is a grid archive
  */
-function mai_is_flex_loop_layout( $layout = '' ) {
-    if ( empty( $layout ) ) {
-        $layout = genesis_site_layout();
-    }
-    $flex_layouts = array(
-        'flex-loop-4',
-        'flex-loop-4md',
-        'flex-loop-4sm',
-        'flex-loop-3',
-        'flex-loop-3md',
-        'flex-loop-3sm',
-        'flex-loop-2',
-        'flex-loop-2md',
-        'flex-loop-2sm',
-        'flex-loop-4-content-sidebar',
-        'flex-loop-4-sidebar-content',
-        'flex-loop-3-content-sidebar',
-        'flex-loop-3-sidebar-content',
-        'flex-loop-2-content-sidebar',
-        'flex-loop-2-sidebar-content',
-    );
-    if ( in_array( $layout, $flex_layouts ) ) {
+function mai_is_flex_loop() {
+    $columns = mai_get_columns();
+    if ( $columns > 1 ) {
         return true;
     }
     return false;
@@ -312,9 +414,7 @@ function mai_is_flex_loop_layout( $layout = '' ) {
  * @return  void        fires post_class filter which returns array of classes
  */
 function mai_do_flex_entry_classes_by( $option, $value ) {
-    if ( 'layout' == $option ) {
-        mai_do_flex_entry_classes_by_layout( $value );
-    } elseif ( 'columns' == $option ) {
+    if ( 'columns' == $option ) {
         mai_do_flex_entry_classes_by_columns( $value );
     }
 }
@@ -326,12 +426,12 @@ function mai_do_flex_entry_classes_by( $option, $value ) {
  *
  * @return  void        fires post_class filter which returns array of classes
  */
-function mai_do_flex_entry_classes_by_layout( $layout ) {
-    add_filter( 'post_class', function( $classes ) use ( $layout ) {
-        $classes[] = mai_get_flex_entry_classes_by_layout( $layout );
-        return $classes;
-    });
-}
+// function mai_do_flex_entry_classes_by_layout( $layout ) {
+//     add_filter( 'post_class', function( $classes ) use ( $layout ) {
+//         $classes[] = mai_get_flex_entry_classes_by_layout( $layout );
+//         return $classes;
+//     });
+// }
 
 /**
  * Filter post_class to add flex classes by number of columns.
@@ -357,9 +457,7 @@ function mai_do_flex_entry_classes_by_columns( $columns ) {
  */
 function mai_get_flex_entry_classes_by( $option, $value ) {
     $classes = '';
-    if ( 'layout' == $option ) {
-        $classes = mai_get_flex_entry_classes_by_layout( $value );
-    } elseif ( 'columns' == $option ) {
+    if ( 'columns' == $option ) {
         $classes = mai_get_flex_entry_classes_by_columns( $value );
     } elseif ( 'fraction' == $option ) {
         $classes = mai_get_flex_entry_classes_by_franction( $value );
@@ -375,38 +473,38 @@ function mai_get_flex_entry_classes_by( $option, $value ) {
  *
  * @return string  the classes
  */
-function mai_get_flex_entry_classes_by_layout( $layout ) {
-    switch ( $layout ) {
-        case 'flex-loop-4':
-        case 'flex-loop-4md':
-        case 'flex-loop-4sm':
-            $classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-3';
-            break;
-        case 'flex-loop-4-content-sidebar':
-        case 'flex-loop-4-sidebar-content':
-            $classes = 'flex-entry column col col-xs-12 col-sm-3';
-            break;
-        case 'flex-loop-3':
-        case 'flex-loop-3md':
-        case 'flex-loop-3sm':
-            $classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-4';
-            break;
-        case 'flex-loop-3-content-sidebar':
-        case 'flex-loop-3-sidebar-content':
-            $classes = 'flex-entry column col col-xs-12 col-sm-4';
-            break;
-        case 'flex-loop-2':
-        case 'flex-loop-2md':
-        case 'flex-loop-2sm':
-        case 'flex-loop-2-content-sidebar':
-        case 'flex-loop-2-sidebar-content':
-            $classes = 'flex-entry column col col-xs-12 col-sm-6';
-            break;
-        default:
-            $classes = 'flex-entry column col col-xs-12';
-    }
-    return $classes;
-}
+// function mai_get_flex_entry_classes_by_layout( $layout ) {
+//     switch ( $layout ) {
+//         case 'flex-loop-4':
+//         case 'flex-loop-4md':
+//         case 'flex-loop-4sm':
+//             $classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-3';
+//             break;
+//         case 'flex-loop-4-content-sidebar':
+//         case 'flex-loop-4-sidebar-content':
+//             $classes = 'flex-entry column col col-xs-12 col-sm-3';
+//             break;
+//         case 'flex-loop-3':
+//         case 'flex-loop-3md':
+//         case 'flex-loop-3sm':
+//             $classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-4';
+//             break;
+//         case 'flex-loop-3-content-sidebar':
+//         case 'flex-loop-3-sidebar-content':
+//             $classes = 'flex-entry column col col-xs-12 col-sm-4';
+//             break;
+//         case 'flex-loop-2':
+//         case 'flex-loop-2md':
+//         case 'flex-loop-2sm':
+//         case 'flex-loop-2-content-sidebar':
+//         case 'flex-loop-2-sidebar-content':
+//             $classes = 'flex-entry column col col-xs-12 col-sm-6';
+//             break;
+//         default:
+//             $classes = 'flex-entry column col col-xs-12';
+//     }
+//     return $classes;
+// }
 
 /**
  * Get the classes needed for an entry
@@ -499,9 +597,7 @@ function mai_get_flex_entry_classes_by_fraction( $fraction ) {
  */
 function mai_get_flex_entry_image_size_by( $option, $value ) {
     $image_size = '';
-    if ( 'layout' == $option ) {
-        $image_size = mai_get_flex_entry_image_size_by_layout( $value );
-    } elseif ( 'columns' == $option ) {
+    if ( 'columns' == $option ) {
         $image_size = mai_get_flex_entry_image_size_by_columns( $value );
     }
     return $image_size;
@@ -515,34 +611,34 @@ function mai_get_flex_entry_image_size_by( $option, $value ) {
  *
  * @return string  the image size
  */
-function mai_get_flex_entry_image_size_by_layout( $layout ) {
-    switch ( $layout ) {
-        case 'flex-loop-4':
-        case 'flex-loop-4sm':
-        case 'flex-loop-4-content-sidebar':
-        case 'flex-loop-4-sidebar-content':
-        case 'flex-loop-3md':
-        case 'flex-loop-3sm':
-        case 'flex-loop-3-content-sidebar':
-        case 'flex-loop-3-sidebar-content':
-            $image_size = 'one-fourth';
-            break;
-        case 'flex-loop-4md':
-        case 'flex-loop-3':
-        case 'flex-loop-2sm':
-        case 'flex-loop-2-content-sidebar':
-        case 'flex-loop-2-sidebar-content':
-            $image_size = 'one-third';
-            break;
-        case 'flex-loop-2':
-        case 'flex-loop-2md':
-            $image_size = 'one-half';
-            break;
-        default:
-            $image_size = 'one-third';
-    }
-    return $image_size;
-}
+// function mai_get_flex_entry_image_size_by_layout( $layout ) {
+//     switch ( $layout ) {
+//         case 'flex-loop-4':
+//         case 'flex-loop-4sm':
+//         case 'flex-loop-4-content-sidebar':
+//         case 'flex-loop-4-sidebar-content':
+//         case 'flex-loop-3md':
+//         case 'flex-loop-3sm':
+//         case 'flex-loop-3-content-sidebar':
+//         case 'flex-loop-3-sidebar-content':
+//             $image_size = 'one-fourth';
+//             break;
+//         case 'flex-loop-4md':
+//         case 'flex-loop-3':
+//         case 'flex-loop-2sm':
+//         case 'flex-loop-2-content-sidebar':
+//         case 'flex-loop-2-sidebar-content':
+//             $image_size = 'one-third';
+//             break;
+//         case 'flex-loop-2':
+//         case 'flex-loop-2md':
+//             $image_size = 'one-half';
+//             break;
+//         default:
+//             $image_size = 'one-third';
+//     }
+//     return $image_size;
+// }
 
 /**
  * Get the image_size needed for an entry

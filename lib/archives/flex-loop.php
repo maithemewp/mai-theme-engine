@@ -4,7 +4,7 @@
 add_action( 'genesis_before_while', 'mai_do_flex_loop_open', 100 );
 function mai_do_flex_loop_open() {
     // Bail if not a flex loop
-    if ( ! mai_is_flex_loop_layout() ) {
+    if ( ! mai_is_flex_loop() ) {
         return;
     }
     $attributes['class'] = 'row gutter-30';
@@ -15,7 +15,7 @@ function mai_do_flex_loop_open() {
 add_action( 'genesis_after_endwhile', 'mai_do_flex_loop_close' );
 function mai_do_flex_loop_close() {
     // Bail if not a flex loop
-    if ( ! mai_is_flex_loop_layout() ) {
+    if ( ! mai_is_flex_loop() ) {
         return;
     }
     echo '</div>';
@@ -29,17 +29,22 @@ function mai_add_flex_entry_post_classes( $classes ) {
     if ( ! $wp_query->is_main_query() ) {
         return $classes;
     }
-    $layout = genesis_site_layout();
-    // Bail if not a flex loop
-    if ( ! mai_is_flex_loop_layout( $layout ) ) {
+
+    $columns = mai_get_columns();
+
+    // Bail if no columns needed
+    if ( ! $columns ) {
         return $classes;
     }
+
     // Get the classes by layout
-    $flex_classes = mai_get_flex_entry_classes_by( 'layout', $layout );
+    $flex_classes = mai_get_flex_entry_classes_by_columns( $columns );
     // Add filter so devs can change these classes easily
     $flex_classes = apply_filters( 'mai_flex_entry_classes', $flex_classes );
     // Add the classes to the post array
     $classes[]    = $flex_classes;
+
+    // Return the classes
     return $classes;
 }
 
@@ -53,16 +58,19 @@ function mai_add_flex_entry_post_classes( $classes ) {
 add_filter( 'genesis_pre_get_option_image_size', 'mai_flex_entry_image_size' );
 function mai_flex_entry_image_size( $size ) {
 
-    $layout = genesis_site_layout();
+    $columns = mai_get_columns();
 
-    // Bail if not a grid archive
-    if ( ! mai_is_flex_loop_layout( $layout ) ) {
+    // Bail if no columns needed
+    if ( ! $columns ) {
         return $size;
     }
+
     // Get image size by layout
-    $image_size = mai_get_flex_entry_image_size_by_layout( $layout );
+    $image_size = mai_get_flex_entry_image_size_by_columns( $columns );
     // Add filter so devs can easily change image size
     $image_size = apply_filters( 'mai_flex_entry_image_size', $image_size );
+
+    // Return the image size
     return $image_size;
 }
 
