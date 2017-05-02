@@ -90,7 +90,7 @@ function mai_do_banner_content() {
 		}
 
 		genesis_do_post_title( $front_page_id );
-		genesis_do_post_content( $front_page_id );
+		get_the_excerpt( $front_page_id );
 
 	}
 
@@ -98,7 +98,7 @@ function mai_do_banner_content() {
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		printf( '<div %s>', genesis_attr( 'posts-page-description' ) );
 			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page_id ) );
-			echo apply_filters( 'genesis_cpt_archive_intro_text_output', get_post( $posts_page_id )->post_content );
+			echo apply_filters( 'genesis_cpt_archive_intro_text_output', get_post( $posts_page_id )->post_excerpt );
 		echo '</div>';
 	}
 
