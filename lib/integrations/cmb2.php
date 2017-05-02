@@ -23,7 +23,7 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 add_action( 'cmb2_before_form', 'mai_before_mai_metabox', 10, 4 );
 function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 
-	if ( ! in_array( $cmb_id, array( 'mai_genesis_theme_settings', 'mai_post_banner', 'mai_term_settings', 'mai_user_settings' ) )
+	if ( ! in_array( $cmb_id, array( 'mai_content_archive', 'mai_post_banner', 'mai_term_settings', 'mai_user_settings' ) )
 		&& ( strpos( $cmb_id, 'mai-cpt-archive-settings-' ) === false ) ) {
 		return;
 	}
@@ -78,17 +78,26 @@ function mai_cmb2_add_metaboxes() {
     $post->add_field( _mai_cmb_banner_config() );
 
     // Static Blog and WooCommerce Shop
-    $term = new_cmb2_box( array(
+    $static_archive = new_cmb2_box( array(
         'id'               => 'mai_static_archive_settings',
         'title'            => $metabox_title,
         'object_types'     => array( 'page' ),
         'context' 		   => 'normal',
         'priority'		   => 'default',
-        'classes' 		   => 'mai-metabox',
+        'classes' 		   => 'mai-metabox mai-content-archive-metabox',
         'show_on_cb' 	   => 'mai_cmb_show_if_static_archive',
     ) );
-    $term->add_field( _mai_cmb_columns_config() );
-    $term->add_field( _mai_cmb_posts_per_page_config() );
+    $static_archive->add_field( _mai_cmb_content_enable_archive_settings_config() );
+    $static_archive->add_field( _mai_cmb_content_archive_settings_title_config() );
+    $static_archive->add_field( _mai_cmb_posts_per_page_config() );
+    $static_archive->add_field( _mai_cmb_columns_config() );
+	$static_archive->add_field( _mai_cmb_content_archive_config() );
+	$static_archive->add_field( _mai_cmb_content_archive_limit_config() );
+	$static_archive->add_field( _mai_cmb_content_archive_thumbnail_config() );
+	$static_archive->add_field( _mai_cmb_image_location_config() );
+	$static_archive->add_field( _mai_cmb_image_size_config() );
+	$static_archive->add_field( _mai_cmb_image_alignment_config() );
+	$static_archive->add_field( _mai_cmb_posts_nav_config() );
 
     // Taxonomy Terms
     $term = new_cmb2_box( array(
@@ -99,12 +108,21 @@ function mai_cmb2_add_metaboxes() {
         'new_term_section' => true,
         'context' 		   => 'normal',
         'priority'		   => 'low',
-        'classes' 		   => 'mai-metabox',
+        'classes' 		   => 'mai-metabox mai-content-archive-metabox',
     ) );
     $term->add_field( _mai_cmb_banner_visibility_config() );
     $term->add_field( _mai_cmb_banner_config() );
-    $term->add_field( _mai_cmb_columns_config() );
+    $term->add_field( _mai_cmb_content_archive_settings_title_config() );
+    $term->add_field( _mai_cmb_content_enable_archive_settings_config() );
     $term->add_field( _mai_cmb_posts_per_page_config() );
+    $term->add_field( _mai_cmb_columns_config() );
+	$term->add_field( _mai_cmb_content_archive_config() );
+	$term->add_field( _mai_cmb_content_archive_limit_config() );
+	$term->add_field( _mai_cmb_content_archive_thumbnail_config() );
+	$term->add_field( _mai_cmb_image_location_config() );
+	$term->add_field( _mai_cmb_image_size_config() );
+	$term->add_field( _mai_cmb_image_alignment_config() );
+	$term->add_field( _mai_cmb_posts_nav_config() );
 
     // User Profiles
     $user = new_cmb2_box( array(
@@ -113,12 +131,21 @@ function mai_cmb2_add_metaboxes() {
 		'object_types'	=> array( 'user' ),
 		'context'		=> 'normal',
 		'show_on_cb' 	=> 'mai_cmb_show_if_user_is_author_or_above',
-		'classes' 		=> 'mai-metabox',
+		'classes' 		=> 'mai-metabox mai-content-archive-metabox',
     ) );
     $user->add_field( _mai_cmb_banner_visibility_config() );
     $user->add_field( _mai_cmb_banner_config() );
-    $user->add_field( _mai_cmb_columns_config() );
+    $user->add_field( _mai_cmb_content_archive_settings_title_config() );
+    $user->add_field( _mai_cmb_content_enable_archive_settings_config() );
     $user->add_field( _mai_cmb_posts_per_page_config() );
+    $user->add_field( _mai_cmb_columns_config() );
+	$user->add_field( _mai_cmb_content_archive_config() );
+	$user->add_field( _mai_cmb_content_archive_limit_config() );
+	$user->add_field( _mai_cmb_content_archive_thumbnail_config() );
+	$user->add_field( _mai_cmb_image_location_config() );
+	$user->add_field( _mai_cmb_image_size_config() );
+	$user->add_field( _mai_cmb_image_alignment_config() );
+	$user->add_field( _mai_cmb_posts_nav_config() );
 }
 
 /**
@@ -285,7 +312,7 @@ class Mai_Genesis_CPT_Settings_Metabox {
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( "admin_print_styles-{$this->admin_hook}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 
-		// Hook into the genesis cpt setttings save and add in the CMB2 sanitized values.
+		// Hook into the genesis cpt settings save and add in the CMB2 sanitized values.
 		add_filter( "sanitize_option_genesis-cpt-archive-settings-{$this->post_type}", array( $this, 'add_sanitized_values' ), 999, 2 );
 
 		// Hook up our Genesis metabox.
@@ -416,21 +443,39 @@ function _mai_cmb_banner_config() {
     );
 }
 
+function _mai_cmb_content_archive_settings_title_config() {
+	return array(
+		'name'	=> __( 'Mai Content Archives', 'maitheme' ),
+		'desc'	=> __( 'If enabled, these will override the settings from Genesis > Theme Settings.', 'maitheme' ),
+		'type'	=> 'title',
+		'id'	=> 'mai_content_archives_title',
+	);
+}
+
+function _mai_cmb_content_enable_archive_settings_config() {
+	return array(
+		'name'	=> __( 'Archive Settings', 'maitheme' ),
+		'desc'	=> __( 'Enable archive settings', 'maitheme' ),
+		'id'	=> 'enable_content_archive_settings',
+		'type'	=> 'checkbox',
+    );
+}
+
 function _mai_cmb_columns_config() {
 
-	$columns = mai_admin_get_columns();
-	$count	 = ( $columns > 1 ) ? $columns : __( 'None', 'maitheme' );
-	$none	 = sprintf( __( 'Inherit - currently (%s)', 'maitheme' ), $count );
+	// $columns = mai_admin_get_columns();
+	// $count	 = ( $columns > 1 ) ? $columns : __( '- None -', 'genesis' );
+	// $none	 = sprintf( __( 'Inherit - currently (%s)', 'maitheme' ), $count );
 
 	return array(
-		'name'				=> __( 'Post Columns', 'maitheme' ),
-		'desc'				=> __( 'Display archives in multiple columns. Default inherits from archive settings.', 'maitheme' ),
+		'name'				=> __( 'Content Columns', 'maitheme' ),
+		'desc'				=> __( 'Display content in multiple columns.', 'maitheme' ),
 		'id'				=> 'columns',
-		'type'				=> 'radio',
-		'show_option_none'	=> $none,
-		// 'default' 			=> 1,
+		'type'				=> 'select',
+		'default'			=> 1,
+		// 'show_option_none'	=> $none,
 		'options'			=> array(
-			1 => __( 'None', 'maitheme' ),
+			1 => __( '- None -', 'genesis' ),
 			2 => __( '2 Columns', 'maitheme' ),
 			3 => __( '3 Columns', 'maitheme' ),
 			4 => __( '4 Columns', 'maitheme' ),
@@ -439,16 +484,114 @@ function _mai_cmb_columns_config() {
     );
 }
 
+function _mai_cmb_content_archive_config() {
+	return array(
+		'name'		=> __( 'Display', 'genesis' ),
+		'id'		=> 'content_archive',
+		'type'		=> 'select',
+		'default'	=> 'excerpts',
+		'options'	=> array(
+			'full'		=> __( 'Entry content', 'genesis' ),
+			'excerpts'	=> __( 'Entry excerpts', 'genesis' ),
+		),
+	);
+}
+
+function _mai_cmb_content_archive_limit_config() {
+	return array(
+		'name'			=> __( 'Limit content to', 'genesis' ),
+		'id'			=> 'content_archive_limit',
+		'type'			=> 'text_small',
+		'before_field'  => __( 'Limit content to', 'genesis' ) . ' ',
+		'after_field'	=> ' ' . __( 'characters', 'genesis' ),
+		'attributes'	=> array(
+			'type'		  => 'number',
+			'pattern'	  => '\d*',
+		),
+		'sanitization_cb' => 'intval',
+    );
+}
+
+function _mai_cmb_content_archive_thumbnail_config() {
+	return array(
+		'name'	=> __( 'Featured Image', 'genesis' ),
+		'desc'	=> __( 'Include the Featured Image?', 'genesis' ),
+		'id'	=> 'content_archive_thumbnail',
+		'type'	=> 'checkbox',
+    );
+}
+
+function _mai_cmb_image_location_config() {
+	return array(
+		'name'				=> __( 'Image Location:', 'maitheme' ),
+		'id'				=> 'image_location',
+		'type'				=> 'select',
+		'before_field'		=> __( 'Image Location:', 'maitheme' ) . ' ',
+		'options'			=> array(
+			'before_entry'	=> __( 'Before Entry', 'maitheme' ),
+			'before_title'	=> __( 'Before Title', 'maitheme' ),
+			'after_title'	=> __( 'After Title', 'maitheme' ),
+		),
+	);
+}
+
+function _mai_cmb_image_size_config() {
+	// Get our image size options
+    $sizes = genesis_get_image_sizes();
+    $size_options = array();
+    foreach ( $sizes as $index => $value ) {
+    	$size_options[$index] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
+    }
+
+	return array(
+		'name'			=> __( 'Image Size:', 'genesis' ),
+		'id'			=> 'image_size',
+		'type'			=> 'select',
+		'before_field'	=> __( 'Image Size:', 'genesis' ) . ' ',
+		'default'		=> 'one-third',
+		'options'		=> $size_options,
+	);
+}
+
+function _mai_cmb_image_alignment_config() {
+	return array(
+		'name'				=> __( 'Image Alignment:', 'genesis' ),
+		'id'				=> 'image_alignment',
+		'type'				=> 'select',
+		'before_field'		=> __( 'Image Alignment:', 'genesis' ) . ' ',
+		'show_option_none'	=> __( '- None -', 'genesis' ),
+		'options'			=> array(
+			'alignleft'	 => __( 'Left', 'genesis' ),
+			'alignright' => __( 'Right', 'genesis' ),
+		),
+	);
+}
+
+function _mai_cmb_posts_nav_config() {
+	return array(
+		'name'		=> __( 'Entry Pagination:', 'genesis' ),
+		'desc'		=> __( 'These options will affect any blog listings page, including archive, author, blog, category, search, and tag pages. Unless overridden in the corresponding metabox.', 'maitheme' ),
+		'id'		=> 'posts_nav',
+		'type'		=> 'select',
+		'default'	=> 'numeric',
+		'options'	=> array(
+			'prev-next'	=> __( 'Previous / Next', 'genesis' ),
+			'numeric'	=> __( 'Numeric', 'genesis' ),
+		),
+	);
+}
+
 function _mai_cmb_posts_per_page_config() {
 	return array(
 		'name'				=> __( 'Posts Per Page', 'maitheme' ),
-		'desc'				=> __( 'The max number of posts to show, per page. If empty, the number in Settings > Reading will be used.', 'maitheme' ),
+		// 'desc'				=> __( 'The max number of posts to show, per page. If empty, the number in Settings > Reading will be used.', 'maitheme' ),
+		'desc'				=> __( 'The max number of posts to show, per page.', 'maitheme' ),
 		'id'				=> 'posts_per_page',
 		'type'				=> 'text_small',
 		'attributes'		=> array(
 			'type'		  => 'number',
 			'pattern'	  => '\d*',
-			'placeholder' => get_option( 'posts_per_page' ),
+			// 'placeholder' => get_option( 'posts_per_page' ),
 		),
 		'sanitization_cb'	=> 'intval',
     );

@@ -1,6 +1,40 @@
 <?php
 
 /**
+ * Updates theme settings on reset.
+ *
+ * @since 1.0.0
+ */
+add_filter( 'genesis_theme_settings_defaults', 'mai_theme_settings_defaults' );
+function mai_theme_settings_defaults( $defaults ) {
+	$defaults['content_archive']           = 'excerpts';
+	$defaults['content_archive_limit']     = 0;
+	$defaults['content_archive_thumbnail'] = 1;
+	$defaults['posts_nav']                 = 'numeric';
+	$defaults['site_layout']               = 'md-content';
+	return $defaults;
+}
+
+/**
+ * Updates theme settings on activation.
+ *
+ * @since 1.0.0
+ */
+add_action( 'after_switch_theme', 'mai_update_theme_settings_defaults' );
+function mai_update_theme_settings_defaults() {
+	if ( function_exists( 'genesis_update_settings' ) ) {
+		genesis_update_settings( array(
+			'content_archive'           => 'excerpts',
+			'content_archive_limit'     => 0,
+			'content_archive_thumbnail' => 1,
+			'posts_nav'                 => 'numeric',
+			'site_layout'               => 'md-content',
+		) );
+	}
+	update_option( 'posts_per_page', 12 );
+}
+
+/**
  * CMB2 Genesis Settings Metabox
  *
  * To fetch these options, use `genesis_get_option()`, e.g.
@@ -181,75 +215,21 @@ class Mai_Genesis_Theme_Settings_Metabox {
 			),
 		), $this->key, 'options-page' );
 
-		$this->cmb->add_field( array(
-			'name'		=> __( 'Display', 'genesis' ),
-			'id'		=> 'content_archive',
-			'type'		=> 'select',
-			'default'	=> 'excerpts',
-			'options'	=> array(
-				'full'		=> __( 'Entry content', 'genesis' ),
-				'excerpts'	=> __( 'Entry excerpts', 'genesis' ),
-			),
-		) );
+		$this->cmb->add_field( _mai_cmb_columns_config() );
 
-		$this->cmb->add_field( array(
-			'name'				=> __( 'Limit content to', 'genesis' ),
-			'id'				=> 'content_archive_limit',
-			'type'				=> 'text_small',
-			'attributes'		=> array(
-				'type'		  => 'number',
-				'pattern'	  => '\d*',
-				'placeholder' => get_option( 'posts_per_page' ),
-			),
-			'sanitization_cb'	=> 'intval',
-	    ) );
+		$this->cmb->add_field( _mai_cmb_content_archive_config() );
 
-		$this->cmb->add_field( array(
-			'name'			=> __( 'Featured Image', 'genesis' ),
-			'desc'			=> __( 'Include the Featured Image?', 'genesis' ),
-			'id'			=> 'content_archive_thumbnail',
-			'type'			=> 'checkbox',
-	    ) );
+		$this->cmb->add_field( _mai_cmb_content_archive_limit_config() );
 
-		// Get our image size options
-	    $sizes = genesis_get_image_sizes();
-	    $size_options = array();
-	    foreach ( $sizes as $index => $value ) {
-	    	$size_options[$index] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
-	    }
+		$this->cmb->add_field( _mai_cmb_content_archive_thumbnail_config() );
 
-		$this->cmb->add_field( array(
-			'name'			=> __( 'Image Size:', 'genesis' ),
-			'id'			=> 'image_size',
-			'type'			=> 'select',
-			'before_field'	=> __( 'Image Size:', 'genesis' ) . ' ',
-			'default'		=> 'one-third',
-			'options'		=> $size_options,
-		) );
+		$this->cmb->add_field( _mai_cmb_image_location_config() );
 
-		$this->cmb->add_field( array(
-			'name'				=> __( 'Image Alignment:', 'genesis' ),
-			'id'				=> 'image_alignment',
-			'type'				=> 'select',
-			'before_field'		=> __( 'Image Alignment:', 'genesis' ) . ' ',
-			'show_option_none'	=> __( '- None -', 'genesis' ),
-			'options'			=> array(
-				'alignleft'	 => __( 'Left', 'genesis' ),
-				'alignright' => __( 'Right', 'genesis' ),
-			),
-		) );
+		$this->cmb->add_field( _mai_cmb_image_size_config() );
 
-		$this->cmb->add_field( array(
-			'name'				=> __( 'Entry Pagination:', 'genesis' ),
-			'desc'				=> __( 'These options will affect any blog listings page, including archive, author, blog, category, search, and tag pages. Unless overridden in the corresponding metabox.', 'maitheme' ),
-			'id'				=> 'posts_nav',
-			'type'				=> 'select',
-			'default'			=> 'numeric',
-			'options'			=> array(
-				'prev-next'	 => __( 'Previous / Next', 'genesis' ),
-				'numeric' => __( 'Numeric', 'genesis' ),
-			),
-		) );
+		$this->cmb->add_field( _mai_cmb_image_alignment_config() );
+
+		$this->cmb->add_field( _mai_cmb_posts_nav_config() );
 
 		return $this->cmb;
 	}
@@ -293,97 +273,3 @@ function mai_content_archive_metabox() {
 
 // Get it started.
 mai_content_archive_metabox();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Register Defaults
- *
- * @link 	http://www.billerickson.net/genesis-theme-options/
- *
- * @param 	array $defaults
- *
- * @return 	array modified defaults
- */
-// add_filter( 'genesis_theme_settings_defaults', 'ourap_theme_settings_defaults' );
-function ourap_theme_settings_defaults( $defaults ) {
-	$defaults['oura_ring'] = '';
-	return $defaults;
-}
-
-/**
- * Sanitization
- */
-// add_action( 'genesis_settings_sanitizer_init', 'ourap_theme_settings_sanitization_filters' );
-function ourap_theme_settings_sanitization_filters() {
-	genesis_add_option_filter( 'absint', GENESIS_SETTINGS_FIELD, array( 'oura_ring' ) );
-	genesis_add_option_filter( 'absint', GENESIS_SETTINGS_FIELD, array( 'oura_charger' ) );
-}
-
-
-/**
- * Register Metabox
- */
-// add_action( 'genesis_theme_settings_metaboxes', 'ourap_register_theme_settings_metabox' );
-function ourap_register_theme_settings_metabox( $_genesis_theme_settings_pagehook ) {
-	global $_genesis_admin_settings;
-	remove_meta_box( 'genesis-theme-settings-scripts', $_genesis_theme_settings_pagehook, 'main' );
-	add_meta_box( 'mai-archive-settings', __( 'Mai Theme Settings', 'maitheme' ), 'mai_archive_settings_metabox', $_genesis_theme_settings_pagehook, 'main', 'default' );
-	$_genesis_admin_settings->add_meta_box( 'genesis-theme-settings-scripts', __( 'Header and Footer Scripts', 'genesis', 'low' ) );
-}
-
-/**
- * Create Metabox
- */
-function mai_archive_settings_metabox() {
-	$ring_id = esc_attr( genesis_get_option('oura_ring') );
-	$charger_id = esc_attr( genesis_get_option('oura_charger') );
-	?>
-	<table class="form-table">
-		<tbody>
-			<tr valign="top">
-				<th scope="row"><label for="genesis-settings[blog_cat_exclude]">ŌURA Ring Product ID:</label></th>
-				<td>
-					<p>
-						<input type="number" name="<?php echo GENESIS_SETTINGS_FIELD; ?>[oura_ring]" class="regular-text" id="<?php echo GENESIS_SETTINGS_FIELD; ?>[oura_ring]" value="<?php echo $ring_id; ?>">
-						<br><span class="description">Enter the product ID for the main ring WooCommerce product</span>
-					</p>
-				</td>
-			</tr>
-			<tr valign="top">
-				<th scope="row">Product Title:</th>
-				<td><?php echo $ring_id ? get_the_title($ring_id) : 'none'; ?></td>
-			</tr>
-
-			<tr valign="top" style="border-top:1px solid #eee;">
-				<th scope="row"><label for="genesis-settings[blog_cat_exclude]">ŌURA Charger Product ID:</label></th>
-				<td>
-					<p>
-						<input type="number" name="<?php echo GENESIS_SETTINGS_FIELD; ?>[oura_charger]" class="regular-text" id="<?php echo GENESIS_SETTINGS_FIELD; ?>[oura_charger]" value="<?php echo $charger_id; ?>">
-						<br><span class="description">Enter the product ID for the ring charger WooCommerce product</span>
-					</p>
-				</td>
-			</tr>
-			<tr valign="top">
-				<th scope="row">Product Title:</th>
-				<td><?php echo $charger_id ? get_the_title($charger_id) : 'none'; ?></td>
-			</tr>
-		</tbody>
-	</table>
-	<?php
-}

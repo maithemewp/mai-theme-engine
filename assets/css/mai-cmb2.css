@@ -1,7 +1,10 @@
 
 .mai-metabox .cmb-row {
-    padding: 10px 0 0 !important;
     border: none !important;
+}
+
+.cmb2-postbox .mai-metabox .cmb-row {
+    padding: 10px 0 0 !important;
     margin-bottom: 16px !important;
 }
 
@@ -13,11 +16,6 @@
     padding-top: .5em !important;
 }
 
-.mai-metabox .cmb-type-checkbox {
-	padding-top: 0 !important;
-	margin-bottom: 0 !important;
-}
-
 .mai-metabox .cmb-type-checkbox .cmb2-metabox-description {
 	display: inline-block !important;
     font-style: normal !important;
@@ -25,21 +23,11 @@
     margin: 2px 0 5px !important;
 }
 
-.mai-metabox .cmb-th {
-	margin-top: -5px !important;
-}
-
-.mai-metabox .cmb-type-checkbox .cmb-th {
-	margin-top: -10px !important;
-}
-
-#mai_content_archive .cmb-row {
-    padding: 0 !important;
-    margin-bottom: 0 !important;
-}
-
-#mai_content_archive .cmb2-id-image-size label,
-#mai_content_archive .cmb2-id-image-alignment label {
+.mai-metabox #cmb2-metabox-mai_static_archive_settings .cmb-row.cmb2-id-mai-content-archives-title .cmb2-metabox-title,
+.mai-content-archive-metabox .cmb2-id-content-archive-limit label,
+.mai-content-archive-metabox .cmb2-id-image-location label,
+.mai-content-archive-metabox .cmb2-id-image-size label,
+.mai-content-archive-metabox .cmb2-id-image-alignment label {
 	display: none;
 }
 
