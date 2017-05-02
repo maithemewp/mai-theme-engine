@@ -268,18 +268,20 @@ function mai_get_section_close( $args ) {
 
 function mai_get_columns() {
 
+    // If static front page
+    if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
+        $columns = get_post_meta( $front_page_id, 'columns', true );
+    }
+
+    // If static blog page
+    elseif ( is_home() && ( $home_id = get_option( 'page_for_posts' ) ) ) {
+        $columns = get_post_meta( $home_id, 'columns', true );
+    }
+
     // Single post/page/cpt
-    if ( is_singular() ) {
-        // If static front page
-        if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
-            $post_id = $front_page_id;
-        }
-        // If static blog page
-        elseif ( is_home() && ( $home_id = get_option( 'page_for_posts' ) ) ) {
-            $post_id = $home_id;
-        }
+    elseif ( is_singular() ) {
         // If WooCommerce shop page
-        elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+        if ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
             $post_id = $shop_id;
         }
         // Regular old single post/page/cpt
@@ -336,14 +338,16 @@ function mai_get_columns() {
         $columns = get_the_author_meta( 'columns', get_query_var( 'author' ) );
     }
 
+    else {
+        $columns = 0;
+    }
+
     return absint($columns);
 }
 
 function mai_admin_get_columns() {
 
     global $pagenow;
-
-    $columns = '';
 
     if ( 'post.php' == $pagenow ) {
 
@@ -386,6 +390,10 @@ function mai_admin_get_columns() {
                 }
             }
         }
+    }
+
+    else {
+        $columns = 0;
     }
 
     return absint($columns);

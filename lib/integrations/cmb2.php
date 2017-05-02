@@ -472,7 +472,7 @@ function _mai_cmb_columns_config() {
 
 	$columns = mai_admin_get_columns();
 	$count	 = ( $columns > 1 ) ? $columns : __( 'None', 'maitheme' );
-	$none	 = sprintf( __( 'Inherit - currently "%s"', 'maitheme' ), $count );
+	$none	 = sprintf( __( 'Inherit - currently (%s)', 'maitheme' ), $count );
 
 	return array(
 		'name'				=> __( 'Post Columns', 'maitheme' ),

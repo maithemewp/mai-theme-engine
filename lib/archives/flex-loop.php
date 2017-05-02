@@ -30,15 +30,13 @@ function mai_add_flex_entry_post_classes( $classes ) {
         return $classes;
     }
 
-    $columns = mai_get_columns();
-
-    // Bail if no columns needed
-    if ( ! $columns ) {
+    // Bail if not a flex loop
+    if ( ! mai_is_flex_loop() ) {
         return $classes;
     }
 
     // Get the classes by layout
-    $flex_classes = mai_get_flex_entry_classes_by_columns( $columns );
+    $flex_classes = mai_get_flex_entry_classes_by_columns( mai_get_columns() );
     // Add filter so devs can change these classes easily
     $flex_classes = apply_filters( 'mai_flex_entry_classes', $flex_classes );
     // Add the classes to the post array
@@ -58,15 +56,13 @@ function mai_add_flex_entry_post_classes( $classes ) {
 add_filter( 'genesis_pre_get_option_image_size', 'mai_flex_entry_image_size' );
 function mai_flex_entry_image_size( $size ) {
 
-    $columns = mai_get_columns();
-
-    // Bail if no columns needed
-    if ( ! $columns ) {
+    // Bail if not a flex loop
+    if ( ! mai_is_flex_loop() ) {
         return $size;
     }
 
     // Get image size by layout
-    $image_size = mai_get_flex_entry_image_size_by_columns( $columns );
+    $image_size = mai_get_flex_entry_image_size_by_columns( mai_get_columns() );
     // Add filter so devs can easily change image size
     $image_size = apply_filters( 'mai_flex_entry_image_size', $image_size );
 

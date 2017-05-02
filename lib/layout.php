@@ -97,7 +97,7 @@ function __mai_return_xs_content() {
  *
  * @return  void
  */
-add_action( 'admin_init', 'mai_register_layouts' );
+add_action( 'init', 'mai_register_layouts' );
 function mai_register_layouts() {
 
     // Layout image directory
@@ -107,25 +107,83 @@ function mai_register_layouts() {
     genesis_register_layout( 'md-content', array(
         'label' => __( 'Medium Content', 'maitheme' ),
         'img'   => $dir . 'mdc.gif',
-        'type'  => array( 'site' ),
+        // 'type'  => array( 'site' ),
     ) );
     // Small Content
     genesis_register_layout( 'sm-content', array(
         'label' => __( 'Small Content', 'maitheme' ),
         'img'   => $dir . 'smc.gif',
-        'type'  => array( 'site' ),
+        // 'type'  => array( 'site' ),
     ) );
     // Extra Small Content
     genesis_register_layout( 'xs-content', array(
         'label' => __( 'Extra Small Content', 'maitheme' ),
         'img'   => $dir . 'xsc.gif',
-        'type'  => array( 'site' ),
+        // 'type'  => array( 'site' ),
     ) );
 
 }
 
 /**
- * Maybe add no-sidebars body class to the head
+ * Maybe set fallbacks for archive layouts.
+ *
+ * If a post taxonomy, use the static blog page layout.
+ * If Woo product taxonomy, use the shop page layout.
+ * If a custom taxo, use the first post type the taxo is registered to.
+ *
+ * @return  array  The layouts.
+ */
+add_filter( 'genesis_site_layout', 'mai_site_layout_fallback' );
+function mai_site_layout_fallback( $layout ) {
+
+    // Bail if a custom layout is already set
+    if ( $layout && ( $layout != genesis_get_default_layout() ) ) {
+        return $layout;
+    }
+
+    // Bail if not a archive
+    if ( ! ( is_category() || is_tag() || is_tax() ) ) {
+        return $layout;
+    }
+
+    // If post taxonomy
+    if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
+        $layout = genesis_get_custom_field( '_genesis_layout', get_option( 'page_for_posts' ) );
+    }
+    // If Woo product taxonomy
+    elseif ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+        $layout = genesis_get_custom_field( '_genesis_layout', get_option( 'woocommerce_shop_page_id' ) );
+    }
+    // Must be custom taxonomy archive
+    else {
+        $tax = get_taxonomy( get_queried_object()->taxonomy );
+        if ( $tax ) {
+            /**
+             * If we have a tax, get the first one.
+             * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
+             */
+            $post_type = reset( $tax->object_type );
+            // If we have a post type and it supports genesis-cpt-archive-settings
+            if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+                $layout = genesis_get_cpt_option( 'layout', $post_type );
+            }
+        }
+    }
+
+    // Return null, to continue the normal function routine
+    if ( ! genesis_get_layout( $layout ) ) {
+        $layout = null;
+    }
+
+    return $layout;
+}
+
+/**
+ * Maybe add no-sidebars body class to the head.
+ *
+ * @param   array  $classes  The body classes.
+ *
+ * @return  array  The modified body classes.
  */
 add_filter( 'body_class', 'mai_sidebars_body_class' );
 function mai_sidebars_body_class( $classes ) {
@@ -139,7 +197,7 @@ function mai_sidebars_body_class( $classes ) {
     );
     // Add .no-sidebar body class if don't have any sidebars
     if ( in_array( genesis_site_layout(), $no_sidebars ) ) {
-        $classes[] = ' no-sidebars';
+        $classes[] = 'no-sidebars';
     }
     return $classes;
 }
@@ -147,7 +205,7 @@ function mai_sidebars_body_class( $classes ) {
 /**
  * Use Flexington for the main content and sidebar layout.
  *
- * @return  void
+ * @return  void.
  */
 add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_layout' );
 function mai_do_layout() {
@@ -251,7 +309,7 @@ function mai_do_layout() {
         return $attributes;
     });
 
-    // Add flexington column classes to the secondary sidebar
+    // Add flexington column classes to the secondary sidebar.
     add_filter( 'genesis_attr_sidebar-secondary', function( $attributes ) use ( $layout, $secondary_first ) {
         // This will only show if there are 2 sidebars, no need for the conditional above
         $classes = ' col col-xs-12 col-lg-2';
@@ -267,13 +325,13 @@ function mai_do_layout() {
 /**
  * Filter the footer-widgets context of the genesis_structural_wrap to add a div before the closing wrap div.
  *
- * @param   string  $output             The markup to be returned
- * @param   string  $original_output    Set to either 'open' or 'close'
+ * @param   string  $output             The markup to be returned.
+ * @param   string  $original_output    Set to either 'open' or 'close'.
  *
  * @return  string  The footer markup
  */
-add_filter( 'genesis_structural_wrap-footer-widgets', 'mai_footer_widgets_flexington_row', 10, 2 );
-function mai_footer_widgets_flexington_row( $output, $original_output ) {
+add_filter( 'genesis_structural_wrap-footer-widgets', 'mai_footer_widgets_flex_row', 10, 2 );
+function mai_footer_widgets_flex_row( $output, $original_output ) {
     if ( 'open' == $original_output ) {
         $output = $output . '<div class="row gutter-30">';
     }
@@ -284,14 +342,14 @@ function mai_footer_widgets_flexington_row( $output, $original_output ) {
 }
 
 /**
- * Filter the footer-widget markup to add flexington column classes
+ * Filter the footer-widget markup to add flexington column classes.
  *
- * @param   array   $attributes  The array of attributes to be added to the footer widget wrap.
+ * @param   array  $attributes  The array of attributes to be added to the footer widget wrap.
  *
- * @return  array  The attributes
+ * @return  array  The attributes.
  */
-add_filter( 'genesis_attr_footer-widget-area', 'alsdkfjklsajflksa' );
-function alsdkfjklsajflksa( $attributes ) {
+add_filter( 'genesis_attr_footer-widget-area', 'mai_footer_widgets_flex_classes' );
+function mai_footer_widgets_flex_classes( $attributes ) {
     switch ( mai_get_footer_widgets_count() ) {
         case '1':
             $classes = ' col col-xs-12 center-xs';

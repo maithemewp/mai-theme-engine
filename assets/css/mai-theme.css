@@ -217,30 +217,21 @@ table {
 /* ## Content Widths
 --------------------------------------------- */
 
-/* .content,
+.content,
+.breadcrumb {
+	width: 100%;
+	max-width: 100%;
+}
+
+.content,
 .xs-content .content,
 .xs-content .breadcrumb,
 .sm-content .content,
 .sm-content .breadcrumb,
 .md-content .content,
 .md-content .breadcrumb,
-.flex-loop-4sm .content,
-.flex-loop-4sm .breadcrumb,
-.flex-loop-3sm .content,
-.flex-loop-3sm .breadcrumb,
-.flex-loop-2sm .content,
-.flex-loop-2sm .breadcrumb,
-.flex-loop-4md .content,
-.flex-loop-4md .breadcrumb,
-.flex-loop-3md .content,
-.flex-loop-3md .breadcrumb,
-.flex-loop-2md .content,
-.flex-loop-2md .breadcrumb { */
-.content,
-.content.nosidebars {
+.no-sidebars .breadcrumb {
 	-ms-flex-negative: 1;-webkit-flex-shrink: 1;flex-shrink: 1;
-	width: 100%;
-	max-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -258,7 +249,7 @@ table {
 }
 
 .content-no-sidebars .section,
-.no-sidebars .section .overlay {
+.content-no-sidebars .section .overlay {
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
 }
@@ -366,6 +357,15 @@ table {
 	padding: 0;
 	position: absolute;
 	width: 1px;
+}
+
+/* ## Banner Area
+--------------------------------------------- */
+
+.banner-area,
+.banner-area .overlay {
+	margin-left: calc(-50vw + 50%);
+	margin-right: calc(-50vw + 50%);
 }
 
 /* ## Mobile Navigation
