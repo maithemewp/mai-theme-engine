@@ -122,6 +122,7 @@ function mai_cmb2_add_metaboxes() {
 	$term->add_field( _mai_cmb_image_location_config() );
 	$term->add_field( _mai_cmb_image_size_config() );
 	$term->add_field( _mai_cmb_image_alignment_config() );
+	$term->add_field( _mai_cmb_meta_config() );
 	$term->add_field( _mai_cmb_posts_nav_config() );
 
     // User Profiles
@@ -508,7 +509,7 @@ function _mai_cmb_content_archive_limit_config() {
 			'type'		  => 'number',
 			'pattern'	  => '\d*',
 		),
-		'sanitization_cb' => 'intval',
+		// 'sanitization_cb' => 'intval',
     );
 }
 
@@ -525,12 +526,14 @@ function _mai_cmb_image_location_config() {
 	return array(
 		'name'				=> __( 'Image Location:', 'maitheme' ),
 		'id'				=> 'image_location',
-		'type'				=> 'select',
 		'before_field'		=> __( 'Image Location:', 'maitheme' ) . ' ',
+		'type'				=> 'select',
+		'default' 			=> 'before_entry',
 		'options'			=> array(
-			'before_entry'	=> __( 'Before Entry', 'maitheme' ),
-			'before_title'	=> __( 'Before Title', 'maitheme' ),
-			'after_title'	=> __( 'After Title', 'maitheme' ),
+			'before_entry'	 => __( 'Before Entry', 'maitheme' ),
+			'before_title'	 => __( 'Before Title', 'maitheme' ),
+			'after_title'	 => __( 'After Title', 'maitheme' ),
+			'before_content' => __( 'Before Content', 'maitheme' ),
 		),
 	);
 }
@@ -567,6 +570,19 @@ function _mai_cmb_image_alignment_config() {
 	);
 }
 
+function _mai_cmb_meta_config() {
+	return array(
+		'name'	=> __( 'Entry Meta', 'maitheme' ),
+		'id'	=> 'remove_meta',
+		'type'	=> 'multicheck',
+		'options'			=> array(
+			'post_info'	=> __( 'Remove Post Info', 'maitheme' ),
+			'post_meta' => __( 'Remove Post Meta', 'maitheme' ),
+		),
+		'select_all_button' => false,
+    );
+}
+
 function _mai_cmb_posts_nav_config() {
 	return array(
 		'name'		=> __( 'Entry Pagination:', 'genesis' ),
@@ -583,7 +599,7 @@ function _mai_cmb_posts_nav_config() {
 
 function _mai_cmb_posts_per_page_config() {
 	return array(
-		'name'				=> __( 'Posts Per Page', 'maitheme' ),
+		'name'				=> __( 'Entries Per Page', 'maitheme' ),
 		// 'desc'				=> __( 'The max number of posts to show, per page. If empty, the number in Settings > Reading will be used.', 'maitheme' ),
 		'desc'				=> __( 'The max number of posts to show, per page.', 'maitheme' ),
 		'id'				=> 'posts_per_page',
@@ -593,6 +609,6 @@ function _mai_cmb_posts_per_page_config() {
 			'pattern'	  => '\d*',
 			// 'placeholder' => get_option( 'posts_per_page' ),
 		),
-		'sanitization_cb'	=> 'intval',
+		// 'sanitization_cb'	=> 'intval',
     );
 }

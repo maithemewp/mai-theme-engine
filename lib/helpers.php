@@ -84,12 +84,12 @@ function mai_get_banner_id() {
     }
     // Author archive
     elseif ( is_author() ) {
-        $author   = get_user_by( 'slug', get_query_var( 'author_name' ) );
-        $image_id = get_user_meta( $author->ID, 'banner_id', true );
+        // $author   = get_user_by( 'slug', get_query_var( 'author_name' ) );
+        // $image_id = get_user_meta( $author->ID, 'banner_id', true );
+        $image_id = get_the_author_meta( 'banner_id', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
-        $shop_id  = get_option( 'woocommerce_shop_page_id' );
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id = get_option( 'woocommerce_shop_page_id' ) ) {
         $image_id = get_post_meta( $shop_id, 'banner_id', true );
     }
 
@@ -108,6 +108,260 @@ function mai_get_banner_id() {
 
     return $image_id;
 }
+
+function mai_is_content_archive() {
+
+    $is_archive = false;
+
+    // Static blog page
+    if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+        $is_archive = true;
+    }
+    // Term archive
+    elseif ( is_category() || is_tag() || is_tax() ) {
+        $is_archive = true;
+    }
+    // CPT archive
+    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+        $is_archive = true;
+    }
+    // Author archive
+    elseif ( is_author() ) {
+        $is_archive = true;
+    }
+    // WooCommerce shop page
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+        $is_archive = true;
+    }
+
+    return $is_archive;
+}
+
+// function mai_is_archive_settings_enabled() {
+
+//     $enabled = false;
+
+//     // Static blog page
+//     if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+//         $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+//     }
+//     // Term archive
+//     elseif ( is_category() || is_tag() || is_tax() ) {
+//         $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+//     }
+//     // CPT archive
+//     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+//         $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' );
+//     }
+//     // Author archive
+//     elseif ( is_author() ) {
+//         $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
+//     }
+//     // WooCommerce shop page
+//     elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+//         $enabled = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
+//     }
+
+//     return ( 'on' == $enabled );
+// }
+
+function mai_get_archive_meta_with_fallback( $key ) {
+
+    $meta = false;
+
+    // Static blog page
+    if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+        $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+        if ( 'on' == $enabled ) {
+            $meta = get_post_meta( $posts_page_id, $key, true );
+        }
+    }
+    // Term archive
+    elseif ( is_category() || is_tag() || is_tax() ) {
+        $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+        if ( 'on' == $enabled ) {
+            $meta = get_term_meta( get_queried_object()->term_id, $key, true );
+        } else {
+            // If post taxonomy
+            if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
+                if ( $posts_page_id = get_option( 'page_for_posts' ) ) {
+                    $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+                    if ( 'on' == $enabled ) {
+                        $meta = get_post_meta( $posts_page_id, $key, true );
+                    }
+                }
+            }
+            // If Woo product taxonomy
+            elseif ( is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+                if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
+                    $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
+                    if ( 'on' == $enabled ) {
+                        $meta = get_post_meta( $shop_page_id, $key, true );
+                    }
+                }
+            }
+            // Must be custom taxonomy archive
+            else {
+                $tax = get_taxonomy( get_queried_object()->taxonomy );
+                if ( $tax ) {
+                    /**
+                     * If we have a tax, get the first one.
+                     * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
+                     */
+                    $post_type = reset( $tax->object_type );
+                    // If we have a post type and it supports genesis-cpt-archive-settings
+                    if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+                        $meta = genesis_get_cpt_option( $key, $post_type );
+                    }
+                }
+            }
+        }
+    }
+    // CPT archive
+    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+        $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' );
+        if ( 'on' == $enabled ) {
+            $meta = genesis_get_cpt_option( $key );
+        }
+    }
+    // Author archive
+    elseif ( is_author() ) {
+        $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
+        if ( 'on' == $enabled ) {
+            $meta = get_the_author_meta( $key, get_query_var( 'author' ) );
+        }
+    }
+    // WooCommerce shop page
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+        $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
+        if ( 'on' == $enabled ) {
+            $meta = get_post_meta( $shop_page_id, $key, true );
+        }
+    }
+
+    // Lastly, fallback to the theme settings/options
+    if ( ! $meta ) {
+        $meta = genesis_get_option( $key );
+    }
+
+    return $meta;
+}
+
+function mai_archive_display_image() {
+
+    $enabled = $archive_display = $display = false;
+
+    // Static blog page
+    if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+        $enabled         = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+        $archive_display = get_post_meta( $posts_page_id, 'content_archive_thumbnail', true );
+    }
+    // Term archive
+    elseif ( is_category() || is_tag() || is_tax() ) {
+        $enabled         = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+        $archive_display = get_term_meta( get_queried_object()->term_id, 'content_archive_thumbnail', true );
+    }
+    // CPT archive
+    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+        $enabled         = genesis_get_cpt_option( 'enable_content_archive_settings' );
+        $archive_display = genesis_get_cpt_option( 'content_archive_thumbnail' );
+    }
+    // Author archive
+    elseif ( is_author() ) {
+        $enabled         = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
+        $archive_display = get_the_author_meta( 'content_archive_thumbnail', get_query_var( 'author' ) );
+    }
+    // WooCommerce shop page
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+        $enabled         = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
+        $archive_display = get_post_meta( $shop_id, 'content_archive_thumbnail', true );
+    }
+
+    // If archive settings are enabled
+    if ( $enabled ) {
+        $display = $archive_display;
+    }
+
+    return $display;
+}
+
+function mai_archive_get_image_location() {
+
+    $enabled = $archive_location = $location = false;
+
+    // Static blog page
+    if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+        $enabled          = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+        $archive_location = get_post_meta( $posts_page_id, 'image_location', true );
+    }
+    // Term archive
+    elseif ( is_category() || is_tag() || is_tax() ) {
+        $enabled          = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+        $archive_location = get_term_meta( get_queried_object()->term_id, 'image_location', true );
+    }
+    // CPT archive
+    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+        $enabled          = genesis_get_cpt_option( 'enable_content_archive_settings' );
+        $archive_location = genesis_get_cpt_option( 'image_location' );
+    }
+    // Author archive
+    elseif ( is_author() ) {
+        $enabled          = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
+        $archive_location = get_the_author_meta( 'image_location', get_query_var( 'author' ) );
+    }
+    // WooCommerce shop page
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+        $enabled          = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
+        $archive_location = get_post_meta( $shop_id, 'image_location', true );
+    }
+
+    // If archive settings are enabled
+    if ( $enabled ) {
+        $location = $archive_location;
+    }
+
+    return $location;
+}
+
+function mai_get_archive_image_size() {
+
+    // Start of without any values
+    $enabled = $archive_size = $size = false;
+
+    // Static blog page
+    if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+        $enabled      = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+        $archive_size = get_post_meta( $posts_page_id, 'image_size', true );
+    }
+    // Term archive
+    elseif ( is_category() || is_tag() || is_tax() ) {
+        $enabled      = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+        $archive_size = get_term_meta( get_queried_object()->term_id, 'image_size', true );
+    }
+    // CPT archive
+    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+        $enabled      = genesis_get_cpt_option( 'enable_content_archive_settings' );
+        $archive_size = genesis_get_cpt_option( 'banner_id' );
+    }
+    // Author archive
+    elseif ( is_author() ) {
+        $enabled      = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
+        $archive_size = get_the_author_meta( 'image_size', get_query_var( 'author' ) );
+    }
+    // WooCommerce shop page
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+        $enabled      = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
+        $archive_size = get_post_meta( $shop_id, 'banner_id', true );
+    }
+
+    // If archive settings are enabled
+    if ( $enabled ) {
+        $size = $archive_size;
+    }
+
+    return $size;
+}
+
 
 /**
  * Echo the section opening markup
@@ -440,6 +694,26 @@ function mai_do_flex_entry_classes_by( $option, $value ) {
 //         return $classes;
 //     });
 // }
+
+/**
+ * Function to be used with post_class filter to add flex entry classes.
+ * Used as a helper function so we can easily add and remove the filter before/after specific loops.
+ *
+ * @param   array  $classes
+ *
+ * @return  array  The modified classes
+ */
+function mai_add_flex_entry_post_classes( $classes ) {
+    // Get the classes by layout
+    $flex_classes = mai_get_flex_entry_classes_by_columns( mai_get_columns() );
+    // Add filter so devs can change these classes easily
+    $flex_classes = apply_filters( 'mai_flex_entry_classes', $flex_classes );
+    // Add the classes to the post array
+    $classes[]    = $flex_classes;
+    // Return the classes
+    return $classes;
+}
+
 
 /**
  * Filter post_class to add flex classes by number of columns.

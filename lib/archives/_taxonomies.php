@@ -65,21 +65,3 @@ function mai_taxonomy_default_layout( $layout ) {
 
 }
 
-/**
- * Add term description before custom taxonomy loop.
- * This is the core WP term description, not the Genesis Intro Text.
- * Genesis Intro Text is in banner.
- */
-add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
-function mai_do_term_description() {
-	// Bail if not a taxonomy archive
-	if ( ! ( is_category() || is_tag() || is_tax() ) ) {
-		return;
-	}
-	if ( 0 === absint( get_query_var( 'paged' ) ) ) {
-		$description = term_description();
-		if ( $description ) {
-			echo '<div class="term-description">' . do_shortcode($description) . '</div>';
-		}
-	}
-}

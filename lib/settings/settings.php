@@ -216,19 +216,12 @@ class Mai_Genesis_Theme_Settings_Metabox {
 		), $this->key, 'options-page' );
 
 		$this->cmb->add_field( _mai_cmb_columns_config() );
-
 		$this->cmb->add_field( _mai_cmb_content_archive_config() );
-
 		$this->cmb->add_field( _mai_cmb_content_archive_limit_config() );
-
 		$this->cmb->add_field( _mai_cmb_content_archive_thumbnail_config() );
-
 		$this->cmb->add_field( _mai_cmb_image_location_config() );
-
 		$this->cmb->add_field( _mai_cmb_image_size_config() );
-
 		$this->cmb->add_field( _mai_cmb_image_alignment_config() );
-
 		$this->cmb->add_field( _mai_cmb_posts_nav_config() );
 
 		return $this->cmb;

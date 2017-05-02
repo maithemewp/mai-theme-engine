@@ -195,6 +195,51 @@ final class Mai_Theme_Engine {
             // Add excerpt support for pages
             add_post_type_support( 'page', 'excerpt' );
 
+            /**
+             * Create the initial image sizes.
+             * @link http://andrew.hedges.name/experiments/aspect_ratio/
+             */
+            $image_sizes = array(
+                'banner' => array(
+                    'width'  => 1200,
+                    'height' => 600,
+                    'crop'   => true, // 2x1
+                ),
+                'featured' => array(
+                    'width'  => 800,
+                    'height' => 600,
+                    'crop'   => true, // 4x3 (works better for no sidebar)
+                ),
+                'one-half' => array(
+                    'width'  => 550,
+                    'height' => 413,
+                    'crop'   => true, // 4x3
+                ),
+                'one-third' => array(
+                    'width'  => 350,
+                    'height' => 263,
+                    'crop'   => true, // 4x3
+                ),
+                'one-fourth' => array(
+                    'width'  => 260,
+                    'height' => 195,
+                    'crop'   => true, // 4x3
+                ),
+                'tiny' => array(
+                    'width'  => 80,
+                    'height' => 80,
+                    'crop'   => true, // square
+                ),
+            );
+
+            // Filter the image sizes to allow the theme to override
+            $image_sizes = apply_filters( 'mai_image_sizes', $image_sizes );
+
+            // Loop through and add the image sizes.
+            foreach ( $image_sizes as $name => $data ) {
+                add_image_size( $name, $data['width'], $data['height'], $data['crop'] );
+            }
+
         }, 15 );
 
         // Vendor
