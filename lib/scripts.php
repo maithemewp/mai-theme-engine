@@ -7,6 +7,7 @@ function mai_enqueue_admin_scripts() {
 	$suffix = mai_get_suffix();
 
 	wp_register_script( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "assets/js/mai-cmb2{$suffix}.js", array( 'jquery' ), MAITHEME_ENGINE_PLUGIN_VERSION, true );
+	wp_register_style( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "assets/css/mai-cmb2{$suffix}.css", array(), MAITHEME_ENGINE_PLUGIN_VERSION );
 }
 
 // Enqueue Javascript files

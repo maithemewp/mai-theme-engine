@@ -5,12 +5,13 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	/**
 	 * Update CMB2 URL cause JS/CSS files 404
 	 * when using the plugin via symlink
-	 * in local dev environments.
+	 * in my local dev environment.
+	 *
+	 * This shouldn't affect anyone else, sorry for extra code just for me :P
 	 */
 	add_filter( 'cmb2_meta_box_url', 'mai_update_cmb2_meta_box_url' );
 	function mai_update_cmb2_meta_box_url( $url ) {
-		// TODO: streplace instead! See docs for this filter!!!!!!
-	    return MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . 'includes/vendor/CMB2';
+	    return str_replace( '/Users/JiveDig/Plugins/maitheme-engine/', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL, $url );
 	}
 }
 
@@ -22,67 +23,14 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 add_action( 'cmb2_before_form', 'mai_before_mai_metabox', 10, 4 );
 function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 
-	if ( ! in_array( $cmb_id, array( 'mai_post_banner', 'mai_term_settings', 'mai_user_settings' ) )
+	if ( ! in_array( $cmb_id, array( 'mai_genesis_theme_settings', 'mai_post_banner', 'mai_term_settings', 'mai_user_settings' ) )
 		&& ( strpos( $cmb_id, 'mai-cpt-archive-settings-' ) === false ) ) {
 		return;
 	}
 
 	// Enqueue
+	wp_enqueue_style( 'mai-cmb2' );
 	wp_enqueue_script( 'mai-cmb2' );
-
-    echo '<style type="text/css">
-	        .mai-metabox .cmb-row {
-		        padding: 10px 0 0 !important;
-			    border: none !important;
-			    margin-bottom: 16px !important;
-			}
-			.mai-metabox .cmb2-metabox-description {
-				display: block !important;
-				color: #666 !important;
-			    font-size: 14px !important;
-			    font-style: italic !important;
-			    padding-top: .5em !important;
-			}
-			.mai-metabox .cmb-type-checkbox {
-				padding-top: 0 !important;
-				margin-bottom: 0 !important;
-			}
-			.mai-metabox .cmb-type-checkbox .cmb2-metabox-description {
-				display: inline-block !important;
-			    color: #444 !important;
-			    font-style: normal !important;
-			    padding-bottom: 0 !important;
-			    margin: 2px 0 5px !important;
-			}
-			.mai-metabox .cmb-th {
-				margin-top: -5px !important;
-			}
-			.mai-metabox .cmb-type-checkbox .cmb-th {
-				margin-top: -10px !important;
-			}
-			#mai_post_banner .cmb-th {
-				position: absolute !important;
-				clip: rect(0, 0, 0, 0);
-				height: 1px;
-				width: 1px;
-				border: 0;
-				overflow: hidden;
-			}
-			#mai_post_banner .cmb-th:focus {
-				clip: auto !important;
-				height: auto;
-				width: auto;
-				display: block;
-				font-size: 1em;
-				font-weight: bold;
-				padding: 15px 23px 14px;
-				color: #323232;
-				background: #fff;
-				z-index: 100000; /* Above WP toolbar. */
-				text-decoration: none;
-				box-shadow: 0 0 2px 2px rgba(0,0,0,.6);
-			}
-        </style>';
 
 }
 
@@ -112,7 +60,7 @@ function mai_cmb2_add_metaboxes() {
 	// Filter taxonomies so devs can change where this shows up
 	$taxonomies = apply_filters( 'mai_banner_taxonomies', $taxonomies );
 
-	$metabox_title = __( 'Mai Archive Settings', 'maitheme' );
+	$metabox_title = __( 'Mai Content Archives', 'maitheme' );
 	$upload_label  = __( 'Banner Image', 'maitheme' ); // Hidden on posts since show_names is false
 	$button_text   = __( 'Add Banner Image', 'maitheme' );
 
@@ -397,7 +345,7 @@ class Mai_Genesis_CPT_Settings_Metabox {
 
 	    $this->cmb = cmb2_get_metabox( array(
 			'id'			=> $this->metabox_id,
-			'title'			=> __( 'Mai Archive Settings', 'maitheme' ),
+			'title'			=> __( 'Mai Content Archives', 'maitheme' ),
 			'classes' 		=> 'mai-metabox',
 			'hookup'		=> false, 	// We'll handle ourselves. ( add_sanitized_values() )
 			'cmb_styles'	=> false, 	// We'll handle ourselves. ( admin_hooks() )

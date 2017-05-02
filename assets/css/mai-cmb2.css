@@ -1,0 +1,68 @@
+
+.mai-metabox .cmb-row {
+    padding: 10px 0 0 !important;
+    border: none !important;
+    margin-bottom: 16px !important;
+}
+
+.mai-metabox .cmb2-metabox-description {
+	display: block !important;
+	color: #444 !important;
+    font-size: 13px !important;
+    font-style: italic !important;
+    padding-top: .5em !important;
+}
+
+.mai-metabox .cmb-type-checkbox {
+	padding-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.mai-metabox .cmb-type-checkbox .cmb2-metabox-description {
+	display: inline-block !important;
+    font-style: normal !important;
+    padding-bottom: 0 !important;
+    margin: 2px 0 5px !important;
+}
+
+.mai-metabox .cmb-th {
+	margin-top: -5px !important;
+}
+
+.mai-metabox .cmb-type-checkbox .cmb-th {
+	margin-top: -10px !important;
+}
+
+#mai_content_archive .cmb-row {
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+#mai_content_archive .cmb2-id-image-size label,
+#mai_content_archive .cmb2-id-image-alignment label {
+	display: none;
+}
+
+#mai_post_banner .cmb-th {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	width: 1px;
+	border: 0;
+	overflow: hidden;
+}
+
+#mai_post_banner .cmb-th:focus {
+	clip: auto !important;
+	height: auto;
+	width: auto;
+	display: block;
+	font-size: 1em;
+	font-weight: bold;
+	padding: 15px 23px 14px;
+	color: #323232;
+	background: #fff;
+	z-index: 100000; /* Above WP toolbar. */
+	text-decoration: none;
+	box-shadow: 0 0 2px 2px rgba(0,0,0,.6);
+}
