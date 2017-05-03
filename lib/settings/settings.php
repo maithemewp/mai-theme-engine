@@ -594,7 +594,7 @@ function mai_cmb2_add_metaboxes() {
         'context' 		   => 'normal',
         'priority'		   => 'default',
         'classes' 		   => 'mai-metabox mai-content-archive-metabox',
-        'show_on_cb' 	   => 'mai_cmb_show_if_static_archive',
+        'show_on_cb' 	   => '_mai_cmb_show_if_static_archive',
     ) );
     $static_archive->add_field( _mai_cmb_remove_loop_config() );
     $static_archive->add_field( _mai_cmb_content_enable_archive_settings_config() );
@@ -670,7 +670,7 @@ function mai_cmb2_add_metaboxes() {
  * Post metabox callback function to check if the
  * archive metabox should show for a post.
  *
- * Returns true if viewing the static blog page or WooCommerce shop page.
+ * Returns true if viewing the static blog page or WooCommerce shop page in the admin.
  *
  * @return bool
  */
