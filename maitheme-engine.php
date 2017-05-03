@@ -5,11 +5,11 @@
  * Plugin URI:      https://github.com/bizbudding/maitheme-engine/
  * Description:     The Mai Theme engine
  *
- * Version:         0.0.5
+ * Version:         0.0.6
  *
  * GitHub URI:      bizbudding/maitheme-engine
  *
- * Author:          BizBudding, Mike Hemberger
+ * Author:          Mike Hemberger, BizBudding Inc
  * Author URI:      https://bizbudding.com
  */
 
@@ -92,7 +92,7 @@ final class Mai_Theme_Engine {
 
         // Plugin version.
         if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_VERSION' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '0.0.5' );
+            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '0.0.6' );
         }
 
         // Plugin Folder Path.
@@ -135,6 +135,32 @@ final class Mai_Theme_Engine {
      * @return  void
      */
     private function setup() {
+
+        /**
+         * Remove the 'Deactivate' and 'Edit' links from this plugin in the Dashboard > Plugins menu.
+         *
+         * @param   $actions      array   An array of plugin action links.
+         * @param   $plugin_file  string  Path to the plugin file relative to the plugins directory.
+         * @param   $plugin_data  array   An array of plugin data.
+         * @param   $context      string  The plugin context. Defaults are 'All', 'Active', 'Inactive', 'Recently Activated', 'Upgrade', 'Must-Use', 'Drop-ins', 'Search'.
+         *
+         * @return  array
+         */
+        add_filter( 'plugin_action_links', function( $actions, $plugin_file, $plugin_data, $context ){
+
+            // If we have a deactivate link
+            if ( array_key_exists( 'deactivate', $actions ) ) {
+                // If viewing this plugin
+                if ( 'maitheme-engine/maitheme-engine.php' == $plugin_file ) {
+                    // Remove the deactivate and edit links
+                    unset( $actions['deactivate'] );
+                    unset( $actions['edit'] );
+                }
+            }
+            // Return the actions
+            return $actions;
+
+        }, 10, 4 );
 
         /**
          * Include files after theme is loaded, to mimic being run in a child theme.

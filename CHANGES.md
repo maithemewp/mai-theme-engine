@@ -1,3 +1,6 @@
+#### 0.0.6
+* Remove Deactivate/Edit links from this plugin in Dashboard > Plugins menu
+
 #### 0.0.5
 * Core functionality moved from Mai Theme to Engine
 
