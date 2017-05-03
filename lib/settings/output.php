@@ -39,6 +39,13 @@ function mai_do_settings_body_classes( $classes ) {
 	return $classes;
 }
 
+/**
+ * Add boxed class to all entries and WooCommerce products.
+ *
+ * @since   1.0.0
+ *
+ * @return  array  The modified classes
+ */
 add_filter( 'post_class', 'mai_do_boxed_content_class' );
 add_filter( 'product_cat_class', 'mai_do_boxed_content_class' );
 function mai_do_boxed_content_class( $classes ) {
@@ -51,7 +58,13 @@ function mai_do_boxed_content_class( $classes ) {
     return $classes;
 }
 
-// Add boxed class to all elements affected by box styling
+/**
+ * Add boxed class to all elements affected by box styling.
+ *
+ * @since   1.0.0
+ *
+ * @return  array  The modified classes
+ */
 add_filter( 'genesis_attr_sidebar-primary', 'mai_do_boxed_content_attributes' );
 add_filter( 'genesis_attr_sidebar-secondary', 'mai_do_boxed_content_attributes' );
 add_filter( 'genesis_attr_author-box', 'mai_do_boxed_content_attributes' );

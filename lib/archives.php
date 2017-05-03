@@ -21,6 +21,7 @@ function mai_do_blog_description() {
  */
 add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
 function mai_do_term_description() {
+
     // Bail if not a taxonomy archive
     if ( ! ( is_category() || is_tag() || is_tax() ) ) {
         return;
@@ -37,10 +38,17 @@ function mai_do_term_description() {
 
 add_action( 'genesis_before_loop', 'mai_maybe_remove_loop' );
 function mai_maybe_remove_loop() {
+
+    // Bail if not a content archive
+    if ( ! mai_is_content_archive() ) {
+        return;
+    }
+    // Bail if not removing the loop
     $remove_loop = mai_get_archive_meta_with_fallback( 'remove_loop' );
     if ( ! $remove_loop ) {
         return;
     }
+
     // Remove the loop
     remove_action( 'genesis_loop', 'genesis_do_loop' );
     remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
@@ -49,13 +57,17 @@ function mai_maybe_remove_loop() {
 
 add_filter( 'pre_get_posts', 'mai_content_archive_posts_per_page' );
 function mai_content_archive_posts_per_page( $query ) {
+
+    // Bail if not the main query
     if ( ! $query->is_main_query() || is_admin() || is_singular() ) {
         return;
     }
+
     // Bail if not a content archive
     if ( ! mai_is_content_archive() ) {
         return;
     }
+
     // Get the posts_per_page
     $posts_per_page = mai_get_archive_meta_with_fallback( 'posts_per_page' );
     /**
@@ -75,6 +87,7 @@ function mai_content_archive_posts_per_page( $query ) {
 // Flex loop opening html
 add_action( 'genesis_before_while', 'mai_archive_flex_loop_open', 100 );
 function mai_archive_flex_loop_open() {
+
     // Bail if not a flex loop
     if ( ! mai_is_flex_loop() ) {
         return;
@@ -90,6 +103,7 @@ function mai_archive_flex_loop_open() {
 // Flex loop closing html
 add_action( 'genesis_after_endwhile', 'mai_archive_flex_loop_close' );
 function mai_archive_flex_loop_close() {
+
     // Bail if not a flex loop
     if ( ! mai_is_flex_loop() ) {
         return;
@@ -113,6 +127,11 @@ function mai_archive_flex_loop_close() {
  */
 add_action( 'genesis_before_loop', 'mai_do_archive_options' );
 function mai_do_archive_options() {
+
+    // Bail if not a content archive
+    if ( ! mai_is_content_archive() ) {
+        return;
+    }
 
     $content_archive_thumbnail = mai_get_archive_meta_with_fallback( 'content_archive_thumbnail' );
     $image_size                = mai_get_archive_meta_with_fallback( 'image_size' );
