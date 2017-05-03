@@ -1,3 +1,6 @@
+.mai-metabox .mai-hidden {
+	display: none;
+}
 
 .mai-metabox .cmb-row {
     border: none !important;
@@ -24,6 +27,7 @@
 }
 
 .mai-metabox #cmb2-metabox-mai_static_archive_settings .cmb-row.cmb2-id-mai-content-archives-title .cmb2-metabox-title,
+.mai-content-archive-metabox .cmb2-id-more-link .cmb-th label,
 .mai-content-archive-metabox .cmb2-id-content-archive-limit label,
 .mai-content-archive-metabox .cmb2-id-image-location label,
 .mai-content-archive-metabox .cmb2-id-image-size label,

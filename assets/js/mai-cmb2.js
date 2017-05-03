@@ -38,25 +38,28 @@
 
 		var $archiveRows = $settingsEnabled.parents( '.cmb-row' ).nextAll( '.cmb-row' );
 
-		// if ( ! $settingsEnabled.is( ':checked' )  ) {
-		// 	$.each( $archiveRows, function( key, value ) {
-		// 		$(this).find( 'input' ).attr( 'disabled', true );
-		// 		$(this).find( 'select' ).attr( 'disabled', true );
-		// 	});
-		// }
-		// $settingsEnabled.change(function() {
-		// 	if ( $(this).is( ':checked' ) ) {
-		// 		$.each( $archiveRows, function( key, value ) {
-		// 			$(this).find( 'input' ).attr( 'disabled', false );
-		// 			$(this).find( 'select' ).attr( 'disabled', false );
-		// 		});
-		// 	} else {
-		// 		$.each( $archiveRows, function( key, value ) {
-		// 			$(this).find( 'input' ).attr( 'disabled', true );
-		// 			$(this).find( 'select' ).attr( 'disabled', true );
-		// 		});
-		// 	}
-		// });
+		if ( ! $settingsEnabled.is( ':checked' )  ) {
+			$.each( $archiveRows, function( key, value ) {
+				$(this).addClass( 'mai-hidden' );
+				// $(this).find( 'input' ).attr( 'disabled', true );
+				// $(this).find( 'select' ).attr( 'disabled', true );
+			});
+		}
+		$settingsEnabled.change(function() {
+			if ( $(this).is( ':checked' ) ) {
+				$.each( $archiveRows, function( key, value ) {
+					$(this).removeClass( 'mai-hidden' );
+					// $(this).find( 'input' ).attr( 'disabled', false );
+					// $(this).find( 'select' ).attr( 'disabled', false );
+				});
+			} else {
+				$.each( $archiveRows, function( key, value ) {
+					$(this).addClass( 'mai-hidden' );
+					// $(this).find( 'input' ).attr( 'disabled', true );
+					// $(this).find( 'select' ).attr( 'disabled', true );
+				});
+			}
+		});
 
 	}
 
