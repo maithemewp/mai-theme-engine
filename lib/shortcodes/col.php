@@ -12,33 +12,33 @@
  */
 
 /**
- * Main Mai_Col_Shortcodes Class.
+ * Main Mai_Col_Shortcode Class.
  *
  * @since 1.0.0
  */
-final class Mai_Col_Shortcodes {
+final class Mai_Col_Shortcode {
 
 	/**
 	 * Singleton
-	 * @var   Mai_Col_Shortcodes The one true Mai_Col_Shortcodes
+	 * @var   Mai_Col_Shortcode The one true Mai_Col_Shortcode
 	 * @since 1.0.0
 	 */
 	private static $instance;
 
 	/**
-	 * Main Mai_Col_Shortcodes Instance.
+	 * Main Mai_Col_Shortcode Instance.
 	 *
-	 * Insures that only one instance of Mai_Col_Shortcodes exists in memory at any one
+	 * Insures that only one instance of Mai_Col_Shortcode exists in memory at any one
 	 * time. Also prevents needing to define globals all over the place.
 	 *
 	 * @since   1.0.0
 	 * @static  var array $instance
-	 * @return  object | Mai_Col_Shortcodes The one true Mai_Col_Shortcodes
+	 * @return  object | Mai_Col_Shortcode The one true Mai_Col_Shortcode
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
 			// Setup the setup
-			self::$instance = new Mai_Col_Shortcodes;
+			self::$instance = new Mai_Col_Shortcode;
             // Initialize
             self::$instance->init();
 		}
@@ -162,18 +162,18 @@ final class Mai_Col_Shortcodes {
 }
 
 /**
- * The main function for that returns Mai_Col_Shortcodes
+ * The main function for that returns Mai_Col_Shortcode
  *
- * The main function responsible for returning the one true Mai_Col_Shortcodes
+ * The main function responsible for returning the one true Mai_Col_Shortcode
  * Instance to functions everywhere.
  *
  * @since 1.0.0
  *
- * @return object|Mai_Col_Shortcodes The one true Mai_Col_Shortcodes Instance.
+ * @return object|Mai_Col_Shortcode The one true Mai_Col_Shortcode Instance.
  */
-function Mai_Col_Shortcodes() {
-	return Mai_Col_Shortcodes::instance();
+function Mai_Col_Shortcode() {
+	return Mai_Col_Shortcode::instance();
 }
 
-// Get Mai_Col_Shortcodes Running.
-Mai_Col_Shortcodes();
+// Get Mai_Col_Shortcode Running.
+Mai_Col_Shortcode();

@@ -43,13 +43,15 @@ remove_action( 'wp_head', 'genesis_load_favicon' );
 add_filter( 'genesis_superfish_args_url', '__return_false' );
 
 /**
- * Remove custom title/logo metabox from Genesis theme options page
+ * Remove custom title/logo and blog page template metaboxes from Genesis theme options page
  *
  * @link http://www.billerickson.net/code/remove-metaboxes-from-genesis-theme-settings/
  */
-add_action( 'genesis_theme_settings_metaboxes', 'mai_remove_metaboxes' );
-function mai_remove_metaboxes( $_genesis_admin_settings ) {
-	remove_meta_box( 'genesis-theme-settings-header', $_genesis_admin_settings, 'main' );
+add_action( 'genesis_theme_settings_metaboxes', 'mai_remove_genesis_theme_settings_metaboxes' );
+function mai_remove_genesis_theme_settings_metaboxes( $_genesis_theme_settings_pagehook ) {
+	remove_meta_box( 'genesis-theme-settings-header', $_genesis_theme_settings_pagehook, 'main' );
+	remove_meta_box( 'genesis-theme-settings-posts', $_genesis_theme_settings_pagehook, 'main' );
+	remove_meta_box( 'genesis-theme-settings-blogpage', $_genesis_theme_settings_pagehook, 'main' );
 }
 
 /**
@@ -58,7 +60,7 @@ function mai_remove_metaboxes( $_genesis_admin_settings ) {
  *
  * @link https://developer.wordpress.org/themes/advanced-topics/customizer-api/
  */
-add_action( 'customize_register', 'mai_theme_customize_register', 99 );
-function mai_theme_customize_register( $wp_customize ) {
+add_action( 'customize_register', 'mai_remove_genesis_customizer_controls', 99 );
+function mai_remove_genesis_customizer_controls( $wp_customize ) {
 	$wp_customize->remove_control('blog_title');
 }
