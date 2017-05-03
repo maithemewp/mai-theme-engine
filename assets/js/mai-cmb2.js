@@ -5,6 +5,7 @@
 		$bannerField		= $( '.cmb2-id-banner' ),
 		$archiveMetabox		= $( '.mai-content-archive-metabox' ),
 		$settingsEnabled	= $( '#enable_content_archive_settings' ),
+		$removeLoop			= $( '#remove_loop' ),
 		$columns			= $( '#columns' ),
 		$includeImage		= $( '#content_archive_thumbnail' ),
 		$imageAlignment		= $( '.cmb2-id-image-alignment' ),
@@ -36,6 +37,18 @@
 	// If we have an archive metabox
 	if ( $archiveMetabox.length > 0 ) {
 
+		var $nextAll = $removeLoop.parents( '.cmb-row' ).nextAll( '.cmb-row' );
+		if ( $removeLoop.is( ':checked' ) ) {
+			$nextAll.addClass( 'mai-hidden' );
+		}
+		$removeLoop.change( function() {
+			if ( $(this).is( ':checked' ) ) {
+				$nextAll.addClass( 'mai-hidden' );
+			} else {
+				$nextAll.removeClass( 'mai-hidden' );
+			}
+		});
+
 		var $archiveRows = $settingsEnabled.parents( '.cmb-row' ).nextAll( '.cmb-row' );
 
 		if ( ! $settingsEnabled.is( ':checked' )  ) {
@@ -45,18 +58,14 @@
 				// $(this).find( 'select' ).attr( 'disabled', true );
 			});
 		}
-		$settingsEnabled.change(function() {
+		$settingsEnabled.change( function() {
 			if ( $(this).is( ':checked' ) ) {
 				$.each( $archiveRows, function( key, value ) {
 					$(this).removeClass( 'mai-hidden' );
-					// $(this).find( 'input' ).attr( 'disabled', false );
-					// $(this).find( 'select' ).attr( 'disabled', false );
 				});
 			} else {
 				$.each( $archiveRows, function( key, value ) {
 					$(this).addClass( 'mai-hidden' );
-					// $(this).find( 'input' ).attr( 'disabled', true );
-					// $(this).find( 'select' ).attr( 'disabled', true );
 				});
 			}
 		});
@@ -81,14 +90,14 @@
 	});
 
 	/**
-	 * Hide the content limit fields if content archive is set to excerpt.
+	 * Hide the content limit fields if content archive is set to none or excerpt.
 	 */
 
-	if ( 'excerpts' == $contentArchive.val() ) {
+	if ( ( 'none' == $contentArchive.val() ) || ( 'excerpts' == $contentArchive.val() ) ) {
 		_hideElement( $contentLimit );
 	}
 	$contentArchive.change(function() {
-		if ( 'excerpts' == $(this).val() ) {
+		if ( ( 'none' == $contentArchive.val() ) || ( 'excerpts' == $contentArchive.val() ) ) {
 			_hideElement( $contentLimit );
 		} else {
 			_showElement( $contentLimit );

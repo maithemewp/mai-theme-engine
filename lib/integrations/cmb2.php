@@ -87,8 +87,8 @@ function mai_cmb2_add_metaboxes() {
         'classes' 		   => 'mai-metabox mai-content-archive-metabox',
         'show_on_cb' 	   => 'mai_cmb_show_if_static_archive',
     ) );
-    $static_archive->add_field( _mai_cmb_content_enable_archive_settings_config() );
     $static_archive->add_field( _mai_cmb_remove_loop_config() );
+    $static_archive->add_field( _mai_cmb_content_enable_archive_settings_config() );
     $static_archive->add_field( _mai_cmb_content_archive_settings_title_config() );
     $static_archive->add_field( _mai_cmb_posts_per_page_config() );
     $static_archive->add_field( _mai_cmb_columns_config() );
@@ -115,9 +115,9 @@ function mai_cmb2_add_metaboxes() {
     ) );
     $term->add_field( _mai_cmb_banner_visibility_config() );
     $term->add_field( _mai_cmb_banner_config() );
+    $term->add_field( _mai_cmb_remove_loop_config() );
     $term->add_field( _mai_cmb_content_archive_settings_title_config() );
     $term->add_field( _mai_cmb_content_enable_archive_settings_config() );
-    $term->add_field( _mai_cmb_remove_loop_config() );
     $term->add_field( _mai_cmb_posts_per_page_config() );
     $term->add_field( _mai_cmb_columns_config() );
 	$term->add_field( _mai_cmb_content_archive_config() );
@@ -503,6 +503,7 @@ function _mai_cmb_content_archive_config() {
 		'type'		=> 'select',
 		'default'	=> 'excerpts',
 		'options'	=> array(
+			'none'		=> __( 'No content', 'maitheme' ),
 			'full'		=> __( 'Entry content', 'genesis' ),
 			'excerpts'	=> __( 'Entry excerpts', 'genesis' ),
 		),
@@ -620,6 +621,7 @@ function _mai_cmb_posts_per_page_config() {
 		'desc'				=> __( 'The max number of posts to show, per page.', 'maitheme' ),
 		'id'				=> 'posts_per_page',
 		'type'				=> 'text_small',
+		'default'			=> 12,
 		'attributes'		=> array(
 			'type'		  => 'number',
 			'pattern'	  => '\d*',

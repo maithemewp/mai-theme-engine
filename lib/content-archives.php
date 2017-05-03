@@ -5,14 +5,12 @@ add_action( 'genesis_before_loop', 'mai_do_blog_description', 20 );
 function mai_do_blog_description() {
 
     // Bail if not the blog page
-    if ( ! is_home() ) {
+    if ( ! ( is_home() && $posts_page = get_option( 'page_for_posts' ) ) ) {
         return;
     }
 
-    if ( $posts_page = get_option( 'page_for_posts' ) ) {
-        // Echo the content
-        echo apply_filters( 'the_content', get_post( $posts_page )->post_content );
-    }
+    // Echo the content
+    echo apply_filters( 'the_content', get_post( $posts_page )->post_content );
 }
 
 
@@ -49,6 +47,31 @@ function mai_maybe_remove_loop() {
     remove_action( 'genesis_after_loop', 'genesis_posts_nav' );
 }
 
+add_filter( 'pre_get_posts', 'mai_content_archive_posts_per_page' );
+function mai_content_archive_posts_per_page( $query ) {
+    if ( ! $query->is_main_query() || is_admin() || is_singular() ) {
+        return;
+    }
+    // Bail if not a content archive
+    if ( ! mai_is_content_archive() ) {
+        return;
+    }
+    // Get the posts_per_page
+    $posts_per_page = mai_get_archive_meta_with_fallback( 'posts_per_page' );
+    /**
+     * posts_per_page setting doesn't fallback to genesis_option,
+     * if requires the core WP posts_per_page setting.
+     * Instead of crazy conditionals in our helper function,
+     * let's just bail here and let WP do it's thing.
+     */
+    if ( ! $posts_per_page ) {
+        return;
+    }
+    $query->set( 'posts_per_page', $posts_per_page );
+    return $query;
+}
+
+
 // Flex loop opening html
 add_action( 'genesis_before_while', 'mai_archive_flex_loop_open', 100 );
 function mai_archive_flex_loop_open() {
@@ -78,6 +101,16 @@ function mai_archive_flex_loop_close() {
     echo '</div>';
 }
 
+/**
+ * Do the content archive options.
+ * Hook in before the loop, get the variables first,
+ * then pass them to the filter to avoid a redirect loop
+ * since the helper function falls back to genesis_option() function.
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
 add_action( 'genesis_before_loop', 'mai_do_archive_options' );
 function mai_do_archive_options() {
 
@@ -85,6 +118,11 @@ function mai_do_archive_options() {
     $image_size                = mai_get_archive_meta_with_fallback( 'image_size' );
     $content_archive           = mai_get_archive_meta_with_fallback( 'content_archive' );
     $content_archive_limit     = absint( mai_get_archive_meta_with_fallback( 'content_archive_limit' ) );
+
+    if ( 'none' == $content_archive ) {
+        // Remove the post content
+        remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
+    }
 
     add_filter( 'genesis_options', function( $options ) use ( $content_archive_thumbnail, $image_size, $content_archive, $content_archive_limit ) {
         $options['content_archive_thumbnail'] = $content_archive_thumbnail;
@@ -96,56 +134,44 @@ function mai_do_archive_options() {
 
 }
 
+/**
+ * Filter the excerpt "read more" string.
+ *
+ * @uses    excerpt_more                When the excerpt is shorter then the full content, this read more link will show.
+ * @uses    get_the_content_more_link   Genesis function to get the more link, if characters are limited.
+ * @uses    the_content_more_link       Not sure when this is used.
+ *
+ * @param   string  $more               "Read more" excerpt string.
+ *
+ * @return  string  (Maybe)             Ellipses if content has been shortened.
+ */
+add_filter( 'excerpt_more', 'mai_read_more_ellipses' );
+add_filter( 'get_the_content_more_link', 'mai_read_more_ellipses' );
+add_filter( 'the_content_more_link', 'mai_read_more_ellipses' );
+function mai_read_more_ellipses( $more ) {
+    return ' &hellip;';
+}
+
+/**
+ * Maybe add the more link to content archives.
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
 add_action( 'genesis_entry_content', 'mai_do_more_link' );
 function mai_do_more_link() {
+
+    // Bail if not a content archive
+    if ( ! mai_is_content_archive() ) {
+        return;
+    }
+
     $more_link = mai_get_archive_meta_with_fallback( 'more_link' );
     if ( ! $more_link ) {
         return;
     }
     echo mai_get_read_more_link( get_the_ID() );
-}
-
-/**
- * Hijack the thumbnail display genesis_option
- * maybe with our new archive settings, otherwise use default (theme settings).
- *
- * @param   bool  $display
- *
- * @return  bool  Whether to show the image.
- */
-// add_filter( 'genesis_pre_get_option_content_archive_thumbnail', 'mai_archive_content_archive_thumbnail' );
-function mai_archive_content_archive_thumbnail( $display ) {
-    return mai_get_archive_meta_with_fallback( 'content_archive_thumbnail' );
-}
-
-/**
- * Get a custom image size for content archives.
- *
- * @return  string  The image size to use.
- */
-// add_filter( 'genesis_pre_get_option_image_size', 'mai_archive_image_size' );
-function mai_archive_image_size( $size ) {
-    return mai_get_archive_meta_with_fallback( 'image_size' );
-}
-
-/**
- * Get content archive setting.
- *
- * @return  string  The type of content to display.
- */
-// add_filter( 'genesis_pre_get_option_content_archive', 'mai_archive_content_archive' );
-function mai_archive_content_archive( $archive ) {
-    return mai_get_archive_meta_with_fallback( 'content_archive' );
-}
-
-/**
- * Get content archive setting.
- *
- * @return  string  The type of content to display.
- */
-// add_filter( 'genesis_pre_get_option_content_archive_limit', 'mai_archive_content_archive_limit' );
-function mai_archive_content_archive_limit( $limit ) {
-    return absint( mai_get_archive_meta_with_fallback( 'content_archive_limit' ) );
 }
 
 /**
@@ -194,6 +220,11 @@ function mai_do_post_image() {
 add_action( 'genesis_before_while', 'mai_archive_remove_meta' );
 function mai_archive_remove_meta() {
 
+    // Bail if not a content archive
+    if ( ! mai_is_content_archive() ) {
+        return;
+    }
+
     $meta_to_remove = mai_get_archive_meta_with_fallback( 'remove_meta' );
 
     if ( $meta_to_remove ) {
@@ -213,27 +244,4 @@ function mai_archive_remove_meta() {
         }
 
     }
-}
-
-/**
- * Change grid archive options
- * To override image size or content_archive (or others) in your template
- * use the 'genesis_options' filter with a priority over 10
- *
- * add_filter( 'genesis_options', function( $args ) {
- *     $args['content_archive']       = 'full';
- *     $args['content_archive_limit'] = '200';
- *     return $args;
- * });
- *
- * @param   array  $args  Full array of Genesis options
- *
- * @return  array  The altered array
- */
-// add_filter( 'genesis_options', 'mai_flex_loop_genesis_options' );
-function mai_flex_loop_genesis_options( $args ) {
-    ddd( $args );
-    $args['content_archive_thumbnail'] = true;
-    $args['image_alignment']           = 'none';
-    return $args;
 }
