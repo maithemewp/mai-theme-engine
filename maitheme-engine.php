@@ -5,7 +5,7 @@
  * Plugin URI:      https://github.com/bizbudding/maitheme-engine/
  * Description:     The Mai Theme engine
  *
- * Version:         0.0.4
+ * Version:         0.0.5
  *
  * GitHub URI:      bizbudding/maitheme-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Theme_Engine {
 
         // Plugin version.
         if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_VERSION' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '0.0.4' );
+            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '0.0.5' );
         }
 
         // Plugin Folder Path.
