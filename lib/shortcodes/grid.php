@@ -651,12 +651,14 @@ final class Mai_Grid_Shortcode {
 
 		// If post parent attribute, set up parent
 		if ( ! empty($atts['parent']) ) {
-			$args['parent'] = $atts['parent'];
+			if ( ( is_category() || is_tag() || is_tax() ) && 'current' == $atts['parent'] ) {
+				$args['parent'] = get_queried_object_id();
+			} else {
+				$args['parent'] = intval( $atts['parent'] );
+			}
 		}
 
-
 		$terms = get_terms( $args );
-
 
 		if ( is_wp_error( $terms ) ) {
 			/**
