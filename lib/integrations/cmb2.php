@@ -22,7 +22,7 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
  */
 add_action( 'cmb2_before_form', 'mai_before_mai_metabox', 10, 4 );
 function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
-
+	// Bail if not the form(s) we want
 	if ( ! in_array( $cmb_id, array( 'mai_content_archive', 'mai_post_banner', 'mai_term_settings', 'mai_user_settings' ) )
 		&& ( strpos( $cmb_id, 'mai-cpt-archive-settings-' ) === false ) ) {
 		return;
@@ -88,15 +88,18 @@ function mai_cmb2_add_metaboxes() {
         'show_on_cb' 	   => 'mai_cmb_show_if_static_archive',
     ) );
     $static_archive->add_field( _mai_cmb_content_enable_archive_settings_config() );
+    $static_archive->add_field( _mai_cmb_remove_loop_config() );
     $static_archive->add_field( _mai_cmb_content_archive_settings_title_config() );
     $static_archive->add_field( _mai_cmb_posts_per_page_config() );
     $static_archive->add_field( _mai_cmb_columns_config() );
 	$static_archive->add_field( _mai_cmb_content_archive_config() );
 	$static_archive->add_field( _mai_cmb_content_archive_limit_config() );
+	$static_archive->add_field( _mai_cmb_more_link_config() );
 	$static_archive->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$static_archive->add_field( _mai_cmb_image_location_config() );
 	$static_archive->add_field( _mai_cmb_image_size_config() );
 	$static_archive->add_field( _mai_cmb_image_alignment_config() );
+	$static_archive->add_field( _mai_cmb_meta_config() );
 	$static_archive->add_field( _mai_cmb_posts_nav_config() );
 
     // Taxonomy Terms
@@ -114,10 +117,12 @@ function mai_cmb2_add_metaboxes() {
     $term->add_field( _mai_cmb_banner_config() );
     $term->add_field( _mai_cmb_content_archive_settings_title_config() );
     $term->add_field( _mai_cmb_content_enable_archive_settings_config() );
+    $term->add_field( _mai_cmb_remove_loop_config() );
     $term->add_field( _mai_cmb_posts_per_page_config() );
     $term->add_field( _mai_cmb_columns_config() );
 	$term->add_field( _mai_cmb_content_archive_config() );
 	$term->add_field( _mai_cmb_content_archive_limit_config() );
+	$term->add_field( _mai_cmb_more_link_config() );
 	$term->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$term->add_field( _mai_cmb_image_location_config() );
 	$term->add_field( _mai_cmb_image_size_config() );
@@ -138,14 +143,17 @@ function mai_cmb2_add_metaboxes() {
     $user->add_field( _mai_cmb_banner_config() );
     $user->add_field( _mai_cmb_content_archive_settings_title_config() );
     $user->add_field( _mai_cmb_content_enable_archive_settings_config() );
+    $user->add_field( _mai_cmb_remove_loop_config() );
     $user->add_field( _mai_cmb_posts_per_page_config() );
     $user->add_field( _mai_cmb_columns_config() );
 	$user->add_field( _mai_cmb_content_archive_config() );
 	$user->add_field( _mai_cmb_content_archive_limit_config() );
+	$user->add_field( _mai_cmb_more_link_config() );
 	$user->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$user->add_field( _mai_cmb_image_location_config() );
 	$user->add_field( _mai_cmb_image_size_config() );
 	$user->add_field( _mai_cmb_image_alignment_config() );
+	$user->add_field( _mai_cmb_meta_config() );
 	$user->add_field( _mai_cmb_posts_nav_config() );
 }
 
@@ -447,7 +455,7 @@ function _mai_cmb_banner_config() {
 function _mai_cmb_content_archive_settings_title_config() {
 	return array(
 		'name'	=> __( 'Mai Content Archives', 'maitheme' ),
-		'desc'	=> __( 'If enabled, these will override the settings from Genesis > Theme Settings.', 'maitheme' ),
+		'desc'	=> __( 'If enabled, these will override the default content archive settings', 'maitheme' ),
 		'type'	=> 'title',
 		'id'	=> 'mai_content_archives_title',
 	);
@@ -462,19 +470,22 @@ function _mai_cmb_content_enable_archive_settings_config() {
     );
 }
 
+function _mai_cmb_remove_loop_config() {
+	return array(
+		'name'	=> __( 'Hide Entries', 'maitheme' ),
+		'desc'	=> __( 'Hide entries from this archive', 'maitheme' ),
+		'id'	=> 'remove_loop',
+		'type'	=> 'checkbox',
+    );
+}
+
 function _mai_cmb_columns_config() {
-
-	// $columns = mai_admin_get_columns();
-	// $count	 = ( $columns > 1 ) ? $columns : __( '- None -', 'genesis' );
-	// $none	 = sprintf( __( 'Inherit - currently (%s)', 'maitheme' ), $count );
-
 	return array(
 		'name'				=> __( 'Content Columns', 'maitheme' ),
 		'desc'				=> __( 'Display content in multiple columns.', 'maitheme' ),
 		'id'				=> 'columns',
 		'type'				=> 'select',
 		'default'			=> 1,
-		// 'show_option_none'	=> $none,
 		'options'			=> array(
 			1 => __( '- None -', 'genesis' ),
 			2 => __( '2 Columns', 'maitheme' ),
@@ -509,14 +520,22 @@ function _mai_cmb_content_archive_limit_config() {
 			'type'		  => 'number',
 			'pattern'	  => '\d*',
 		),
-		// 'sanitization_cb' => 'intval',
+    );
+}
+
+function _mai_cmb_more_link_config() {
+	return array(
+		'name'	=> __( 'More Link', 'maitheme' ),
+		'desc'	=> __( 'Include the Read More link', 'maitheme' ),
+		'id'	=> 'more_link',
+		'type'	=> 'checkbox',
     );
 }
 
 function _mai_cmb_content_archive_thumbnail_config() {
 	return array(
 		'name'	=> __( 'Featured Image', 'genesis' ),
-		'desc'	=> __( 'Include the Featured Image?', 'genesis' ),
+		'desc'	=> __( 'Include the Featured Image', 'maitheme' ),
 		'id'	=> 'content_archive_thumbnail',
 		'type'	=> 'checkbox',
     );
@@ -545,7 +564,6 @@ function _mai_cmb_image_size_config() {
     foreach ( $sizes as $index => $value ) {
     	$size_options[$index] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
     }
-
 	return array(
 		'name'			=> __( 'Image Size:', 'genesis' ),
 		'id'			=> 'image_size',
@@ -586,7 +604,6 @@ function _mai_cmb_meta_config() {
 function _mai_cmb_posts_nav_config() {
 	return array(
 		'name'		=> __( 'Entry Pagination:', 'genesis' ),
-		'desc'		=> __( 'These options will affect any blog listings page, including archive, author, blog, category, search, and tag pages. Unless overridden in the corresponding metabox.', 'maitheme' ),
 		'id'		=> 'posts_nav',
 		'type'		=> 'select',
 		'default'	=> 'numeric',
@@ -600,15 +617,12 @@ function _mai_cmb_posts_nav_config() {
 function _mai_cmb_posts_per_page_config() {
 	return array(
 		'name'				=> __( 'Entries Per Page', 'maitheme' ),
-		// 'desc'				=> __( 'The max number of posts to show, per page. If empty, the number in Settings > Reading will be used.', 'maitheme' ),
 		'desc'				=> __( 'The max number of posts to show, per page.', 'maitheme' ),
 		'id'				=> 'posts_per_page',
 		'type'				=> 'text_small',
 		'attributes'		=> array(
 			'type'		  => 'number',
 			'pattern'	  => '\d*',
-			// 'placeholder' => get_option( 'posts_per_page' ),
 		),
-		// 'sanitization_cb'	=> 'intval',
     );
 }
