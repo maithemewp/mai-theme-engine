@@ -1,5 +1,54 @@
 <?php
 
+// Output the static blog page content before the posts
+add_action( 'genesis_before_loop', 'mai_do_blog_description', 20 );
+function mai_do_blog_description() {
+
+    // Bail if not the blog page
+    if ( ! is_home() ) {
+        return;
+    }
+
+    if ( $posts_page = get_option( 'page_for_posts' ) ) {
+        // Echo the content
+        echo apply_filters( 'the_content', get_post( $posts_page )->post_content );
+    }
+}
+
+
+/**
+ * Add term description before custom taxonomy loop.
+ * This is the core WP term description, not the Genesis Intro Text.
+ * Genesis Intro Text is in banner.
+ */
+add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
+function mai_do_term_description() {
+    // Bail if not a taxonomy archive
+    if ( ! ( is_category() || is_tag() || is_tax() ) ) {
+        return;
+    }
+
+    // If the first page
+    if ( 0 === absint( get_query_var( 'paged' ) ) ) {
+        $description = term_description();
+        if ( $description ) {
+            echo '<div class="term-description">' . do_shortcode($description) . '</div>';
+        }
+    }
+}
+
+add_action( 'genesis_before_loop', 'mai_maybe_remove_loop' );
+function mai_maybe_remove_loop() {
+    $remove_loop = mai_get_archive_meta_with_fallback( 'remove_loop' );
+    if ( ! $remove_loop ) {
+        return;
+    }
+    // Remove the loop
+    remove_action( 'genesis_loop', 'genesis_do_loop' );
+    remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+    remove_action( 'genesis_after_loop', 'genesis_posts_nav' );
+}
+
 // Flex loop opening html
 add_action( 'genesis_before_while', 'mai_archive_flex_loop_open', 100 );
 function mai_archive_flex_loop_open() {
@@ -45,6 +94,15 @@ function mai_do_archive_options() {
         return $options;
     });
 
+}
+
+add_action( 'genesis_entry_content', 'mai_do_more_link' );
+function mai_do_more_link() {
+    $more_link = mai_get_archive_meta_with_fallback( 'more_link' );
+    if ( ! $more_link ) {
+        return;
+    }
+    echo mai_get_read_more_link( get_the_ID() );
 }
 
 /**
@@ -154,43 +212,6 @@ function mai_archive_remove_meta() {
             remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
         }
 
-    }
-}
-
-// Output the static blog page content before the posts
-add_action( 'genesis_before_loop', 'mai_do_blog_description', 20 );
-function mai_do_blog_description() {
-
-    // Bail if not the blog page
-    if ( ! is_home() ) {
-        return;
-    }
-
-    if ( $posts_page = get_option( 'page_for_posts' ) ) {
-        // Echo the content
-        echo apply_filters( 'the_content', get_post( $posts_page )->post_content );
-    }
-}
-
-
-/**
- * Add term description before custom taxonomy loop.
- * This is the core WP term description, not the Genesis Intro Text.
- * Genesis Intro Text is in banner.
- */
-add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
-function mai_do_term_description() {
-    // Bail if not a taxonomy archive
-    if ( ! ( is_category() || is_tag() || is_tax() ) ) {
-        return;
-    }
-
-    // If the first page
-    if ( 0 === absint( get_query_var( 'paged' ) ) ) {
-        $description = term_description();
-        if ( $description ) {
-            echo '<div class="term-description">' . do_shortcode($description) . '</div>';
-        }
     }
 }
 
