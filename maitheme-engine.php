@@ -148,13 +148,17 @@ final class Mai_Theme_Engine {
          */
         add_filter( 'plugin_action_links', function( $actions, $plugin_file, $plugin_data, $context ){
 
-            // If we have a deactivate link
-            if ( array_key_exists( 'deactivate', $actions ) ) {
-                // If viewing this plugin
-                if ( 'maitheme-engine/maitheme-engine.php' == $plugin_file ) {
-                    // Remove the deactivate and edit links
-                    unset( $actions['deactivate'] );
+            // If viewing this plugin
+            if ( 'maitheme-engine/maitheme-engine.php' == $plugin_file ) {
+                // Remove the deactivate and edit links
+                if ( isset( $actions['edit'] ) ) {
                     unset( $actions['edit'] );
+                }
+                if ( isset( $actions['delete'] ) ) {
+                    unset( $actions['delete'] );
+                }
+                if ( isset( $actions['deactivate'] ) ) {
+                    unset( $actions['deactivate'] );
                 }
             }
             // Return the actions
@@ -228,8 +232,8 @@ final class Mai_Theme_Engine {
             $image_sizes = array(
                 'banner' => array(
                     'width'  => 1200,
-                    'height' => 600,
-                    'crop'   => true, // 2x1
+                    'height' => 400,
+                    'crop'   => true, // 3x1
                 ),
                 'featured' => array(
                     'width'  => 800,

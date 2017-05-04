@@ -1,4 +1,4 @@
-/*!
+/**
  * Swap out no-js for js body class
  */
 ( function() {
@@ -6,6 +6,197 @@
     c = c.replace( /no-js/, 'js' );
     document.body.className = c;
 })();
+
+
+/**
+ * Handle spacing for sticky-header and shrink-header.
+ *
+ * @version  1.0.0
+ */
+( function ( document, $, undefined ) {
+
+    var $body = $('body');
+
+    // If doing a sticky header
+    if ( $body.hasClass('sticky-header') ) {
+        // Trigger the resizing
+        $( window ).on( 'resize.maiHeader', _doFixedHeader ).triggerHandler( 'resize.maiHeader' );
+    }
+
+    // If doing a shrink header
+    if ( $body.hasClass('shrink-header') ) {
+
+        // On scroll
+        $( window ).scroll(function () {
+            // Shrink the header on scroll.
+            if ( $( document ).scrollTop() > 1 ) {
+                $( '.site-header' ).addClass( 'shrink' );
+            } else {
+                $( '.site-header' ).removeClass( 'shrink' );
+            }
+
+        });
+
+    }
+
+    // Dynamically add top margin to site inner at the same height as the site header
+    function _doFixedHeader() {
+
+        var $window      = $(window),
+            $siteHeader  = $('.site-header'),
+            $siteInner   = $('.site-inner'),
+            $navPrimary  = $('.nav-primary'),
+            $pushElement;
+
+        var headerHeight = $siteHeader.height();
+
+        // If we have a visible primary nav bar
+        if ( $navPrimary.is(':visible') ) {
+            // Push the primary nav
+            $pushElement = $navPrimary;
+        } else {
+            // Add 20 more px to the header height
+            headerHeight = headerHeight + 20;
+            // Push site inner
+            $pushElement = $siteInner;
+        }
+
+        /**
+         * Clear all margin-top inline styles
+         * This helps when resizing larger
+         */
+        $siteInner.css( 'margin-top', '' );
+        $navPrimary.css( 'margin-top', '' );
+
+        /**
+         * If bigger than mobile (xs) screen size
+         * Make header fixed
+         * Add spacing above our push element
+         */
+        if ( $window.width() > 544 ) {
+            $siteHeader.css( 'position', 'fixed' );
+            $pushElement.css( 'margin-top', headerHeight + 'px' );
+        } else {
+            // Set header back to static
+            $siteHeader.css( 'position', 'static' );
+        }
+
+    }
+
+})( document, jQuery );
+
+
+/**
+ * Set an elements min-height
+ * according to the aspect ratio of its' background image.
+ *
+ * @version  1.0.0
+ */
+( function ( document, $, undefined ) {
+
+    var $imageBG = $( '.image-bg' );
+
+    if ( $imageBG.length > 0 ) {
+
+        $.each( $imageBG, function(){
+            var $element = $(this);
+            // Initial sizing
+            _resizeToMatch( $element );
+            // Resize the banner
+            $( window ).resize( function(){
+                 _resizeToMatch( $element );
+            });
+        });
+    }
+
+    function _resizeToMatch( $element ) {
+
+        // Get the image size from attributes
+        var width  = $element.data( 'img-width' ),
+            height = $element.data( 'img-height' );
+
+        if ( width && height ) {
+            $element.css( 'min-height', Math.round( $element.width() * height / width ) + 'px' );
+        }
+
+    }
+
+})( document, jQuery );
+
+
+/**
+ * Convert menu items with .search class to a search icon with a fade in search box
+ * Show/hide search box on click, and allow closing by clicking outside of search box
+ *
+ * @version  1.0.0
+ */
+( function ( document, $, undefined ) {
+
+    var $searchItems = $( '.genesis-nav-menu .search' );
+
+    if ( $searchItems.length == 0 ) {
+        return;
+    }
+
+    $.each( $searchItems, function(){
+
+        var $this = $(this);
+
+
+        // Show search menu item and hide the menu text
+        $this.show().find( 'span[itemprop=name]' ).addClass( 'screen-reader-text' );
+
+        var $searchLink = $this.find( 'a' );
+
+        toggleAria( $searchLink, 'aria-pressed' );
+        toggleAria( $searchLink, 'aria-expanded' );
+
+        // Add the search box after the link
+        $this.append( maiVars.search_box );
+
+        // On click of the search button
+        $this.on( 'click', 'a', function(e){
+
+            e.preventDefault()
+
+            toggleAria( $(this), 'aria-pressed' );
+            toggleAria( $(this), 'aria-expanded' );
+
+            // Close if the button has open class, otherwise open
+            if ( $this.hasClass( 'activated' ) ) {
+
+                _searchClose($this);
+
+            } else {
+
+                _searchOpen($this);
+
+                // Close search listener
+                $('body').mouseup(function(e){
+                    /**
+                     * If click is not on our search box container
+                     * If click is not on a child of our search box container
+                     */
+                    if( ! $(this).hasClass( 'search-box' ) && ! $this.has(e.target).length ) {
+                        _searchClose($this);
+                    }
+                });
+            }
+        });
+
+    });
+
+    // Helper function to open search form and add class to search button
+    function _searchOpen($this) {
+        $this.addClass('activated').find('.search-box').fadeIn('fast');
+    }
+
+    // Helper function to close search form and remove class to search button
+    function _searchClose($this) {
+        $this.removeClass('activated').find('.search-box').fadeOut('fast');
+    }
+
+})( document, jQuery );
 
 
 /**
@@ -297,145 +488,6 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 
 /**
- * Convert menu items with .search class to a search icon with a fade in search box
- * Show/hide search box on click, and allow closing by clicking outside of search box
- *
- * @version  1.0.0
- */
-( function ( document, $, undefined ) {
-
-    var $searchItems = $( '.genesis-nav-menu .search' );
-
-    if ( $searchItems.length == 0 ) {
-        return;
-    }
-
-    $.each( $searchItems, function() {
-
-        var $this = $(this);
-
-
-        // Show search menu item and hide the menu text
-        $this.show().find( 'span[itemprop=name]' ).addClass( 'screen-reader-text' );
-
-        var $searchLink = $this.find( 'a' );
-
-        toggleAria( $searchLink, 'aria-pressed' );
-        toggleAria( $searchLink, 'aria-expanded' );
-
-        // Add the search box after the link
-        $this.append( maiVars.search_box );
-
-        // On click of the search button
-        $this.on( 'click', 'a', function(e){
-
-            e.preventDefault()
-
-            toggleAria( $(this), 'aria-pressed' );
-            toggleAria( $(this), 'aria-expanded' );
-
-            // Close if the button has open class, otherwise open
-            if ( $this.hasClass( 'activated' ) ) {
-
-                _searchClose($this);
-
-            } else {
-
-                _searchOpen($this);
-
-                // Close search listener
-                $('body').mouseup(function(e){
-                    /**
-                     * If click is not on our search box container
-                     * If click is not on a child of our search box container
-                     */
-                    if( ! $(this).hasClass( 'search-box' ) && ! $this.has(e.target).length ) {
-                        _searchClose($this);
-                    }
-                });
-            }
-        });
-
-    });
-
-    // Helper function to open search form and add class to search button
-    function _searchOpen($this) {
-        $this.addClass('activated').find('.search-box').fadeIn('fast');
-    }
-
-    // Helper function to close search form and remove class to search button
-    function _searchClose($this) {
-        $this.removeClass('activated').find('.search-box').fadeOut('fast');
-    }
-
-})( document, jQuery );
-
-
-/**
- * Handle spacing for fixed-header
- *
- * @version  1.0.0
- */
-( function ( document, $, undefined ) {
-
-    var $body = $('body');
-
-    // Bail if not a fixed header
-    if ( ! $body.hasClass('fixed-header') ) {
-        return;
-    }
-
-    // Trigger the resizing
-    $( window ).on( 'resize.maiHeader', _doFixedHeader ).triggerHandler( 'resize.maiHeader' );
-
-    // Dynamically add top margin to site inner at the same height as the site header
-    function _doFixedHeader() {
-
-        var $window      = $(window),
-            $siteHeader  = $('.site-header'),
-            $siteInner   = $('.site-inner'),
-            $navPrimary  = $('.nav-primary'),
-            $pushElement;
-
-        var headerHeight = $siteHeader.height();
-
-        // If we have a visible primary nav bar
-        if ( $navPrimary.is(':visible') ) {
-            // Push the primary nav
-            $pushElement = $navPrimary;
-        } else {
-            // Add 20 more px to the header height
-            headerHeight = headerHeight + 20;
-            // Push site inner
-            $pushElement = $siteInner;
-        }
-
-        /**
-         * Clear all margin-top inline styles
-         * This helps when resizing larger
-         */
-        $siteInner.css( 'margin-top', '' );
-        $navPrimary.css( 'margin-top', '' );
-
-        /**
-         * If bigger than mobile (xs) screen size
-         * Make header fixed
-         * Add spacing above our push element
-         */
-        if ( $window.width() > 544 ) {
-            $siteHeader.css( 'position', 'fixed' );
-            $pushElement.css( 'margin-top', headerHeight + 'px' );
-        } else {
-            // Set header back to static
-            $siteHeader.css( 'position', 'static' );
-        }
-
-    }
-
-})( document, jQuery );
-
-
-/**
  * Toggle aria attributes.
  * @param  {button} $this   passed through
  * @param  {aria-xx}        attribute aria attribute to toggle
@@ -446,6 +498,30 @@ function toggleAria( $this, attribute ) {
         return 'false' === value;
     });
 }
+
+
+/**
+ * Scroll to a div id
+ *
+ * Link
+ * <a class="scroll-to" href="#element-id">Text</a>
+ *
+ * Target
+ * <div id="element-id">Content</div>
+ */
+( function ( document, $, undefined ) {
+
+    $( 'body' ).on( 'click', '.scroll-to', function(event) {
+        var target = $(this.getAttribute('href'));
+        if( target.length ) {
+            event.preventDefault();
+            $('html, body').stop().animate({
+                scrollTop: target.offset().top - 120
+            }, 1000 );
+        }
+    });
+
+})( document, jQuery );
 
 
 /**

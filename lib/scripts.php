@@ -17,6 +17,10 @@ function mai_enqueue_scripts() {
 	// Use minified files if script debug is not being used
 	$suffix = mai_get_suffix();
 
+	// global $_wp_additional_image_sizes;
+
+	// d( $_wp_additional_image_sizes );
+
 	// Enqueue the main global js file
 	wp_enqueue_script( 'mai-theme-script', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "/assets/js/mai-theme{$suffix}.js", array('jquery'), MAITHEME_ENGINE_PLUGIN_VERSION, true );
 	wp_localize_script( 'mai-theme-script', 'maiVars', array(

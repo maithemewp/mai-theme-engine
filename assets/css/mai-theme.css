@@ -23,7 +23,8 @@
 	- Scripts
 		- Slick
 	- Site Header
-		- Fixed Header
+		- Sticky Header
+		- Shrink Header
 		- Title Area
 		- Header Content
 	- Site Navigation
@@ -36,6 +37,13 @@
 			- Side Menu
 
 */
+
+/* # HTML5 Reset
+---------------------------------------------------------------------------------------------------- */
+
+/* Normalize */
+/* normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
+progress,sub,sup{vertical-align:baseline}button,hr,input{overflow:visible}[type=checkbox],[type=radio],legend{box-sizing:border-box;padding:0}html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}svg:not(:root){overflow:hidden}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}figure{margin:1em 40px}hr{box-sizing:content-box;height:0}button,input,optgroup,select,textarea{font:inherit;margin:0}optgroup{font-weight:700}button,select{text-transform:none}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:ButtonText dotted 1px}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;white-space:normal}textarea{overflow:auto}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-input-placeholder{color:inherit;opacity:.54}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
 
 /* # Defaults
 ---------------------------------------------------------------------------------------------------- */
@@ -216,38 +224,11 @@ table {
 	border-spacing: 0;
 	line-height: 2;
 	width: 100%;
+	margin-bottom: 30px;
 }
 
 /* # Structure and Layout
 ---------------------------------------------------------------------------------------------------- */
-
-/* ## Site Containers
---------------------------------------------- */
-
-.site-container {
-	display: -webkit-flex;display: -ms-flexbox;display: flex;
-	-webkit-flex-direction: column;-ms-flex-direction: column;flex-direction: column;
-	min-height: 100vh; /* forces footer to bottom when not enough content to fill the window */
-	overflow: hidden;  /* keeps mai-slider in check */
-}
-
-.admin-bar .site-container {
-	min-height: calc(100vh - 32px);
-}
-
-.site-inner,
-.wrap {
-	width: 100%;
-}
-
-.site-inner {
-	-webkit-flex: 1 1 auto;-ms-flex: 1 1 auto;flex: 1 1 auto;
-	word-wrap: break-word;
-}
-
-.wrap {
-	margin: 0 auto;
-}
 
 /* ## Content Widths
 --------------------------------------------- */
@@ -261,14 +242,109 @@ table {
 .content,
 .xs-content .content,
 .xs-content .breadcrumb,
+/* .xs-content .section:not(.banner-area) .wrap, */
 .sm-content .content,
 .sm-content .breadcrumb,
+/* .sm-content .section:not(.banner-area) .wrap, */
 .md-content .content,
 .md-content .breadcrumb,
+/* .md-content .section:not(.banner-area) .wrap, */
 .no-sidebars .breadcrumb {
 	-ms-flex-negative: 1;-webkit-flex-shrink: 1;flex-shrink: 1;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.site-inner,
+.wrap {
+	max-width: 1200px;
+}
+
+.xs-content .content,
+.xs-content .breadcrumb,
+.xs-content .section:not(.banner-area) .wrap {
+	-ms-flex-preferred-size: 400px;-webkit-flex-basis: 400px;flex-basis: 400px;
+	max-width: 400px;
+}
+
+.sm-content .content,
+.sm-content .breadcrumb,
+.sm-content .section:not(.banner-area) .wrap {
+	-ms-flex-preferred-size: 650px;-webkit-flex-basis: 650px;flex-basis: 650px;
+	max-width: 650px;
+}
+
+.md-content .content,
+.md-content .breadcrumb,
+.md-content .section:not(.banner-area) .wrap {
+	-ms-flex-preferred-size: 800px;-webkit-flex-basis: 800px;flex-basis: 800px;
+	max-width: 800px;
+}
+
+
+/* ## Site Containers
+--------------------------------------------- */
+
+.site-container {
+	display: -webkit-flex;display: -ms-flexbox;display: flex;
+	-webkit-flex-direction: column;-ms-flex-direction: column;flex-direction: column;
+	min-height: 100vh; /* forces footer to bottom when not enough content to fill the window */
+	overflow: hidden;  /* keeps mai-slider in check */
+}
+
+.admin-bar .site-container {
+	min-height: calc( 100vh - 32px );
+}
+
+.site-inner,
+.wrap {
+	width: 100%;
+}
+
+.site-inner,
+.site-header .wrap,
+.nav-primary .wrap,
+.nav-secondary .wrap,
+.banner-area .wrap,
+.section .wrap,
+.footer-widgets .wrap,
+.site-footer .wrap {
+	padding-left: calc( 3% + 10px );
+	padding-right: calc( 3% + 10px );
+}
+
+.wrap {
+	margin: 0 auto;
+}
+
+.site-inner {
+	-webkit-flex: 1 1 auto;-ms-flex: 1 1 auto;flex: 1 1 auto;
+	word-wrap: break-word;
+	margin: 20px auto 40px;
+}
+
+.content-sidebar-wrap {
+	margin-top: 20px;
+}
+
+.home .content-sidebar-wrap {
+	margin-top: 0;
+}
+
+.breadcrumb {
+	margin-top: 20px;
+}
+
+.content {
+	margin-bottom: 0;
+}
+
+.entry,
+.after-entry .widget,
+.sidebar .widget,
+.entry-comments,
+.entry-pings {
+	margin-bottom: 30px;
 }
 
 /* # Common Classes
@@ -277,27 +353,44 @@ table {
 /* ## Section
 --------------------------------------------- */
 
+.section {
+	margin-bottom: 30px;
+}
+
+/* offset the section bottom margin when 2 sections in a row */
+.section + .section {
+	margin-top: -30px;
+}
+
+/* add top margin any time a section is after another element */
+.entry-content > *:not(.section) + .section {
+	margin-top: 30px;
+}
+
+
 /* only make sections full window width where appropriate */
 .banner-area.section,
-.banner-area.section .overlay,
-.content-no-sidebars .section,
-.content-no-sidebars .section .overlay {
+.content-no-sidebars .section {
 	clear: both;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
 }
 
+.banner-area.section {
+	margin-top: -20px; /* offset .site-inner top margin */
+	margin-bottom: 0;
+}
+
 .section .wrap {
-	padding-top: 50px;
-	padding-bottom: 50px;
+	padding-top: calc( 6% + 20px );
+	padding-bottom: calc( 6% + 20px );
 }
 
 .section .wrap p:last-of-type {
-	margin-bottom: 16px;
+	/* margin-bottom: 16px; */
 }
 
-.image-bg .inner,
-.image-bg .overlay .inner {
+.image-bg .inner {
 	display: inline-block;
 	color: #323232;
 	text-shadow: none;
@@ -307,13 +400,7 @@ table {
 	background-color: rgba(255, 255, 255, 0.7);
 	color: #323232;
 	padding: 30px;
-	border: 6px solid rgba(0,0,0,0.075);
 	box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
-}
-
-.light-content,
-.light-content .entry-title a {
-	color: #fff;
 }
 
 /* ## Image Background
@@ -329,15 +416,10 @@ table {
 --------------------------------------------- */
 
 .overlay {
-	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 0.6) );
-}
-
-.flex-entry.overlay {
 	position: relative;
 }
 
-.flex-entry.overlay::before,
-a.flex-entry.overlay::before {
+.overlay::after {
     content: '';
     position: absolute;
     top: 0;
@@ -345,18 +427,25 @@ a.flex-entry.overlay::before {
     bottom: 0;
     left: 0;
     display: block;
-    background: rgba(80, 80, 80, 0.75);
+	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
     text-shadow: 0 0 6px #3f3f3f;
     transition: all 0.2s ease-in-out;
     z-index: 0;
 }
 
-.flex-entry.overlay * {
-    z-index: 1;
+.overlay * {
+	position: relative;
+	z-index: 1;
 }
 
-a.flex-entry.overlay:hover::before {
-	background: rgba(80, 80, 80, 0.9);
+a.overlay::after {
+    /* background: rgba(80, 80, 80, 0.75); */
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+a.overlay:hover::after {
+	/* background: rgba(80, 80, 80, 0.9); */
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 /* ## Light Content
@@ -631,7 +720,6 @@ a.flex-entry.overlay:hover::before {
 	height: auto; /* resize back after closing fixed header menu */
 }
 
-
 .site-header .widget {
 	display: inline-block;
 }
@@ -645,24 +733,37 @@ a.flex-entry.overlay:hover::before {
 
 }
 
-/* ## Fixed Header
+/* ## Sticky Header
  * jQuery handles the position
  * If JS is not enabled, header will remain static
 --------------------------------------------- */
 
 /* jQuery handles the position */
-.fixed-header .site-header {
+.sticky-header .site-header {
 	width: 100%;
 	z-index: 99;
 }
 
-.fixed-header.mai-menu-activated {
+.sticky-header.mai-menu-activated {
 	overflow: hidden;
 }
 
-.fixed-header.mai-menu-activated .site-header {
+.sticky-header.mai-menu-activated .site-header {
 	height: 100vh;
 	overflow-y: auto;
+}
+
+/* ## Shrink Header
+--------------------------------------------- */
+
+.shrink-header .site-header .site-title a {
+	transition: all 0.3s ease-in-out;
+}
+
+.shrink-header .site-header.shrink .site-title a {
+    -webkit-transform:scale(0.6);-ms-transform:scale(0.6);transform:scale(0.6);
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* ## Title Area
@@ -976,3 +1077,183 @@ a.flex-entry.overlay:hover::before {
 	}
 
 }
+
+/* # Sidebars
+---------------------------------------------------------------------------------------------------- */
+
+.sidebar .widget p:last-child,
+.sidebar .widget ul > li:last-of-type,
+.sidebar .widget-area .widget:last-of-type {
+	margin-bottom: 0;
+}
+
+.sidebar .widget ul > li {
+	margin-bottom: 6px;
+}
+
+.sidebar .widget ol > li {
+	list-style-position: inside;
+	list-style-type: decimal;
+	padding-left: 20px;
+	text-indent: -20px;
+}
+
+.sidebar .widget li li {
+	border: 0;
+	margin: 0 0 0 20px;
+	padding: 0;
+}
+
+/* # Footer Widgets
+---------------------------------------------------------------------------------------------------- */
+
+.footer-widgets li {
+	list-style-type: none;
+	margin-bottom: 6px;
+	word-wrap: break-word;
+}
+
+/* # Print Styles
+---------------------------------------------------------------------------------------------------- */
+
+@media print {
+
+	*,
+	*::before,
+	*::after {
+		background: transparent !important;
+		box-shadow: none !important;
+		color: #000 !important;
+		text-shadow: none !important;
+	}
+
+	a,
+	a:visited {
+		text-decoration: underline;
+	}
+
+	a[href]::after {
+		content: " (" attr(href) ")";
+	}
+
+	abbr[title]::after {
+		content: " (" attr(title) ")";
+	}
+
+	a[href^="javascript:"]::after,
+	a[href^="#"]::after,
+	.site-title > a::after {
+		content: "";
+	}
+
+	thead {
+		display: table-header-group;
+	}
+
+	img,
+	tr {
+		page-break-inside: avoid;
+	}
+
+	img {
+		max-width: 100% !important;
+	}
+
+	@page {
+		margin: 2cm 0.5cm;
+	}
+
+	p,
+	h2,
+	h3 {
+		orphans: 3;
+		widows: 3;
+	}
+
+	blockquote,
+	pre {
+		border: 1px solid #999;
+		page-break-inside: avoid;
+	}
+
+	.content,
+	.content-sidebar {
+		width: 100%;
+	}
+
+	button,
+	input,
+	select,
+	textarea,
+	.breadcrumb,
+	.comment-edit-link,
+	.comment-form,
+	.comment-list .reply a,
+	.comment-reply-title,
+	.edit-link,
+	.entry-comments-link,
+	.entry-footer,
+	.genesis-box,
+	.header-widget-area,
+	.hidden-print,
+	.home-top,
+	.nav-primary,
+	.nav-secondary,
+	.post-edit-link,
+	.sidebar {
+		display: none !important;
+	}
+
+	.title-area {
+		text-align: center;
+		width: 100%;
+	}
+
+	.site-title > a {
+		margin: 0;
+		text-decoration: none;
+		text-indent: 0;
+	}
+
+	.site-inner {
+		padding-top: 0;
+		position: relative;
+		top: -100px;
+	}
+
+	.author-box {
+		margin-bottom: 0;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		orphans: 3;
+		page-break-after: avoid;
+		page-break-inside: avoid;
+		widows: 3;
+	}
+
+
+	img {
+		page-break-after: avoid;
+		page-break-inside: avoid;
+	}
+
+	blockquote,
+	pre,
+	table {
+		page-break-inside: avoid;
+	}
+
+	dl,
+	ol,
+	ul {
+		page-break-before: avoid;
+	}
+
+}
+

@@ -50,7 +50,7 @@ function mai_do_banner_area() {
 	}
 
     // Add a filter so devs can change these defaults
-    $args = apply_filters( 'mai_banner_area_args', $args );
+    $args = apply_filters( 'mai_banner_defaults', $args );
 
     // Opening markup
     echo mai_get_section_open( $args );
@@ -83,6 +83,14 @@ function mai_do_banner_content() {
 	// Add static front page banner content
 	if ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
 
+		// Remove the edit link, cause it's super ugly here.
+		add_filter ( 'genesis_edit_post_link' , '__return_false' );
+
+		// Remove post title
+		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
+		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
+		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+
 		// Use an h2 on front page, since the site title/logo is h1
 		add_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
 		function mai_filter_entry_title_wrap( $wrap ) {
@@ -106,6 +114,8 @@ function mai_do_banner_content() {
 	elseif ( is_singular() && ! is_front_page() && ! is_home() ) {
 
 		// Remove post title
+		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
+		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
 		global $post;

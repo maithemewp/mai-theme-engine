@@ -9,24 +9,29 @@
  * @link    https://bizbudding.com
  */
 
-// Add fixed header body class
+/**
+ * Add body class to enabled specific settings.
+ *
+ * @since   1.0.0
+ *
+ * @param   array  The body classes.
+ *
+ * @return  array  The modified classes.
+ */
 add_filter( 'body_class', 'mai_do_settings_body_classes' );
 function mai_do_settings_body_classes( $classes ) {
 	/**
-	 * Add fixed header styling
+	 * Add sticky header styling
 	 * Fixed header currently only works with standard mobile menu
 	 *
 	 * DO NOT USE WITH SIDE MENU!
 	 */
-	if ( mai_is_fixed_header_enabled() ) {
-		$classes[] = 'fixed-header';
+	if ( mai_is_sticky_header_enabled() ) {
+		$classes[] = 'sticky-header';
 	}
 
-	/**
-	 * Add boxed layout body class, which allows custom boxed container/entry styling
-	 */
-	if ( mai_is_boxed_content_enabled() ) {
-		$classes[] = 'boxed-content';
+	if ( mai_is_shrink_header_enabled() ) {
+		$classes[] = 'shrink-header';
 	}
 
 	/**
@@ -46,8 +51,8 @@ function mai_do_settings_body_classes( $classes ) {
  *
  * @return  array  The modified classes
  */
-add_filter( 'post_class', 'mai_do_boxed_content_class' );
-add_filter( 'product_cat_class', 'mai_do_boxed_content_class' );
+// add_filter( 'post_class', 'mai_do_boxed_content_class' );
+// add_filter( 'product_cat_class', 'mai_do_boxed_content_class' );
 function mai_do_boxed_content_class( $classes ) {
 	if ( ! is_main_query() ) {
 		return $classes;
@@ -65,10 +70,10 @@ function mai_do_boxed_content_class( $classes ) {
  *
  * @return  array  The modified classes
  */
-add_filter( 'genesis_attr_sidebar-primary', 'mai_do_boxed_content_attributes' );
-add_filter( 'genesis_attr_sidebar-secondary', 'mai_do_boxed_content_attributes' );
-add_filter( 'genesis_attr_author-box', 'mai_do_boxed_content_attributes' );
-add_filter( 'genesis_attr_adjacent-entry-pagination', 'mai_do_boxed_content_attributes' );
+// add_filter( 'genesis_attr_sidebar-primary', 'mai_do_boxed_content_attributes' );
+// add_filter( 'genesis_attr_sidebar-secondary', 'mai_do_boxed_content_attributes' );
+// add_filter( 'genesis_attr_author-box', 'mai_do_boxed_content_attributes' );
+// add_filter( 'genesis_attr_adjacent-entry-pagination', 'mai_do_boxed_content_attributes' );
 function mai_do_boxed_content_attributes( $attributes ) {
     if ( mai_is_boxed_content_enabled() ) {
     	$attributes['class'] .= ' boxed';
