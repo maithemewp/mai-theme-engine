@@ -34,10 +34,19 @@
             } else {
                 $( '.site-header' ).removeClass( 'shrink' );
             }
-
         });
 
     }
+
+    // On scroll add .scroll class
+    $( window ).scroll(function () {
+        // Shrink the header on scroll.
+        if ( $( document ).scrollTop() > 1 ) {
+            $body.addClass( 'scroll' );
+        } else {
+            $body.removeClass( 'scroll' );
+        }
+    });
 
     // Dynamically add top margin to site inner at the same height as the site header
     function _doFixedHeader() {

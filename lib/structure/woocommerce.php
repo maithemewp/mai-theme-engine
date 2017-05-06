@@ -103,7 +103,7 @@ function mai_woocommerce_default_layout( $layout ) {
 	}
 
 	if ( is_shop() ) {
-		$layout = 'flex-loop-3';
+		$layout = 'md-content';
 	}
 	elseif ( is_product() ) {
 	    $layout = 'md-content';

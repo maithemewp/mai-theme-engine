@@ -146,25 +146,25 @@ final class Mai_Theme_Engine {
          *
          * @return  array
          */
-        add_filter( 'plugin_action_links', function( $actions, $plugin_file, $plugin_data, $context ){
+        // add_filter( 'plugin_action_links', function( $actions, $plugin_file, $plugin_data, $context ){
 
-            // If viewing this plugin
-            if ( 'maitheme-engine/maitheme-engine.php' == $plugin_file ) {
-                // Remove the deactivate and edit links
-                if ( isset( $actions['edit'] ) ) {
-                    unset( $actions['edit'] );
-                }
-                if ( isset( $actions['delete'] ) ) {
-                    unset( $actions['delete'] );
-                }
-                if ( isset( $actions['deactivate'] ) ) {
-                    unset( $actions['deactivate'] );
-                }
-            }
-            // Return the actions
-            return $actions;
+        //     // If viewing this plugin
+        //     if ( 'maitheme-engine/maitheme-engine.php' == $plugin_file ) {
+        //         // Remove the deactivate and edit links
+        //         if ( isset( $actions['edit'] ) ) {
+        //             unset( $actions['edit'] );
+        //         }
+        //         if ( isset( $actions['delete'] ) ) {
+        //             unset( $actions['delete'] );
+        //         }
+        //         if ( isset( $actions['deactivate'] ) ) {
+        //             unset( $actions['deactivate'] );
+        //         }
+        //     }
+        //     // Return the actions
+        //     return $actions;
 
-        }, 10, 4 );
+        // }, 10, 4 );
 
         /**
          * Include files after theme is loaded, to mimic being run in a child theme.
@@ -224,6 +224,13 @@ final class Mai_Theme_Engine {
 
             // Add excerpt support for pages
             add_post_type_support( 'page', 'excerpt' );
+
+            /**
+             * Move Genesis child theme style sheet to a later priority
+             * to make sure Mai Theme Engine loads CSS first.
+             */
+            remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+            add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 14 );
 
             /**
              * Create the initial image sizes.
