@@ -136,35 +136,11 @@ final class Mai_Theme_Engine {
      */
     private function setup() {
 
-        /**
-         * Remove the 'Deactivate' and 'Edit' links from this plugin in the Dashboard > Plugins menu.
-         *
-         * @param   $actions      array   An array of plugin action links.
-         * @param   $plugin_file  string  Path to the plugin file relative to the plugins directory.
-         * @param   $plugin_data  array   An array of plugin data.
-         * @param   $context      string  The plugin context. Defaults are 'All', 'Active', 'Inactive', 'Recently Activated', 'Upgrade', 'Must-Use', 'Drop-ins', 'Search'.
-         *
-         * @return  array
-         */
-        // add_filter( 'plugin_action_links', function( $actions, $plugin_file, $plugin_data, $context ){
+        // Vendor
+        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
 
-        //     // If viewing this plugin
-        //     if ( 'maitheme-engine/maitheme-engine.php' == $plugin_file ) {
-        //         // Remove the deactivate and edit links
-        //         if ( isset( $actions['edit'] ) ) {
-        //             unset( $actions['edit'] );
-        //         }
-        //         if ( isset( $actions['delete'] ) ) {
-        //             unset( $actions['delete'] );
-        //         }
-        //         if ( isset( $actions['deactivate'] ) ) {
-        //             unset( $actions['deactivate'] );
-        //         }
-        //     }
-        //     // Return the actions
-        //     return $actions;
-
-        // }, 10, 4 );
+        // Includes
+        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
 
         /**
          * Include files after theme is loaded, to mimic being run in a child theme.
@@ -279,23 +255,19 @@ final class Mai_Theme_Engine {
 
         }, 15 );
 
-        // Vendor
-        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
-
-        // Includes
-        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
-
+        /**
+         * Load our files after theme setup but at an earlier hook
+         * so devs can override some actions/filters without needing to specific priority.
+         */
         add_action( 'after_setup_theme', function(){
 
             // Lib
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'archives/*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'integrations/*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'layouts/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'settings/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
+            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
-        });
+        }, 8 );
     }
 
 }

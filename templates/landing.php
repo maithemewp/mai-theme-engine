@@ -10,12 +10,6 @@ function mai_landing_page_body_class( $classes ) {
    return $classes;
 }
 
-//
-add_action( 'genesis_entry_content', 'asjfkljaslfgjsalgfjsklajflsjgflk' );
-function asjfkljaslfgjsalgfjsklajflsjgflk() {
-	echo '<h1>In Plugin!</h1>';
-}
-
 // Remove site header elements
 remove_filter( 'body_class', 'mai_do_fixed_header_body_class' );
 add_filter( 'mai_utility_nav', '__return_false' );
