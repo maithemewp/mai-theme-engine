@@ -78,7 +78,7 @@ final class Mai_Grid_Shortcode {
 			'ids'					=> '',
 			'ignore_sticky_posts'	=> false,
 			'image_size'			=> 'one-third',
-			'image_background'		=> false,
+			'image_bg'		=> false,
 			'link'					=> true,
 			'meta_key'				=> '',
 			'meta_value'			=> '',
@@ -120,7 +120,7 @@ final class Mai_Grid_Shortcode {
 			'slidestoscroll' 		=> 1, 	  // (slider only) The amount of posts to scroll
 		), $atts, 'grid' );
 
-		$atts = apply_filters( 'mai_grid_shortcode_defaults', $atts );
+		$atts = apply_filters( 'mai_grid_defaults', $atts );
 
 		$atts = array(
 			'authors'				=> $atts['authors'], // Validated later
@@ -145,7 +145,7 @@ final class Mai_Grid_Shortcode {
 			'ids'					=> array_filter( explode( ',', sanitize_text_field( $atts['ids'] ) ) ),
 			'ignore_sticky_posts'	=> filter_var( $atts['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN ),
 			'image_size'			=> sanitize_key( $atts['image_size'] ),
-			'image_background'		=> filter_var( $atts['image_background'], FILTER_VALIDATE_BOOLEAN ),
+			'image_bg'		=> filter_var( $atts['image_bg'], FILTER_VALIDATE_BOOLEAN ),
 			'link'					=> filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN ),
 			'meta_key'				=> sanitize_text_field( $atts['meta_key'] ),
 			'meta_value'			=> sanitize_text_field( $atts['meta_value'] ),
@@ -437,7 +437,7 @@ final class Mai_Grid_Shortcode {
 					$image_id = $this->get_image_id( $atts, $post->ID );
 					if ( $image_id ) {
 						$do_image = true;
-						if ( $atts['image_background'] ) {
+						if ( $atts['image_bg'] ) {
 							$has_background_image = true;
 						}
 					}
@@ -451,7 +451,7 @@ final class Mai_Grid_Shortcode {
 
 
 					// Image
-					if ( $do_image && ! $atts['image_background'] ) {
+					if ( $do_image && ! $atts['image_bg'] ) {
 						if ( $image_id ) {
 							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
 							if ( $atts['link'] ) {
@@ -685,7 +685,7 @@ final class Mai_Grid_Shortcode {
 					$image_id = $this->get_image_id( $atts, $term->term_id );
 					if ( $image_id ) {
 						$do_image = true;
-						if ( $atts['image_background'] ) {
+						if ( $atts['image_bg'] ) {
 							$has_background_image = true;
 						}
 					}
@@ -698,7 +698,7 @@ final class Mai_Grid_Shortcode {
 					$url = $this->get_entry_link( $atts, $term );
 
 					// Image
-					if ( $do_image && ! $atts['image_background'] ) {
+					if ( $do_image && ! $atts['image_bg'] ) {
 						if ( $image_id ) {
 							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
 							if ( $atts['link'] ) {
@@ -861,11 +861,11 @@ final class Mai_Grid_Shortcode {
 		// Set the entry classes
 		$flex_entry['class'] = $this->get_entry_classes( $atts );
 
-		if ( $atts['image_background'] ) {
+		if ( $atts['image_bg'] ) {
 			// Get the object ID
 			$object_id = $this->get_object_id( $atts, $object );
 			if ( $object_id ) {
-				$flex_entry = $this->add_image_background( $flex_entry, $atts, $object_id );
+				$flex_entry = $this->add_image_bg( $flex_entry, $atts, $object_id );
 			}
 		}
 
@@ -892,7 +892,7 @@ final class Mai_Grid_Shortcode {
 	 * @return  bool
 	 */
 	function is_linking_element( $atts, $has_background_image ) {
-		if ( $atts['image_background'] && $atts['link'] && $has_background_image ) {
+		if ( $atts['image_bg'] && $atts['link'] && $has_background_image ) {
 			return true;
 		}
 		return false;
@@ -947,9 +947,9 @@ final class Mai_Grid_Shortcode {
 
 		}
 		// non-posts don't have post_class, so add boxed content class manually
-		elseif ( mai_is_boxed_content_enabled() ) {
-			$classes[] = 'boxed';
-		}
+		// elseif ( mai_is_boxed_content_enabled() ) {
+		// 	$classes[] = 'boxed';
+		// }
 
 		// Turn array into a string of space separated classes
 		return implode( ' ', $classes );
@@ -981,15 +981,17 @@ final class Mai_Grid_Shortcode {
 	 *
 	 * @return  array              [description]
 	 */
-	function add_image_background( $attributes, $atts, $object_id ) {
+	function add_image_bg( $attributes, $atts, $object_id ) {
 		// Get the image ID
 		$image_id = $this->get_image_id( $atts, $object_id );
 	    if ( ! $image_id ) {
 	    	return $attributes;
 	    }
-	    $image_url  = wp_get_attachment_image_src( $image_id, $atts['image_size'], true );
-	    $attributes['style'] = 'background-image: url(' . $image_url[0] . ');';
-	    $attributes['class'] .= ' image-bg overlay light-content';
+	    $image = wp_get_attachment_image_src( $image_id, $atts['image_size'], true );
+		$attributes['class']			.= ' image-bg image-bg-ar overlay light-content';
+		$attributes['style']			= 'background-image: url(' . $image[0] . ');';
+		$attributes['data-img-width']	= $image[1];
+		$attributes['data-img-height']	= $image[2];
 	    return $attributes;
 	}
 
@@ -1026,7 +1028,7 @@ final class Mai_Grid_Shortcode {
 	}
 
 	function get_more_link( $atts, $url, $has_background_image ) {
-		if ( $atts['image_background'] && $has_background_image ) {
+		if ( $atts['image_bg'] && $has_background_image ) {
 			$link = sprintf( '<span class="more-link">%s</span>', $atts['more_link_text'] );
 		} else {
 			$link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $atts['more_link_text'] );

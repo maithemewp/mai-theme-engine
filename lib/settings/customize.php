@@ -36,16 +36,32 @@ function mai_register_customizer_general( $wp_customize ) {
 	) );
 
 	/*****************************************************
-	 * Enable Fixed Header setting
+	 * Enable Sticky Header setting
 	 */
 
-	$wp_customize->add_setting( 'enable_fixed_header', array(
+	$wp_customize->add_setting( 'enable_sticky_header', array(
 		'default'           => 0,
 		'sanitize_callback' => 'absint',
 	) );
 
-	$wp_customize->add_control( 'enable_fixed_header', array(
-		'label'    => __( 'Enable fixed (sticky) header', 'maitheme' ),
+	$wp_customize->add_control( 'enable_sticky_header', array(
+		'label'    => __( 'Enable sticky header', 'maitheme' ),
+		'section'  => $section,
+		'type'     => 'checkbox',
+		'priority' => 5,
+	) );
+
+	/*****************************************************
+	 * Enable Shrinking Header setting
+	 */
+
+	$wp_customize->add_setting( 'enable_shrink_header', array(
+		'default'           => 0,
+		'sanitize_callback' => 'absint',
+	) );
+
+	$wp_customize->add_control( 'enable_shrink_header', array(
+		'label'    => __( 'Enable shrinking header', 'maitheme' ),
 		'section'  => $section,
 		'type'     => 'checkbox',
 		'priority' => 5,
@@ -55,17 +71,17 @@ function mai_register_customizer_general( $wp_customize ) {
 	 * Enable Boxed Content setting
 	 */
 
-	$wp_customize->add_setting( 'enable_boxed_content', array(
-		'default'           => 1,
-		'sanitize_callback' => 'absint',
-	) );
+	// $wp_customize->add_setting( 'enable_boxed_content', array(
+	// 	'default'           => 1,
+	// 	'sanitize_callback' => 'absint',
+	// ) );
 
-	$wp_customize->add_control( 'enable_boxed_content', array(
-		'label'    => __( 'Enable boxed content styling', 'maitheme' ),
-		'section'  => $section,
-		'type'     => 'checkbox',
-		'priority' => 5,
-	) );
+	// $wp_customize->add_control( 'enable_boxed_content', array(
+	// 	'label'    => __( 'Enable boxed content styling', 'maitheme' ),
+	// 	'section'  => $section,
+	// 	'type'     => 'checkbox',
+	// 	'priority' => 5,
+	// ) );
 
 	/*****************************************************
 	 * Enable Auto Display of featured image setting
@@ -94,7 +110,7 @@ function mai_register_customizer_general( $wp_customize ) {
 
 	$wp_customize->add_control( 'mobile_menu_style', array(
 		'label'			=> __( 'Mobile menu style', 'maitheme' ),
-		'description'	=> __( '(Side menu disabled if fixed header enabled)', 'maitheme' ),
+		'description'	=> __( '(Side menu disabled if sticky header enabled)', 'maitheme' ),
 		'section'		=> $section,
 		'priority'		=> 5,
 		'type'			=> 'select',

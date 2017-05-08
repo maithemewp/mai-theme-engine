@@ -5,7 +5,7 @@
  * Plugin URI:      https://github.com/bizbudding/maitheme-engine/
  * Description:     The Mai Theme engine
  *
- * Version:         0.0.6
+ * Version:         0.1.0-beta
  *
  * GitHub URI:      bizbudding/maitheme-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Theme_Engine {
 
         // Plugin version.
         if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_VERSION' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '0.0.6' );
+            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '0.1.0-beta' );
         }
 
         // Plugin Folder Path.
@@ -136,31 +136,11 @@ final class Mai_Theme_Engine {
      */
     private function setup() {
 
-        /**
-         * Remove the 'Deactivate' and 'Edit' links from this plugin in the Dashboard > Plugins menu.
-         *
-         * @param   $actions      array   An array of plugin action links.
-         * @param   $plugin_file  string  Path to the plugin file relative to the plugins directory.
-         * @param   $plugin_data  array   An array of plugin data.
-         * @param   $context      string  The plugin context. Defaults are 'All', 'Active', 'Inactive', 'Recently Activated', 'Upgrade', 'Must-Use', 'Drop-ins', 'Search'.
-         *
-         * @return  array
-         */
-        add_filter( 'plugin_action_links', function( $actions, $plugin_file, $plugin_data, $context ){
+        // Vendor
+        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
 
-            // If we have a deactivate link
-            if ( array_key_exists( 'deactivate', $actions ) ) {
-                // If viewing this plugin
-                if ( 'maitheme-engine/maitheme-engine.php' == $plugin_file ) {
-                    // Remove the deactivate and edit links
-                    unset( $actions['deactivate'] );
-                    unset( $actions['edit'] );
-                }
-            }
-            // Return the actions
-            return $actions;
-
-        }, 10, 4 );
+        // Includes
+        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
 
         /**
          * Include files after theme is loaded, to mimic being run in a child theme.
@@ -222,14 +202,21 @@ final class Mai_Theme_Engine {
             add_post_type_support( 'page', 'excerpt' );
 
             /**
+             * Move Genesis child theme style sheet to a later priority
+             * to make sure Mai Theme Engine loads CSS first.
+             */
+            remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
+            add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 14 );
+
+            /**
              * Create the initial image sizes.
              * @link http://andrew.hedges.name/experiments/aspect_ratio/
              */
             $image_sizes = array(
                 'banner' => array(
                     'width'  => 1200,
-                    'height' => 600,
-                    'crop'   => true, // 2x1
+                    'height' => 400,
+                    'crop'   => true, // 3x1
                 ),
                 'featured' => array(
                     'width'  => 800,
@@ -268,23 +255,19 @@ final class Mai_Theme_Engine {
 
         }, 15 );
 
-        // Vendor
-        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
-
-        // Includes
-        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
-
+        /**
+         * Load our files after theme setup but at an earlier hook
+         * so devs can override some actions/filters without needing to specific priority.
+         */
         add_action( 'after_setup_theme', function(){
 
             // Lib
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'archives/*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'integrations/*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'layouts/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'settings/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
+            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
-        });
+        }, 8 );
     }
 
 }

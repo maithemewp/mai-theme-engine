@@ -25,14 +25,17 @@ function mai_get_section_shortcode( $atts, $content = null ) {
         return;
     }
 
+    $defaults = array(
+        'class'    => '',
+        'bg_color' => '',
+        'image'    => null,
+        'overlay'  => false,
+        'wrap'     => true,
+        'inner'    => true,
+    );
+
     // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
-    $defaults = apply_filters( 'mai_section_shortcode_defaults', array(
-        'class'   => '',
-        'image'   => null,
-        'overlay' => false,
-        'wrap'    => true,
-        'inner'   => true,
-    ) );
+    $defaults = apply_filters( 'mai_section_defaults', $defaults );
 
     /**
      * Shortcode section attributes

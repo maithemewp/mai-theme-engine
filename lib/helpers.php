@@ -232,7 +232,7 @@ function mai_get_archive_meta_with_fallback( $key ) {
         }
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_page_id  = get_option( 'woocommerce_shop_page_id' ) ) {
         $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
         if ( 'on' == $enabled ) {
             $meta = get_post_meta( $shop_page_id, $key, true );
@@ -272,9 +272,9 @@ function mai_archive_display_image() {
         $archive_display = get_the_author_meta( 'content_archive_thumbnail', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
-        $enabled         = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
-        $archive_display = get_post_meta( $shop_id, 'content_archive_thumbnail', true );
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_page_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+        $enabled         = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
+        $archive_display = get_post_meta( $shop_page_id, 'content_archive_thumbnail', true );
     }
 
     // If archive settings are enabled
@@ -399,16 +399,8 @@ function mai_section_close( $args ) {
  */
 function mai_get_section_open( $args ) {
 
-    $defaults = array(
-        'wrapper' => 'section',
-        'id'      => null,
-        'class'   => null,
-        'image'   => null,
-        'overlay' => false,
-        'wrap'    => false,
-        'inner'   => false,
-    );
-    $args = wp_parse_args( $args, $defaults );
+    // Get the args args, since this helper when used in a shortcode already uses shortcode_atts()
+    $args = wp_parse_args( $args, mai_get_section_defaults() );
 
     // Start all element variables as empty string
     $overlay = $wrap = $inner = '';
@@ -422,7 +414,7 @@ function mai_get_section_open( $args ) {
     }
 
     // Default section class
-    $section_atts['class'] = 'section';
+    $section_atts['class'] = 'section row middle-xs center-xs';
 
     // Maybe add section classes
     if ( $args['class'] ) {
@@ -435,16 +427,17 @@ function mai_get_section_open( $args ) {
         // Get the attachment image
         $image = wp_get_attachment_image_src( absint($args['image']), 'banner', true );
         if ( $image ) {
-            $section_atts['class'] .= ' image-bg';
-            $section_atts['style'] = sprintf( 'background-image: url(%s);', $image[0] );
+            $section_atts['class']           .= ' image-bg';
+            $section_atts['style']           = sprintf( 'background-image: url(%s);', $image[0] );
+            $section_atts['data-img-width']  = $image[1];
+            $section_atts['data-img-height'] = $image[2];
         }
 
     }
 
     // Maybe add an overlay, typically for image tint/style
     if ( filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $overlay_atts['class'] = 'overlay';
-        $overlay               = sprintf( '<div %s>', genesis_attr( 'mai-overlay', $overlay_atts ) );
+        $section_atts['class'] .= ' overlay light-content';
     }
 
     // Maybe add a wrap, typically to contain content over the image
@@ -484,21 +477,11 @@ function mai_get_section_open( $args ) {
  */
 function mai_get_section_close( $args ) {
 
-    $defaults = array(
-        'wrapper' => 'section',
-        'overlay' => false,
-        'wrap'    => false,
-        'inner'   => false,
-    );
-    $args = wp_parse_args( $args, $defaults );
+    // Get the args
+    $args = wp_parse_args( $args, mai_get_section_defaults() );
 
     // Start all element variables as empty string
     $overlay = $wrap = $inner = '';
-
-    // Maybe close overlay
-    if ( filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $overlay = '</div>';
-    }
 
     // Maybe close wrap
     if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
@@ -518,6 +501,19 @@ function mai_get_section_close( $args ) {
         sanitize_text_field( $args['wrapper'] )
     );
 
+}
+
+function mai_get_section_defaults() {
+    $defaults = array(
+        'wrapper' => 'section',
+        'id'      => null,
+        'class'   => null,
+        'image'   => null,
+        'overlay' => false,
+        'wrap'    => false,
+        'inner'   => false,
+    );
+    return apply_filters( 'mai_section_defaults', $defaults );
 }
 
 function mai_get_columns() {
@@ -1000,9 +996,19 @@ function mai_get_suffix() {
  *
  * @return bool
  */
-function mai_is_fixed_header_enabled() {
-    return filter_var( get_theme_mod( 'enable_fixed_header', 0 ), FILTER_VALIDATE_BOOLEAN );
+function mai_is_sticky_header_enabled() {
+    return filter_var( get_theme_mod( 'enable_sticky_header', 0 ), FILTER_VALIDATE_BOOLEAN );
 }
+
+/**
+ * Check if shrink header is enabled
+ *
+ * @return bool
+ */
+function mai_is_shrink_header_enabled() {
+    return filter_var( get_theme_mod( 'enable_shrink_header', 0 ), FILTER_VALIDATE_BOOLEAN );
+}
+
 
 /**
  * Check if banner area is enabled
@@ -1023,29 +1029,17 @@ function mai_is_banner_area_enabled() {
  */
 function mai_is_hide_banner() {
     if ( is_singular() ) {
-        $hide_banner = get_post_meta( get_the_ID(), 'mai_hide_banner', true );
+        $hide_banner = get_post_meta( get_the_ID(), 'hide_banner', true );
     } elseif ( is_tax() ) {
-        $hide_banner = get_term_meta( get_queried_object_id(), 'mai_hide_banner', true );
+        $hide_banner = get_term_meta( get_queried_object_id(), 'hide_banner', true );
     } elseif ( is_post_type_archive() ) {
-        $hide_banner = genesis_get_cpt_option( 'mai_hide_banner' );
+        $hide_banner = genesis_get_cpt_option( 'hide_banner' );
     } elseif ( is_author() ) {
-        $hide_banner = get_user_meta( get_queried_object_id(), 'mai_hide_banner', true );
+        $hide_banner = get_user_meta( get_queried_object_id(), 'hide_banner', true );
     } else {
         $hide_banner = false;
     }
     return $hide_banner;
-}
-
-/**
- * Check if boxed content is enabled
- *
- * Force this in a template via:
- * add_filter( 'theme_mod_enable_boxed_content', '__return_true' );
- *
- * @return bool
- */
-function mai_is_boxed_content_enabled() {
-    return filter_var( get_theme_mod( 'enable_boxed_content', 1 ), FILTER_VALIDATE_BOOLEAN );
 }
 
 /**
@@ -1063,7 +1057,7 @@ function mai_is_display_featured_image_enabled() {
  * @return bool
  */
 function mai_is_side_menu_enabled() {
-    if ( mai_is_fixed_header_enabled() || 'side' != get_theme_mod( 'mobile_menu_style' ) ) {
+    if ( mai_is_sticky_header_enabled() || 'side' != get_theme_mod( 'mobile_menu_style' ) ) {
         return false;
     }
     return true;
