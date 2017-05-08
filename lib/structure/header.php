@@ -75,7 +75,7 @@ function mai_maybe_hide_site_description( $attributes ) {
  * Do the Flexington header.
  * This is all wrapped in one function so we can pass $left and $right variables easier.
  *
- * @version  1.0.1
+ * @version  1.1.0
  *
  * @return   void
  */
@@ -96,6 +96,27 @@ function mai_do_header() {
 	$left 	 = apply_filters( 'mai_header_left_content', '' );
 	$right 	 = apply_filters( 'mai_header_right_content', '' );
 	$mobile  = apply_filters( 'mai_mobile_menu', mai_get_mobile_menu() );
+
+	/**
+	 * Add classes to know when the header has left or right header content.
+	 *
+	 * @param   array  $attributes  The header attributes.
+	 *
+	 * @return  array  The modified attributes.
+	 */
+	add_filter( 'genesis_attr_site-header', function( $attributes ) use ( $left, $right ) {
+
+		if ( $left ) {
+			$attributes['class'] .= ' has-header-left';
+		}
+
+		if ( $right ) {
+			$attributes['class'] .= ' has-header-right';
+		}
+
+		return $attributes;
+
+	});
 
 	/**
 	 * Filter the (site) header context of the genesis_structural_wrap

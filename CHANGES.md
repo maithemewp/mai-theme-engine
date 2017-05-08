@@ -1,3 +1,9 @@
+#### 1.0.1-beta
+* Make header-shrink more pronounced
+
+#### 1.0.0-beta
+* Initial beta release
+
 #### 0.0.6
 * Remove Deactivate/Edit links from this plugin in Dashboard > Plugins menu
 

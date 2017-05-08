@@ -1566,8 +1566,8 @@ img.alignright,
 	font-size: 30px;
 	font-weight: bold;
 	line-height: 1.2;
-    margin-top: 6px;
-    margin-bottom: 6px;
+    margin-top: 32px;
+    margin-bottom: 32px;
     margin-left: 16px;
     margin-right: 16px;
 }
@@ -2743,9 +2743,21 @@ li.comment {
 
 @media only screen and (max-width: 1159px) {}
 
-@media only screen and (max-width: 992px) {}
+@media only screen and (max-width: 992px) {
+
+	.has-header-left.has-header-right .site-title a {
+	    margin-top: 16px;
+	    margin-bottom: 4px;
+	}
+
+}
 
 @media only screen and (max-width: 768px) {
+
+	.has-header-left.has-header-right .site-title a {
+	    margin-top: 0;
+	    margin-bottom: 0;
+	}
 
 	.header-left,
 	.header-right,
@@ -2903,7 +2915,5 @@ li.comment {
 	ul {
 		page-break-before: avoid;
 	}
-
-}
 
 }
