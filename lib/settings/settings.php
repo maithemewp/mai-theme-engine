@@ -705,7 +705,7 @@ function _mai_cmb_show_if_user_is_author_or_above() {
 function _mai_cmb_banner_visibility_config() {
 	return array(
 		'name'			=> __( 'Banner Visibility', 'maitheme' ),
-		'desc'			=> __( 'Hide banner on this archive.', 'maitheme' ),
+		'desc'			=> __( 'Hide the banner area', 'maitheme' ),
 		'id'			=> 'hide_banner',
 		'type'			=> 'checkbox',
 		'show_on_cb'	=> 'mai_is_banner_area_enabled',
@@ -880,7 +880,7 @@ function _mai_cmb_meta_config() {
 
 function _mai_cmb_posts_nav_config() {
 	return array(
-		'name'		=> __( 'Entry Pagination:', 'genesis' ),
+		'name'		=> __( 'Entry Pagination', 'genesis' ),
 		'id'		=> 'posts_nav',
 		'type'		=> 'select',
 		'default'	=> 'numeric',

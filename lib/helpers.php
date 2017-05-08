@@ -232,7 +232,7 @@ function mai_get_archive_meta_with_fallback( $key ) {
         }
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_page_id  = get_option( 'woocommerce_shop_page_id' ) ) {
         $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
         if ( 'on' == $enabled ) {
             $meta = get_post_meta( $shop_page_id, $key, true );
@@ -272,9 +272,9 @@ function mai_archive_display_image() {
         $archive_display = get_the_author_meta( 'content_archive_thumbnail', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
-        $enabled         = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
-        $archive_display = get_post_meta( $shop_id, 'content_archive_thumbnail', true );
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_page_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+        $enabled         = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
+        $archive_display = get_post_meta( $shop_page_id, 'content_archive_thumbnail', true );
     }
 
     // If archive settings are enabled
@@ -437,7 +437,7 @@ function mai_get_section_open( $args ) {
 
     // Maybe add an overlay, typically for image tint/style
     if ( filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $section_atts['class'] .= ' overlay';
+        $section_atts['class'] .= ' overlay light-content';
     }
 
     // Maybe add a wrap, typically to contain content over the image
@@ -1029,13 +1029,13 @@ function mai_is_banner_area_enabled() {
  */
 function mai_is_hide_banner() {
     if ( is_singular() ) {
-        $hide_banner = get_post_meta( get_the_ID(), 'mai_hide_banner', true );
+        $hide_banner = get_post_meta( get_the_ID(), 'hide_banner', true );
     } elseif ( is_tax() ) {
-        $hide_banner = get_term_meta( get_queried_object_id(), 'mai_hide_banner', true );
+        $hide_banner = get_term_meta( get_queried_object_id(), 'hide_banner', true );
     } elseif ( is_post_type_archive() ) {
-        $hide_banner = genesis_get_cpt_option( 'mai_hide_banner' );
+        $hide_banner = genesis_get_cpt_option( 'hide_banner' );
     } elseif ( is_author() ) {
-        $hide_banner = get_user_meta( get_queried_object_id(), 'mai_hide_banner', true );
+        $hide_banner = get_user_meta( get_queried_object_id(), 'hide_banner', true );
     } else {
         $hide_banner = false;
     }

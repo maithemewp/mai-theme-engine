@@ -33,9 +33,32 @@ function mai_add_nav_secondary_skip_link( $links ) {
 	return $links;
 }
 
+// Limit Secondary and Utility nav menus to top level items only.
+add_filter( 'wp_nav_menu_args', 'mai_limit_nav_secondary_menu_depth' );
+function mai_limit_nav_secondary_menu_depth( $args ) {
+
+	$limit_menus = array( 'secondary', 'utility' );
+
+	if ( in_array( $args['theme_location'], $limit_menus ) ) {
+		$args['depth'] = 1;
+	}
+	return $args;
+}
+
+// Reposition the secondary navigation menu
+remove_action( 'genesis_after_header', 'genesis_do_subnav' );
+add_action( 'genesis_before_footer', 'genesis_do_subnav' );
+
+// Reposition the breadcrumbs
+remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
+add_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 12 );
+
 // Move archive pagination
 remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 add_action( 'genesis_after_loop', 'genesis_posts_nav' );
+
+// Add previous/next post links to single posts
+add_action( 'genesis_entry_footer', 'genesis_prev_next_post_nav' );
 
 /**
  * Add mobile menu on custom hook, after the site header row

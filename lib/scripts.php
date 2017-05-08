@@ -7,10 +7,6 @@ function mai_enqueue_scripts() {
 	// Use minified files if script debug is not being used
 	$suffix = mai_get_suffix();
 
-	// global $_wp_additional_image_sizes;
-
-	// d( $_wp_additional_image_sizes );
-
 	// Enqueue the main global js file
 	wp_enqueue_script( 'mai-theme-script', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "/assets/js/mai-theme{$suffix}.js", array('jquery'), MAITHEME_ENGINE_PLUGIN_VERSION, true );
 	wp_localize_script( 'mai-theme-script', 'maiVars', array(
@@ -37,6 +33,7 @@ function mai_enqueue_styles() {
 	wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', array(), MAITHEME_ENGINE_PLUGIN_VERSION );
 }
 
+// Enqueue admin scripts and styles
 add_action( 'admin_enqueue_scripts', 'mai_enqueue_admin_scripts' );
 function mai_enqueue_admin_scripts() {
 
@@ -45,4 +42,43 @@ function mai_enqueue_admin_scripts() {
 
 	wp_register_script( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "assets/js/mai-cmb2{$suffix}.js", array( 'jquery' ), MAITHEME_ENGINE_PLUGIN_VERSION, true );
 	wp_register_style( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "assets/css/mai-cmb2{$suffix}.css", array(), MAITHEME_ENGINE_PLUGIN_VERSION );
+}
+
+// Enqueue the mai-woocommerce stylesheet if a woo template is used
+add_action( 'woocommerce_before_template_part', 'mai_enqueue_woocommerce_styles' );
+function mai_enqueue_woocommerce_styles() {
+
+	$file_name = 'mai-woocommerce';
+	$file_path = get_stylesheet_directory() . '/assets/css/' . $file_name . 'css';
+
+	// If the file exists in the child theme /assets/css/{file_name}
+	if ( file_exists( $file_path ) ) {
+		// Use child theme file
+		$location = get_stylesheet_directory_uri() . '/assets/css/' . $file_name . 'css';
+	} else {
+
+		// Use minified files if script debug is not being used
+		$suffix = mai_get_suffix();
+
+		// Use our plugin file
+		$location = MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "assets/css/{$file_name}{$suffix}.css";
+	}
+
+	// Register woocommerce script for later enqueuing
+	wp_enqueue_style( 'mai-woocommerce', $location, array(), CHILD_THEME_VERSION );
+}
+
+// Remove WooCommerce default layout styles
+add_filter( 'woocommerce_enqueue_styles', 'mai_dequeue_woocommerce_styles' );
+function mai_dequeue_woocommerce_styles( $styles ) {
+
+	// Bail if account, cart, or checkout pages. We need layout stuff here
+	if ( is_account_page() || is_cart() || is_checkout() ) {
+		return $styles;
+	}
+
+	unset( $styles['woocommerce-layout'] );		 	// Remove the layout
+	// unset( $styles['woocommerce-general'] );	 	// Remove the gloss
+	// unset( $styles['woocommerce-smallscreen'] ); // Remove the smallscreen optimisation
+	return $styles;
 }

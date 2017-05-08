@@ -159,7 +159,7 @@ function mai_do_woo_flex_loop( $template_name, $template_path, $located, $args )
 
     // Bail if not a flex loop
     if ( ! mai_is_flex_loop() ) {
-        return $classes;
+        return;
     }
 
     // Filter and add our flex classes
