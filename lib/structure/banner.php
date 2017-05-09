@@ -34,11 +34,14 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
+	// d( get_theme_mod( 'enable_banner_overlay' ) );
+	// d( filter_var( get_theme_mod( 'enable_banner_overlay' ), FILTER_VALIDATE_BOOLEAN ) );
+
     $args = array(
 		'class'		=> 'banner-area',
-		'overlay'	=> true,
+		'overlay'	=> get_theme_mod( 'enable_banner_overlay', 1 ),
 		'wrap'		=> true,
-		'inner'		=> false,
+		'inner'		=> get_theme_mod( 'enable_banner_inner', 0 ),
     );
 
 	// Get the image ID
@@ -50,7 +53,7 @@ function mai_do_banner_area() {
 	}
 
     // Add a filter so devs can change these defaults
-    $args = apply_filters( 'mai_banner_defaults', $args );
+    $args = apply_filters( 'mai_banner_args', $args );
 
     // Opening markup
     echo mai_get_section_open( $args );

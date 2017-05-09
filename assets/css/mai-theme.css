@@ -215,10 +215,12 @@ h6 {
 h1,
 h1.entry-title {
 	font-size: 36px;
+	font-size: calc(1vw + 26px);
 }
 
 h2 {
 	font-size: 30px;
+	font-size: calc(1vw + 20px)
 }
 
 h3 {
@@ -266,7 +268,7 @@ a:focus,
 .banner-area .entry-title,
 .banner-area .archive-title,
 .banner-area .author-box-title {
-	font-size: 42px;
+	font-size: calc(2vw + 24px);
 	margin-top: 8px;
 	margin-bottom: 8px;
 }
@@ -794,12 +796,9 @@ td {
 
 .image-bg .inner {
 	display: inline-block;
-	text-shadow: none;
-}
-
-.image-bg .inner {
 	background-color: rgba(255, 255, 255, 0.7);
-	padding: 30px;
+	text-shadow: none;
+	padding: 4% 8%;
 	box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
 }
 
@@ -1549,8 +1548,17 @@ img.alignright,
 
 .shrink-header .site-header.shrink .site-title a {
     -webkit-transform:scale(0.7);-ms-transform:scale(0.7);transform:scale(0.7);
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+
+	/* stay shrunk on mobile */
+	.site-title a {
+	    -webkit-transform:scale(0.7);-ms-transform:scale(0.7);transform:scale(0.7);
+	}
+
 }
 
 /* ## Title Area
@@ -1596,8 +1604,8 @@ img.alignright,
 .header-left,
 .header-right {
 	line-height: 1;
-	margin-top: 12px;
-	margin-bottom: 12px;
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
 
 .site-header .widget {
@@ -1795,6 +1803,14 @@ img.alignright,
 .nav-utility a:hover,
 .nav-utility .current-menu-item > a {
 	color: #323232;
+}
+
+.nav-utility .search > a {
+	width: 40px;
+}
+
+.nav-utility .search > a::before {
+	font-size: 19px;
 }
 
 /* ## Header Navigation
@@ -2214,12 +2230,12 @@ img.alignright,
 --------------------------------------------- */
 
 .banner-area  {
-	background-color: #4c4c4c;
-	color: #fff;
+	background-color: #3f3f3f;
+	/* color: #fff; */
 	text-align: center;
 	font-size: 22px;
 	line-height: 1.45;
-	text-shadow: 0 0 6px #323232;
+	/* text-shadow: 0 0 6px #323232; */
 }
 
 .banner-area .wrap {
@@ -2245,7 +2261,7 @@ img.alignright,
 .banner-area .archive-title,
 .banner-area .entry-title,
 .banner-area .author-box-title {
-	color: #fff;
+	/* color: #fff; */
 	font-weight: bold;
 }
 
@@ -2755,8 +2771,8 @@ li.comment {
 @media only screen and (max-width: 768px) {
 
 	.has-header-left.has-header-right .site-title a {
-	    margin-top: 0;
-	    margin-bottom: 0;
+	    margin-top: 4px;
+	    margin-bottom: 4px;
 	}
 
 	.header-left,

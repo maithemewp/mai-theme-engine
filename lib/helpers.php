@@ -11,37 +11,6 @@
  * @version  1.0.5
  */
 
-/**
- * Get default accent color for Customizer.
- * Abstracted here since at least two functions use it.
- *
- * @since 1.0.0
- *
- * @return string Hex color code for accent color.
- */
-function mai_customizer_get_default_accent_color() {
-    return '#067CCC';
-}
-
-/**
- * Generate a hex value that has appropriate contrast
- * against the inputted value.
- *
- * @since 1.0.0
- *
- * @return string Hex color code for contrasting color.
- */
-function mai_color_contrast( $color ) {
-
-    $hexcolor = str_replace( '#', '', $color );
-    $red      = hexdec( substr( $hexcolor, 0, 2 ) );
-    $green    = hexdec( substr( $hexcolor, 2, 2 ) );
-    $blue     = hexdec( substr( $hexcolor, 4, 2 ) );
-
-    $luminosity = ( ( $red * 0.2126 ) + ( $green * 0.7152 ) + ( $blue * 0.0722 ) );
-
-    return ( $luminosity > 128 ) ? '#000000' : '#ffffff';
-}
 
 /**
  * Get the banner image ID.
@@ -408,6 +377,10 @@ function mai_get_section_open( $args ) {
     // Start all attributes as empty array
     $section_atts = $overlay_atts = $wrap_atts = $inner_atts = array();
 
+    $has_overlay = filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN );
+    $has_wrap    = filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN );
+    $has_inner   = filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN );
+
     // Maybe add section id
     if ( $args['id'] ) {
         $section_atts['id'] = sanitize_html_class( $args['id'] );
@@ -419,6 +392,11 @@ function mai_get_section_open( $args ) {
     // Maybe add section classes
     if ( $args['class'] ) {
         $section_atts['class'] .= ' ' . sanitize_html_class( $args['class'] );
+    }
+
+    // If no inner, add light-content class
+    if ( ! $has_inner ) {
+        $section_atts['class'] .= ' light-content';
     }
 
     // If we have an image ID
@@ -436,18 +414,18 @@ function mai_get_section_open( $args ) {
     }
 
     // Maybe add an overlay, typically for image tint/style
-    if ( filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $section_atts['class'] .= ' overlay light-content';
+    if ( $has_overlay ) {
+        $section_atts['class'] .= ' overlay';
     }
 
     // Maybe add a wrap, typically to contain content over the image
-    if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
+    if ( $has_wrap ) {
         $wrap_atts['class'] = 'wrap';
         $wrap               = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
     }
 
     // Maybe add an inner wrap, typically for content width/style
-    if ( filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ) ) {
+    if ( $inner ) {
         $inner_atts['class'] = 'inner';
         $inner               = sprintf( '<div %s>', genesis_attr( 'mai-inner', $inner_atts ) );
     }
@@ -1070,4 +1048,36 @@ function mai_is_side_menu_enabled() {
  */
 function mai_get_footer_widgets_count() {
     return get_theme_mod( 'footer_widget_count', 2 );
+}
+
+/**
+ * Get default accent color for Customizer.
+ * Abstracted here since at least two functions use it.
+ *
+ * @since 1.0.0
+ *
+ * @return string Hex color code for accent color.
+ */
+function mai_customizer_get_default_accent_color() {
+    return '#067CCC';
+}
+
+/**
+ * Generate a hex value that has appropriate contrast
+ * against the inputted value.
+ *
+ * @since 1.0.0
+ *
+ * @return string Hex color code for contrasting color.
+ */
+function mai_color_contrast( $color ) {
+
+    $hexcolor = str_replace( '#', '', $color );
+    $red      = hexdec( substr( $hexcolor, 0, 2 ) );
+    $green    = hexdec( substr( $hexcolor, 2, 2 ) );
+    $blue     = hexdec( substr( $hexcolor, 4, 2 ) );
+
+    $luminosity = ( ( $red * 0.2126 ) + ( $green * 0.7152 ) + ( $blue * 0.0722 ) );
+
+    return ( $luminosity > 128 ) ? '#000000' : '#ffffff';
 }
