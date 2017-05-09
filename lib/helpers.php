@@ -78,6 +78,22 @@ function mai_get_banner_id() {
     return $image_id;
 }
 
+function mai_do_grid( $args, $content = null ) {
+    echo mai_get_grid( $args, $content );
+}
+
+/**
+ * Helper function to get a grid of content.
+ * This is a php version of the [grid] shortcode.
+ *
+ * @param   array  $args  The [grid] shortcode atts.
+ *
+ * @return  string|HTML
+ */
+function mai_get_grid( $args, $content = null ) {
+    return Mai_Grid_Shortcode()->get_grid( $args, $content );
+}
+
 function mai_is_content_archive() {
 
     $is_archive = false;
