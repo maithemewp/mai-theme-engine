@@ -8,7 +8,7 @@
  *
  * @author   Mike Hemberger
  *
- * @version  1.0.6
+ * @version  1.1.0
  */
 
 /**
@@ -56,9 +56,11 @@ final class Mai_Grid_Shortcode {
 
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
+			'align_cols'			=> '',
+			'align_text'			=> '',
 			'authors'				=> '',
 			'categories'			=> '', // Comma separated category IDs
-			'center'				=> false,
+			// 'center'				=> false,
 			'columns'				=> '3',
 			'content'				=> 'post', // post_type name (comma separated if multiple), or taxonomy name
 			'content_limit'			=> '', // Limit number of words
@@ -82,7 +84,7 @@ final class Mai_Grid_Shortcode {
 			'link'					=> true,
 			'meta_key'				=> '',
 			'meta_value'			=> '',
-			'middle'				=> false,
+			// 'middle'				=> false,
 			'more_link_text'		=> apply_filters( 'mai_more_link_text', __( 'Read More', 'maitheme' ) ),
 			'no_content_message'	=> '',
 			'number'				=> '12',
@@ -123,9 +125,11 @@ final class Mai_Grid_Shortcode {
 		$atts = apply_filters( 'mai_grid_defaults', $atts );
 
 		$atts = array(
+			'align_cols'			=> array_map( 'sanitize_key', ( array_filter( explode( ' ', $atts['align_cols'] ) ) ) ),
+			'align_text'			=> array_map( 'sanitize_key', ( array_filter( explode( ' ', $atts['align_text'] ) ) ) ),
 			'authors'				=> $atts['authors'], // Validated later
 			'categories'			=> array_filter( explode( ',', sanitize_text_field( $atts['categories'] ) ) ),
-			'center'				=> filter_var( $atts['center'], FILTER_VALIDATE_BOOLEAN ),
+			// 'center'				=> filter_var( $atts['center'], FILTER_VALIDATE_BOOLEAN ),
 			'columns'				=> intval( $atts['columns'] ),
 			'content'				=> array_filter( explode( ',', sanitize_text_field( $atts['content'] ) ) ),
 			'content_limit'			=> intval( $atts['content_limit'] ),
@@ -149,7 +153,7 @@ final class Mai_Grid_Shortcode {
 			'link'					=> filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN ),
 			'meta_key'				=> sanitize_text_field( $atts['meta_key'] ),
 			'meta_value'			=> sanitize_text_field( $atts['meta_value'] ),
-			'middle'				=> filter_var( $atts['middle'], FILTER_VALIDATE_BOOLEAN ),
+			// 'middle'				=> filter_var( $atts['middle'], FILTER_VALIDATE_BOOLEAN ),
 			'more_link_text'		=> sanitize_text_field( $atts['more_link_text'] ),
 			'no_content_message'	=> sanitize_text_field( $atts['no_content_message'] ),
 			'number'				=> $atts['number'], // Validated later, after check for 'all'
@@ -785,7 +789,7 @@ final class Mai_Grid_Shortcode {
 	    }
 
 	    // Row classes
-	    if ( ! empty($atts['row_class']) ) {
+	    if ( ! empty( $atts['row_class'] ) ) {
 	    	$flex_row['class'] .= ' ' . implode( ' ', $atts['row_class'] );
 	    }
 
@@ -798,6 +802,8 @@ final class Mai_Grid_Shortcode {
 
 			// Slider wrapper class
 			$flex_row['class'] .= ' mai-slider';
+
+			// TODO: center is no more!
 
 			// Slider HTML data attributes
 			$flex_row['data-arrows']		 = $atts['arrows'] ? 'true' : 'false';
@@ -820,15 +826,70 @@ final class Mai_Grid_Shortcode {
 				$flex_row['class'] .= sprintf( ' gutter-%s', $atts['gutter'] );
 		    }
 
+		    // Align columns
+		    if ( ! empty( $atts['align_cols'] ) ) {
+
+		    	// Left
+			    if ( isset( $atts['align_cols']['left'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['start-xs'];
+			    }
+
+			    // Center
+			    if ( isset( $atts['align_cols']['center'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['center-xs'];
+			    }
+
+			    // Right
+			    if ( isset( $atts['align_cols']['right'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['end-xs'];
+			    }
+
+			    // Top
+			    if ( isset( $atts['align_cols']['top'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['top-xs'];
+			    }
+
+			    // Middle
+			    if ( isset( $atts['align_cols']['middle'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['middle-xs'];
+			    }
+
+			    // Bottom
+			    if ( isset( $atts['align_cols']['bottom'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['bottom-xs'];
+			    }
+
+		    }
+
+		    // Align text
+		    if ( ! empty( $atts['align_text'] ) ) {
+
+		    	// Left
+			    if ( isset( $atts['align_text']['left'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['start-xs'];
+			    }
+
+			    // Center
+			    if ( isset( $atts['align_text']['center'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['center-xs'];
+			    }
+
+			    // Right
+			    if ( isset( $atts['align_text']['right'] ) ) {
+			    	$flex_row['class'] .= ' ' . $atts['align_cols']['end-xs'];
+			    }
+
+		    }
+
 			// Center horizontally
-			if ( $atts['center'] ) {
-				$flex_row['class'] .= ' text-xs-center';
-			}
+			// if ( $atts['center'] ) {
+			// 	$flex_row['class'] .= ' text-xs-center';
+			// }
 
 			// Center vertically
-			if ( $atts['middle'] ) {
-				$flex_row['class'] .= ' middle-xs';
-			}
+			// if ( $atts['middle'] ) {
+			// 	$flex_row['class'] .= ' middle-xs';
+			// }
 
 		}
 
