@@ -866,30 +866,20 @@ final class Mai_Grid_Shortcode {
 
 		    	// Left
 			    if ( isset( $atts['align_text']['left'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['start-xs'];
+			    	$flex_row['class'] .= ' ' . $atts['align_text']['start-xs'];
 			    }
 
 			    // Center
 			    if ( isset( $atts['align_text']['center'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['center-xs'];
+			    	$flex_row['class'] .= ' ' . $atts['align_text']['center-xs'];
 			    }
 
 			    // Right
 			    if ( isset( $atts['align_text']['right'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['end-xs'];
+			    	$flex_row['class'] .= ' ' . $atts['align_text']['end-xs'];
 			    }
 
 		    }
-
-			// Center horizontally
-			// if ( $atts['center'] ) {
-			// 	$flex_row['class'] .= ' text-xs-center';
-			// }
-
-			// Center vertically
-			// if ( $atts['middle'] ) {
-			// 	$flex_row['class'] .= ' middle-xs';
-			// }
 
 		}
 
