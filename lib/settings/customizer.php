@@ -183,6 +183,32 @@ function mai_register_customizer_settings( $wp_customize ) {
 		'priority' => 5,
 	) );
 
+	// Banner Overlay
+	$wp_customize->add_setting( 'enable_banner_overlay', array(
+		'default'           => 1,
+		'sanitize_callback' => 'absint',
+	) );
+
+	$wp_customize->add_control( 'enable_banner_overlay', array(
+		'label'    => __( 'Enable banner overlay', 'maitheme' ),
+		'section'  => $section,
+		'type'     => 'checkbox',
+		'priority' => 5,
+	) );
+
+	// Banner Inner Styling
+	$wp_customize->add_setting( 'enable_banner_inner', array(
+		'default'           => 0,
+		'sanitize_callback' => 'absint',
+	) );
+
+	$wp_customize->add_control( 'enable_banner_inner', array(
+		'label'    => __( 'Enable banner inner styling', 'maitheme' ),
+		'section'  => $section,
+		'type'     => 'checkbox',
+		'priority' => 5,
+	) );
+
 	/*****************************************************
 	 * Default Banner Image setting
 	 */
