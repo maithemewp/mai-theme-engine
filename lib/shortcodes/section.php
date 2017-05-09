@@ -35,16 +35,16 @@ function mai_get_section_shortcode( $atts, $content = null ) {
     );
 
     // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
-    $defaults = apply_filters( 'mai_section_defaults', $defaults );
+    $atts = apply_filters( 'mai_section_defaults', $defaults );
+
+    // Add shortcode class
+    $atts['class'] = trim( 'section-shortcode ' . $atts['class'] );
 
     /**
      * Shortcode section attributes
      * Note, these are different then the defaults in mai_get_section_* functions
      */
     $atts = shortcode_atts( $defaults, $atts, 'section' );
-
-    // Add shortcode class
-    $atts['class'] = 'section-shortcode' . $atts['class'];
 
     $output = '';
 

@@ -391,7 +391,8 @@ function mai_get_section_open( $args ) {
 
     // Maybe add section classes
     if ( $args['class'] ) {
-        $section_atts['class'] .= ' ' . sanitize_html_class( $args['class'] );
+        // Add classes. Can't use sanitize_html_field cause there may be multiple classes with spaces
+        $section_atts['class'] .= ' ' . sanitize_text_field( $args['class'] );
     }
 
     // If no inner, add light-content class

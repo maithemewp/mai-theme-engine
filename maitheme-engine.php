@@ -214,8 +214,8 @@ final class Mai_Theme_Engine {
              */
             $image_sizes = array(
                 'banner' => array(
-                    'width'  => 1200,
-                    'height' => 400,
+                    'width'  => 1600,
+                    'height' => 533,
                     'crop'   => true, // 3x1
                 ),
                 'featured' => array(
