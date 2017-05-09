@@ -755,7 +755,7 @@ td {
 --------------------------------------------- */
 
 .section {
-	background-color: rgba(0, 0, 0, 0.05);
+	background-color: #f1f1f1;
 	margin-bottom: 30px;
 }
 
@@ -786,8 +786,6 @@ td {
 	margin-top: -20px; /* offset .site-inner top margin */
 	margin-bottom: 20px;
 }
-
-.banner-area.section + .content-sidebar-wrap > .content > .entry
 
 .section .wrap {
 	padding-top: calc(4vw + 2em);
@@ -2416,7 +2414,8 @@ img.alignright,
 
 .flex-entry .entry-title + .entry-image-link,
 .flex-entry .entry-image-link + .entry-header,
-.flex-entry .entry-image-link + .entry-title {
+.flex-entry .entry-image-link + .entry-title,
+.flex-entry .entry-header + .entry-content {
 	margin-top: 12px;
 }
 
@@ -2447,7 +2446,7 @@ img.alignright,
 }
 
 .flex-entry .entry-header .entry-meta {
-	margin: 10px 0;
+	margin: 12px 0 0;
 }
 
 /* ## Entry Meta
