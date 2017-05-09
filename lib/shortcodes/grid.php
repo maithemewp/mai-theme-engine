@@ -193,7 +193,6 @@ final class Mai_Grid_Shortcode {
 
 		$html = '';
 
-		// TODO: Test this!!!!!!
 		// If content using this as a wrapper for [col] shortcodes
 		if ( null != $content ) {
 			$html .= $this->get_row_wrap_open( $atts );
