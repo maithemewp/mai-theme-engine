@@ -192,8 +192,8 @@ final class Mai_Theme_Engine {
 
             // Add custom logo support
             add_theme_support( 'custom-logo', array(
-                'height'        => '',
-                'width'         => '',
+                'height'        => 120, // Optional size
+                'width'         => 240, // Optional size
                 'flex-height'   => true,
                 'flex-width'    => true,
             ) );
@@ -245,7 +245,32 @@ final class Mai_Theme_Engine {
                 ),
             );
 
-            // Filter the image sizes to allow the theme to override
+            /**
+             * Filter the image sizes to allow the theme to override.
+             *
+             * // Change the default Mai image sizes
+             * add_filter( 'mai_image_sizes', 'prefix_custom_image_sizes' );
+             * function prefix_custom_image_sizes( $image_sizes ) {
+             *
+             *   // Change one-third image size
+             *   $image_sizes['one-third'] = array(
+             *       'width'  => 350,
+             *       'height' => 350,
+             *       'crop'   => true,
+             *   );
+             *
+             *   // Change one-fourth image size
+             *   $image_sizes['one-fourth'] = array(
+             *       'width'  => 260,
+             *       'height' => 260,
+             *       'crop'   => true,
+             *   );
+             *
+             *   return $image_sizes;
+             *
+             * }
+             *
+             */
             $image_sizes = apply_filters( 'mai_image_sizes', $image_sizes );
 
             // Loop through and add the image sizes.
