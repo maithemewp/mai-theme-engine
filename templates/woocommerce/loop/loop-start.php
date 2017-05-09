@@ -21,7 +21,6 @@
  * @package 	WooCommerce/Templates
  * @version     2.0.0
  */
-
 $attributes = array();
 $attributes['class'] = 'products row gutter-30';
 // This can be filtered on specific templates to add/change attributes

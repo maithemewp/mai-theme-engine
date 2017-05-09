@@ -121,7 +121,7 @@ function mai_is_content_archive() {
         $is_archive = true;
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $is_archive = true;
     }
 
@@ -223,11 +223,15 @@ function mai_get_archive_meta_with_fallback( $key ) {
         }
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_page_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
         if ( 'on' == $enabled ) {
             $meta = get_post_meta( $shop_page_id, $key, true );
         }
+        // elseif ( ( 'columns' == $key ) && ! $meta ) {
+        //     // Set default columns for Shop
+        //     $meta = 3;
+        // }
     }
 
     // Lastly, fallback to the theme settings/options
@@ -263,7 +267,7 @@ function mai_archive_display_image() {
         $archive_display = get_the_author_meta( 'content_archive_thumbnail', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_page_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled         = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
         $archive_display = get_post_meta( $shop_page_id, 'content_archive_thumbnail', true );
     }
@@ -301,7 +305,7 @@ function mai_archive_get_image_location() {
         $archive_location = get_the_author_meta( 'image_location', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled          = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
         $archive_location = get_post_meta( $shop_id, 'image_location', true );
     }
@@ -340,7 +344,7 @@ function mai_get_archive_image_size() {
         $archive_size = get_the_author_meta( 'image_size', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled      = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
         $archive_size = get_post_meta( $shop_id, 'banner_id', true );
     }
@@ -519,77 +523,16 @@ function mai_get_section_defaults() {
 
 function mai_get_columns() {
 
-    // If static front page
-    if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
-        $columns = get_post_meta( $front_page_id, 'columns', true );
-    }
+    $columns = mai_get_archive_meta_with_fallback( 'columns' );
 
-    // If static blog page
-    elseif ( is_home() && ( $home_page_id = get_option( 'page_for_posts' ) ) ) {
-        $columns = get_post_meta( $home_page_id, 'columns', true );
-    }
-
-    // Single post/page/cpt
-    elseif ( is_singular() ) {
-        $columns = get_post_meta( get_the_ID(), 'columns', true );
-    }
-
-    // Term archive
-    elseif ( is_category() || is_tag() || is_tax() ) {
-        // Get the column count
-        $columns = get_term_meta( get_queried_object()->term_id, 'columns', true );
-        // If columns not set for this term
-        if ( ! $columns ) {
-            // If post taxonomy
-            if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-                $columns = get_post_meta( get_option( 'page_for_posts' ), 'columns', true );
-            }
-            // If Woo product taxonomy
-            elseif ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
-                $columns = get_post_meta( get_option( 'woocommerce_shop_page_id' ), 'columns', true );
-            }
-            // Must be custom taxonomy archive
-            else {
-                // global $wp_taxonomies;
-                // $tax = get_queried_object()->taxonomy;
-                $tax = get_taxonomy( get_queried_object()->taxonomy );
-                if ( $tax ) {
-                    /**
-                     * If we have a tax, get the first one.
-                     * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
-                     */
-                    // $post_type = isset( $wp_taxonomies[$tax] ) ? reset($wp_taxonomies[$tax]->object_type) : '';
-                    $post_type = reset( $tax->object_type );
-                    // If we have a post type and it supports genesis-cpt-archive-settings
-                    if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
-                        $columns = genesis_get_cpt_option( 'columns', $post_type );
-                    }
-                }
-            }
+    if ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+        if ( $columns <= 1 ) {
+            $columns = 3;
         }
-
     }
 
-    // CPT archive
-    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-        $columns = genesis_get_cpt_option( 'columns' );
-    }
+    return absint( $columns );
 
-    // Author archive
-    elseif ( is_author() ) {
-        $columns = get_the_author_meta( 'columns', get_query_var( 'author' ) );
-    }
-
-    // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-        $columns = get_post_meta( $shop_page_id, 'columns', true );
-    }
-
-    else {
-        $columns = 0;
-    }
-
-    return absint($columns);
 }
 
 function mai_admin_get_columns() {
