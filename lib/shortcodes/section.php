@@ -28,10 +28,10 @@ function mai_get_section_shortcode( $atts, $content = null ) {
     $defaults = array(
         'class'    => '',
         'bg_color' => '',
-        'image'    => null,
+        'image'    => '',
         'overlay'  => false,
         'wrap'     => true,
-        'inner'    => true,
+        'inner'    => false,
     );
 
     // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme

@@ -395,13 +395,13 @@ function mai_get_section_open( $args ) {
         $section_atts['class'] .= ' ' . sanitize_text_field( $args['class'] );
     }
 
-    // If no inner, add light-content class
-    if ( ! $has_inner ) {
-        $section_atts['class'] .= ' light-content';
-    }
-
     // If we have an image ID
     if ( $args['image'] ) {
+
+        // If no inner, add light-content class
+        if ( ! $has_inner ) {
+            $section_atts['class'] .= ' light-content';
+        }
 
         // Get the attachment image
         $image = wp_get_attachment_image_src( absint($args['image']), 'banner', true );
