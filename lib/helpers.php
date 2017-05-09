@@ -11,37 +11,6 @@
  * @version  1.0.5
  */
 
-/**
- * Get default accent color for Customizer.
- * Abstracted here since at least two functions use it.
- *
- * @since 1.0.0
- *
- * @return string Hex color code for accent color.
- */
-function mai_customizer_get_default_accent_color() {
-    return '#067CCC';
-}
-
-/**
- * Generate a hex value that has appropriate contrast
- * against the inputted value.
- *
- * @since 1.0.0
- *
- * @return string Hex color code for contrasting color.
- */
-function mai_color_contrast( $color ) {
-
-    $hexcolor = str_replace( '#', '', $color );
-    $red      = hexdec( substr( $hexcolor, 0, 2 ) );
-    $green    = hexdec( substr( $hexcolor, 2, 2 ) );
-    $blue     = hexdec( substr( $hexcolor, 4, 2 ) );
-
-    $luminosity = ( ( $red * 0.2126 ) + ( $green * 0.7152 ) + ( $blue * 0.0722 ) );
-
-    return ( $luminosity > 128 ) ? '#000000' : '#ffffff';
-}
 
 /**
  * Get the banner image ID.
@@ -1079,4 +1048,36 @@ function mai_is_side_menu_enabled() {
  */
 function mai_get_footer_widgets_count() {
     return get_theme_mod( 'footer_widget_count', 2 );
+}
+
+/**
+ * Get default accent color for Customizer.
+ * Abstracted here since at least two functions use it.
+ *
+ * @since 1.0.0
+ *
+ * @return string Hex color code for accent color.
+ */
+function mai_customizer_get_default_accent_color() {
+    return '#067CCC';
+}
+
+/**
+ * Generate a hex value that has appropriate contrast
+ * against the inputted value.
+ *
+ * @since 1.0.0
+ *
+ * @return string Hex color code for contrasting color.
+ */
+function mai_color_contrast( $color ) {
+
+    $hexcolor = str_replace( '#', '', $color );
+    $red      = hexdec( substr( $hexcolor, 0, 2 ) );
+    $green    = hexdec( substr( $hexcolor, 2, 2 ) );
+    $blue     = hexdec( substr( $hexcolor, 4, 2 ) );
+
+    $luminosity = ( ( $red * 0.2126 ) + ( $green * 0.7152 ) + ( $blue * 0.0722 ) );
+
+    return ( $luminosity > 128 ) ? '#000000' : '#ffffff';
 }
