@@ -425,7 +425,7 @@ function mai_get_section_open( $args ) {
     }
 
     // Maybe add an inner wrap, typically for content width/style
-    if ( $inner ) {
+    if ( $has_inner ) {
         $inner_atts['class'] = 'inner';
         $inner               = sprintf( '<div %s>', genesis_attr( 'mai-inner', $inner_atts ) );
     }
