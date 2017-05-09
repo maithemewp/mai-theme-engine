@@ -34,9 +34,6 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
-	// d( get_theme_mod( 'enable_banner_overlay' ) );
-	// d( filter_var( get_theme_mod( 'enable_banner_overlay' ), FILTER_VALIDATE_BOOLEAN ) );
-
     $args = array(
 		'class'		=> 'banner-area',
 		'overlay'	=> get_theme_mod( 'enable_banner_overlay', 1 ),
