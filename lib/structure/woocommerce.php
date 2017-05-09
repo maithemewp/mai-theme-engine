@@ -75,8 +75,6 @@ function mai_wc_get_template_part( $template, $slug, $name ) {
  * We need to hook in later to make give
  * a chance for template to exist.
  *
- * Similar code in /lib/taxonomies.php
- *
  * @return  void
  */
 add_action( 'genesis_meta', 'mai_woocommerce_default_layouts' );
@@ -129,6 +127,8 @@ function mai_woocommerce_default_layout( $layout ) {
  */
 add_filter( 'product_cat_class', 'mai_do_product_cat_flex_entry_classes' );
 function mai_do_product_cat_flex_entry_classes( $classes ) {
+
+	d( mai_is_flex_loop() );
 
     // Bail if not a flex loop
     if ( ! mai_is_flex_loop() ) {

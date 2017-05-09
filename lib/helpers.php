@@ -29,14 +29,17 @@ function mai_get_banner_id() {
     if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
         $image_id = get_post_meta( $front_page_id, 'banner_id', true );
     }
+
     // Static blog page
     elseif ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
         $image_id = get_post_meta( $posts_page_id, 'banner_id', true );
     }
+
     // Single page/post/cpt, but not static front page or static home page
     elseif ( is_singular() && ! ( is_front_page() || is_home() ) ) {
         $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
     }
+
     // Term archive
     elseif ( is_category() || is_tag() || is_tax() ) {
         // If WooCommerce product category
@@ -47,18 +50,21 @@ function mai_get_banner_id() {
             $image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
         }
     }
+
     // CPT archive
     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
         $image_id = genesis_get_cpt_option( 'banner_id' );
     }
+
     // Author archive
     elseif ( is_author() ) {
         // $author   = get_user_by( 'slug', get_query_var( 'author_name' ) );
         // $image_id = get_user_meta( $author->ID, 'banner_id', true );
         $image_id = get_the_author_meta( 'banner_id', get_query_var( 'author' ) );
     }
+
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $image_id = get_post_meta( $shop_id, 'banner_id', true );
     }
 
@@ -519,22 +525,13 @@ function mai_get_columns() {
     }
 
     // If static blog page
-    elseif ( is_home() && ( $home_id = get_option( 'page_for_posts' ) ) ) {
-        $columns = get_post_meta( $home_id, 'columns', true );
+    elseif ( is_home() && ( $home_page_id = get_option( 'page_for_posts' ) ) ) {
+        $columns = get_post_meta( $home_page_id, 'columns', true );
     }
 
     // Single post/page/cpt
     elseif ( is_singular() ) {
-        // If WooCommerce shop page
-        if ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-            $post_id = $shop_id;
-        }
-        // Regular old single post/page/cpt
-        else {
-            $post_id = get_the_ID();
-        }
-        // Get the column count
-        $columns = get_post_meta( $post_id, 'columns', true );
+        $columns = get_post_meta( get_the_ID(), 'columns', true );
     }
 
     // Term archive
@@ -581,6 +578,11 @@ function mai_get_columns() {
     // Author archive
     elseif ( is_author() ) {
         $columns = get_the_author_meta( 'columns', get_query_var( 'author' ) );
+    }
+
+    // WooCommerce shop page
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+        $columns = get_post_meta( $shop_page_id, 'columns', true );
     }
 
     else {
@@ -1027,10 +1029,12 @@ function mai_is_hide_banner() {
         $hide_banner = get_post_meta( get_the_ID(), 'hide_banner', true );
     } elseif ( is_tax() ) {
         $hide_banner = get_term_meta( get_queried_object_id(), 'hide_banner', true );
-    } elseif ( is_post_type_archive() ) {
+    } elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
         $hide_banner = genesis_get_cpt_option( 'hide_banner' );
     } elseif ( is_author() ) {
         $hide_banner = get_user_meta( get_queried_object_id(), 'hide_banner', true );
+    } elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+        $hide_banner = get_post_meta( $shop_page_id, 'hide_banner', true );
     } else {
         $hide_banner = false;
     }
