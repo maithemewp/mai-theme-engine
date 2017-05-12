@@ -1,3 +1,7 @@
+#### 1.0.0-beta.2
+* Rebuild flex loop functionality
+* Re-engineer everything
+
 #### 1.0.0-beta.1
 * Initial beta release
 * Make header-shrink more pronounced
