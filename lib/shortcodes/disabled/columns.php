@@ -46,6 +46,7 @@ final class Mai_Col_Shortcode {
 	}
 
 	function init() {
+		add_shortcode( 'columns', 				array( $this, 'get_columns' ) );
 		add_shortcode( 'col', 					array( $this, 'get_col' ) );
 		add_shortcode( 'col_auto', 				array( $this, 'get_col_auto' ) );
 		add_shortcode( 'col_one_twelfth', 		array( $this, 'get_col_one_twelfth' ) );
@@ -60,6 +61,41 @@ final class Mai_Col_Shortcode {
 		add_shortcode( 'col_five_sixths', 		array( $this, 'get_col_five_sixths' ) );
 		add_shortcode( 'col_eleven_twelfths', 	array( $this, 'get_col_eleven_twelfths' ) );
 		add_shortcode( 'col_one_whole', 		array( $this, 'get_col_one_whole' ) );
+	}
+
+	function get_columns( $atts, $content = null ) {
+
+		// Bail if no content
+		if ( null == $content ) {
+			return;
+		}
+
+		// Pull in shortcode attributes and set defaults
+		$atts = shortcode_atts( array(
+			'align_cols'	=> '',
+			'align_text'	=> '',
+			'class'			=> '',
+			'id'			=> '',
+			'style'			=> '',
+		), $atts, 'columns' );
+
+		$atts = apply_filters( 'mai_columns_args', $atts );
+
+		// Sanitize atts
+		$atts = array(
+			'align_cols'	=> mai_sanitize_keys( $atts['align_cols'] ),
+			'align_text'	=> mai_sanitize_keys( $atts['align_text'] ),
+			'class'			=> mai_sanitize_html_classes( $atts['class'] ),
+			'id'			=> sanitize_html_class( $atts['id'] ),
+			'style'			=> esc_attr( $atts['style'] ),
+		);
+
+		// If content using this as a wrapper for [col] shortcodes
+		$html .= $this->get_row_wrap_open( $atts );
+		$html .= do_shortcode(trim($content));
+		$html .= $this->get_row_wrap_close( $atts );
+		return $html;
+
 	}
 
 	function get_col( $atts, $content = null ) {
@@ -133,12 +169,12 @@ final class Mai_Col_Shortcode {
 			'style'		 => '',
 		), $atts, 'col' );
 
-		$atts = apply_filters( 'mai_col_shortcode_defaults', $atts );
+		$atts = apply_filters( 'mai_col_args', $atts );
 
 		// Sanitize atts
 		$atts = array(
-			'align_text' => array_map( 'sanitize_key', ( array_filter( explode( ' ', $atts['align_text'] ) ) ) ),
-			'class'		 => array_map( 'sanitize_html_class', ( array_filter( explode( ' ', $atts['class'] ) ) ) ),
+			'align_text' => mai_sanitize_keys( $atts['align_text'] ),
+			'class'		 => mai_sanitize_html_classes( $atts['class'] ),
 			'id'		 => sanitize_html_class( $atts['id'] ),
 			'style'		 => esc_attr( $atts['style'] ),
 		);
@@ -152,25 +188,25 @@ final class Mai_Col_Shortcode {
 
 		// Classes
 		if ( ! empty( $atts['class'] ) ) {
-			$flex_col['class'] .= ' ' . implode( ' ', $atts['class'] );
+			$flex_col['class'] .= ' ' . $atts['class'];
 		}
 
 	    // Align text
 	    if ( ! empty( $atts['align_text'] ) ) {
 
 	    	// Left
-		    if ( isset( $atts['align_text']['left'] ) ) {
-		    	$flex_row['class'] .= ' ' . $atts['align_text']['start-xs'];
+		    if ( in_array( 'left', $atts['align_text']) ) {
+		    	$flex_row['class'] .= ' text-xs-left';
 		    }
 
 		    // Center
-		    if ( isset( $atts['align_text']['center'] ) ) {
-		    	$flex_row['class'] .= ' ' . $atts['align_text']['center-xs'];
+		    if ( in_array( 'center', $atts['align_text'] ) ) {
+		    	$flex_row['class'] .= ' text-xs-center';
 		    }
 
 		    // Right
-		    if ( isset( $atts['align_text']['right'] ) ) {
-		    	$flex_row['class'] .= ' ' . $atts['align_text']['end-xs'];
+		    if ( in_array( 'right', $atts['align_text'] ) ) {
+		    	$flex_row['class'] .= ' text-xs-right';
 		    }
 
 	    }
