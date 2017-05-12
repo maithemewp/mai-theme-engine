@@ -1,15 +1,4 @@
 <?php
-/**
- * Mai Theme.
- *
- * WARNING: This file is part of the core Mai Theme framework.
- * The goal is to keep all files in /lib/ untouched.
- * That way we can easily update the core structure of the theme on existing sites without breaking things
- *
- * @author   Mike Hemberger
- *
- * @version  1.0.0
- */
 
 /**
  * Add new section shortcode
@@ -35,16 +24,16 @@ function mai_get_section_shortcode( $atts, $content = null ) {
     );
 
     // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
-    $atts = apply_filters( 'mai_section_defaults', $defaults );
-
-    // Add shortcode class
-    $atts['class'] = trim( 'section-shortcode ' . $atts['class'] );
+    $defaults = apply_filters( 'mai_section_defaults', $defaults );
 
     /**
      * Shortcode section attributes
      * Note, these are different then the defaults in mai_get_section_* functions
      */
     $atts = shortcode_atts( $defaults, $atts, 'section' );
+
+    // Add shortcode class
+    $atts['class'] = 'section-shortcode ' . mai_sanitize_html_classes( $atts['class'] );
 
     $output = '';
 

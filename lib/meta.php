@@ -35,8 +35,8 @@ function mai_post_author_link_defaults( $atts ) {
 }
 
 // Customize the entry meta in the entry header
-add_filter( 'genesis_post_info', 'mai_post_info_filter' );
-function mai_post_info_filter( $post_info ) {
+add_filter( 'genesis_post_info', 'mai_post_info' );
+function mai_post_info( $post_info ) {
 	$post_info = '[post_date] [post_author_posts_link]';
 	if ( ! mai_is_flex_loop() ) {
 		$post_info .= '[post_comments before=" &middot; "] [post_edit before="&nbsp; &middot; "]';
@@ -45,11 +45,17 @@ function mai_post_info_filter( $post_info ) {
 }
 
 // Add all public taxonomies to post meta
-add_filter( 'genesis_post_meta','mai_post_meta_filter', 11 );
-function mai_post_meta_filter( $post_meta ) {
+add_filter( 'genesis_post_meta','mai_post_meta', 11 );
+function mai_post_meta( $post_meta ) {
 	global $post;
     $taxos = get_post_taxonomies($post);
     if ( $taxos ) {
+
+		// Skip if Post Formats and Yoast prominent keyworks
+		$taxos = array_diff( $taxos, array( 'post_format', 'yst_prominent_words' ) );
+
+		$taxos = apply_filters( 'mai_post_meta_taxos', $taxos );
+
     	$post_meta = $shortcodes = '';
     	foreach ( $taxos as $tax ) {
     		$taxonomy = get_taxonomy($tax);

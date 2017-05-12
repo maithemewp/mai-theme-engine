@@ -56,8 +56,8 @@ final class Mai_Grid_Shortcode {
 
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
-			'align_cols'			=> '',
-			'align_text'			=> '',
+			'align_cols'			=> '', // "top left"
+			'align_text'			=> '', // "center"
 			'authors'				=> '',
 			'categories'			=> '', // Comma separated category IDs
 			// 'center'				=> false,
@@ -806,12 +806,12 @@ final class Mai_Grid_Shortcode {
 
 			// Slider HTML data attributes
 			$flex_row['data-arrows']		 = $atts['arrows'] ? 'true' : 'false';
-			$flex_row['data-center']		 = $atts['center'] ? 'true' : 'false';
+			$flex_row['data-center']		 = in_array( 'center', $atts['align_cols'] ) ? 'true' : 'false';
 			$flex_row['data-centermode']	 = $atts['center_mode'] ? 'true' : 'false';
 			$flex_row['data-dots']			 = $atts['dots'] ? 'true' : 'false';
 			$flex_row['data-fade']			 = $atts['fade'] ? 'true' : 'false';
 			$flex_row['data-infinite']		 = $atts['infinite'] ? 'true' : 'false';
-			$flex_row['data-middle']		 = $atts['middle'] ? 'true' : 'false';
+			$flex_row['data-middle']		 = in_array( 'middle', $atts['align_cols'] ) ? 'true' : 'false';
 			$flex_row['data-slidestoscroll'] = $atts['slidestoscroll'];
 			$flex_row['data-slidestoshow']	 = $atts['columns'];
 			$flex_row['data-gutter']		 = $is_valid_gutter ? $atts['gutter'] : 0;
@@ -829,33 +829,33 @@ final class Mai_Grid_Shortcode {
 		    if ( ! empty( $atts['align_cols'] ) ) {
 
 		    	// Left
-			    if ( isset( $atts['align_cols']['left'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['start-xs'];
+			    if ( in_array( 'left', $atts['align_cols'] ) ) {
+			    	$flex_row['class'] .= ' start-xs';
 			    }
 
 			    // Center
-			    if ( isset( $atts['align_cols']['center'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['center-xs'];
+			    if ( in_array( 'center', $atts['align_cols'] ) ) {
+			    	$flex_row['class'] .= ' center-xs';
 			    }
 
 			    // Right
-			    if ( isset( $atts['align_cols']['right'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['end-xs'];
+			    if ( in_array( 'right', $atts['align_cols'] ) ) {
+			    	$flex_row['class'] .= ' end-xs';
 			    }
 
 			    // Top
-			    if ( isset( $atts['align_cols']['top'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['top-xs'];
+			    if ( in_array( 'top', $atts['align_cols'] ) ) {
+			    	$flex_row['class'] .= ' top-xs';
 			    }
 
 			    // Middle
-			    if ( isset( $atts['align_cols']['middle'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['middle-xs'];
+			    if ( in_array( 'middle', $atts['align_cols'] ) ) {
+			    	$flex_row['class'] .= ' middle-xs';
 			    }
 
 			    // Bottom
-			    if ( isset( $atts['align_cols']['bottom'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_cols']['bottom-xs'];
+			    if ( in_array( 'bottom', $atts['align_cols'] ) ) {
+			    	$flex_row['class'] .= ' bottom-xs';
 			    }
 
 		    }
@@ -864,18 +864,18 @@ final class Mai_Grid_Shortcode {
 		    if ( ! empty( $atts['align_text'] ) ) {
 
 		    	// Left
-			    if ( isset( $atts['align_text']['left'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_text']['start-xs'];
+			    if ( in_array( 'left', $atts['align_text']) ) {
+			    	$flex_row['class'] .= ' text-xs-left';
 			    }
 
 			    // Center
-			    if ( isset( $atts['align_text']['center'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_text']['center-xs'];
+			    if ( in_array( 'center', $atts['align_text'] ) ) {
+			    	$flex_row['class'] .= ' text-xs-center';
 			    }
 
 			    // Right
-			    if ( isset( $atts['align_text']['right'] ) ) {
-			    	$flex_row['class'] .= ' ' . $atts['align_text']['end-xs'];
+			    if ( in_array( 'right', $atts['align_text'] ) ) {
+			    	$flex_row['class'] .= ' text-xs-right';
 			    }
 
 		    }
@@ -964,6 +964,7 @@ final class Mai_Grid_Shortcode {
 	}
 
 	function get_entry_classes( $atts ) {
+
 		// We need classes to be an array so we can use them in get_post_class()
 		$classes = array( 'flex-entry', 'entry' );
 
@@ -980,26 +981,13 @@ final class Mai_Grid_Shortcode {
 		// If dealing with a post object
 		if ( 'post' == $atts['content_type'] ) {
 
-			/**
-			 * Remove the normal flex entry classes filter to make sure we start with a clean slate.
-			 * This was an issue when adding [grid] shortcode in product_cat descriptions.
-			 */
-			remove_filter( 'post_class', 'mai_add_flex_entry_post_classes' );
-
 		    /**
 		     * Merge our new classes with the default WP generated classes.
 		     * Also removes potential duplicate flex-entry since we need it even if slider.
 		     */
 			$classes = array_map( 'sanitize_html_class', get_post_class( array_unique( $classes ), get_the_ID() ) );
 
-			// Add back the post class filter for any queried posts
-			add_filter( 'post_class', 'mai_add_flex_entry_post_classes' );
-
 		}
-		// non-posts don't have post_class, so add boxed content class manually
-		// elseif ( mai_is_boxed_content_enabled() ) {
-		// 	$classes[] = 'boxed';
-		// }
 
 		// Turn array into a string of space separated classes
 		return implode( ' ', $classes );

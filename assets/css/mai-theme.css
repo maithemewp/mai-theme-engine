@@ -89,6 +89,7 @@ progress,sub,sup{vertical-align:baseline}button,hr,input{overflow:visible}[type=
 
 html {
 	font-size: 62.5%; /* 10px browser default */
+	/* font-size: calc(112.5% + 4 * (100vw - 600px) / 400); */
 }
 
 body {
@@ -98,6 +99,7 @@ body {
 	width: 100%;
 	height: 100%;
 	font-size: 16px;
+	/* font-size: calc(112.5% + 0.25vw); */
 	line-height: 1.625;
 	margin: 0;
 }
@@ -214,29 +216,32 @@ h6 {
 
 h1,
 h1.entry-title {
-	font-size: 36px;
-	font-size: calc(1vw + 26px);
+	font-size: calc(24px + 0.5vw);
 }
 
 h2 {
-	font-size: 30px;
-	font-size: calc(1vw + 20px)
+	/* font-size: 30px; */
+	font-size: calc(22px + 0.5vw);
 }
 
 h3 {
-	font-size: 26px;
+	/* font-size: 26px; */
+	font-size: calc(20px + 0.5vw);
 }
 
 h4 {
-	font-size: 22px;
+	/* font-size: 22px; */
+	font-size: calc(19px + 0.5vw);
 }
 
 h5 {
-	font-size: 18px;
+	/* font-size: 18px; */
+	font-size: calc(18px + 0.5vw);
 }
 
 h6 {
-	font-size: 16px;
+	/* font-size: 16px; */
+	font-size: calc(17px + 0.5vw);
 }
 
 /* ## Titles
@@ -268,15 +273,24 @@ a:focus,
 .banner-area .entry-title,
 .banner-area .archive-title,
 .banner-area .author-box-title {
-	font-size: calc(2vw + 24px);
+	font-size: calc(26px + 1.25vw);
 	margin-top: 8px;
 	margin-bottom: 8px;
 }
 
+.flex-entry .entry-title,
+.flex-entry .woocommerce-loop-product__title,
+.flex-entry .woocommerce-loop-category__title {
+	font-size: calc(22px + 0.1vw);
+	line-height: 1.35;
+}
+
 .flex-entry .entry-title {
-	font-size: 24px;
-	line-height: 1.25;
 	margin-bottom: 0;
+}
+
+.flex-entry .woocommerce-loop-product__title {
+	margin-bottom: 12px;
 }
 
 .entry-title a,
@@ -492,8 +506,36 @@ input[type="submit"],
 .button,
 .entry-content .button,
 .entry-content .more-link,
-.menu-item.highlight a {
-	display: -webkit-inline-flex;display: -ms-inline-flexbox;display: inline-flex;
+.menu-item.highlight a,
+.woocommerce #respond input#submit,
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit.alt,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt,
+.woocommerce #respond input#submit.alt.disabled,
+.woocommerce #respond input#submit.alt.disabled:hover,
+.woocommerce #respond input#submit.alt:disabled[disabled],
+.woocommerce #respond input#submit.alt:disabled[disabled]:hover,
+.woocommerce a.button.alt:disabled,
+.woocommerce a.button.alt:disabled:hover,
+.woocommerce a.button.alt:disabled[disabled],
+.woocommerce a.button.alt:disabled[disabled]:hover,
+.woocommerce button.button.alt.disabled,
+.woocommerce button.button.alt.disabled:hover,
+.woocommerce button.button.alt:disabled,
+.woocommerce button.button.alt:disabled:hover,
+.woocommerce button.button.alt:disabled[disabled],
+.woocommerce button.button.alt:disabled[disabled]:hover,
+.woocommerce input.button.alt.disabled,
+.woocommerce input.button.alt.disabled:hover,
+.woocommerce input.button.alt:disabled,
+.woocommerce input.button.alt:disabled:hover,
+.woocommerce input.button.alt:disabled[disabled],
+.woocommerce input.button.alt:disabled[disabled]:hover {
+	display: ;-webkit-inline-flex;display: -ms-inline-flexbox;display: -webkit-inline-flex;display: inline-flex;
 	-webkit-justify-content: center;-ms-flex-pack: center;justify-content: center;
 	-webkit-align-items: center;-ms-flex-align: center;align-items: center;
 	cursor: pointer;
@@ -503,6 +545,7 @@ input[type="submit"],
 	color: rgba(255, 255, 255, 1);
 	text-align: center;
 	text-shadow: none;
+	border-radius: 0;
 	box-shadow: none;
 }
 
@@ -522,7 +565,23 @@ input:focus[type="submit"],
 .entry-content .more-link:focus,
 .menu-item.highlight.current-menu-item > a,
 .menu-item.highlight > a:hover,
-.menu-item.highlight > a:focus {
+.menu-item.highlight > a:focus,
+.woocommerce #respond input#submit:hover,
+.woocommerce #respond input#submit:focus,
+.woocommerce a.button:hover,
+.woocommerce a.button:focus,
+.woocommerce button.button:hover,
+.woocommerce button.button:focus,
+.woocommerce input.button:hover,
+.woocommerce input.button:focus,
+.woocommerce #respond input#submit.alt:hover,
+.woocommerce #respond input#submit.alt:focus,
+.woocommerce a.button.alt:hover,
+.woocommerce a.button.alt:focus,
+.woocommerce button.button.alt:hover,
+.woocommerce button.button.alt:focus,
+.woocommerce input.button.alt:hover,
+.woocommerce input.button.alt:focus {
 	background-color: rgba(0, 0, 0, 1);
 	color: rgba(255, 255, 255, 1);
 	outline: none;
@@ -550,9 +609,13 @@ input[type="submit"].small,
 .button.alt,
 .comment-reply-link,
 .entry-content .button.alt,
-.entry-content .more-link {
-	background-color: rgba(0, 0, 0, 0.06);
-	color: rgba(0, 0, 0, 0.7);
+.entry-content .more-link,
+.woocommerce #respond input#submit,
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button {
+    color: #515151;
+    background-color: #ebe9eb;
 }
 
 .button.alt:hover,
@@ -562,9 +625,17 @@ input[type="submit"].small,
 .entry-content .button.alt:hover,
 .entry-content .button.alt:focus,
 .entry-content .more-link:hover,
-.entry-content .more-link:focus {
-	background-color: rgba(0, 0, 0, 0.12);
-	color: rgba(0, 0, 0, 0.7);
+.entry-content .more-link:focus,
+.woocommerce #respond input#submit:hover,
+.woocommerce #respond input#submit:focus,
+.woocommerce a.button:hover,
+.woocommerce a.button:focus,
+.woocommerce button.button:hover,
+.woocommerce button.button:focus,
+.woocommerce input.button:hover,
+.woocommerce input.button:focus {
+    background-color: #dad8da;
+    color: #515151;
 }
 
 .more-link {
@@ -750,6 +821,19 @@ td {
 
 /* # Common Classes
 ---------------------------------------------------------------------------------------------------- */
+
+/* ## Callout
+--------------------------------------------- */
+
+.callout {
+	background-color: #ebe9eb;
+	padding: 24px;
+	margin-bottom: 24px;
+}
+
+.callout > p:last-child {
+	margin-bottom: 0;
+}
 
 /* ## Section
 --------------------------------------------- */
@@ -2695,6 +2779,12 @@ li.comment {
 .footer-widgets {
 	background-color: #323232;
 	color: rgba(255, 255, 255, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.footer-widgets .wrap {
+	padding-top: 60px;
+	padding-bottom: 30px;
 }
 
 .footer-widgets .widget {
@@ -2711,7 +2801,6 @@ li.comment {
 
 .footer-widgets .widget-title {
 	color: #fff;
-	margin-bottom: 8px;
 }
 
 .footer-widgets li {

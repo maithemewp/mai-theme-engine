@@ -1,9 +1,7 @@
 <?php
 /**
  * *********************************************************
- * Added product-wrap
- * Changed .products to a <div>
- * Use genesis_attr to add flexington classes for .products
+ * Remove all markup and add 'mai_before_flex_loop' hook
  * *********************************************************
  *
  * Product Loop Start
@@ -21,8 +19,6 @@
  * @package 	WooCommerce/Templates
  * @version     2.0.0
  */
-$attributes = array();
-$attributes['class'] = 'products row gutter-30';
-// This can be filtered on specific templates to add/change attributes
-printf( '<div class="products-wrap"><div %s>', genesis_attr( 'loop-start', $attributes ) );
+
+do_action( 'mai_before_flex_loop' );
 ?>

@@ -100,6 +100,7 @@ function mai_get_grid( $args, $content = null ) {
     return Mai_Grid_Shortcode()->get_grid( $args, $content );
 }
 
+
 function mai_is_content_archive() {
 
     $is_archive = false;
@@ -128,35 +129,52 @@ function mai_is_content_archive() {
     return $is_archive;
 }
 
-// function mai_is_archive_settings_enabled() {
+function mai_get_archive_setting( $key ) {
 
-//     $enabled = false;
+    // Allow child theme to short circuit this function.
+    $pre = apply_filters( "mai_pre_get_archive_setting_{$key}", null );
+    if ( null !== $pre ) {
+        return $pre;
+    }
 
-//     // Static blog page
-//     if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-//         $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
-//     }
-//     // Term archive
-//     elseif ( is_category() || is_tag() || is_tax() ) {
-//         $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
-//     }
-//     // CPT archive
-//     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-//         $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' );
-//     }
-//     // Author archive
-//     elseif ( is_author() ) {
-//         $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
-//     }
-//     // WooCommerce shop page
-//     elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
-//         $enabled = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
-//     }
+    $settings = mai_get_archive_settings();
 
-//     return ( 'on' == $enabled );
-// }
+    return $settings[$key];
+}
 
-function mai_get_archive_meta_with_fallback( $key ) {
+function mai_get_archive_settings() {
+
+    $settings = array(
+        'hide_banner'                     => mai_get_archive_setting_with_fallback( 'hide_banner' ),
+        'banner_id'                       => mai_get_archive_setting_with_fallback( 'banner_id' ),
+        'enable_content_archive_settings' => mai_get_archive_setting_with_fallback( 'enable_content_archive_settings' ),
+        'remove_loop'                     => mai_get_archive_setting_with_fallback( 'remove_loop' ),
+        'columns'                         => mai_get_archive_setting_with_fallback( 'columns' ),
+        'content_archive'                 => mai_get_archive_setting_with_fallback( 'content_archive' ),
+        'content_archive_thumbnail'       => mai_get_archive_setting_with_fallback( 'content_archive_thumbnail' ),
+        'image_location'                  => mai_get_archive_setting_with_fallback( 'image_location' ),
+        'image_size'                      => mai_get_archive_setting_with_fallback( 'image_size' ),
+        'image_alignment'                 => mai_get_archive_setting_with_fallback( 'image_alignment' ),
+        'content_archive_limit'           => mai_get_archive_setting_with_fallback( 'content_archive_limit' ),
+        'more_link'                       => mai_get_archive_setting_with_fallback( 'more_link' ),
+        'remove_meta'                     => mai_get_archive_setting_with_fallback( 'remove_meta' ),
+        'posts_nav'                       => mai_get_archive_setting_with_fallback( 'posts_nav' ),
+        'posts_per_page'                  => mai_get_archive_setting_with_fallback( 'posts_per_page' ),
+    );
+    return (array) apply_filters( 'mai_archive_settings', $settings );
+}
+
+
+/**
+ * This function returns an archive setting value
+ * without running through any filters.
+ * Do not use in child themes! Instead use mai_get_archive_setting( $key );
+ *
+ * @param  [type] $key      [description]
+ * @param  [type] $fallback [description]
+ * @return [type]           [description]
+ */
+function mai_get_archive_setting_with_fallback( $key, $fallback = null ) {
 
     $meta = false;
 
@@ -189,6 +207,9 @@ function mai_get_archive_meta_with_fallback( $key ) {
                     if ( 'on' == $enabled ) {
                         $meta = get_post_meta( $shop_page_id, $key, true );
                     }
+                    // elseif ( $posts_page_id = get_option( 'page_for_posts' ) ) {
+                        // $meta = get_post_meta( $posts_page_id, $key, true );
+                    // }
                 }
             }
             // Must be custom taxonomy archive
@@ -228,16 +249,29 @@ function mai_get_archive_meta_with_fallback( $key ) {
         if ( 'on' == $enabled ) {
             $meta = get_post_meta( $shop_page_id, $key, true );
         }
-        // elseif ( ( 'columns' == $key ) && ! $meta ) {
-        //     // Set default columns for Shop
-        //     $meta = 3;
-        // }
     }
+
+    // Exceptions
+    // if ( ! $meta ) {
+    //     if ( ( 'columns' == $key )
+    //     && class_exists( 'WooCommerce' )
+    //     && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
+    //         if ( $columns <= 1 ) {
+    //             $columns = 3;
+    //         }
+    //     }
+    // }
 
     // Lastly, fallback to the theme settings/options
     if ( ! $meta ) {
-        $meta = genesis_get_option( $key );
+        // if ( ! empty( $fallback ) ) {
+            // $meta = $fallback;
+        // } else {
+            $meta = genesis_get_option( $key );
+        // }
     }
+
+    // d( $meta );
 
     return $meta;
 }
@@ -523,16 +557,15 @@ function mai_get_section_defaults() {
 
 function mai_get_columns() {
 
-    $columns = mai_get_archive_meta_with_fallback( 'columns' );
+    $columns = mai_get_archive_setting_with_fallback( 'columns' );
 
-    if ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+    if ( class_exists( 'WooCommerce' ) && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
         if ( $columns <= 1 ) {
             $columns = 3;
         }
     }
 
-    return absint( $columns );
-
+    return absint( apply_filters( 'mai_columns', $columns ) );
 }
 
 function mai_admin_get_columns() {
@@ -632,26 +665,6 @@ function mai_do_flex_entry_classes_by( $option, $value ) {
 // }
 
 /**
- * Function to be used with post_class filter to add flex entry classes.
- * Used as a helper function so we can easily add and remove the filter before/after specific loops.
- *
- * @param   array  $classes
- *
- * @return  array  The modified classes
- */
-function mai_add_flex_entry_post_classes( $classes ) {
-    // Get the classes by layout
-    $flex_classes = mai_get_flex_entry_classes_by_columns( mai_get_columns() );
-    // Add filter so devs can change these classes easily
-    $flex_classes = apply_filters( 'mai_flex_entry_classes', $flex_classes );
-    // Add the classes to the post array
-    $classes[]    = $flex_classes;
-    // Return the classes
-    return $classes;
-}
-
-
-/**
  * Filter post_class to add flex classes by number of columns.
  *
  * @param  string  $columns  number of columns to get classes for
@@ -725,8 +738,7 @@ function mai_get_flex_entry_classes_by( $option, $value ) {
 // }
 
 /**
- * Get the classes needed for an entry
- * from number of columns
+ * Get the classes needed for an entry from number of columns.
  *
  * @param  string  $columns  number of columns to get classes for
  *
@@ -822,43 +834,6 @@ function mai_get_flex_entry_image_size_by( $option, $value ) {
 }
 
 /**
- * Get the image size needed for an entry
- * depending on the layout
- *
- * @param  string  $layout  the page layout
- *
- * @return string  the image size
- */
-// function mai_get_flex_entry_image_size_by_layout( $layout ) {
-//     switch ( $layout ) {
-//         case 'flex-loop-4':
-//         case 'flex-loop-4sm':
-//         case 'flex-loop-4-content-sidebar':
-//         case 'flex-loop-4-sidebar-content':
-//         case 'flex-loop-3md':
-//         case 'flex-loop-3sm':
-//         case 'flex-loop-3-content-sidebar':
-//         case 'flex-loop-3-sidebar-content':
-//             $image_size = 'one-fourth';
-//             break;
-//         case 'flex-loop-4md':
-//         case 'flex-loop-3':
-//         case 'flex-loop-2sm':
-//         case 'flex-loop-2-content-sidebar':
-//         case 'flex-loop-2-sidebar-content':
-//             $image_size = 'one-third';
-//             break;
-//         case 'flex-loop-2':
-//         case 'flex-loop-2md':
-//             $image_size = 'one-half';
-//             break;
-//         default:
-//             $image_size = 'one-third';
-//     }
-//     return $image_size;
-// }
-
-/**
  * Get the image_size needed for an entry
  * from number of columns.
  *
@@ -919,6 +894,20 @@ function mai_get_read_more_link( $object = '', $text = '' ) {
     }
     $text = $text ? sanitize_text_field($text) : __( 'Read More', 'maitheme' );
     return sprintf( '<p class="more-link-wrap"><a class="more-link" href="%s">%s</a></p>', $link, sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) ) );
+}
+
+/**
+ * Sanitize a string or array of classes.
+ *
+ * @param   string|array  $classes   The classes to sanitize.
+ *
+ * @return  string  Space-separated, sanitized classes.
+ */
+function mai_sanitize_html_classes( $classes ) {
+    if ( ! is_array( $classes ) ) {
+        $classes = explode( ' ', $classes );
+    }
+    return implode( ' ', array_unique( array_map( 'sanitize_html_class', $classes ) ) );
 }
 
 /**

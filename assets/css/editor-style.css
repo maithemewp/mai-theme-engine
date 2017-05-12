@@ -1,7 +1,7 @@
 .button {
-	background-color: #f4f4f4;
 	padding: 8px 20px;
 	text-decoration: none;
+	border: 1px solid #222;
 }
 
 .callout {}
