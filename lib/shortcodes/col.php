@@ -127,29 +127,53 @@ final class Mai_Col_Shortcode {
 
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
-			'class'	=> '',
-			'id'	=> '',
-			'style' => '',
+			'align_text' => '',
+			'class'		 => '',
+			'id'		 => '',
+			'style'		 => '',
 		), $atts, 'col' );
 
 		$atts = apply_filters( 'mai_col_shortcode_defaults', $atts );
 
 		// Sanitize atts
 		$atts = array(
-			'class'	=> array_map( 'sanitize_html_class', ( array_filter( explode( ' ', $atts['class'] ) ) ) ),
-			'id'	=> sanitize_html_class( $atts['id'] ),
-			'style'	=> esc_attr( $atts['style'] ),
+			'align_text' => array_map( 'sanitize_key', ( array_filter( explode( ' ', $atts['align_text'] ) ) ) ),
+			'class'		 => array_map( 'sanitize_html_class', ( array_filter( explode( ' ', $atts['class'] ) ) ) ),
+			'id'		 => sanitize_html_class( $atts['id'] ),
+			'style'		 => esc_attr( $atts['style'] ),
 		);
 
 		$flex_col = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
 
-		if ( ! empty($atts['wrapper_id']) ) {
+		// ID
+		if ( ! empty( $atts['wrapper_id'] ) ) {
 			$flex_col['id'] = $atts['wrapper_id'];
 		}
 
-		if ( ! empty($atts['class']) ) {
+		// Classes
+		if ( ! empty( $atts['class'] ) ) {
 			$flex_col['class'] .= ' ' . implode( ' ', $atts['class'] );
 		}
+
+	    // Align text
+	    if ( ! empty( $atts['align_text'] ) ) {
+
+	    	// Left
+		    if ( isset( $atts['align_text']['left'] ) ) {
+		    	$flex_row['class'] .= ' ' . $atts['align_text']['start-xs'];
+		    }
+
+		    // Center
+		    if ( isset( $atts['align_text']['center'] ) ) {
+		    	$flex_row['class'] .= ' ' . $atts['align_text']['center-xs'];
+		    }
+
+		    // Right
+		    if ( isset( $atts['align_text']['right'] ) ) {
+		    	$flex_row['class'] .= ' ' . $atts['align_text']['end-xs'];
+		    }
+
+	    }
 
 	    /**
 	     * Return the content with col wrap.

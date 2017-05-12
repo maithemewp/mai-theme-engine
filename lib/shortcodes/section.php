@@ -1,15 +1,4 @@
 <?php
-/**
- * Mai Theme.
- *
- * WARNING: This file is part of the core Mai Theme framework.
- * The goal is to keep all files in /lib/ untouched.
- * That way we can easily update the core structure of the theme on existing sites without breaking things
- *
- * @author   Mike Hemberger
- *
- * @version  1.0.0
- */
 
 /**
  * Add new section shortcode
@@ -25,26 +14,13 @@ function mai_get_section_shortcode( $atts, $content = null ) {
         return;
     }
 
-    $defaults = array(
-        'class'    => '',
-        'bg_color' => '',
-        'image'    => null,
-        'overlay'  => false,
-        'wrap'     => true,
-        'inner'    => true,
-    );
-
-    // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
-    $defaults = apply_filters( 'mai_section_defaults', $defaults );
-
     /**
-     * Shortcode section attributes
-     * Note, these are different then the defaults in mai_get_section_* functions
+     * Parse incoming $args into an array and merge it with $defaults
      */
-    $atts = shortcode_atts( $defaults, $atts, 'section' );
+    // $args = wp_parse_args( $args, $defaults );
 
     // Add shortcode class
-    $atts['class'] = 'section-shortcode' . $atts['class'];
+    $atts['class'] = isset( $atts['class'] ) ? 'section-shortcode ' . $atts['class'] : 'section-shortcode';
 
     $output = '';
 

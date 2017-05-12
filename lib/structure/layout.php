@@ -17,7 +17,7 @@
  *
  * Used as shortcut second parameter for `add_filter()`.
  *
- * add_filter( 'genesis_pre_get_option_site_layout', '__mai_return_flex_loop_3md' );
+ * add_filter( 'genesis_pre_get_option_site_layout', '__mai_return_md_content' );
  */
 
 function __mai_return_md_content() {
@@ -31,66 +31,6 @@ function __mai_return_sm_content() {
 function __mai_return_xs_content() {
     return 'xs-content';
 }
-
-// function __mai_return_flex_loop_4() {
-//     return 'flex-loop-4';
-// }
-
-// function __mai_return_flex_loop_3() {
-//     return 'flex-loop-3';
-// }
-
-// function __mai_return_flex_loop_2() {
-//     return 'flex-loop-2';
-// }
-
-// function __mai_return_flex_loop_4md() {
-//     return 'flex-loop-4md';
-// }
-
-// function __mai_return_flex_loop_3md() {
-//     return 'flex-loop-3md';
-// }
-
-// function __mai_return_flex_loop_2md() {
-//     return 'flex-loop-2md';
-// }
-
-// function __mai_return_flex_loop_4sm() {
-//     return 'flex-loop-4sm';
-// }
-
-// function __mai_return_flex_loop_3sm() {
-//     return 'flex-loop-3sm';
-// }
-
-// function __mai_return_flex_loop_2sm() {
-//     return 'flex-loop-2sm';
-// }
-
-// function __mai_return_flex_loop_4_content_sidebar() {
-//     return 'flex-loop-4-content-sidebar';
-// }
-
-// function __mai_return_flex_loop_4_sidebar_content() {
-//     return 'flex-loop-4-sidebar-content';
-// }
-
-// function __mai_return_flex_loop_3_content_sidebar() {
-//     return 'flex-loop-3-content-sidebar';
-// }
-
-// function __mai_return_flex_loop_3_sidebar_content() {
-//     return 'flex-loop-3-sidebar-content';
-// }
-
-// function __mai_return_flex_loop_2_content_sidebar() {
-//     return 'flex-loop-2-content-sidebar';
-// }
-
-// function __mai_return_flex_loop_2_sidebar_content() {
-//     return 'flex-loop-2-sidebar-content';
-// }
 
 /**
  * Add new sitewide layout options.

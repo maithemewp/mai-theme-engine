@@ -564,8 +564,6 @@ function mai_cmb2_add_metaboxes() {
 	$post_types = apply_filters( 'mai_banner_post_types', $post_types );
 
 	$taxonomies = get_taxonomies( array( 'public' => true ) );
-	// Remove Woo Product Cat since it has its own image field
-	unset( $taxonomies['product_cat'] );
 	// Filter taxonomies so devs can change where this shows up
 	$taxonomies = apply_filters( 'mai_banner_taxonomies', $taxonomies );
 
@@ -623,7 +621,10 @@ function mai_cmb2_add_metaboxes() {
         'classes' 		   => 'mai-metabox mai-content-archive-metabox',
     ) );
     $term->add_field( _mai_cmb_banner_visibility_config() );
-    $term->add_field( _mai_cmb_banner_config() );
+    // Don't show banner upload field on product categories, since Woo has an image field already
+    if ( ! ( class_exists( 'WooCommerce' ) && ( 'product_cat' == $taxonomies['product_cat'] ) ) ) {
+	    $term->add_field( _mai_cmb_banner_config() );
+	}
     $term->add_field( _mai_cmb_remove_loop_config() );
     $term->add_field( _mai_cmb_content_archive_settings_title_config() );
     $term->add_field( _mai_cmb_content_enable_archive_settings_config() );

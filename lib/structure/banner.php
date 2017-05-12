@@ -35,10 +35,11 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
     $args = array(
-		'class'		=> 'banner-area',
-		'overlay'	=> get_theme_mod( 'enable_banner_overlay', 1 ),
-		'wrap'		=> true,
-		'inner'		=> get_theme_mod( 'enable_banner_inner', 0 ),
+		'class'			=> 'banner-area width-full',
+		'overlay'		=> get_theme_mod( 'enable_banner_overlay', 1 ),
+		'wrap'			=> true,
+		'inner'			=> get_theme_mod( 'enable_banner_inner', 0 ),
+		'content_width'	=> get_theme_mod( 'banner_content_width', 'lg' ),
     );
 
 	// Get the image ID
@@ -148,12 +149,11 @@ function mai_do_banner_content() {
 	// Bail if WooCommerce is not active
 	elseif ( class_exists( 'WooCommerce' ) ) {
 
-		 if ( is_shop() ) {
+		 if ( is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
 		    // Get our new data
-		    $shop_id 	= get_option( 'woocommerce_shop_page_id' );
-			$post		= get_post( $shop_id );
-			$headline	= $post->post_title;
-			$intro_text = $post->post_excerpt;
+			// $post		= get_post( $shop_page_id );
+			$headline	= get_the_title( $shop_page_id );
+			$intro_text = get_the_excerpt( $shop_page_id );
 			$headline	= $headline ? sprintf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), strip_tags( $headline ) ) : '';
 			$intro_text = $intro_text ? $intro_text : '';
 		    printf( '<div %s>%s</div>', genesis_attr( 'cpt-archive-description' ), $headline . $intro_text );

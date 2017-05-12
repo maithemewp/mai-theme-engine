@@ -29,14 +29,17 @@ function mai_get_banner_id() {
     if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
         $image_id = get_post_meta( $front_page_id, 'banner_id', true );
     }
+
     // Static blog page
     elseif ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
         $image_id = get_post_meta( $posts_page_id, 'banner_id', true );
     }
+
     // Single page/post/cpt, but not static front page or static home page
     elseif ( is_singular() && ! ( is_front_page() || is_home() ) ) {
         $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
     }
+
     // Term archive
     elseif ( is_category() || is_tag() || is_tax() ) {
         // If WooCommerce product category
@@ -47,18 +50,21 @@ function mai_get_banner_id() {
             $image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
         }
     }
+
     // CPT archive
     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
         $image_id = genesis_get_cpt_option( 'banner_id' );
     }
+
     // Author archive
     elseif ( is_author() ) {
         // $author   = get_user_by( 'slug', get_query_var( 'author_name' ) );
         // $image_id = get_user_meta( $author->ID, 'banner_id', true );
         $image_id = get_the_author_meta( 'banner_id', get_query_var( 'author' ) );
     }
+
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $image_id = get_post_meta( $shop_id, 'banner_id', true );
     }
 
@@ -77,6 +83,23 @@ function mai_get_banner_id() {
 
     return $image_id;
 }
+
+function mai_do_grid( $args, $content = null ) {
+    echo mai_get_grid( $args, $content );
+}
+
+/**
+ * Helper function to get a grid of content.
+ * This is a php version of the [grid] shortcode.
+ *
+ * @param   array  $args  The [grid] shortcode atts.
+ *
+ * @return  string|HTML
+ */
+function mai_get_grid( $args, $content = null ) {
+    return Mai_Grid_Shortcode()->get_grid( $args, $content );
+}
+
 
 function mai_is_content_archive() {
 
@@ -99,42 +122,59 @@ function mai_is_content_archive() {
         $is_archive = true;
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $is_archive = true;
     }
 
     return $is_archive;
 }
 
-// function mai_is_archive_settings_enabled() {
+function mai_get_archive_setting( $key ) {
 
-//     $enabled = false;
+    // Allow child theme to short circuit this function.
+    $pre = apply_filters( "mai_pre_get_archive_setting_{$key}", null );
+    if ( null !== $pre ) {
+        return $pre;
+    }
 
-//     // Static blog page
-//     if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-//         $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
-//     }
-//     // Term archive
-//     elseif ( is_category() || is_tag() || is_tax() ) {
-//         $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
-//     }
-//     // CPT archive
-//     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-//         $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' );
-//     }
-//     // Author archive
-//     elseif ( is_author() ) {
-//         $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
-//     }
-//     // WooCommerce shop page
-//     elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
-//         $enabled = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
-//     }
+    $settings = mai_get_archive_settings();
 
-//     return ( 'on' == $enabled );
-// }
+    return $settings[$key];
+}
 
-function mai_get_archive_meta_with_fallback( $key ) {
+function mai_get_archive_settings() {
+
+    $settings = array(
+        'hide_banner'                     => mai_get_archive_setting_with_fallback( 'hide_banner' ),
+        'banner_id'                       => mai_get_archive_setting_with_fallback( 'banner_id' ),
+        'enable_content_archive_settings' => mai_get_archive_setting_with_fallback( 'enable_content_archive_settings' ),
+        'remove_loop'                     => mai_get_archive_setting_with_fallback( 'remove_loop' ),
+        'columns'                         => mai_get_archive_setting_with_fallback( 'columns' ),
+        'content_archive'                 => mai_get_archive_setting_with_fallback( 'content_archive' ),
+        'content_archive_thumbnail'       => mai_get_archive_setting_with_fallback( 'content_archive_thumbnail' ),
+        'image_location'                  => mai_get_archive_setting_with_fallback( 'image_location' ),
+        'image_size'                      => mai_get_archive_setting_with_fallback( 'image_size' ),
+        'image_alignment'                 => mai_get_archive_setting_with_fallback( 'image_alignment' ),
+        'content_archive_limit'           => mai_get_archive_setting_with_fallback( 'content_archive_limit' ),
+        'more_link'                       => mai_get_archive_setting_with_fallback( 'more_link' ),
+        'remove_meta'                     => mai_get_archive_setting_with_fallback( 'remove_meta' ),
+        'posts_nav'                       => mai_get_archive_setting_with_fallback( 'posts_nav' ),
+        'posts_per_page'                  => mai_get_archive_setting_with_fallback( 'posts_per_page' ),
+    );
+    return (array) apply_filters( 'mai_archive_settings', $settings );
+}
+
+
+/**
+ * This function returns an archive setting value
+ * without running through any filters.
+ * Do not use in child themes! Instead use mai_get_archive_setting( $key );
+ *
+ * @param  [type] $key      [description]
+ * @param  [type] $fallback [description]
+ * @return [type]           [description]
+ */
+function mai_get_archive_setting_with_fallback( $key, $fallback = null ) {
 
     $meta = false;
 
@@ -167,6 +207,9 @@ function mai_get_archive_meta_with_fallback( $key ) {
                     if ( 'on' == $enabled ) {
                         $meta = get_post_meta( $shop_page_id, $key, true );
                     }
+                    // elseif ( $posts_page_id = get_option( 'page_for_posts' ) ) {
+                        // $meta = get_post_meta( $posts_page_id, $key, true );
+                    // }
                 }
             }
             // Must be custom taxonomy archive
@@ -201,17 +244,34 @@ function mai_get_archive_meta_with_fallback( $key ) {
         }
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_page_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
         if ( 'on' == $enabled ) {
             $meta = get_post_meta( $shop_page_id, $key, true );
         }
     }
 
+    // Exceptions
+    // if ( ! $meta ) {
+    //     if ( ( 'columns' == $key )
+    //     && class_exists( 'WooCommerce' )
+    //     && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
+    //         if ( $columns <= 1 ) {
+    //             $columns = 3;
+    //         }
+    //     }
+    // }
+
     // Lastly, fallback to the theme settings/options
     if ( ! $meta ) {
-        $meta = genesis_get_option( $key );
+        // if ( ! empty( $fallback ) ) {
+            // $meta = $fallback;
+        // } else {
+            $meta = genesis_get_option( $key );
+        // }
     }
+
+    // d( $meta );
 
     return $meta;
 }
@@ -241,7 +301,7 @@ function mai_archive_display_image() {
         $archive_display = get_the_author_meta( 'content_archive_thumbnail', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_page_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled         = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
         $archive_display = get_post_meta( $shop_page_id, 'content_archive_thumbnail', true );
     }
@@ -279,7 +339,7 @@ function mai_archive_get_image_location() {
         $archive_location = get_the_author_meta( 'image_location', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled          = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
         $archive_location = get_post_meta( $shop_id, 'image_location', true );
     }
@@ -318,7 +378,7 @@ function mai_get_archive_image_size() {
         $archive_size = get_the_author_meta( 'image_size', get_query_var( 'author' ) );
     }
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && $shop_id  = get_option( 'woocommerce_shop_page_id' ) ) {
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled      = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
         $archive_size = get_post_meta( $shop_id, 'banner_id', true );
     }
@@ -368,8 +428,21 @@ function mai_section_close( $args ) {
  */
 function mai_get_section_open( $args ) {
 
-    // Get the args args, since this helper when used in a shortcode already uses shortcode_atts()
-    $args = wp_parse_args( $args, mai_get_section_defaults() );
+    // Shortcode section atts
+    $args = shortcode_atts( mai_get_section_defaults(), $args, 'section' );
+
+    // Sanitized args
+    $args = array(
+        'wrapper'       => sanitize_key( $args['wrapper'] ),
+        'id'            => sanitize_html_class( $args['id'] ),
+        'class'         => mai_sanitize_html_classes( $args['class'] ),
+        'image'         => absint( $args['image'] ),
+        'overlay'       => filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ),
+        'wrap'          => filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ),
+        'inner'         => filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ),
+        'content_width' => sanitize_key( $args['content_width'] ),
+        'height'        => sanitize_key( $args['height'] ),
+    );
 
     // Start all element variables as empty string
     $overlay = $wrap = $inner = '';
@@ -377,30 +450,26 @@ function mai_get_section_open( $args ) {
     // Start all attributes as empty array
     $section_atts = $overlay_atts = $wrap_atts = $inner_atts = array();
 
-    $has_overlay = filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN );
-    $has_wrap    = filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN );
-    $has_inner   = filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN );
-
     // Maybe add section id
     if ( $args['id'] ) {
-        $section_atts['id'] = sanitize_html_class( $args['id'] );
+        $section_atts['id'] = $args['id'];
     }
 
     // Default section class
     $section_atts['class'] = 'section row middle-xs center-xs';
 
-    // Maybe add section classes
+    // Maybe add additional section classes
     if ( $args['class'] ) {
-        $section_atts['class'] .= ' ' . sanitize_html_class( $args['class'] );
-    }
-
-    // If no inner, add light-content class
-    if ( ! $has_inner ) {
-        $section_atts['class'] .= ' light-content';
+        $section_atts['class'] .= ' ' . $args['class'];
     }
 
     // If we have an image ID
     if ( $args['image'] ) {
+
+        // If no inner, add light-content class
+        if ( ! $args['inner'] ) {
+            $section_atts['class'] .= ' light-content';
+        }
 
         // Get the attachment image
         $image = wp_get_attachment_image_src( absint($args['image']), 'banner', true );
@@ -414,25 +483,93 @@ function mai_get_section_open( $args ) {
     }
 
     // Maybe add an overlay, typically for image tint/style
-    if ( $has_overlay ) {
+    if ( $args['overlay'] ) {
         $section_atts['class'] .= ' overlay';
     }
 
     // Maybe add a wrap, typically to contain content over the image
-    if ( $has_wrap ) {
+    if ( $args['wrap'] ) {
+
         $wrap_atts['class'] = 'wrap';
-        $wrap               = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
+
+        // Wrap height
+        if ( $args['height'] ) {
+
+            switch ( $args['height'] ) {
+                case 'sm':
+                case 'small';
+                    $wrap_atts['class'] .= ' height-sm';
+                    break;
+                case 'md':
+                case 'medium':
+                    $wrap_atts['class'] .= ' height-md';
+                    break;
+                case 'lg':
+                case 'large':
+                    $wrap_atts['class'] .= ' height-lg';
+                    break;
+            }
+
+        }
+
+        // Wrap content width
+        if ( $args['content_width'] ) {
+
+            switch ( $args['content_width'] ) {
+                case 'xs':
+                case 'extra-small':
+                    $wrap_atts['class'] .= ' width-xs';
+                    break;
+                case 'sm':
+                case 'small';
+                    $wrap_atts['class'] .= ' width-sm';
+                    break;
+                case 'md':
+                case 'medium':
+                    $wrap_atts['class'] .= ' width-md';
+                    break;
+                case 'lg':
+                case 'large':
+                    $wrap_atts['class'] .= ' width-lg';
+                    break;
+                case 'xl':
+                case 'extra-large':
+                    $wrap_atts['class'] .= ' width-xl';
+                    break;
+                case 'full':
+                    $wrap_atts['class'] .= ' width-full';
+                    break;
+            }
+
+        } else {
+
+            // Add width classes based on layout
+            switch ( genesis_site_layout() ) {
+                case 'sm-content':
+                    $wrap_atts['class'] .= ' width-sm';
+                    break;
+                case 'md-content':
+                    $wrap_atts['class'] .= ' width-md';
+                    break;
+                case 'lg-content':
+                    $wrap_atts['class'] .= ' width-lg';
+                    break;
+            }
+
+        }
+
+        $wrap = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
     }
 
     // Maybe add an inner wrap, typically for content width/style
-    if ( $has_inner ) {
+    if ( $args['inner'] ) {
         $inner_atts['class'] = 'inner';
         $inner               = sprintf( '<div %s>', genesis_attr( 'mai-inner', $inner_atts ) );
     }
 
     // Build the opening markup
     return sprintf( '<%s %s>%s%s%s',
-        sanitize_text_field( $args['wrapper'] ),
+        $args['wrapper'],
         genesis_attr( 'mai-section', $section_atts ),
         $overlay,
         $wrap,
@@ -483,94 +620,31 @@ function mai_get_section_close( $args ) {
 
 function mai_get_section_defaults() {
     $defaults = array(
-        'wrapper' => 'section',
-        'id'      => null,
-        'class'   => null,
-        'image'   => null,
-        'overlay' => false,
-        'wrap'    => false,
-        'inner'   => false,
+        'wrapper'       => 'section',
+        'id'            => '',
+        'class'         => '',
+        'image'         => '',
+        'overlay'       => false,
+        'wrap'          => true,
+        'inner'         => false,
+        'content_width' => '',
+        'height'        => 'md',
     );
+    // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
     return apply_filters( 'mai_section_defaults', $defaults );
 }
 
 function mai_get_columns() {
 
-    // If static front page
-    if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
-        $columns = get_post_meta( $front_page_id, 'columns', true );
-    }
+    $columns = mai_get_archive_setting_with_fallback( 'columns' );
 
-    // If static blog page
-    elseif ( is_home() && ( $home_id = get_option( 'page_for_posts' ) ) ) {
-        $columns = get_post_meta( $home_id, 'columns', true );
-    }
-
-    // Single post/page/cpt
-    elseif ( is_singular() ) {
-        // If WooCommerce shop page
-        if ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-            $post_id = $shop_id;
+    if ( class_exists( 'WooCommerce' ) && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
+        if ( $columns <= 1 ) {
+            $columns = 3;
         }
-        // Regular old single post/page/cpt
-        else {
-            $post_id = get_the_ID();
-        }
-        // Get the column count
-        $columns = get_post_meta( $post_id, 'columns', true );
     }
 
-    // Term archive
-    elseif ( is_category() || is_tag() || is_tax() ) {
-        // Get the column count
-        $columns = get_term_meta( get_queried_object()->term_id, 'columns', true );
-        // If columns not set for this term
-        if ( ! $columns ) {
-            // If post taxonomy
-            if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-                $columns = get_post_meta( get_option( 'page_for_posts' ), 'columns', true );
-            }
-            // If Woo product taxonomy
-            elseif ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
-                $columns = get_post_meta( get_option( 'woocommerce_shop_page_id' ), 'columns', true );
-            }
-            // Must be custom taxonomy archive
-            else {
-                // global $wp_taxonomies;
-                // $tax = get_queried_object()->taxonomy;
-                $tax = get_taxonomy( get_queried_object()->taxonomy );
-                if ( $tax ) {
-                    /**
-                     * If we have a tax, get the first one.
-                     * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
-                     */
-                    // $post_type = isset( $wp_taxonomies[$tax] ) ? reset($wp_taxonomies[$tax]->object_type) : '';
-                    $post_type = reset( $tax->object_type );
-                    // If we have a post type and it supports genesis-cpt-archive-settings
-                    if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
-                        $columns = genesis_get_cpt_option( 'columns', $post_type );
-                    }
-                }
-            }
-        }
-
-    }
-
-    // CPT archive
-    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-        $columns = genesis_get_cpt_option( 'columns' );
-    }
-
-    // Author archive
-    elseif ( is_author() ) {
-        $columns = get_the_author_meta( 'columns', get_query_var( 'author' ) );
-    }
-
-    else {
-        $columns = 0;
-    }
-
-    return absint($columns);
+    return absint( apply_filters( 'mai_columns', $columns ) );
 }
 
 function mai_admin_get_columns() {
@@ -670,26 +744,6 @@ function mai_do_flex_entry_classes_by( $option, $value ) {
 // }
 
 /**
- * Function to be used with post_class filter to add flex entry classes.
- * Used as a helper function so we can easily add and remove the filter before/after specific loops.
- *
- * @param   array  $classes
- *
- * @return  array  The modified classes
- */
-function mai_add_flex_entry_post_classes( $classes ) {
-    // Get the classes by layout
-    $flex_classes = mai_get_flex_entry_classes_by_columns( mai_get_columns() );
-    // Add filter so devs can change these classes easily
-    $flex_classes = apply_filters( 'mai_flex_entry_classes', $flex_classes );
-    // Add the classes to the post array
-    $classes[]    = $flex_classes;
-    // Return the classes
-    return $classes;
-}
-
-
-/**
  * Filter post_class to add flex classes by number of columns.
  *
  * @param  string  $columns  number of columns to get classes for
@@ -763,8 +817,7 @@ function mai_get_flex_entry_classes_by( $option, $value ) {
 // }
 
 /**
- * Get the classes needed for an entry
- * from number of columns
+ * Get the classes needed for an entry from number of columns.
  *
  * @param  string  $columns  number of columns to get classes for
  *
@@ -860,43 +913,6 @@ function mai_get_flex_entry_image_size_by( $option, $value ) {
 }
 
 /**
- * Get the image size needed for an entry
- * depending on the layout
- *
- * @param  string  $layout  the page layout
- *
- * @return string  the image size
- */
-// function mai_get_flex_entry_image_size_by_layout( $layout ) {
-//     switch ( $layout ) {
-//         case 'flex-loop-4':
-//         case 'flex-loop-4sm':
-//         case 'flex-loop-4-content-sidebar':
-//         case 'flex-loop-4-sidebar-content':
-//         case 'flex-loop-3md':
-//         case 'flex-loop-3sm':
-//         case 'flex-loop-3-content-sidebar':
-//         case 'flex-loop-3-sidebar-content':
-//             $image_size = 'one-fourth';
-//             break;
-//         case 'flex-loop-4md':
-//         case 'flex-loop-3':
-//         case 'flex-loop-2sm':
-//         case 'flex-loop-2-content-sidebar':
-//         case 'flex-loop-2-sidebar-content':
-//             $image_size = 'one-third';
-//             break;
-//         case 'flex-loop-2':
-//         case 'flex-loop-2md':
-//             $image_size = 'one-half';
-//             break;
-//         default:
-//             $image_size = 'one-third';
-//     }
-//     return $image_size;
-// }
-
-/**
  * Get the image_size needed for an entry
  * from number of columns.
  *
@@ -960,6 +976,20 @@ function mai_get_read_more_link( $object = '', $text = '' ) {
 }
 
 /**
+ * Sanitize a string or array of classes.
+ *
+ * @param   string|array  $classes   The classes to sanitize.
+ *
+ * @return  string  Space-separated, sanitized classes.
+ */
+function mai_sanitize_html_classes( $classes ) {
+    if ( ! is_array( $classes ) ) {
+        $classes = explode( ' ', $classes );
+    }
+    return implode( ' ', array_unique( array_map( 'sanitize_html_class', $classes ) ) );
+}
+
+/**
  * Helper function for getting the script/style `.min` suffix for minified files.
  *
  * @return string
@@ -1010,10 +1040,12 @@ function mai_is_hide_banner() {
         $hide_banner = get_post_meta( get_the_ID(), 'hide_banner', true );
     } elseif ( is_tax() ) {
         $hide_banner = get_term_meta( get_queried_object_id(), 'hide_banner', true );
-    } elseif ( is_post_type_archive() ) {
+    } elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
         $hide_banner = genesis_get_cpt_option( 'hide_banner' );
     } elseif ( is_author() ) {
         $hide_banner = get_user_meta( get_queried_object_id(), 'hide_banner', true );
+    } elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+        $hide_banner = get_post_meta( $shop_page_id, 'hide_banner', true );
     } else {
         $hide_banner = false;
     }

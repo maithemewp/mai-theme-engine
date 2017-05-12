@@ -5,7 +5,7 @@
  * Plugin URI:      https://github.com/bizbudding/maitheme-engine/
  * Description:     The Mai Theme engine
  *
- * Version:         0.0.7
+ * Version:         1.0.0-beta.2
  *
  * GitHub URI:      bizbudding/maitheme-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Theme_Engine {
 
         // Plugin version.
         if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_VERSION' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '0.0.7' );
+            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '1.0.0-beta.1' );
         }
 
         // Plugin Folder Path.
@@ -192,8 +192,8 @@ final class Mai_Theme_Engine {
 
             // Add custom logo support
             add_theme_support( 'custom-logo', array(
-                'height'        => '',
-                'width'         => '',
+                'height'        => 120, // Optional size
+                'width'         => 240, // Optional size
                 'flex-height'   => true,
                 'flex-width'    => true,
             ) );
@@ -214,8 +214,8 @@ final class Mai_Theme_Engine {
              */
             $image_sizes = array(
                 'banner' => array(
-                    'width'  => 1200,
-                    'height' => 400,
+                    'width'  => 1600,
+                    'height' => 533,
                     'crop'   => true, // 3x1
                 ),
                 'featured' => array(
@@ -245,7 +245,32 @@ final class Mai_Theme_Engine {
                 ),
             );
 
-            // Filter the image sizes to allow the theme to override
+            /**
+             * Filter the image sizes to allow the theme to override.
+             *
+             * // Change the default Mai image sizes
+             * add_filter( 'mai_image_sizes', 'prefix_custom_image_sizes' );
+             * function prefix_custom_image_sizes( $image_sizes ) {
+             *
+             *   // Change one-third image size
+             *   $image_sizes['one-third'] = array(
+             *       'width'  => 350,
+             *       'height' => 350,
+             *       'crop'   => true,
+             *   );
+             *
+             *   // Change one-fourth image size
+             *   $image_sizes['one-fourth'] = array(
+             *       'width'  => 260,
+             *       'height' => 260,
+             *       'crop'   => true,
+             *   );
+             *
+             *   return $image_sizes;
+             *
+             * }
+             *
+             */
             $image_sizes = apply_filters( 'mai_image_sizes', $image_sizes );
 
             // Loop through and add the image sizes.

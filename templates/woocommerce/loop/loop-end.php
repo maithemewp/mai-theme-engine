@@ -1,8 +1,7 @@
 <?php
 /**
  * *************************************************************
- * Change </ul> to </div>
- * Added extra closing </div> for product-wrap in loop-start.php
+ * Remove all markup and add 'mai_after_flex_loop' hook
  * *************************************************************
  *
  * Product Loop End
@@ -12,5 +11,6 @@
  * @package 	WooCommerce/Templates
  * @version     2.0.0
  */
+
+do_action( 'mai_after_flex_loop' );
 ?>
-</div></div>
