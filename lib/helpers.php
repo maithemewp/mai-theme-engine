@@ -428,8 +428,21 @@ function mai_section_close( $args ) {
  */
 function mai_get_section_open( $args ) {
 
-    // Get the args args, since this helper when used in a shortcode already uses shortcode_atts()
-    $args = wp_parse_args( $args, mai_get_section_defaults() );
+    // Shortcode section atts
+    $args = shortcode_atts( mai_get_section_defaults(), $args, 'section' );
+
+    // Sanitized args
+    $args = array(
+        'wrapper'       => sanitize_key( $args['wrapper'] ),
+        'id'            => sanitize_html_class( $args['id'] ),
+        'class'         => mai_sanitize_html_classes( $args['class'] ),
+        'image'         => absint( $args['image'] ),
+        'overlay'       => filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ),
+        'wrap'          => filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ),
+        'inner'         => filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ),
+        'content_width' => sanitize_key( $args['content_width'] ),
+        'height'        => sanitize_key( $args['height'] ),
+    );
 
     // Start all element variables as empty string
     $overlay = $wrap = $inner = '';
@@ -437,29 +450,24 @@ function mai_get_section_open( $args ) {
     // Start all attributes as empty array
     $section_atts = $overlay_atts = $wrap_atts = $inner_atts = array();
 
-    $has_overlay = filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN );
-    $has_wrap    = filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN );
-    $has_inner   = filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN );
-
     // Maybe add section id
     if ( $args['id'] ) {
-        $section_atts['id'] = sanitize_html_class( $args['id'] );
+        $section_atts['id'] = $args['id'];
     }
 
     // Default section class
     $section_atts['class'] = 'section row middle-xs center-xs';
 
-    // Maybe add section classes
+    // Maybe add additional section classes
     if ( $args['class'] ) {
-        // Add classes. Can't use sanitize_html_field cause there may be multiple classes with spaces
-        $section_atts['class'] .= ' ' . sanitize_text_field( $args['class'] );
+        $section_atts['class'] .= ' ' . $args['class'];
     }
 
     // If we have an image ID
     if ( $args['image'] ) {
 
         // If no inner, add light-content class
-        if ( ! $has_inner ) {
+        if ( ! $args['inner'] ) {
             $section_atts['class'] .= ' light-content';
         }
 
@@ -475,25 +483,93 @@ function mai_get_section_open( $args ) {
     }
 
     // Maybe add an overlay, typically for image tint/style
-    if ( $has_overlay ) {
+    if ( $args['overlay'] ) {
         $section_atts['class'] .= ' overlay';
     }
 
     // Maybe add a wrap, typically to contain content over the image
-    if ( $has_wrap ) {
+    if ( $args['wrap'] ) {
+
         $wrap_atts['class'] = 'wrap';
-        $wrap               = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
+
+        // Wrap height
+        if ( $args['height'] ) {
+
+            switch ( $args['height'] ) {
+                case 'sm':
+                case 'small';
+                    $wrap_atts['class'] .= ' height-sm';
+                    break;
+                case 'md':
+                case 'medium':
+                    $wrap_atts['class'] .= ' height-md';
+                    break;
+                case 'lg':
+                case 'large':
+                    $wrap_atts['class'] .= ' height-lg';
+                    break;
+            }
+
+        }
+
+        // Wrap content width
+        if ( $args['content_width'] ) {
+
+            switch ( $args['content_width'] ) {
+                case 'xs':
+                case 'extra-small':
+                    $wrap_atts['class'] .= ' width-xs';
+                    break;
+                case 'sm':
+                case 'small';
+                    $wrap_atts['class'] .= ' width-sm';
+                    break;
+                case 'md':
+                case 'medium':
+                    $wrap_atts['class'] .= ' width-md';
+                    break;
+                case 'lg':
+                case 'large':
+                    $wrap_atts['class'] .= ' width-lg';
+                    break;
+                case 'xl':
+                case 'extra-large':
+                    $wrap_atts['class'] .= ' width-xl';
+                    break;
+                case 'full':
+                    $wrap_atts['class'] .= ' width-full';
+                    break;
+            }
+
+        } else {
+
+            // Add width classes based on layout
+            switch ( genesis_site_layout() ) {
+                case 'sm-content':
+                    $wrap_atts['class'] .= ' width-sm';
+                    break;
+                case 'md-content':
+                    $wrap_atts['class'] .= ' width-md';
+                    break;
+                case 'lg-content':
+                    $wrap_atts['class'] .= ' width-lg';
+                    break;
+            }
+
+        }
+
+        $wrap = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
     }
 
     // Maybe add an inner wrap, typically for content width/style
-    if ( $has_inner ) {
+    if ( $args['inner'] ) {
         $inner_atts['class'] = 'inner';
         $inner               = sprintf( '<div %s>', genesis_attr( 'mai-inner', $inner_atts ) );
     }
 
     // Build the opening markup
     return sprintf( '<%s %s>%s%s%s',
-        sanitize_text_field( $args['wrapper'] ),
+        $args['wrapper'],
         genesis_attr( 'mai-section', $section_atts ),
         $overlay,
         $wrap,
@@ -544,14 +620,17 @@ function mai_get_section_close( $args ) {
 
 function mai_get_section_defaults() {
     $defaults = array(
-        'wrapper' => 'section',
-        'id'      => null,
-        'class'   => null,
-        'image'   => null,
-        'overlay' => false,
-        'wrap'    => false,
-        'inner'   => false,
+        'wrapper'       => 'section',
+        'id'            => '',
+        'class'         => '',
+        'image'         => '',
+        'overlay'       => false,
+        'wrap'          => true,
+        'inner'         => false,
+        'content_width' => '',
+        'height'        => 'md',
     );
+    // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
     return apply_filters( 'mai_section_defaults', $defaults );
 }
 

@@ -34,8 +34,6 @@ function mai_enqueue_styles() {
 
 }
 
-
-
 // Remove WooCommerce default layout styles
 add_filter( 'woocommerce_enqueue_styles', 'mai_woocommerce_styles' );
 function mai_woocommerce_styles( $styles ) {

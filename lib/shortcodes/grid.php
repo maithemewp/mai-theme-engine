@@ -130,9 +130,9 @@ final class Mai_Grid_Shortcode {
 			'authors'				=> $atts['authors'], // Validated later
 			'categories'			=> array_filter( explode( ',', sanitize_text_field( $atts['categories'] ) ) ),
 			// 'center'				=> filter_var( $atts['center'], FILTER_VALIDATE_BOOLEAN ),
-			'columns'				=> intval( $atts['columns'] ),
+			'columns'				=> absint( $atts['columns'] ),
 			'content'				=> array_filter( explode( ',', sanitize_text_field( $atts['content'] ) ) ),
-			'content_limit'			=> intval( $atts['content_limit'] ),
+			'content_limit'			=> absint( $atts['content_limit'] ),
 			'content_type'			=> sanitize_text_field( $atts['content_type'] ),
 			'display_taxonomies'	=> array_filter( explode( ',', sanitize_text_field( $atts['display_taxonomies'] ) ) ),
 			'date_after'			=> sanitize_text_field( $atts['date_after'] ),
@@ -144,12 +144,12 @@ final class Mai_Grid_Shortcode {
 			'grid_title'			=> sanitize_text_field( $atts['grid_title'] ),
 			'grid_title_class'		=> sanitize_text_field( $atts['grid_title_class'] ),
 			'grid_title_wrap'		=> sanitize_key( $atts['grid_title_wrap'] ),
-			'gutter'				=> intval( $atts['gutter'] ),
+			'gutter'				=> absint( $atts['gutter'] ),
 			'hide_empty'			=> filter_var( $atts['hide_empty'], FILTER_VALIDATE_BOOLEAN ),
 			'ids'					=> array_filter( explode( ',', sanitize_text_field( $atts['ids'] ) ) ),
 			'ignore_sticky_posts'	=> filter_var( $atts['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN ),
 			'image_size'			=> sanitize_key( $atts['image_size'] ),
-			'image_bg'		=> filter_var( $atts['image_bg'], FILTER_VALIDATE_BOOLEAN ),
+			'image_bg'				=> filter_var( $atts['image_bg'], FILTER_VALIDATE_BOOLEAN ),
 			'link'					=> filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN ),
 			'meta_key'				=> sanitize_text_field( $atts['meta_key'] ),
 			'meta_value'			=> sanitize_text_field( $atts['meta_value'] ),
@@ -157,7 +157,7 @@ final class Mai_Grid_Shortcode {
 			'more_link_text'		=> sanitize_text_field( $atts['more_link_text'] ),
 			'no_content_message'	=> sanitize_text_field( $atts['no_content_message'] ),
 			'number'				=> $atts['number'], // Validated later, after check for 'all'
-			'offset'				=> intval( $atts['offset'] ),
+			'offset'				=> absint( $atts['offset'] ),
 			'order'					=> sanitize_key( $atts['order'] ),
 			'order_by'				=> sanitize_key( $atts['order_by'] ),
 			'parent'				=> $atts['parent'], // Validated later, after check for 'current'
@@ -188,7 +188,7 @@ final class Mai_Grid_Shortcode {
 			'dots'					=> filter_var( $atts['dots'], FILTER_VALIDATE_BOOLEAN ),
 			'fade'					=> filter_var( $atts['fade'], FILTER_VALIDATE_BOOLEAN ),
 			'infinite'				=> filter_var( $atts['infinite'], FILTER_VALIDATE_BOOLEAN ),
-			'slidestoscroll'		=> intval( $atts['slidestoscroll'] ),
+			'slidestoscroll'		=> absint( $atts['slidestoscroll'] ),
 		);
 
 		$html = '';

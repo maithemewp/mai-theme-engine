@@ -35,10 +35,11 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
     $args = array(
-		'class'		=> 'banner-area',
-		'overlay'	=> get_theme_mod( 'enable_banner_overlay', 1 ),
-		'wrap'		=> true,
-		'inner'		=> get_theme_mod( 'enable_banner_inner', 0 ),
+		'class'			=> 'banner-area width-full',
+		'overlay'		=> get_theme_mod( 'enable_banner_overlay', 1 ),
+		'wrap'			=> true,
+		'inner'			=> get_theme_mod( 'enable_banner_inner', 0 ),
+		'content_width'	=> get_theme_mod( 'banner_content_width', 'lg' ),
     );
 
 	// Get the image ID

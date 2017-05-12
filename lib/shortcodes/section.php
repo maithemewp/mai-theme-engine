@@ -14,26 +14,13 @@ function mai_get_section_shortcode( $atts, $content = null ) {
         return;
     }
 
-    $defaults = array(
-        'class'    => '',
-        'bg_color' => '',
-        'image'    => '',
-        'overlay'  => false,
-        'wrap'     => true,
-        'inner'    => false,
-    );
-
-    // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
-    $defaults = apply_filters( 'mai_section_defaults', $defaults );
-
     /**
-     * Shortcode section attributes
-     * Note, these are different then the defaults in mai_get_section_* functions
+     * Parse incoming $args into an array and merge it with $defaults
      */
-    $atts = shortcode_atts( $defaults, $atts, 'section' );
+    // $args = wp_parse_args( $args, $defaults );
 
     // Add shortcode class
-    $atts['class'] = 'section-shortcode ' . mai_sanitize_html_classes( $atts['class'] );
+    $atts['class'] = isset( $atts['class'] ) ? 'section-shortcode ' . $atts['class'] : 'section-shortcode';
 
     $output = '';
 

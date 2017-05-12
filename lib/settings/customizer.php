@@ -168,7 +168,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	) );
 
 	/*****************************************************
-	 * Enabe Banner Area setting
+	 * Enable Banner Area
 	 */
 
 	$wp_customize->add_setting( 'enable_banner_area', array(
@@ -179,11 +179,14 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control( 'enable_banner_area', array(
 		'label'    => __( 'Enable the banner area', 'maitheme' ),
 		'section'  => $section,
-		'type'     => 'checkbox',
 		'priority' => 5,
+		'type'     => 'checkbox',
 	) );
 
-	// Banner Overlay
+	/*****************************************************
+	 * Enable Banner Overlay
+	 */
+
 	$wp_customize->add_setting( 'enable_banner_overlay', array(
 		'default'           => 1,
 		'sanitize_callback' => 'absint',
@@ -192,11 +195,15 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control( 'enable_banner_overlay', array(
 		'label'    => __( 'Enable banner overlay', 'maitheme' ),
 		'section'  => $section,
-		'type'     => 'checkbox',
 		'priority' => 5,
+		'type'     => 'checkbox',
 	) );
 
-	// Banner Inner Styling
+
+	/*****************************************************
+	 * Enable Banner Inner styling
+	 */
+
 	$wp_customize->add_setting( 'enable_banner_inner', array(
 		'default'           => 0,
 		'sanitize_callback' => 'absint',
@@ -205,8 +212,32 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control( 'enable_banner_inner', array(
 		'label'    => __( 'Enable banner inner styling', 'maitheme' ),
 		'section'  => $section,
-		'type'     => 'checkbox',
 		'priority' => 5,
+		'type'     => 'checkbox',
+	) );
+
+	/*****************************************************
+	 * Banner Content Width
+	 */
+
+	$wp_customize->add_setting( 'banner_content_width', array(
+		'default'           => 'lg',
+		// 'sanitize_callback' => 'absint',
+	) );
+
+	$wp_customize->add_control( 'banner_content_width', array(
+		'label'		=> __( 'Banner content width', 'maitheme' ),
+		'section'	=> $section,
+		'priority'	=> 5,
+		'type'		=> 'select',
+		'choices'	=> array(
+			'xs'   => __( 'Extra Small', 'maitheme' ),
+			'sm'   => __( 'Small', 'maitheme' ),
+			'md'   => __( 'Medium', 'maitheme' ),
+			'lg'   => __( 'Large', 'maitheme' ),
+			'xl'   => __( 'Extra Large', 'maitheme' ),
+			'full' => __( 'Full Width', 'maitheme' ),
+		),
 	) );
 
 	/*****************************************************
