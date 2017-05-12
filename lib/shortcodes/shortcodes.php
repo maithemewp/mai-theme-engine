@@ -33,6 +33,7 @@ function mai_shortcode_content_filter( $content ) {
     $shortcodes = array(
         'section',
         'grid',
+        'columns',
         'col',
         'col_auto',
         'col_one_twelfth',

@@ -496,6 +496,9 @@ function mai_get_section_open( $args ) {
         if ( $args['height'] ) {
 
             switch ( $args['height'] ) {
+                case 'auto';
+                    $wrap_atts['class'] .= ' height-auto';
+                    break;
                 case 'sm':
                 case 'small';
                     $wrap_atts['class'] .= ' height-sm';
@@ -987,6 +990,20 @@ function mai_sanitize_html_classes( $classes ) {
         $classes = explode( ' ', $classes );
     }
     return implode( ' ', array_unique( array_map( 'sanitize_html_class', $classes ) ) );
+}
+
+/**
+ * Sanitize a string or array of keys.
+ *
+ * @param   string|array  $keys   The keys to sanitize.
+ *
+ * @return  array  Array of sanitized keys.
+ */
+function mai_sanitize_keys( $keys ) {
+    if ( ! is_array( $keys ) ) {
+        $keys = explode( ' ', $keys );
+    }
+    return array_map( 'sanitize_key', ( array_filter( $keys ) ) );
 }
 
 /**

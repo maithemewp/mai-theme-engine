@@ -99,7 +99,7 @@ function mai_do_banner_content() {
 		}
 
 		genesis_do_post_title( $front_page_id );
-		get_the_excerpt( $front_page_id );
+		echo get_the_excerpt( $front_page_id );
 
 	}
 

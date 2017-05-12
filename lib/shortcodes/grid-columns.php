@@ -46,16 +46,191 @@ final class Mai_Grid_Shortcode {
 	}
 
 	function init() {
-		add_shortcode( 'grid', array( $this, 'get_grid' ) );
+		add_shortcode( 'columns', 				array( $this, 'get_columns' ) );
+		add_shortcode( 'col', 					array( $this, 'get_col' ) );
+		add_shortcode( 'col_auto', 				array( $this, 'get_col_auto' ) );
+		add_shortcode( 'col_one_twelfth', 		array( $this, 'get_col_one_twelfth' ) );
+		add_shortcode( 'col_one_sixth', 		array( $this, 'get_col_one_sixth' ) );
+		add_shortcode( 'col_one_fourth', 		array( $this, 'get_col_one_fourth' ) );
+		add_shortcode( 'col_one_third', 		array( $this, 'get_col_one_third' ) );
+		add_shortcode( 'col_five_twelfths', 	array( $this, 'get_col_five_twelfths' ) );
+		add_shortcode( 'col_one_half', 			array( $this, 'get_col_one_half' ) );
+		add_shortcode( 'col_seven_twelfths', 	array( $this, 'get_col_seven_twelfths' ) );
+		add_shortcode( 'col_two_thirds', 		array( $this, 'get_col_two_thirds' ) );
+		add_shortcode( 'col_three_fourths', 	array( $this, 'get_col_three_fourths' ) );
+		add_shortcode( 'col_five_sixths', 		array( $this, 'get_col_five_sixths' ) );
+		add_shortcode( 'col_eleven_twelfths', 	array( $this, 'get_col_eleven_twelfths' ) );
+		add_shortcode( 'col_one_whole', 		array( $this, 'get_col_one_whole' ) );
+		add_shortcode( 'grid', 					array( $this, 'get_grid' ) );
 	}
 
-	function get_grid( $atts, $content = null ) {
+	function get_columns( $atts, $content = null ) {
+
+		// Bail if no content
+		if ( null == $content ) {
+			return;
+		}
+
+		// Pull in shortcode attributes and set defaults
+		$atts = shortcode_atts( array(
+			'align'				=> '',
+			'align_cols'		=> '',
+			'align_text'		=> '',
+			'class'				=> '',
+			'gutter'			=> '30',
+			'id'				=> '',
+			'style'				=> '',
+		), $atts, 'columns' );
+
+		// Sanitize atts
+		$atts = array(
+			'align'				=> mai_sanitize_keys( $atts['align'] ),
+			'align_cols'		=> mai_sanitize_keys( $atts['align_cols'] ),
+			'align_text'		=> mai_sanitize_keys( $atts['align_text'] ),
+			'class'				=> mai_sanitize_html_classes( $atts['class'] ),
+			'gutter'			=> absint( $atts['gutter'] ),
+			'id'				=> sanitize_html_class( $atts['id'] ),
+			'style'				=> esc_attr( $atts['style'] ),
+		);
+
+		$html = '';
+
+		$html .= $this->get_row_wrap_open( $atts );
+		$html .= do_shortcode(trim($content));
+		$html .= $this->get_row_wrap_close( $atts );
+
+		return $html;
+	}
+
+	function get_col( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'col', $atts, $content );
+	}
+
+	function get_col_auto( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'col-auto', $atts, $content );
+	}
+
+	function get_col_one_twelfth( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'one-twelfth', $atts, $content );
+	}
+
+	function get_col_one_sixth( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'one-sixth', $atts, $content );
+	}
+
+	function get_col_one_fourth( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'one-fourth', $atts, $content );
+	}
+
+	function get_col_one_third( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'one-third', $atts, $content );
+	}
+
+	function get_col_five_twelfths( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'five-twelfths', $atts, $content );
+	}
+
+	function get_col_one_half( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'one-half', $atts, $content );
+	}
+
+	function get_col_seven_twelfths( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'seven-twelfths', $atts, $content );
+	}
+
+	function get_col_two_thirds( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'two-thirds', $atts, $content );
+	}
+
+	function get_col_three_fourths( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'three-fourths', $atts, $content );
+	}
+
+	function get_col_five_sixths( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'five-sixths', $atts, $content );
+	}
+
+	function get_col_eleven_twelfths( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'eleven-twelfths', $atts, $content );
+	}
+
+	function get_col_one_whole( $atts, $content = null ) {
+		return $this->get_col_by_fraction( 'one-whole', $atts, $content );
+	}
+
+	function get_col_by_fraction( $fraction, $atts, $content ) {
+
+		// Bail if no content
+		if ( null == $content ) {
+			return;
+		}
+
+		// Pull in shortcode attributes and set defaults
+		$atts = shortcode_atts( array(
+			'align'	=> '',
+			'class'	=> '',
+			'id'	=> '',
+			'style'	=> '',
+		), $atts, 'col' );
+
+		$atts = apply_filters( 'mai_col_args', $atts );
+
+		// Sanitize atts
+		$atts = array(
+			'align'	=> mai_sanitize_keys( $atts['align'] ),
+			'class'	=> mai_sanitize_html_classes( $atts['class'] ),
+			'id'	=> sanitize_html_class( $atts['id'] ),
+			'style'	=> esc_attr( $atts['style'] ),
+		);
+
+		$flex_col = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
+
+		// ID
+		if ( ! empty( $atts['wrapper_id'] ) ) {
+			$flex_col['id'] = $atts['wrapper_id'];
+		}
+
+		// Classes
+		if ( ! empty( $atts['class'] ) ) {
+			$flex_col['class'] .= ' ' . $atts['class'];
+		}
+
+	    // Align text
+	    if ( ! empty( $atts['align'] ) ) {
+
+	    	// Left
+		    if ( in_array( 'left', $atts['align']) ) {
+		    	$flex_row['class'] .= ' text-xs-left';
+		    }
+
+		    // Center
+		    if ( in_array( 'center', $atts['align'] ) ) {
+		    	$flex_row['class'] .= ' text-xs-center';
+		    }
+
+		    // Right
+		    if ( in_array( 'right', $atts['align'] ) ) {
+		    	$flex_row['class'] .= ' text-xs-right';
+		    }
+
+	    }
+
+	    /**
+	     * Return the content with col wrap.
+	     * With flex-col attr so devs can filter elsewhere.
+	     */
+	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), wpautop( do_shortcode( trim($content) ) ) );
+
+	}
+
+	function get_grid( $atts ) {
 
 		// Save original atts in a variable for filtering later
 		$original_atts = $atts;
 
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
+			'align'					=> '',  // "top left" overrides align_cols and align_text for most times one setting makes sense
 			'align_cols'			=> '', // "top left"
 			'align_text'			=> '', // "center"
 			'authors'				=> '',
@@ -88,7 +263,7 @@ final class Mai_Grid_Shortcode {
 			'more_link_text'		=> apply_filters( 'mai_more_link_text', __( 'Read More', 'maitheme' ) ),
 			'no_content_message'	=> '',
 			'number'				=> '12',
-			'offset'				=> 0,
+			'offset'				=> '0',
 			'order'					=> '',
 			'order_by'				=> '',
 			'parent'				=> '',
@@ -111,22 +286,23 @@ final class Mai_Grid_Shortcode {
 			'taxonomy'				=> '',
 			'terms'					=> '',
 			'title_wrap'			=> 'h3',
-			'wrapper_class'			=> '',
-			'wrapper_id'			=> '',
-			'slider'				=> false,
+			'class'					=> '',
+			'id'					=> '',
+			'slider'				=> false, // (slider only) Make the columns a slider
 			'arrows'				=> true,  // (slider only) Whether to display arrows
 			'center_mode'			=> false, // (slider only) Mobile 'peek'
 			'dots'					=> false, // (slider only) Whether to display dots
 			'fade'					=> false, // (slider only) Fade instead of left/right scroll (works requires slidestoshow 1)
 			'infinite'				=> true,  // (slider only) Loop slider
-			'slidestoscroll' 		=> 1, 	  // (slider only) The amount of posts to scroll
+			'slidestoscroll' 		=> '1',   // (slider only) The amount of posts to scroll
 		), $atts, 'grid' );
 
 		$atts = apply_filters( 'mai_grid_defaults', $atts );
 
 		$atts = array(
-			'align_cols'			=> array_map( 'sanitize_key', ( array_filter( explode( ' ', $atts['align_cols'] ) ) ) ),
-			'align_text'			=> array_map( 'sanitize_key', ( array_filter( explode( ' ', $atts['align_text'] ) ) ) ),
+			'align'					=> mai_sanitize_keys( $atts['align'] ),
+			'align_cols'			=> mai_sanitize_keys( $atts['align_cols'] ),
+			'align_text'			=> mai_sanitize_keys( $atts['align_text'] ),
 			'authors'				=> $atts['authors'], // Validated later
 			'categories'			=> array_filter( explode( ',', sanitize_text_field( $atts['categories'] ) ) ),
 			// 'center'				=> filter_var( $atts['center'], FILTER_VALIDATE_BOOLEAN ),
@@ -180,8 +356,8 @@ final class Mai_Grid_Shortcode {
 			'taxonomy'				=> sanitize_key( $atts['taxonomy'] ),
 			'terms'					=> $atts['terms'], // Validated later, after check for 'current'
 			'title_wrap'			=> sanitize_key( $atts['title_wrap'] ),
-			'wrapper_class'			=> array_map( 'sanitize_html_class', ( array_filter( explode( ' ', $atts['wrapper_class'] ) ) ) ),
-			'wrapper_id'			=> sanitize_html_class( $atts['wrapper_id'] ),
+			'class'					=> mai_sanitize_html_classes( $atts['class'] ),
+			'id'					=> sanitize_html_class( $atts['id'] ),
 			'slider'				=> filter_var( $atts['slider'], FILTER_VALIDATE_BOOLEAN ),
 			'arrows'				=> filter_var( $atts['arrows'], FILTER_VALIDATE_BOOLEAN ),
 			'center_mode'			=> filter_var( $atts['center_mode'], FILTER_VALIDATE_BOOLEAN ),
@@ -192,14 +368,6 @@ final class Mai_Grid_Shortcode {
 		);
 
 		$html = '';
-
-		// If content using this as a wrapper for [col] shortcodes
-		if ( null != $content ) {
-			$html .= $this->get_row_wrap_open( $atts );
-			$html .= do_shortcode(trim($content));
-			$html .= $this->get_row_wrap_close( $atts );
-			return $html;
-		}
 
 		// Get the content type
 		if ( empty( $atts['content_type'] ) ) {
@@ -213,12 +381,12 @@ final class Mai_Grid_Shortcode {
 
 		$flex_grid = array( 'class' => 'flex-grid' );
 
-		if ( ! empty($atts['wrapper_id']) ) {
-			$flex_grid['id'] = $atts['wrapper_id'];
+		if ( ! empty($atts['id']) ) {
+			$flex_grid['id'] = $atts['id'];
 		}
 
-		if ( ! empty($atts['wrapper_class']) ) {
-			$flex_grid['class'] .= ' ' . implode( ' ', $atts['wrapper_class'] );
+		if ( ! empty($atts['class']) ) {
+			$flex_grid['class'] .= ' ' . $atts['class'];
 		}
 
 	    /**
@@ -271,6 +439,203 @@ final class Mai_Grid_Shortcode {
 
 	}
 
+	function get_row_wrap_open( $atts ) {
+
+		$flex_row = array();
+
+		// Main row class
+	    $flex_row['class'] = 'row';
+
+	    $is_valid_gutter = false;
+	    // Gutter
+	    if ( $atts['gutter'] ) {
+	    	// If gutter is a valid Flexington size
+			if ( in_array( $atts['gutter'], array( 5, 10, 20, 30, 40, 50 ) ) ) {
+				$is_valid_gutter = true;
+			}
+	    }
+
+	    // Row classes
+	    if ( ! empty( $atts['row_class'] ) ) {
+	    	$flex_row['class'] .= ' ' . implode( ' ', $atts['row_class'] );
+	    }
+
+	    // If posts are a slider. 'slider' may not be set if coming from [columns] shortcode.
+		if ( isset( $atts['slider'] ) && $atts['slider'] ) {
+
+			// Enqueue Slick Carousel
+			wp_enqueue_script( 'mai-slick' );
+			wp_enqueue_script( 'mai-slick-init' );
+
+			// Slider wrapper class
+			$flex_row['class'] .= ' mai-slider';
+
+			// TODO: center is no more!
+
+			// Slider HTML data attributes
+			$flex_row['data-arrows']		 = $atts['arrows'] ? 'true' : 'false';
+			$flex_row['data-center']		 = $atts['center'] ? 'true' : 'false';
+			$flex_row['data-centermode']	 = $atts['center_mode'] ? 'true' : 'false';
+			$flex_row['data-dots']			 = $atts['dots'] ? 'true' : 'false';
+			$flex_row['data-fade']			 = $atts['fade'] ? 'true' : 'false';
+			$flex_row['data-infinite']		 = $atts['infinite'] ? 'true' : 'false';
+			$flex_row['data-middle']		 = $atts['middle'] ? 'true' : 'false';
+			$flex_row['data-slidestoscroll'] = $atts['slidestoscroll'];
+			$flex_row['data-slidestoshow']	 = $atts['columns'];
+			$flex_row['data-gutter']		 = $is_valid_gutter ? $atts['gutter'] : 0;
+
+		}
+		// Flex row classes are not on slider
+		else {
+
+			// Add gutter
+	    	if ( $is_valid_gutter ) {
+				$flex_row['class'] .= sprintf( ' gutter-%s', $atts['gutter'] );
+		    }
+
+		    /**
+		     * "align" takes precendence over "align_cols" and "align_text".
+		     * "align" forces the text to align along with the cols.
+		     */
+		    if ( ! empty( $atts['align'] ) ) {
+		    	// Left
+			    if ( in_array( 'left', $atts['align'] ) ) {
+			    	$flex_row['class'] .= ' start-xs text-xs-left';
+			    }
+
+			    // Center
+			    if ( in_array( 'center', $atts['align'] ) ) {
+			    	$flex_row['class'] .= ' center-xs text-xs-center';
+			    }
+
+			    // Right
+			    if ( in_array( 'right', $atts['align'] ) ) {
+			    	$flex_row['class'] .= ' end-xs text-xs-right';
+			    }
+
+			    // Top
+			    if ( in_array( 'top', $atts['align'] ) ) {
+			    	$flex_row['class'] .= ' top-xs';
+			    }
+
+			    // Middle
+			    if ( in_array( 'middle', $atts['align'] ) ) {
+			    	$flex_row['class'] .= ' middle-xs';
+			    }
+
+			    // Bottom
+			    if ( in_array( 'bottom', $atts['align'] ) ) {
+			    	$flex_row['class'] .= ' bottom-xs';
+			    }
+
+		    } else {
+
+			    // Align columns
+			    if ( ! empty( $atts['align_cols'] ) ) {
+
+			    	// Left
+				    if ( in_array( 'left', $atts['align_cols'] ) ) {
+				    	$flex_row['class'] .= ' start-xs';
+				    }
+
+				    // Center
+				    if ( in_array( 'center', $atts['align_cols'] ) ) {
+				    	$flex_row['class'] .= ' center-xs';
+				    }
+
+				    // Right
+				    if ( in_array( 'right', $atts['align_cols'] ) ) {
+				    	$flex_row['class'] .= ' end-xs';
+				    }
+
+				    // Top
+				    if ( in_array( 'top', $atts['align_cols'] ) ) {
+				    	$flex_row['class'] .= ' top-xs';
+				    }
+
+				    // Middle
+				    if ( in_array( 'middle', $atts['align_cols'] ) ) {
+				    	$flex_row['class'] .= ' middle-xs';
+				    }
+
+				    // Bottom
+				    if ( in_array( 'bottom', $atts['align_cols'] ) ) {
+				    	$flex_row['class'] .= ' bottom-xs';
+				    }
+
+			    }
+
+			    // Align text
+			    if ( ! empty( $atts['align_text'] ) ) {
+
+			    	// Left
+				    if ( in_array( 'left', $atts['align_text']) ) {
+				    	$flex_row['class'] .= ' text-xs-left';
+				    }
+
+				    // Center
+				    if ( in_array( 'center', $atts['align_text'] ) ) {
+				    	$flex_row['class'] .= ' text-xs-center';
+				    }
+
+				    // Right
+				    if ( in_array( 'right', $atts['align_text'] ) ) {
+				    	$flex_row['class'] .= ' text-xs-right';
+				    }
+
+			    }
+
+			}
+
+		}
+
+		// WooCommerce. 'content' may not be set if coming from [columns] shortcode
+		if ( isset( $atts['content'] ) && class_exists( 'WooCommerce' ) && in_array( 'product', $atts['content'] ) ) {
+			$flex_row['class'] .= ' woocommerce';
+		}
+
+	    /**
+	     * Main content row wrap.
+	     * With flex-row attr so devs can filter elsewhere.
+	     */
+	    return sprintf( '<div %s>', genesis_attr( 'flex-row', $flex_row ) );
+
+	}
+
+	function get_row_wrap_close( $atts ) {
+		return '</div>';
+	}
+
+	function get_entry_wrap_open( $atts, $object, $has_background_image ) {
+
+		$flex_entry = array();
+
+		// Add href if linking element
+		if ( $this->is_linking_element( $atts, $has_background_image ) ) {
+			$flex_entry['href'] = $this->get_entry_link( $atts, $object );
+		}
+
+		// Set the entry classes
+		$flex_entry['class'] = $this->get_entry_classes( $atts );
+
+		if ( $atts['image_bg'] ) {
+			// Get the object ID
+			$object_id = $this->get_object_id( $atts, $object );
+			if ( $object_id ) {
+				$flex_entry = $this->add_image_bg( $flex_entry, $atts, $object_id );
+			}
+		}
+
+		/**
+		 * Main entry col wrap.
+		 * If we use genesis_attr( 'entry' ) then it resets the classes.
+		 */
+		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts, $has_background_image ), genesis_attr( 'flex-entry', $flex_entry ) );
+	}
+
+	function get_entry_wrap_close( $atts, $has_background_image ) {
+		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts, $has_background_image ) );
+	}
 
 	function get_posts( $atts, $original_atts ) {
 
@@ -399,13 +764,16 @@ final class Mai_Grid_Shortcode {
 			);
 		}
 
+
 		/**
+		 * Temporarily disabled cause this is coming from [grid] and [columns] now
+		 *
 		 * Filter the arguments passed to WP_Query.
 		 *
 		 * @param array $args          Parsed arguments to pass to WP_Query.
 		 * @param array $original_atts Original attributes passed to the shortcode.
 		 */
-		$args = apply_filters( 'grid_shortcode_args', $args, $original_atts );
+		// $args = apply_filters( 'mai_grid_args', $args, $original_atts );
 
 		// Get our query
 		$query = new WP_Query( $args );
@@ -417,7 +785,7 @@ final class Mai_Grid_Shortcode {
 			 *
 			 * @param string $no_posts_message Content to display, returned via {@see wpautop()}.
 			 */
-			return apply_filters( 'grid_shortcode_no_results', wpautop( $atts['no_content_message'] ) );
+			return apply_filters( 'mai_grid_no_results', wpautop( $atts['no_content_message'] ) );
 		}
 
 		// Get it started
@@ -431,6 +799,7 @@ final class Mai_Grid_Shortcode {
 			while ( $query->have_posts() ) : $query->the_post();
 
 				global $post;
+				setup_postdata( $post );
 
 				$entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
 
@@ -768,166 +1137,6 @@ final class Mai_Grid_Shortcode {
 		}
 		$classes = 'heading ' . $atts['grid_title_class'];
 		return sprintf( '<%s class="%s">%s</%s>', $atts['grid_title_wrap'], trim($classes), $atts['grid_title'], $atts['grid_title_wrap'] );
-	}
-
-
-	function get_row_wrap_open( $atts ) {
-
-		$flex_row = array();
-
-		// Main row class
-	    $flex_row['class'] = 'row';
-
-	    $is_valid_gutter = false;
-	    // Gutter
-	    if ( $atts['gutter'] ) {
-	    	// If gutter is a valid Flexington size
-			if ( in_array( $atts['gutter'], array( 5, 10, 20, 30, 40, 50 ) ) ) {
-				$is_valid_gutter = true;
-			}
-	    }
-
-	    // Row classes
-	    if ( ! empty( $atts['row_class'] ) ) {
-	    	$flex_row['class'] .= ' ' . implode( ' ', $atts['row_class'] );
-	    }
-
-	    // If posts are a slider
-		if ( $atts['slider'] ) {
-
-			// Enqueue Slick Carousel
-			wp_enqueue_script( 'mai-slick' );
-			wp_enqueue_script( 'mai-slick-init' );
-
-			// Slider wrapper class
-			$flex_row['class'] .= ' mai-slider';
-
-			// TODO: center is no more!
-
-			// Slider HTML data attributes
-			$flex_row['data-arrows']		 = $atts['arrows'] ? 'true' : 'false';
-			$flex_row['data-center']		 = in_array( 'center', $atts['align_cols'] ) ? 'true' : 'false';
-			$flex_row['data-centermode']	 = $atts['center_mode'] ? 'true' : 'false';
-			$flex_row['data-dots']			 = $atts['dots'] ? 'true' : 'false';
-			$flex_row['data-fade']			 = $atts['fade'] ? 'true' : 'false';
-			$flex_row['data-infinite']		 = $atts['infinite'] ? 'true' : 'false';
-			$flex_row['data-middle']		 = in_array( 'middle', $atts['align_cols'] ) ? 'true' : 'false';
-			$flex_row['data-slidestoscroll'] = $atts['slidestoscroll'];
-			$flex_row['data-slidestoshow']	 = $atts['columns'];
-			$flex_row['data-gutter']		 = $is_valid_gutter ? $atts['gutter'] : 0;
-
-		}
-		// Flex row classes are not on slider
-		else {
-
-			// Add gutter
-	    	if ( $is_valid_gutter ) {
-				$flex_row['class'] .= sprintf( ' gutter-%s', $atts['gutter'] );
-		    }
-
-		    // Align columns
-		    if ( ! empty( $atts['align_cols'] ) ) {
-
-		    	// Left
-			    if ( in_array( 'left', $atts['align_cols'] ) ) {
-			    	$flex_row['class'] .= ' start-xs';
-			    }
-
-			    // Center
-			    if ( in_array( 'center', $atts['align_cols'] ) ) {
-			    	$flex_row['class'] .= ' center-xs';
-			    }
-
-			    // Right
-			    if ( in_array( 'right', $atts['align_cols'] ) ) {
-			    	$flex_row['class'] .= ' end-xs';
-			    }
-
-			    // Top
-			    if ( in_array( 'top', $atts['align_cols'] ) ) {
-			    	$flex_row['class'] .= ' top-xs';
-			    }
-
-			    // Middle
-			    if ( in_array( 'middle', $atts['align_cols'] ) ) {
-			    	$flex_row['class'] .= ' middle-xs';
-			    }
-
-			    // Bottom
-			    if ( in_array( 'bottom', $atts['align_cols'] ) ) {
-			    	$flex_row['class'] .= ' bottom-xs';
-			    }
-
-		    }
-
-		    // Align text
-		    if ( ! empty( $atts['align_text'] ) ) {
-
-		    	// Left
-			    if ( in_array( 'left', $atts['align_text']) ) {
-			    	$flex_row['class'] .= ' text-xs-left';
-			    }
-
-			    // Center
-			    if ( in_array( 'center', $atts['align_text'] ) ) {
-			    	$flex_row['class'] .= ' text-xs-center';
-			    }
-
-			    // Right
-			    if ( in_array( 'right', $atts['align_text'] ) ) {
-			    	$flex_row['class'] .= ' text-xs-right';
-			    }
-
-		    }
-
-		}
-
-		// WooCommerce
-		if ( class_exists( 'WooCommerce' ) && in_array( 'product', $atts['content'] ) ) {
-			$flex_row['class'] .= ' woocommerce';
-		}
-
-	    /**
-	     * Main content row wrap.
-	     * With flex-row attr so devs can filter elsewhere.
-	     */
-	    return sprintf( '<div %s>', genesis_attr( 'flex-row', $flex_row ) );
-
-	}
-
-	function get_row_wrap_close( $atts ) {
-		return '</div>';
-	}
-
-	function get_entry_wrap_open( $atts, $object, $has_background_image ) {
-
-		$flex_entry = array();
-
-		// Add href if linking element
-		if ( $this->is_linking_element( $atts, $has_background_image ) ) {
-			$flex_entry['href'] = $this->get_entry_link( $atts, $object );
-		}
-
-		// Set the entry classes
-		$flex_entry['class'] = $this->get_entry_classes( $atts );
-
-		if ( $atts['image_bg'] ) {
-			// Get the object ID
-			$object_id = $this->get_object_id( $atts, $object );
-			if ( $object_id ) {
-				$flex_entry = $this->add_image_bg( $flex_entry, $atts, $object_id );
-			}
-		}
-
-		/**
-		 * Main entry col wrap.
-		 * If we use genesis_attr( 'entry' ) then it resets the classes.
-		 */
-		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts, $has_background_image ), genesis_attr( 'flex-entry', $flex_entry ) );
-	}
-
-	function get_entry_wrap_close( $atts, $has_background_image ) {
-		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts, $has_background_image ) );
 	}
 
 	function get_entry_wrap_element( $atts, $has_background_image ) {
