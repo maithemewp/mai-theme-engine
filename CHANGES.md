@@ -1,3 +1,6 @@
+#### 1.0.0-beta.3
+* [columns] is now the wrap for static [col]'s
+
 #### 1.0.0-beta.2
 * Rebuild flex loop functionality
 * Re-engineer everything
