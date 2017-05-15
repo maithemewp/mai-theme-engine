@@ -95,8 +95,8 @@ function mai_do_banner_content() {
 			return 'h2';
 		}
 
-		genesis_do_post_title( $front_page_id );
-		echo get_the_excerpt( $front_page_id );
+		genesis_do_post_title();
+		echo wpautop( get_the_excerpt( get_the_ID() ) );
 
 	}
 
@@ -104,7 +104,7 @@ function mai_do_banner_content() {
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		printf( '<div %s>', genesis_attr( 'posts-page-description' ) );
 			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page_id ) );
-			echo apply_filters( 'genesis_cpt_archive_intro_text_output', get_post( $posts_page_id )->post_excerpt );
+			echo wpautop( get_the_excerpt( get_the_ID() ) );
 		echo '</div>';
 	}
 
@@ -116,9 +116,8 @@ function mai_do_banner_content() {
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
-		global $post;
 		genesis_do_post_title();
-		echo apply_filters( 'genesis_cpt_archive_intro_text_output', $post->post_excerpt );
+		echo wpautop( get_the_excerpt( get_the_ID() ) );
 	}
 
 	// Do author archive banner content

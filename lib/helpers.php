@@ -436,8 +436,11 @@ function mai_get_section_open( $args ) {
         'wrapper'       => sanitize_key( $args['wrapper'] ),
         'id'            => sanitize_html_class( $args['id'] ),
         'class'         => mai_sanitize_html_classes( $args['class'] ),
+        'align'         => mai_sanitize_keys( $args['align'] ), // left, center, right
         'image'         => absint( $args['image'] ),
         'overlay'       => filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ),
+        'title'         => sanitize_text_field( $args['title'] ),
+        'title_wrap'    => sanitize_key( $args['title_wrap'] ),
         'wrap'          => filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ),
         'inner'         => filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ),
         'content_width' => sanitize_key( $args['content_width'] ),
@@ -445,10 +448,10 @@ function mai_get_section_open( $args ) {
     );
 
     // Start all element variables as empty string
-    $overlay = $wrap = $inner = '';
+    $title = $wrap = $inner = '';
 
     // Start all attributes as empty array
-    $section_atts = $overlay_atts = $wrap_atts = $inner_atts = array();
+    $section_atts = $wrap_atts = $inner_atts = array();
 
     // Maybe add section id
     if ( $args['id'] ) {
@@ -461,6 +464,26 @@ function mai_get_section_open( $args ) {
     // Maybe add additional section classes
     if ( $args['class'] ) {
         $section_atts['class'] .= ' ' . $args['class'];
+    }
+
+    // Align text
+    if ( ! empty( $args['align'] ) ) {
+
+        // Left
+        if ( in_array( 'left', $args['align']) ) {
+            $section_atts['class'] .= ' text-xs-left';
+        }
+
+        // Center
+        if ( in_array( 'center', $args['align'] ) ) {
+            $section_atts['class'] .= ' text-xs-center';
+        }
+
+        // Right
+        if ( in_array( 'right', $args['align'] ) ) {
+            $section_atts['class'] .= ' text-xs-right';
+        }
+
     }
 
     // If we have an image ID
@@ -564,6 +587,11 @@ function mai_get_section_open( $args ) {
         $wrap = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
     }
 
+    // Maybe add a section title
+    if ( $args['title'] ) {
+        $title = sprintf( '<%s class="heading">%s</%s>', $args['title_wrap'], $args['title'], $args['title_wrap'] );
+    }
+
     // Maybe add an inner wrap, typically for content width/style
     if ( $args['inner'] ) {
         $inner_atts['class'] = 'inner';
@@ -574,8 +602,8 @@ function mai_get_section_open( $args ) {
     return sprintf( '<%s %s>%s%s%s',
         $args['wrapper'],
         genesis_attr( 'mai-section', $section_atts ),
-        $overlay,
         $wrap,
+        $title,
         $inner
     );
 
@@ -599,7 +627,7 @@ function mai_get_section_close( $args ) {
     $args = wp_parse_args( $args, mai_get_section_defaults() );
 
     // Start all element variables as empty string
-    $overlay = $wrap = $inner = '';
+    $title = $wrap = $inner = '';
 
     // Maybe close wrap
     if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
@@ -612,10 +640,9 @@ function mai_get_section_close( $args ) {
     }
 
     // Build the closing markup, in reverse order so the close appropriately
-    return sprintf( '%s%s%s</%s>',
+    return sprintf( '%s%s</%s>',
         $inner,
         $wrap,
-        $overlay,
         sanitize_text_field( $args['wrapper'] )
     );
 
@@ -626,8 +653,11 @@ function mai_get_section_defaults() {
         'wrapper'       => 'section',
         'id'            => '',
         'class'         => '',
+        'align'         => '',
         'image'         => '',
         'overlay'       => false,
+        'title'         => '',
+        'title_wrap'    => 'h2',
         'wrap'          => true,
         'inner'         => false,
         'content_width' => '',
