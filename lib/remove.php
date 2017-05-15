@@ -23,6 +23,9 @@ function mai_remove_page_templates( $templates ) {
 	return $templates;
 }
 
+// Remove edit post link
+add_filter ( 'genesis_edit_post_link' , '__return_false' );
+
 // Turn off gallery CSS
 add_filter( 'use_default_gallery_style', '__return_false' );
 

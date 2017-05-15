@@ -84,9 +84,6 @@ function mai_do_banner_content() {
 	// Add static front page banner content
 	if ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
 
-		// Remove the edit link, cause it's super ugly here.
-		add_filter ( 'genesis_edit_post_link' , '__return_false' );
-
 		// Remove post title
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
