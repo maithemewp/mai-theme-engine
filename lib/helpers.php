@@ -1007,6 +1007,39 @@ function mai_sanitize_keys( $keys ) {
 }
 
 /**
+ * Check if a string starts with another string.
+ *
+ * @link    http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+ *
+ * @param   string  $haystack  The string to check against.
+ * @param   string  $needle    The string to check if starts with.
+ *
+ * @return  bool
+ */
+function mai_starts_with( $haystack, $needle ) {
+    $length = strlen( $needle );
+    return ( $needle === substr( $haystack, 0, $length ) );
+}
+
+/**
+ * Check if a string ends with another string.
+ *
+ * @link    http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+ *
+ * @param   string  $haystack  The string to check against.
+ * @param   string  $needle    The string to check if starts with.
+ *
+ * @return  bool
+ */
+function mai_ends_with( $haystack, $needle ) {
+    $length = strlen($needle);
+    if ( 0 == $length ) {
+        return true;
+    }
+    return ( $needle === substr( $haystack, -$length ) );
+}
+
+/**
  * Helper function for getting the script/style `.min` suffix for minified files.
  *
  * @return string
