@@ -244,6 +244,13 @@ h6 {
 	font-size: calc(17px + 0.5vw);
 }
 
+.heading {
+	font-size: calc(24px + 0.5vw);
+	font-weight: bold;
+	text-align: center;
+	margin: 30px auto;
+}
+
 /* ## Titles
 --------------------------------------------- */
 
@@ -741,19 +748,33 @@ td {
 	-webkit-hyphens: auto;
 	-ms-hyphens: auto;
 	hyphens: auto;
-	margin: 20px auto 40px;
+	margin: 0 auto;
 }
 
-.content-sidebar-wrap {
-	margin-top: 20px;
+/* we don't want to add hyphens in links */
+.site-inner a {
+	-ms-word-break: break-all;
+	word-break: break-all;
+	word-break: break-word; /* Non standard for WebKit */
 }
 
-.home .content-sidebar-wrap {
-	margin-top: 0;
-}
-
+/**
+ * These are offset in .section too,
+ * If changed, .section needs to change too.
+ */
 .content {
-	margin-bottom: 0;
+	margin-top: 16px;
+	margin-bottom: 30px;
+}
+
+/* offset section if it's the first element in the content */
+.entry-content > .section:first-of-type {
+	margin-top: -16px;
+}
+
+/* offset section if it's the last element in the content */
+.entry-content > .section:last-of-type {
+	margin-bottom: -60px;
 }
 
 .entry,
@@ -888,15 +909,14 @@ td {
 	background-color: #fff;
 }
 
-/* offset the section bottom margin when 2 sections in a row */
-.section + .section {
-	margin-top: -30px;
-}
-
-
 /* add top margin any time a section is after another element */
 .entry-content > *:not(.section) + .section {
 	margin-top: 30px;
+}
+
+/* offset the section bottom margin when 2 sections in a row */
+.section + .section {
+	margin-top: -30px;
 }
 
 /* only make sections full window width where appropriate */
@@ -906,14 +926,7 @@ td {
 	margin-right: calc(-50vw + 50%);
 }
 
-.banner-area.section {
-	margin-top: -20px; /* offset .site-inner top margin */
-	margin-bottom: 20px;
-}
-
 .section .wrap {
-	/* padding-top: calc(4vw + 2em); */
-	/* padding-bottom: calc(4vw + 2em); */
 	padding-left: 24px;
 	padding-right: 24px;
 }
@@ -924,7 +937,6 @@ td {
 }
 
 .image-bg .inner {
-	/* display: inline-block; */
 	background-color: rgba(255, 255, 255, 0.7);
 	text-shadow: none;
 	padding: 4% 8%;
@@ -1121,6 +1133,7 @@ img.alignright,
 
 .breadcrumb {
 	font-size: 14px;
+	margin-top: 12px;
 }
 
 .breadcrumb a {
@@ -2360,15 +2373,13 @@ img.alignright,
 --------------------------------------------- */
 
 .banner-area  {
-	background-color: #3f3f3f;
 	text-align: center;
 	font-size: 22px;
 	line-height: 1.45;
 }
 
-.banner-area .wrap {
-	/* padding-top: calc(3vw + 2em); */
-	/* padding-bottom: calc(3vw + 2em); */
+.banner-area.section {
+	margin-bottom: 0;
 }
 
 .banner-area a:not(.button) {
@@ -2426,6 +2437,10 @@ img.alignright,
 	border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
+.entry.image-bg {
+	border: none;
+}
+
 /* offset the .entry border */
 .singular .featured-image {
 	margin-bottom: -1px;
@@ -2444,6 +2459,7 @@ img.alignright,
 .home .content > .entry {
 	background: transparent;
 	padding: 0;
+	/* padding-top: 24px; */
 	border: none;
 }
 
@@ -2480,8 +2496,7 @@ img.alignright,
 }
 
 .entry-content code {
-	background-color: #323232;
-	color: #e4e4e4;
+	background-color: #f1f1f1;
 }
 
 .single .entry-content .wp-post-image {
@@ -2560,8 +2575,13 @@ img.alignright,
 	max-width: 100%;
 }
 
+.flex-entry .price,
 .flex-entry .more-link-wrap {
 	margin-top: auto;
+}
+
+.flex-entry .price + .more-link-wrap {
+	margin-top: 0;
 }
 
 .flex-entry .entry-footer .entry-meta {
