@@ -247,7 +247,7 @@ h6 {
 }
 
 .section .height-sm .heading {
-	margin-bottom: calc(0px + 1vw);
+	margin-bottom: calc(15px + 1vw);
 }
 
 .section .height-md .heading {
