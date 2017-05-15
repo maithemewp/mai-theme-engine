@@ -5,9 +5,18 @@
  *
  * @return void
  */
-add_action( 'admin_enqueue_scripts', 'mai_add_editor_styles' );
-function mai_add_editor_styles() {
+add_action( 'admin_enqueue_scripts', 'mai_admin_enqueue_scripts' );
+function mai_admin_enqueue_scripts() {
+
+	// Add an editor stylesheet
 	add_editor_style( '/assets/css/editor-style.css' );
+
+	// Use minified files if script debug is not being used
+	$suffix = mai_get_suffix();
+
+	// Register for later
+	wp_enqueue_style( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "/assets/css/mai-cmb2{$suffix}.css", array(), CHILD_THEME_VERSION );
+	wp_enqueue_script( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "/assets/js/mai-cmb2{$suffix}.js", array( 'jquery' ), CHILD_THEME_VERSION, true );
 }
 
 /**
@@ -24,7 +33,7 @@ function mai_add_styleselect_dropdown( $buttons ) {
 }
 
 /**
- * Add a new full width wrap span to elements
+ * Add a button option to the editor.
  *
  * @param   array  $init_array
  *
@@ -35,6 +44,12 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 	// Define the style_formats array
 	$style_formats = array(
 		// Each array child is a format with it's own settings
+		array(
+			'title' 	=> 'Section Title',
+			// 'selector'  => 'h2',
+			'block' 	=> 'h2',
+			'classes' 	=> 'heading',
+		),
 		array(
 			'title'		=> 'Button',
 			'selector'	=> 'a',

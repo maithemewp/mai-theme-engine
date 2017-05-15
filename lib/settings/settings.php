@@ -34,8 +34,6 @@ function mai_update_theme_settings_defaults() {
 	update_option( 'posts_per_page', 12 );
 }
 
-
-
 // If debug mode
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	/**
@@ -67,7 +65,6 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 	// Enqueue
 	wp_enqueue_style( 'mai-cmb2' );
 	wp_enqueue_script( 'mai-cmb2' );
-
 }
 
 /**
@@ -719,9 +716,7 @@ function _mai_cmb_banner_config() {
 		'id'			=> 'banner',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
-		'options'		=> array(
-	        'url' => false,
-	    ),
+		'options'		=> array( 'url' => false ),
 	    'text' 			=> array(
 	        'add_upload_file_text' => __( 'Add Image', 'maitheme' ),
 	    ),
