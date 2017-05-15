@@ -200,17 +200,17 @@ final class Mai_Grid_Shortcode {
 
 	    	// Left
 		    if ( in_array( 'left', $atts['align']) ) {
-		    	$flex_row['class'] .= ' text-xs-left';
+		    	$flex_col['class'] .= ' text-xs-left';
 		    }
 
 		    // Center
 		    if ( in_array( 'center', $atts['align'] ) ) {
-		    	$flex_row['class'] .= ' text-xs-center';
+		    	$flex_col['class'] .= ' text-xs-center';
 		    }
 
 		    // Right
 		    if ( in_array( 'right', $atts['align'] ) ) {
-		    	$flex_row['class'] .= ' text-xs-right';
+		    	$flex_col['class'] .= ' text-xs-right';
 		    }
 
 	    }
@@ -255,7 +255,7 @@ final class Mai_Grid_Shortcode {
 			'ids'					=> '',
 			'ignore_sticky_posts'	=> false,
 			'image_size'			=> 'one-third',
-			'image_bg'		=> false,
+			'image_bg'				=> false,
 			'link'					=> true,
 			'meta_key'				=> '',
 			'meta_value'			=> '',
@@ -474,12 +474,12 @@ final class Mai_Grid_Shortcode {
 
 			// Slider HTML data attributes
 			$flex_row['data-arrows']		 = $atts['arrows'] ? 'true' : 'false';
-			$flex_row['data-center']		 = $atts['center'] ? 'true' : 'false';
+			$flex_row['data-center']		 = in_array( 'center', $atts['align'] ) ? 'true' : 'false';
 			$flex_row['data-centermode']	 = $atts['center_mode'] ? 'true' : 'false';
 			$flex_row['data-dots']			 = $atts['dots'] ? 'true' : 'false';
 			$flex_row['data-fade']			 = $atts['fade'] ? 'true' : 'false';
 			$flex_row['data-infinite']		 = $atts['infinite'] ? 'true' : 'false';
-			$flex_row['data-middle']		 = $atts['middle'] ? 'true' : 'false';
+			$flex_row['data-middle']		 = in_array( 'middle', $atts['align'] ) ? 'true' : 'false';
 			$flex_row['data-slidestoscroll'] = $atts['slidestoscroll'];
 			$flex_row['data-slidestoshow']	 = $atts['columns'];
 			$flex_row['data-gutter']		 = $is_valid_gutter ? $atts['gutter'] : 0;

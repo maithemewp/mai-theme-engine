@@ -130,7 +130,7 @@ a {
 }
 
 p {
-	margin: 0 0 calc(.75vw + 1em);
+	margin: 0 0 16px;
 	padding: 0;
 }
 
@@ -220,27 +220,22 @@ h1.entry-title {
 }
 
 h2 {
-	/* font-size: 30px; */
 	font-size: calc(22px + 0.5vw);
 }
 
 h3 {
-	/* font-size: 26px; */
 	font-size: calc(20px + 0.5vw);
 }
 
 h4 {
-	/* font-size: 22px; */
 	font-size: calc(19px + 0.5vw);
 }
 
 h5 {
-	/* font-size: 18px; */
 	font-size: calc(18px + 0.5vw);
 }
 
 h6 {
-	/* font-size: 16px; */
 	font-size: calc(17px + 0.5vw);
 }
 
@@ -249,6 +244,18 @@ h6 {
 	font-weight: bold;
 	text-align: center;
 	margin: 30px auto;
+}
+
+.section .height-sm .heading {
+	margin-bottom: calc(0px + 1vw);
+}
+
+.section .height-md .heading {
+	margin-bottom: calc(30px + 2vw);
+}
+
+.section .height-lg .heading {
+	margin-bottom: calc(60px + 3vw);
 }
 
 /* ## Titles
@@ -552,6 +559,7 @@ input[type="submit"],
 	color: rgba(255, 255, 255, 1);
 	text-align: center;
 	text-shadow: none;
+	border: none;
 	border-radius: 0;
 	box-shadow: none;
 }
@@ -591,6 +599,7 @@ input:focus[type="submit"],
 .woocommerce input.button.alt:focus {
 	background-color: rgba(0, 0, 0, 1);
 	color: rgba(255, 255, 255, 1);
+	border: none;
 	outline: none;
 }
 
@@ -643,6 +652,50 @@ input[type="submit"].small,
 .woocommerce input.button:focus {
     background-color: #dad8da;
     color: #515151;
+}
+
+
+button.white,
+input[type="button"].white,
+input[type="reset"].white,
+input[type="submit"].white,
+.button.white,
+.entry-content .button.white,
+.banner-area.light-content button,
+.banner-area.light-content input[type="button"],
+.banner-area.light-content input[type="reset"],
+.banner-area.light-content input[type="submit"],
+.banner-area.light-content .button {
+	background-color: #fff;
+	color: #323232;
+	text-shadow: none;
+}
+
+button.white:hover,
+button.white:focus,
+input[type="button"].white:hover,
+input[type="button"].white:focus,
+input[type="reset"].white:hover,
+input[type="reset"].white:focus,
+input[type="submit"].white:hover,
+input[type="submit"].white:focus,
+.button.white:hover,
+.button.white:focus,
+.entry-content .button.white:hover,
+.entry-content .button.white:focus,
+.banner-area.light-content button:hover,
+.banner-area.light-content button:focus,
+.banner-area.light-content input[type="button"]:hover,
+.banner-area.light-content input[type="button"]:focus,
+.banner-area.light-content input[type="reset"]:hover,
+.banner-area.light-content input[type="reset"]:focus,
+.banner-area.light-content input[type="submit"]:hover,
+.banner-area.light-content input[type="submit"]:focus,
+.banner-area.light-content .button:hover,
+.banner-area.light-content .button:focus {
+	background-color: #ebe9eb;
+	color: #323232;
+	text-shadow: none;
 }
 
 .more-link {
@@ -758,23 +811,20 @@ td {
 	word-break: break-word; /* Non standard for WebKit */
 }
 
-/**
- * These are offset in .section too,
- * If changed, .section needs to change too.
- */
-.content {
-	margin-top: 16px;
+.content,
+.sidebar {
+	margin-top: 30px;
 	margin-bottom: 30px;
 }
 
 /* offset section if it's the first element in the content */
-.entry-content > .section:first-of-type {
-	/* .content (margin-bottom) + .content .entry (padding): (16px + 24px = 40px) */
-	margin-top: -40px;
+.content-no-sidebars .entry-content > .section:first-of-type {
+	/* .content (margin-bottom) + .content .entry (padding): (30px + 24px = 54px) */
+	margin-top: -54px;
 }
 
 /* offset section if it's the last element in the content */
-.entry-content > .section:last-of-type {
+.content-no-sidebars .entry-content > .section:last-of-type {
 	/* .content (margin-bottom) + .content .entry (padding) + .section (margin-bottom: (30px + 24px + 30px = 84px) */
 	margin-bottom: -84px;
 }
@@ -869,18 +919,18 @@ td {
 }
 
 .height-sm {
-	padding-top: calc(30px + 1vw);
-	padding-bottom: calc(30px + 1vw);
+	padding-top: calc(16px + 1vw);
+	padding-bottom: calc(0px + 1vw);
 }
 
 .height-md {
-	padding-top: calc(60px + 2vw);
-	padding-bottom: calc(60px + 2vw);
+	padding-top: calc(46px + 2vw);
+	padding-bottom: calc(30px + 2vw);
 }
 
 .height-lg {
-	padding-top: calc(90px + 3vw);
-	padding-bottom: calc(90px + 3vw);
+	padding-top: calc(76px + 3vw);
+	padding-bottom: calc(60px + 3vw);
 }
 
 /* # Common Classes
@@ -933,7 +983,6 @@ td {
 	padding-right: 24px;
 }
 
-.section .wrap > p:last-child,
 .section .inner > p:last-child {
 	margin-bottom: 0;
 }
@@ -1136,6 +1185,7 @@ img.alignright,
 .breadcrumb {
 	font-size: 14px;
 	margin-top: 12px;
+	margin-bottom: -16px; /* offset .content top margin */
 }
 
 .breadcrumb a {
@@ -1190,6 +1240,7 @@ img.alignright,
 
 .mai-slider.slick-initialized .slick-slide {
 	display: -webkit-flex;display: -ms-flexbox;display: flex;
+	-webkit-flex-direction: column;-ms-flex-direction: column;flex-direction: column;
 }
 
 .mai-slider .slick-slide {
@@ -1429,11 +1480,17 @@ img.alignright,
 
 .slick-prev {
 	left: 3%;
-	margin-left: calc(-50vw + 50%);
 }
 
 .slick-next {
 	right: 3%;
+}
+
+.content-no-sidebars .slick-prev {
+	margin-left: calc(-50vw + 50%);
+}
+
+.content-no-sidebars .slick-next {
 	margin-right: calc(-50vw + 50%);
 }
 
@@ -2404,6 +2461,10 @@ img.alignright,
 	font-weight: bold;
 }
 
+.banner-area p {
+	margin-bottom: 24px;
+}
+
 .banner-area p:first-of-type {
 	margin-top: 16px;
 }
@@ -2524,7 +2585,7 @@ img.alignright,
 --------------------------------------------- */
 
 .flex-grid {
-	margin-top: 20px;
+	/* margin-top: 20px; */
 }
 
 .flex-entry {
