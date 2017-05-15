@@ -769,12 +769,14 @@ td {
 
 /* offset section if it's the first element in the content */
 .entry-content > .section:first-of-type {
-	margin-top: -16px;
+	/* .content (margin-bottom) + .content .entry (padding): (16px + 24px = 40px) */
+	margin-top: -40px;
 }
 
 /* offset section if it's the last element in the content */
 .entry-content > .section:last-of-type {
-	margin-bottom: -60px;
+	/* .content (margin-bottom) + .content .entry (padding) + .section (margin-bottom: (30px + 24px + 30px = 84px) */
+	margin-bottom: -84px;
 }
 
 .entry,
@@ -2454,13 +2456,6 @@ img.alignright,
 .adjacent-entry-pagination .pagination-previous,
 .adjacent-entry-pagination .pagination-next {
 	padding: 24px;
-}
-
-.home .content > .entry {
-	background: transparent;
-	padding: 0;
-	/* padding-top: 24px; */
-	border: none;
 }
 
 .entry-content .attachment a,
