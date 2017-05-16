@@ -921,8 +921,8 @@ td {
 }
 
 .height-sm {
-	padding-top: calc(0px + 1vw);
-	padding-bottom: calc(0px + 1vw);
+	padding-top: calc(12px + 1vw);
+	padding-bottom: calc(12px + 1vw);
 }
 
 .height-md {
