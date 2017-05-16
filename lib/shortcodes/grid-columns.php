@@ -1234,11 +1234,24 @@ final class Mai_Grid_Shortcode {
 	    if ( ! $image_id ) {
 	    	return $attributes;
 	    }
+	    // Get all registered image sizes
+		global $_wp_additional_image_sizes;
+
 	    $image = wp_get_attachment_image_src( $image_id, $atts['image_size'], true );
-		$attributes['class']			.= ' image-bg image-bg-ar overlay light-content';
-		$attributes['style']			= 'background-image: url(' . $image[0] . ');';
-		$attributes['data-img-width']	= $image[1];
-		$attributes['data-img-height']	= $image[2];
+		$attributes['class'] .= ' image-bg aspect-ratio overlay light-content';
+		$attributes['style']  = 'background-image: url(' . $image[0] . ');';
+		// If image size is in the global (it should be)
+		if ( isset( $_wp_additional_image_sizes[ $atts['image_size'] ] ) ) {
+			$registered_image = $_wp_additional_image_sizes[ $atts['image_size'] ];
+			$attributes['data-aspect-width']  = $registered_image['width'];
+			$attributes['data-aspect-height'] = $registered_image['height'];
+		}
+		// Use the actual image dimensions
+		else {
+			$attributes['data-aspect-width']  = $image[1];
+			$attributes['data-aspect-height'] = $image[2];
+		}
+		d( $attributes );
 	    return $attributes;
 	}
 
