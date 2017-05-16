@@ -101,7 +101,8 @@
  */
 ( function ( document, $, undefined ) {
 
-    var $imageBG = $( '.image-bg' );
+    // Image aspect ratio elements
+    var $imageBG = $( '.aspect-ratio' );
 
     if ( $imageBG.length > 0 ) {
 
@@ -119,11 +120,12 @@
     function _resizeToMatch( $element ) {
 
         // Get the image size from attributes
-        var width  = $element.data( 'img-width' ),
-            height = $element.data( 'img-height' );
+        var width  = $element.data( 'aspect-width' ),
+            height = $element.data( 'aspect-height' );
 
         if ( width && height ) {
-            $element.css( 'min-height', Math.round( $element.width() * height / width ) + 'px' );
+            console.log( $element.width() );
+            $element.css( 'min-height', Math.round( $element.outerWidth() * height / width ) + 'px' );
         }
 
     }
@@ -516,7 +518,7 @@ function toggleAria( $this, attribute ) {
  */
 ( function ( document, $, undefined ) {
 
-    $( 'body' ).on( 'click', '.scrollTo', function(event) {
+    $( 'body' ).on( 'click', '.scroll-to', function(event) {
         var target = $(this.getAttribute('href'));
         if( target.length ) {
             event.preventDefault();
