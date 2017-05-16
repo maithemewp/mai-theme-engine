@@ -553,24 +553,23 @@ final class Mai_Grid_Shortcode {
 	    /**
 	     * "align" takes precendence over "align_cols" and "align_text".
 	     * "align" forces the text to align along with the cols.
+	     *
+	     * We add text align classes here and on entries, because [columns] shortcode center="" only uses these.
 	     */
 	    if ( ! empty( $atts['align'] ) ) {
 	    	// Left
 		    if ( in_array( 'left', $atts['align'] ) ) {
-		    	// $classes .= ' start-xs text-xs-left';
-		    	$classes .= ' start-xs';
+		    	$classes .= ' start-xs text-xs-left';
 		    }
 
 		    // Center
 		    if ( in_array( 'center', $atts['align'] ) ) {
-		    	// $classes .= ' center-xs text-xs-center';
-		    	$classes .= ' center-xs';
+		    	$classes .= ' center-xs text-xs-center';
 		    }
 
 		    // Right
 		    if ( in_array( 'right', $atts['align'] ) ) {
-		    	// $classes .= ' end-xs text-xs-right';
-		    	$classes .= ' end-xs';
+		    	$classes .= ' end-xs text-xs-right';
 		    }
 
 		    // Top
