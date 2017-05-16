@@ -2,10 +2,10 @@
 
 	- HTML5 Reset
 	- Defaults
+		- Box Sizing
 		- Typographical Elements
 		- Headings
 		- Titles
-		- Box Sizing
 		- Screen Reader Text
 		- Skip Links
 		- Accessible Menu
@@ -83,6 +83,22 @@ progress,sub,sup{vertical-align:baseline}button,hr,input{overflow:visible}[type=
 
 /* # Defaults
 ---------------------------------------------------------------------------------------------------- */
+
+/* ## Box Sizing
+--------------------------------------------- */
+
+html,
+input[type="search"]{
+	box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+	min-height: 0;
+	min-width: 0;
+}
 
 /* ## Typographical Elements
 --------------------------------------------- */
@@ -316,20 +332,6 @@ a:focus,
 .widget-title {
 	font-size: 22px;
 	margin-bottom: 24px;
-}
-
-/* ## Box Sizing
---------------------------------------------- */
-
-html,
-input[type="search"]{
-	box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-	box-sizing: inherit;
 }
 
 /* ## Screen Reader Text
@@ -818,13 +820,13 @@ td {
 }
 
 /* offset section if it's the first element in the content */
-.content-no-sidebars .entry-content > .section:first-of-type {
+.content-no-sidebars .entry-content > .section:first-child:first-of-type {
 	/* .content (margin-bottom) + .content .entry (padding): (30px + 24px = 54px) */
 	margin-top: -54px;
 }
 
 /* offset section if it's the last element in the content */
-.content-no-sidebars .entry-content > .section:last-of-type {
+.content-no-sidebars .entry-content > .section:last-child:last-of-type {
 	/* .content (margin-bottom) + .content .entry (padding) + .section (margin-bottom: (30px + 24px + 30px = 84px) */
 	margin-bottom: -84px;
 }
@@ -919,17 +921,17 @@ td {
 }
 
 .height-sm {
-	padding-top: calc(16px + 1vw);
+	padding-top: calc(0 + 1vw);
 	padding-bottom: calc(0px + 1vw);
 }
 
 .height-md {
-	padding-top: calc(46px + 2vw);
+	padding-top: calc(30px + 2vw);
 	padding-bottom: calc(30px + 2vw);
 }
 
 .height-lg {
-	padding-top: calc(76px + 3vw);
+	padding-top: calc(60px + 3vw);
 	padding-bottom: calc(60px + 3vw);
 }
 
@@ -1224,8 +1226,13 @@ img.alignright,
 /* ## Slick
 --------------------------------------------- */
 
+.mai-slider {
+	/* display: block; */
+}
+
 .mai-slider .slick-list {
 	-webkit-flex: 1 1 100%;-ms-flex: 1 1 100%;flex: 1 1 100%;
+	max-width: 100%;
 }
 
 .mai-slider .slick-track::before,
@@ -1234,8 +1241,12 @@ img.alignright,
 }
 
 .mai-slider .slick-track {
+	/* display: block; */
 	display: -webkit-flex;display: -ms-flexbox;display: flex;
 	-webkit-flex: 0 1 auto;-ms-flex: 0 1 auto;flex: 0 1 auto;
+	max-width: auto;
+	/* -webkit-flex: 0 1 100%;-ms-flex: 0 1 100%;flex: 0 1 100%; */
+	/* max-width: 100%; */
 }
 
 .mai-slider.slick-initialized .slick-slide {
@@ -1419,6 +1430,7 @@ img.alignright,
 	top: 50%;
 	-webkit-transform: translate(0, -50%);-ms-transform: translate(0, -50%);transform: translate(0, -50%);
 	-webkit-flex: 0 0 48px;-ms-flex: 0 0 48px;flex: 0 0 48px;
+	max-width: 48px;
 	-webkit-align-self: center;-ms-flex-item-align: center;-ms-grid-row-align: center;align-self: center;
 	display: block;
 	width: 48px;
@@ -1711,11 +1723,26 @@ img.alignright,
 	margin-bottom: 4px;
 }
 
+/* forces logo and mobile toggle on same line */
+.site-header.has-header-left:not(.has-header-right) .wrap > .row,
+.site-header.has-header-right:not(.has-header-left) .wrap > .row {
+	-webkit-flex-wrap: nowrap;-ms-flex-wrap: nowrap;flex-wrap: nowrap;
+}
+
+@media only screen and (max-width: 992px) {
+
+	.has-header-left.has-header-right .site-title a {
+		margin-top: 16px;
+		margin-bottom: 4px;
+	}
+
+}
+
 @media only screen and (max-width: 768px) {
 
-	/* forces logo and mobile toggle on same line */
-	.site-header .wrap > .row {
-		-webkit-flex-wrap: nowrap;-ms-flex-wrap: nowrap;flex-wrap: nowrap;
+	.has-header-left.has-header-right .site-title a {
+		margin-top: 4px;
+		margin-bottom: 4px;
 	}
 
 }
@@ -1745,19 +1772,59 @@ img.alignright,
 
 .shrink-header .site-header .site-title a {
 	transition: all 0.3s ease-in-out;
+	-webkit-transform: translateX(0) scale(1);
+	    -ms-transform: translateX(0) scale(1);
+	        transform: translateX(0) scale(1);
 }
 
 .shrink-header .site-header.shrink .site-title a {
-	-webkit-transform:scale(0.7);-ms-transform:scale(0.7);transform:scale(0.7);
 	margin-top: 4px;
 	margin-bottom: 4px;
+}
+
+.shrink-header .site-header.has-header-right.shrink .site-title a {
+	-webkit-transform: translateX(-14%) scale(0.7);
+	    -ms-transform: translateX(-14%) scale(0.7);
+	        transform: translateX(-14%) scale(0.7);
+}
+
+.shrink-header .site-header.has-header-left.shrink .site-title a {
+	-webkit-transform: translateX(14%) scale(0.7);
+	    -ms-transform: translateX(14%) scale(0.7);
+	        transform: translateX(14%) scale(0.7);
+}
+
+.shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
+	-webkit-transform: translateX(0) scale(0.7);
+	    -ms-transform: translateX(0) scale(0.7);
+	        transform: translateX(0) scale(0.7);
 }
 
 @media only screen and (max-width: 768px) {
 
 	/* stay shrunk on mobile */
-	.site-title a {
-		-webkit-transform:scale(0.7);-ms-transform:scale(0.7);transform:scale(0.7);
+	.shrink-header .site-header .site-title a,
+	.shrink-header .site-header.shrink .site-title a {
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+
+	.shrink-header .site-header.has-header-right .site-title a {
+		-webkit-transform: translateX(-14%) scale(0.7);
+		    -ms-transform: translateX(-14%) scale(0.7);
+		        transform: translateX(-14%) scale(0.7);
+	}
+
+	.shrink-header .site-header.has-header-left .site-title a {
+		-webkit-transform: translateX(14%) scale(0.7);
+		    -ms-transform: translateX(14%) scale(0.7);
+		        transform: translateX(14%) scale(0.7);
+	}
+
+	.shrink-header .site-header.has-header-left.has-header-right .site-title a {
+		-webkit-transform: translateX(0) scale(0.7);
+		    -ms-transform: translateX(0) scale(0.7);
+		        transform: translateX(0) scale(0.7);
 	}
 
 }
@@ -2967,21 +3034,9 @@ li.comment {
 
 @media only screen and (max-width: 1159px) {}
 
-@media only screen and (max-width: 992px) {
-
-	.has-header-left.has-header-right .site-title a {
-		margin-top: 16px;
-		margin-bottom: 4px;
-	}
-
-}
+@media only screen and (max-width: 992px) {}
 
 @media only screen and (max-width: 768px) {
-
-	.has-header-left.has-header-right .site-title a {
-		margin-top: 4px;
-		margin-bottom: 4px;
-	}
 
 	.header-left,
 	.header-right,
