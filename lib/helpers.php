@@ -571,6 +571,9 @@ function mai_get_section_open( $args ) {
 
             // Add width classes based on layout
             switch ( genesis_site_layout() ) {
+                case 'xs-content':
+                    $wrap_atts['class'] .= ' width-xs';
+                    break;
                 case 'sm-content':
                     $wrap_atts['class'] .= ' width-sm';
                     break;
