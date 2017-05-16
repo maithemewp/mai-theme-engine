@@ -64,8 +64,6 @@
             // Push the primary nav
             $pushElement = $navPrimary;
         } else {
-            // Add 20 more px to the header height
-            headerHeight = headerHeight + 20;
             // Push site inner
             $pushElement = $siteInner;
         }
@@ -151,7 +149,6 @@
 
         var $this = $(this);
 
-
         // Show search menu item and hide the menu text
         $this.show().find( 'span[itemprop=name]' ).addClass( 'screen-reader-text' );
 
@@ -218,7 +215,6 @@
 var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 ( function ( document, $, undefined ) {
-
     'use strict';
 
     var maiMenu             = {},
@@ -520,7 +516,7 @@ function toggleAria( $this, attribute ) {
  */
 ( function ( document, $, undefined ) {
 
-    $( 'body' ).on( 'click', '.scroll-to', function(event) {
+    $( 'body' ).on( 'click', '.scrollTo', function(event) {
         var target = $(this.getAttribute('href'));
         if( target.length ) {
             event.preventDefault();
