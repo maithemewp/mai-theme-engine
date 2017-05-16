@@ -230,15 +230,15 @@ final class Mai_Grid_Shortcode {
 
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
-			'align'					=> '',  // "top left" overrides align_cols and align_text for most times one setting makes sense
+			'align'					=> '', // "top left" overrides align_cols and align_text for most times one setting makes sense
 			'align_cols'			=> '', // "top left"
 			'align_text'			=> '', // "center"
-			'authors'				=> '',
+			'authors'				=> '', // Comma separated author/user IDs
 			'categories'			=> '', // Comma separated category IDs
 			// 'center'				=> false,
 			'columns'				=> '3',
 			'content'				=> 'post', // post_type name (comma separated if multiple), or taxonomy name
-			'content_limit'			=> '', // Limit number of words
+			'content_limit'			=> '', 	// Limit number of words
 			'content_type'			=> '',
 			'display_taxonomies'	=> '',  // Comma separated taxonomies to show terms
 			'date_after'			=> '',
