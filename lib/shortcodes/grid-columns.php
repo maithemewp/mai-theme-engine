@@ -493,99 +493,7 @@ final class Mai_Grid_Shortcode {
 				$flex_row['class'] .= sprintf( ' gutter-%s', $atts['gutter'] );
 		    }
 
-		    /**
-		     * "align" takes precendence over "align_cols" and "align_text".
-		     * "align" forces the text to align along with the cols.
-		     */
-		    if ( ! empty( $atts['align'] ) ) {
-		    	// Left
-			    if ( in_array( 'left', $atts['align'] ) ) {
-			    	$flex_row['class'] .= ' start-xs text-xs-left';
-			    }
-
-			    // Center
-			    if ( in_array( 'center', $atts['align'] ) ) {
-			    	$flex_row['class'] .= ' center-xs text-xs-center';
-			    }
-
-			    // Right
-			    if ( in_array( 'right', $atts['align'] ) ) {
-			    	$flex_row['class'] .= ' end-xs text-xs-right';
-			    }
-
-			    // Top
-			    if ( in_array( 'top', $atts['align'] ) ) {
-			    	$flex_row['class'] .= ' top-xs';
-			    }
-
-			    // Middle
-			    if ( in_array( 'middle', $atts['align'] ) ) {
-			    	$flex_row['class'] .= ' middle-xs';
-			    }
-
-			    // Bottom
-			    if ( in_array( 'bottom', $atts['align'] ) ) {
-			    	$flex_row['class'] .= ' bottom-xs';
-			    }
-
-		    } else {
-
-			    // Align columns
-			    if ( ! empty( $atts['align_cols'] ) ) {
-
-			    	// Left
-				    if ( in_array( 'left', $atts['align_cols'] ) ) {
-				    	$flex_row['class'] .= ' start-xs';
-				    }
-
-				    // Center
-				    if ( in_array( 'center', $atts['align_cols'] ) ) {
-				    	$flex_row['class'] .= ' center-xs';
-				    }
-
-				    // Right
-				    if ( in_array( 'right', $atts['align_cols'] ) ) {
-				    	$flex_row['class'] .= ' end-xs';
-				    }
-
-				    // Top
-				    if ( in_array( 'top', $atts['align_cols'] ) ) {
-				    	$flex_row['class'] .= ' top-xs';
-				    }
-
-				    // Middle
-				    if ( in_array( 'middle', $atts['align_cols'] ) ) {
-				    	$flex_row['class'] .= ' middle-xs';
-				    }
-
-				    // Bottom
-				    if ( in_array( 'bottom', $atts['align_cols'] ) ) {
-				    	$flex_row['class'] .= ' bottom-xs';
-				    }
-
-			    }
-
-			    // Align text
-			    if ( ! empty( $atts['align_text'] ) ) {
-
-			    	// Left
-				    if ( in_array( 'left', $atts['align_text']) ) {
-				    	$flex_row['class'] .= ' text-xs-left';
-				    }
-
-				    // Center
-				    if ( in_array( 'center', $atts['align_text'] ) ) {
-				    	$flex_row['class'] .= ' text-xs-center';
-				    }
-
-				    // Right
-				    if ( in_array( 'right', $atts['align_text'] ) ) {
-				    	$flex_row['class'] .= ' text-xs-right';
-				    }
-
-			    }
-
-			}
+		    $flex_row['class'] = $this->add_row_align_classes( $flex_row['class'], $atts );
 
 		}
 
@@ -618,6 +526,9 @@ final class Mai_Grid_Shortcode {
 		// Set the entry classes
 		$flex_entry['class'] = $this->get_entry_classes( $atts );
 
+		// Add the align classes
+	    $flex_entry['class'] = $this->add_entry_align_classes( $flex_entry['class'], $atts );
+
 		if ( $atts['image_bg'] ) {
 			// Get the object ID
 			$object_id = $this->get_object_id( $atts, $object );
@@ -635,6 +546,176 @@ final class Mai_Grid_Shortcode {
 
 	function get_entry_wrap_close( $atts, $has_background_image ) {
 		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts, $has_background_image ) );
+	}
+
+	function add_row_align_classes( $classes, $atts ) {
+
+	    /**
+	     * "align" takes precendence over "align_cols" and "align_text".
+	     * "align" forces the text to align along with the cols.
+	     */
+	    if ( ! empty( $atts['align'] ) ) {
+	    	// Left
+		    if ( in_array( 'left', $atts['align'] ) ) {
+		    	// $classes .= ' start-xs text-xs-left';
+		    	$classes .= ' start-xs';
+		    }
+
+		    // Center
+		    if ( in_array( 'center', $atts['align'] ) ) {
+		    	// $classes .= ' center-xs text-xs-center';
+		    	$classes .= ' center-xs';
+		    }
+
+		    // Right
+		    if ( in_array( 'right', $atts['align'] ) ) {
+		    	// $classes .= ' end-xs text-xs-right';
+		    	$classes .= ' end-xs';
+		    }
+
+		    // Top
+		    if ( in_array( 'top', $atts['align'] ) ) {
+		    	$classes .= ' top-xs';
+		    }
+
+		    // Middle
+		    if ( in_array( 'middle', $atts['align'] ) ) {
+		    	$classes .= ' middle-xs';
+		    }
+
+		    // Bottom
+		    if ( in_array( 'bottom', $atts['align'] ) ) {
+		    	$classes .= ' bottom-xs';
+		    }
+
+	    } else {
+
+		    // Align columns
+		    if ( ! empty( $atts['align_cols'] ) ) {
+
+		    	// Left
+			    if ( in_array( 'left', $atts['align_cols'] ) ) {
+			    	$classes .= ' start-xs';
+			    }
+
+			    // Center
+			    if ( in_array( 'center', $atts['align_cols'] ) ) {
+			    	$classes .= ' center-xs';
+			    }
+
+			    // Right
+			    if ( in_array( 'right', $atts['align_cols'] ) ) {
+			    	$classes .= ' end-xs';
+			    }
+
+			    // Top
+			    if ( in_array( 'top', $atts['align_cols'] ) ) {
+			    	$classes .= ' top-xs';
+			    }
+
+			    // Middle
+			    if ( in_array( 'middle', $atts['align_cols'] ) ) {
+			    	$classes .= ' middle-xs';
+			    }
+
+			    // Bottom
+			    if ( in_array( 'bottom', $atts['align_cols'] ) ) {
+			    	$classes .= ' bottom-xs';
+			    }
+
+		    }
+
+		}
+
+		return $classes;
+	}
+
+	function add_entry_align_classes( $classes, $atts ) {
+
+	    /**
+	     * "align" takes precendence over "align_cols" and "align_text".
+	     * "align" forces the text to align along with the cols.
+	     */
+	    if ( ! empty( $atts['align'] ) ) {
+	    	// Left
+		    if ( in_array( 'left', $atts['align'] ) ) {
+		    	// $classes .= ' start-xs text-xs-left';
+		    	$classes .= ' top-xs text-xs-left';
+		    }
+
+		    // Center
+		    if ( in_array( 'center', $atts['align'] ) ) {
+		    	// $classes .= ' center-xs text-xs-center';
+		    	$classes .= ' middle-xs text-xs-center';
+		    }
+
+		    // Right
+		    if ( in_array( 'right', $atts['align'] ) ) {
+		    	// $classes .= ' end-xs text-xs-right';
+		    	$classes .= ' bottom-xs text-xs-right';
+		    }
+
+		    // Top
+		    if ( in_array( 'top', $atts['align'] ) ) {
+		    	// $classes .= ' top-xs';
+		    	$classes .= ' start-xs';
+		    }
+
+		    // Middle
+		    if ( in_array( 'middle', $atts['align'] ) ) {
+		    	// $classes .= ' middle-xs';
+		    	$classes .= ' center-xs';
+		    }
+
+		    // Bottom
+		    if ( in_array( 'bottom', $atts['align'] ) ) {
+		    	// $classes .= ' bottom-xs';
+		    	$classes .= ' end-xs';
+		    }
+
+	    } else {
+
+		    // Align text
+		    if ( ! empty( $atts['align_text'] ) ) {
+
+		    	// Left
+			    if ( in_array( 'left', $atts['align_text']) ) {
+			    	$classes .= ' text-xs-left';
+			    }
+
+			    // Center
+			    if ( in_array( 'center', $atts['align_text'] ) ) {
+			    	$classes .= ' text-xs-center';
+			    }
+
+			    // Right
+			    if ( in_array( 'right', $atts['align_text'] ) ) {
+			    	$classes .= ' text-xs-right';
+			    }
+
+			    // Top
+			    if ( in_array( 'top', $atts['align_text'] ) ) {
+			    	// $classes .= ' top-xs';
+			    	$classes .= ' start-xs';
+			    }
+
+			    // Middle
+			    if ( in_array( 'middle', $atts['align_text'] ) ) {
+			    	// $classes .= ' middle-xs';
+			    	$classes .= ' center-xs';
+			    }
+
+			    // Bottom
+			    if ( in_array( 'bottom', $atts['align_text'] ) ) {
+			    	// $classes .= ' bottom-xs';
+			    	$classes .= ' end-xs';
+			    }
+
+		    }
+
+		}
+
+		return $classes;
 	}
 
 	function get_posts( $atts, $original_atts ) {
@@ -1246,12 +1327,11 @@ final class Mai_Grid_Shortcode {
 			$attributes['data-aspect-width']  = $registered_image['width'];
 			$attributes['data-aspect-height'] = $registered_image['height'];
 		}
-		// Use the actual image dimensions
+		// Otherwise use the actual image dimensions
 		else {
 			$attributes['data-aspect-width']  = $image[1];
 			$attributes['data-aspect-height'] = $image[2];
 		}
-		d( $attributes );
 	    return $attributes;
 	}
 
