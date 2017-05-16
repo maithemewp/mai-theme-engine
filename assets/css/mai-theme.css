@@ -1648,6 +1648,7 @@ img.alignright,
 
 .widget {
 	word-wrap: break-word;
+	overflow: hidden; /* fix avatar cut-off when floated left in widget */
 }
 
 .widget .entry,
