@@ -124,7 +124,6 @@
             height = $element.data( 'aspect-height' );
 
         if ( width && height ) {
-            console.log( $element.width() );
             $element.css( 'min-height', Math.round( $element.outerWidth() * height / width ) + 'px' );
         }
 
