@@ -27,9 +27,10 @@ function mai_post_date_defaults( $atts ) {
 add_filter( 'shortcode_atts_post_author_link', 'mai_post_author_link_defaults' );
 add_filter( 'shortcode_atts_post_author_posts_link', 'mai_post_author_link_defaults' );
 function mai_post_author_link_defaults( $atts ) {
-	$atts['before']	= ' &middot;';
+	$atts['before']	= '//&nbsp;&nbsp;';
 	if ( ! mai_is_flex_loop() ) {
-		$atts['before'] .= '&nbsp;by';
+		// $atts['before'] .= '&nbsp;by';
+		$atts['before'] .= ' by';
 	}
 	return $atts;
 }
@@ -39,7 +40,7 @@ add_filter( 'genesis_post_info', 'mai_post_info' );
 function mai_post_info( $post_info ) {
 	$post_info = '[post_date] [post_author_posts_link]';
 	if ( ! mai_is_flex_loop() ) {
-		$post_info .= '[post_comments before=" &middot; "] [post_edit before="&nbsp; &middot; "]';
+		$post_info .= '[post_comments before=" //&nbsp;&nbsp;"] [post_edit before="&nbsp; //&nbsp;&nbsp;"]';
 	}
 	return $post_info;
 }
