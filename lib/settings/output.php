@@ -26,11 +26,11 @@ function mai_do_settings_body_classes( $classes ) {
 	 *
 	 * DO NOT USE WITH SIDE MENU!
 	 */
-	if ( mai_is_sticky_header_enabled() ) {
+	if ( mai_is_sticky_header_enabled() && ! is_page_template( 'landing.php' ) ) {
 		$classes[] = 'sticky-header';
 	}
 
-	if ( mai_is_shrink_header_enabled() ) {
+	if ( mai_is_shrink_header_enabled() && ! is_page_template( 'landing.php' ) ) {
 		$classes[] = 'shrink-header';
 	}
 
