@@ -562,8 +562,6 @@ final class Mai_Grid_Shortcode {
 	    /**
 	     * "align" takes precendence over "align_cols" and "align_text".
 	     * "align" forces the text to align along with the cols.
-	     *
-	     * We add text align classes here and on entries, because [columns] shortcode center="" only uses these.
 	     */
 	    if ( ! empty( $atts['align'] ) ) {
 	    	// Left
@@ -643,7 +641,7 @@ final class Mai_Grid_Shortcode {
 		return $classes;
 	}
 
-	function add_entry_align_classes( $classes, $atts ) {
+	function add_entry_align_classes( $classes, $atts, $content = 'grid' ) {
 
 	    /**
 	     * "align" takes precendence over "align_cols" and "align_text".
@@ -1278,9 +1276,13 @@ final class Mai_Grid_Shortcode {
 			$classes = array_merge( $classes, explode( ' ', $atts['entry_class'] ) );
 		}
 
-		// Add Flexington columns if not a slider
+		// If not a slider
 		if ( ! $atts['slider'] ) {
+			// Add Flexington columns
 			$classes = array_merge( $classes, explode( ' ', mai_get_flex_entry_classes_by_columns( $atts['columns'] ) ) );
+		} else {
+			// Add slide class
+			$classes[] = 'mai-slide';
 		}
 
 		// If dealing with a post object
