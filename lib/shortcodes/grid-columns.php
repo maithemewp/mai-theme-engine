@@ -901,7 +901,6 @@ final class Mai_Grid_Shortcode {
 					// Set url as a variable
 					$url = $this->get_entry_link( $atts, $post );
 
-
 					// Image
 					if ( $do_image && ! $atts['image_bg'] ) {
 						if ( $image_id ) {
@@ -1003,14 +1002,8 @@ final class Mai_Grid_Shortcode {
 					}
 
 					// Add to cart link
-					// TODO: Test!!!!!!
-					if ( $atts['show_add_to_cart'] ) {
-						if ( class_exists( 'WooCommerce' ) ) {
-							ob_start();
-							woocommerce_template_loop_add_to_cart();
-							$add_to_cart = ob_get_clean();
-							$entry_content .= sprintf( '<p class="more-link-wrap">%s</p>', $add_to_cart );
-						}
+					if ( $atts['link'] && $atts['show_add_to_cart'] ) {
+						$entry_content .= $this->get_add_to_cart_link( $atts, $url, $has_background_image );
 					}
 
 					// Add entry content wrap if we have content
@@ -1240,7 +1233,16 @@ final class Mai_Grid_Shortcode {
 	function get_entry_link( $atts, $object_or_id ) {
 	    switch ( $atts['content_type'] ) {
 	        case 'post':
-	            $link = get_permalink( $object_or_id );
+	        	$link = '';
+				if ( $atts['show_add_to_cart'] ) {
+					if ( class_exists( 'WooCommerce' ) ) {
+						$product = wc_get_product( $object_or_id );
+						$link 	 = $product->add_to_cart_url();
+					}
+				}
+				if ( ! $link ) {
+		            $link = get_permalink( $object_or_id );
+				}
 	            break;
 	        case 'term':
 	            $link = get_term_link( $object_or_id );
@@ -1373,6 +1375,21 @@ final class Mai_Grid_Shortcode {
 			$link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $atts['more_link_text'] );
 		}
 	    return sprintf( '<p class="more-link-wrap">%s</p>', $link );
+	}
+
+	function get_add_to_cart_link( $atts, $url, $has_background_image ) {
+		$link = '';
+		if ( class_exists( 'WooCommerce' ) ) {
+			$product = wc_get_product( get_the_ID() );
+			if ( $atts['image_bg'] && $has_background_image ) {
+				$link = sprintf( '<span class="more-link">%s</span>', $product->add_to_cart_text() );
+			} else {
+				ob_start();
+				woocommerce_template_loop_add_to_cart();
+				$link = ob_get_clean();
+			}
+		}
+		return $link ? sprintf( '<p class="more-link-wrap">%s</p>', $link ) : '';
 	}
 
 	/**
