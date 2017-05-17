@@ -176,6 +176,11 @@ function mai_get_archive_settings() {
  */
 function mai_get_archive_setting_with_fallback( $key, $fallback = null ) {
 
+    // Bail if not a content archive
+    if ( ! mai_is_content_archive() ) {
+        return;
+    }
+
     $meta = false;
 
     // Static blog page
