@@ -95,7 +95,7 @@ final class Mai_Grid_Shortcode {
 
 		$html = '';
 
-		$html .= $this->get_row_wrap_open( $atts );
+		$html .= $this->get_row_wrap_open( $atts, 'columns' );
 		$html .= do_shortcode(trim($content));
 		$html .= $this->get_row_wrap_close( $atts );
 
@@ -439,7 +439,7 @@ final class Mai_Grid_Shortcode {
 
 	}
 
-	function get_row_wrap_open( $atts ) {
+	function get_row_wrap_open( $atts, $context = 'grid' ) {
 
 		$flex_row = array();
 
@@ -493,7 +493,7 @@ final class Mai_Grid_Shortcode {
 				$flex_row['class'] .= sprintf( ' gutter-%s', $atts['gutter'] );
 		    }
 
-		    $flex_row['class'] = $this->add_row_align_classes( $flex_row['class'], $atts );
+		    $flex_row['class'] = $this->add_row_align_classes( $flex_row['class'], $atts, $context );
 
 		}
 
@@ -548,7 +548,16 @@ final class Mai_Grid_Shortcode {
 		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts, $has_background_image ) );
 	}
 
-	function add_row_align_classes( $classes, $atts ) {
+	/**
+	 * Add align classes to the row.
+	 *
+	 * @param   string   $classes   The existing classes.
+	 * @param   array    $atts      The attributes from the shortcode or helper function.
+	 * @param   string   $context   The shortcode context (grid or columns).
+	 *
+	 * @return  string   The modified classes
+	 */
+	function add_row_align_classes( $classes, $atts, $context = 'grid' ) {
 
 	    /**
 	     * "align" takes precendence over "align_cols" and "align_text".
@@ -572,20 +581,25 @@ final class Mai_Grid_Shortcode {
 		    	$classes .= ' end-xs text-xs-right';
 		    }
 
-		    // Top
-		    if ( in_array( 'top', $atts['align'] ) ) {
-		    	$classes .= ' top-xs';
-		    }
+		    // These are added to the entries when context is 'grid'
+			if ( 'columns' == $context ) {
 
-		    // Middle
-		    if ( in_array( 'middle', $atts['align'] ) ) {
-		    	$classes .= ' middle-xs';
-		    }
+			    // Top
+			    if ( in_array( 'top', $atts['align'] ) ) {
+			    	$classes .= ' top-xs';
+			    }
 
-		    // Bottom
-		    if ( in_array( 'bottom', $atts['align'] ) ) {
-		    	$classes .= ' bottom-xs';
-		    }
+			    // Middle
+			    if ( in_array( 'middle', $atts['align'] ) ) {
+			    	$classes .= ' middle-xs';
+			    }
+
+			    // Bottom
+			    if ( in_array( 'bottom', $atts['align'] ) ) {
+			    	$classes .= ' bottom-xs';
+			    }
+
+			}
 
 	    } else {
 
@@ -1316,23 +1330,14 @@ final class Mai_Grid_Shortcode {
 	    if ( ! $image_id ) {
 	    	return $attributes;
 	    }
-	    // Get all registered image sizes
-		global $_wp_additional_image_sizes;
 
 	    $image = wp_get_attachment_image_src( $image_id, $atts['image_size'], true );
 		$attributes['class'] .= ' image-bg aspect-ratio overlay light-content';
 		$attributes['style']  = 'background-image: url(' . $image[0] . ');';
-		// If image size is in the global (it should be)
-		if ( isset( $_wp_additional_image_sizes[ $atts['image_size'] ] ) ) {
-			$registered_image = $_wp_additional_image_sizes[ $atts['image_size'] ];
-			$attributes['data-aspect-width']  = $registered_image['width'];
-			$attributes['data-aspect-height'] = $registered_image['height'];
-		}
-		// Otherwise use the actual image dimensions
-		else {
-			$attributes['data-aspect-width']  = $image[1];
-			$attributes['data-aspect-height'] = $image[2];
-		}
+
+		// Add the aspect ratio attributes
+		$attributes = mai_add_aspect_ratio_attributes( $attributes, $image_id, $atts['image_size'] );
+
 	    return $attributes;
 	}
 

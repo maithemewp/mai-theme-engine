@@ -494,15 +494,12 @@ function mai_get_section_open( $args ) {
             $section_atts['class'] .= ' light-content';
         }
 
-        // Get the attachment image
-        $image = wp_get_attachment_image_src( absint($args['image']), 'banner', true );
-        if ( $image ) {
-            $section_atts['class']           .= ' image-bg';
-            $section_atts['style']           = sprintf( 'background-image: url(%s);', $image[0] );
-            $section_atts['data-img-width']  = $image[1];
-            $section_atts['data-img-height'] = $image[2];
-        }
+        $image = wp_get_attachment_image_src( $args['image'], 'banner', true );
+        $section_atts['class'] .= ' image-bg aspect-ratio';
+        $section_atts['style']  = sprintf( 'background-image: url(%s);', $image[0] );
 
+        // Add the aspect ratio attributes
+        $section_atts = mai_add_aspect_ratio_attributes( $section_atts, $args['image'], 'banner' );
     }
 
     // Maybe add an overlay, typically for image tint/style
@@ -978,6 +975,32 @@ function mai_get_flex_entry_image_size_by_columns( $columns ) {
             $image_size = 'one-third';
     }
     return $image_size;
+}
+
+function mai_add_aspect_ratio_attributes( $attributes, $image_id, $image_size ) {
+    // Get all registered image sizes
+    global $_wp_additional_image_sizes;
+
+    // Get the image
+    $image = wp_get_attachment_image_src( $image_id, $image_size, true );
+
+    // Bail if no image
+    if ( ! $image ) {
+        return $attributes;
+    }
+
+    // If image size is in the global (it should be)
+    if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
+        $registered_image = $_wp_additional_image_sizes[ $image_size ];
+        $attributes['data-aspect-width']  = $registered_image['width'];
+        $attributes['data-aspect-height'] = $registered_image['height'];
+    }
+    // Otherwise use the actual image dimensions
+    else {
+        $attributes['data-aspect-width']  = $image[1];
+        $attributes['data-aspect-height'] = $image[2];
+    }
+    return $attributes;
 }
 
 /**
