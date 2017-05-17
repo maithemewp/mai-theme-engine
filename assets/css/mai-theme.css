@@ -1226,10 +1226,6 @@ img.alignright,
 /* ## Slick
 --------------------------------------------- */
 
-.mai-slider {
-	/* display: block; */
-}
-
 .mai-slider .slick-list {
 	-webkit-flex: 1 1 100%;-ms-flex: 1 1 100%;flex: 1 1 100%;
 	max-width: 100%;
@@ -1241,12 +1237,9 @@ img.alignright,
 }
 
 .mai-slider .slick-track {
-	/* display: block; */
 	display: -webkit-flex;display: -ms-flexbox;display: flex;
 	-webkit-flex: 0 1 auto;-ms-flex: 0 1 auto;flex: 0 1 auto;
 	max-width: auto;
-	/* -webkit-flex: 0 1 100%;-ms-flex: 0 1 100%;flex: 0 1 100%; */
-	/* max-width: 100%; */
 }
 
 .mai-slider.slick-initialized .slick-slide {
@@ -1524,6 +1517,20 @@ img.alignright,
 .slick-slide.testimonial .entry-content,
 .slick-slide.testimonial .entry-content p:last-of-type {
 	margin-bottom: 0;
+}
+
+@media only screen and (min-width: 545px) {
+
+	.xs-content .content .slick-prev {
+		left: -5%;
+		margin-left: 0;
+	}
+
+	.xs-content .content .slick-next {
+		right: -5%;
+		margin-right: 0;
+	}
+
 }
 
 @media only screen and (min-width: 769px) {
@@ -2566,11 +2573,14 @@ img.alignright,
 .adjacent-entry-pagination {
 	background-color: #fff;
 	border: 1px solid rgba(0, 0, 0, 0.06);
-	overflow: hidden;
 }
 
 .entry.image-bg {
 	border: none;
+}
+
+.archive .content > .entry {
+	overflow: hidden;
 }
 
 /* offset the .entry border */
