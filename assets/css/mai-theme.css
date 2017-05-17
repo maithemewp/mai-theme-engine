@@ -2579,6 +2579,7 @@ img.alignright,
 	border: none;
 }
 
+.blog .content > .entry,
 .archive .content > .entry {
 	overflow: hidden;
 }
