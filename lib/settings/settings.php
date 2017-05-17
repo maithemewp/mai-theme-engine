@@ -619,7 +619,7 @@ function mai_cmb2_add_metaboxes() {
     ) );
     $term->add_field( _mai_cmb_banner_visibility_config() );
     // Don't show banner upload field on product categories, since Woo has an image field already
-    if ( ! ( class_exists( 'WooCommerce' ) && ( 'product_cat' == $taxonomies['product_cat'] ) ) ) {
+    if ( ! ( class_exists( 'WooCommerce' ) && ( 'product_cat' == $taxonomies ) ) ) {
 	    $term->add_field( _mai_cmb_banner_config() );
 	}
     $term->add_field( _mai_cmb_remove_loop_config() );
