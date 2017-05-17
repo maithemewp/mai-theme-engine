@@ -101,20 +101,64 @@
  */
 ( function ( document, $, undefined ) {
 
-    // Image aspect ratio elements
-    var $imageBG = $( '.aspect-ratio' );
+    // Aspect ratio elements
+    var $aspectElement = $( '.aspect-ratio' );
 
-    if ( $imageBG.length > 0 ) {
+    // If we have any elements
+    if ( $aspectElement.length > 0 ) {
 
-        $.each( $imageBG, function(){
-            var $element = $(this);
-            // Initial sizing
-            _resizeToMatch( $element );
-            // Resize the banner
-            $( window ).resize( function(){
-                 _resizeToMatch( $element );
+        // If the element is part of a slider
+        if ( $aspectElement.hasClass( 'mai-slide' ) ) {
+
+            // Get the slider element
+            var $slider = $aspectElement.parents( '.flex-grid' ).find( '.mai-slider' );
+
+            /**
+             * Setup resize after slider initialization
+             * since additional elements are often created during init
+             */
+            $slider.on( 'init', function(event, slick, direction){
+                var $additionalAspectElements = $( '.aspect-ratio' );
+                _setupResize( $additionalAspectElements );
             });
+
+        } else {
+            _setupResize( $aspectElement );
+        }
+
+    }
+
+    function _setupResize( $aspectElement ) {
+
+        $.each( $aspectElement, function(){
+
+            var $element = $(this);
+
+            if ( $element.hasClass( 'mai-slide' ) ) {
+
+                var $slider = $element.parents( '.flex-grid' ).find( '.mai-slider' );
+
+                /**
+                 * Wait till slider events before initial resize,
+                 * otherwise we were getting element width too early and calculations were wrong.
+                 */
+                $slider.on( 'init reInit breakpoint setPosition', function(event, slick, direction){
+                    _resizeToMatch( $element );
+                });
+
+            } else {
+
+                _resizeToMatch( $element );
+
+            }
+
+            // Resize the window resize
+            $( window ).on( 'resize', function(){
+                _resizeToMatch( $element );
+            });
+
         });
+
     }
 
     function _resizeToMatch( $element ) {

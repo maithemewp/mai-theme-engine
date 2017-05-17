@@ -68,7 +68,7 @@ jQuery(document).ready(function($) {
         }
 
 		$(this).slick({
-			adaptiveHeight: false,
+			adaptiveHeight: true,
 			arrows: arrows,
 			dots: dots,
 			fade: fade,
