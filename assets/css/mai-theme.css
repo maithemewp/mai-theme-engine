@@ -1811,25 +1811,25 @@ img.alignright,
 @media only screen and (max-width: 768px) {
 
 	/* stay shrunk on mobile */
-	.shrink-header .site-header .site-title a,
-	.shrink-header .site-header.shrink .site-title a {
+	.site-header .site-title a,
+	.site-header.shrink .site-title a {
 		margin-top: 8px;
 		margin-bottom: 8px;
 	}
 
-	.shrink-header .site-header.has-header-right .site-title a {
+	.site-header.has-header-right .site-title a {
 		-webkit-transform: translateX(-14%) scale(0.7);
 		    -ms-transform: translateX(-14%) scale(0.7);
 		        transform: translateX(-14%) scale(0.7);
 	}
 
-	.shrink-header .site-header.has-header-left .site-title a {
+	.site-header.has-header-left .site-title a {
 		-webkit-transform: translateX(14%) scale(0.7);
 		    -ms-transform: translateX(14%) scale(0.7);
 		        transform: translateX(14%) scale(0.7);
 	}
 
-	.shrink-header .site-header.has-header-left.has-header-right .site-title a {
+	.site-header.has-header-left.has-header-right .site-title a {
 		-webkit-transform: translateX(0) scale(0.7);
 		    -ms-transform: translateX(0) scale(0.7);
 		        transform: translateX(0) scale(0.7);
