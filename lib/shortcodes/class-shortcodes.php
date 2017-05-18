@@ -12,33 +12,33 @@
  */
 
 /**
- * Main Mai_Grid_Shortcode Class.
+ * Main Mai_Shortcodes Class.
  *
  * @since 1.0.0
  */
-final class Mai_Grid_Shortcode {
+final class Mai_Shortcodes {
 
 	/**
 	 * Singleton
-	 * @var   Mai_Grid_Shortcode The one true Mai_Grid_Shortcode
+	 * @var   Mai_Shortcodes The one true Mai_Shortcodes
 	 * @since 1.0.0
 	 */
 	private static $instance;
 
 	/**
-	 * Main Mai_Grid_Shortcode Instance.
+	 * Main Mai_Shortcodes Instance.
 	 *
-	 * Insures that only one instance of Mai_Grid_Shortcode exists in memory at any one
+	 * Insures that only one instance of Mai_Shortcodes exists in memory at any one
 	 * time. Also prevents needing to define globals all over the place.
 	 *
 	 * @since   1.0.0
 	 * @static  var array $instance
-	 * @return  object | Mai_Grid_Shortcode The one true Mai_Grid_Shortcode
+	 * @return  object | Mai_Shortcodes The one true Mai_Shortcodes
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
 			// Setup the setup
-			self::$instance = new Mai_Grid_Shortcode;
+			self::$instance = new Mai_Shortcodes;
             // Initialize
             self::$instance->init();
 		}
@@ -46,6 +46,8 @@ final class Mai_Grid_Shortcode {
 	}
 
 	function init() {
+		add_shortcode( 'callout', 				array( $this, 'get_callout' ) );
+		add_shortcode( 'section', 				array( $this, 'get_section' ) );
 		add_shortcode( 'columns', 				array( $this, 'get_columns' ) );
 		add_shortcode( 'col', 					array( $this, 'get_col' ) );
 		add_shortcode( 'col_auto', 				array( $this, 'get_col_auto' ) );
@@ -64,6 +66,311 @@ final class Mai_Grid_Shortcode {
 		add_shortcode( 'grid', 					array( $this, 'get_grid' ) );
 	}
 
+	function get_callout( $atts, $content = null ) {
+
+	    // Bail if no content
+	    if ( null == $content ) {
+	        return;
+	    }
+
+	    $defaults = array(
+	        'color' => '',
+	    );
+
+	    /**
+	     * Shortcode callout attributes
+	     */
+	    $atts = shortcode_atts( $defaults, $atts, 'callout' );
+
+	    $attributes['class'] = 'callout';
+
+	    if ( $atts['color'] ) {
+	    	$attributes['class'] .= mai_sanitized_html_classes( $atts['color'] );
+	    }
+
+	    $output = sprintf( '<div %s>%s</div>', genesis_attr( 'mai-callout', $attributes ), do_shortcode( wpautop( trim($content) ) ) );
+
+	    return $output;
+	}
+
+	/**
+	 * Add new section shortcode
+	 * On layouts with no sidebar it will be a full browser/window width section
+	 *
+	 * Add parameter of 'image=246' with an image ID from the media library to use a full width background image
+	 */
+	function get_section( $atts, $content = null ) {
+	    // Bail if no content
+	    if ( null == $content ) {
+	        return;
+	    }
+
+	    // Add shortcode class
+	    $atts['class'] = isset( $atts['class'] ) ? 'section-shortcode ' . $atts['class'] : 'section-shortcode';
+
+	    $output = '';
+
+	    $output .= $this->get_section_open( $atts );
+	    $output .= do_shortcode( trim($content) );
+	    $output .= $this->get_section_close( $atts );
+
+	    return $output;
+	}
+
+	/**
+	 * Get opening section wrap
+	 * To be used in front-page.php and [section] shortcode
+	 *
+	 * @version  1.0.1
+	 *
+	 * @param    array  $args  Options for the wrapping markup
+	 *
+	 * @return   string|HTML
+	 */
+	function get_section_open( $args ) {
+
+	    // Shortcode section atts
+	    $args = shortcode_atts( $this->get_section_defaults(), $args, 'section' );
+
+	    // Add filter to change args. There is also a mai_section_defaults filter to manipulate earlier.
+	    $args = apply_filters( 'mai_section_args', $args );
+
+	    // Sanitized args
+	    $args = array(
+	        'wrapper'       => sanitize_key( $args['wrapper'] ),
+	        'id'            => sanitize_html_class( $args['id'] ),
+	        'class'         => mai_sanitize_html_classes( $args['class'] ),
+	        'align'         => mai_sanitize_keys( $args['align'] ), // left, center, right
+	        'image'         => absint( $args['image'] ),
+	        'overlay'       => filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ),
+	        'title'         => sanitize_text_field( $args['title'] ),
+	        'title_wrap'    => sanitize_key( $args['title_wrap'] ),
+	        'wrap'          => filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ),
+	        'inner'         => filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ),
+	        'content_width' => sanitize_key( $args['content_width'] ),
+	        'height'        => sanitize_key( $args['height'] ),
+	    );
+
+	    // Start all element variables as empty string
+	    $title = $wrap = $inner = '';
+
+	    // Start all attributes as empty array
+	    $section_atts = $wrap_atts = $inner_atts = array();
+
+	    // Maybe add section id
+	    if ( $args['id'] ) {
+	        $section_atts['id'] = $args['id'];
+	    }
+
+	    // Default section class
+	    $section_atts['class'] = 'section row middle-xs center-xs';
+
+	    // Maybe add additional section classes
+	    if ( $args['class'] ) {
+	        $section_atts['class'] .= ' ' . $args['class'];
+	    }
+
+	    // Align text
+	    if ( ! empty( $args['align'] ) ) {
+
+	        // Left
+	        if ( in_array( 'left', $args['align']) ) {
+	            $section_atts['class'] .= ' text-xs-left';
+	        }
+
+	        // Center
+	        if ( in_array( 'center', $args['align'] ) ) {
+	            $section_atts['class'] .= ' text-xs-center';
+	        }
+
+	        // Right
+	        if ( in_array( 'right', $args['align'] ) ) {
+	            $section_atts['class'] .= ' text-xs-right';
+	        }
+
+	    }
+
+	    // If we have an image ID
+	    if ( $args['image'] ) {
+
+	        // If no inner, add light-content class
+	        if ( ! $args['inner'] ) {
+	            $section_atts['class'] .= ' light-content';
+	        }
+
+	        $image = wp_get_attachment_image_src( $args['image'], 'banner', true );
+	        $section_atts['class'] .= ' image-bg aspect-ratio';
+	        $section_atts['style']  = sprintf( 'background-image: url(%s);', $image[0] );
+
+	        // Add the aspect ratio attributes
+	        $section_atts = mai_add_aspect_ratio_attributes( $section_atts, $args['image'], 'banner' );
+	    }
+
+	    // Maybe add an overlay, typically for image tint/style
+	    if ( $args['overlay'] ) {
+	        $section_atts['class'] .= ' overlay';
+	    }
+
+	    // Maybe add a wrap, typically to contain content over the image
+	    if ( $args['wrap'] ) {
+
+	        $wrap_atts['class'] = 'wrap';
+
+	        // Wrap height
+	        if ( $args['height'] ) {
+
+	            switch ( $args['height'] ) {
+	                case 'auto';
+	                    $wrap_atts['class'] .= ' height-auto';
+	                    break;
+	                case 'sm':
+	                case 'small';
+	                    $wrap_atts['class'] .= ' height-sm';
+	                    break;
+	                case 'md':
+	                case 'medium':
+	                    $wrap_atts['class'] .= ' height-md';
+	                    break;
+	                case 'lg':
+	                case 'large':
+	                    $wrap_atts['class'] .= ' height-lg';
+	                    break;
+	            }
+
+	        }
+
+	        // Wrap content width
+	        if ( $args['content_width'] ) {
+
+	            switch ( $args['content_width'] ) {
+	                case 'xs':
+	                case 'extra-small':
+	                    $wrap_atts['class'] .= ' width-xs';
+	                    break;
+	                case 'sm':
+	                case 'small';
+	                    $wrap_atts['class'] .= ' width-sm';
+	                    break;
+	                case 'md':
+	                case 'medium':
+	                    $wrap_atts['class'] .= ' width-md';
+	                    break;
+	                case 'lg':
+	                case 'large':
+	                    $wrap_atts['class'] .= ' width-lg';
+	                    break;
+	                case 'xl':
+	                case 'extra-large':
+	                    $wrap_atts['class'] .= ' width-xl';
+	                    break;
+	                case 'full':
+	                    $wrap_atts['class'] .= ' width-full';
+	                    break;
+	            }
+
+	        } else {
+
+	            // Add width classes based on layout
+	            switch ( genesis_site_layout() ) {
+	                case 'xs-content':
+	                    $wrap_atts['class'] .= ' width-xs';
+	                    break;
+	                case 'sm-content':
+	                    $wrap_atts['class'] .= ' width-sm';
+	                    break;
+	                case 'md-content':
+	                    $wrap_atts['class'] .= ' width-md';
+	                    break;
+	                case 'lg-content':
+	                    $wrap_atts['class'] .= ' width-lg';
+	                    break;
+	            }
+
+	        }
+
+	        $wrap = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
+	    }
+
+	    // Maybe add a section title
+	    if ( $args['title'] ) {
+	        $title = sprintf( '<%s class="heading">%s</%s>', $args['title_wrap'], $args['title'], $args['title_wrap'] );
+	    }
+
+	    // Maybe add an inner wrap, typically for content width/style
+	    if ( $args['inner'] ) {
+	        $inner_atts['class'] = 'inner';
+	        $inner               = sprintf( '<div %s>', genesis_attr( 'mai-inner', $inner_atts ) );
+	    }
+
+	    // Build the opening markup
+	    return sprintf( '<%s %s>%s%s%s',
+	        $args['wrapper'],
+	        genesis_attr( 'mai-section', $section_atts ),
+	        $wrap,
+	        $title,
+	        $inner
+	    );
+
+	}
+
+	/**
+	 * Get closing section wrap
+	 * To be used in front-page.php and [section] shortcode
+	 *
+	 * This should share the same $args variable as opening function
+	 *
+	 * @version  1.0.1
+	 *
+	 * @param    array  $args  Options for the wrapping markup
+	 *
+	 * @return   string|HTML
+	 */
+	function get_section_close( $args ) {
+
+	    // Get the args
+	    $args = wp_parse_args( $args, $this->get_section_defaults() );
+
+	    // Start all element variables as empty string
+	    $title = $wrap = $inner = '';
+
+	    // Maybe close wrap
+	    if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
+	        $wrap = '</div>';
+	    }
+
+	    // Maybe close inner wrap
+	    if ( filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ) ) {
+	        $outer = '</div>';
+	    }
+
+	    // Build the closing markup, in reverse order so the close appropriately
+	    return sprintf( '%s%s</%s>',
+	        $inner,
+	        $wrap,
+	        sanitize_text_field( $args['wrapper'] )
+	    );
+
+	}
+
+	function get_section_defaults() {
+	    $defaults = array(
+	        'wrapper'       => 'section',
+	        'id'            => '',
+	        'class'         => '',
+	        'align'         => '',
+	        'image'         => '',
+	        'overlay'       => false,
+	        'title'         => '',
+	        'title_wrap'    => 'h2',
+	        'wrap'          => true,
+	        'inner'         => false,
+	        'content_width' => '',
+	        'height'        => 'md',
+	    );
+	    // Add filter to the defaults. Maybe different themes want to have the default something unique.
+	    return apply_filters( 'mai_section_defaults', $defaults );
+	}
+
 	function get_columns( $atts, $content = null ) {
 
 		// Bail if no content
@@ -76,10 +383,10 @@ final class Mai_Grid_Shortcode {
 			'align'				=> '',
 			'align_cols'		=> '',
 			'align_text'		=> '',
-			'class'				=> '',
-			'gutter'			=> '30',
-			'id'				=> '',
-			'style'				=> '',
+			'class'				=> '',	 // HTML classes (space separated)
+			'gutter'			=> '30', // Space between columns (5, 10, 20, 30, 40, 50) only
+			'id'				=> '',   // Add HTML id
+			'style'				=> '',   // Inline styles
 		), $atts, 'columns' );
 
 		// Sanitize atts
@@ -230,17 +537,15 @@ final class Mai_Grid_Shortcode {
 
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
-			'align'					=> '', // "top left" overrides align_cols and align_text for most times one setting makes sense
-			'align_cols'			=> '', // "top left"
-			'align_text'			=> '', // "center"
+			'align'					=> '', // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
+			'align_cols'			=> '', // "top, left" Comma separted
+			'align_text'			=> '', // "center" Comma separted
 			'authors'				=> '', // Comma separated author/user IDs
 			'categories'			=> '', // Comma separated category IDs
-			// 'center'				=> false,
 			'columns'				=> '3',
 			'content'				=> 'post', // post_type name (comma separated if multiple), or taxonomy name
 			'content_limit'			=> '', 	// Limit number of words
 			'content_type'			=> '',
-			'display_taxonomies'	=> '',  // Comma separated taxonomies to show terms
 			'date_after'			=> '',
 			'date_before'			=> '',
 			'date_format'			=> '',
@@ -254,12 +559,11 @@ final class Mai_Grid_Shortcode {
 			'hide_empty'			=> true,
 			'ids'					=> '',
 			'ignore_sticky_posts'	=> false,
+			'image_location'		=> 'before_entry',
 			'image_size'			=> 'one-third',
-			'image_bg'				=> false,
 			'link'					=> true,
 			'meta_key'				=> '',
 			'meta_value'			=> '',
-			// 'middle'				=> false,
 			'more_link_text'		=> apply_filters( 'mai_more_link_text', __( 'Read More', 'maitheme' ) ),
 			'no_content_message'	=> '',
 			'number'				=> '12',
@@ -268,16 +572,17 @@ final class Mai_Grid_Shortcode {
 			'order_by'				=> '',
 			'parent'				=> '',
 			'row_class'				=> '',
-			'show_add_to_cart'		=> false, // Woo only
-			'show_author'			=> false,
-			'show_content'			=> false,
-			'show_date'				=> false,
-			'show_excerpt'			=> false,
-			'show_image'			=> true,
-			'show_more_link'		=> false,
-			'show_price'			=> false, // Woo only
-			'show_taxonomies'		=> false,
-			'show_title'			=> true,
+			'show'					=> 'image, title', // image, title, add_to_cart, author, content, date, excerpt, image, more_link, price, meta, title
+			// 'show_add_to_cart'		=> false, // Woo only
+			// 'show_author'			=> false,
+			// 'show_content'			=> false,
+			// 'show_date'				=> false,
+			// 'show_excerpt'			=> false,
+			// 'show_image'			=> true,
+			// 'show_more_link'		=> false,
+			// 'show_price'			=> false, // Woo only
+			// 'show_taxonomies'		=> false,
+			// 'show_title'			=> true,
 			'status'				=> '', // Comma separated for multiple
 			'tags'					=> '', // Comma separated tag IDs
 			'tax_include_children'	=> true,
@@ -305,12 +610,10 @@ final class Mai_Grid_Shortcode {
 			'align_text'			=> mai_sanitize_keys( $atts['align_text'] ),
 			'authors'				=> $atts['authors'], // Validated later
 			'categories'			=> array_filter( explode( ',', sanitize_text_field( $atts['categories'] ) ) ),
-			// 'center'				=> filter_var( $atts['center'], FILTER_VALIDATE_BOOLEAN ),
 			'columns'				=> absint( $atts['columns'] ),
 			'content'				=> array_filter( explode( ',', sanitize_text_field( $atts['content'] ) ) ),
 			'content_limit'			=> absint( $atts['content_limit'] ),
 			'content_type'			=> sanitize_text_field( $atts['content_type'] ),
-			'display_taxonomies'	=> array_filter( explode( ',', sanitize_text_field( $atts['display_taxonomies'] ) ) ),
 			'date_after'			=> sanitize_text_field( $atts['date_after'] ),
 			'date_before'			=> sanitize_text_field( $atts['date_before'] ),
 			'date_format'			=> sanitize_text_field( $atts['date_format'] ),
@@ -324,12 +627,11 @@ final class Mai_Grid_Shortcode {
 			'hide_empty'			=> filter_var( $atts['hide_empty'], FILTER_VALIDATE_BOOLEAN ),
 			'ids'					=> array_filter( explode( ',', sanitize_text_field( $atts['ids'] ) ) ),
 			'ignore_sticky_posts'	=> filter_var( $atts['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN ),
+			'image_location'		=> sanitize_key( $atts['image_location'] ),
 			'image_size'			=> sanitize_key( $atts['image_size'] ),
-			'image_bg'				=> filter_var( $atts['image_bg'], FILTER_VALIDATE_BOOLEAN ),
 			'link'					=> filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN ),
 			'meta_key'				=> sanitize_text_field( $atts['meta_key'] ),
 			'meta_value'			=> sanitize_text_field( $atts['meta_value'] ),
-			// 'middle'				=> filter_var( $atts['middle'], FILTER_VALIDATE_BOOLEAN ),
 			'more_link_text'		=> sanitize_text_field( $atts['more_link_text'] ),
 			'no_content_message'	=> sanitize_text_field( $atts['no_content_message'] ),
 			'number'				=> $atts['number'], // Validated later, after check for 'all'
@@ -337,17 +639,18 @@ final class Mai_Grid_Shortcode {
 			'order'					=> sanitize_key( $atts['order'] ),
 			'order_by'				=> sanitize_key( $atts['order_by'] ),
 			'parent'				=> $atts['parent'], // Validated later, after check for 'current'
-			'row_class'				=> array_map( 'sanitize_html_class', ( array_filter( explode( ' ', $atts['row_class'] ) ) ) ),
-			'show_add_to_cart'		=> filter_var( $atts['show_add_to_cart'], FILTER_VALIDATE_BOOLEAN ),
-			'show_author'			=> filter_var( $atts['show_author'], FILTER_VALIDATE_BOOLEAN ),
-			'show_content'			=> filter_var( $atts['show_content'], FILTER_VALIDATE_BOOLEAN ),
-			'show_date'				=> filter_var( $atts['show_date'], FILTER_VALIDATE_BOOLEAN ),
-			'show_excerpt'			=> filter_var( $atts['show_excerpt'], FILTER_VALIDATE_BOOLEAN ),
-			'show_image'			=> filter_var( $atts['show_image'], FILTER_VALIDATE_BOOLEAN ),
-			'show_more_link'		=> filter_var( $atts['show_more_link'], FILTER_VALIDATE_BOOLEAN ),
-			'show_price'			=> filter_var( $atts['show_price'], FILTER_VALIDATE_BOOLEAN ),
-			'show_taxonomies'		=> filter_var( $atts['show_taxonomies'], FILTER_VALIDATE_BOOLEAN ),
-			'show_title'			=> filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN ),
+			'row_class'				=> mai_sanitize_html_classes( $atts['row_class'] ),
+			'show'					=> mai_sanitize_keys( $atts['show'] ),
+			// 'show_add_to_cart'		=> filter_var( $atts['show_add_to_cart'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_author'			=> filter_var( $atts['show_author'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_content'			=> filter_var( $atts['show_content'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_date'				=> filter_var( $atts['show_date'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_excerpt'			=> filter_var( $atts['show_excerpt'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_image'			=> filter_var( $atts['show_image'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_more_link'		=> filter_var( $atts['show_more_link'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_price'			=> filter_var( $atts['show_price'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_taxonomies'		=> filter_var( $atts['show_taxonomies'], FILTER_VALIDATE_BOOLEAN ),
+			// 'show_title'			=> filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN ),
 			'status'				=> array_filter( explode( ',', $atts['status'] ) ),
 			'tags'					=> array_filter( explode( ',', sanitize_text_field( $atts['tags'] ) ) ),
 			'tax_include_children'	=> filter_var( $atts['tax_include_children'], FILTER_VALIDATE_BOOLEAN ),
@@ -379,12 +682,15 @@ final class Mai_Grid_Shortcode {
 			return;
 		}
 
+		// Add default/base class
 		$flex_grid = array( 'class' => 'flex-grid' );
 
+		// If we have an id, add it
 		if ( ! empty($atts['id']) ) {
 			$flex_grid['id'] = $atts['id'];
 		}
 
+		// If we have classes, add them
 		if ( ! empty($atts['class']) ) {
 			$flex_grid['class'] .= ' ' . $atts['class'];
 		}
@@ -457,7 +763,7 @@ final class Mai_Grid_Shortcode {
 
 	    // Row classes
 	    if ( ! empty( $atts['row_class'] ) ) {
-	    	$flex_row['class'] .= ' ' . implode( ' ', $atts['row_class'] );
+	    	$flex_row['class'] .= ' ' . $atts['row_class'];
 	    }
 
 	    // If posts are a slider. 'slider' may not be set if coming from [columns] shortcode.
@@ -469,8 +775,6 @@ final class Mai_Grid_Shortcode {
 
 			// Slider wrapper class
 			$flex_row['class'] .= ' mai-slider';
-
-			// TODO: center is no more!
 
 			// Slider HTML data attributes
 			$flex_row['data-arrows']		 = $atts['arrows'] ? 'true' : 'false';
@@ -529,7 +833,7 @@ final class Mai_Grid_Shortcode {
 		// Add the align classes
 	    $flex_entry['class'] = $this->add_entry_align_classes( $flex_entry['class'], $atts );
 
-		if ( $atts['image_bg'] ) {
+		if ( $this->is_image_bg( $atts ) && $has_background_image ) {
 			// Get the object ID
 			$object_id = $this->get_object_id( $atts, $object );
 			if ( $object_id ) {
@@ -891,17 +1195,18 @@ final class Mai_Grid_Shortcode {
 			while ( $query->have_posts() ) : $query->the_post();
 
 				global $post;
-				setup_postdata( $post );
 
-				$entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
+				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
 
 				// Get image vars
 				$do_image = $has_background_image = false;
-				if ( $atts['show_image'] ) {
-					$image_id = $this->get_image_id( $atts, $post->ID );
+
+				// If showing image
+				if ( in_array( 'image', $atts['show'] ) ) {
+					$image_id = $this->get_image_id( $atts, get_the_ID() );
 					if ( $image_id ) {
 						$do_image = true;
-						if ( $atts['image_bg'] ) {
+						if ( $this->is_image_bg( $atts ) ) {
 							$has_background_image = true;
 						}
 					}
@@ -910,23 +1215,30 @@ final class Mai_Grid_Shortcode {
 				// Opening wrap
 				$html .= $this->get_entry_wrap_open( $atts, $post, $has_background_image );
 
+					// Image
+					if ( 'before_entry' == $atts['image_location'] ) {
+						$html .= $image_html;
+					}
+
 					// Set url as a variable
 					$url = $this->get_entry_link( $atts, $post );
 
 					// Image
-					if ( $do_image && ! $atts['image_bg'] ) {
+					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
 						if ( $image_id ) {
 							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
-							if ( $atts['link'] ) {
-								$html .= sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, the_title_attribute( 'echo=0' ), $image );
-							} else {
-								$html .= $image;
+							if ( $image ) {
+								if ( $atts['link'] ) {
+									$image_html = sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, the_title_attribute( 'echo=0' ), $image );
+								} else {
+									$image_html = $image;
+								}
 							}
 						}
 					}
 
 					// Date
-					if ( $atts['show_date'] ) {
+					if ( in_array( 'date', $atts['show'] ) ) {
 						/**
 						 * If date formate is set in shortcode, use that format instead of default Genesis.
 						 * Since using G post_date shortcode you can also use 'relative' for '3 days ago'.
@@ -940,7 +1252,7 @@ final class Mai_Grid_Shortcode {
 					}
 
 					// Author
-					if ( $atts['show_author'] ) {
+					if ( in_array( 'author', $atts['show'] ) ) {
 						/**
 						 * If author has no link this shortcode defaults to genesis_post_author_shortcode() [post_author]
 						 */
@@ -963,18 +1275,28 @@ final class Mai_Grid_Shortcode {
 					}
 
 					// Build entry header
-					if ( $atts['show_title'] || $entry_meta ) {
+					if ( $this->is_entry_header_image( $atts ) || in_array( 'title', $atts['show'] ) || $entry_meta ) {
 
 						$html .= sprintf( '<header %s>', genesis_attr( 'entry-header' ) );
 
+							// Image
+							if ( 'before_title' == $atts['image_location'] ) {
+								$html .= $image_html;
+							}
+
 							// Title
-							if ( $atts['show_title'] ) {
+							if ( in_array( 'title', $atts['show'] ) ) {
 								if ( $atts['link'] && ! $has_background_image ) {
 									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
 								} else {
 									$title = get_the_title();
 								}
 								$html .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title' ), $title, $atts['title_wrap'] );
+							}
+
+							// Image
+							if ( 'after_title' == $atts['image_location'] ) {
+								$html .= $image_html;
 							}
 
 							// Entry Meta
@@ -986,14 +1308,21 @@ final class Mai_Grid_Shortcode {
 
 					}
 
+					// Image
+					if ( 'before_content' == $atts['image_location'] ) {
+						$html .= $image_html;
+					}
+
 					// Excerpt
-					if ( $atts['show_excerpt'] ) {
-						$entry_content .= wpautop( strip_shortcodes( get_the_excerpt() ) );
+					if ( in_array( 'excerpt', $atts['show'] ) ) {
+						// Strip tags and shortcodes cause things go nuts, especially if showing image as background
+						$entry_content .= wpautop( wp_strip_all_tags( strip_shortcodes( get_the_excerpt() ) ) );
 					}
 
 					// Content
-					if ( $atts['show_content'] ) {
-						$entry_content .= apply_filters( 'the_content', get_the_content() );
+					if ( in_array( 'content', $atts['show'] ) ) {
+						// $entry_content .= apply_filters( 'the_content', get_the_content() );
+						$entry_content .= get_the_content();
 					}
 
 					// Limit content. Empty string is sanitized to zero.
@@ -1002,19 +1331,19 @@ final class Mai_Grid_Shortcode {
 						$entry_content = wpautop( wp_trim_words( $entry_content, $atts['content_limit'], '&hellip;' ) );
 					}
 
-					if ( $atts['show_price'] ) {
+					if ( in_array( 'price', $atts['show'] ) ) {
 						ob_start();
 						woocommerce_template_loop_price();
 						$entry_content .= ob_get_clean();
 					}
 
 					// More link
-					if ( $atts['link'] && $atts['show_more_link'] ) {
+					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
 						$entry_content .= $this->get_more_link( $atts, $url, $has_background_image );
 					}
 
 					// Add to cart link
-					if ( $atts['link'] && $atts['show_add_to_cart'] ) {
+					if ( $atts['link'] && in_array( 'add_to_cart', $atts['show'] ) ) {
 						$entry_content .= $this->get_add_to_cart_link( $atts, $url, $has_background_image );
 					}
 
@@ -1023,24 +1352,9 @@ final class Mai_Grid_Shortcode {
 						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content' ), $entry_content );
 					}
 
-					// Taxonomies
-					if ( $atts['display_taxonomies'] ) {
-
-						$taxos = array_map( 'trim', explode( ',', $atts['display_taxonomies'] ) );
-
-						foreach ( $taxos as $taxo ) {
-
-							// Skip if post type isn't in the taxo
-							if ( ! is_object_in_taxonomy( get_post_type(), $taxo ) ) {
-								continue;
-							}
-							$terms = get_the_terms( get_the_ID(), $taxo );
-							foreach ( $terms as $term ) {
-								$entry_footer .= '[post_terms taxonomy="' . $tax . '" before="' . get_taxonomy($taxo)->labels->singular_name . ': "]';
-							}
-
-						}
-
+					// Meta
+					if ( in_array( 'meta', $atts['show'] ) ) {
+						$entry_footer = mai_get_post_meta( get_the_ID() );
 					}
 
 					// Entry footer
@@ -1138,11 +1452,13 @@ final class Mai_Grid_Shortcode {
 
 				// Get image vars
 				$do_image = $has_background_image = false;
-				if ( $atts['show_image'] ) {
+
+				// If showing image
+				if ( in_array( 'image', $atts['show'] ) ) {
 					$image_id = $this->get_image_id( $atts, $term->term_id );
 					if ( $image_id ) {
 						$do_image = true;
-						if ( $atts['image_bg'] ) {
+						if ( $this->is_image_bg( $atts ) ) {
 							$has_background_image = true;
 						}
 					}
@@ -1155,7 +1471,7 @@ final class Mai_Grid_Shortcode {
 					$url = $this->get_entry_link( $atts, $term );
 
 					// Image
-					if ( $do_image && ! $atts['image_bg'] ) {
+					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
 						if ( $image_id ) {
 							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
 							if ( $atts['link'] ) {
@@ -1167,7 +1483,7 @@ final class Mai_Grid_Shortcode {
 					}
 
 					// Title
-					if ( $atts['show_title'] ) {
+					if ( in_array( 'title', $atts['show'] ) ) {
 
 						// Build entry header
 						$html .= sprintf( '<header %s>', genesis_attr( 'entry-header' ) );
@@ -1184,7 +1500,7 @@ final class Mai_Grid_Shortcode {
 					}
 
 					// Excerpt/Content
-					if ( $atts['show_excerpt'] || $atts['show_content'] ) {
+					if ( in_array( 'excerpt', $atts['show'] ) || in_array( 'content', $atts['show'] ) ) {
 						$entry_content .= term_description( $term->term_id, $term->taxonomy );
 					}
 
@@ -1195,7 +1511,7 @@ final class Mai_Grid_Shortcode {
 					}
 
 					// More link
-					if ( $atts['link'] && $atts['show_more_link'] ) {
+					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
 						$entry_content .= $this->get_more_link( $atts, $url, $has_background_image );
 					}
 
@@ -1236,17 +1552,43 @@ final class Mai_Grid_Shortcode {
 	 * @return  bool
 	 */
 	function is_linking_element( $atts, $has_background_image ) {
-		if ( $atts['image_bg'] && $atts['link'] && $has_background_image ) {
+		if ( $this->is_image_bg( $atts ) && $atts['link'] && $has_background_image ) {
 			return true;
 		}
 		return false;
+	}
+
+	function is_image_bg( $atts ) {
+	    switch ( $atts['image_location'] ) {
+	        case 'bg':
+	        case 'background':
+	            $return = true;
+	            break;
+	        default:
+	            $return = false;
+	            break;
+	    }
+	    return $return;
+	}
+
+	function is_entry_header_image( $atts ) {
+	    switch ( $atts['image_location'] ) {
+	        case 'before_title':
+	        case 'after_title':
+	            $return = true;
+	            break;
+	        default:
+	            $return = false;
+	            break;
+	    }
+	    return $return;
 	}
 
 	function get_entry_link( $atts, $object_or_id ) {
 	    switch ( $atts['content_type'] ) {
 	        case 'post':
 	        	$link = '';
-				if ( $atts['show_add_to_cart'] ) {
+				if ( in_array( 'add_to_cart', $atts['show'] ) ) {
 					if ( class_exists( 'WooCommerce' ) ) {
 						$product = wc_get_product( $object_or_id );
 						$link 	 = $product->add_to_cart_url();
@@ -1376,7 +1718,7 @@ final class Mai_Grid_Shortcode {
 	}
 
 	function get_more_link( $atts, $url, $has_background_image ) {
-		if ( $atts['image_bg'] && $has_background_image ) {
+		if ( $this->is_image_bg( $atts ) && $has_background_image ) {
 			$link = sprintf( '<span class="more-link">%s</span>', $atts['more_link_text'] );
 		} else {
 			$link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $atts['more_link_text'] );
@@ -1388,7 +1730,7 @@ final class Mai_Grid_Shortcode {
 		$link = '';
 		if ( class_exists( 'WooCommerce' ) ) {
 			$product = wc_get_product( get_the_ID() );
-			if ( $atts['image_bg'] && $has_background_image ) {
+			if ( $this->is_image_bg( $atts ) && $has_background_image ) {
 				$link = sprintf( '<span class="more-link">%s</span>', $product->add_to_cart_text() );
 			} else {
 				ob_start();
@@ -1429,18 +1771,18 @@ final class Mai_Grid_Shortcode {
 }
 
 /**
- * The main function for that returns Mai_Grid_Shortcode
+ * The main function for that returns Mai_Shortcodes
  *
- * The main function responsible for returning the one true Mai_Grid_Shortcode
+ * The main function responsible for returning the one true Mai_Shortcodes
  * Instance to functions everywhere.
  *
  * @since 1.0.0
  *
- * @return object|Mai_Grid_Shortcode The one true Mai_Grid_Shortcode Instance.
+ * @return object|Mai_Shortcodes The one true Mai_Shortcodes Instance.
  */
-function Mai_Grid_Shortcode() {
-	return Mai_Grid_Shortcode::instance();
+function Mai_Shortcodes() {
+	return Mai_Shortcodes::instance();
 }
 
-// Get Mai_Grid_Shortcode Running.
-Mai_Grid_Shortcode();
+// Get Mai_Shortcodes Running.
+Mai_Shortcodes();

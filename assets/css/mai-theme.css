@@ -296,7 +296,9 @@ a:focus,
 .entry-title a:hover,
 .entry-title a:focus,
 .entry-content .entry-title a:hover,
-.entry-content .entry-title a:focus {
+.entry-content .entry-title a:focus,
+.sidebar .widget-title a:hover,
+.sidebar .widget-title a:focus {
 	color: rgba(0, 0, 0, 0.95);
 }
 

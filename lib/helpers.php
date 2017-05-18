@@ -97,7 +97,7 @@ function mai_do_grid( $args, $content = null ) {
  * @return  string|HTML
  */
 function mai_get_grid( $args, $content = null ) {
-    return Mai_Grid_Shortcode()->get_grid( $args, $content );
+    return Mai_Shortcodes()->get_grid( $args, $content );
 }
 
 
@@ -396,280 +396,26 @@ function mai_get_archive_image_size() {
     return $size;
 }
 
-
 /**
- * Echo the section opening markup
- * Share variable with mai_section_close()
+ * Get the section opening markup
  *
- * @see    mai_get_section_open() for full args
+ * @param  array  $args  The section args.
  *
  * @return string|HTML
- */
-function mai_section_open( $args ) {
-    echo mai_get_section_open( $args );
-}
-
-/**
- * Echo the section closing markup
- * Share variable with mai_section_close()
- *
- * @see    mai_get_section_close() for full args
- *
- * @return string|HTML
- */
-function mai_section_close( $args ) {
-    echo mai_get_section_close( $args );
-}
-
-/**
- * Get opening section wrap
- * To be used in front-page.php and [section] shortcode
- *
- * @version  1.0.1
- *
- * @param    array  $args  Options for the wrapping markup
- *
- * @return   string|HTML
  */
 function mai_get_section_open( $args ) {
-
-    // Shortcode section atts
-    $args = shortcode_atts( mai_get_section_defaults(), $args, 'section' );
-
-    // Sanitized args
-    $args = array(
-        'wrapper'       => sanitize_key( $args['wrapper'] ),
-        'id'            => sanitize_html_class( $args['id'] ),
-        'class'         => mai_sanitize_html_classes( $args['class'] ),
-        'align'         => mai_sanitize_keys( $args['align'] ), // left, center, right
-        'image'         => absint( $args['image'] ),
-        'overlay'       => filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ),
-        'title'         => sanitize_text_field( $args['title'] ),
-        'title_wrap'    => sanitize_key( $args['title_wrap'] ),
-        'wrap'          => filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ),
-        'inner'         => filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ),
-        'content_width' => sanitize_key( $args['content_width'] ),
-        'height'        => sanitize_key( $args['height'] ),
-    );
-
-    // Start all element variables as empty string
-    $title = $wrap = $inner = '';
-
-    // Start all attributes as empty array
-    $section_atts = $wrap_atts = $inner_atts = array();
-
-    // Maybe add section id
-    if ( $args['id'] ) {
-        $section_atts['id'] = $args['id'];
-    }
-
-    // Default section class
-    $section_atts['class'] = 'section row middle-xs center-xs';
-
-    // Maybe add additional section classes
-    if ( $args['class'] ) {
-        $section_atts['class'] .= ' ' . $args['class'];
-    }
-
-    // Align text
-    if ( ! empty( $args['align'] ) ) {
-
-        // Left
-        if ( in_array( 'left', $args['align']) ) {
-            $section_atts['class'] .= ' text-xs-left';
-        }
-
-        // Center
-        if ( in_array( 'center', $args['align'] ) ) {
-            $section_atts['class'] .= ' text-xs-center';
-        }
-
-        // Right
-        if ( in_array( 'right', $args['align'] ) ) {
-            $section_atts['class'] .= ' text-xs-right';
-        }
-
-    }
-
-    // If we have an image ID
-    if ( $args['image'] ) {
-
-        // If no inner, add light-content class
-        if ( ! $args['inner'] ) {
-            $section_atts['class'] .= ' light-content';
-        }
-
-        $image = wp_get_attachment_image_src( $args['image'], 'banner', true );
-        $section_atts['class'] .= ' image-bg aspect-ratio';
-        $section_atts['style']  = sprintf( 'background-image: url(%s);', $image[0] );
-
-        // Add the aspect ratio attributes
-        $section_atts = mai_add_aspect_ratio_attributes( $section_atts, $args['image'], 'banner' );
-    }
-
-    // Maybe add an overlay, typically for image tint/style
-    if ( $args['overlay'] ) {
-        $section_atts['class'] .= ' overlay';
-    }
-
-    // Maybe add a wrap, typically to contain content over the image
-    if ( $args['wrap'] ) {
-
-        $wrap_atts['class'] = 'wrap';
-
-        // Wrap height
-        if ( $args['height'] ) {
-
-            switch ( $args['height'] ) {
-                case 'auto';
-                    $wrap_atts['class'] .= ' height-auto';
-                    break;
-                case 'sm':
-                case 'small';
-                    $wrap_atts['class'] .= ' height-sm';
-                    break;
-                case 'md':
-                case 'medium':
-                    $wrap_atts['class'] .= ' height-md';
-                    break;
-                case 'lg':
-                case 'large':
-                    $wrap_atts['class'] .= ' height-lg';
-                    break;
-            }
-
-        }
-
-        // Wrap content width
-        if ( $args['content_width'] ) {
-
-            switch ( $args['content_width'] ) {
-                case 'xs':
-                case 'extra-small':
-                    $wrap_atts['class'] .= ' width-xs';
-                    break;
-                case 'sm':
-                case 'small';
-                    $wrap_atts['class'] .= ' width-sm';
-                    break;
-                case 'md':
-                case 'medium':
-                    $wrap_atts['class'] .= ' width-md';
-                    break;
-                case 'lg':
-                case 'large':
-                    $wrap_atts['class'] .= ' width-lg';
-                    break;
-                case 'xl':
-                case 'extra-large':
-                    $wrap_atts['class'] .= ' width-xl';
-                    break;
-                case 'full':
-                    $wrap_atts['class'] .= ' width-full';
-                    break;
-            }
-
-        } else {
-
-            // Add width classes based on layout
-            switch ( genesis_site_layout() ) {
-                case 'xs-content':
-                    $wrap_atts['class'] .= ' width-xs';
-                    break;
-                case 'sm-content':
-                    $wrap_atts['class'] .= ' width-sm';
-                    break;
-                case 'md-content':
-                    $wrap_atts['class'] .= ' width-md';
-                    break;
-                case 'lg-content':
-                    $wrap_atts['class'] .= ' width-lg';
-                    break;
-            }
-
-        }
-
-        $wrap = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
-    }
-
-    // Maybe add a section title
-    if ( $args['title'] ) {
-        $title = sprintf( '<%s class="heading">%s</%s>', $args['title_wrap'], $args['title'], $args['title_wrap'] );
-    }
-
-    // Maybe add an inner wrap, typically for content width/style
-    if ( $args['inner'] ) {
-        $inner_atts['class'] = 'inner';
-        $inner               = sprintf( '<div %s>', genesis_attr( 'mai-inner', $inner_atts ) );
-    }
-
-    // Build the opening markup
-    return sprintf( '<%s %s>%s%s%s',
-        $args['wrapper'],
-        genesis_attr( 'mai-section', $section_atts ),
-        $wrap,
-        $title,
-        $inner
-    );
-
+    return Mai_Shortcodes()->get_section_open( $args );
 }
 
 /**
- * Get closing section wrap
- * To be used in front-page.php and [section] shortcode
+ * Get the section closing markup
  *
- * This should share the same $args variable as opening function
+ * @param  array  $args  The section args.
  *
- * @version  1.0.1
- *
- * @param    array  $args  Options for the wrapping markup
- *
- * @return   string|HTML
+ * @return string|HTML
  */
 function mai_get_section_close( $args ) {
-
-    // Get the args
-    $args = wp_parse_args( $args, mai_get_section_defaults() );
-
-    // Start all element variables as empty string
-    $title = $wrap = $inner = '';
-
-    // Maybe close wrap
-    if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $wrap = '</div>';
-    }
-
-    // Maybe close inner wrap
-    if ( filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ) ) {
-        $outer = '</div>';
-    }
-
-    // Build the closing markup, in reverse order so the close appropriately
-    return sprintf( '%s%s</%s>',
-        $inner,
-        $wrap,
-        sanitize_text_field( $args['wrapper'] )
-    );
-
-}
-
-function mai_get_section_defaults() {
-    $defaults = array(
-        'wrapper'       => 'section',
-        'id'            => '',
-        'class'         => '',
-        'align'         => '',
-        'image'         => '',
-        'overlay'       => false,
-        'title'         => '',
-        'title_wrap'    => 'h2',
-        'wrap'          => true,
-        'inner'         => false,
-        'content_width' => '',
-        'height'        => 'md',
-    );
-    // Filter these defaults, this allows the /lib/ to be updated later without affecting a customized theme
-    return apply_filters( 'mai_section_defaults', $defaults );
+    return Mai_Shortcodes()->get_section_close( $args );
 }
 
 function mai_get_columns() {
@@ -1040,6 +786,40 @@ function mai_get_read_more_link( $object = '', $text = '' ) {
 }
 
 /**
+ * Get a post's post_meta
+ *
+ * @param  int|object  $post  (Optional) the post to get the meta for.
+ *
+ * @return string|HTML The post meta
+ */
+function mai_get_post_meta( $post = '' ) {
+
+    if ( ! empty( $post ) ) {
+        $post = get_post( $post );
+    } else {
+        global $post;
+    }
+
+    $post_meta = $shortcodes = '';
+
+    $taxos = get_post_taxonomies($post);
+    if ( $taxos ) {
+
+        // Skip if Post Formats and Yoast prominent keyworks
+        $taxos = array_diff( $taxos, array( 'post_format', 'yst_prominent_words' ) );
+
+        $taxos = apply_filters( 'mai_post_meta_taxos', $taxos );
+
+        foreach ( $taxos as $tax ) {
+            $taxonomy = get_taxonomy($tax);
+            $shortcodes .= '[post_terms taxonomy="' . $tax . '" before="' . $taxonomy->labels->singular_name . ': "]';
+        }
+        $post_meta = $shortcodes;
+    }
+    return $post_meta;
+}
+
+/**
  * Sanitize a string or array of classes.
  *
  * @param   string|array  $classes   The classes to sanitize.
@@ -1050,7 +830,7 @@ function mai_sanitize_html_classes( $classes ) {
     if ( ! is_array( $classes ) ) {
         $classes = explode( ' ', $classes );
     }
-    return implode( ' ', array_unique( array_map( 'sanitize_html_class', $classes ) ) );
+    return implode( ' ', array_unique( array_map( 'sanitize_html_class', array_map( 'trim', $classes ) ) ) );
 }
 
 /**
@@ -1062,9 +842,9 @@ function mai_sanitize_html_classes( $classes ) {
  */
 function mai_sanitize_keys( $keys ) {
     if ( ! is_array( $keys ) ) {
-        $keys = explode( ' ', $keys );
+        $keys = explode( ',', $keys );
     }
-    return array_map( 'sanitize_key', ( array_filter( $keys ) ) );
+    return array_map( 'sanitize_key', array_map( 'trim', array_filter($keys) ) );
 }
 
 /**
