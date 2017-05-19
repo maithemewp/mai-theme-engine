@@ -132,6 +132,7 @@ function mai_is_content_archive() {
     }
     // CPT archive
     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+    // elseif ( is_post_type_archive() ) {
         $is_archive = true;
     }
     // Author archive
@@ -147,9 +148,7 @@ function mai_is_content_archive() {
 }
 
 /**
- * This function returns an archive setting value
- * without running through any filters.
- * Do not use in child themes! Instead use mai_get_archive_setting( $key );
+ * Get an archive setting value with fallback.
  *
  * @param  [type] $key      [description]
  * @param  [type] $fallback [description]
@@ -409,7 +408,7 @@ function mai_get_columns() {
 function mai_is_flex_loop() {
     // Bail if not a content archive
     if ( ! mai_is_content_archive() ) {
-        return;
+        return false;
     }
     // Get columns
     $columns = mai_get_columns();
