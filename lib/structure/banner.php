@@ -21,7 +21,7 @@ add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_banner_area' );
 function mai_do_banner_area() {
 
 	// Bail if banner area is not enabled or banner is hidden on this page
-	if ( ! mai_is_banner_area_enabled() || mai_is_hide_banner() ) {
+	if ( ! mai_is_banner_area_enabled() ) {
 		return;
 	}
 

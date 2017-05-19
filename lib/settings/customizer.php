@@ -31,7 +31,7 @@ function mai_register_customizer_general( $wp_customize ) {
 
 	$wp_customize->add_section( $section, array(
 		'description' => __( 'Customize your theme with sitewide changes.', 'maitheme' ),
-		'title'       => __( 'Mai Theme Settings', 'maitheme' ),
+		'title'       => __( 'Mai Settings', 'maitheme' ),
 		'priority'    => 35,
 	) );
 
@@ -66,22 +66,6 @@ function mai_register_customizer_general( $wp_customize ) {
 		'type'     => 'checkbox',
 		'priority' => 5,
 	) );
-
-	/*****************************************************
-	 * Enable Boxed Content setting
-	 */
-
-	// $wp_customize->add_setting( 'enable_boxed_content', array(
-	// 	'default'           => 1,
-	// 	'sanitize_callback' => 'absint',
-	// ) );
-
-	// $wp_customize->add_control( 'enable_boxed_content', array(
-	// 	'label'    => __( 'Enable boxed content styling', 'maitheme' ),
-	// 	'section'  => $section,
-	// 	'type'     => 'checkbox',
-	// 	'priority' => 5,
-	// ) );
 
 	/*****************************************************
 	 * Enable Auto Display of featured image setting
@@ -163,7 +147,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	 */
 
 	$wp_customize->add_section( $section, array(
-		'title'       => __( 'Banner Area', 'maitheme' ),
+		'title'       => __( 'Mai Banner Area', 'maitheme' ),
 		'priority'    => 35,
 	) );
 
@@ -247,7 +231,6 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting( 'banner_id', array(
 		'default'           => '',
 		'sanitize_callback' => 'absint',
-		'type'              => 'option',
 	) );
 
 	$wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'banner_id', array(
@@ -257,106 +240,5 @@ function mai_register_customizer_settings( $wp_customize ) {
 		'settings'		=> 'banner_id',
 		'priority'		=> 5,
 	) ) );
-
-
-
-	// TODO: Enable color controls, for now... return!
-	return;
-
-
-
-	$wp_customize->add_setting(
-		'mai_accent_color',
-		array(
-			'default'           => mai_customizer_get_default_accent_color(),
-			'sanitize_callback' => 'sanitize_hex_color',
-		)
-	);
-
-	$wp_customize->add_control(
-		new WP_Customize_Color_Control(
-			$wp_customize,
-			'mai_accent_color',
-			array(
-				'description' => __( 'Change the default color for some links, link hovers, buttons, and button hovers.', 'maitheme' ),
-				'label'       => __( 'Accent Color', 'maitheme' ),
-				'section'     => 'colors',
-				'settings'    => 'mai_accent_color',
-			)
-		)
-	);
-
-	// If using a primary nav menu
-	if ( has_nav_menu( 'primary' ) ) {
-
-		$wp_customize->add_setting(
-			'mai_primary_nav_bg_color',
-			array(
-				'default'           => '#3f3f3f',
-				'sanitize_callback' => 'sanitize_hex_color',
-			)
-		);
-
-		$wp_customize->add_control(
-			new WP_Customize_Color_Control(
-				$wp_customize,
-				'mai_primary_nav_bg_color',
-				array(
-					'description' => __( 'Change the default background color for the footer widgets area.', 'maitheme' ),
-					'label'       => __( 'Footer Widgets Background Color', 'maitheme' ),
-					'section'     => 'colors',
-					'settings'    => 'mai_primary_nav_bg_color',
-				)
-			)
-		);
-
-	}
-
-	// If we have a least 1 footer widget area
-	if ( mai_get_footer_widgets_count() > 0 ) {
-
-		$wp_customize->add_setting(
-			'mai_footer_widgets_bg_color',
-			array(
-				'default'           => '#3f3f3f',
-				'sanitize_callback' => 'sanitize_hex_color',
-			)
-		);
-
-		$wp_customize->add_control(
-			new WP_Customize_Color_Control(
-				$wp_customize,
-				'mai_footer_widgets_bg_color',
-				array(
-					'description' => __( 'Change the default background color for the footer widgets area.', 'maitheme' ),
-					'label'       => __( 'Footer Widgets Background Color', 'maitheme' ),
-					'section'     => 'colors',
-					'settings'    => 'mai_footer_widgets_bg_color',
-				)
-			)
-		);
-
-	}
-
-	$wp_customize->add_setting(
-		'mai_site_footer_bg_color',
-		array(
-			'default'           => '#323232',
-			'sanitize_callback' => 'sanitize_hex_color',
-		)
-	);
-
-	$wp_customize->add_control(
-		new WP_Customize_Color_Control(
-			$wp_customize,
-			'mai_site_footer_bg_color',
-			array(
-				'description' => __( 'Change the default background color for the site footer area.', 'maitheme' ),
-				'label'       => __( 'Site Footer Background Color', 'maitheme' ),
-				'section'     => 'colors',
-				'settings'    => 'mai_site_footer_bg_color',
-			)
-		)
-	);
 
 }

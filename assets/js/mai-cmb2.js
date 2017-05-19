@@ -1,9 +1,7 @@
 ( function ( document, $, undefined ) {
     'use strict';
 
-	var $hideBanner  		= $( '#hide_banner' ),
-		$bannerField		= $( '.cmb2-id-banner' ),
-		$archiveMetabox		= $( '.mai-content-archive-metabox' ),
+	var $archiveMetabox		= $( '.mai-content-archive-metabox' ),
 		$settingsEnabled	= $( '#enable_content_archive_settings' ),
 		$removeLoop			= $( '#remove_loop' ),
 		$columns			= $( '#columns' ),
@@ -15,20 +13,6 @@
 		$imageLocation		= $( '.cmb2-id-image-location' ),
 		$imageSize			= $( '.cmb2-id-image-size' ),
 		$imageAlignment		= $( '.cmb2-id-image-alignment' );
-
-    /**
-     * Hide banner upload field if the hide banner checkbox is checked.
-     */
-	if ( $hideBanner.is( ':checked' )  ) {
-		_hideElement( $bannerField );
-	}
-	$hideBanner.change(function() {
-		if ( $(this).prop( 'checked' ) ) {
-			_hideElement( $bannerField );
-		} else {
-			_showElement( $bannerField );
-		}
-	});
 
 	/**
 	 * Hide the archive settings if settings not enabled.

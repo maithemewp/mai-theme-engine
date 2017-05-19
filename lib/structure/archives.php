@@ -44,7 +44,7 @@ function mai_maybe_remove_loop() {
         return;
     }
     // Bail if not removing the loop
-    $remove_loop = mai_get_archive_setting( 'remove_loop' );
+    $remove_loop = mai_get_archive_setting( 'remove_loop', false );
     if ( ! $remove_loop ) {
         return;
     }
@@ -69,7 +69,7 @@ function mai_content_archive_posts_per_page( $query ) {
     }
 
     // Get the posts_per_page
-    $posts_per_page = mai_get_archive_setting( 'posts_per_page' );
+    $posts_per_page = mai_get_archive_setting( 'posts_per_page', false );
     /**
      * posts_per_page setting doesn't fallback to genesis_option,
      * if requires the core WP posts_per_page setting.
@@ -124,7 +124,7 @@ function mai_do_flex_loop_before() {
     printf( '<div %s>', genesis_attr( 'flex-row', $attributes ) );
 
     // Get the archive column count
-    $columns = mai_get_archive_setting( 'columns' );
+    $columns = mai_get_archive_setting( 'columns', genesis_get_option( 'columns' ) );
 
     // If a Woo product archive
     if ( class_exists( 'WooCommerce' ) ) {
@@ -235,10 +235,10 @@ function mai_do_archive_options() {
         return;
     }
 
-    $content_archive_thumbnail = mai_get_archive_setting( 'content_archive_thumbnail' );
-    $image_size                = mai_get_archive_setting( 'image_size' );
-    $content_archive           = mai_get_archive_setting( 'content_archive' );
-    $content_archive_limit     = absint( mai_get_archive_setting( 'content_archive_limit' ) );
+    $content_archive_thumbnail = mai_get_archive_setting( 'content_archive_thumbnail', genesis_get_option( 'content_archive_thumbnail' ) );
+    $image_size                = mai_get_archive_setting( 'image_size', genesis_get_option( 'image_size' ) );
+    $content_archive           = mai_get_archive_setting( 'content_archive', genesis_get_option( 'content_archive' ) );
+    $content_archive_limit     = absint( mai_get_archive_setting( 'content_archive_limit', genesis_get_option( 'content_archive_limit' ) ) );
 
     if ( 'none' == $content_archive ) {
         // Remove the post content
@@ -288,7 +288,7 @@ function mai_do_more_link() {
         return;
     }
 
-    $more_link = mai_get_archive_setting( 'more_link' );
+    $more_link = mai_get_archive_setting( 'more_link', genesis_get_option( 'more_link' ) );
     if ( ! $more_link ) {
         return;
     }
@@ -313,7 +313,7 @@ function mai_do_post_image() {
     // Remove the post image
     remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 
-    $location = mai_get_archive_setting( 'image_location' );
+    $location = mai_get_archive_setting( 'image_location', genesis_get_option( 'more_link' ) );
 
     // Bail if no location
     if ( ! $location ) {
@@ -346,7 +346,7 @@ function mai_archive_remove_meta() {
         return;
     }
 
-    $meta_to_remove = mai_get_archive_setting( 'remove_meta' );
+    $meta_to_remove = mai_get_archive_setting( 'remove_meta', genesis_get_option( 'remove_meta' ) );
 
     if ( $meta_to_remove ) {
 

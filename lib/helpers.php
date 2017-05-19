@@ -15,8 +15,7 @@
 /**
  * Get the banner image ID.
  *
- * If single post/page/cpt does not have a specific banner image set,
- * and no default banner is set, the featured image will be used.
+ * First check immediate setting, then archive setting (if applicable), then fallback to default image.
  *
  * @return int|false
  */
@@ -25,19 +24,34 @@ function mai_get_banner_id() {
     // Start of without an image
     $image_id = false;
 
-    // Static front page
-    if ( is_front_page() && ( $front_page_id = get_option( 'page_on_front' ) ) ) {
+    if ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
         $image_id = get_post_meta( $front_page_id, 'banner_id', true );
     }
-
-    // Static blog page
-    elseif ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+    elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
         $image_id = get_post_meta( $posts_page_id, 'banner_id', true );
     }
-
     // Single page/post/cpt, but not static front page or static home page
-    elseif ( is_singular() && ! ( is_front_page() || is_home() ) ) {
+    elseif ( is_singular() ) {
         $image_id = get_post_meta( get_the_ID(), 'banner_id', true );
+
+        // If No image and CPT has genesis archive support
+        if ( ! $image_id ) {
+
+            $post_type = get_post_type();
+
+            // Posts
+            if ( 'post' == $post_type && $posts_page_id = get_option( 'page_for_posts' ) ) {
+                $image_id = get_post_meta( $posts_page_id, 'banner_id', true );
+            }
+            // CPTs
+            elseif ( genesis_has_post_type_archive_support( $post_type ) ) {
+                $image_id = genesis_get_cpt_option( 'banner_id' );
+            }
+            // Products
+            elseif ( class_exists( 'WooCommerce' ) && is_product() && $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
+                $image_id = get_post_meta( $shop_page_id, 'banner_id', true );
+            }
+        }
     }
 
     // Term archive
@@ -49,6 +63,11 @@ function mai_get_banner_id() {
         } else {
             $image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
         }
+        // If no image
+        if ( ! $image_id ) {
+            // Check the archive settings, so we can fall back to the taxo's post_type setting
+            $image_id = mai_get_archive_setting( 'banner_id', false );
+        }
     }
 
     // CPT archive
@@ -58,14 +77,12 @@ function mai_get_banner_id() {
 
     // Author archive
     elseif ( is_author() ) {
-        // $author   = get_user_by( 'slug', get_query_var( 'author_name' ) );
-        // $image_id = get_user_meta( $author->ID, 'banner_id', true );
         $image_id = get_the_author_meta( 'banner_id', get_query_var( 'author' ) );
     }
 
     // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-        $image_id = get_post_meta( $shop_id, 'banner_id', true );
+    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+        $image_id = get_post_meta( $shop_page_id, 'banner_id', true );
     }
 
     /**
@@ -73,7 +90,7 @@ function mai_get_banner_id() {
      * use the default banner image.
      */
     if ( ! $image_id ) {
-        if ( $default_id = get_option( 'banner_id' ) ) {
+        if ( $default_id = get_theme_mod( 'banner_id' ) ) {
             $image_id = absint( $default_id );
         }
     }
@@ -129,42 +146,6 @@ function mai_is_content_archive() {
     return $is_archive;
 }
 
-function mai_get_archive_setting( $key ) {
-
-    // Allow child theme to short circuit this function.
-    $pre = apply_filters( "mai_pre_get_archive_setting_{$key}", null );
-    if ( null !== $pre ) {
-        return $pre;
-    }
-
-    $settings = mai_get_archive_settings();
-
-    return $settings[$key];
-}
-
-function mai_get_archive_settings() {
-
-    $settings = array(
-        'hide_banner'                     => mai_get_archive_setting_with_fallback( 'hide_banner' ),
-        'banner_id'                       => mai_get_archive_setting_with_fallback( 'banner_id' ),
-        'enable_content_archive_settings' => mai_get_archive_setting_with_fallback( 'enable_content_archive_settings' ),
-        'remove_loop'                     => mai_get_archive_setting_with_fallback( 'remove_loop' ),
-        'columns'                         => mai_get_archive_setting_with_fallback( 'columns' ),
-        'content_archive'                 => mai_get_archive_setting_with_fallback( 'content_archive' ),
-        'content_archive_thumbnail'       => mai_get_archive_setting_with_fallback( 'content_archive_thumbnail' ),
-        'image_location'                  => mai_get_archive_setting_with_fallback( 'image_location' ),
-        'image_size'                      => mai_get_archive_setting_with_fallback( 'image_size' ),
-        'image_alignment'                 => mai_get_archive_setting_with_fallback( 'image_alignment' ),
-        'content_archive_limit'           => mai_get_archive_setting_with_fallback( 'content_archive_limit' ),
-        'more_link'                       => mai_get_archive_setting_with_fallback( 'more_link' ),
-        'remove_meta'                     => mai_get_archive_setting_with_fallback( 'remove_meta' ),
-        'posts_nav'                       => mai_get_archive_setting_with_fallback( 'posts_nav' ),
-        'posts_per_page'                  => mai_get_archive_setting_with_fallback( 'posts_per_page' ),
-    );
-    return (array) apply_filters( 'mai_archive_settings', $settings );
-}
-
-
 /**
  * This function returns an archive setting value
  * without running through any filters.
@@ -174,14 +155,18 @@ function mai_get_archive_settings() {
  * @param  [type] $fallback [description]
  * @return [type]           [description]
  */
-function mai_get_archive_setting_with_fallback( $key, $fallback = null ) {
+function mai_get_archive_setting( $key, $fallback ) {
 
     // Bail if not a content archive
     if ( ! mai_is_content_archive() ) {
-        return;
+        return false;
     }
 
-    $meta = false;
+    // Allow child theme to short circuit this function.
+    $pre = apply_filters( "mai_pre_get_archive_setting_{$key}", null );
+    if ( null !== $pre ) {
+        return $pre;
+    }
 
     // Static blog page
     if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
@@ -212,9 +197,6 @@ function mai_get_archive_setting_with_fallback( $key, $fallback = null ) {
                     if ( 'on' == $enabled ) {
                         $meta = get_post_meta( $shop_page_id, $key, true );
                     }
-                    // elseif ( $posts_page_id = get_option( 'page_for_posts' ) ) {
-                        // $meta = get_post_meta( $posts_page_id, $key, true );
-                    // }
                 }
             }
             // Must be custom taxonomy archive
@@ -256,145 +238,132 @@ function mai_get_archive_setting_with_fallback( $key, $fallback = null ) {
         }
     }
 
-    // Exceptions
-    // if ( ! $meta ) {
-    //     if ( ( 'columns' == $key )
-    //     && class_exists( 'WooCommerce' )
-    //     && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
-    //         if ( $columns <= 1 ) {
-    //             $columns = 3;
-    //         }
-    //     }
-    // }
-
-    // Lastly, fallback to the theme settings/options
-    if ( ! $meta ) {
-        // if ( ! empty( $fallback ) ) {
-            // $meta = $fallback;
-        // } else {
-            $meta = genesis_get_option( $key );
-        // }
+    // If we have meta, return it
+    if ( isset( $meta ) ) {
+        return $meta;
     }
-
-    // d( $meta );
-
-    return $meta;
+    // If we hav a fallback, return it
+    elseif ( $fallback ) {
+        return $fallback;
+    }
+    // Return false    
+    return false;
 }
 
-function mai_archive_display_image() {
+// function mai_archive_display_image() {
 
-    $enabled = $archive_display = $display = false;
+//     $enabled = $archive_display = $display = false;
 
-    // Static blog page
-    if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-        $enabled         = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
-        $archive_display = get_post_meta( $posts_page_id, 'content_archive_thumbnail', true );
-    }
-    // Term archive
-    elseif ( is_category() || is_tag() || is_tax() ) {
-        $enabled         = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
-        $archive_display = get_term_meta( get_queried_object()->term_id, 'content_archive_thumbnail', true );
-    }
-    // CPT archive
-    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-        $enabled         = genesis_get_cpt_option( 'enable_content_archive_settings' );
-        $archive_display = genesis_get_cpt_option( 'content_archive_thumbnail' );
-    }
-    // Author archive
-    elseif ( is_author() ) {
-        $enabled         = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
-        $archive_display = get_the_author_meta( 'content_archive_thumbnail', get_query_var( 'author' ) );
-    }
-    // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-        $enabled         = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
-        $archive_display = get_post_meta( $shop_page_id, 'content_archive_thumbnail', true );
-    }
+//     // Static blog page
+//     if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+//         $enabled         = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+//         $archive_display = get_post_meta( $posts_page_id, 'content_archive_thumbnail', true );
+//     }
+//     // Term archive
+//     elseif ( is_category() || is_tag() || is_tax() ) {
+//         $enabled         = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+//         $archive_display = get_term_meta( get_queried_object()->term_id, 'content_archive_thumbnail', true );
+//     }
+//     // CPT archive
+//     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+//         $enabled         = genesis_get_cpt_option( 'enable_content_archive_settings' );
+//         $archive_display = genesis_get_cpt_option( 'content_archive_thumbnail' );
+//     }
+//     // Author archive
+//     elseif ( is_author() ) {
+//         $enabled         = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
+//         $archive_display = get_the_author_meta( 'content_archive_thumbnail', get_query_var( 'author' ) );
+//     }
+//     // WooCommerce shop page
+//     elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+//         $enabled         = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
+//         $archive_display = get_post_meta( $shop_page_id, 'content_archive_thumbnail', true );
+//     }
 
-    // If archive settings are enabled
-    if ( $enabled ) {
-        $display = $archive_display;
-    }
+//     // If archive settings are enabled
+//     if ( $enabled ) {
+//         $display = $archive_display;
+//     }
 
-    return $display;
-}
+//     return $display;
+// }
 
-function mai_archive_get_image_location() {
+// function mai_archive_get_image_location() {
 
-    $enabled = $archive_location = $location = false;
+//     $enabled = $archive_location = $location = false;
 
-    // Static blog page
-    if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-        $enabled          = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
-        $archive_location = get_post_meta( $posts_page_id, 'image_location', true );
-    }
-    // Term archive
-    elseif ( is_category() || is_tag() || is_tax() ) {
-        $enabled          = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
-        $archive_location = get_term_meta( get_queried_object()->term_id, 'image_location', true );
-    }
-    // CPT archive
-    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-        $enabled          = genesis_get_cpt_option( 'enable_content_archive_settings' );
-        $archive_location = genesis_get_cpt_option( 'image_location' );
-    }
-    // Author archive
-    elseif ( is_author() ) {
-        $enabled          = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
-        $archive_location = get_the_author_meta( 'image_location', get_query_var( 'author' ) );
-    }
-    // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-        $enabled          = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
-        $archive_location = get_post_meta( $shop_id, 'image_location', true );
-    }
+//     // Static blog page
+//     if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+//         $enabled          = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+//         $archive_location = get_post_meta( $posts_page_id, 'image_location', true );
+//     }
+//     // Term archive
+//     elseif ( is_category() || is_tag() || is_tax() ) {
+//         $enabled          = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+//         $archive_location = get_term_meta( get_queried_object()->term_id, 'image_location', true );
+//     }
+//     // CPT archive
+//     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+//         $enabled          = genesis_get_cpt_option( 'enable_content_archive_settings' );
+//         $archive_location = genesis_get_cpt_option( 'image_location' );
+//     }
+//     // Author archive
+//     elseif ( is_author() ) {
+//         $enabled          = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
+//         $archive_location = get_the_author_meta( 'image_location', get_query_var( 'author' ) );
+//     }
+//     // WooCommerce shop page
+//     elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+//         $enabled          = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
+//         $archive_location = get_post_meta( $shop_id, 'image_location', true );
+//     }
 
-    // If archive settings are enabled
-    if ( $enabled ) {
-        $location = $archive_location;
-    }
+//     // If archive settings are enabled
+//     if ( $enabled ) {
+//         $location = $archive_location;
+//     }
 
-    return $location;
-}
+//     return $location;
+// }
 
-function mai_get_archive_image_size() {
+// function mai_get_archive_image_size() {
 
-    // Start of without any values
-    $enabled = $archive_size = $size = false;
+//     // Start of without any values
+//     $enabled = $archive_size = $size = false;
 
-    // Static blog page
-    if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-        $enabled      = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
-        $archive_size = get_post_meta( $posts_page_id, 'image_size', true );
-    }
-    // Term archive
-    elseif ( is_category() || is_tag() || is_tax() ) {
-        $enabled      = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
-        $archive_size = get_term_meta( get_queried_object()->term_id, 'image_size', true );
-    }
-    // CPT archive
-    elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-        $enabled      = genesis_get_cpt_option( 'enable_content_archive_settings' );
-        $archive_size = genesis_get_cpt_option( 'banner_id' );
-    }
-    // Author archive
-    elseif ( is_author() ) {
-        $enabled      = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
-        $archive_size = get_the_author_meta( 'image_size', get_query_var( 'author' ) );
-    }
-    // WooCommerce shop page
-    elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-        $enabled      = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
-        $archive_size = get_post_meta( $shop_id, 'banner_id', true );
-    }
+//     // Static blog page
+//     if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+//         $enabled      = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
+//         $archive_size = get_post_meta( $posts_page_id, 'image_size', true );
+//     }
+//     // Term archive
+//     elseif ( is_category() || is_tag() || is_tax() ) {
+//         $enabled      = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+//         $archive_size = get_term_meta( get_queried_object()->term_id, 'image_size', true );
+//     }
+//     // CPT archive
+//     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+//         $enabled      = genesis_get_cpt_option( 'enable_content_archive_settings' );
+//         $archive_size = genesis_get_cpt_option( 'banner_id' );
+//     }
+//     // Author archive
+//     elseif ( is_author() ) {
+//         $enabled      = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
+//         $archive_size = get_the_author_meta( 'image_size', get_query_var( 'author' ) );
+//     }
+//     // WooCommerce shop page
+//     elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+//         $enabled      = get_post_meta( $shop_id, 'enable_content_archive_settings', true );
+//         $archive_size = get_post_meta( $shop_id, 'banner_id', true );
+//     }
 
-    // If archive settings are enabled
-    if ( $enabled ) {
-        $size = $archive_size;
-    }
+//     // If archive settings are enabled
+//     if ( $enabled ) {
+//         $size = $archive_size;
+//     }
 
-    return $size;
-}
+//     return $size;
+// }
 
 /**
  * Get the section opening markup
@@ -420,7 +389,7 @@ function mai_get_section_close( $args ) {
 
 function mai_get_columns() {
 
-    $columns = mai_get_archive_setting_with_fallback( 'columns' );
+    $columns = mai_get_archive_setting( 'columns', genesis_get_option( 'columns' ) );
 
     if ( class_exists( 'WooCommerce' ) && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
         if ( $columns <= 1 ) {
@@ -431,60 +400,6 @@ function mai_get_columns() {
     return absint( apply_filters( 'mai_columns', $columns ) );
 }
 
-function mai_admin_get_columns() {
-
-    global $pagenow;
-
-    if ( 'post.php' == $pagenow ) {
-
-        $post_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-        $posts_page_id = get_option('page_for_posts');
-        $shop_page_id  = get_option('woocommerce_shop_page_id');
-
-        // If static blog page or WooCommerce shop page
-        if ( ( $post_id == $posts_page_id ) || ( class_exists('WooCommerce') && ( $post_id == $shop_page_id ) ) ) {
-            $columns = get_post_meta( $post_id, 'columns', true );
-        }
-
-    }
-
-    elseif ( 'term.php' == $pagenow ) {
-        $taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
-        // If we have the right data
-        if ( $taxonomy ) {
-            // If post taxonomy
-            if ( in_array( $taxonomy, get_object_taxonomies( 'post', 'names' ) ) ) {
-                $columns = get_post_meta( get_option( 'page_for_posts' ), 'columns', true );
-            }
-            // If Woo product taxonomy
-            elseif ( class_exists( 'WooCommerce' ) && in_array( $taxonomy, get_object_taxonomies( 'product', 'names' ) ) ) {
-                $columns = get_post_meta( get_option( 'woocommerce_shop_page_id' ), 'columns', true );
-            }
-            // Must be custom taxonomy archive
-            else {
-                $tax = get_taxonomy( $taxonomy );
-                if ( $tax ) {
-                    /**
-                     * If we have a tax, get the first one.
-                     * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
-                     */
-                    $post_type = reset( $tax->object_type );
-                    // // If we have a post type and it supports genesis-cpt-archive-settings
-                    if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
-                        $columns = genesis_get_cpt_option( 'columns', $post_type );
-                    }
-                }
-            }
-        }
-    }
-
-    else {
-        $columns = 0;
-    }
-
-    return absint($columns);
-}
-
 /**
  * Helper function to check if archive is a flex loop
  * This doesn't check if viewing an actual archive, but this layout should not be an option if ! is_archive()
@@ -492,10 +407,17 @@ function mai_admin_get_columns() {
  * @return bool   Whether the layout is a grid archive
  */
 function mai_is_flex_loop() {
+    // Bail if not a content archive
+    if ( ! mai_is_content_archive() ) {
+        return;
+    }
+    // Get columns
     $columns = mai_get_columns();
+    // If we have more than 1 column, it's a flex loop
     if ( $columns > 1 ) {
         return true;
     }
+    // Not a flex loop
     return false;
 }
 
@@ -909,38 +831,42 @@ function mai_is_shrink_header_enabled() {
 }
 
 
-/**
- * Check if banner area is enabled
- *
- * Force this in a template via:
- * add_filter( 'theme_mod_enable_banner_area', '__return_true' );
- *
- * @return bool
- */
-function mai_is_banner_area_enabled() {
+function mai_is_banner_area_enabled_globally() {
     return filter_var( get_theme_mod( 'enable_banner_area', 1 ), FILTER_VALIDATE_BOOLEAN );
 }
 
 /**
- * Check if the banner should be hidden on this page.
+ * Check if banner area is enabled.
+ *
+ * Force this in a template via:
+ * add_filter( 'theme_mod_enable_banner_area', '__return_true' );
+ *
+ * First check global settings, then archive setting (if applicable), then immediate setting.
  *
  * @return bool
  */
-function mai_is_hide_banner() {
-    if ( is_singular() ) {
-        $hide_banner = get_post_meta( get_the_ID(), 'hide_banner', true );
-    } elseif ( is_tax() ) {
-        $hide_banner = get_term_meta( get_queried_object_id(), 'hide_banner', true );
-    } elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-        $hide_banner = genesis_get_cpt_option( 'hide_banner' );
-    } elseif ( is_author() ) {
-        $hide_banner = get_user_meta( get_queried_object_id(), 'hide_banner', true );
-    } elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-        $hide_banner = get_post_meta( $shop_page_id, 'hide_banner', true );
-    } else {
-        $hide_banner = false;
+function mai_is_banner_area_enabled() {
+    
+    // Bail if not enabled at all
+    if ( ! mai_is_banner_area_enabled_globally() ) {
+        return false;
     }
-    return $hide_banner;
+
+    // Get 'disabled' content, typecasted as array because it may return empty string if none
+    $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
+    $disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+
+    if ( is_singular() || is_post_type_archive() ) {
+        if ( in_array( get_post_type(), $disable_post_types ) ) {
+            return false;
+        }
+    } elseif ( is_tax() ) {
+        if ( in_array( get_queried_object()->slug, $disable_taxonomies ) ) {
+            return false;
+        }        
+    }
+
+    return true;
 }
 
 /**

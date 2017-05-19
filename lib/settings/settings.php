@@ -1,39 +1,5 @@
 <?php
 
-/**
- * Updates theme settings on reset.
- *
- * @since 1.0.0
- */
-// add_filter( 'genesis_theme_settings_defaults', 'mai_theme_settings_defaults' );
-function mai_theme_settings_defaults( $defaults ) {
-	$defaults['content_archive']           = 'excerpts';
-	$defaults['content_archive_limit']     = 0;
-	$defaults['content_archive_thumbnail'] = 1;
-	$defaults['posts_nav']                 = 'numeric';
-	$defaults['site_layout']               = 'md-content';
-	return $defaults;
-}
-
-/**
- * Updates theme settings on activation.
- *
- * @since 1.0.0
- */
-// add_action( 'after_switch_theme', 'mai_update_theme_settings_defaults' );
-function mai_update_theme_settings_defaults() {
-	if ( function_exists( 'genesis_update_settings' ) ) {
-		genesis_update_settings( array(
-			'content_archive'           => 'excerpts',
-			'content_archive_limit'     => 0,
-			'content_archive_thumbnail' => 1,
-			'posts_nav'                 => 'numeric',
-			'site_layout'               => 'md-content',
-		) );
-	}
-	update_option( 'posts_per_page', 12 );
-}
-
 // If debug mode
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	/**
@@ -69,9 +35,6 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 
 /**
  * CMB2 Genesis Settings Metabox
- *
- * To fetch these options, use `genesis_get_option()`, e.g.
- *      $color = genesis_get_option( 'test_colorpicker' );
  *
  * @version 0.1.0
  */
@@ -232,7 +195,7 @@ class Mai_Genesis_Theme_Settings_Metabox {
 
 		$this->cmb = cmb2_get_metabox( array(
 			'id'           => $this->metabox_id,
-			'title'        => __( 'Mai Content Archives', 'maitheme' ),
+			'title'        => __( 'Mai Content Archive Settings', 'maitheme' ),
 			'object_types' => array( $this->admin_hook ),
 			'hookup'       => false,  // We'll handle ourselves. (add_sanitized_values())
 			'cmb_styles'   => false,  // We'll handle ourselves. (admin_hooks())
@@ -252,7 +215,10 @@ class Mai_Genesis_Theme_Settings_Metabox {
 			'type'	=> 'title',
 			'id'	=> 'mai_content_archives_title',
 		) );
-
+		$this->cmb->add_field( _mai_cmb_banner_disable_post_types_config() );
+		$this->cmb->add_field( _mai_cmb_banner_disable_taxos_config() );
+		// $this->cmb->add_field( _mai_cmb_banner_visibility_config() );
+		// $this->cmb->add_field( _mai_cmb_banner_area_post_types_config() );
 		$this->cmb->add_field( _mai_cmb_columns_config() );
 		$this->cmb->add_field( _mai_cmb_content_archive_config() );
 		$this->cmb->add_field( _mai_cmb_content_archive_limit_config() );
@@ -458,7 +424,7 @@ class Mai_Genesis_CPT_Settings_Metabox {
 
 	    $this->cmb = cmb2_get_metabox( array(
 			'id'			=> $this->metabox_id,
-			'title'			=> __( 'Mai Content Archives', 'maitheme' ),
+			'title'			=> __( 'Mai Content Archive Settings', 'maitheme' ),
 			'classes' 		=> 'mai-metabox',
 			'hookup'		=> false, 	// We'll handle ourselves. ( add_sanitized_values() )
 			'cmb_styles'	=> false, 	// We'll handle ourselves. ( admin_hooks() )
@@ -473,11 +439,21 @@ class Mai_Genesis_CPT_Settings_Metabox {
 		), $this->key, 'options-page' );
 
 	    $this->cmb->add_field( _mai_cmb_banner_visibility_config() );
-	    $this->cmb->add_field( _mai_cmb_banner_config() );
-	    $this->cmb->add_field( _mai_cmb_columns_config() );
+	    $this->cmb->add_field( _mai_cmb_banner_image_config() );
+	    $this->cmb->add_field( _mai_cmb_remove_loop_config() );
+	    $this->cmb->add_field( _mai_cmb_content_enable_archive_settings_config() );
+	    $this->cmb->add_field( _mai_cmb_content_archive_settings_title_config() );
 	    $this->cmb->add_field( _mai_cmb_posts_per_page_config() );
-
-	    // TODO: Rebuild the genesis-cpt-archives-settings.php fields!
+	    $this->cmb->add_field( _mai_cmb_columns_config() );
+		$this->cmb->add_field( _mai_cmb_content_archive_thumbnail_config() );
+		$this->cmb->add_field( _mai_cmb_image_location_config() );
+		$this->cmb->add_field( _mai_cmb_image_size_config() );
+		$this->cmb->add_field( _mai_cmb_image_alignment_config() );
+		$this->cmb->add_field( _mai_cmb_content_archive_config() );
+		$this->cmb->add_field( _mai_cmb_content_archive_limit_config() );
+		$this->cmb->add_field( _mai_cmb_more_link_config() );
+		$this->cmb->add_field( _mai_cmb_meta_config() );
+		$this->cmb->add_field( _mai_cmb_posts_nav_config() );
 
 		return $this->cmb;
 	}
@@ -554,16 +530,6 @@ function mai_do_genesis_cpt_settings( $post_type ) {
 add_action( 'cmb2_admin_init', 'mai_cmb2_add_metaboxes' );
 function mai_cmb2_add_metaboxes() {
 
-	$post_types = get_post_types( array('public' => true ), 'names' );
-	// Remove attachments
-	unset( $post_types['attachment'] );
-	// Filter post_types so devs can change where this shows up
-	$post_types = apply_filters( 'mai_banner_post_types', $post_types );
-
-	$taxonomies = get_taxonomies( array( 'public' => true ) );
-	// Filter taxonomies so devs can change where this shows up
-	$taxonomies = apply_filters( 'mai_banner_taxonomies', $taxonomies );
-
 	$metabox_title = __( 'Mai Content Archives', 'maitheme' );
 	$upload_label  = __( 'Banner Image', 'maitheme' ); // Hidden on posts since show_names is false
 	$button_text   = __( 'Add Banner Image', 'maitheme' );
@@ -571,15 +537,15 @@ function mai_cmb2_add_metaboxes() {
 	// Posts/Pages/CPTs
     $post = new_cmb2_box( array(
 		'id'			=> 'mai_post_banner',
-		'title'			=> $metabox_title,
-		'object_types'	=> $post_types,
+		'title'			=> __( 'Banner Area', 'maitheme' ),
+		'object_types'	=> get_post_types( array('public' => true ), 'names' ),
 		'context'		=> 'side',
 		'priority'		=> 'low',
 		'classes' 		=> 'mai-metabox',
-		'show_on_cb'	=> 'mai_is_banner_area_enabled',
+		'show_on_cb'	=> '_mai_cmb_show_banner_visibility_field',
     ) );
     $post->add_field( _mai_cmb_banner_visibility_config() );
-    $post->add_field( _mai_cmb_banner_config() );
+    $post->add_field( _mai_cmb_banner_image_config() );
 
     // Static Blog and WooCommerce Shop
     $static_archive = new_cmb2_box( array(
@@ -611,17 +577,14 @@ function mai_cmb2_add_metaboxes() {
         'id'               => 'mai_term_settings',
         'title'            => $metabox_title,
         'object_types'     => array( 'term' ),
-        'taxonomies'       => $taxonomies,
+        'taxonomies'       => get_taxonomies( array( 'public' => true ), 'names' ),
         'new_term_section' => true,
         'context' 		   => 'normal',
         'priority'		   => 'low',
         'classes' 		   => 'mai-metabox mai-content-archive-metabox',
     ) );
     $term->add_field( _mai_cmb_banner_visibility_config() );
-    // Don't show banner upload field on product categories, since Woo has an image field already
-    if ( ! ( class_exists( 'WooCommerce' ) && ( 'product_cat' == $taxonomies ) ) ) {
-	    $term->add_field( _mai_cmb_banner_config() );
-	}
+    $term->add_field( _mai_cmb_banner_image_config() );
     $term->add_field( _mai_cmb_remove_loop_config() );
     $term->add_field( _mai_cmb_content_archive_settings_title_config() );
     $term->add_field( _mai_cmb_content_enable_archive_settings_config() );
@@ -647,7 +610,7 @@ function mai_cmb2_add_metaboxes() {
 		'classes' 		=> 'mai-metabox mai-content-archive-metabox',
     ) );
     $user->add_field( _mai_cmb_banner_visibility_config() );
-    $user->add_field( _mai_cmb_banner_config() );
+    $user->add_field( _mai_cmb_banner_image_config() );
     $user->add_field( _mai_cmb_content_archive_settings_title_config() );
     $user->add_field( _mai_cmb_content_enable_archive_settings_config() );
     $user->add_field( _mai_cmb_remove_loop_config() );
@@ -664,6 +627,83 @@ function mai_cmb2_add_metaboxes() {
 	$user->add_field( _mai_cmb_posts_nav_config() );
 }
 
+function _mai_cmb_show_banner_visibility_field() {
+
+    // Bail if not enabled at all
+    if ( ! mai_is_banner_area_enabled_globally() ) {
+        return false;
+    }
+
+    $show = true;
+
+    global $pagenow, $typenow;
+
+    // Get 'disabled' content, typecasted as array because it may return empty string if none
+    $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
+    $disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+
+    // Posts
+    if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
+
+    	if ( in_array( $typenow, $disable_post_types ) ) {
+    		$show = false;
+    	}
+
+    }
+    // Terms
+    elseif ( 'term.php' == $pagenow ) {
+
+        // Get taxonomy
+        $taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
+
+    	if ( in_array( $typenow, $disable_taxonomies ) ) {
+    		$show = false;
+    	}
+
+    }
+
+    return $show;
+}
+
+function _mai_cmb_show_banner_image_field() {
+	// Don't show field if banner area is globally disabled
+	if ( ! mai_is_banner_area_enabled_globally() ) {
+		return false;
+	}
+
+    $show = true;
+
+    global $pagenow, $typenow;
+
+    $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
+    $disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+
+    // Posts
+    if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
+
+    	if ( in_array( $typenow, $disable_post_types ) ) {
+    		$show = false;
+    	}
+
+    }
+    // Terms
+    elseif ( 'term.php' == $pagenow ) {
+
+        // Get taxonomy
+        $taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
+
+		// Don't show field on Woo product categories, they have their own image field
+		if ( class_exists('WooCommerce') && 'product_cat' == $taxonomy ) {
+			$show = false;
+		} elseif ( in_array( $typenow, $disable_taxonomies ) ) {
+    		$show = false;
+    	}
+
+    }
+
+	return $show;
+}
+
 /**
  * Post metabox callback function to check if the
  * archive metabox should show for a post.
@@ -673,6 +713,12 @@ function mai_cmb2_add_metaboxes() {
  * @return bool
  */
 function _mai_cmb_show_if_static_archive() {
+	// Bail if not editing a post
+	global $pagenow;
+	if ( 'post.php' != $pagenow ) {
+		return false;
+	}
+
     $post_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
     $posts_page_id = get_option('page_for_posts');
     $shop_page_id  = get_option('woocommerce_shop_page_id');
@@ -700,6 +746,40 @@ function _mai_cmb_show_if_user_is_author_or_above() {
 	return false;
 }
 
+function _mai_cmb_banner_disable_post_types_config() {
+	$post_types			= get_post_types( array('public' => true ), 'objects' );
+	$post_type_options	= array();
+    foreach ( $post_types as $post_type ) {
+		$post_type_options[$post_type->name] = $post_type->label;
+    }
+	return array(
+		'name'				=> __( 'Disable Banner on<br />(post types)', 'maitheme' ),
+		'desc'				=> __( 'Disable the banner area for the above post types', 'maitheme' ),
+		'id'				=> 'banner_disable_post_types',
+		'type'				=> 'multicheck',
+		'select_all_button'	=> false,
+		'options'			=> $post_type_options,
+		'show_on_cb'		=> mai_is_banner_area_enabled_globally(),
+    );
+}
+
+function _mai_cmb_banner_disable_taxos_config() {
+	$taxos			= get_taxonomies( array( 'public' => true ), 'objects' );
+	$taxo_options	= array();
+    foreach ( $taxos as $taxo ) {
+    	$taxo_options[$taxo->name] = $taxo->label;
+    }
+	return array(
+		'name'				=> __( 'Disable Banner on<br />(taxonomies)', 'maitheme' ),
+		'desc'				=> __( 'Disable the banner area for the above taxonomies', 'maitheme' ),
+		'id'				=> 'banner_disable_taxonomies',
+		'type'				=> 'multicheck',
+		'select_all_button'	=> false,
+		'options'			=> $taxo_options,
+		'show_on_cb'		=> mai_is_banner_area_enabled_globally(),
+    );
+}
+
 function _mai_cmb_banner_visibility_config() {
 	return array(
 		'name'			=> __( 'Banner Visibility', 'maitheme' ),
@@ -710,7 +790,7 @@ function _mai_cmb_banner_visibility_config() {
     );
 }
 
-function _mai_cmb_banner_config() {
+function _mai_cmb_banner_image_config() {
 	return array(
 		'name'			=> __( 'Banner Image', 'maitheme' ),
 		'id'			=> 'banner',
@@ -720,23 +800,58 @@ function _mai_cmb_banner_config() {
 	    'text' 			=> array(
 	        'add_upload_file_text' => __( 'Add Image', 'maitheme' ),
 	    ),
-	    'show_on_cb' 	=> 'mai_is_banner_area_enabled',
+	    'show_on_cb' 	=> '_mai_cmb_show_banner_image_field',
     );
 }
 
 function _mai_cmb_content_archive_settings_title_config() {
 	return array(
-		'name'	=> __( 'Mai Content Archives', 'maitheme' ),
+		'name'	=> __( 'Mai Content Archive Settings', 'maitheme' ),
 		'desc'	=> __( 'If enabled, these will override the default content archive settings', 'maitheme' ),
 		'type'	=> 'title',
 		'id'	=> 'mai_content_archives_title',
 	);
 }
 
+// function _mai_cmb_banner_area_config() {
+// 	return array(
+// 		'name'	=> __( 'Banner Area', 'maitheme' ),
+// 		'desc'	=> __( 'Disable the banner area', 'maitheme' ),
+// 		'id'	=> 'disable_banner_area',
+// 		'type'	=> 'checkbox',
+//     );
+// }
+
+// function _mai_cmb_banner_area_singular_config() {
+// 	return array(
+// 		'name'	=> __( 'Banner Area', 'maitheme' ),
+// 		'desc'	=> __( 'Disable the banner area for single entries', 'maitheme' ),
+// 		'id'	=> 'disable_banner_singular',
+// 		'type'	=> 'checkbox',
+//     );
+// }
+
+// function _mai_cmb_banner_area_config() {
+// 	// Get our image size options
+//     $post_types = get_post_types( array('public' => true ), 'objects' );
+//     $post_type_options = array();
+//     foreach ( $post_types as $post_type ) {
+//     	$post_type_options[$post_type->name] = 'Single ' . $post_type->label;
+//     }
+//     unset( $post_type_options['attachment'] );
+// 	return array(
+// 		'name'		=> __( 'Disable Banner Area', 'maitheme' ),
+// 		'desc'		=> __( 'Disable the banner area for these post types', 'maitheme' ),
+// 		'id'		=> 'disable_banner_area',
+// 		'type'		=> 'multicheck',
+// 		'options'	=> $post_type_options,
+//     );
+// }
+
 function _mai_cmb_content_enable_archive_settings_config() {
 	return array(
 		'name'	=> __( 'Archive Settings', 'maitheme' ),
-		'desc'	=> __( 'Enable archive settings', 'maitheme' ),
+		'desc'	=> __( 'Enable custom archive settings', 'maitheme' ),
 		'id'	=> 'enable_content_archive_settings',
 		'type'	=> 'checkbox',
     );
