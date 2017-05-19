@@ -31,8 +31,8 @@ add_filter( 'the_content', 'mai_shortcode_content_filter' );
 function mai_shortcode_content_filter( $content ) {
 
     $shortcodes = array(
+        'callout',
         'section',
-        'grid',
         'columns',
         'col',
         'col_auto',
@@ -48,6 +48,7 @@ function mai_shortcode_content_filter( $content ) {
         'col_five_sixths',
         'col_eleven_twelfths',
         'col_one_whole',
+        'grid',
     );
 
     // Array of custom shortcodes requiring the fix
