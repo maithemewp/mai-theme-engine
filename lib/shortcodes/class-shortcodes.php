@@ -1277,6 +1277,7 @@ final class Mai_Shortcodes {
 					// Build entry header
 					if ( $this->is_entry_header_image( $atts ) || in_array( 'title', $atts['show'] ) || $entry_meta ) {
 
+						// Entry header open
 						$html .= sprintf( '<header %s>', genesis_attr( 'entry-header' ) );
 
 							// Image
@@ -1304,6 +1305,7 @@ final class Mai_Shortcodes {
 								$html .= $entry_meta;
 							}
 
+						// Entry header close
 						$html .= '</header>';
 
 					}
@@ -1321,8 +1323,7 @@ final class Mai_Shortcodes {
 
 					// Content
 					if ( in_array( 'content', $atts['show'] ) ) {
-						// $entry_content .= apply_filters( 'the_content', get_the_content() );
-						$entry_content .= get_the_content();
+						$entry_content .= wp_strip_all_tags( strip_shortcodes( get_the_content() ) );
 					}
 
 					// Limit content. Empty string is sanitized to zero.
@@ -1448,7 +1449,7 @@ final class Mai_Shortcodes {
 
 			foreach ( $terms as $term ) {
 
-				$entry_header = $date = $author = $entry_meta = $entry_content = $image_id = '';
+				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $image_id = '';
 
 				// Get image vars
 				$do_image = $has_background_image = false;
@@ -1467,6 +1468,11 @@ final class Mai_Shortcodes {
 				// Opening wrap
 				$html .= $this->get_entry_wrap_open( $atts, $term, $has_background_image );
 
+					// Image
+					if ( 'before_entry' == $atts['image_location'] ) {
+						$html .= $image_html;
+					}
+
 					// Set url as a variable
 					$url = $this->get_entry_link( $atts, $term );
 
@@ -1474,20 +1480,28 @@ final class Mai_Shortcodes {
 					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
 						if ( $image_id ) {
 							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
-							if ( $atts['link'] ) {
-								$html .= sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, esc_attr( $term->name ), $image );
-							} else {
-								$html .= $image;
+							if ( $image ) {
+								if ( $atts['link'] ) {
+									$image_html = sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, esc_attr( $term->name ), $image );
+								} else {
+									$image_html = $image;
+								}
 							}
 						}
 					}
 
-					// Title
-					if ( in_array( 'title', $atts['show'] ) ) {
+					// Build entry header
+					if ( $this->is_entry_header_image( $atts ) || in_array( 'title', $atts['show'] ) ) {
 
-						// Build entry header
+						// Entry header open
 						$html .= sprintf( '<header %s>', genesis_attr( 'entry-header' ) );
 
+							// Image
+							if ( 'before_title' == $atts['image_location'] ) {
+								$html .= $image_html;
+							}
+
+							// Title
 							if ( $atts['link'] && ! $has_background_image ) {
 								$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
 							} else {
@@ -1495,13 +1509,24 @@ final class Mai_Shortcodes {
 							}
 							$html .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title' ), $title, $atts['title_wrap'] );
 
+							// Image
+							if ( 'after_title' == $atts['image_location'] ) {
+								$html .= $image_html;
+							}
+
+						// Entry header close
 						$html .= '</header>';
 
 					}
 
+					// Image
+					if ( 'before_content' == $atts['image_location'] ) {
+						$html .= $image_html;
+					}
+
 					// Excerpt/Content
 					if ( in_array( 'excerpt', $atts['show'] ) || in_array( 'content', $atts['show'] ) ) {
-						$entry_content .= term_description( $term->term_id, $term->taxonomy );
+						$entry_content .= wp_strip_all_tags( strip_shortcodes( term_description( $term->term_id, $term->taxonomy ) ) );
 					}
 
 					// Limit content. Empty string is sanitized to zero.
