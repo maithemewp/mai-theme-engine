@@ -198,12 +198,8 @@ final class Mai_Shortcodes {
 	            $section_atts['class'] .= ' light-content';
 	        }
 
-	        $image = wp_get_attachment_image_src( $args['image'], 'banner', true );
-	        $section_atts['class'] .= ' image-bg aspect-ratio';
-	        $section_atts['style']  = sprintf( 'background-image: url(%s);', $image[0] );
-
 	        // Add the aspect ratio attributes
-	        $section_atts = mai_add_aspect_ratio_attributes( $section_atts, $args['image'], 'banner' );
+	        $section_atts = mai_add_image_background_attributes( $section_atts, $args['image'], 'banner' );
 	    }
 
 	    // Maybe add an overlay, typically for image tint/style
@@ -819,6 +815,7 @@ final class Mai_Shortcodes {
 	}
 
 	function get_entry_wrap_open( $atts, $object, $has_background_image ) {
+
 
 		$flex_entry = array();
 
@@ -1700,12 +1697,14 @@ final class Mai_Shortcodes {
 	    	return $attributes;
 	    }
 
-	    $image = wp_get_attachment_image_src( $image_id, $atts['image_size'], true );
-		$attributes['class'] .= ' image-bg aspect-ratio overlay light-content';
-		$attributes['style']  = 'background-image: url(' . $image[0] . ');';
+	    // $image = wp_get_attachment_image_src( $image_id, $atts['image_size'], true );
+		// $attributes['class'] .= ' image-bg aspect-ratio overlay light-content';
+		// $attributes['style']  = 'background-image: url(' . $image[0] . ');';
 
-		// Add the aspect ratio attributes
-		$attributes = mai_add_aspect_ratio_attributes( $attributes, $image_id, $atts['image_size'] );
+		$attributes['class'] .= ' overlay light-content';
+
+		// Add the image background attributes
+		$attributes = mai_add_image_background_attributes( $attributes, $image_id, $atts['image_size'] );
 
 	    return $attributes;
 	}

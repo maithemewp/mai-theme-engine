@@ -914,6 +914,7 @@ function _mai_cmb_image_location_config() {
 		'type'				=> 'select',
 		'default' 			=> 'before_entry',
 		'options'			=> array(
+			'background'	 => __( 'Background Image', 'maitheme' ),
 			'before_entry'	 => __( 'Before Entry', 'maitheme' ),
 			'before_title'	 => __( 'Before Title', 'maitheme' ),
 			'after_title'	 => __( 'After Title', 'maitheme' ),

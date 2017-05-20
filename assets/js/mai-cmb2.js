@@ -6,13 +6,12 @@
 		$removeLoop			= $( '#remove_loop' ),
 		$columns			= $( '#columns' ),
 		$includeImage		= $( '#content_archive_thumbnail' ),
+		$imageLocation		= $( '.cmb2-id-image-location' ),
+		$imageSize			= $( '.cmb2-id-image-size' ),
 		$imageAlignment		= $( '.cmb2-id-image-alignment' ),
 		$contentArchive		= $( '#content_archive' ),
 		$contentLimit		= $( '.cmb2-id-content-archive-limit' ),
-		$includeImage		= $( '#content_archive_thumbnail' ),
-		$imageLocation		= $( '.cmb2-id-image-location' ),
-		$imageSize			= $( '.cmb2-id-image-size' ),
-		$imageAlignment		= $( '.cmb2-id-image-alignment' );
+		$includeImage		= $( '#content_archive_thumbnail' );
 
 	/**
 	 * Hide the archive settings if settings not enabled.

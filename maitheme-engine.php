@@ -288,6 +288,7 @@ final class Mai_Theme_Engine {
 
             // Lib
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
+            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'settings/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }

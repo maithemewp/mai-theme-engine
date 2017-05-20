@@ -157,6 +157,71 @@ function mai_do_flex_loop_before() {
     });
 }
 
+add_action( 'genesis_before_entry', 'mai_do_entry_image_background' );
+function mai_do_entry_image_background() {
+
+    // Get image location
+    $image_location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
+
+    // If background image
+    if ( 'background' != $image_location ) {
+        return;
+    }
+
+    // Get the image ID
+    $image_id = get_post_thumbnail_id();
+
+    // Bail if no image
+    if ( ! $image_id ) {
+        return;
+    }
+
+    // Create an anonomous markup functions
+    $markup_open = function( $open ) {
+        $open = str_replace( '<article', '<a', $open );
+        return $open;
+    };
+    $markup_close = function( $close ) {
+        $close = str_replace( '</article>', '</a>', $close );
+        return $close;
+    };
+
+    // Get image size
+    $image_size = mai_get_archive_setting( 'image_size', genesis_get_option( 'image_size' ) );
+
+    // Anonomous attributes function
+    $entry_attributes = function( $attributes ) use ( $image_id, $image_size ) {
+
+        // Add classes and href link
+        $attributes['class'] .= ' overlay light-content center-xs middle-xs';
+        $attributes['href'] = get_permalink();
+
+        // Add image background attributes
+        $attributes = mai_add_image_background_attributes( $attributes, $image_id, $image_size );
+
+        return $attributes;
+    };
+
+    // Change entry markup from 'arcticle' to 'a'
+    add_filter( 'genesis_markup_entry_open', $markup_open );
+    add_filter( 'genesis_markup_entry_close', $markup_close );
+    add_filter( 'genesis_attr_entry', $entry_attributes );
+    add_filter( 'genesis_link_post_title', '__return_false' );
+    add_filter( 'genesis_markup_entry-content_open', '__return_false' );
+    add_filter( 'genesis_markup_entry-content_close', '__return_false' );
+
+    // Remove the filters so any other loops aren't affected
+    add_action( 'genesis_after_entry', function() use ( $markup_open, $markup_close, $entry_attributes ) {
+        remove_filter( 'genesis_markup_entry_open', $markup_open );
+        remove_filter( 'genesis_markup_entry_close', $markup_close );
+        remove_filter( 'genesis_attr_entry', $entry_attributes );
+        remove_filter( 'genesis_link_post_title', '__return_true' );
+        remove_filter( 'genesis_markup_entry-content_open', '__return_true' );
+        remove_filter( 'genesis_markup_entry-content_close', '__return_true' );
+    });
+
+}
+
 /**
  * Add the shortcode column count to the flex loop setting.
  */
