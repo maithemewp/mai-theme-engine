@@ -162,26 +162,47 @@ function mai_get_section_close( $args ) {
  * @return HTML string for the link
  */
 function mai_get_read_more_link( $object = '', $text = '' ) {
+
+    $text           = $text ? sanitize_text_field($text) : __( 'Read More', 'maitheme' );
+    $more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) );
+
+    // Get image location
+    $image_location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
+
+    // If background image
+    if ( 'background' == $image_location ) {
+        $link = sprintf( '<span class="more-link">%s</span>', $more_link_text );
+    } else {
+        $url = mai_get_read_more_link_url( $object );
+        if ( $url ) {
+            $link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $more_link_text );
+        }
+    }
+
+    // Bail if no link
+    if ( empty( $link ) ) {
+        return;
+    }
+
+    return sprintf( '<p class="more-link-wrap">%s</p>', $link );
+}
+
+function mai_get_read_more_link_url( $object ) {
     $link = '';
     // Maybe get a post object
     $post = $object ? get_post($object) : get_post( get_the_ID() );
     // If we have a post
     if ( $post ) {
-        $link = get_permalink( $post->ID );
+        $link  = get_permalink( $post->ID );
     }
     // No post, try a term
     else {
         $term = get_term( $object );
         if ( ! is_wp_error( $term ) ) {
-            $link = get_term_link( $term );
+            $link  = get_term_link( $term );
         }
     }
-    // Bail if no link
-    if ( empty( $link ) ) {
-        return;
-    }
-    $text = $text ? sanitize_text_field($text) : __( 'Read More', 'maitheme' );
-    return sprintf( '<p class="more-link-wrap"><a class="more-link" href="%s">%s</a></p>', $link, sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) ) );
+    return $link;
 }
 
 /**

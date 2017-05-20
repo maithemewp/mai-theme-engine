@@ -193,7 +193,7 @@ function mai_do_entry_image_background() {
     $entry_attributes = function( $attributes ) use ( $image_id, $image_size ) {
 
         // Add classes and href link
-        $attributes['class'] .= ' overlay light-content center-xs middle-xs';
+        $attributes['class'] .= ' overlay light-content center-xs middle-xs text-xs-center';
         $attributes['href'] = get_permalink();
 
         // Add image background attributes
@@ -400,6 +400,7 @@ function mai_do_post_image() {
 
 /**
  * Maybe remove the archive meta.
+ * Forces meta to be removed if image background setting.
  *
  * @return  void
  */
@@ -411,23 +412,20 @@ function mai_archive_remove_meta() {
         return;
     }
 
-    $meta_to_remove = mai_get_archive_setting( 'remove_meta', genesis_get_option( 'remove_meta' ) );
+    // Get image location
+    $image_location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
+    $meta_to_remove = (array) mai_get_archive_setting( 'remove_meta', genesis_get_option( 'remove_meta' ) );
 
-    if ( $meta_to_remove ) {
+    if ( 'background' == $image_location || in_array( 'post_info', $meta_to_remove ) ) {
+        // Remove the entry meta in the entry header
+        remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
+    }
 
-        if ( in_array( 'post_info', $meta_to_remove ) ) {
-            // Remove the entry meta in the entry header
-            remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
-        }
-
-        // if ( isset( $meta_to_remove['post_meta'] ) ) {
-        if ( in_array( 'post_meta', $meta_to_remove ) ) {
-            // Remove the entry footer markup
-            remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
-            remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
-            // Remove the entry meta in the entry footer
-            remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
-        }
-
+    if ( 'background' == $image_location || in_array( 'post_meta', $meta_to_remove ) ) {
+        // Remove the entry footer markup
+        remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
+        remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
+        // Remove the entry meta in the entry footer
+        remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
     }
 }
