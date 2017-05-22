@@ -56,18 +56,15 @@ function mai_do_custom_logo( $title, $inside, $wrap ) {
 
 /**
  * Add class for screen readers to site description.
- * This will keep the site description markup but will not have any visual presence on the page
- * This runs if there is a logo image set in the Customizer.
+ * This will keep the site description markup but will not have any visual presence on the page.
  *
  * @param 	array  $attributes Current attributes.
  *
  * @return  array  The attributes.
  */
-add_filter( 'genesis_attr_site-description', 'mai_maybe_hide_site_description' );
-function mai_maybe_hide_site_description( $attributes ) {
-	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
-		$attributes['class'] .= ' screen-reader-text';
-	}
+add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
+function mai_hide_site_description( $attributes ) {
+	$attributes['class'] .= ' screen-reader-text';
 	return $attributes;
 }
 
