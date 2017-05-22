@@ -41,7 +41,6 @@
 	- Site Navigation
 		- General Navigation
 		- Navigation Search Box
-		- Utility Navigation
 		- Header Navigation
 		- Primary Navigation
 		- Secondary Navigation
@@ -1911,15 +1910,38 @@ img.alignright,
 	border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
-.header-before .wrap {
+.header-before .widget-area {
 	display: -webkit-box;display: -ms-flexbox;display: flex;
-	-ms-flex-wrap: wrap;flex-wrap: wrap;
+	-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;
+    -webkit-box-align: center;-ms-flex-align: center;align-items: center;
 }
 
-.header-before .widget-area,
-.header-before .nav-utility {
-    -webkit-box-flex: 1;-ms-flex: 1 0 auto;flex: 1 0 auto;
-	max-width: 100%;
+.header-before .widget {
+	-webkit-box-flex: 1;-ms-flex-positive: 1;flex-grow: 1;
+	overflow: visible; /* for search-box */
+}
+
+.header-before .widget_nav_menu {
+	text-align: right;
+}
+
+.header-before .menu-item a {
+	color: #6b6b6b;
+	font-size: 13px;
+	padding: 8px 12px;
+}
+
+.header-before .menu-item a:hover,
+.header-before .menu-item .current-menu-item > a {
+	color: #323232;
+}
+
+.header-before .menu-item.search > a {
+	width: 40px;
+}
+
+.header-before .menu-item.search > a::before {
+	font-size: 19px;
 }
 
 .header-left,
@@ -2088,36 +2110,6 @@ img.alignright,
 	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto;
 	color: red;
 	padding: 6px 12px;
-}
-
-/* ## Utility Navigation
---------------------------------------------- */
-
-.nav-utility .menu {
-	-ms-flex-pack: end;-webkit-box-pack: end;justify-content: flex-end;  /* align menu items to the right */-ms-flex-wrap: wrap;flex-wrap: wrap;
-}
-
-.nav-utility {
-	text-align: right;
-}
-
-.nav-utility a {
-	color: #6b6b6b;
-	font-size: 13px;
-	padding: 8px 12px;
-}
-
-.nav-utility a:hover,
-.nav-utility .current-menu-item > a {
-	color: #323232;
-}
-
-.nav-utility .search > a {
-	width: 40px;
-}
-
-.nav-utility .search > a::before {
-	font-size: 19px;
 }
 
 /* ## Header Navigation
@@ -3080,6 +3072,7 @@ li.comment {
 
 @media only screen and (max-width: 768px) {
 
+	.header-before,
 	.header-left,
 	.header-right,
 	.nav-primary,

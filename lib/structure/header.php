@@ -65,6 +65,42 @@ function mai_hide_site_description( $attributes ) {
 }
 
 /**
+ * Add new header before hook.
+ *
+ * @return  string|HTML  The content
+ */
+add_filter( 'mai_header_before_content', 'mai_get_header_before_content' );
+function mai_get_header_before_content( $content ) {
+	ob_start();
+	do_action( 'mai_header_before' );
+	return ob_get_clean();
+}
+
+/**
+ * Add new header left content hook.
+ *
+ * @return  string|HTML  The content
+ */
+add_filter( 'mai_header_left_content', 'mai_get_header_left_content' );
+function mai_get_header_left_content( $content ) {
+	ob_start();
+	do_action( 'mai_header_left' );
+	return ob_get_clean();
+}
+
+/**
+ * Add new header right content hook.
+ *
+ * @return  string|HTML  The content
+ */
+add_filter( 'mai_header_right_content', 'mai_get_header_right_content' );
+function mai_get_header_right_content( $content ) {
+	ob_start();
+	do_action( 'mai_header_right' );
+	return ob_get_clean();
+}
+
+/**
  * Do the Flexington header.
  * This is all wrapped in one function so we can pass $left and $right variables easier.
  *
@@ -85,10 +121,9 @@ function mai_do_header() {
 	 *
 	 * @return  bool
 	 */
-	// $utility = apply_filters( 'mai_utility_nav', genesis_get_nav_menu( array( 'theme_location' => 'utility' ) ) );
-	$before  = apply_filters( 'mai_header_before_content', '' );
-	$left 	 = apply_filters( 'mai_header_left_content', '' );
-	$right 	 = apply_filters( 'mai_header_right_content', '' );
+	$before  = apply_filters( 'mai_header_before_content', '__return_empty_string' );
+	$left 	 = apply_filters( 'mai_header_left_content', '__return_empty_string' );
+	$right 	 = apply_filters( 'mai_header_right_content', '__return_empty_string' );
 	$mobile  = apply_filters( 'mai_mobile_menu', mai_get_mobile_menu() );
 
 	/**
@@ -219,50 +254,39 @@ function mai_do_header() {
 
 }
 
-/**
- * Run the filter to get the header before content.
- *
- * @return  string|HTML  The content
- */
-add_filter( 'mai_header_before_content', 'mai_get_header_before_content' );
-function mai_get_header_before_content( $content ) {
-	// Header Before widget area
-	if ( is_active_sidebar('header_before') ) {
-		ob_start();
-		_mai_add_header_menu_args();
-		genesis_widget_area( 'header_before' );
-		_mai_remove_header_menu_args();
-		$content .= ob_get_clean();
-	}
-	// Header Before menu
-	if ( has_nav_menu('header_left') ) {
-		$content .= genesis_get_nav_menu( array( 'theme_location' => 'utility' ) );
+add_action( 'mai_header_before', 'mai_do_header_before' );
+function mai_do_header_before() {
+
+	// Bail if no content
+	if ( ! is_active_sidebar('header_before') ) {
+		return;
 	}
 
-	return $content;
+	// Before Header widget area
+	_mai_add_header_menu_args();
+	genesis_widget_area( 'header_before' );
+	_mai_remove_header_menu_args();
 }
 
-/**
- * Run the filter to get the header left content.
- *
- * @return  string|HTML  The content
- */
-add_filter( 'mai_header_left_content', 'mai_get_header_left_content' );
-function mai_get_header_left_content( $content ) {
+add_action( 'mai_header_left', 'mai_do_header_left' );
+function mai_do_header_left() {
+
+	// Bail if no content
+	if ( ! ( is_active_sidebar('header_left') || has_nav_menu('header_left') ) ) {
+		return;
+	}
+
 	// Header Left widget area
 	if ( is_active_sidebar('header_left') ) {
-		ob_start();
 		_mai_add_header_menu_args();
 		genesis_widget_area( 'header_left' );
 		_mai_remove_header_menu_args();
-		$content .= ob_get_clean();
-	}
-	// Header Left menu
-	if ( has_nav_menu('header_left') ) {
-		$content .= genesis_get_nav_menu( array( 'theme_location' => 'header_left' ) );
 	}
 
-	return $content;
+	// Header Left menu
+	if ( has_nav_menu('header_left') ) {
+		echo genesis_get_nav_menu( array( 'theme_location' => 'header_left' ) );
+	}
 }
 
 /**
@@ -270,22 +294,24 @@ function mai_get_header_left_content( $content ) {
  *
  * @return  string|HTML  The content
  */
-add_filter( 'mai_header_right_content', 'mai_get_header_right_content' );
-function mai_get_header_right_content( $content ) {
+add_filter( 'mai_header_right', 'mai_do_header_right' );
+function mai_do_header_right() {
+
+	// Bail if no content
+	if ( ! ( is_active_sidebar('header_right') || has_nav_menu('header_right') ) ) {
+		return;
+	}
+
 	// Header Right widget area
 	if ( is_active_sidebar('header_right') ) {
-		ob_start();
 		_mai_add_header_menu_args();
 		genesis_widget_area( 'header_right' );
 		_mai_remove_header_menu_args();
-		$content .= ob_get_clean();
 	}
 	// Header Right menu
 	if ( has_nav_menu('header_right') ) {
-		$content .= genesis_get_nav_menu( array( 'theme_location' => 'header_right' ) );
+		echo genesis_get_nav_menu( array( 'theme_location' => 'header_right' ) );
 	}
-
-	return $content;
 }
 
 // Use Genesis header menu filter (taken from G)
