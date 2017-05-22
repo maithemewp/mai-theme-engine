@@ -814,13 +814,12 @@ final class Mai_Shortcodes {
 		return '</div>';
 	}
 
-	function get_entry_wrap_open( $atts, $object, $has_background_image ) {
-
+	function get_entry_wrap_open( $atts, $object, $has_image_bg ) {
 
 		$flex_entry = array();
 
 		// Add href if linking element
-		if ( $this->is_linking_element( $atts, $has_background_image ) ) {
+		if ( $this->is_linking_element( $atts, $has_image_bg ) ) {
 			$flex_entry['href'] = $this->get_entry_link( $atts, $object );
 		}
 
@@ -830,7 +829,7 @@ final class Mai_Shortcodes {
 		// Add the align classes
 	    $flex_entry['class'] = $this->add_entry_align_classes( $flex_entry['class'], $atts );
 
-		if ( $this->is_image_bg( $atts ) && $has_background_image ) {
+		if ( $this->is_image_bg( $atts ) && $has_image_bg ) {
 			// Get the object ID
 			$object_id = $this->get_object_id( $atts, $object );
 			if ( $object_id ) {
@@ -842,11 +841,11 @@ final class Mai_Shortcodes {
 		 * Main entry col wrap.
 		 * If we use genesis_attr( 'entry' ) then it resets the classes.
 		 */
-		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts, $has_background_image ), genesis_attr( 'flex-entry', $flex_entry ) );
+		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts, $has_image_bg ), genesis_attr( 'flex-entry', $flex_entry ) );
 	}
 
-	function get_entry_wrap_close( $atts, $has_background_image ) {
-		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts, $has_background_image ) );
+	function get_entry_wrap_close( $atts, $has_image_bg ) {
+		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts, $has_image_bg ) );
 	}
 
 	/**
@@ -1196,32 +1195,24 @@ final class Mai_Shortcodes {
 				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
 
 				// Get image vars
-				$do_image = $has_background_image = false;
+				$do_image_bg = $has_image_bg = false;
 
 				// If showing image
 				if ( in_array( 'image', $atts['show'] ) ) {
 					$image_id = $this->get_image_id( $atts, get_the_ID() );
 					if ( $image_id ) {
-						$do_image = true;
+						$do_image_bg = true;
 						if ( $this->is_image_bg( $atts ) ) {
-							$has_background_image = true;
+							$has_image_bg = true;
 						}
 					}
 				}
 
 				// Opening wrap
-				$html .= $this->get_entry_wrap_open( $atts, $post, $has_background_image );
+				$html .= $this->get_entry_wrap_open( $atts, $post, $has_image_bg );
 
 					// Image
-					if ( 'before_entry' == $atts['image_location'] ) {
-						$html .= $image_html;
-					}
-
-					// Set url as a variable
-					$url = $this->get_entry_link( $atts, $post );
-
-					// Image
-					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
+					if ( $do_image_bg && ! $this->is_image_bg( $atts ) ) {
 						if ( $image_id ) {
 							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
 							if ( $image ) {
@@ -1233,6 +1224,14 @@ final class Mai_Shortcodes {
 							}
 						}
 					}
+
+					// Image
+					if ( 'before_entry' == $atts['image_location'] ) {
+						$html .= $image_html;
+					}
+
+					// Set url as a variable
+					$url = $this->get_entry_link( $atts, $post );
 
 					// Date
 					if ( in_array( 'date', $atts['show'] ) ) {
@@ -1256,7 +1255,7 @@ final class Mai_Shortcodes {
 						$author_before	  = $atts['author_before'] ? ' before="' . $atts['author_before'] . '"' : '';
 						$author_after	  = $atts['author_after'] ? ' after="' . $atts['author_after'] . '"' : '';
 						// Can't have a nested link if we have a background image
-						if ( $has_background_image ) {
+						if ( $has_image_bg ) {
 							$author_shortcode_name = 'post_author';
 						} else {
 							$author_shortcode_name = 'post_author_link';
@@ -1284,7 +1283,7 @@ final class Mai_Shortcodes {
 
 							// Title
 							if ( in_array( 'title', $atts['show'] ) ) {
-								if ( $atts['link'] && ! $has_background_image ) {
+								if ( $atts['link'] && ! $has_image_bg ) {
 									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
 								} else {
 									$title = get_the_title();
@@ -1337,12 +1336,12 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url, $has_background_image );
+						$entry_content .= $this->get_more_link( $atts, $url, $has_image_bg );
 					}
 
 					// Add to cart link
 					if ( $atts['link'] && in_array( 'add_to_cart', $atts['show'] ) ) {
-						$entry_content .= $this->get_add_to_cart_link( $atts, $url, $has_background_image );
+						$entry_content .= $this->get_add_to_cart_link( $atts, $url, $has_image_bg );
 					}
 
 					// Add entry content wrap if we have content
@@ -1360,7 +1359,7 @@ final class Mai_Shortcodes {
 						$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer' ), $entry_footer );
 					}
 
-				$html .= $this->get_entry_wrap_close( $atts, $has_background_image );
+				$html .= $this->get_entry_wrap_close( $atts, $has_image_bg );
 
 			endwhile;
 			wp_reset_postdata();
@@ -1449,32 +1448,25 @@ final class Mai_Shortcodes {
 				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $image_id = '';
 
 				// Get image vars
-				$do_image = $has_background_image = false;
+				$do_image_bg = $has_image_bg = false;
 
 				// If showing image
 				if ( in_array( 'image', $atts['show'] ) ) {
 					$image_id = $this->get_image_id( $atts, $term->term_id );
 					if ( $image_id ) {
-						$do_image = true;
+
+						$do_image_bg = true;
 						if ( $this->is_image_bg( $atts ) ) {
-							$has_background_image = true;
+							$has_image_bg = true;
 						}
 					}
 				}
 
 				// Opening wrap
-				$html .= $this->get_entry_wrap_open( $atts, $term, $has_background_image );
+				$html .= $this->get_entry_wrap_open( $atts, $term, $has_image_bg );
 
 					// Image
-					if ( 'before_entry' == $atts['image_location'] ) {
-						$html .= $image_html;
-					}
-
-					// Set url as a variable
-					$url = $this->get_entry_link( $atts, $term );
-
-					// Image
-					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
+					if ( $do_image_bg && ! $this->is_image_bg( $atts ) ) {
 						if ( $image_id ) {
 							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
 							if ( $image ) {
@@ -1486,6 +1478,14 @@ final class Mai_Shortcodes {
 							}
 						}
 					}
+
+					// Image
+					if ( 'before_entry' == $atts['image_location'] ) {
+						$html .= $image_html;
+					}
+
+					// Set url as a variable
+					$url = $this->get_entry_link( $atts, $term );
 
 					// Build entry header
 					if ( $this->is_entry_header_image( $atts ) || in_array( 'title', $atts['show'] ) ) {
@@ -1499,7 +1499,7 @@ final class Mai_Shortcodes {
 							}
 
 							// Title
-							if ( $atts['link'] && ! $has_background_image ) {
+							if ( $atts['link'] && ! $has_image_bg ) {
 								$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
 							} else {
 								$title = $term->name;
@@ -1534,7 +1534,7 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url, $has_background_image );
+						$entry_content .= $this->get_more_link( $atts, $url, $has_image_bg );
 					}
 
 					// Add entry content wrap if we have content
@@ -1542,7 +1542,7 @@ final class Mai_Shortcodes {
 						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content' ), $entry_content );
 					}
 
-				$html .= $this->get_entry_wrap_close( $atts, $has_background_image );
+				$html .= $this->get_entry_wrap_close( $atts, $has_image_bg );
 
 			}
 
@@ -1562,8 +1562,8 @@ final class Mai_Shortcodes {
 		return sprintf( '<%s class="%s">%s</%s>', $atts['grid_title_wrap'], trim($classes), $atts['grid_title'], $atts['grid_title_wrap'] );
 	}
 
-	function get_entry_wrap_element( $atts, $has_background_image ) {
-		return $this->is_linking_element( $atts, $has_background_image ) ? 'a' : 'div';
+	function get_entry_wrap_element( $atts, $has_image_bg ) {
+		return $this->is_linking_element( $atts, $has_image_bg ) ? 'a' : 'div';
 	}
 
 	/**
@@ -1573,8 +1573,8 @@ final class Mai_Shortcodes {
 	 *
 	 * @return  bool
 	 */
-	function is_linking_element( $atts, $has_background_image ) {
-		if ( $this->is_image_bg( $atts ) && $atts['link'] && $has_background_image ) {
+	function is_linking_element( $atts, $has_image_bg ) {
+		if ( $this->is_image_bg( $atts ) && $atts['link'] && $has_image_bg ) {
 			return true;
 		}
 		return false;
@@ -1741,8 +1741,8 @@ final class Mai_Shortcodes {
 	    return $image_id;
 	}
 
-	function get_more_link( $atts, $url, $has_background_image ) {
-		if ( $this->is_image_bg( $atts ) && $has_background_image ) {
+	function get_more_link( $atts, $url, $has_image_bg ) {
+		if ( $this->is_image_bg( $atts ) && $has_image_bg ) {
 			$link = sprintf( '<span class="more-link">%s</span>', $atts['more_link_text'] );
 		} else {
 			$link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $atts['more_link_text'] );
@@ -1750,11 +1750,11 @@ final class Mai_Shortcodes {
 	    return sprintf( '<p class="more-link-wrap">%s</p>', $link );
 	}
 
-	function get_add_to_cart_link( $atts, $url, $has_background_image ) {
+	function get_add_to_cart_link( $atts, $url, $has_image_bg ) {
 		$link = '';
 		if ( class_exists( 'WooCommerce' ) ) {
 			$product = wc_get_product( get_the_ID() );
-			if ( $this->is_image_bg( $atts ) && $has_background_image ) {
+			if ( $this->is_image_bg( $atts ) && $has_image_bg ) {
 				$link = sprintf( '<span class="more-link">%s</span>', $product->add_to_cart_text() );
 			} else {
 				ob_start();
