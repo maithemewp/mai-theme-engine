@@ -35,8 +35,6 @@
 			}
 		});
 
-		console.log( $settingsEnabled.length );
-
 		// If we have a setting (theme settings doesn't ) to enable archive settings and that setting is not checked, hide the archive settings
 		if ( $settingsEnabled.length > 0 && ! $settingsEnabled.is( ':checked' )  ) {
 			_hideElement( $settingsWrap );
