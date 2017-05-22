@@ -15,8 +15,8 @@ function mai_admin_enqueue_scripts() {
 	$suffix = mai_get_suffix();
 
 	// Register for later
-	wp_enqueue_style( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "/assets/css/mai-cmb2{$suffix}.css", array(), CHILD_THEME_VERSION );
-	wp_enqueue_script( 'mai-cmb2', MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . "/assets/js/mai-cmb2{$suffix}.js", array( 'jquery' ), CHILD_THEME_VERSION, true );
+	wp_enqueue_style( 'mai-cmb2', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/css/mai-cmb2{$suffix}.css", array(), CHILD_THEME_VERSION );
+	wp_enqueue_script( 'mai-cmb2', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/js/mai-cmb2{$suffix}.js", array( 'jquery' ), CHILD_THEME_VERSION, true );
 }
 
 /**

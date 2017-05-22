@@ -41,7 +41,7 @@ add_action( 'init', 'mai_register_layouts' );
 function mai_register_layouts() {
 
     // Layout image directory
-    $dir = MAITHEME_ENGINE_PLUGIN_PLUGIN_URL . '/assets/images/layouts/';
+    $dir = MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/layouts/';
 
     // Medium Content
     genesis_register_layout( 'md-content', array(

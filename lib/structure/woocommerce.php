@@ -34,7 +34,7 @@ function mai_wc_get_template( $template, $template_name, $args, $template_path )
 		$template = $_template;
 	} else {
 		// Use our plugin template
-		$plugin_path = MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR . 'templates/woocommerce/';
+		$plugin_path = MAI_PRO_ENGINE_PLUGIN_DIR . 'templates/woocommerce/';
 		if ( file_exists( $plugin_path . $template_name ) ) {
 			$template = $plugin_path . $template_name;
 		}
@@ -62,7 +62,7 @@ function mai_wc_get_template_part( $template, $slug, $name ) {
 		$template = $_template;
 	} else {
 		// Use our plugin template
-		$plugin_path = MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR . 'templates/woocommerce/';
+		$plugin_path = MAI_PRO_ENGINE_PLUGIN_DIR . 'templates/woocommerce/';
 		if ( file_exists( $plugin_path . $template_name ) ) {
 			$template = $plugin_path . $template_name;
 		}

@@ -47,7 +47,7 @@ function mai_plugin_include_theme_page_templates( $template ) {
 		$template = $_template;
 	} else {
 		// Use our plugin template
-		$plugin_path = MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR . 'templates/';
+		$plugin_path = MAI_PRO_ENGINE_PLUGIN_DIR . 'templates/';
 		if ( file_exists( $plugin_path . $template_name ) ) {
 			$template = $plugin_path . $template_name;
 		}

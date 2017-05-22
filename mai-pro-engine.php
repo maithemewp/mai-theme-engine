@@ -91,38 +91,38 @@ final class Mai_Pro_Engine {
     private function setup_constants() {
 
         // Plugin version.
-        if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_VERSION' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_VERSION', '1.0.0-beta.8' );
+        if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
+            define( 'MAI_PRO_ENGINE_VERSION', '1.0.0-beta.8' );
         }
 
         // Plugin Folder Path.
-        if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+        if ( ! defined( 'MAI_PRO_ENGINE_PLUGIN_DIR' ) ) {
+            define( 'MAI_PRO_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
         }
 
         // Plugin Lib Path
-        if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_LIB_DIR' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_LIB_DIR', MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR . 'lib/' );
+        if ( ! defined( 'MAI_PRO_ENGINE_LIB_DIR' ) ) {
+            define( 'MAI_PRO_ENGINE_LIB_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'lib/' );
         }
 
         // Plugin Includes Path
-        if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR', MAITHEME_ENGINE_PLUGIN_PLUGIN_DIR . 'includes/' );
+        if ( ! defined( 'MAI_PRO_ENGINE_INCLUDES_DIR' ) ) {
+            define( 'MAI_PRO_ENGINE_INCLUDES_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'includes/' );
         }
 
         // Plugin Folder URL.
-        if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_PLUGIN_URL' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+        if ( ! defined( 'MAI_PRO_ENGINE_PLUGIN_URL' ) ) {
+            define( 'MAI_PRO_ENGINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
         }
 
         // Plugin Root File.
-        if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_PLUGIN_FILE' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_PLUGIN_FILE', __FILE__ );
+        if ( ! defined( 'MAI_PRO_ENGINE_PLUGIN_FILE' ) ) {
+            define( 'MAI_PRO_ENGINE_PLUGIN_FILE', __FILE__ );
         }
 
         // Plugin Base Name
-        if ( ! defined( 'MAITHEME_ENGINE_PLUGIN_BASENAME' ) ) {
-            define( 'MAITHEME_ENGINE_PLUGIN_BASENAME', dirname( plugin_basename( __FILE__ ) ) );
+        if ( ! defined( 'MAI_PRO_ENGINE_BASENAME' ) ) {
+            define( 'MAI_PRO_ENGINE_BASENAME', dirname( plugin_basename( __FILE__ ) ) );
         }
 
     }
@@ -137,10 +137,10 @@ final class Mai_Pro_Engine {
     private function setup() {
 
         // Vendor
-        require_once MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . 'vendor/CMB2/init.php';
+        require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'vendor/CMB2/init.php';
 
         // Includes
-        foreach ( glob( MAITHEME_ENGINE_PLUGIN_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
+        foreach ( glob( MAI_PRO_ENGINE_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
 
         /**
          * Include files after theme is loaded, to mimic being run in a child theme.
@@ -287,11 +287,11 @@ final class Mai_Pro_Engine {
         add_action( 'after_setup_theme', function(){
 
             // Lib
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'settings/*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAITHEME_ENGINE_PLUGIN_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
+            foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
+            foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
+            foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/*.php' ) as $file ) { include_once $file; }
+            foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
+            foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
         }, 8 );
     }
