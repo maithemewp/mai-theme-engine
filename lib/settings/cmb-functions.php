@@ -221,29 +221,15 @@ function _mai_cmb_remove_loop_config() {
     );
 }
 
-function _mai_cmb_posts_per_page_config() {
-	return array(
-		'before_row'	=> '<div class="mai-archive-settings-wrap">',
-		'name'			=> __( 'Entries Per Page', 'maitheme' ),
-		'desc'			=> __( 'The max number of posts to show, per page.', 'maitheme' ),
-		'id'			=> 'posts_per_page',
-		'type'			=> 'text_small',
-		'default'		=> 12,
-		'attributes'	=> array(
-			'type'		  => 'number',
-			'pattern'	  => '\d*',
-		),
-    );
-}
-
 function _mai_cmb_columns_config() {
 	return array(
-		'name'		=> __( 'Content Columns', 'maitheme' ),
-		'desc'		=> __( 'Display content in multiple columns.', 'maitheme' ),
-		'id'		=> 'columns',
-		'type'		=> 'select',
-		'default'	=> 1,
-		'options'	=> array(
+		'before_row'	=> '<div class="mai-archive-settings-wrap">',
+		'name'			=> __( 'Content Columns', 'maitheme' ),
+		'desc'			=> __( 'Display content in multiple columns.', 'maitheme' ),
+		'id'			=> 'columns',
+		'type'			=> 'select',
+		'default'		=> 1,
+		'options'		=> array(
 			1 => __( '- None -', 'genesis' ),
 			2 => __( '2 Columns', 'maitheme' ),
 			3 => __( '3 Columns', 'maitheme' ),
@@ -357,6 +343,20 @@ function _mai_cmb_meta_config() {
 			'post_meta' => __( 'Remove Post Meta', 'maitheme' ),
 		),
 		'select_all_button' => false,
+    );
+}
+
+function _mai_cmb_posts_per_page_config() {
+	return array(
+		'name'			=> __( 'Entries Per Page', 'maitheme' ),
+		'desc'			=> __( 'The max number of posts to show, per page.', 'maitheme' ),
+		'id'			=> 'posts_per_page',
+		'type'			=> 'text_small',
+		'default'		=> 12,
+		'attributes'	=> array(
+			'type'		  => 'number',
+			'pattern'	  => '\d*',
+		),
     );
 }
 

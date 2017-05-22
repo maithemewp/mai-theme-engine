@@ -44,7 +44,6 @@ function mai_cmb2_add_metaboxes() {
     $static_archive->add_field( _mai_cmb_remove_loop_config() );
     $static_archive->add_field( _mai_cmb_content_enable_archive_settings_config() );
     $static_archive->add_field( _mai_cmb_content_archive_settings_title_config() );
-    $static_archive->add_field( _mai_cmb_posts_per_page_config() );
     $static_archive->add_field( _mai_cmb_columns_config() );
 	$static_archive->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$static_archive->add_field( _mai_cmb_image_location_config() );
@@ -54,6 +53,7 @@ function mai_cmb2_add_metaboxes() {
 	$static_archive->add_field( _mai_cmb_content_archive_limit_config() );
 	$static_archive->add_field( _mai_cmb_more_link_config() );
 	$static_archive->add_field( _mai_cmb_meta_config() );
+    $static_archive->add_field( _mai_cmb_posts_per_page_config() );
 	$static_archive->add_field( _mai_cmb_posts_nav_config() );
 
     // Taxonomy Terms
@@ -72,7 +72,6 @@ function mai_cmb2_add_metaboxes() {
     $term->add_field( _mai_cmb_remove_loop_config() );
     $term->add_field( _mai_cmb_content_archive_settings_title_config() );
     $term->add_field( _mai_cmb_content_enable_archive_settings_config() );
-    $term->add_field( _mai_cmb_posts_per_page_config() );
     $term->add_field( _mai_cmb_columns_config() );
 	$term->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$term->add_field( _mai_cmb_image_location_config() );
@@ -82,6 +81,7 @@ function mai_cmb2_add_metaboxes() {
 	$term->add_field( _mai_cmb_content_archive_limit_config() );
 	$term->add_field( _mai_cmb_more_link_config() );
 	$term->add_field( _mai_cmb_meta_config() );
+    $term->add_field( _mai_cmb_posts_per_page_config() );
 	$term->add_field( _mai_cmb_posts_nav_config() );
 
     // User Profiles
@@ -98,7 +98,6 @@ function mai_cmb2_add_metaboxes() {
     $user->add_field( _mai_cmb_content_archive_settings_title_config() );
     $user->add_field( _mai_cmb_content_enable_archive_settings_config() );
     $user->add_field( _mai_cmb_remove_loop_config() );
-    $user->add_field( _mai_cmb_posts_per_page_config() );
     $user->add_field( _mai_cmb_columns_config() );
 	$user->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$user->add_field( _mai_cmb_image_location_config() );
@@ -108,5 +107,6 @@ function mai_cmb2_add_metaboxes() {
 	$user->add_field( _mai_cmb_content_archive_limit_config() );
 	$user->add_field( _mai_cmb_more_link_config() );
 	$user->add_field( _mai_cmb_meta_config() );
+    $user->add_field( _mai_cmb_posts_per_page_config() );
 	$user->add_field( _mai_cmb_posts_nav_config() );
 }

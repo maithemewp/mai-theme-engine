@@ -170,7 +170,6 @@ class Mai_Genesis_CPT_Settings_Metabox {
 	    $this->cmb->add_field( _mai_cmb_remove_loop_config() );
 	    $this->cmb->add_field( _mai_cmb_content_enable_archive_settings_config() );
 	    $this->cmb->add_field( _mai_cmb_content_archive_settings_title_config() );
-	    $this->cmb->add_field( _mai_cmb_posts_per_page_config() );
 	    $this->cmb->add_field( _mai_cmb_columns_config() );
 		$this->cmb->add_field( _mai_cmb_content_archive_thumbnail_config() );
 		$this->cmb->add_field( _mai_cmb_image_location_config() );
@@ -180,6 +179,7 @@ class Mai_Genesis_CPT_Settings_Metabox {
 		$this->cmb->add_field( _mai_cmb_content_archive_limit_config() );
 		$this->cmb->add_field( _mai_cmb_more_link_config() );
 		$this->cmb->add_field( _mai_cmb_meta_config() );
+	    $this->cmb->add_field( _mai_cmb_posts_per_page_config() );
 		$this->cmb->add_field( _mai_cmb_posts_nav_config() );
 
 		return $this->cmb;

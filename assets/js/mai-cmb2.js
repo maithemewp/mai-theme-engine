@@ -35,8 +35,10 @@
 			}
 		});
 
-		// If archive settings are not enabled, hide the settings
-		if ( ! $settingsEnabled.is( ':checked' )  ) {
+		console.log( $settingsEnabled.length );
+
+		// If we have a setting (theme settings doesn't ) to enable archive settings and that setting is not checked, hide the archive settings
+		if ( $settingsEnabled.length > 0 && ! $settingsEnabled.is( ':checked' )  ) {
 			_hideElement( $settingsWrap );
 		}
 		// On change of 'enable archive settings'
@@ -52,7 +54,6 @@
 				_hideElement( $settingsWrap );
 			}
 		});
-
 
 		var $columns			= $( '#columns' ),
 			$includeImage		= $( '#content_archive_thumbnail' ),
