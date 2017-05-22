@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Plugin Name:     Mai Theme Engine
- * Plugin URI:      https://github.com/bizbudding/maitheme-engine/
+ * Plugin Name:     Mai Pro Engine
+ * Plugin URI:      https://github.com/bizbudding/mai-pro-engine/
  * Description:     The Mai Theme engine
  *
  * Version:         1.0.0-beta.7
  *
- * GitHub URI:      bizbudding/maitheme-engine
+ * GitHub URI:      bizbudding/mai-pro-engine
  *
  * Author:          Mike Hemberger, BizBudding Inc
  * Author URI:      https://bizbudding.com
@@ -16,37 +16,37 @@
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'Mai_Theme_Engine' ) ) :
+if ( ! class_exists( 'Mai_Pro_Engine' ) ) :
 
 /**
- * Main Mai_Theme_Engine Class.
+ * Main Mai_Pro_Engine Class.
  *
  * @since 1.0.0
  */
-final class Mai_Theme_Engine {
+final class Mai_Pro_Engine {
 
     /**
-     * @var Mai_Theme_Engine The one true Mai_Theme_Engine
+     * @var Mai_Pro_Engine The one true Mai_Pro_Engine
      * @since 1.0.0
      */
     private static $instance;
 
     /**
-     * Main Mai_Theme_Engine Instance.
+     * Main Mai_Pro_Engine Instance.
      *
-     * Insures that only one instance of Mai_Theme_Engine exists in memory at any one
+     * Insures that only one instance of Mai_Pro_Engine exists in memory at any one
      * time. Also prevents needing to define globals all over the place.
      *
      * @since   1.0.0
      * @static  var array $instance
-     * @uses    Mai_Theme_Engine::setup_constants() Setup the constants needed.
-     * @uses    Mai_Theme_Engine::includes() Include the required files.
-     * @return  object | Mai_Theme_Engine The one true Mai_Theme_Engine
+     * @uses    Mai_Pro_Engine::setup_constants() Setup the constants needed.
+     * @uses    Mai_Pro_Engine::includes() Include the required files.
+     * @return  object | Mai_Pro_Engine The one true Mai_Pro_Engine
      */
     public static function instance() {
         if ( ! isset( self::$instance ) ) {
             // Setup the setup
-            self::$instance = new Mai_Theme_Engine;
+            self::$instance = new Mai_Pro_Engine;
             // Methods
             self::$instance->setup_constants();
             self::$instance->setup();
@@ -66,7 +66,7 @@ final class Mai_Theme_Engine {
      */
     public function __clone() {
         // Cloning instances of the class is forbidden.
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'Mai_Theme_Engine' ), '1.0' );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'Mai_Pro_Engine' ), '1.0' );
     }
 
     /**
@@ -78,7 +78,7 @@ final class Mai_Theme_Engine {
      */
     public function __wakeup() {
         // Unserializing instances of the class is forbidden.
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'Mai_Theme_Engine' ), '1.0' );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'Mai_Pro_Engine' ), '1.0' );
     }
 
     /**
@@ -300,23 +300,23 @@ final class Mai_Theme_Engine {
 endif; // End if class_exists check.
 
 /**
- * The main function for that returns Mai_Theme_Engine
+ * The main function for that returns Mai_Pro_Engine
  *
- * The main function responsible for returning the one true Mai_Theme_Engine
+ * The main function responsible for returning the one true Mai_Pro_Engine
  * Instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
  * to declare the global.
  *
- * Example: <?php $plugin = Mai_Theme_Engine(); ?>
+ * Example: <?php $plugin = Mai_Pro_Engine(); ?>
  *
  * @since 1.0.0
  *
- * @return object|Mai_Theme_Engine The one true Mai_Theme_Engine Instance.
+ * @return object|Mai_Pro_Engine The one true Mai_Pro_Engine Instance.
  */
-function Mai_Theme_Engine() {
-    return Mai_Theme_Engine::instance();
+function Mai_Pro_Engine() {
+    return Mai_Pro_Engine::instance();
 }
 
-// Get Mai_Theme_Engine Running.
-Mai_Theme_Engine();
+// Get Mai_Pro_Engine Running.
+Mai_Pro_Engine();
