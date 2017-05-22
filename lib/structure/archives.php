@@ -271,6 +271,7 @@ function mai_do_content_archive_archive_options() {
     $image_size                = mai_get_archive_setting( 'image_size', genesis_get_option( 'image_size' ) );
     $content_archive           = mai_get_archive_setting( 'content_archive', genesis_get_option( 'content_archive' ) );
     $content_archive_limit     = absint( mai_get_archive_setting( 'content_archive_limit', genesis_get_option( 'content_archive_limit' ) ) );
+    $posts_nav                 = mai_get_archive_setting( 'posts_nav', genesis_get_option( 'posts_nav' ) );
 
     if ( 'none' == $content_archive ) {
         // Remove the post content
@@ -295,6 +296,11 @@ function mai_do_content_archive_archive_options() {
     // Archive Limit
     add_filter( 'genesis_pre_get_option_content_archive_limit', function( $options ) use ( $content_archive_limit ) {
         return $content_archive_limit;
+    });
+
+    // Posts Nav
+    add_filter( 'genesis_pre_get_option_posts_nav', function( $options ) use ( $posts_nav ) {
+        return $posts_nav;
     });
 
 }
@@ -382,6 +388,8 @@ function mai_do_entry_image_background() {
             $attributes['href'] = get_permalink();
             // Add image background attributes
             $attributes = mai_add_image_background_attributes( $attributes, $image_id, $image_size );
+        } else {
+            $attributes['class'] .= ' image-bg-none';
         }
 
         // Center the content even if we don't have an image

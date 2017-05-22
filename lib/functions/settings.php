@@ -140,26 +140,28 @@ function mai_is_banner_area_enabled_globally() {
  */
 function mai_is_banner_area_enabled() {
 
+    $enabled = true;
+
     // Bail if not enabled at all
     if ( ! mai_is_banner_area_enabled_globally() ) {
-        return false;
-    }
+        $enabled = false;
+    } else {
 
-    // Get 'disabled' content, typecasted as array because it may return empty string if none
-    $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
-    $disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+        // Get 'disabled' content, typecasted as array because it may return empty string if none
+        $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
 
-    if ( is_singular() || is_post_type_archive() ) {
-        if ( in_array( get_post_type(), $disable_post_types ) ) {
-            return false;
+        if ( is_singular() || is_post_type_archive() ) {
+            if ( in_array( get_post_type(), $disable_post_types ) ) {
+                $enabled = false;
+            }
+        } elseif ( is_tax() ) {
+            if ( array_intersect( get_taxonomy( get_queried_object()->taxonomy )->object_type, $disable_post_types ) ) {
+                $enabled = false;
+            }
         }
-    } elseif ( is_tax() ) {
-        if ( in_array( get_queried_object()->slug, $disable_taxonomies ) ) {
-            return false;
-        }
-    }
 
-    return true;
+    }
+    return $enabled;
 }
 
 /**

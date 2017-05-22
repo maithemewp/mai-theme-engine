@@ -1523,7 +1523,7 @@ final class Mai_Shortcodes {
 
 					// Excerpt/Content
 					if ( in_array( 'excerpt', $atts['show'] ) || in_array( 'content', $atts['show'] ) ) {
-						$entry_content .= wp_strip_all_tags( strip_shortcodes( term_description( $term->term_id, $term->taxonomy ) ) );
+						$entry_content .= wpautop( wp_strip_all_tags( strip_shortcodes( term_description( $term->term_id, $term->taxonomy ) ) ) );
 					}
 
 					// Limit content. Empty string is sanitized to zero.

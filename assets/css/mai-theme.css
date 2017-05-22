@@ -2707,7 +2707,9 @@ img.alignright,
 	max-width: 100%;
 }
 
-.flex-entry.image-bg .entry-content {
+.flex-entry.image-bg .entry-content,
+.flex-entry.image-bg-none .entry-content {
+	/* allow content to be centered vertically when image-bg */
 	-webkit-box-flex: 0;-ms-flex: 0 0 auto;flex: 0 0 auto;
 }
 
