@@ -965,8 +965,12 @@ td {
 --------------------------------------------- */
 
 .section {
-	background-color: #f1f1f1;
 	margin-bottom: 30px;
+}
+
+.section,
+.has-sidebar .content .section {
+	background-color: #f1f1f1;
 }
 
 .section:not(.image-bg):nth-of-type(even) {
@@ -995,8 +999,7 @@ td {
 	padding-right: 24px;
 }
 
-.sidebar ~ .content .section,
-.sidebar ~ .content .section .wrap {
+.has-sidebar .content .section .wrap {
 	padding-left: 0;
 	padding-right: 0;
 }
@@ -1010,7 +1013,7 @@ td {
 	text-shadow: none;
 	padding: 4% 8%;
 	-webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
-	        box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
+    box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
 }
 
 /* ## Image Background
