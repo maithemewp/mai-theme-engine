@@ -1211,6 +1211,9 @@ final class Mai_Shortcodes {
 				// Opening wrap
 				$html .= $this->get_entry_wrap_open( $atts, $post, $has_image_bg );
 
+					// Set url as a variable
+					$url = $this->get_entry_link( $atts, $post );
+
 					// Image
 					if ( $do_image_bg && ! $this->is_image_bg( $atts ) ) {
 						if ( $image_id ) {
@@ -1229,9 +1232,6 @@ final class Mai_Shortcodes {
 					if ( 'before_entry' == $atts['image_location'] ) {
 						$html .= $image_html;
 					}
-
-					// Set url as a variable
-					$url = $this->get_entry_link( $atts, $post );
 
 					// Date
 					if ( in_array( 'date', $atts['show'] ) ) {
@@ -1465,6 +1465,9 @@ final class Mai_Shortcodes {
 				// Opening wrap
 				$html .= $this->get_entry_wrap_open( $atts, $term, $has_image_bg );
 
+					// Set url as a variable
+					$url = $this->get_entry_link( $atts, $term );
+
 					// Image
 					if ( $do_image_bg && ! $this->is_image_bg( $atts ) ) {
 						if ( $image_id ) {
@@ -1483,9 +1486,6 @@ final class Mai_Shortcodes {
 					if ( 'before_entry' == $atts['image_location'] ) {
 						$html .= $image_html;
 					}
-
-					// Set url as a variable
-					$url = $this->get_entry_link( $atts, $term );
 
 					// Build entry header
 					if ( $this->is_entry_header_image( $atts ) || in_array( 'title', $atts['show'] ) ) {

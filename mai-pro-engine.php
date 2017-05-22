@@ -3,7 +3,7 @@
 /**
  * Plugin Name:     Mai Pro Engine
  * Plugin URI:      https://github.com/bizbudding/mai-pro-engine/
- * Description:     The Mai Theme engine
+ * Description:     The Mai theme engine
  *
  * Version:         1.0.0-beta.9
  *
