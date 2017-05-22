@@ -46,7 +46,6 @@ function _mai_cmb_show_banner_visibility_field() {
 
     // Get 'disabled' content, typecasted as array because it may return empty string if none
     $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
-    $disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
 
     // Posts
     if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
@@ -62,7 +61,7 @@ function _mai_cmb_show_banner_visibility_field() {
         // Get taxonomy
         $taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
 
-    	if ( in_array( $typenow, $disable_taxonomies ) ) {
+        if ( array_intersect( get_taxonomy( $taxonomy )->object_type, $disable_post_types ) ) {
     		$show = false;
     	}
 
@@ -175,7 +174,7 @@ function _mai_cmb_banner_visibility_config() {
 		'desc'			=> __( 'Hide the banner area', 'maitheme' ),
 		'id'			=> 'hide_banner',
 		'type'			=> 'checkbox',
-		'show_on_cb'	=> 'mai_is_banner_area_enabled',
+		'show_on_cb'	=> '_mai_cmb_show_banner_visibility_field',
     );
 }
 
@@ -195,7 +194,7 @@ function _mai_cmb_banner_image_config() {
 
 function _mai_cmb_content_archive_settings_title_config() {
 	return array(
-		'name'	=> __( 'Mai Content Archive Settings', 'maitheme' ),
+		'name'	=> '',
 		'desc'	=> __( 'If enabled, these will override the default content archive settings', 'maitheme' ),
 		'type'	=> 'title',
 		'id'	=> 'mai_content_archives_title',
@@ -204,30 +203,47 @@ function _mai_cmb_content_archive_settings_title_config() {
 
 function _mai_cmb_content_enable_archive_settings_config() {
 	return array(
-		'name'	=> __( 'Archive Settings', 'maitheme' ),
-		'desc'	=> __( 'Enable custom archive settings', 'maitheme' ),
-		'id'	=> 'enable_content_archive_settings',
-		'type'	=> 'checkbox',
+		'before_row' => '<div class="mai-archive-setting-wrap">',
+		'name'		 => __( 'Archive Settings', 'maitheme' ),
+		'desc'		 => __( 'Enable custom archive settings', 'maitheme' ),
+		'id'		 => 'enable_content_archive_settings',
+		'type'		 => 'checkbox',
     );
 }
 
 function _mai_cmb_remove_loop_config() {
 	return array(
-		'name'	=> __( 'Hide Entries', 'maitheme' ),
-		'desc'	=> __( 'Hide entries from this archive', 'maitheme' ),
-		'id'	=> 'remove_loop',
-		'type'	=> 'checkbox',
+		'after_row'	=> '</div>',
+		'name'		=> __( 'Hide Entries', 'maitheme' ),
+		'desc'		=> __( 'Hide entries from this archive', 'maitheme' ),
+		'id'		=> 'remove_loop',
+		'type'		=> 'checkbox',
+    );
+}
+
+function _mai_cmb_posts_per_page_config() {
+	return array(
+		'before_row'	=> '<div class="mai-archive-settings-wrap">',
+		'name'			=> __( 'Entries Per Page', 'maitheme' ),
+		'desc'			=> __( 'The max number of posts to show, per page.', 'maitheme' ),
+		'id'			=> 'posts_per_page',
+		'type'			=> 'text_small',
+		'default'		=> 12,
+		'attributes'	=> array(
+			'type'		  => 'number',
+			'pattern'	  => '\d*',
+		),
     );
 }
 
 function _mai_cmb_columns_config() {
 	return array(
-		'name'				=> __( 'Content Columns', 'maitheme' ),
-		'desc'				=> __( 'Display content in multiple columns.', 'maitheme' ),
-		'id'				=> 'columns',
-		'type'				=> 'select',
-		'default'			=> 1,
-		'options'			=> array(
+		'name'		=> __( 'Content Columns', 'maitheme' ),
+		'desc'		=> __( 'Display content in multiple columns.', 'maitheme' ),
+		'id'		=> 'columns',
+		'type'		=> 'select',
+		'default'	=> 1,
+		'options'	=> array(
 			1 => __( '- None -', 'genesis' ),
 			2 => __( '2 Columns', 'maitheme' ),
 			3 => __( '3 Columns', 'maitheme' ),
@@ -262,12 +278,12 @@ function _mai_cmb_content_archive_thumbnail_config() {
 
 function _mai_cmb_image_location_config() {
 	return array(
-		'name'				=> __( 'Image Location:', 'maitheme' ),
-		'id'				=> 'image_location',
-		'before_field'		=> __( 'Image Location:', 'maitheme' ) . ' ',
-		'type'				=> 'select',
-		'default' 			=> 'before_entry',
-		'options'			=> array(
+		'name'			=> __( 'Image Location:', 'maitheme' ),
+		'id'			=> 'image_location',
+		'before_field'	=> __( 'Image Location:', 'maitheme' ) . ' ',
+		'type'			=> 'select',
+		'default'		=> 'before_entry',
+		'options'		=> array(
 			'background'	 => __( 'Background Image', 'maitheme' ),
 			'before_entry'	 => __( 'Before Entry', 'maitheme' ),
 			'before_title'	 => __( 'Before Title', 'maitheme' ),
@@ -333,10 +349,10 @@ function _mai_cmb_more_link_config() {
 
 function _mai_cmb_meta_config() {
 	return array(
-		'name'	=> __( 'Entry Meta', 'maitheme' ),
-		'id'	=> 'remove_meta',
-		'type'	=> 'multicheck',
-		'options'			=> array(
+		'name'		=> __( 'Entry Meta', 'maitheme' ),
+		'id'		=> 'remove_meta',
+		'type'		=> 'multicheck',
+		'options'	=> array(
 			'post_info'	=> __( 'Remove Post Info', 'maitheme' ),
 			'post_meta' => __( 'Remove Post Meta', 'maitheme' ),
 		),
@@ -346,6 +362,7 @@ function _mai_cmb_meta_config() {
 
 function _mai_cmb_posts_nav_config() {
 	return array(
+		'after_row'	=> '</div>', // close .mai-archive-settings-wrap
 		'name'		=> __( 'Entry Pagination', 'genesis' ),
 		'id'		=> 'posts_nav',
 		'type'		=> 'select',
@@ -355,18 +372,4 @@ function _mai_cmb_posts_nav_config() {
 			'numeric'	=> __( 'Numeric', 'genesis' ),
 		),
 	);
-}
-
-function _mai_cmb_posts_per_page_config() {
-	return array(
-		'name'				=> __( 'Entries Per Page', 'maitheme' ),
-		'desc'				=> __( 'The max number of posts to show, per page.', 'maitheme' ),
-		'id'				=> 'posts_per_page',
-		'type'				=> 'text_small',
-		'default'			=> 12,
-		'attributes'		=> array(
-			'type'		  => 'number',
-			'pattern'	  => '\d*',
-		),
-    );
 }
