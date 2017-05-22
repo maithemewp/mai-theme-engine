@@ -1,14 +1,10 @@
 <?php
 /**
- * Mai Theme.
- *
- * WARNING: This file is part of the core Mai Theme framework.
- * The goal is to keep all files in /lib/ untouched.
- * That way we can easily update the core structure of the theme on existing sites without breaking things
+ * Mai Pro Engine.
  *
  * @author   Mike Hemberger
  *
- * @version  1.0.3
+ * @version  1.0.0
  */
 
 
@@ -89,7 +85,8 @@ function mai_do_header() {
 	 *
 	 * @return  bool
 	 */
-	$utility = apply_filters( 'mai_utility_nav', genesis_get_nav_menu( array( 'theme_location' => 'utility' ) ) );
+	// $utility = apply_filters( 'mai_utility_nav', genesis_get_nav_menu( array( 'theme_location' => 'utility' ) ) );
+	$before  = apply_filters( 'mai_header_before_content', '' );
 	$left 	 = apply_filters( 'mai_header_left_content', '' );
 	$right 	 = apply_filters( 'mai_header_right_content', '' );
 	$mobile  = apply_filters( 'mai_mobile_menu', mai_get_mobile_menu() );
@@ -123,14 +120,14 @@ function mai_do_header() {
 	 * @param  string  $output 			 The markup to be returned
 	 * @param  string  $original_output  Set to either 'open' or 'close'
 	 */
-	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $utility, $left, $right, $mobile ) {
+	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $before, $left, $right, $mobile ) {
 
-		$before = $after = '';
+		$content_before = $content_after = '';
 
 	    if ( 'open' == $original_output ) {
 
-	    	if ( $utility ) {
-		    	$before = $utility;
+	    	if ( $before ) {
+	    		$content_before .= sprintf( '<div class="header-before"><div class="wrap">%s</div></div>', $before );
 	    	}
 
 			$row['class'] = 'row middle-xs';
@@ -142,19 +139,19 @@ function mai_do_header() {
 			}
 			$row['class'] .= $justify;
 
-			$after = sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
+			$content_after .= sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
 
 	    } elseif ( 'close' == $original_output ) {
 
-	    	$before = '</div>';
+	    	$content_before .= '</div>';
 
 	    	if ( $mobile ) {
-		    	$before .= $mobile;
+		    	$content_before .= $mobile;
 	    	}
 
 	    }
 
-	    return $before . $output . $after;
+	    return $content_before . $output . $content_after;
 
 	}, 10, 2 );
 
@@ -220,18 +217,29 @@ function mai_do_header() {
 
 	}
 
-	// Use Genesis header menu filter (taken from G)
-	function _mai_add_header_menu_args() {
-		add_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
-		add_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
+}
+
+/**
+ * Run the filter to get the header before content.
+ *
+ * @return  string|HTML  The content
+ */
+add_filter( 'mai_header_before_content', 'mai_get_header_before_content' );
+function mai_get_header_before_content( $content ) {
+	// Header Before widget area
+	if ( is_active_sidebar('header_before') ) {
+		ob_start();
+		_mai_add_header_menu_args();
+		genesis_widget_area( 'header_before' );
+		_mai_remove_header_menu_args();
+		$content .= ob_get_clean();
+	}
+	// Header Before menu
+	if ( has_nav_menu('header_left') ) {
+		$content .= genesis_get_nav_menu( array( 'theme_location' => 'utility' ) );
 	}
 
-	// Remove Genesis header menu filter (taken from G)
-	function _mai_remove_header_menu_args() {
-		remove_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
-		remove_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
-	}
-
+	return $content;
 }
 
 /**
@@ -278,4 +286,16 @@ function mai_get_header_right_content( $content ) {
 	}
 
 	return $content;
+}
+
+// Use Genesis header menu filter (taken from G)
+function _mai_add_header_menu_args() {
+	add_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
+	add_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
+}
+
+// Remove Genesis header menu filter (taken from G)
+function _mai_remove_header_menu_args() {
+	remove_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
+	remove_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
 }

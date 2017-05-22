@@ -1,17 +1,19 @@
 <?php
 /**
- * Mai Theme.
- *
- * WARNING: This file is part of the core Mai Theme framework.
- * The goal is to keep all files in /lib/ untouched.
- * That way we can easily update the core structure of the theme on existing sites without breaking things
+ * Mai Pro Engine.
  *
  * @author   Mike Hemberger
  *
- * @version  1.0.1
+ * @version  1.0.0
  */
 
+
 // Register widget areas
+genesis_register_sidebar( array(
+	'id'          => 'header_before',
+	'name'        => __( 'Before Header', 'maitheme' ),
+	'description' => __( 'This is the widget that appears on before the site header.', 'maitheme' ),
+) );
 genesis_register_sidebar( array(
 	'id'          => 'header_left',
 	'name'        => __( 'Header Left', 'maitheme' ),

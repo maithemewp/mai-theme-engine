@@ -973,7 +973,7 @@ td {
 	background-color: #f1f1f1;
 }
 
-.section:not(.image-bg):nth-of-type(even) {
+body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	background-color: #fff;
 }
 
@@ -1693,6 +1693,16 @@ img.alignright,
 	margin-bottom: 0;
 }
 
+.widget .entry a.alignleft,
+.widget .entry img.alignleft {
+	margin: 0 20px 0 0;
+}
+
+.widget .entry a.alignright,
+.widget .entry img.alignright {
+	margin: 0 0 0 20px;
+}
+
 .widget .entry-title {
 	font-size: 22px;
 	font-weight: normal;
@@ -1896,6 +1906,22 @@ img.alignright,
 /* ## Header Content
 --------------------------------------------- */
 
+.header-before {
+	background-color: rgba(0, 0, 0, 0.06);
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.header-before .wrap {
+	display: -webkit-box;display: -ms-flexbox;display: flex;
+	-ms-flex-wrap: wrap;flex-wrap: wrap;
+}
+
+.header-before .widget-area,
+.header-before .nav-utility {
+    -webkit-box-flex: 1;-ms-flex: 1 0 auto;flex: 1 0 auto;
+	max-width: 100%;
+}
+
 .header-left,
 .header-right {
 	line-height: 1;
@@ -2067,13 +2093,12 @@ img.alignright,
 /* ## Utility Navigation
 --------------------------------------------- */
 
-.nav-utility .menu {-ms-flex-pack: end;-webkit-box-pack: end;justify-content: flex-end;  /* align menu items to the right */-ms-flex-wrap: wrap;flex-wrap: wrap;
+.nav-utility .menu {
+	-ms-flex-pack: end;-webkit-box-pack: end;justify-content: flex-end;  /* align menu items to the right */-ms-flex-wrap: wrap;flex-wrap: wrap;
 }
 
 .nav-utility {
-	background-color: rgba(0, 0, 0, 0.06);
 	text-align: right;
-	border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .nav-utility a {
@@ -2640,10 +2665,6 @@ img.alignright,
 	background-color: #f1f1f1;
 }
 
-.single .entry-content .wp-post-image {
-	margin-bottom: 16px;
-}
-
 .featured-image {
 	text-align: center;
 	margin: 0 auto calc(.75vw + 1em);
@@ -2669,10 +2690,6 @@ img.alignright,
 /* ## Grid Entries
 --------------------------------------------- */
 
-.flex-grid {
-	/* margin-top: 20px; */
-}
-
 .flex-entry {
 	padding: 0;
 }
@@ -2686,6 +2703,7 @@ img.alignright,
 
 .flex-entry > .entry-image-link {
 	/* offset the entry padding and border */
+	width: calc( 100% + 50px );
 	margin-top: -25px;
 	margin-left: -25px;
 	margin-right: -25px;

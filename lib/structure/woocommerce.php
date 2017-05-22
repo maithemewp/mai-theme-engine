@@ -1,4 +1,12 @@
 <?php
+/**
+ * Mai Pro Engine.
+ *
+ * @author   Mike Hemberger
+ *
+ * @version  1.0.0
+ */
+
 
 /**
  * WooCommerce product gallery support.

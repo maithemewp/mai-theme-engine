@@ -174,7 +174,7 @@ final class Mai_Pro_Engine {
                 'archive-description',
                 'breadcrumb',
                 'header',
-                'menu-utility',
+                // 'menu-utility',
                 'menu-primary',
                 'menu-secondary',
                 'footer-widgets',
