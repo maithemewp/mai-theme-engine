@@ -995,6 +995,12 @@ td {
 	padding-right: 24px;
 }
 
+.sidebar ~ .content .section,
+.sidebar ~ .content .section .wrap {
+	padding-left: 0;
+	padding-right: 0;
+}
+
 .section .inner > p:last-child {
 	margin-bottom: 0;
 }

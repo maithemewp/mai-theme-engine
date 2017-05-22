@@ -128,16 +128,30 @@ function mai_site_layout_fallback( $layout ) {
 add_filter( 'body_class', 'mai_sidebars_body_class' );
 function mai_sidebars_body_class( $classes ) {
 
-    // No sidebars
+    $layout = genesis_site_layout();
+
     $no_sidebars = array(
         'full-width-content',
         'md-content',
         'sm-content',
         'xs-content',
     );
+    $has_sidebar = array(
+        'sidebar-content',
+        'content-sidebar',
+    );
+    $has_sidebars = array(
+        'sidebar-content-sidebar',
+        'content-sidebar-sidebar',
+        'sidebar-sidebar-content',
+    );
     // Add .no-sidebar body class if don't have any sidebars
-    if ( in_array( genesis_site_layout(), $no_sidebars ) ) {
+    if ( in_array( $layout, $no_sidebars ) ) {
         $classes[] = 'no-sidebars';
+    } elseif ( in_array( $layout, $has_sidebar ) ) {
+        $classes[] = 'has-sidebar';
+    } elseif ( in_array( $layout, $has_sidebars ) ) {
+        $classes[] = 'has-sidebar has-sidebars';
     }
     return $classes;
 }
