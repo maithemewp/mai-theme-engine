@@ -43,19 +43,16 @@ function mai_register_layouts() {
     genesis_register_layout( 'md-content', array(
         'label' => __( 'Medium Content', 'mai-pro' ),
         'img'   => $dir . 'mdc.gif',
-        // 'type'  => array( 'site' ),
     ) );
     // Small Content
     genesis_register_layout( 'sm-content', array(
         'label' => __( 'Small Content', 'mai-pro' ),
         'img'   => $dir . 'smc.gif',
-        // 'type'  => array( 'site' ),
     ) );
     // Extra Small Content
     genesis_register_layout( 'xs-content', array(
         'label' => __( 'Extra Small Content', 'mai-pro' ),
         'img'   => $dir . 'xsc.gif',
-        // 'type'  => array( 'site' ),
     ) );
 
 }

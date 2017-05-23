@@ -170,11 +170,13 @@ function _mai_cmb_banner_disable_post_types_config() {
 
 function _mai_cmb_banner_visibility_config() {
 	return array(
-		'name'			=> __( 'Banner Visibility', 'mai-pro' ),
-		'desc'			=> __( 'Hide the banner area', 'mai-pro' ),
-		'id'			=> 'hide_banner',
-		'type'			=> 'checkbox',
-		'show_on_cb'	=> '_mai_cmb_show_banner_visibility_field',
+		'name'				=> __( 'Banner Visibility', 'mai-pro' ),
+		'desc'				=> __( 'Hide the banner area', 'mai-pro' ),
+		'id'				=> 'hide_banner',
+		'type'				=> 'checkbox',
+		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
+		'escape_cb'			=> '_mai_cmb_escape_one_zero',
+		'show_on_cb'		=> '_mai_cmb_show_banner_visibility_field',
     );
 }
 
@@ -203,21 +205,25 @@ function _mai_cmb_content_archive_settings_title_config() {
 
 function _mai_cmb_content_enable_archive_settings_config() {
 	return array(
-		'before_row' => '<div class="mai-archive-setting-wrap">',
-		'name'		 => __( 'Archive Settings', 'mai-pro' ),
-		'desc'		 => __( 'Enable custom archive settings', 'mai-pro' ),
-		'id'		 => 'enable_content_archive_settings',
-		'type'		 => 'checkbox',
+		'before_row'		=> '<div class="mai-archive-setting-wrap">',
+		'name'				=> __( 'Archive Settings', 'mai-pro' ),
+		'desc'				=> __( 'Enable custom archive settings', 'mai-pro' ),
+		'id'				=> 'enable_content_archive_settings',
+		'type'				=> 'checkbox',
+		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
+		'escape_cb'			=> '_mai_cmb_escape_one_zero',
     );
 }
 
 function _mai_cmb_remove_loop_config() {
 	return array(
-		'after_row'	=> '</div>',
-		'name'		=> __( 'Hide Entries', 'mai-pro' ),
-		'desc'		=> __( 'Hide entries from this archive', 'mai-pro' ),
-		'id'		=> 'remove_loop',
-		'type'		=> 'checkbox',
+		'after_row'			=> '</div>',
+		'name'				=> __( 'Hide Entries', 'mai-pro' ),
+		'desc'				=> __( 'Hide entries from this archive', 'mai-pro' ),
+		'id'				=> 'remove_loop',
+		'type'				=> 'checkbox',
+		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
+		'escape_cb'			=> '_mai_cmb_escape_one_zero',
     );
 }
 
@@ -255,10 +261,12 @@ function _mai_cmb_content_archive_config() {
 
 function _mai_cmb_content_archive_thumbnail_config() {
 	return array(
-		'name'	=> __( 'Featured Image', 'genesis' ),
-		'desc'	=> __( 'Include the Featured Image', 'mai-pro' ),
-		'id'	=> 'content_archive_thumbnail',
-		'type'	=> 'checkbox',
+		'name'				=> __( 'Featured Image', 'genesis' ),
+		'desc'				=> __( 'Include the Featured Image', 'mai-pro' ),
+		'id'				=> 'content_archive_thumbnail',
+		'type'				=> 'checkbox',
+		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
+		'escape_cb'			=> '_mai_cmb_escape_one_zero',
     );
 }
 
@@ -326,10 +334,12 @@ function _mai_cmb_content_archive_limit_config() {
 
 function _mai_cmb_more_link_config() {
 	return array(
-		'name'	=> __( 'More Link', 'mai-pro' ),
-		'desc'	=> __( 'Include the Read More link', 'mai-pro' ),
-		'id'	=> 'more_link',
-		'type'	=> 'checkbox',
+		'name'				=> __( 'More Link', 'mai-pro' ),
+		'desc'				=> __( 'Include the Read More link', 'mai-pro' ),
+		'id'				=> 'more_link',
+		'type'				=> 'checkbox',
+		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
+		'escape_cb'			=> '_mai_cmb_escape_one_zero',
     );
 }
 
@@ -372,4 +382,12 @@ function _mai_cmb_posts_nav_config() {
 			'numeric'	=> __( 'Numeric', 'genesis' ),
 		),
 	);
+}
+
+function _mai_cmb_sanitize_one_zero( $value ) {
+	return absint( filter_var( $value, FILTER_VALIDATE_BOOLEAN ) );
+}
+
+function _mai_cmb_escape_one_zero( $value ) {
+	return absint( filter_var( $value, FILTER_VALIDATE_BOOLEAN ) );
 }

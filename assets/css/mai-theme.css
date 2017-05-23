@@ -726,6 +726,17 @@ input[type="submit"].white:focus,
 	margin-left: 12px;
 }
 
+.site-inner button:active,
+.site-inner input[type="button"]:active,
+.site-inner input[type="reset"]:active,
+.site-inner input[type="submit"]:active,
+.site-inner .button:active,
+.site-inner .more-link:active {
+	-webkit-transform: translateY(1px);
+	    -ms-transform: translateY(1px);
+	        transform: translateY(1px);
+}
+
 .site-container button:disabled,
 .site-container button:disabled:hover,
 .site-container input:disabled,

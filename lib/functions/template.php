@@ -127,6 +127,10 @@ function mai_is_content_archive() {
     elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $is_archive = true;
     }
+    // Search results
+    elseif ( is_search() ) {
+        $is_archive = true;
+    }
 
     return $is_archive;
 }

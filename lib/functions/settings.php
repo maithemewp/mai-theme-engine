@@ -23,21 +23,21 @@ function mai_get_archive_setting( $key, $fallback ) {
     // Static blog page
     if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
         $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
-        if ( 'on' == $enabled ) {
+        if ( $enabled ) {
             $meta = get_post_meta( $posts_page_id, $key, true );
         }
     }
     // Term archive
     elseif ( is_category() || is_tag() || is_tax() ) {
         $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
-        if ( 'on' == $enabled ) {
+        if ( $enabled ) {
             $meta = get_term_meta( get_queried_object()->term_id, $key, true );
         } else {
             // If post taxonomy
             if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
                 if ( $posts_page_id = get_option( 'page_for_posts' ) ) {
                     $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true );
-                    if ( 'on' == $enabled ) {
+                    if ( $enabled ) {
                         $meta = get_post_meta( $posts_page_id, $key, true );
                     }
                 }
@@ -46,7 +46,7 @@ function mai_get_archive_setting( $key, $fallback ) {
             elseif ( is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
                 if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
                     $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
-                    if ( 'on' == $enabled ) {
+                    if ( $enabled ) {
                         $meta = get_post_meta( $shop_page_id, $key, true );
                     }
                 }
@@ -74,21 +74,21 @@ function mai_get_archive_setting( $key, $fallback ) {
     // CPT archive
     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
         $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' );
-        if ( 'on' == $enabled ) {
+        if ( $enabled ) {
             $meta = genesis_get_cpt_option( $key );
         }
     }
     // Author archive
     elseif ( is_author() ) {
         $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) );
-        if ( 'on' == $enabled ) {
+        if ( $enabled ) {
             $meta = get_the_author_meta( $key, get_query_var( 'author' ) );
         }
     }
     // WooCommerce shop page
     elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
         $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
-        if ( 'on' == $enabled ) {
+        if ( $enabled ) {
             $meta = get_post_meta( $shop_page_id, $key, true );
         }
     }

@@ -54,3 +54,41 @@ function mai_plugin_include_theme_page_templates( $template ) {
 	}
 	return $template;
 }
+
+/**
+ * Add default archive settings for search results.
+ *
+ * @return  void
+ */
+add_action( 'genesis_meta', 'mai_search_results_template' );
+function mai_search_results_template() {
+
+	// Bail if not search results
+	if ( ! is_search() ) {
+		return;
+	}
+
+	// Layout (medium content)
+ 	add_filter( 'genesis_pre_get_option_site_layout', '__mai_return_md_content' );
+
+ 	// Columns
+	add_filter( 'mai_pre_get_archive_setting_columns', function( $columns ) {
+		return 3;
+	});
+
+	// Content Archive
+	add_filter( 'mai_pre_get_archive_setting_content_archive', function( $archive ) {
+		return 'full';
+	});
+
+	// Content Limit
+	add_filter( 'mai_pre_get_archive_setting_content_archive_limit', function( $limit ) {
+		return 140;
+	});
+
+	// More Link
+	add_filter( 'mai_pre_get_archive_setting_more_link', function( $more_link ) {
+		return 1;
+	});
+
+}
