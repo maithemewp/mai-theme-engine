@@ -12,7 +12,7 @@ function mai_landing_page_body_class( $classes ) {
 
 // Remove site header elements
 remove_filter( 'body_class', 'mai_do_fixed_header_body_class' );
-add_filter( 'mai_utility_nav', '__return_false' );
+add_filter( 'mai_header_before_content', '__return_false' );
 add_filter( 'mai_header_left_content', '__return_false' );
 add_filter( 'mai_header_right_content', '__return_false' );
 add_filter( 'mai_mobile_menu', '__return_false' );
