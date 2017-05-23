@@ -11,7 +11,7 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	 */
 	add_filter( 'cmb2_meta_box_url', 'mai_update_cmb2_meta_box_url' );
 	function mai_update_cmb2_meta_box_url( $url ) {
-	    return str_replace( '/Users/JiveDig/Plugins/maitheme-engine/', MAI_PRO_ENGINE_PLUGIN_URL, $url );
+	    return str_replace( '/Users/JiveDig/Plugins/mai-pro-engine/', MAI_PRO_ENGINE_PLUGIN_URL, $url );
 	}
 }
 

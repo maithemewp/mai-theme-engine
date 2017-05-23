@@ -254,6 +254,11 @@ function mai_do_header() {
 
 }
 
+/**
+ * Add the header before content.
+ *
+ * @return  void
+ */
 add_action( 'mai_header_before', 'mai_do_header_before' );
 function mai_do_header_before() {
 
@@ -263,11 +268,16 @@ function mai_do_header_before() {
 	}
 
 	// Before Header widget area
-	_mai_add_header_menu_args();
+	_mai_add_widget_header_menu_args();
 	genesis_widget_area( 'header_before' );
-	_mai_remove_header_menu_args();
+	_mai_remove_widget_header_menu_args();
 }
 
+/**
+ * Add the header left content.
+ *
+ * @return  void
+ */
 add_action( 'mai_header_left', 'mai_do_header_left' );
 function mai_do_header_left() {
 
@@ -278,9 +288,9 @@ function mai_do_header_left() {
 
 	// Header Left widget area
 	if ( is_active_sidebar('header_left') ) {
-		_mai_add_header_menu_args();
+		_mai_add_widget_header_menu_args();
 		genesis_widget_area( 'header_left' );
-		_mai_remove_header_menu_args();
+		_mai_remove_widget_header_menu_args();
 	}
 
 	// Header Left menu
@@ -290,11 +300,11 @@ function mai_do_header_left() {
 }
 
 /**
- * Run the filter to get the header right content.
+ * Add the header right content.
  *
- * @return  string|HTML  The content
+ * @return  void
  */
-add_filter( 'mai_header_right', 'mai_do_header_right' );
+add_action( 'mai_header_right', 'mai_do_header_right' );
 function mai_do_header_right() {
 
 	// Bail if no content
@@ -304,9 +314,9 @@ function mai_do_header_right() {
 
 	// Header Right widget area
 	if ( is_active_sidebar('header_right') ) {
-		_mai_add_header_menu_args();
+		_mai_add_widget_header_menu_args();
 		genesis_widget_area( 'header_right' );
-		_mai_remove_header_menu_args();
+		_mai_remove_widget_header_menu_args();
 	}
 	// Header Right menu
 	if ( has_nav_menu('header_right') ) {
@@ -315,13 +325,13 @@ function mai_do_header_right() {
 }
 
 // Use Genesis header menu filter (taken from G)
-function _mai_add_header_menu_args() {
-	add_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
-	add_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
+function _mai_add_widget_header_menu_args() {
+    add_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
+    add_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
 }
 
 // Remove Genesis header menu filter (taken from G)
-function _mai_remove_header_menu_args() {
-	remove_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
-	remove_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
+function _mai_remove_widget_header_menu_args() {
+    remove_filter( 'wp_nav_menu_args', 'genesis_header_menu_args' );
+    remove_filter( 'wp_nav_menu', 'genesis_header_menu_wrap' );
 }

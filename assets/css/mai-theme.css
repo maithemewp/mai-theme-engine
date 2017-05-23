@@ -1795,7 +1795,6 @@ img.alignright,
 
  /* jQuery handles the position */
  .sticky-header .site-header {
- 	/* top: 0; */
  	width: 100%;
  	z-index: 99;
  }
@@ -2032,6 +2031,11 @@ img.alignright,
 	font-size: 12px;
 	margin-left: 8px;
 	-webkit-font-smoothing: antialiased;
+}
+
+.nav-secondary .genesis-nav-menu .menu-item-has-children > a::after,
+.site-footer .genesis-nav-menu .menu-item-has-children > a::after {
+	display: none;
 }
 
 .genesis-nav-menu .sub-menu {
@@ -3102,8 +3106,8 @@ li.comment {
 	color: rgba(255, 255, 255, 0.5);
 	font-size: 14px;
 	text-align: center;
-	padding-top: 40px;
-	padding-bottom: 40px;
+	padding-top: 30px;
+	padding-bottom: 30px;
 	border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -3116,9 +3120,29 @@ li.comment {
 	border-bottom: 1px dotted rgba(255, 255, 255, 0.75);
 }
 
-.site-footer a:hover {
+.site-footer a:hover,
+.site-footer a:focus {
 	color: rgba(255, 255, 255, 1);
 	border-bottom-style: solid;
+}
+
+.site-footer .menu-item a {
+	padding: 12px 16px;
+}
+
+.site-footer .menu-item a,
+.site-footer .menu-item a:hover,
+.site-footer .menu-item a:focus {
+	border: none;
+}
+
+.site-footer .widget {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.site-footer .genesis-nav-menu {
+	-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;
 }
 
 /* # Media Queries (mobile-first)
