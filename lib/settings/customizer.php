@@ -84,27 +84,6 @@ function mai_register_customizer_general( $wp_customize ) {
 	) );
 
 	/*****************************************************
-	 * Mobile Menu Style setting
-	 */
-
-	$wp_customize->add_setting( 'mobile_menu_style', array(
-		'default'           => 'standard',
-		'sanitize_callback' => 'wp_strip_all_tags',
-	) );
-
-	$wp_customize->add_control( 'mobile_menu_style', array(
-		'label'			=> __( 'Mobile menu style', 'maitheme' ),
-		'description'	=> __( '(Side menu disabled if sticky header enabled)', 'maitheme' ),
-		'section'		=> $section,
-		'priority'		=> 5,
-		'type'			=> 'select',
-		'choices'		=> array(
-			'standard'	=> __( 'Standard Menu', 'maitheme' ),
-			'side'		=> __( 'Side Menu', 'maitheme' ),
-		),
-	) );
-
-	/*****************************************************
 	 * Footer Widget Count setting
 	 */
 
@@ -125,6 +104,26 @@ function mai_register_customizer_general( $wp_customize ) {
 			3 => __( '3', 'maitheme' ),
 			4 => __( '4', 'maitheme' ),
 			6 => __( '6', 'maitheme' ),
+		),
+	) );
+
+	/*****************************************************
+	 * Mobile Menu Style setting
+	 */
+
+	$wp_customize->add_setting( 'mobile_menu_style', array(
+		'default'           => 'standard',
+		'sanitize_callback' => 'wp_strip_all_tags',
+	) );
+
+	$wp_customize->add_control( 'mobile_menu_style', array(
+		'label'			=> __( 'Mobile menu style', 'maitheme' ),
+		'section'		=> $section,
+		'priority'		=> 5,
+		'type'			=> 'select',
+		'choices'		=> array(
+			'standard'	=> __( 'Standard Menu', 'maitheme' ),
+			'side'		=> __( 'Side Menu', 'maitheme' ),
 		),
 	) );
 
