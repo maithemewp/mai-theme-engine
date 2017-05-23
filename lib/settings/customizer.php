@@ -30,8 +30,8 @@ function mai_register_customizer_general( $wp_customize ) {
 	 */
 
 	$wp_customize->add_section( $section, array(
-		'description' => __( 'Customize your theme with sitewide changes.', 'maitheme' ),
-		'title'       => __( 'Mai Settings', 'maitheme' ),
+		'description' => __( 'Customize your theme with sitewide changes.', 'mai-pro' ),
+		'title'       => __( 'Mai Settings', 'mai-pro' ),
 		'priority'    => 35,
 	) );
 
@@ -45,7 +45,7 @@ function mai_register_customizer_general( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'enable_sticky_header', array(
-		'label'    => __( 'Enable sticky header', 'maitheme' ),
+		'label'    => __( 'Enable sticky header', 'mai-pro' ),
 		'section'  => $section,
 		'type'     => 'checkbox',
 		'priority' => 5,
@@ -61,7 +61,7 @@ function mai_register_customizer_general( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'enable_shrink_header', array(
-		'label'    => __( 'Enable shrinking header', 'maitheme' ),
+		'label'    => __( 'Enable shrinking header', 'mai-pro' ),
 		'section'  => $section,
 		'type'     => 'checkbox',
 		'priority' => 5,
@@ -77,7 +77,7 @@ function mai_register_customizer_general( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'enable_singular_image', array(
-		'label'    => __( 'Automatically display the featured image on single posts/pages', 'maitheme' ),
+		'label'    => __( 'Automatically display the featured image on single posts/pages', 'mai-pro' ),
 		'section'  => $section,
 		'type'     => 'checkbox',
 		'priority' => 5,
@@ -93,17 +93,17 @@ function mai_register_customizer_general( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'footer_widget_count', array(
-		'label'			=> __( 'Footer widget areas', 'maitheme' ),
-		'description'	=> __( 'Save and reload customizer to view changes', 'maitheme' ),
+		'label'			=> __( 'Footer widget areas', 'mai-pro' ),
+		'description'	=> __( 'Save and reload customizer to view changes', 'mai-pro' ),
 		'section'		=> $section,
 		'priority'		=> 5,
 		'type'			=> 'select',
 		'choices'		=> array(
-			1 => __( '1', 'maitheme' ),
-			2 => __( '2', 'maitheme' ),
-			3 => __( '3', 'maitheme' ),
-			4 => __( '4', 'maitheme' ),
-			6 => __( '6', 'maitheme' ),
+			1 => __( '1', 'mai-pro' ),
+			2 => __( '2', 'mai-pro' ),
+			3 => __( '3', 'mai-pro' ),
+			4 => __( '4', 'mai-pro' ),
+			6 => __( '6', 'mai-pro' ),
 		),
 	) );
 
@@ -117,13 +117,13 @@ function mai_register_customizer_general( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'mobile_menu_style', array(
-		'label'			=> __( 'Mobile menu style', 'maitheme' ),
+		'label'			=> __( 'Mobile menu style', 'mai-pro' ),
 		'section'		=> $section,
 		'priority'		=> 5,
 		'type'			=> 'select',
 		'choices'		=> array(
-			'standard'	=> __( 'Standard Menu', 'maitheme' ),
-			'side'		=> __( 'Side Menu', 'maitheme' ),
+			'standard'	=> __( 'Standard Menu', 'mai-pro' ),
+			'side'		=> __( 'Side Menu', 'mai-pro' ),
 		),
 	) );
 
@@ -146,7 +146,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	 */
 
 	$wp_customize->add_section( $section, array(
-		'title'       => __( 'Mai Banner Area', 'maitheme' ),
+		'title'       => __( 'Mai Banner Area', 'mai-pro' ),
 		'priority'    => 35,
 	) );
 
@@ -160,7 +160,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'enable_banner_area', array(
-		'label'    => __( 'Enable the banner area', 'maitheme' ),
+		'label'    => __( 'Enable the banner area', 'mai-pro' ),
 		'section'  => $section,
 		'priority' => 5,
 		'type'     => 'checkbox',
@@ -176,7 +176,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'enable_banner_overlay', array(
-		'label'    => __( 'Enable banner overlay', 'maitheme' ),
+		'label'    => __( 'Enable banner overlay', 'mai-pro' ),
 		'section'  => $section,
 		'priority' => 5,
 		'type'     => 'checkbox',
@@ -193,7 +193,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'enable_banner_inner', array(
-		'label'    => __( 'Enable banner inner styling', 'maitheme' ),
+		'label'    => __( 'Enable banner inner styling', 'mai-pro' ),
 		'section'  => $section,
 		'priority' => 5,
 		'type'     => 'checkbox',
@@ -209,17 +209,17 @@ function mai_register_customizer_settings( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( 'banner_content_width', array(
-		'label'		=> __( 'Banner content width', 'maitheme' ),
+		'label'		=> __( 'Banner content width', 'mai-pro' ),
 		'section'	=> $section,
 		'priority'	=> 5,
 		'type'		=> 'select',
 		'choices'	=> array(
-			'xs'   => __( 'Extra Small', 'maitheme' ),
-			'sm'   => __( 'Small', 'maitheme' ),
-			'md'   => __( 'Medium', 'maitheme' ),
-			'lg'   => __( 'Large', 'maitheme' ),
-			'xl'   => __( 'Extra Large', 'maitheme' ),
-			'full' => __( 'Full Width', 'maitheme' ),
+			'xs'   => __( 'Extra Small', 'mai-pro' ),
+			'sm'   => __( 'Small', 'mai-pro' ),
+			'md'   => __( 'Medium', 'mai-pro' ),
+			'lg'   => __( 'Large', 'mai-pro' ),
+			'xl'   => __( 'Extra Large', 'mai-pro' ),
+			'full' => __( 'Full Width', 'mai-pro' ),
 		),
 	) );
 
@@ -233,8 +233,8 @@ function mai_register_customizer_settings( $wp_customize ) {
 	) );
 
 	$wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'banner_id', array(
-		'label'			=> __( 'Banner Image', 'maitheme' ),
-		'description'	=> __( 'Set a default banner image. Can be overridden per post/page.', 'maitheme' ),
+		'label'			=> __( 'Banner Image', 'mai-pro' ),
+		'description'	=> __( 'Set a default banner image. Can be overridden per post/page.', 'mai-pro' ),
 		'section'		=> $section,
 		'settings'		=> 'banner_id',
 		'priority'		=> 5,

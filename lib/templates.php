@@ -2,7 +2,7 @@
 
 /**
  * Add page templates.
- * Override by copying files from /maitheme-engine/templates/{filename}.php
+ * Override by copying files from /mai-pro-engine/templates/{filename}.php
  * and putting in /{child-theme-name}/templates/{filename}.php
  *
  * @since   1.0.0
@@ -13,8 +13,8 @@
  */
 add_filter( 'theme_page_templates', 'mai_plugin_theme_page_templates' );
 function mai_plugin_theme_page_templates( $page_templates ) {
-	$page_templates['landing.php'] = __( 'Landing Page', 'maitheme' );
-	$page_templates['sitemap.php'] = __( 'Sitemap', 'maitheme' );
+	$page_templates['landing.php'] = __( 'Landing Page', 'mai-pro' );
+	$page_templates['sitemap.php'] = __( 'Sitemap', 'mai-pro' );
 	return $page_templates;
 }
 

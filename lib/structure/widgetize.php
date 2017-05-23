@@ -17,23 +17,23 @@
  */
 genesis_register_sidebar( array(
 	'id'          => 'header_before',
-	'name'        => __( 'Before Header', 'maitheme' ),
-	'description' => __( 'This is the widget that appears on before the site header.', 'maitheme' ),
+	'name'        => __( 'Before Header', 'mai-pro' ),
+	'description' => __( 'This is the widget that appears on before the site header.', 'mai-pro' ),
 ) );
 genesis_register_sidebar( array(
 	'id'          => 'header_left',
-	'name'        => __( 'Header Left', 'maitheme' ),
-	'description' => __( 'This is the widget that appears on left of the title area.', 'maitheme' ),
+	'name'        => __( 'Header Left', 'mai-pro' ),
+	'description' => __( 'This is the widget that appears on left of the title area.', 'mai-pro' ),
 ) );
 genesis_register_sidebar( array(
 	'id'          => 'header_right',
-	'name'        => __( 'Header Right', 'maitheme' ),
-	'description' => __( 'This is the widget that appears on right of the title area.', 'maitheme' ),
+	'name'        => __( 'Header Right', 'mai-pro' ),
+	'description' => __( 'This is the widget that appears on right of the title area.', 'mai-pro' ),
 ) );
 genesis_register_sidebar( array(
 	'id'          => 'mobile_menu',
-	'name'        => __( 'Mobile Menu', 'maitheme' ),
-	'description' => __( 'This widget that replaces the default mobile menu.', 'maitheme' ),
+	'name'        => __( 'Mobile Menu', 'mai-pro' ),
+	'description' => __( 'This widget that replaces the default mobile menu.', 'mai-pro' ),
 ) );
 
 // Activate After Entry widget area and display it on single posts
@@ -47,8 +47,8 @@ add_action( 'after_setup_theme', function(){
 
 	genesis_register_sidebar( array(
 		'id'          => 'site_footer',
-		'name'        => __( 'Site Footer', 'maitheme' ),
-		'description' => __( 'This is the widget that appears in the site footer area.', 'maitheme' ),
+		'name'        => __( 'Site Footer', 'mai-pro' ),
+		'description' => __( 'This is the widget that appears in the site footer area.', 'mai-pro' ),
 	) );
 
 });

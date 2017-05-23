@@ -163,7 +163,7 @@ function mai_get_section_close( $args ) {
  */
 function mai_get_read_more_link( $object = '', $text = '' ) {
 
-    $text           = $text ? sanitize_text_field($text) : __( 'Read More', 'maitheme' );
+    $text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-pro' );
     $more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) );
 
     // Get image location

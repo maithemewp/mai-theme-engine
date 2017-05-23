@@ -161,12 +161,12 @@ final class Mai_Pro_Engine {
             add_theme_support( 'genesis-responsive-viewport' );
 
             add_theme_support( 'genesis-menus', array(
-                'utility'       => __( 'Top (Utility) Menu', 'maitheme' ),
-                'primary'       => __( 'Primary Menu', 'maitheme' ),
-                'header_left'   => __( 'Header Left Menu', 'maitheme' ),
-                'header_right'  => __( 'Header Right Menu', 'maitheme' ),
-                'secondary'     => __( 'Footer Menu', 'maitheme' ),
-                'mobile'        => __( 'Mobile Menu', 'maitheme' ),
+                'utility'       => __( 'Top (Utility) Menu', 'mai-pro' ),
+                'primary'       => __( 'Primary Menu', 'mai-pro' ),
+                'header_left'   => __( 'Header Left Menu', 'mai-pro' ),
+                'header_right'  => __( 'Header Right Menu', 'mai-pro' ),
+                'secondary'     => __( 'Footer Menu', 'mai-pro' ),
+                'mobile'        => __( 'Mobile Menu', 'mai-pro' ),
             ) );
 
             // Add support for structural wraps
