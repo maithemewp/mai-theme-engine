@@ -287,27 +287,27 @@ function mai_do_content_archive_archive_options() {
     }
 
     // Image
-    add_filter( 'genesis_pre_get_option_content_archive_thumbnail', function( $options ) use ( $content_archive_thumbnail ) {
+    add_filter( 'genesis_pre_get_option_content_archive_thumbnail', function( $option ) use ( $content_archive_thumbnail ) {
         return $content_archive_thumbnail;
     });
 
     // Image Size
-    add_filter( 'genesis_pre_get_option_image_size', function( $options ) use ( $image_size ) {
+    add_filter( 'genesis_pre_get_option_image_size', function( $option ) use ( $image_size ) {
         return $image_size;
     });
 
     // Content Archive
-    add_filter( 'genesis_pre_get_option_content_archive', function( $options ) use ( $content_archive ) {
+    add_filter( 'genesis_pre_get_option_content_archive', function( $option ) use ( $content_archive ) {
         return $content_archive;
     });
 
     // Archive Limit
-    add_filter( 'genesis_pre_get_option_content_archive_limit', function( $options ) use ( $content_archive_limit ) {
+    add_filter( 'genesis_pre_get_option_content_archive_limit', function( $option ) use ( $content_archive_limit ) {
         return $content_archive_limit;
     });
 
     // Posts Nav
-    add_filter( 'genesis_pre_get_option_posts_nav', function( $options ) use ( $posts_nav ) {
+    add_filter( 'genesis_pre_get_option_posts_nav', function( $option ) use ( $posts_nav ) {
         return $posts_nav;
     });
 
@@ -331,7 +331,7 @@ function mai_do_post_image() {
     // Remove the post image
     remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 
-    $location = mai_get_archive_setting( 'image_location', genesis_get_option( 'more_link' ) );
+    $location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
 
     // Bail if no location
     if ( ! $location ) {

@@ -95,9 +95,9 @@ function mai_cmb2_add_metaboxes() {
     ) );
     $user->add_field( _mai_cmb_banner_visibility_config() );
     $user->add_field( _mai_cmb_banner_image_config() );
+    $user->add_field( _mai_cmb_remove_loop_config() );
     $user->add_field( _mai_cmb_content_archive_settings_title_config() );
     $user->add_field( _mai_cmb_content_enable_archive_settings_config() );
-    $user->add_field( _mai_cmb_remove_loop_config() );
     $user->add_field( _mai_cmb_columns_config() );
 	$user->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$user->add_field( _mai_cmb_image_location_config() );
