@@ -2511,7 +2511,7 @@ img.alignright,
 	position: static;
 	display: none;
 	width: 100%;
-	background-color: rgba(0,0,0,0.02);
+	background-color: rgba(0,0,0,0.01);
 	margin: 0;
 	border: 1px solid #e6e6e6;
 	border-top: none;
@@ -2519,10 +2519,14 @@ img.alignright,
 }
 
 .mobile-menu .sub-menu a {
-	background-color: rgba(0,0,0,0.02);
+	background-color: rgba(0,0,0,0.01);
 	font-size: 15px;
 	padding-left: 10px;
 	margin: 0;
+}
+
+.mobile-menu .sub-menu a:hover {
+	color: #067CCC;
 }
 
 .mobile-menu .sub-menu .sub-menu {
