@@ -39,19 +39,6 @@ function mai_do_entry_featured_image() {
 
 }
 
-// Add our image sizes to the media chooser
-add_filter( 'image_size_names_choose', 'mai_do_media_chooser_sizes' );
-function mai_do_media_chooser_sizes( $sizes ) {
-	$addsizes = array(
-        'featured'     => __( 'Featured'),
-        'one-half'     => __( 'One Half'),
-        'one-third'    => __( 'One Third'),
-        'one-fourth'   => __( 'One Fourth'),
-	);
-	$newsizes = array_merge( $sizes, $addsizes );
-	return $newsizes;
-}
-
 /**
  * Add checkbox to save auto-display featured image meta
  *
@@ -63,8 +50,8 @@ add_filter( 'admin_post_thumbnail_html', 'mai_hide_featured_image_checkbox');
 function mai_hide_featured_image_checkbox( $featured_image_field ) {
     global $typenow;
 
-	// Get all public post types
-	$post_types = get_post_types( array('public' => true ), 'names' );
+	// Get the post types. This matches the output in mai_do_entry_featured_image
+	$post_types = array( 'page', 'post' );
 
 	// Remove attachments
 	unset( $post_types['attachment'] );
@@ -110,10 +97,24 @@ function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
     }
 
 	$display = isset($_POST[ 'mai_hide_featured_image' ]) ? $_POST[ 'mai_hide_featured_image' ] : false;
-	$value 	 = ( 'on' == $display ) ? true : false;
+    // Convert to 1/0
+    $value   = absint( filter_var( $display, FILTER_VALIDATE_BOOLEAN ) );
 
 	// Save our meta field
     update_post_meta( $post_id, 'mai_hide_featured_image', $value );
+}
+
+// Add our image sizes to the media chooser
+add_filter( 'image_size_names_choose', 'mai_do_media_chooser_sizes' );
+function mai_do_media_chooser_sizes( $sizes ) {
+    $addsizes = array(
+        'featured'     => __( 'Featured'),
+        'one-half'     => __( 'One Half'),
+        'one-third'    => __( 'One Third'),
+        'one-fourth'   => __( 'One Fourth'),
+    );
+    $newsizes = array_merge( $sizes, $addsizes );
+    return $newsizes;
 }
 
 /**
