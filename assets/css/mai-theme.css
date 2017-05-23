@@ -777,6 +777,7 @@ td {
 	min-height: 100vh; /* forces footer to bottom when not enough content to fill the window */
 	/* keeps mai-slider in check */
 	/* overflow-x: hidden; */
+	overflow: hidden;
 }
 
 .admin-bar .site-container {
@@ -1794,7 +1795,7 @@ img.alignright,
 
  /* jQuery handles the position */
  .sticky-header .site-header {
- 	top: 0;
+ 	/* top: 0; */
  	width: 100%;
  	z-index: 99;
  }
@@ -1812,11 +1813,11 @@ img.alignright,
 }
 
  .sticky-header.mai-menu-activated {
- 	/* overflow: hidden; */
+ 	overflow: hidden;
  }
 
  .sticky-header.mai-menu-activated:not(.side-menu) .site-header {
- 	height: 100vh;
+ 	max-height: 100vh;
  	overflow-y: auto;
  }
 
@@ -2462,6 +2463,7 @@ img.alignright,
 .mobile-menu .highlight > a {
 	margin-left: 0;
 	margin-right: 0;
+	border-bottom: none;
 }
 
 .mobile-menu .sub-menu-toggle {
@@ -2524,87 +2526,55 @@ img.alignright,
 /* ### Side Menu
 --------------------------------------------- */
 
-.side-menu {
-	-webkit-transition: all 300ms ease-out;
-	-o-transition: all 300ms ease-out;
-	transition: all 300ms ease-out;
-	-webkit-backface-visibility: hidden;backface-visibility: hidden;
-}
-
-.side-menu.mai-menu-activated {
-	-webkit-animation: side-menu-site-container 0.3s ease;
-    animation: side-menu-site-container 0.3s ease;
-	margin-left: -260px;
-	margin-right: 260px;
+.mai-menu {
+	display: none;
 }
 
 .side-menu .mai-menu {
-	position: relative;
+	display: block;
+	position: static;
 	width: 0;
 	height: 0;
+}
+
+.side-menu.mai-menu-activated {
+	/* prevent scrolling on the body */
+	overflow: hidden;
+}
+
+.side-menu .site-container {
+	-webkit-transition: margin 300ms ease-in-out;
+	-o-transition: margin 300ms ease-in-out;
+	transition: margin 300ms ease-in-out;
+	-webkit-backface-visibility: hidden;backface-visibility: hidden;
+}
+
+.side-menu.mai-menu-activated .site-container {
+	margin-left: -260px;
+	margin-right: 260px;
 }
 
 .side-menu .mai-menu-inner {
 	position: fixed;
 	top: 0;
-	right: -260px;
+	right:0;
+	margin-right: -260px;
 	width: 260px;
 	height: 100vh;
 	-webkit-box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
 	box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
 	-webkit-overflow-scrolling: touch;
-	-webkit-transition: all 300ms ease-out;
-	-o-transition: all 300ms ease-out;
-	transition: all 300ms ease-out;
+	-webkit-transition: all 300ms ease-in-out;
+	-o-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
 	/* z-index: -1; */
 }
 
 .side-menu.mai-menu-activated .mai-menu-inner {
-	-webkit-animation: side-menu 0.3s ease;
-    animation: side-menu 0.3s ease;
-	right: 0;
+	margin-right: 0;
 }
 
-/* Side Menu */
-@-webkit-keyframes side-menu-site-container {
-    0% {
-    	margin-left: 0;
-    	margin-right: 0;
-    }
-    100% {
-		margin-left: -260px;
-		margin-right: 260px;
-    }
-}
-@keyframes side-menu-site-container {
-    0% {
-    	margin-left: 0;
-    	margin-right: 0;
-    }
-    100% {
-		margin-left: -260px;
-		margin-right: 260px;
-    }
-}
-
-@-webkit-keyframes side-menu {
-    0% {
-    	right: -260px;
-    }
-    100% {
-        right: 0;
-    }
-}
-@keyframes side-menu {
-    0% {
-    	right: -260px;
-    }
-    100% {
-        right: 0;
-    }
-}
-
-.side-menu .mai-menu-inner {
+.side-menu .mai-menu-outer {
 	overflow-x: hidden;
 	overflow-y: auto;
 }

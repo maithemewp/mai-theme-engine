@@ -103,7 +103,8 @@ function mai_get_mobile_menu() {
 
 	$menu = '';
 
-	$menu .= '<div id="mai-menu" class="mai-menu" style="display:none;">';
+	// $menu .= '<div id="mai-menu" class="mai-menu" style="display:none;">';
+	$menu .= '<div id="mai-menu" class="mai-menu">';
 
 		// $menu .= '<div class="mai-menu-outer">';
 		$menu .= '<div class="mai-menu-inner">';

@@ -351,12 +351,21 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
         toggleAria( $this, 'aria-pressed' );
         toggleAria( $this, 'aria-expanded' );
         $this.toggleClass( 'activated' );
-        $body.toggleClass( 'mai-menu-activated' );
+
+        if ( $body.hasClass( 'mai-menu-activated' ) ) {
+            $body.addClass( 'mai-menu-deactivated' );
+            $body.removeClass( 'mai-menu-activated' );
+        } else {
+            $body.removeClass( 'mai-menu-deactivated' );
+            $body.addClass( 'mai-menu-activated' );
+        }
+
 
         if ( $body.hasClass('side-menu') ) {
 
-            $maiMenu.show();
-            $body.removeClass( 'side-menu-activated' );
+            // $maiMenu.show();
+            // $maiMenu.slideToggle();
+            // $body.removeClass( 'side-menu-activated' );
 
         } else {
             // Standard menu, toggle it down/up
@@ -365,6 +374,9 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
         // Allow additional keyboard nav
         if ( $body.hasClass( 'mai-menu-activated' ) ) {
+
+            // console.log( 'Activated!' );
+
 
             $(document).keydown(function(e) {
                 // Use switch to easily add new keystrokes
