@@ -1,20 +1,24 @@
 <?php
 
 // Add custom body class to the head
-add_filter( 'body_class', 'mai_add_sitemap_body_class' );
-function mai_add_sitemap_body_class( $classes ) {
+add_filter( 'body_class', 'mai_sitemap_body_class' );
+function mai_sitemap_body_class( $classes ) {
    $classes[] = 'sitemap';
    return $classes;
 }
 
 // Filter the default sitemap items and add any publically registered post types to the variable
-add_filter( 'genesis_sitemap_output', 'mai_filter_genesis_sitemap_output' );
-function mai_filter_genesis_sitemap_output( $sitemap ) {
+add_filter( 'genesis_sitemap_output', 'mai_genesis_sitemap_output' );
+function mai_genesis_sitemap_output( $sitemap ) {
 
 	// Get public custom post types
 	$post_types = get_post_types( array(
 		'public'   => true,
 	), 'objects' );
+
+	// Remove pages and posts as they are added already in genesis_sitemap_output
+	unset( $post_types['page'] );
+	unset( $post_types['post'] );
 
 	// Bail if none
 	if ( ! $post_types ) {

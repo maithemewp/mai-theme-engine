@@ -29,7 +29,7 @@ function mai_get_archive_setting( $key, $fallback ) {
     }
     // Term archive
     elseif ( is_category() || is_tag() || is_tax() ) {
-        $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true );
+        $enabled = isset( get_queried_object()->term_id ) ? get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true ) : false;
         if ( $enabled ) {
             $meta = get_term_meta( get_queried_object()->term_id, $key, true );
         } else {
@@ -53,7 +53,7 @@ function mai_get_archive_setting( $key, $fallback ) {
             }
             // Must be custom taxonomy archive
             else {
-                $tax = get_taxonomy( get_queried_object()->taxonomy );
+                $tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
                 if ( $tax ) {
                     /**
                      * If the taxonomy is only registered to 1 post type.
