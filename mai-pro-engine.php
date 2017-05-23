@@ -5,7 +5,7 @@
  * Plugin URI:      https://github.com/bizbudding/mai-pro-engine/
  * Description:     The Mai theme engine
  *
- * Version:         1.0.0-beta.10
+ * Version:         1.0.0-beta.11
  *
  * GitHub URI:      bizbudding/mai-pro-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Pro_Engine {
 
         // Plugin version.
         if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
-            define( 'MAI_PRO_ENGINE_VERSION', '1.0.0-beta.10' );
+            define( 'MAI_PRO_ENGINE_VERSION', '1.0.0-beta.11' );
         }
 
         // Plugin Folder Path.
