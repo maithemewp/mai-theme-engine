@@ -355,22 +355,8 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
         if ( $body.hasClass('side-menu') ) {
 
-            // First, show the mobile menu behind the main container
             $maiMenu.show();
-
-            if ( $body.hasClass( 'side-menu-activated' ) ) {
-                $body.removeClass( 'side-menu-activated' );
-            } else {
-                /**
-                 * Allow the menu to slide in before adding the activated class
-                 * This allows us to change z-index after opening (and other usability changes)
-                 */
-                setTimeout( function() {
-                    if ( ! $body.hasClass( 'side-menu-activated' ) ) {
-                        $body.addClass( 'side-menu-activated' );
-                    }
-                }, 300 );
-            }
+            $body.removeClass( 'side-menu-activated' );
 
         } else {
             // Standard menu, toggle it down/up

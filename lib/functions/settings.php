@@ -179,7 +179,7 @@ function mai_is_display_featured_image_enabled() {
  * @return bool
  */
 function mai_is_side_menu_enabled() {
-    if ( mai_is_sticky_header_enabled() || 'side' != get_theme_mod( 'mobile_menu_style' ) ) {
+    if ( 'side' != get_theme_mod( 'mobile_menu_style' ) ) {
         return false;
     }
     return true;
