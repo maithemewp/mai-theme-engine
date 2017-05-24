@@ -92,7 +92,7 @@ function mai_do_banner_content() {
 		}
 
 		genesis_do_post_title();
-		echo wpautop( get_the_excerpt( get_the_ID() ) );
+		echo has_excerpt( get_the_ID() ) ? wpautop( get_the_excerpt( get_the_ID() ) ) : '';
 
 	}
 
@@ -113,7 +113,7 @@ function mai_do_banner_content() {
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
 		genesis_do_post_title();
-		echo wpautop( get_the_excerpt( get_the_ID() ) );
+		echo has_excerpt( get_the_ID() ) ? wpautop( get_the_excerpt( get_the_ID() ) ) : '';
 	}
 
 	// Do author archive banner content
@@ -145,9 +145,8 @@ function mai_do_banner_content() {
 		    // Get our new data
 			// $post		= get_post( $shop_page_id );
 			$headline	= get_the_title( $shop_page_id );
-			$intro_text = get_the_excerpt( $shop_page_id );
 			$headline	= $headline ? sprintf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), strip_tags( $headline ) ) : '';
-			$intro_text = $intro_text ? $intro_text : '';
+			$intro_text = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
 		    printf( '<div %s>%s</div>', genesis_attr( 'cpt-archive-description' ), $headline . $intro_text );
 		} elseif ( is_product() ) {
 
