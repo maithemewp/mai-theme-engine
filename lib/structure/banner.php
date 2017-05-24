@@ -163,4 +163,11 @@ function mai_do_banner_content() {
 	// Remove the filter so it doesn't affect anything later
 	remove_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
 
+	// Add back the entry header/title incase custom queries & loops need it
+	add_action( 'genesis_before_entry_content', function() {
+		add_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
+		add_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
+		add_action( 'genesis_entry_header', 'genesis_do_post_title' );
+	});
+
 }
