@@ -100,6 +100,7 @@ function mai_get_mobile_menu() {
 
 	$menu .= '<div id="mai-menu" class="mai-menu">';
 
+		$menu .= '<div class="mai-menu-outer">';
 		$menu .= '<div class="mai-menu-inner">';
 
 			/**
@@ -142,6 +143,7 @@ function mai_get_mobile_menu() {
 
 			$menu .= ob_get_clean();
 
+		$menu .= '</div>';
 		$menu .= '</div>';
 
 	$menu .= '</div>';
