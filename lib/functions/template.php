@@ -116,7 +116,6 @@ function mai_is_content_archive() {
     }
     // CPT archive
     elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-    // elseif ( is_post_type_archive() ) {
         $is_archive = true;
     }
     // Author archive
@@ -165,21 +164,39 @@ function mai_get_section_close( $args ) {
  *
  * @return HTML string for the link
  */
-function mai_get_read_more_link( $object = '', $text = '' ) {
+function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
+
+    $url = $screen_reader_html = $screen_reader_text = '';
 
     $text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-pro' );
     $more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) );
+
+    $object = mai_get_read_more_object( $object_or_id );
+
+    if ( $object ) {
+        if ( isset( $object['post'] ) ) {
+            $url                = get_permalink( $object['post'] );
+            $screen_reader_text = $object['post']->post_title;
+        } elseif ( isset( $object['term'] ) ) {
+            $url                = get_term_link( $object['term'] );
+            $screen_reader_text = $object['term']->name;
+        }
+    }
+
+    // Build the screen reader text html
+    if ( $screen_reader_text ) {
+        $screen_reader_html = sprintf( '<span class="screen-reader-text">%s</span>', esc_html( $screen_reader_text ) );
+    }
 
     // Get image location
     $image_location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
 
     // If background image
     if ( 'background' == $image_location ) {
-        $link = sprintf( '<span class="more-link">%s</span>', $more_link_text );
+        $link = sprintf( '<span class="more-link">%s%s</span>', $screen_reader_html, $more_link_text );
     } else {
-        $url = mai_get_read_more_link_url( $object );
         if ( $url ) {
-            $link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $more_link_text );
+            $link = sprintf( '<a class="more-link" href="%s">%s%s</a>', $url, $screen_reader_html, $more_link_text );
         }
     }
 
@@ -191,22 +208,28 @@ function mai_get_read_more_link( $object = '', $text = '' ) {
     return sprintf( '<p class="more-link-wrap">%s</p>', $link );
 }
 
-function mai_get_read_more_link_url( $object ) {
-    $link = '';
-    // Maybe get a post object
-    $post = $object ? get_post($object) : get_post( get_the_ID() );
+/**
+ * Get the object for a read more link.
+ *
+ * @param   int|object  $object_or_id  The object or ID, for now only post or term.
+ *
+ * @return  associated array, key is object type and value is the object
+ */
+function mai_get_read_more_object( $object_or_id ) {
+    $type = array();
+    // Bail if no object_or_id
+    if ( ! $object_or_id ) {
+        return $type;
+    }
     // If we have a post
-    if ( $post ) {
-        $link  = get_permalink( $post->ID );
+    if ( $object = get_post($object_or_id) ) {
+        $type['post'] = $object;
     }
     // No post, try a term
-    else {
-        $term = get_term( $object );
-        if ( ! is_wp_error( $term ) ) {
-            $link  = get_term_link( $term );
-        }
+    elseif ( $term = get_term( $object_or_id ) && ! is_wp_error( $term ) ) {
+        $type['term'] = $object;
     }
-    return $link;
+    return $type;
 }
 
 /**
