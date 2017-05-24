@@ -353,7 +353,12 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
         $this.toggleClass( 'activated' );
         $body.toggleClass( 'mai-menu-activated' );
 
-        if ( ! $body.hasClass('side-menu') ) {
+        if ( $body.hasClass( 'side-menu' ) ) {
+            // Side menu activated class
+            $body.toggleClass( 'mai-side-menu-activated' );
+        } else {
+            // Standard menu activated class
+            $body.toggleClass( 'mai-standard-menu-activated' );
             // Standard menu, toggle it down/up
             $maiMenu.slideToggle( 'fast' );
         }
@@ -375,6 +380,8 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
             });
 
         }
+
+
 
     }
 

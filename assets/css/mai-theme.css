@@ -47,8 +47,8 @@
 		- Mobile Navigation
 			- Menu Toggle
 			- Mobile Menu Container
-			- Mobile Menu
 			- Side Menu
+			- Mobile Menu
 	- Content Area
 		- Banner Area
 		- Entries
@@ -1805,8 +1805,8 @@ img.alignright,
  * If JS is not enabled, header will remain static
  --------------------------------------------- */
 
- /* jQuery handles the position */
- .sticky-header .site-header {
+/* jQuery handles the position */
+.sticky-header .site-header {
  	width: 100%;
  	z-index: 99;
  }
@@ -1823,14 +1823,18 @@ img.alignright,
 
 }
 
- .sticky-header.mai-menu-activated {
- 	overflow: hidden;
- }
+@media only screen and (min-width: 545px) {
 
- .sticky-header.mai-menu-activated:not(.side-menu) .site-header {
- 	max-height: 100vh;
- 	overflow-y: auto;
- }
+	.sticky-header.mai-standard-menu-activated {
+		overflow: hidden;
+	}
+
+	.sticky-header.mai-standard-menu-activated .site-header {
+	 	max-height: 100vh;
+	 	overflow-y: auto;
+	}
+
+}
 
 /* ## Shrink Header
 --------------------------------------------- */
@@ -2332,9 +2336,6 @@ img.alignright,
 	height: 50px;
 }
 
-.mai-menu-activated .mai-toggle:focus {
-}
-
 .mai-bars {
 	position: relative;
 	width: 100%;
@@ -2398,38 +2399,34 @@ img.alignright,
 /* ### Mobile Menu Container
 --------------------------------------------- */
 
-.mai-menu {
-	/* width: 100%; */
-	/* height: 100%; */
-	/* max-width: 400px; */
-	/* max-height: 100%; */
-	/* margin: 0 auto; */
-
-	/* margin-top: 0; */
-	/* margin-bottom: 0; */
-	/* margin-left: auto; */
-	/* margin-right: auto; */
-}
+.mai-menu {}
 
 .mai-menu-inner {
 	width: 100%;
 	height: 100%;
-	padding: 20px 20px 40px;
+	padding: 20px 20px 80px;
 }
 
 .mai-menu .widget {
 	display: block;
 	width: 100%;
-	margin-bottom: 24px;
 }
 
-.mai-menu .widget-area + div[class^="menu-"],
+.mai-menu .widget {
+	margin-bottom: 16px;
+}
+
 .mai-menu .widget.widget_nav_menu + .widget.widget_nav_menu {
-	margin-top: -24px; /* remove spacing when 2 menus are stacked */
+	margin-top: -16px; /* remove spacing when 2 menus are stacked */
 }
 
 .mai-menu .widget-title {
-	margin-bottom: 10px;
+	margin-top: 30px;
+	margin-bottom: 8px;
+}
+
+.mai-menu .widget:first-child:first-of-type .widget-title {
+	margin-top: 0; /* no top margin if first widget has a title */
 }
 
 .mai-menu .search-form {
@@ -2439,6 +2436,75 @@ img.alignright,
 .mai-menu input[type="search"] {
 	background-color: #fff;
 	border: 1px solid #dfdcdf;
+}
+
+/* ### Side Menu
+--------------------------------------------- */
+
+.mai-menu {
+	display: none;
+}
+
+.side-menu .mai-menu {
+	display: block;
+	position: static;
+	width: 0;
+	height: 0;
+}
+
+.side-menu.mai-menu-activated {
+	/* prevent scrolling on the body (doesn't work on iOS and maybe other places) */
+	overflow: hidden;
+}
+
+.side-menu .site-container {
+	-webkit-transition: margin 300ms ease-in-out;
+	-o-transition: margin 300ms ease-in-out;
+	transition: margin 300ms ease-in-out;
+	-webkit-backface-visibility: hidden;backface-visibility: hidden;
+}
+
+.side-menu.mai-menu-activated .site-container {
+	margin-left: -270px;
+	margin-right: 270px;
+}
+
+.side-menu .mai-menu-outer {
+	background-color: #f1f1f1;
+	position: fixed;
+	top: 0;
+	right:0;
+	margin-right: -270px;
+	width: 270px;
+	height: 100vh;
+	-webkit-box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
+	box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
+	-webkit-overflow-scrolling: touch;
+	-webkit-transition: all 300ms ease-in-out;
+	-o-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+	z-index: 99;
+}
+
+.side-menu.mai-menu-activated .mai-menu-outer {
+	margin-right: 0;
+}
+
+.admin-bar.side-menu .mai-menu-outer {
+	top: 32px;
+}
+
+@media only screen and (max-width: 782px) {
+
+	.admin-bar.side-menu .mai-menu-outer {
+		top: 46px;
+	}
+
+}
+
+.side-menu .mai-menu-inner {
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 /* ### Mobile Menu
@@ -2474,7 +2540,7 @@ img.alignright,
 	width: 100%;
 	background: transparent;
 	color: #323232;
-	padding: 10px 10px 10px 0;
+	padding: 12px 10px 12px 0;
 	margin: 0;
 	border: none;
 	border-radius: 0;
@@ -2517,7 +2583,7 @@ img.alignright,
 
 /* removes sub-menu double border on nested sub-menu-toggles */
 .mobile-menu .sub-menu .sub-menu-toggle {
-	margin: 0 -1px -1px 0;
+	margin: -1px -1px -1px 0;
 }
 
 .mobile-menu .sub-menu {
@@ -2538,7 +2604,9 @@ img.alignright,
 	margin: 0;
 }
 
-.mobile-menu .sub-menu a:hover {
+.mobile-menu .sub-menu a:hover,
+.mobile-menu .sub-menu a:focus,
+.mobile-menu .sub-menu a:active {
 	color: #067CCC;
 }
 
@@ -2551,75 +2619,6 @@ img.alignright,
 .mobile-menu .menu-item > a:focus ul.sub-menu .sub-menu {
 	left: 0;
 	margin-left: 0;
-}
-
-/* ### Side Menu
---------------------------------------------- */
-
-.mai-menu {
-	display: none;
-}
-
-.side-menu .mai-menu {
-	display: block;
-	position: static;
-	width: 0;
-	height: 0;
-}
-
-.side-menu.mai-menu-activated {
-	/* prevent scrolling on the body (doesn't work on iOS and maybe other places) */
-	overflow: hidden;
-}
-
-.side-menu .site-container {
-	-webkit-transition: margin 300ms ease-in-out;
-	-o-transition: margin 300ms ease-in-out;
-	transition: margin 300ms ease-in-out;
-	-webkit-backface-visibility: hidden;backface-visibility: hidden;
-}
-
-.side-menu.mai-menu-activated .site-container {
-	margin-left: -260px;
-	margin-right: 260px;
-	/* overflow: visible; */
-}
-
-.side-menu .mai-menu-outer {
-	background-color: #f1f1f1;
-	position: fixed;
-	top: 0;
-	right:0;
-	margin-right: -260px;
-	width: 260px;
-	height: 100vh;
-	-webkit-box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
-	box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
-	-webkit-overflow-scrolling: touch;
-	-webkit-transition: all 300ms ease-in-out;
-	-o-transition: all 300ms ease-in-out;
-	transition: all 300ms ease-in-out;
-}
-
-.side-menu.mai-menu-activated .mai-menu-outer {
-	margin-right: 0;
-}
-
-.admin-bar.side-menu .mai-menu-outer {
-	top: 32px;
-}
-
-@media only screen and (max-width: 782px) {
-
-	.admin-bar.side-menu .mai-menu-outer {
-		top: 46px;
-	}
-
-}
-
-.side-menu .mai-menu-inner {
-	overflow-x: hidden;
-	overflow-y: auto;
 }
 
 /* # Content Area
