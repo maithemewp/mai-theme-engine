@@ -381,8 +381,6 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
         }
 
-
-
     }
 
     /**
