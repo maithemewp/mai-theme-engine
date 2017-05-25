@@ -173,7 +173,6 @@ final class Mai_Pro_Engine {
                 'archive-description',
                 'breadcrumb',
                 'header',
-                // 'menu-utility',
                 'menu-primary',
                 'menu-secondary',
                 'footer-widgets',
@@ -289,7 +288,6 @@ final class Mai_Pro_Engine {
             foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/*.php' ) as $file ) { include_once $file; }
-            foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'shortcodes/*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
         }, 8 );

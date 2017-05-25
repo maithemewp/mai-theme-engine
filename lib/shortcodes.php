@@ -42,6 +42,23 @@ final class Mai_Shortcodes {
 	}
 
 	function init() {
+
+		// Enable shortcodes in widgets
+		add_filter( 'widget_text', 'do_shortcode' );
+
+		// Custom Post Type Archive Intro Text
+		add_filter( 'genesis_cpt_archive_intro_text_output', 'do_shortcode' );
+
+		// Author Archive Intro Text
+		add_filter( 'genesis_author_intro_text_output', 'do_shortcode' );
+
+		// Term Archive Intro Text
+		add_filter( 'genesis_term_intro_text_output', 'do_shortcode' );
+
+		// Remove empty <p> tags from shortcodes
+		add_filter( 'the_content', array( $this, 'content_filter' ) );
+
+		// Create shortcodes
 		add_shortcode( 'callout', 				array( $this, 'get_callout' ) );
 		add_shortcode( 'section', 				array( $this, 'get_section' ) );
 		add_shortcode( 'columns', 				array( $this, 'get_columns' ) );
@@ -60,6 +77,49 @@ final class Mai_Shortcodes {
 		add_shortcode( 'col_eleven_twelfths', 	array( $this, 'get_col_eleven_twelfths' ) );
 		add_shortcode( 'col_one_whole', 		array( $this, 'get_col_one_whole' ) );
 		add_shortcode( 'grid', 					array( $this, 'get_grid' ) );
+	}
+
+	/**
+	 * Filter the content to remove empty <p></p> tags from shortcodes
+	 *
+	 * @link https://gist.github.com/bitfade/4555047
+	 *
+	 * @return  mixed  Fixed shortcode content
+	 */
+	function content_filter( $content ) {
+
+	    $shortcodes = array(
+	        'callout',
+	        'section',
+	        'columns',
+	        'col',
+	        'col_auto',
+	        'col_one_twelfth',
+	        'col_one_sixth',
+	        'col_one_fourth',
+	        'col_one_third',
+	        'col_five_twelfths',
+	        'col_one_half',
+	        'col_seven_twelfths',
+	        'col_two_thirds',
+	        'col_three_fourths',
+	        'col_five_sixths',
+	        'col_eleven_twelfths',
+	        'col_one_whole',
+	        'grid',
+	    );
+
+	    // Array of custom shortcodes requiring the fix
+	    $shortcodes = join( '|', $shortcodes );
+
+	    // Opening tag
+	    $rep = preg_replace( "/(<p>)?\[($shortcodes)(\s[^\]]+)?\](<\/p>|<br \/>)?/", "[$2$3]", $content );
+
+	    // Closing tag
+	    $rep = preg_replace( "/(<p>)?\[\/($shortcodes)](<\/p>|<br \/>)?/", "[/$2]", $rep );
+
+	    // Return fixed shortcodes
+	    return $rep;
 	}
 
 	function get_callout( $atts, $content = null ) {
