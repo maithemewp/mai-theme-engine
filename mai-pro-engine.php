@@ -5,7 +5,7 @@
  * Plugin URI:      https://github.com/bizbudding/mai-pro-engine/
  * Description:     The Mai theme engine
  *
- * Version:         1.0.0-beta.21
+ * Version:         1.0.0-beta.22
  *
  * GitHub URI:      bizbudding/mai-pro-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Pro_Engine {
 
         // Plugin version.
         if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
-            define( 'MAI_PRO_ENGINE_VERSION', '1.0.0-beta.21' );
+            define( 'MAI_PRO_ENGINE_VERSION', '1.0.0-beta.22' );
         }
 
         // Plugin Folder Path.
@@ -291,6 +291,23 @@ final class Mai_Pro_Engine {
             foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
         }, 8 );
+
+        /**
+         * Force update check when user clicks 'Check Again'
+         * via Dashboard > Updates.
+         *
+         * @return  void
+         */
+        add_action( 'core_upgrade_preamble', function() {
+            $force_check = ! empty( $_GET['force-check'] );
+            if ( $force_check ) {
+                $one_day_ago = strtotime( '-1 day', get_option( 'ghu_last_checked' ) );
+
+                // Set the option to one day ago
+                update_option( 'ghu_last_checked', $one_day_ago );
+            }
+        });
+
     }
 
 }
