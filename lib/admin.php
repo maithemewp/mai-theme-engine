@@ -71,8 +71,8 @@ function mai_posts_page_edit_form() {
 }
 
 // Change login logo
-add_action( 'login_head',  'mai_login_logo' );
-function mai_login_logo() {
+add_action( 'login_head',  'mai_login_logo_css' );
+function mai_login_logo_css() {
 
 	$logo_id  = get_theme_mod( 'custom_logo' );
 
@@ -81,18 +81,66 @@ function mai_login_logo() {
 		return;
 	}
 
-	$logo_src = wp_get_attachment_image_src( $logo_id, 'medium' );
-	$logo_url = $logo_src[0];
-
 	echo '<style  type="text/css">
 		.login h1 a {
-			background-image:url(' . $logo_url . ') !important;
-			background-size: contain !important;
 			width: 100% !important;
-			max-width: 300px !important;
-			min-height: 100px !important;
+			max-width: 100% !important;
+			height: auto !important;
+			background: none !important;
+			text-indent: 0 !important;
+			padding: 0 !important;
+			margin: 0 !important;
 		}
 	</style>';
+
+	// Add the filter that adds the inline logo
+	add_action( 'login_header', 'mai_do_login_logo_filter' );
+
+}
+
+/**
+ * Add login logo filters if we have a custom logo.
+ *
+ * @return  void
+ */
+function mai_do_login_logo_filter() {
+
+	// Replace site title with the logo
+	add_filter( 'bloginfo', 'mai_do_inline_login_logo', 10, 2 );
+
+	// Hook in after the login form to remove the filter
+	add_action( 'login_footer', 'mai_remove_login_logo_filter' );
+}
+
+/**
+ * Remove the filter that adds login logo as the blog name.
+ *
+ * @return  void
+ */
+function mai_remove_login_logo_filter() {
+	remove_filter( 'bloginfo', 'mai_do_inline_login_logo', 10, 2 );
+}
+
+/**
+ * Replace site name with an inline logo.
+ * This filter only runs if we have a custom logo, so no need to check if ! $logo_id again.
+ *
+ * @param   string  $output  The site name.
+ * @param   string  $show    Which bloginfo data to filter.
+ *
+ * @return  string|HTML 	 The inline image HTML
+ */
+function mai_do_inline_login_logo( $output, $show ) {
+
+	// Bail if not filtering the name
+	if ( $show != 'name' ) {
+		return $output;
+	}
+
+	// Get the logo
+	$logo_id  = get_theme_mod( 'custom_logo' );
+
+	return wp_get_attachment_image( get_theme_mod( 'custom_logo' ), 'full' );
 }
 
 // Change login link
