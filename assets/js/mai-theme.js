@@ -194,19 +194,18 @@
 
         var $this = $(this);
 
-        // Show search menu item and hide the menu text
-        $this.show().find( 'span[itemprop=name]' ).addClass( 'screen-reader-text' );
+        $this.html( '<button class="nav-search"><span class="screen-reader-text">' + $this.text() + '</span></button>' ).show();
 
-        var $searchLink = $this.find( 'a' );
+        var $searchButton = $this.find( 'button' );
 
-        toggleAria( $searchLink, 'aria-pressed' );
-        toggleAria( $searchLink, 'aria-expanded' );
+        toggleAria( $searchButton, 'aria-pressed' );
+        toggleAria( $searchButton, 'aria-expanded' );
 
         // Add the search box after the link
         $this.append( maiVars.search_box );
 
         // On click of the search button
-        $this.on( 'click', 'a', function(e){
+        $this.on( 'click', 'button', function(e){
 
             e.preventDefault()
 
@@ -216,21 +215,23 @@
             // Close if the button has open class, otherwise open
             if ( $this.hasClass( 'activated' ) ) {
 
-                _searchClose($this);
+                _searchClose( $this );
 
             } else {
 
-                _searchOpen($this);
+                _searchOpen( $this );
 
                 // Close search listener
-                $('body').mouseup(function(e){
+                $( 'body' ).mouseup(function(e){
                     /**
-                     * If click is not on our search box container
-                     * If click is not on a child of our search box container
+                     * Bail if:
+                     * If click is on our search box container
+                     * If click is on a child of our search box container
                      */
-                    if( ! $(this).hasClass( 'search-box' ) && ! $this.has(e.target).length ) {
-                        _searchClose($this);
+                    if ( $(this).hasClass( 'search-box' ) || ( $this.has(e.target).length ) ) {
+                        return;
                     }
+                    _searchClose( $this );
                 });
             }
         });
@@ -238,13 +239,13 @@
     });
 
     // Helper function to open search form and add class to search button
-    function _searchOpen($this) {
-        $this.addClass('activated').find('.search-box').fadeIn('fast');
+    function _searchOpen( $this ) {
+        $this.addClass( 'activated' ).find( '.search-box' ).fadeIn( 'fast' ).find( 'input[type="search"]' ).focus();
     }
 
     // Helper function to close search form and remove class to search button
-    function _searchClose($this) {
-        $this.removeClass('activated').find('.search-box').fadeOut('fast');
+    function _searchClose( $this ) {
+        $this.removeClass( 'activated' ).find( '.search-box' ).fadeOut( 'fast' );
     }
 
 })( document, jQuery );
