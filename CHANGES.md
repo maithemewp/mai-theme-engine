@@ -1,28 +1,2 @@
-#### 1.0.0-beta.3
-* [columns] is now the wrap for static [col]'s
-
-#### 1.0.0-beta.2
-* Rebuild flex loop functionality
-* Re-engineer everything
-
-#### 1.0.0-beta.1
+#### 0.0.1.beta.1
 * Initial beta release
-* Make header-shrink more pronounced
-
-#### 0.0.6
-* Remove Deactivate/Edit links from this plugin in Dashboard > Plugins menu
-
-#### 0.0.5
-* Core functionality moved from Mai Theme to Engine
-
-#### 0.0.4
-* Version bump to test updater
-
-#### 0.0.3
-* Version bump to test updater
-
-#### 0.0.2
-* Version bump to test updater
-
-#### 0.0.1
-* Initial release
