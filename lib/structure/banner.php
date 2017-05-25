@@ -7,6 +7,22 @@
  * @version  1.0.0
  */
 
+/**
+ * Add custom banner area body class.
+ *
+ * @param   array  The existing body classes.
+ *
+ * @return  array  Modified classes.
+ */
+add_filter( 'body_class', 'mai_do_banner_area_body_class' );
+function mai_do_banner_area_body_class( $classes ) {
+	// Bail if no banner area
+	if ( ! mai_is_banner_area_enabled() ) {
+		return $classes;
+	}
+	$classes[] = 'has-banner-area';
+	return $classes;
+}
 
 /**
  * Check if we need to display the banner area
