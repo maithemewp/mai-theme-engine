@@ -7,7 +7,7 @@
  * @param  [type] $fallback [description]
  * @return [type]           [description]
  */
-function mai_get_archive_setting( $key, $fallback ) {
+function mai_get_archive_setting( $key, $fallback = false ) {
 
     // Bail if not a content archive
     if ( ! mai_is_content_archive() ) {
@@ -97,7 +97,7 @@ function mai_get_archive_setting( $key, $fallback ) {
     if ( isset( $meta ) ) {
         return $meta;
     }
-    // If we hav a fallback, return it
+    // If we have a fallback, return it
     elseif ( $fallback ) {
         return $fallback;
     }
@@ -142,13 +142,18 @@ function mai_is_banner_area_enabled() {
 
     $enabled = true;
 
-    // Bail if not enabled at all
+    // If not enabled at all
     if ( ! mai_is_banner_area_enabled_globally() ) {
         $enabled = false;
     } else {
 
         // Get 'disabled' content, typecasted as array because it may return empty string if none
         $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
+
+        /**
+         * If disabled via theme settings.
+         * (by post_type)
+         */
 
         if ( is_singular() || is_post_type_archive() ) {
             if ( in_array( get_post_type(), $disable_post_types ) ) {
@@ -158,6 +163,51 @@ function mai_is_banner_area_enabled() {
             if ( array_intersect( get_taxonomy( get_queried_object()->taxonomy )->object_type, $disable_post_types ) ) {
                 $enabled = false;
             }
+        }
+
+        /**
+         * If still enabled,
+         * check on the single object level.
+         *
+         * These conditionals were mostly adopted from mai_get_archive_setting() function.
+         */
+        if ( $enabled ) {
+
+            $hidden = false;
+
+            // Static blog page
+            if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+                $hidden = get_post_meta( $posts_page_id, 'hide_banner', true );
+            }
+            // Single posts/pages/cpts
+            elseif ( is_singular() ) {
+                $hidden = get_post_meta( get_the_ID(), 'hide_banner', true );
+            }
+            // Term archive
+            elseif ( is_category() || is_tag() || is_tax() ) {
+                $term_id = isset( get_queried_object()->term_id ) ? get_queried_object()->term_id : false;
+                if ( $term_id ) {
+                    $hidden = get_term_meta( $term_id, 'hide_banner', true );
+                }
+            }
+            // CPT archive
+            elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+                $hidden = genesis_get_cpt_option( 'hide_banner' );
+            }
+            // Author archive
+            elseif ( is_author() ) {
+                $hidden = get_the_author_meta( 'hide_banner', get_query_var( 'author' ) );
+            }
+            // WooCommerce shop page
+            elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+                $hidden = get_post_meta( $shop_page_id, 'hide_banner', true );
+            }
+
+            // If hidden, disable banner
+            if ( $hidden ) {
+                $enabled = false;
+            }
+
         }
 
     }

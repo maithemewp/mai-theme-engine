@@ -826,13 +826,13 @@ td {
 	margin-bottom: 30px;
 }
 
-/* offset section if it's the first element in the content */
-.content-no-sidebars .entry-content > .section:first-child:first-of-type {
+/* if banner area enabled, offset section if it's the first element in the content */
+.has-banner-area .content-no-sidebars .entry-content > .section:first-child:first-of-type {
 	/* .content (margin-bottom) + .content .entry (padding): (30px + 24px = 54px) */
 	margin-top: -54px;
 }
 
-.breadcrumb + .content-sidebar-wrap .content-no-sidebars .entry-content > .section:first-child:first-of-type {
+.has-banner-area .breadcrumb + .content-sidebar-wrap .content-no-sidebars .entry-content > .section:first-child:first-of-type {
 	/* .breadcrumb has -16px bottom-margin, so just .content .entry (padding):  24px */
 	margin-top: -24px;
 }
@@ -2192,11 +2192,11 @@ img.alignright,
 }
 
 .genesis-nav-menu .search-box input[type="search"] {
-	border-radius: 0;
+	border-radius: 3px 0 0 3px;
 }
 
 .genesis-nav-menu .search-box input[type="submit"] {
-	border-radius: 0;
+	border-radius: 0 3px 3px 0;
     -webkit-box-shadow: none;box-shadow: none;
     margin: 0 0 0 -1px;
 }

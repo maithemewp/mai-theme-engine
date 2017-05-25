@@ -68,7 +68,7 @@ jQuery(document).ready(function($) {
         }
 
 		$(this).slick({
-			adaptiveHeight: true,
+			adaptiveHeight: false, // true breaks things on image-bg aspect-ratio resize
 			arrows: arrows,
 			dots: dots,
 			fade: fade,

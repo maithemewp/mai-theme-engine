@@ -142,7 +142,7 @@
                  * Wait till slider events before initial resize,
                  * otherwise we were getting element width too early and calculations were wrong.
                  */
-                $slider.on( 'init reInit breakpoint setPosition', function(event, slick, direction){
+                $slider.on( 'init reInit breakpoint setPosition', function(event, slick){
                     _resizeToMatch( $element );
                 });
 
@@ -233,6 +233,20 @@
                     }
                     _searchClose( $this );
                 });
+
+                // Close search if esc key pressed
+                $(document).keydown(function(e) {
+                    // Use switch to easily add new keystrokes
+                    switch(e.which) {
+                        case 27: // esc
+                        // Close search box with esc key
+                        _searchClose( $this );
+                        break;
+
+                        default: return; // exit this handler for other keys
+                    }
+                });
+
             }
         });
 
