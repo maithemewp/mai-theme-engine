@@ -519,27 +519,33 @@ final class Mai_Shortcodes {
 
 	function get_col_by_fraction( $fraction, $atts, $content ) {
 
-		// Bail if no content
-		if ( null == $content ) {
+		// Bail if no background image and no content
+		if ( ! isset( $atts['image'] ) && null == $content ) {
 			return;
 		}
 
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
-			'align'	=> '',
-			'class'	=> '',
-			'id'	=> '',
-			'style'	=> '',
+            'align'      => '',
+            'class'      => '',
+            'id'         => '',
+            'image'      => '',
+            'image_size' => 'one-third',
+            'overlay'    => false,
+            'style'      => '',
 		), $atts, 'col' );
 
 		$atts = apply_filters( 'mai_col_args', $atts );
 
 		// Sanitize atts
 		$atts = array(
-			'align'	=> mai_sanitize_keys( $atts['align'] ),
-			'class'	=> mai_sanitize_html_classes( $atts['class'] ),
-			'id'	=> sanitize_html_class( $atts['id'] ),
-			'style'	=> esc_attr( $atts['style'] ),
+            'align'      => mai_sanitize_keys( $atts['align'] ),
+            'class'      => mai_sanitize_html_classes( $atts['class'] ),
+            'id'         => sanitize_html_class( $atts['id'] ),
+            'image'      => absint( $atts['image'] ),
+            'image_size' => sanitize_key( $atts['image_size'] ),
+            'overlay'    => filter_var( $atts['overlay'], FILTER_VALIDATE_BOOLEAN ),
+            'style'      => esc_attr( $atts['style'] ),
 		);
 
 		$flex_col = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
@@ -554,25 +560,23 @@ final class Mai_Shortcodes {
 			$flex_col['class'] .= ' ' . $atts['class'];
 		}
 
-	    // Align text
-	    if ( ! empty( $atts['align'] ) ) {
+		// Add the align classes
+	    $flex_col['class'] = $this->add_entry_align_classes( $flex_col['class'], $atts, 'columns' );
 
-	    	// Left
-		    if ( in_array( 'left', $atts['align']) ) {
-		    	$flex_col['class'] .= ' text-xs-left';
-		    }
+        // If we have an image ID
+        if ( $atts['image'] ) {
 
-		    // Center
-		    if ( in_array( 'center', $atts['align'] ) ) {
-		    	$flex_col['class'] .= ' text-xs-center';
-		    }
+        	// Add light content class
+            $flex_col['class'] .= ' light-content';
 
-		    // Right
-		    if ( in_array( 'right', $atts['align'] ) ) {
-		    	$flex_col['class'] .= ' text-xs-right';
-		    }
+            // Add the aspect ratio attributes
+            $flex_col = mai_add_image_background_attributes( $flex_col, $atts['image'], $atts['image_size'] );
+        }
 
-	    }
+        // Maybe add an overlay, typically for image tint/style
+        if ( $atts['overlay'] ) {
+            $flex_col['class'] .= ' overlay';
+        }
 
 	    /**
 	     * Return the content with col wrap.
@@ -610,7 +614,7 @@ final class Mai_Shortcodes {
 			'gutter'				=> '30',
 			'hide_empty'			=> true,
 			'ids'					=> '',
-			'ignore_sticky_posts'	=> false,
+			'ignore_sticky_posts'	=> true, // normal WP_Query is false
 			'image_location'		=> 'before_entry',
 			'image_size'			=> 'one-third',
 			'link'					=> true,
@@ -997,7 +1001,7 @@ final class Mai_Shortcodes {
 		return $classes;
 	}
 
-	function add_entry_align_classes( $classes, $atts, $content = 'grid' ) {
+	function add_entry_align_classes( $classes, $atts, $context = 'grid' ) {
 
 	    /**
 	     * "align" takes precendence over "align_cols" and "align_text".
@@ -1006,37 +1010,31 @@ final class Mai_Shortcodes {
 	    if ( ! empty( $atts['align'] ) ) {
 	    	// Left
 		    if ( in_array( 'left', $atts['align'] ) ) {
-		    	// $classes .= ' start-xs text-xs-left';
 		    	$classes .= ' top-xs text-xs-left';
 		    }
 
 		    // Center
 		    if ( in_array( 'center', $atts['align'] ) ) {
-		    	// $classes .= ' center-xs text-xs-center';
 		    	$classes .= ' middle-xs text-xs-center';
 		    }
 
 		    // Right
 		    if ( in_array( 'right', $atts['align'] ) ) {
-		    	// $classes .= ' end-xs text-xs-right';
 		    	$classes .= ' bottom-xs text-xs-right';
 		    }
 
 		    // Top
 		    if ( in_array( 'top', $atts['align'] ) ) {
-		    	// $classes .= ' top-xs';
 		    	$classes .= ' start-xs';
 		    }
 
 		    // Middle
 		    if ( in_array( 'middle', $atts['align'] ) ) {
-		    	// $classes .= ' middle-xs';
 		    	$classes .= ' center-xs';
 		    }
 
 		    // Bottom
 		    if ( in_array( 'bottom', $atts['align'] ) ) {
-		    	// $classes .= ' bottom-xs';
 		    	$classes .= ' end-xs';
 		    }
 
@@ -1062,19 +1060,16 @@ final class Mai_Shortcodes {
 
 			    // Top
 			    if ( in_array( 'top', $atts['align_text'] ) ) {
-			    	// $classes .= ' top-xs';
 			    	$classes .= ' start-xs';
 			    }
 
 			    // Middle
 			    if ( in_array( 'middle', $atts['align_text'] ) ) {
-			    	// $classes .= ' middle-xs';
 			    	$classes .= ' center-xs';
 			    }
 
 			    // Bottom
 			    if ( in_array( 'bottom', $atts['align_text'] ) ) {
-			    	// $classes .= ' bottom-xs';
 			    	$classes .= ' end-xs';
 			    }
 
@@ -1091,8 +1086,9 @@ final class Mai_Shortcodes {
 
 		// Set up initial query for posts
 		$args = array(
-			'post_type'		 => $atts['content'],
-			'posts_per_page' => $number,
+            'post_type'           => $atts['content'],
+            'posts_per_page'      => $number,
+            'ignore_sticky_posts' => $atts['ignore_sticky_posts'],
 		);
 
 		// Authors
@@ -1130,11 +1126,6 @@ final class Mai_Shortcodes {
 		// Post IDs
 		if ( ! empty($atts['ids']) ) {
 			$args['post__in'] = $atts['ids'];
-		}
-
-		// Ignore Sticky Posts
-		if ( $atts['ignore_sticky_posts'] ) {
-			$args['ignore_sticky_posts'] = true;
 		}
 
 		// Order
@@ -1212,7 +1203,6 @@ final class Mai_Shortcodes {
 			);
 		}
 
-
 		/**
 		 * Temporarily disabled cause this is coming from [grid] and [columns] now
 		 *
@@ -1243,26 +1233,26 @@ final class Mai_Shortcodes {
 
 		$html .= $this->get_row_wrap_open( $atts );
 
-			// Loop through posts
-			while ( $query->have_posts() ) : $query->the_post();
+            // Loop through posts
+            while ( $query->have_posts() ) : $query->the_post();
 
-				global $post;
+                global $post;
 
-				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
+                $image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
 
-				// Get image vars
-				$do_image_bg = $has_image_bg = false;
+                // Get image vars
+                $do_image_bg = $has_image_bg = false;
 
-				// If showing image
-				if ( in_array( 'image', $atts['show'] ) ) {
-					$image_id = $this->get_image_id( $atts, get_the_ID() );
-					if ( $image_id ) {
-						$do_image_bg = true;
-						if ( $this->is_image_bg( $atts ) ) {
-							$has_image_bg = true;
-						}
-					}
-				}
+                // If showing image
+                if ( in_array( 'image', $atts['show'] ) ) {
+                    $image_id = $this->get_image_id( $atts, get_the_ID() );
+                    if ( $image_id ) {
+                        $do_image_bg = true;
+                        if ( $this->is_image_bg( $atts ) ) {
+                            $has_image_bg = true;
+                        }
+                    }
+                }
 
 				// Opening wrap
 				$html .= $this->get_entry_wrap_open( $atts, $post, $has_image_bg );

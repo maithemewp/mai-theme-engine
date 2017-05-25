@@ -793,7 +793,7 @@ td {
 .nav-secondary .wrap,
 .footer-widgets .wrap,
 .site-footer .wrap,
-.section {
+.section .wrap {
 	padding-left: calc(1vw + .5em);
 	padding-right: calc(1vw + .5em);
 }
@@ -882,26 +882,26 @@ td {
 }
 
 .width-full,
-.wrap.width-full {
+.section .wrap.width-full {
 	padding-left: 0;
 	padding-right: 0;
 	margin-left: calc(-50vw + 50%);
 	margin-right: calc(-50vw + 50%);
 }
 
-.width-full .width-full {
+.content-no-sidebars .width-full {
 	max-width: 100%;
 }
 
 .site-inner,
 .wrap,
 .width-xl,
-.wrap.width-xl {
+.section .wrap.width-xl {
 	max-width: 1200px;
 }
 
 .width-lg,
-.wrap.width-lg {
+.section .wrap.width-lg {
 	-ms-flex-preferred-size: 960px;flex-basis: 960px;
 	max-width: 960px;
 }
@@ -909,7 +909,7 @@ td {
 .md-content .content,
 .md-content .breadcrumb,
 .width-md,
-.wrap.width-md {
+.section .wrap.width-md {
 	-ms-flex-preferred-size: 800px;flex-basis: 800px;
 	max-width: 800px;
 }
@@ -917,7 +917,7 @@ td {
 .sm-content .content,
 .sm-content .breadcrumb,
 .width-sm,
-.wrap.width-sm {
+.section .wrap.width-sm {
 	-ms-flex-preferred-size: 650px;flex-basis: 650px;
 	max-width: 650px;
 }
@@ -925,7 +925,7 @@ td {
 .xs-content .content,
 .xs-content .breadcrumb,
 .width-xs,
-.wrap.width-xs {
+.section .wrap.width-xs {
 	-ms-flex-preferred-size: 400px;flex-basis: 400px;
 	max-width: 400px;
 }
@@ -1016,12 +1016,8 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	margin-bottom: 0;
 }
 
-.image-bg .inner {
-	background-color: rgba(255, 255, 255, 0.7);
-	text-shadow: none;
-	padding: 4% 8%;
-	-webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
-    box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
+.section .width-full .col {
+	padding: calc(30px + 2vw);
 }
 
 /* ## Image Background
@@ -1031,6 +1027,14 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
+}
+
+.image-bg .inner {
+	background-color: rgba(255, 255, 255, 0.7);
+	text-shadow: none;
+	padding: 4% 8%;
+	-webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
+    box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
 }
 
 /* ## Overlay
