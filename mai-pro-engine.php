@@ -2,10 +2,10 @@
 
 /**
  * Plugin Name:     Mai Pro Engine
- * Plugin URI:      https://github.com/bizbudding/mai-pro-engine/
- * Description:     The Mai theme engine
+ * Plugin URI:      https://maitheme.com/
+ * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.0.0-beta.22
+ * Version:         1.0.0-beta.23
  *
  * GitHub URI:      bizbudding/mai-pro-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Pro_Engine {
 
         // Plugin version.
         if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
-            define( 'MAI_PRO_ENGINE_VERSION', '1.0.0-beta.22' );
+            define( 'MAI_PRO_ENGINE_VERSION', '1.0.0-beta.23' );
         }
 
         // Plugin Folder Path.
@@ -138,9 +138,13 @@ final class Mai_Pro_Engine {
 
         // Vendor
         require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'vendor/CMB2/init.php';
+        require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php';
+
+        // Setup the updater
+        $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/mai-pro-engine/plugin.json', MAI_PRO_ENGINE_PLUGIN_FILE, 'mai-pro-engine' );
 
         // Includes
-        foreach ( glob( MAI_PRO_ENGINE_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
+        // foreach ( glob( MAI_PRO_ENGINE_INCLUDES_DIR . '*.php' ) as $file ) { include_once $file; }
 
         /**
          * Include files after theme is loaded, to mimic being run in a child theme.
@@ -298,15 +302,15 @@ final class Mai_Pro_Engine {
          *
          * @return  void
          */
-        add_action( 'core_upgrade_preamble', function() {
-            $force_check = ! empty( $_GET['force-check'] );
-            if ( $force_check ) {
-                $one_day_ago = strtotime( '-1 day', get_option( 'ghu_last_checked' ) );
+        // add_action( 'core_upgrade_preamble', function() {
+        //     $force_check = ! empty( $_GET['force-check'] );
+        //     if ( $force_check ) {
+        //         $one_day_ago = strtotime( '-1 day', get_option( 'ghu_last_checked' ) );
 
-                // Set the option to one day ago
-                update_option( 'ghu_last_checked', $one_day_ago );
-            }
-        });
+        //         // Set the option to one day ago
+        //         update_option( 'ghu_last_checked', $one_day_ago );
+        //     }
+        // });
 
     }
 

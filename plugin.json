@@ -1,0 +1,25 @@
+{
+	"name": "Mai Pro Engine",
+	"version": "1.0.0-beta.22",
+	"download_url": "https://github.com/bizbudding/mai-pro-engine/archive/master.zip",
+
+	"homepage": "https://maitheme.com/",
+	"requires": "4.7",
+	"tested": "4.7.5",
+	"last_updated": "2017-01-01 16:17:00",
+
+	"author": "Mike Hemberger, BizBudding, Inc",
+	"author_homepage": "https://bizbudding.com/",
+
+	"sections": {
+		"description": "(Required) Plugin description. Basic HTML can be used in all sections.",
+		"installation": "(Recommended) Installation instructions.",
+		"changelog": "(Recommended) Changelog. <p>This section will be displayed by default when the user clicks 'View version x.y.z details'.</p>",
+		"custom_section": "This is a custom section labeled 'Custom Section'."
+	},
+
+	"banners": {
+		"low": "http://w-shadow.com/files/external-update-example/assets/banner-772x250.png",
+		"high": "http://w-shadow.com/files/external-update-example/assets/banner-1544x500.png"
+	},
+}
