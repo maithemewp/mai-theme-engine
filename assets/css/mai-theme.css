@@ -2303,7 +2303,8 @@ img.alignright,
 	color: #fff;
 }
 
-.nav-primary .menu-item.search {
+.has-header-left ~ .nav-primary .menu-item.search,
+.has-header-right ~ .nav-primary .menu-item.search {
 	margin-left: auto;
 }
 
