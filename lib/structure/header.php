@@ -135,6 +135,10 @@ function mai_do_header() {
 	 */
 	add_filter( 'genesis_attr_site-header', function( $attributes ) use ( $left, $right ) {
 
+		if ( empty($left) && empty($right) ) {
+			$attributes['class'] .= ' no-header-content';
+		}
+
 		if ( $left ) {
 			$attributes['class'] .= ' has-header-left';
 		}
