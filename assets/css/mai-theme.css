@@ -1017,11 +1017,6 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	padding-right: 24px;
 }
 
-.has-sidebar .content .section .wrap {
-	padding-left: 0;
-	padding-right: 0;
-}
-
 .section .inner > p:last-child {
 	margin-bottom: 0;
 }
