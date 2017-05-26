@@ -1965,6 +1965,7 @@ img.alignright,
 --------------------------------------------- */
 
 .header-before {
+	min-height: 35px; /* if sticky header and search icon is the only menu item */
 	background-color: rgba(0, 0, 0, 0.06);
 	border-bottom: 1px solid rgba(0,0,0,0.05);
 }
