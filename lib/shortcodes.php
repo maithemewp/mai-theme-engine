@@ -584,8 +584,10 @@ final class Mai_Shortcodes {
 	    /**
 	     * Return the content with col wrap.
 	     * With flex-col attr so devs can filter elsewhere.
+	     *
+	     * Don't wpautop cause it breaks things if [grid] and possibly other stuff in there.
 	     */
-	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), wpautop( do_shortcode( trim($content) ) ) );
+	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), do_shortcode( trim($content) ) );
 
 	}
 
@@ -1745,10 +1747,6 @@ final class Mai_Shortcodes {
 	    if ( ! $image_id ) {
 	    	return $attributes;
 	    }
-
-	    // $image = wp_get_attachment_image_src( $image_id, $atts['image_size'], true );
-		// $attributes['class'] .= ' image-bg aspect-ratio overlay light-content';
-		// $attributes['style']  = 'background-image: url(' . $image[0] . ');';
 
 		$attributes['class'] .= ' overlay light-content';
 

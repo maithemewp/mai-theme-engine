@@ -1,3 +1,9 @@
+#### 0.0.1.beta.6
+* Remove wpauto from [col] cause it breaks if [grid] or other shortcode is in there
+
+#### 0.0.1.beta.5
+* Hotfix comma exploding things
+
 #### 0.0.1.beta.4
 * Move section title inside inner wrap
 
