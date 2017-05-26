@@ -13,5 +13,8 @@ Mai Pro Engine is a required plugin that powers Mai Pro theme. Your theme will n
 
 == Changelog ==
 
-= 1.0.0 =
+= 0.0.1-beta.2 =
+* This is readme.txt
+
+= 0.0.1-beta.1 =
 * TBD
