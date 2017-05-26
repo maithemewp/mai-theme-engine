@@ -557,18 +557,26 @@ input[type="submit"],
 .woocommerce input.button.alt:disabled:hover,
 .woocommerce input.button.alt:disabled[disabled],
 .woocommerce input.button.alt:disabled[disabled]:hover {
-	display: ;-webkit-inline-flex;display: -ms-inline-flexbox;display: -webkit-inline-box;display: inline-flex;-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;-ms-flex-align: center;-webkit-box-align: center;align-items: center;
+	display: ;-webkit-inline-flex;display: -ms-inline-flexbox;display: -webkit-inline-box;display: inline-flex;
+	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
+	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
 	cursor: pointer;
 	width: auto;
 	white-space: normal;
+    background-image: none;
 	background-color: #323232;
 	color: rgba(255, 255, 255, 1);
+	font-size: 100%;
+	font-weight: normal;
+    line-height: 1;
 	text-align: center;
+	text-decoration: none;
 	text-shadow: none;
+    margin: 0;
 	border: none;
 	border-radius: 0;
-	-webkit-box-shadow: none;
-	        box-shadow: none;
+    -webkit-box-shadow: none;box-shadow: none;
+    overflow: hidden;
 }
 
 button:hover,
@@ -604,8 +612,10 @@ input:focus[type="submit"],
 .woocommerce button.button.alt:focus,
 .woocommerce input.button.alt:hover,
 .woocommerce input.button.alt:focus {
+    background-image: none;
 	background-color: rgba(0, 0, 0, 1);
 	color: rgba(255, 255, 255, 1);
+	text-decoration: none;
 	border: none;
 	outline: none;
 }
@@ -617,7 +627,7 @@ input[type="submit"],
 .button,
 .entry-content .button {
 	font-size: 16px;
-	padding: 10px 20px;
+	padding: 14px 20px;
 }
 
 button.small,
@@ -626,7 +636,7 @@ input[type="reset"].small,
 input[type="submit"].small,
 .button.small,
 .entry-content .button.small {
-	padding: 8px 16px;
+	padding: 11px 13px;
 }
 
 .button.alt,
@@ -814,7 +824,7 @@ td {
 }
 
 /* we don't want to add hyphens in links */
-.site-inner a {
+.site-inner a:not(input[type="submit"]):not(button):not(.button) {
 	-ms-word-break: break-all;
 	word-break: break-all;
 	word-break: break-word; /* Non standard for WebKit */
@@ -2210,7 +2220,7 @@ img.alignright,
 }
 
 .nav-header a {
-	padding: 8px 16px;
+	padding: 10px 16px;
 	margin: 0 2px;
 }
 
