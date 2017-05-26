@@ -2130,7 +2130,7 @@ img.alignright,
 
 .genesis-nav-menu .search,
 .nav-search {
-	width: 52px;
+	width: 50px;
 }
 
 .nav-search,
@@ -2155,6 +2155,7 @@ img.alignright,
 	font-family: FontAwesome;
 	font-size: 24px;
 	padding: 8px 0;
+	margin: 0 auto;
 	-webkit-transition: all 0.1s ease-in-out;
 	-o-transition: all 0.1s ease-in-out;
 	transition: all 0.1s ease-in-out;
@@ -2844,6 +2845,10 @@ img.alignright,
 
 /* ## Grid Entries
 --------------------------------------------- */
+
+.flex-grid {
+	margin-top: 30px;
+}
 
 .flex-entry {
 	padding: 0;
