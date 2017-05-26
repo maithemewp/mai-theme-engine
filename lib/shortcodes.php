@@ -346,15 +346,15 @@ final class Mai_Shortcodes {
 	        $wrap = sprintf( '<div %s>', genesis_attr( 'mai-wrap', $wrap_atts ) );
 	    }
 
-	    // Maybe add a section title
-	    if ( $args['title'] ) {
-	        $title = sprintf( '<%s class="heading">%s</%s>', $args['title_wrap'], $args['title'], $args['title_wrap'] );
-	    }
-
 	    // Maybe add an inner wrap, typically for content width/style
 	    if ( $args['inner'] ) {
 	        $inner_atts['class'] = 'inner';
 	        $inner               = sprintf( '<div %s>', genesis_attr( 'mai-inner', $inner_atts ) );
+	    }
+
+	    // Maybe add a section title
+	    if ( $args['title'] ) {
+	        $title = sprintf( '<%s class="heading">%s</%s>', $args['title_wrap'], $args['title'], $args['title_wrap'] );
 	    }
 
 	    // Build the opening markup
@@ -362,8 +362,8 @@ final class Mai_Shortcodes {
 	        $args['wrapper'],
 	        genesis_attr( 'mai-section', $section_atts ),
 	        $wrap,
-	        $title,
 	        $inner
+	        $title,
 	    );
 
 	}
