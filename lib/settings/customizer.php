@@ -204,8 +204,8 @@ function mai_register_customizer_settings( $wp_customize ) {
 	 */
 
 	$wp_customize->add_setting( 'banner_content_width', array(
-		'default'           => 'lg',
-		// 'sanitize_callback' => 'absint',
+		'default'			=> 'auto',
+		'sanitize_callback'	=> 'sanitize_key',
 	) );
 
 	$wp_customize->add_control( 'banner_content_width', array(
@@ -214,6 +214,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 		'priority'	=> 5,
 		'type'		=> 'select',
 		'choices'	=> array(
+			'auto' => __( 'Auto', 'mai-pro' ),
 			'xs'   => __( 'Extra Small', 'mai-pro' ),
 			'sm'   => __( 'Small', 'mai-pro' ),
 			'md'   => __( 'Medium', 'mai-pro' ),

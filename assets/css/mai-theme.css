@@ -891,6 +891,12 @@ td {
 	margin-right: auto;
 }
 
+.width-auto,
+.section .wrap.width-auto {
+	width: auto;
+	-ms-flex-preferred-size: auto;flex-basis: auto;
+}
+
 .width-full,
 .section .wrap.width-full {
 	padding-left: 0;

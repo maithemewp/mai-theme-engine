@@ -295,6 +295,9 @@ final class Mai_Shortcodes {
 	        if ( $args['content_width'] ) {
 
 	            switch ( $args['content_width'] ) {
+	                case 'auto':
+	                    $wrap_atts['class'] .= ' width-auto';
+	                    break;
 	                case 'xs':
 	                case 'extra-small':
 	                    $wrap_atts['class'] .= ' width-xs';
