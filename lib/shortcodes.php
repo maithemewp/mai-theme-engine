@@ -362,8 +362,8 @@ final class Mai_Shortcodes {
 	        $args['wrapper'],
 	        genesis_attr( 'mai-section', $section_atts ),
 	        $wrap,
-	        $inner
-	        $title,
+	        $inner,
+	        $title
 	    );
 
 	}
