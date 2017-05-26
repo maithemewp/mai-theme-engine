@@ -557,7 +557,7 @@ input[type="submit"],
 .woocommerce input.button.alt:disabled:hover,
 .woocommerce input.button.alt:disabled[disabled],
 .woocommerce input.button.alt:disabled[disabled]:hover {
-	display: ;-webkit-inline-flex;display: -ms-inline-flexbox;display: -webkit-inline-box;display: inline-flex;
+	display: -webkit-inline-box;display: -ms-inline-flexbox;display: inline-flex;
 	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
 	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
 	cursor: pointer;
@@ -576,7 +576,7 @@ input[type="submit"],
 	border: none;
 	border-radius: 0;
     -webkit-box-shadow: none;box-shadow: none;
-    overflow: hidden;
+    white-space: nowrap;
 }
 
 button:hover,
@@ -643,10 +643,10 @@ input[type="submit"].small,
 .comment-reply-link,
 .entry-content .button.alt,
 .entry-content .more-link,
-.woocommerce #respond input#submit,
-.woocommerce a.button,
-.woocommerce button.button,
-.woocommerce input.button {
+.woocommerce .product #respond input#submit,
+.woocommerce .product a.button,
+.woocommerce .product button.button,
+.woocommerce .product input.button {
     color: #515151;
     background-color: #ebe9eb;
 }
@@ -659,14 +659,14 @@ input[type="submit"].small,
 .entry-content .button.alt:focus,
 .entry-content .more-link:hover,
 .entry-content .more-link:focus,
-.woocommerce #respond input#submit:hover,
-.woocommerce #respond input#submit:focus,
-.woocommerce a.button:hover,
-.woocommerce a.button:focus,
-.woocommerce button.button:hover,
-.woocommerce button.button:focus,
-.woocommerce input.button:hover,
-.woocommerce input.button:focus {
+.woocommerce .product #respond input#submit:hover,
+.woocommerce .product #respond input#submit:focus,
+.woocommerce .product a.button:hover,
+.woocommerce .product a.button:focus,
+.woocommerce .product button.button:hover,
+.woocommerce .product button.button:focus,
+.woocommerce .product input.button:hover,
+.woocommerce .product input.button:focus {
     background-color: #dad8da;
     color: #515151;
 }
