@@ -826,8 +826,8 @@ td {
 	margin-bottom: 30px;
 }
 
-/* if banner area enabled, offset section if it's the first element in the content */
-.has-banner-area .content-no-sidebars .entry-content > .section:first-child:first-of-type {
+/* offset section if it's the first element in the content */
+.content-no-sidebars .entry-content > .section:first-child:first-of-type {
 	/* .content (margin-bottom) + .content .entry (padding): (30px + 24px = 54px) */
 	margin-top: -54px;
 }
@@ -2123,7 +2123,6 @@ img.alignright,
 
 .genesis-nav-menu .search {
 	display: none;
-	position: relative;
 }
 
 .genesis-nav-menu .search,
@@ -2131,17 +2130,11 @@ img.alignright,
 	width: 52px;
 }
 
-.nav-search {
-	position: absolute;
-	top: 0; right: 0; bottom: 0; left: 0;
-	display: -ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
-}
-
 .nav-search,
 .nav-search:hover,
 .nav-search:focus {
+	position: relative;
+	height: 100%;
 	background: transparent;
 	border: none;
     -webkit-box-shadow: none;box-shadow: none;
@@ -2152,12 +2145,13 @@ img.alignright,
 
 .nav-search::before {
 	display: block;
-	width: 100%;
-	height: auto;
+	display: -ms-flexbox;display: -webkit-box;display: flex;
+	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
+	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
 	content: "\f002";
 	font-family: FontAwesome;
 	font-size: 24px;
-	padding: 0;
+	padding: 8px 0;
 	-webkit-transition: all 0.1s ease-in-out;
 	-o-transition: all 0.1s ease-in-out;
 	transition: all 0.1s ease-in-out;
@@ -2263,6 +2257,10 @@ img.alignright,
 
 .nav-primary {
 	margin-top: -1px; /* hides bottom border on site header when primary nav is active */
+}
+
+.no-header-content ~ .nav-primary .menu {
+	-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;
 }
 
 .home .nav-primary .current-menu-item > a,
