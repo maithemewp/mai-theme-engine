@@ -1018,11 +1018,6 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	margin-right: calc(-50vw + 50%);
 }
 
-.section .wrap {
-	padding-left: 24px;
-	padding-right: 24px;
-}
-
 .section .inner > p:last-child {
 	margin-bottom: 0;
 }
