@@ -1019,7 +1019,7 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 }
 
 .section .inner > p:last-child {
-	margin-bottom: 0;
+	margin-bottom: 8px;
 }
 
 .section .width-full .col {
@@ -1038,7 +1038,7 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 .image-bg .inner {
 	background-color: rgba(255, 255, 255, 0.7);
 	text-shadow: none;
-	padding: 4% 8%;
+	padding: 1vw calc(1vw + 1em);
 	-webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
     box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
 }
@@ -2715,7 +2715,7 @@ img.alignright,
 }
 
 .banner-area p:last-of-type {
-	margin-bottom: 0;
+	margin-bottom: 8px;
 }
 
 .banner-area .author-box {
