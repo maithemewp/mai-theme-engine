@@ -112,14 +112,30 @@ final class Mai_Shortcodes {
 	    // Array of custom shortcodes requiring the fix
 	    $shortcodes = join( '|', $shortcodes );
 
+        $content = $this->cleanup_shortcode_html( $content );
+
 	    // Opening tag
-	    $rep = preg_replace( "/(<p>)?\[($shortcodes)(\s[^\]]+)?\](<\/p>|<br \/>)?/", "[$2$3]", $content );
+	    $content = preg_replace( "/(<p>)?\[($shortcodes)(\s[^\]]+)?\](<\/p>|<br \/>)?/", "[$2$3]", $content );
 
 	    // Closing tag
-	    $rep = preg_replace( "/(<p>)?\[\/($shortcodes)](<\/p>|<br \/>)?/", "[/$2]", $rep );
+	    $content = preg_replace( "/(<p>)?\[\/($shortcodes)](<\/p>|<br \/>)?/", "[/$2]", $content );
 
 	    // Return fixed shortcodes
-	    return $rep;
+	    return $content;
+
+	}
+
+	function cleanup_shortcode_html( $content ) {
+
+        $array = array (
+        	'<p></p>'	=> '',
+			'<p>['		=> '[',
+			']</p>'		=> ']',
+			']<br />'	=> ']'
+        );
+        $content = strtr( $content, $array );
+
+		return $content;
 	}
 
 	function get_callout( $atts, $content = null ) {
@@ -167,7 +183,7 @@ final class Mai_Shortcodes {
 	    $output = '';
 
 	    $output .= $this->get_section_open( $atts );
-	    $output .= do_shortcode( trim($content) );
+	    $output .= shortcode_unautop( do_shortcode( trim($content) ) );
 	    $output .= $this->get_section_close( $atts );
 
 	    return $output;
@@ -455,11 +471,14 @@ final class Mai_Shortcodes {
 			'style'				=> esc_attr( $atts['style'] ),
 		);
 
+		$atts['row_class'] = trim( $atts['class'] . ' columns-shortcode' );
+
 		$html = '';
 
 		$html .= $this->get_row_wrap_open( $atts, 'columns' );
-		$html .= do_shortcode(trim($content));
+		$html .= shortcode_unautop( do_shortcode( trim($content) ) );
 		$html .= $this->get_row_wrap_close( $atts );
+
 
 		return $html;
 	}
@@ -587,7 +606,7 @@ final class Mai_Shortcodes {
 	     *
 	     * Don't wpautop cause it breaks things if [grid] and possibly other stuff in there.
 	     */
-	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), do_shortcode( trim($content) ) );
+	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), shortcode_unautop( do_shortcode( trim($content) ) ) );
 
 	}
 
@@ -822,11 +841,6 @@ final class Mai_Shortcodes {
 			}
 	    }
 
-	    // Row classes
-	    if ( ! empty( $atts['row_class'] ) ) {
-	    	$flex_row['class'] .= ' ' . $atts['row_class'];
-	    }
-
 	    // If posts are a slider. 'slider' may not be set if coming from [columns] shortcode.
 		if ( isset( $atts['slider'] ) && $atts['slider'] ) {
 
@@ -866,6 +880,11 @@ final class Mai_Shortcodes {
 		if ( isset( $atts['content'] ) && class_exists( 'WooCommerce' ) && in_array( 'product', $atts['content'] ) ) {
 			$flex_row['class'] .= ' woocommerce';
 		}
+
+	    // Custom row classes
+	    if ( ! empty( $atts['row_class'] ) ) {
+	    	$flex_row['class'] .= ' ' . $atts['row_class'];
+	    }
 
 	    /**
 	     * Main content row wrap.
