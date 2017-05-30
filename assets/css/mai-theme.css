@@ -791,7 +791,8 @@ td {
 .site-container {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex-direction: column;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;
-	min-height: 100vh; /* forces footer to bottom when not enough content to fill the window */
+	/* forces footer to bottom when not enough content to fill the window */
+	min-height: 100vh;
 	/* keeps mai-slider in check */
 	overflow: hidden;
 }
@@ -969,6 +970,16 @@ td {
 .height-lg {
 	padding-top: calc(60px + 3vw);
 	padding-bottom: calc(60px + 3vw);
+}
+
+.columns-shortcode > .col {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.height-auto .columns-shortcode > .col {
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 /* # Common Classes
