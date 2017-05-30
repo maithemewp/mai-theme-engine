@@ -839,6 +839,17 @@ td {
 	margin-bottom: 30px;
 }
 
+/* remove margin on Sections page template content */
+.mai-sections .content {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+/* remove the bottom margin on the last section of Sections page template */
+.mai-sections .content > .section:last-of-type {
+	margin-bottom: 0;
+}
+
 /* offset section if it's the first element in the content */
 .content-no-sidebars .entry-content > .section:first-child:first-of-type {
 	/* .content (margin-bottom) + .content .entry (padding): (30px + 24px = 54px) */

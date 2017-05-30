@@ -13,8 +13,9 @@
  */
 add_filter( 'theme_page_templates', 'mai_plugin_theme_page_templates' );
 function mai_plugin_theme_page_templates( $page_templates ) {
-	$page_templates['landing.php'] = __( 'Landing Page', 'mai-pro' );
-	$page_templates['sitemap.php'] = __( 'Sitemap', 'mai-pro' );
+	$page_templates['landing.php']	= __( 'Landing Page', 'mai-pro' );
+	$page_templates['sections.php']	= __( 'Sections', 'mai-pro' );
+	$page_templates['sitemap.php']	= __( 'Sitemap', 'mai-pro' );
 	return $page_templates;
 }
 
@@ -34,7 +35,7 @@ function mai_plugin_include_theme_page_templates( $template ) {
 	$template_name = get_post_meta( get_the_ID(), '_wp_page_template', true );
 
 	// Bail if not a template from our plugin
-	if ( ! in_array( $template_name, array( 'landing.php', 'sitemap.php' ) ) ) {
+	if ( ! in_array( $template_name, array( 'landing.php', 'sections.php', 'sitemap.php' ) ) ) {
 		return $template;
 	}
 

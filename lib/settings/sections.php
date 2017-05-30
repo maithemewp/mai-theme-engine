@@ -1,5 +1,20 @@
 <?php
 
+add_action( 'admin_head', 'hide_editor' );
+function hide_editor() {
+	global $pagenow;
+
+	if ( 'post.php' != $pagenow ) {
+		return;
+	}
+	if ( ! isset( $_GET['post'] ) ) {
+		return;
+	}
+	if ( 'sections.php' == get_page_template_slug( absint( $_GET['post'] ) ) ) {
+		remove_post_type_support('page', 'editor');
+	}
+}
+
 add_action( 'cmb2_admin_init', 'mai_do_sections_metabox' );
 function mai_do_sections_metabox() {
 
@@ -30,35 +45,39 @@ function mai_do_sections_metabox() {
 	$sections->add_group_field( $section, array(
 		'name'			=> __( 'Background Image', 'mai-pro' ),
 		'id'			=> 'image',
+		'before_row'	=> '<div class="cmb-section-settings"><div class="cmb-flex-wrap"><div class="cmb-flex-item">',
+		'after_row'		=> '</div>',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
 		'options'		=> array( 'url' => false ),
-	    'text' 			=> array(
+		'text'			=> array(
 	        'add_upload_file_text' => __( 'Add Image', 'mai-pro' ),
 	    ),
 	) );
 
 	// Style Settings
 	$sections->add_group_field( $section, array(
-		'name'				=> __( 'Settings', 'mai-pro' ),
+		'name'				=> __( 'Image Style', 'mai-pro' ),
 		'id'				=> 'settings',
+		'before_row'		=> '<div class="cmb-flex-item">',
+		'after_row'			=> '</div>',
 		'type'				=> 'multicheck',
 		'select_all_button'	=> false,
-		// 'default' 			=> mai_set_checkbox_default_for_new_post( 'wrap' ),
-		'options' => array(
+		'options'			=> array(
 			'overlay'	=> __( 'Add image overlay', 'mai-pro' ),
-			// 'wrap'		=> __( 'Add content wrap', 'mai-pro' ),
 			'inner'		=> __( 'Add content inner styling', 'mai-pro' ),
 		),
 	) );
 
 	// Height
 	$sections->add_group_field( $section, array(
-		'name'             => __( 'Height', 'mai-pro' ),
-		'id'               => 'height',
-		'type'             => 'select',
-		'default'          => 'md',
-		'options'          => array(
+		'name'			=> __( 'Height', 'mai-pro' ),
+		'id'			=> 'height',
+		'before_row'	=> '<div class="cmb-flex-item">',
+		'after_row'		=> '</div>',
+		'type'			=> 'select',
+		'default'		=> 'md',
+		'options'		=> array(
 			'auto'	=> __( 'Auto (Use height of content)', 'mai-pro' ),
 			'sm'	=> __( 'Small', 'mai-pro' ),
 			'md'	=> __( 'Medium', 'mai-pro' ),
@@ -68,11 +87,13 @@ function mai_do_sections_metabox() {
 
 	// Content Width
 	$sections->add_group_field( $section, array(
-		'name'             => __( 'Content Width', 'mai-pro' ),
-		'id'               => 'content_width',
-		'type'             => 'select',
-		'show_option_none' => __( 'Default (Use Layout Width)', 'mai-pro' ),
-		'options'          => array(
+		'name'				=> __( 'Content Width', 'mai-pro' ),
+		'id'				=> 'content_width',
+		'before_row'		=> '<div class="cmb-flex-item">',
+		'after_row'			=> '</div></div></div>',
+		'type'				=> 'select',
+		'show_option_none'	=> __( 'Default (Use Layout Width)', 'mai-pro' ),
+		'options'			=> array(
 			'xs'	=> __( 'Extra Small', 'mai-pro' ),
 			'sm'	=> __( 'Small', 'mai-pro' ),
 			'md'	=> __( 'Medium', 'mai-pro' ),
@@ -82,11 +103,22 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
+	// Title
+	$sections->add_group_field( $section, array(
+		'name'	=> 'Title',
+		'id'	=> 'title',
+		'type'	=> 'text',
+		'attributes'  => array(
+			'placeholder' => __( 'Enter section title here', 'mai-pro' ),
+			'class'        => 'widefat',
+		),
+	) );
+
 	// Content
 	$sections->add_group_field( $section, array(
-	    'name'             => 'Content',
-	    'id'               => 'content',
-	    'type'             => 'wysiwyg',
+		'name'	=> 'Content',
+		'id'	=> 'content',
+		'type'	=> 'wysiwyg',
 	) );
 
 }

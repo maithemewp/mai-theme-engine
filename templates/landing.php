@@ -1,7 +1,4 @@
 <?php
-/**
- * Template Name: Landing Page
- */
 
 // Add custom body class to the head
 add_filter( 'body_class', 'mai_landing_page_body_class' );

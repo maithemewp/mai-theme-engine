@@ -134,6 +134,10 @@ function mai_is_content_archive() {
     return $is_archive;
 }
 
+function mai_get_section( $args, $content ) {
+    return Mai_Shortcodes()->get_section( $args, $content );
+}
+
 /**
  * Get the section opening markup
  *
