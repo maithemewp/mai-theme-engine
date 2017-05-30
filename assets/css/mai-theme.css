@@ -104,6 +104,12 @@ input[type="search"]{
 /* ## Typographical Elements
 --------------------------------------------- */
 
+html,
+body {
+	width: 100%;
+	height: 100%;
+}
+
 html {
 	font-size: 62.5%; /* 10px browser default */
 }
@@ -787,7 +793,6 @@ td {
 	-ms-flex-direction: column;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;
 	min-height: 100vh; /* forces footer to bottom when not enough content to fill the window */
 	/* keeps mai-slider in check */
-	/* overflow-x: hidden; */
 	overflow: hidden;
 }
 
@@ -1827,17 +1832,19 @@ img.alignright,
 /* jQuery handles the position */
 .sticky-header .site-header {
  	width: 100%;
+ 	/* top: 0; */
+ 	/* left: 0; */
  	z-index: 99;
  }
 
 .admin-bar.sticky-header .site-header {
-	top: 32px;
+	/* top: 32px; */
 }
 
 @media only screen and (max-width: 782px) {
 
 	.admin-bar.sticky-header .site-header {
-		top: 46px;
+		/* top: 46px; */
 	}
 
 }
@@ -2504,16 +2511,7 @@ img.alignright,
 }
 
 .side-menu .site-container {
-	-webkit-transition: margin 300ms ease-in-out;
-	-o-transition: margin 300ms ease-in-out;
-	transition: margin 300ms ease-in-out;
-	-webkit-backface-visibility: hidden;backface-visibility: hidden;
-}
-
-.side-menu .site-header {
-	/* -webkit-transition: margin 300ms ease-in-out; */
-	/* -o-transition: margin 300ms ease-in-out; */
-	/* transition: margin 300ms ease-in-out; */
+	-webkit-transition: margin 0.3s;-o-transition: margin 0.3s;transition: margin 0.3s;
 }
 
 .side-menu.mai-menu-activated .site-container {
@@ -2521,37 +2519,21 @@ img.alignright,
 	margin-right: 270px;
 }
 
-@media only screen and (max-width: 768px) {
-
-	.mai-side-menu-activated .site-header {
-		/* margin-left: -270px; */
-		/* margin-right: 0px; */
-		/* overflow: visible; */
-		/* position: static !important; */
-		/* left: -260px; */
-	}
-
-}
-
 .side-menu .mai-menu-outer {
+	-webkit-transition: right 0.3s;-o-transition: right 0.3s;transition: right 0.3s;
 	background-color: #f1f1f1;
 	position: fixed;
 	top: 0;
-	right:0;
-	margin-right: -270px;
+	right: -270px;
 	width: 270px;
 	height: 100vh;
 	-webkit-box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
 	box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
-	-webkit-overflow-scrolling: touch;
-	-webkit-transition: all 300ms ease-in-out;
-	-o-transition: all 300ms ease-in-out;
-	transition: all 300ms ease-in-out;
 	z-index: 99;
 }
 
 .side-menu.mai-menu-activated .mai-menu-outer {
-	margin-right: 0;
+	right: 0;
 }
 
 .admin-bar.side-menu .mai-menu-outer {
