@@ -39,6 +39,23 @@ function mai_sanitize_keys( $keys ) {
 }
 
 /**
+ * Kind of a gross function to run do_action in output buffering
+ * and return the content of that hook.
+ *
+ * @param   string  $hook  The hook name to run.
+ *
+ * @return  string|HTML
+ */
+function mai_get_do_action( $hook ) {
+    // Start buffer
+    ob_start();
+    // Add new hook
+    do_action( $hook );
+    // End buffer
+    return ob_get_clean();
+}
+
+/**
  * Check if a string starts with another string.
  *
  * @link    http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
