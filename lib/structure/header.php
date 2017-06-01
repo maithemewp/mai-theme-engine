@@ -64,7 +64,12 @@ function mai_hide_site_description( $attributes ) {
 	return $attributes;
 }
 
-
+/**
+ * Add header action hooks.
+ * Filter header elements to modify attributes accordingly.
+ *
+ * @return  void
+ */
 add_action( 'genesis_header', 'mai_do_header', 4 );
 function mai_do_header() {
 
