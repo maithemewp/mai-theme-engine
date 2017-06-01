@@ -64,67 +64,15 @@ function mai_hide_site_description( $attributes ) {
 	return $attributes;
 }
 
-/**
- * Add new header before hook.
- *
- * @return  string|HTML  The content
- */
-add_filter( 'mai_header_before_content', 'mai_get_header_before_content' );
-function mai_get_header_before_content( $content ) {
-	ob_start();
-	do_action( 'mai_header_before' );
-	return ob_get_clean();
-}
 
-/**
- * Add new header left content hook.
- *
- * @return  string|HTML  The content
- */
-add_filter( 'mai_header_left_content', 'mai_get_header_left_content' );
-function mai_get_header_left_content( $content ) {
-	ob_start();
-	do_action( 'mai_header_left' );
-	return ob_get_clean();
-}
-
-/**
- * Add new header right content hook.
- *
- * @return  string|HTML  The content
- */
-add_filter( 'mai_header_right_content', 'mai_get_header_right_content' );
-function mai_get_header_right_content( $content ) {
-	ob_start();
-	do_action( 'mai_header_right' );
-	return ob_get_clean();
-}
-
-/**
- * Do the Flexington header.
- * This is all wrapped in one function so we can pass $left and $right variables easier.
- *
- * @version  1.1.0
- *
- * @return   void
- */
-add_action( 'genesis_meta', 'mai_do_header' );
+add_action( 'genesis_header', 'mai_do_header', 4 );
 function mai_do_header() {
 
-	/**
-	 * Allow templates to hijack and remove the header content via a filter
-	 *
-	 * add_filter( 'mai_utility_nav', '__return_false' );
-	 * add_filter( 'mai_header_left_content', '__return_false' );
-	 * add_filter( 'mai_header_right_content', '__return_false' );
-	 * add_filter( 'mai_mobile_menu', '__return_false' );
-	 *
-	 * @return  bool
-	 */
-	$before  = apply_filters( 'mai_header_before_content', '__return_empty_string' );
-	$left 	 = apply_filters( 'mai_header_left_content', '__return_empty_string' );
-	$right 	 = apply_filters( 'mai_header_right_content', '__return_empty_string' );
-	$mobile  = apply_filters( 'mai_mobile_menu', mai_get_mobile_menu() );
+	// These are basically do_action() hooks you can use
+	$before	= mai_get_do_action( 'mai_header_before' );
+	$left	= mai_get_do_action( 'mai_header_left' );
+	$right	= mai_get_do_action( 'mai_header_right' );
+	$after	= mai_get_do_action( 'mai_header_after' );
 
 	/**
 	 * Add classes to know when the header has left or right header content.
@@ -135,7 +83,7 @@ function mai_do_header() {
 	 */
 	add_filter( 'genesis_attr_site-header', function( $attributes ) use ( $left, $right ) {
 
-		if ( empty($left) && empty($right) ) {
+		if ( ! ( $left && $right ) ) {
 			$attributes['class'] .= ' no-header-content';
 		}
 
@@ -152,78 +100,36 @@ function mai_do_header() {
 	});
 
 	/**
-	 * Filter the (site) header context of the genesis_structural_wrap
-	 * Add utility nav before the wrap
-	 * Open Flexington row after the wrap
+	 * Filter the (site) header context of the genesis_structural_wrap.
+	 * Add new before/after header content hooks.
 	 *
-	 * @param  string  $output 			 The markup to be returned
-	 * @param  string  $original_output  Set to either 'open' or 'close'
+	 * @return  string|HTML  The content
 	 */
-	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $before, $left, $right, $mobile ) {
-
-		$content_before = $content_after = '';
+	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $before, $left, $right, $after ) {
 
 	    if ( 'open' == $original_output ) {
 
-	    	if ( $before ) {
-	    		$content_before .= sprintf( '<div class="header-before"><div class="wrap">%s</div></div>', $before );
-	    	}
+			// Build header before markup
+			if ( $before ) {
 
+				$before_atts['class'] = 'header-before';
+
+				$before = sprintf( '<div %s>%s</div>', genesis_attr( 'header-before', $before_atts ), $before );
+
+			}
+
+			// Default classes
 			$row['class'] = 'row middle-xs';
 
 			// Justification
-			$justify = ' around-xs';
-			if ( $left || $right ) {
-				$justify = ' between-xs';
-			}
-			$row['class'] .= $justify;
+			$row['class'] .= ( $left || $right ) ? ' between-xs' : ' around-xs';
 
-			$content_after .= sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
+			// Output with row open
+			$output = $before . $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
 
 	    } elseif ( 'close' == $original_output ) {
 
-	    	$content_before .= '</div>';
-
-	    	if ( $mobile ) {
-		    	$content_before .= $mobile;
-	    	}
-
-	    }
-
-	    return $content_before . $output . $content_after;
-
-	}, 10, 2 );
-
-	// Add Flexington classes to the title area
-	add_filter( 'genesis_attr_title-area', function( $attributes ) use ( $left, $right ) {
-		$classes = 'col col-xs-auto';
-		$distribution = '';
-		if ( ( $left && $right ) || ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) ) {
-			$distribution = 'text-xs-center';
-		}
-		if ( $left || $right ) {
-			$classes .= ' start-xs';
-			if ( $left && $right ) {
-				$classes .= ' col-md-12 col-lg-auto';
-			} elseif ( $left && ! $right ) {
-				$classes .= ' last-xs';
-			}
-		} else {
-			$classes .= ' center-xs';
-		}
-	    $attributes['class'] = $attributes['class'] . ' ' . $classes . ' ' . $distribution;
-	    return $attributes;
-	});
-
-	// Check if we have header content
-	if ( $left || $right ) {
-
-		/**
-		 * Add header left and right widget areas and menus
-		 * with Flexington classes
-		 */
-		add_action( 'genesis_header', function() use ( $left, $right ) {
-
+			// Build header left markup
 			if ( $left ) {
 
 				$left_atts['class'] = 'header-left col col-xs';
@@ -234,10 +140,11 @@ function mai_do_header() {
 					$left_atts['class'] .= ' first-xs';
 				}
 
-				printf( '<div %s>%s</div>', genesis_attr( 'header-left', $left_atts ), $left );
+				$left = sprintf( '<div %s>%s</div>', genesis_attr( 'header-left', $left_atts ), $left );
 
 			}
 
+			// Build header right markup
 			if ( $right ) {
 
 				$right_atts['class'] = 'header-right col col-xs';
@@ -248,13 +155,60 @@ function mai_do_header() {
 					$right_atts['class'] .= ' text-xs-right';
 				}
 
-				printf( '<div %s>%s</div>', genesis_attr( 'header-right', $right_atts ), $right );
+				$right = sprintf( '<div %s>%s</div>', genesis_attr( 'header-right', $right_atts ), $right );
 
 			}
 
-		});
+			// Build header after markup
+			if ( $after ) {
 
-	}
+				$after_atts['class'] = 'header-after';
+
+				$after = sprintf( '<div %s>%s</div>', genesis_attr( 'header-after', $after_atts ), $after );
+
+			}
+
+
+			$output = $left . $right . $output . $after;
+
+	    }
+
+	    return $output;
+
+	}, 10, 2 );
+
+	// Add Flexington classes to the title area
+	add_filter( 'genesis_attr_title-area', function( $attributes ) use ( $left, $right ) {
+
+		// Default classes
+		$attributes['class'] .= ' col col-xs-auto';
+
+		// If left and right content, or logo
+		if ( $left && $right ) {
+
+			$attributes['class'] .= ' col-md-12 col-lg-auto';
+
+			if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
+				$attributes['class'] .= ' text-xs-center';
+			}
+		}
+
+		// If left or right content
+		if ( $left || $right ) {
+
+			$attributes['class'] .= ' start-xs';
+			if ( $left && ! $right ) {
+				$attributes['class'] .= ' last-xs';
+			}
+
+
+		} else {
+			$attributes['class'] .= ' center-xs';
+		}
+
+	    return $attributes;
+
+	});
 
 }
 
@@ -310,6 +264,8 @@ function mai_do_header_left() {
  */
 add_action( 'mai_header_right', 'mai_do_header_right' );
 function mai_do_header_right() {
+
+	// d( did_action( 'mai_header_right' ) );
 
 	// Bail if no content
 	if ( ! ( is_active_sidebar('header_right') || has_nav_menu('header_right') ) ) {
