@@ -219,7 +219,7 @@ final class Mai_Shortcodes {
 	    }
 
 	    // Default section class
-	    $section_atts['class'] = 'section row middle-xs center-xs';
+	    $section_atts['class'] = 'section row';
 
 	    // Maybe add additional section classes
 	    if ( $args['class'] ) {
