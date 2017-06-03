@@ -8,15 +8,15 @@
 add_action( 'admin_enqueue_scripts', 'mai_admin_enqueue_scripts' );
 function mai_admin_enqueue_scripts() {
 
-	// Add an editor stylesheet
-	add_editor_style( '/assets/css/editor-style.css' );
-
 	// Use minified files if script debug is not being used
 	$suffix = mai_get_suffix();
 
+	// Add an editor stylesheet
+	add_editor_style( '/assets/css/mai-editor{$suffix}.css' );
+
 	// Register for later
-	wp_enqueue_style( 'mai-cmb2', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/css/mai-cmb2{$suffix}.css", array(), CHILD_THEME_VERSION );
-	wp_enqueue_script( 'mai-cmb2', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/js/mai-cmb2{$suffix}.js", array( 'jquery' ), CHILD_THEME_VERSION, true );
+	wp_enqueue_style( 'mai-admin', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/css/mai-admin{$suffix}.css", array(), MAI_PRO_ENGINE_VERSION );
+	wp_enqueue_script( 'mai-admin', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/js/mai-admin{$suffix}.js", array( 'jquery' ), MAI_PRO_ENGINE_VERSION, true );
 }
 
 /**

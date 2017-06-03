@@ -41,11 +41,21 @@ function mai_do_sections_metabox() {
 	    ),
 	) );
 
-	// Style
+	// Background Color
+	$sections->add_group_field( $section, array(
+		'name'		 => __( 'Background Color', 'mai-pro' ),
+		'id'		 => 'bg',
+		'before_row' => '<div class="cmb-section-settings"><div class="mai-row"><div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
+		// 'after_row'	 => '</div>',
+		'type'		 => 'colorpicker',
+		'default'	 => '#fff',
+	) );
+
+	// Background Image
 	$sections->add_group_field( $section, array(
 		'name'			=> __( 'Background Image', 'mai-pro' ),
 		'id'			=> 'image',
-		'before_row'	=> '<div class="cmb-section-settings"><div class="cmb-flex-wrap"><div class="cmb-flex-item">',
+		// 'before_row'	=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'after_row'		=> '</div>',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
@@ -57,9 +67,9 @@ function mai_do_sections_metabox() {
 
 	// Style Settings
 	$sections->add_group_field( $section, array(
-		'name'				=> __( 'Image Style', 'mai-pro' ),
-		'id'				=> 'settings',
-		'before_row'		=> '<div class="cmb-flex-item">',
+		'name'				=> __( 'Image Styles', 'mai-pro' ),
+		'id'				=> 'styles',
+		'before_row'		=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'after_row'			=> '</div>',
 		'type'				=> 'multicheck',
 		'select_all_button'	=> false,
@@ -73,8 +83,8 @@ function mai_do_sections_metabox() {
 	$sections->add_group_field( $section, array(
 		'name'			=> __( 'Height', 'mai-pro' ),
 		'id'			=> 'height',
-		'before_row'	=> '<div class="cmb-flex-item">',
-		'after_row'		=> '</div>',
+		'before_row'	=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
+		// 'after_row'		=> '</div>',
 		'type'			=> 'select',
 		'default'		=> 'md',
 		'options'		=> array(
@@ -89,7 +99,7 @@ function mai_do_sections_metabox() {
 	$sections->add_group_field( $section, array(
 		'name'				=> __( 'Content Width', 'mai-pro' ),
 		'id'				=> 'content_width',
-		'before_row'		=> '<div class="cmb-flex-item">',
+		// 'before_row'		=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'after_row'			=> '</div></div></div>',
 		'type'				=> 'select',
 		'show_option_none'	=> __( 'Default (Use Layout Width)', 'mai-pro' ),

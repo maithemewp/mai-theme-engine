@@ -58,7 +58,7 @@ function mai_woocommerce_styles( $styles ) {
 	$styles['mai-woocommerce'] = array(
 		'src'     => $src,
 		'deps'    => '',
-		'version' => CHILD_THEME_VERSION,
+		'version' => MAI_PRO_ENGINE_VERSION,
 		'media'   => 'all',
 	);
 

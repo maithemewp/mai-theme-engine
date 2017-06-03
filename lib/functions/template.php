@@ -270,7 +270,25 @@ function mai_get_post_meta( $post = '' ) {
     return $post_meta;
 }
 
-function mai_add_image_background_attributes( $attributes, $image_id, $image_size ) {
+function mai_add_background_color_attributes( $attributes, $color ) {
+
+    // Bail if no color to add
+    if ( ! $color ) {
+        return $attributes;
+    }
+
+    // Make sure style attribute is set
+    $attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
+
+    // Add background color
+    $inline_style        = sprintf( 'background-color: %s;', $color );
+    $attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
+
+    return $attributes;
+
+}
+
+function mai_add_background_image_attributes( $attributes, $image_id, $image_size ) {
     // Get all registered image sizes
     global $_wp_additional_image_sizes;
 
@@ -282,9 +300,12 @@ function mai_add_image_background_attributes( $attributes, $image_id, $image_siz
         return $attributes;
     }
 
-    // Add image background
+    // Make sure style attribute is set
+    $attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
+
+    // Add background image
     $inline_style        = sprintf( 'background-image: url(%s);', $image[0] );
-    $attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
+    $attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
 
     // Add aspect ratio class, for JS to target
     $attributes['class'] .= ' image-bg aspect-ratio';

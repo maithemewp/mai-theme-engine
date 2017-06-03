@@ -167,19 +167,58 @@ function mai_register_customizer_settings( $wp_customize ) {
 	) );
 
 	/*****************************************************
-	 * Enable Banner Overlay
+	 * Banner BG Color
 	 */
 
-	$wp_customize->add_setting( 'enable_banner_overlay', array(
-		'default'           => 1,
+	$wp_customize->add_setting( 'banner_background_color', array(
+		'default'           => '#f1f1f1',
+		'sanitize_callback' => 'sanitize_hex_color'
+	) );
+
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'banner_background_color', array(
+		'label'    => __( 'Background color', 'mai-pro' ),
+		'section'  => $section,
+		'settings' => 'banner_background_color',
+		'priority' => 5
+	) ) );
+
+	/*****************************************************
+	 * Default Banner Image setting
+	 */
+
+	$wp_customize->add_setting( 'banner_id', array(
+		'default'           => '',
 		'sanitize_callback' => 'absint',
 	) );
 
-	$wp_customize->add_control( 'enable_banner_overlay', array(
-		'label'    => __( 'Enable banner overlay', 'mai-pro' ),
-		'section'  => $section,
-		'priority' => 5,
-		'type'     => 'checkbox',
+	$wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'banner_id', array(
+		'label'			=> __( 'Banner Image', 'mai-pro' ),
+		'description'	=> __( 'Set a default banner image. Can be overridden per post/page.', 'mai-pro' ),
+		'section'		=> $section,
+		'settings'		=> 'banner_id',
+		'priority'		=> 5,
+	) ) );
+
+	/*****************************************************
+	 * Enable Banner Overlay
+	 */
+
+	$wp_customize->add_setting( 'banner_overlay', array(
+		'default'           => 0,
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+
+	$wp_customize->add_control( 'banner_overlay', array(
+		'label'		=> __( 'Enable banner overlay', 'mai-pro' ),
+		'section'	=> $section,
+		'priority'	=> 5,
+		'type'		=> 'select',
+		'choices'	=> array(
+			'none'		=> __( '- None -', 'genesis' ),
+			'light'		=> __( 'Light Overlay', 'mai-pro' ),
+			'dark'		=> __( 'Dark Overlay', 'mai-pro' ),
+			'gradient'	=> __( 'Gradient Overlay', 'mai-pro' ),
+		),
 	) );
 
 
@@ -187,16 +226,33 @@ function mai_register_customizer_settings( $wp_customize ) {
 	 * Enable Banner Inner styling
 	 */
 
-	$wp_customize->add_setting( 'enable_banner_inner', array(
-		'default'           => 0,
-		'sanitize_callback' => 'absint',
+	// $wp_customize->add_setting( 'enable_banner_inner', array(
+	// 	'default'           => 0,
+	// 	'sanitize_callback' => 'absint',
+	// ) );
+
+	// $wp_customize->add_control( 'enable_banner_inner', array(
+	// 	'label'    => __( 'Enable banner inner styling', 'mai-pro' ),
+	// 	'section'  => $section,
+	// 	'priority' => 5,
+	// 	'type'     => 'checkbox',
+	// ) );
+
+	$wp_customize->add_setting( 'banner_inner', array(
+		'default'           => 'none',
+		'sanitize_callback' => 'sanitize_text_field',
 	) );
 
-	$wp_customize->add_control( 'enable_banner_inner', array(
-		'label'    => __( 'Enable banner inner styling', 'mai-pro' ),
-		'section'  => $section,
-		'priority' => 5,
-		'type'     => 'checkbox',
+	$wp_customize->add_control( 'banner_inner', array(
+		'label'		=> __( 'Enable banner inner styling', 'mai-pro' ),
+		'section'	=> $section,
+		'priority'	=> 5,
+		'type'		=> 'select',
+		'choices'	=> array(
+			'none'	=> __( '- None -', 'genesis' ),
+			'light'	=> __( 'Light Box', 'mai-pro' ),
+			'dark'	=> __( 'Dark Box', 'mai-pro' ),
+		),
 	) );
 
 	/*****************************************************
@@ -223,22 +279,5 @@ function mai_register_customizer_settings( $wp_customize ) {
 			'full' => __( 'Full Width', 'mai-pro' ),
 		),
 	) );
-
-	/*****************************************************
-	 * Default Banner Image setting
-	 */
-
-	$wp_customize->add_setting( 'banner_id', array(
-		'default'           => '',
-		'sanitize_callback' => 'absint',
-	) );
-
-	$wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'banner_id', array(
-		'label'			=> __( 'Banner Image', 'mai-pro' ),
-		'description'	=> __( 'Set a default banner image. Can be overridden per post/page.', 'mai-pro' ),
-		'section'		=> $section,
-		'settings'		=> 'banner_id',
-		'priority'		=> 5,
-	) ) );
 
 }

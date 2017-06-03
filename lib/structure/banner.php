@@ -48,11 +48,23 @@ function mai_do_banner_area() {
 
     $args = array(
 		'class'			=> 'banner-area width-full aspect-ratio',
-		'overlay'		=> get_theme_mod( 'enable_banner_overlay', 1 ),
 		'wrap'			=> true,
-		'inner'			=> get_theme_mod( 'enable_banner_inner', 0 ),
+		'bg' 			=> get_theme_mod( 'banner_background_color', '#f1f1f1' ),
 		'content_width'	=> get_theme_mod( 'banner_content_width', 'lg' ),
+		'styles'		=> '',
     );
+
+    // Maybe add overlay
+    $overlay = get_theme_mod( 'banner_overlay', 'none' );
+    if ( $overlay && ( 'none' != $overlay ) ) {
+    	$args['styles'][] .= 'overlay-' . $overlay;
+    }
+
+    // Maybe add inner styling
+    $inner = get_theme_mod( 'banner_inner', 'none' );
+    if ( $inner && ( 'none' != $inner ) ) {
+    	$args['styles'][] .= 'inner-' . $inner;
+    }
 
 	// Get the image ID
 	$image_id = mai_get_banner_id();

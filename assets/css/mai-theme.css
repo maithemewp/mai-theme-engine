@@ -20,7 +20,7 @@
 		- Section
 		- Image Background
 		- Overlay
-		- Light Content
+		- Color Contrast
 		- Avatar
 		- Search Form
 		- WordPress
@@ -1020,7 +1020,7 @@ td {
 
 .section,
 .has-sidebar .content .section {
-	background-color: #f1f1f1;
+	background-color: #f0f0f0;
 }
 
 body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
@@ -1061,12 +1061,34 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	background-position: center;
 }
 
-.image-bg .inner {
-	background-color: rgba(255, 255, 255, 0.7);
-	text-shadow: none;
+.image-bg,
+.image-bg * {
+	color: #fff;
+	text-shadow: 0 0 6px #323232;
+}
+
+/* ## Inner
+--------------------------------------------- */
+
+.inner {
 	padding: calc(1vw + .5em) calc(1vw + 1em);
-	-webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
     box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
+	-webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
+}
+
+.inner-light,
+.inner-light *,
+.inner-dark,
+.inner-dark * {
+	text-shadow: none;
+}
+
+.inner-light {
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.inner-dark {
+	background-color: rgba(0, 0, 0, 0.7);
 }
 
 /* ## Overlay
@@ -1084,11 +1106,6 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	bottom: 0;
 	left: 0;
 	display: block;
-	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(25%, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6)) );
-	background-image: -webkit-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
-	background-image: -o-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
-	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
-	text-shadow: 0 0 6px #323232;
 	-webkit-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
 	transition: all 0.2s ease-in-out;
@@ -1100,6 +1117,23 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	z-index: 1;
 }
 
+.overlay.overlay-light::after {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.overlay.overlay-dark::after {
+	background-color: rgba(0, 0, 0, 0.5);
+	text-shadow: 0 0 6px #323232;
+}
+
+.overlay.overlay-gradient::after {
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(25%, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6)) );
+	background-image: -webkit-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
+	background-image: -o-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
+	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
+	text-shadow: 0 0 6px #323232;
+}
+
 a.overlay::after {
 	background-color: rgba(0, 0, 0, 0.25);
 }
@@ -1108,13 +1142,17 @@ a.overlay:hover::after {
 	background-color: rgba(0, 0, 0, 0.6);
 }
 
-/* ## Light Content
+/* ## Color Contrast
 --------------------------------------------- */
 
 .light-content,
 .light-content * {
 	color: #fff;
-	text-shadow: 0 0 6px #323232;
+}
+
+.dark-content,
+.dark-content * {
+	color: #323232;
 }
 
 /* ## Avatar

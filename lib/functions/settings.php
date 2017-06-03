@@ -252,8 +252,15 @@ function mai_get_footer_widgets_count() {
  *
  * @return string Hex color code for accent color.
  */
-function mai_customizer_get_default_accent_color() {
+function mai_get_customizer_get_default_accent_color() {
     return '#067CCC';
+}
+
+function mai_get_color_shade( $color ) {
+
+    $luminosity = mai_get_color_luminosity( $color );
+
+    return ( $luminosity > 128 ) ? 'dark-content' : 'light-content';
 }
 
 /**
@@ -264,14 +271,19 @@ function mai_customizer_get_default_accent_color() {
  *
  * @return string Hex color code for contrasting color.
  */
-function mai_color_contrast( $color ) {
+function mai_get_color_contrast_hex( $color ) {
+
+    $luminosity = mai_get_color_luminosity( $color );
+
+    return ( $luminosity > 128 ) ? '#000000' : '#ffffff';
+}
+
+function mai_get_color_luminosity( $color ) {
 
     $hexcolor = str_replace( '#', '', $color );
     $red      = hexdec( substr( $hexcolor, 0, 2 ) );
     $green    = hexdec( substr( $hexcolor, 2, 2 ) );
     $blue     = hexdec( substr( $hexcolor, 4, 2 ) );
 
-    $luminosity = ( ( $red * 0.2126 ) + ( $green * 0.7152 ) + ( $blue * 0.0722 ) );
-
-    return ( $luminosity > 128 ) ? '#000000' : '#ffffff';
+    return ( ( $red * 0.2126 ) + ( $green * 0.7152 ) + ( $blue * 0.0722 ) );
 }

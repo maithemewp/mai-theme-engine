@@ -213,12 +213,12 @@ final class Mai_Shortcodes {
 	        'id'            => sanitize_html_class( $args['id'] ),
 	        'class'         => mai_sanitize_html_classes( $args['class'] ),
 	        'align'         => mai_sanitize_keys( $args['align'] ), // left, center, right
+	        'bg' 			=> sanitize_hex_color( $args['bg'] ), // 3 or 6 dig hex color
 	        'image'         => absint( $args['image'] ),
-	        'overlay'       => filter_var( $args['overlay'], FILTER_VALIDATE_BOOLEAN ),
+	        'styles'		=> mai_sanitize_keys( $args['styles'] ), // overlay-gradient, overlay-dark, overlay-light
 	        'title'         => sanitize_text_field( $args['title'] ),
 	        'title_wrap'    => sanitize_key( $args['title_wrap'] ),
-	        'wrap'          => filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ),
-	        'inner'         => filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ),
+	        // 'wrap'          => filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ),
 	        'content_width' => sanitize_key( $args['content_width'] ),
 	        'height'        => sanitize_key( $args['height'] ),
 	    );
@@ -262,25 +262,61 @@ final class Mai_Shortcodes {
 
 	    }
 
+    	// Maybe add the inline background color
+	    if ( $args['bg'] ) {
+	    	// ADd the background color
+		    $section_atts = mai_add_background_color_attributes( $section_atts, $args['bg'] );
+
+		    if ( ! $args['image'] ) {
+			    // Add color contrast class
+			    $section_atts['class'] .= ' ' . mai_get_color_shade( $args['bg'] );
+	    	}
+	    }
+
 	    // If we have an image ID
 	    if ( $args['image'] ) {
 
 	        // If no inner, add light-content class
-	        if ( ! $args['inner'] ) {
-	            $section_atts['class'] .= ' light-content';
-	        }
+	    	// if ( ! in_array( 'inner', $args['styles'] ) ) {
+	            // $section_atts['class'] .= ' light-content';
+	        // }
 
 	        // Add the aspect ratio attributes
-	        $section_atts = mai_add_image_background_attributes( $section_atts, $args['image'], 'banner' );
+	        $section_atts = mai_add_background_image_attributes( $section_atts, $args['image'], 'banner' );
 	    }
 
 	    // Maybe add an overlay, typically for image tint/style
-	    if ( $args['overlay'] ) {
-	        $section_atts['class'] .= ' overlay';
-	    }
+	    // if ( in_array( 'overlay', $args['styles'] ) ) {
+	        // $section_atts['class'] .= ' overlay';
+	    // }
+
+	    $light_content = false;
+
+	    $has_overlay = $this->has_overlay( $args );
+	    $has_inner 	 = $this->has_inner( $args );
+
+		if ( $has_overlay ) {
+
+		    if ( in_array( 'overlay-light', $args['styles'] ) ) {
+		        $section_atts['class'] .= ' overlay overlay-light';
+		    }
+		    elseif ( in_array( 'overlay-dark', $args['styles'] ) ) {
+		    	$light_content = true;
+		        $section_atts['class'] .= ' overlay overlay-dark';
+		    }
+		    elseif ( in_array( 'overlay-gradient', $args['styles'] ) ) {
+		    	$light_content = true;
+		        $section_atts['class'] .= ' overlay overlay-gradient';
+		    }
+
+		    if ( ! $has_inner ) {
+		    	$section_atts['class'] .= $light_content ? ' light-content' : ' dark-content';
+		    }
+
+		}
 
 	    // Maybe add a wrap, typically to contain content over the image
-	    if ( $args['wrap'] ) {
+	    // if ( $args['wrap'] ) {
 
 	        $wrap_atts['class'] = 'wrap';
 
@@ -360,13 +396,24 @@ final class Mai_Shortcodes {
 	        }
 
 	        $wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts ) );
-	    }
+	    // }
 
 	    // Maybe add an inner wrap, typically for content width/style
-	    if ( $args['inner'] ) {
-	        $inner_atts['class'] = 'inner';
+		if ( $has_inner ) {
+
+			$light_content = false;
+
+		    if ( in_array( 'inner-light', $args['styles'] ) ) {
+		        $inner_atts['class'] = 'inner inner-light';
+		    } elseif ( in_array( 'inner-dark', $args['styles'] ) ) {
+		    	$light_content = true;
+		        $inner_atts['class'] = 'inner inner-dark';
+		    }
+
+	    	$inner_atts['class'] .= $light_content ? ' light-content' : ' dark-content';
 	        $inner               = sprintf( '<div %s>', genesis_attr( 'section-inner', $inner_atts ) );
-	    }
+
+		}
 
 	    // Maybe add a section title
 	    if ( $args['title'] ) {
@@ -405,12 +452,12 @@ final class Mai_Shortcodes {
 	    $title = $wrap = $inner = '';
 
 	    // Maybe close wrap
-	    if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
+	    // if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
 	        $wrap = '</div>';
-	    }
+	    // }
 
 	    // Maybe close inner wrap
-	    if ( filter_var( $args['inner'], FILTER_VALIDATE_BOOLEAN ) ) {
+	    if ( in_array( 'inner', mai_sanitize_keys( $args['styles'] ) ) ) {
 	        $outer = '</div>';
 	    }
 
@@ -418,7 +465,7 @@ final class Mai_Shortcodes {
 	    return sprintf( '%s%s</%s>',
 	        $inner,
 	        $wrap,
-	        sanitize_text_field( $args['wrapper'] )
+	        sanitize_key( $args['wrapper'] )
 	    );
 
 	}
@@ -429,12 +476,12 @@ final class Mai_Shortcodes {
 	        'id'            => '',
 	        'class'         => '',
 	        'align'         => '',
+	        'bg'			=> '',
 	        'image'         => '',
-	        'overlay'       => false,
+	        'styles'        => '',
 	        'title'         => '',
 	        'title_wrap'    => 'h2',
 	        'wrap'          => true,
-	        'inner'         => false,
 	        'content_width' => '',
 	        'height'        => 'md',
 	    );
@@ -553,8 +600,8 @@ final class Mai_Shortcodes {
             'id'         => '',
             'image'      => '',
             'image_size' => 'one-third',
-            'overlay'    => false,
-            'style'      => '',
+            'styles'     => '', // overlay, etc
+            'style'      => '', // HTML inline style
 		), $atts, 'col' );
 
 		$atts = apply_filters( 'mai_col_args', $atts );
@@ -566,7 +613,7 @@ final class Mai_Shortcodes {
             'id'         => sanitize_html_class( $atts['id'] ),
             'image'      => absint( $atts['image'] ),
             'image_size' => sanitize_key( $atts['image_size'] ),
-            'overlay'    => filter_var( $atts['overlay'], FILTER_VALIDATE_BOOLEAN ),
+            'styles'     => mai_sanitize_keys( $atts['styles'] ),
             'style'      => esc_attr( $atts['style'] ),
 		);
 
@@ -592,11 +639,11 @@ final class Mai_Shortcodes {
             $flex_col['class'] .= ' light-content';
 
             // Add the aspect ratio attributes
-            $flex_col = mai_add_image_background_attributes( $flex_col, $atts['image'], $atts['image_size'] );
+            $flex_col = mai_add_background_image_attributes( $flex_col, $atts['image'], $atts['image_size'] );
         }
 
         // Maybe add an overlay, typically for image tint/style
-        if ( $atts['overlay'] ) {
+        if ( in_array( 'overlay', $atts['styles'] ) ) {
             $flex_col['class'] .= ' overlay';
         }
 
@@ -653,16 +700,6 @@ final class Mai_Shortcodes {
 			'parent'				=> '',
 			'row_class'				=> '',
 			'show'					=> 'image, title', // image, title, add_to_cart, author, content, date, excerpt, image, more_link, price, meta, title
-			// 'show_add_to_cart'		=> false, // Woo only
-			// 'show_author'			=> false,
-			// 'show_content'			=> false,
-			// 'show_date'				=> false,
-			// 'show_excerpt'			=> false,
-			// 'show_image'			=> true,
-			// 'show_more_link'		=> false,
-			// 'show_price'			=> false, // Woo only
-			// 'show_taxonomies'		=> false,
-			// 'show_title'			=> true,
 			'status'				=> '', // Comma separated for multiple
 			'tags'					=> '', // Comma separated tag IDs
 			'tax_include_children'	=> true,
@@ -721,16 +758,6 @@ final class Mai_Shortcodes {
 			'parent'				=> $atts['parent'], // Validated later, after check for 'current'
 			'row_class'				=> mai_sanitize_html_classes( $atts['row_class'] ),
 			'show'					=> mai_sanitize_keys( $atts['show'] ),
-			// 'show_add_to_cart'		=> filter_var( $atts['show_add_to_cart'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_author'			=> filter_var( $atts['show_author'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_content'			=> filter_var( $atts['show_content'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_date'				=> filter_var( $atts['show_date'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_excerpt'			=> filter_var( $atts['show_excerpt'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_image'			=> filter_var( $atts['show_image'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_more_link'		=> filter_var( $atts['show_more_link'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_price'			=> filter_var( $atts['show_price'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_taxonomies'		=> filter_var( $atts['show_taxonomies'], FILTER_VALIDATE_BOOLEAN ),
-			// 'show_title'			=> filter_var( $atts['show_title'], FILTER_VALIDATE_BOOLEAN ),
 			'status'				=> array_filter( explode( ',', $atts['status'] ) ),
 			'tags'					=> array_filter( explode( ',', sanitize_text_field( $atts['tags'] ) ) ),
 			'tax_include_children'	=> filter_var( $atts['tax_include_children'], FILTER_VALIDATE_BOOLEAN ),
@@ -917,7 +944,7 @@ final class Mai_Shortcodes {
 			// Get the object ID
 			$object_id = $this->get_object_id( $atts, $object );
 			if ( $object_id ) {
-				$flex_entry = $this->add_image_bg( $flex_entry, $atts, $object_id );
+				$flex_entry = $this->add_bg_image( $flex_entry, $atts, $object_id );
 			}
 		}
 
@@ -1663,6 +1690,14 @@ final class Mai_Shortcodes {
 	    return $return;
 	}
 
+	function has_overlay( $atts ) {
+		return array_intersect( array( 'overlay-light', 'overlay-dark', 'overlay-gradient' ), $atts['styles'] );
+	}
+
+	function has_inner( $atts ) {
+		return array_intersect( array( 'inner-light', 'inner-dark' ), $atts['styles'] );
+	}
+
 	function is_entry_header_image( $atts ) {
 	    switch ( $atts['image_location'] ) {
 	        case 'before_title':
@@ -1760,17 +1795,18 @@ final class Mai_Shortcodes {
 	 *
 	 * @return  array              [description]
 	 */
-	function add_image_bg( $attributes, $atts, $object_id ) {
+	function add_bg_image( $attributes, $atts, $object_id ) {
 		// Get the image ID
 		$image_id = $this->get_image_id( $atts, $object_id );
 	    if ( ! $image_id ) {
 	    	return $attributes;
 	    }
 
-		$attributes['class'] .= ' overlay light-content';
+		// $attributes['class'] .= ' overlay light-content';
+		$attributes['class'] .= ' light-content';
 
 		// Add the image background attributes
-		$attributes = mai_add_image_background_attributes( $attributes, $image_id, $atts['image_size'] );
+		$attributes = mai_add_background_image_attributes( $attributes, $image_id, $atts['image_size'] );
 
 	    return $attributes;
 	}
