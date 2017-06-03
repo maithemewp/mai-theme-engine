@@ -37,12 +37,15 @@ function mai_do_sections_loop() {
 		$args['content_width']	= isset( $section['content_width'] ) ? $section['content_width'] : '';
 		$args['bg']				= isset( $section['bg'] ) ? $section['bg'] : '';
 		$args['image']			= isset( $section['image_id'] ) ? $section['image_id'] : '';
+		$args['styles'] 		= array();
 
-		d( $section );
+		if ( 'none' != $section['overlay'] ) {
+			$args['styles'][] = $section['overlay'];
+		}
 
-		// TODO: Convert to $args['styles']
-		$args['overlay']		= isset( $section['styles']['overlay'] ) ? $section['styles']['overlay'] : 'none';
-		$args['inner']			= isset( $section['styles']['inner'] ) ? $section['styles']['inner'] : 'none';
+		if ( 'none' != $section['inner'] ) {
+			$args['styles'][] = $section['inner'];
+		}
 
 	    echo mai_get_section( $args, $section['content'] );
 

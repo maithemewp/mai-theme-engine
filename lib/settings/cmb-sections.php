@@ -65,17 +65,35 @@ function mai_do_sections_metabox() {
 	    ),
 	) );
 
-	// Style Settings
+	// Overlay
 	$sections->add_group_field( $section, array(
-		'name'				=> __( 'Image Styles', 'mai-pro' ),
-		'id'				=> 'styles',
+		'name'				=> __( 'Overlay Style', 'mai-pro' ),
+		'id'				=> 'overlay',
 		'before_row'		=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
-		'after_row'			=> '</div>',
-		'type'				=> 'multicheck',
+		// 'after_row'			=> '</div>',
+		'type'				=> 'select',
 		'select_all_button'	=> false,
 		'options'			=> array(
-			'overlay'	=> __( 'Add image overlay', 'mai-pro' ),
-			'inner'		=> __( 'Add content inner styling', 'mai-pro' ),
+			'none'				=> __( '- None -', 'mai-pro' ),
+			'overlay-gradient'	=> __( 'Gradient overlay', 'mai-pro' ),
+			'overlay-dark'		=> __( 'Dark overlay', 'mai-pro' ),
+			'overlay-light'		=> __( 'Light overlay', 'mai-pro' ),
+			'inner'				=> __( 'Add content inner styling', 'mai-pro' ),
+		),
+	) );
+
+	// Inner
+	$sections->add_group_field( $section, array(
+		'name'				=> __( 'Inner Style', 'mai-pro' ),
+		'id'				=> 'inner',
+		// 'before_row'		=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
+		'after_row'			=> '</div>',
+		'type'				=> 'select',
+		'select_all_button'	=> false,
+		'options'			=> array(
+			'none'				=> __( '- None -', 'mai-pro' ),
+			'inner-dark'		=> __( 'Dark box', 'mai-pro' ),
+			'inner-light'		=> __( 'Light box', 'mai-pro' ),
 		),
 	) );
 
