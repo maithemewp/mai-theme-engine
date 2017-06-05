@@ -46,7 +46,6 @@ function mai_do_sections_metabox() {
 		'name'		 => __( 'Background Color', 'mai-pro' ),
 		'id'		 => 'bg',
 		'before_row' => '<div class="cmb-section-settings"><div class="mai-row"><div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
-		// 'after_row'	 => '</div>',
 		'type'		 => 'colorpicker',
 		'default'	 => '#fff',
 	) );
@@ -55,7 +54,6 @@ function mai_do_sections_metabox() {
 	$sections->add_group_field( $section, array(
 		'name'			=> __( 'Background Image', 'mai-pro' ),
 		'id'			=> 'image',
-		// 'before_row'	=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'after_row'		=> '</div>',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
@@ -70,15 +68,13 @@ function mai_do_sections_metabox() {
 		'name'				=> __( 'Overlay Style', 'mai-pro' ),
 		'id'				=> 'overlay',
 		'before_row'		=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
-		// 'after_row'			=> '</div>',
 		'type'				=> 'select',
 		'select_all_button'	=> false,
 		'options'			=> array(
 			''			=> __( '- None -', 'mai-pro' ),
-			'gradient'	=> __( 'Gradient overlay', 'mai-pro' ),
-			'light'		=> __( 'Light overlay', 'mai-pro' ),
-			'dark'		=> __( 'Dark overlay', 'mai-pro' ),
-			// 'inner'				=> __( 'Add content inner styling', 'mai-pro' ),
+			'gradient'	=> __( 'Gradient', 'mai-pro' ),
+			'light'		=> __( 'Light', 'mai-pro' ),
+			'dark'		=> __( 'Dark', 'mai-pro' ),
 		),
 	) );
 
@@ -92,8 +88,8 @@ function mai_do_sections_metabox() {
 		'select_all_button'	=> false,
 		'options'			=> array(
 			''		=> __( '- None -', 'mai-pro' ),
-			'light' => __( 'Light box', 'mai-pro' ),
-			'dark'  => __( 'Dark box', 'mai-pro' ),
+			'light' => __( 'Light Box', 'mai-pro' ),
+			'dark'  => __( 'Dark Box', 'mai-pro' ),
 		),
 	) );
 
@@ -102,7 +98,6 @@ function mai_do_sections_metabox() {
 		'name'			=> __( 'Height', 'mai-pro' ),
 		'id'			=> 'height',
 		'before_row'	=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
-		// 'after_row'		=> '</div>',
 		'type'			=> 'select',
 		'default'		=> 'md',
 		'options'		=> array(
@@ -117,7 +112,6 @@ function mai_do_sections_metabox() {
 	$sections->add_group_field( $section, array(
 		'name'				=> __( 'Content Width', 'mai-pro' ),
 		'id'				=> 'content_width',
-		// 'before_row'		=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'after_row'			=> '</div></div></div>',
 		'type'				=> 'select',
 		'show_option_none'	=> __( 'Default (Use Layout Width)', 'mai-pro' ),
