@@ -115,11 +115,11 @@ html {
 }
 
 body {
-	/* background-color: #fafafa; */
 	background-color: rgba(0, 0, 0, 0.025);
 	color: #323232;
 	width: 100%;
 	height: 100%;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 	font-size: 16px;
 	line-height: 1.625;
 	margin: 0;
@@ -1064,27 +1064,18 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 .image-bg,
 .image-bg * {
 	color: #fff;
-	text-shadow: 0 0 6px #323232;
 }
 
 /* ## Inner
 --------------------------------------------- */
 
 .inner {
-	padding: calc(1vw + .5em) calc(1vw + 1em);
-    box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
-	-webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
-}
-
-.inner-light,
-.inner-light *,
-.inner-dark,
-.inner-dark * {
-	text-shadow: none;
+	padding: calc(1vw + .5em) calc(1vw + 1.5em);
 }
 
 .inner-light {
 	background-color: rgba(255, 255, 255, 0.7);
+    -webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
 }
 
 .inner-dark {
@@ -1123,7 +1114,6 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 
 .overlay.overlay-dark::after {
 	background-color: rgba(0, 0, 0, 0.5);
-	text-shadow: 0 0 6px #323232;
 }
 
 .overlay.overlay-gradient::after {
@@ -1131,7 +1121,6 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	background-image: -webkit-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
 	background-image: -o-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
 	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
-	text-shadow: 0 0 6px #323232;
 }
 
 a.overlay::after {
@@ -1145,14 +1134,30 @@ a.overlay:hover::after {
 /* ## Color Contrast
 --------------------------------------------- */
 
+/* these could go 3 levels deep with Section > Overlay > Inner */
+
 .light-content,
-.light-content * {
+.light-content *,
+.dark-content .light-content,
+.dark-content .light-content *,
+.light-content .dark-content .light-content,
+.light-content .dark-content .light-content *,
+.dark-content .dark-content .light-content,
+.dark-content .dark-content .light-content * {
 	color: #fff;
+	text-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
 }
 
 .dark-content,
-.dark-content * {
+.dark-content *,
+.light-content .dark-content,
+.light-content .dark-content *,
+.dark-content .light-content .dark-content,
+.dark-content .light-content .dark-content *,
+.light-content .light-content .dark-content,
+.light-content .light-content .dark-content * {
 	color: #323232;
+	text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
 }
 
 /* ## Avatar
@@ -1894,22 +1899,9 @@ img.alignright,
 /* jQuery handles the position */
 .sticky-header .site-header {
  	width: 100%;
- 	/* top: 0; */
- 	/* left: 0; */
  	z-index: 99;
- }
-
-.admin-bar.sticky-header .site-header {
-	/* top: 32px; */
 }
 
-@media only screen and (max-width: 782px) {
-
-	.admin-bar.sticky-header .site-header {
-		/* top: 46px; */
-	}
-
-}
 
 @media only screen and (min-width: 545px) {
 
@@ -2090,10 +2082,6 @@ img.alignright,
 	line-height: 1;
 	margin-top: 8px;
 	margin-bottom: 8px;
-}
-
-.site-header .widget {
-	/* display: inline-block; */
 }
 
 /* # Site Navigation

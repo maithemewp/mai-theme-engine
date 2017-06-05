@@ -327,7 +327,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
      */
     function _addMenuButtons( toggleButtons ) {
 
-        $('.site-header').find('.wrap > .row').append( toggleButtons.menu ); // add the main nav button
+        $( '.site-header-row' ).append( toggleButtons.menu ); // add the main nav button
 
         if ( $mobileMenus.length > 0 ) {
             $( '.' + maiMenuClass ).find( '.sub-menu' ).before( toggleButtons.submenu ); // add the submenu nav buttons
@@ -529,6 +529,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
     // Make it happen
     $(document).ready(function () {
+
         // Initiate if there is menu content
         if ( $maiMenu.length > 0 ) {
             maiMenu.init();
