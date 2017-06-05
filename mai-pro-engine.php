@@ -145,7 +145,6 @@ final class Mai_Pro_Engine {
 
         /**
          * Include files after theme is loaded, to mimic being run in a child theme.
-         * Priority must be earlier than 10 to make sure 'genesis_initial_layouts' filter fires.
          */
         add_action( 'genesis_setup', function(){
 
@@ -205,7 +204,7 @@ final class Mai_Pro_Engine {
              * to make sure Mai Theme Engine loads CSS first.
              */
             remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
-            add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 14 );
+            add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 999 );
 
             /**
              * Create the initial image sizes.
