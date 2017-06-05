@@ -96,6 +96,7 @@ function mai_get_mobile_menu() {
 		return;
 	}
 
+
 	$menu = '';
 
 	$menu .= '<div id="mai-menu" class="mai-menu">';

@@ -73,11 +73,12 @@ function mai_hide_site_description( $attributes ) {
 add_action( 'genesis_header', 'mai_do_header', 4 );
 function mai_do_header() {
 
-	// These are basically do_action() hooks you can use
+	// These are basically do_action() hooks you can use, with filters (via mai_get_do_action helper) so we can easily remove elements from templates
 	$before	= mai_get_do_action( 'mai_header_before' );
 	$left	= mai_get_do_action( 'mai_header_left' );
 	$right	= mai_get_do_action( 'mai_header_right' );
 	$after	= mai_get_do_action( 'mai_header_after' );
+	$mobile = apply_filters( '_mai_mobile_menu', mai_get_mobile_menu() );
 
 	/**
 	 * Add classes to know when the header has left or right header content.
@@ -110,7 +111,7 @@ function mai_do_header() {
 	 *
 	 * @return  string|HTML  The content
 	 */
-	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $before, $left, $right, $after ) {
+	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $before, $left, $right, $after, $mobile ) {
 
 	    if ( 'open' == $original_output ) {
 
@@ -124,7 +125,7 @@ function mai_do_header() {
 			}
 
 			// Default classes
-			$row['class'] = 'row middle-xs';
+			$row['class'] = 'site-header-row row middle-xs';
 
 			// Justification
 			$row['class'] .= ( $left || $right ) ? ' between-xs' : ' around-xs';
@@ -173,8 +174,7 @@ function mai_do_header() {
 
 			}
 
-
-			$output = $left . $right . $output . $after;
+			$output = $left . $right . $output . $after . $mobile;
 
 	    }
 
