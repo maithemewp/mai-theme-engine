@@ -268,7 +268,7 @@ final class Mai_Shortcodes {
 
     	// Maybe add the inline background color
 	    if ( $args['bg'] ) {
-	    	// ADd the background color
+	    	// Add the background color
 		    $section_atts = mai_add_background_color_attributes( $section_atts, $args['bg'] );
 
 		    if ( ! $args['image'] ) {
@@ -606,7 +606,7 @@ final class Mai_Shortcodes {
             'id'         => '',
             'image'      => '',
             'image_size' => 'one-third',
-            'styles'     => '', // overlay, etc
+            'overlay' 	 => '',
             'style'      => '', // HTML inline style
 		), $atts, 'col' );
 
@@ -619,7 +619,7 @@ final class Mai_Shortcodes {
             'id'         => sanitize_html_class( $atts['id'] ),
             'image'      => absint( $atts['image'] ),
             'image_size' => sanitize_key( $atts['image_size'] ),
-            'styles'     => mai_sanitize_keys( $atts['styles'] ),
+            'overlay' 	 => sanitize_key( $atts['overlay'] ),
             'style'      => esc_attr( $atts['style'] ),
 		);
 
@@ -641,16 +641,17 @@ final class Mai_Shortcodes {
         // If we have an image ID
         if ( $atts['image'] ) {
 
-        	// Add light content class
-            $flex_col['class'] .= ' dark-bg';
+        	// Set dark overlay if we don't have one
+        	$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
 
             // Add the aspect ratio attributes
             $flex_col = mai_add_background_image_attributes( $flex_col, $atts['image'], $atts['image_size'] );
         }
 
         // Maybe add an overlay, typically for image tint/style
-        if ( in_array( 'overlay', $atts['styles'] ) ) {
-            $flex_col['class'] .= ' overlay';
+        // if ( in_array( 'overlay', $atts['styles'] ) ) {
+        if ( $this->has_overlay( $atts ) ) {
+            $flex_col['class'] .= sprintf( ' overlay overlay-%s', $atts['overlay'] );
         }
 
 	    /**
@@ -703,6 +704,7 @@ final class Mai_Shortcodes {
 			'offset'				=> '0',
 			'order'					=> '',
 			'order_by'				=> '',
+			'overlay'				=> '',
 			'parent'				=> '',
 			'row_class'				=> '',
 			'show'					=> 'image, title', // image, title, add_to_cart, author, content, date, excerpt, image, more_link, price, meta, title
@@ -761,6 +763,7 @@ final class Mai_Shortcodes {
 			'offset'				=> absint( $atts['offset'] ),
 			'order'					=> sanitize_key( $atts['order'] ),
 			'order_by'				=> sanitize_key( $atts['order_by'] ),
+			'overlay'				=> sanitize_key( $atts['overlay'] ),
 			'parent'				=> $atts['parent'], // Validated later, after check for 'current'
 			'row_class'				=> mai_sanitize_html_classes( $atts['row_class'] ),
 			'show'					=> mai_sanitize_keys( $atts['show'] ),
@@ -933,32 +936,60 @@ final class Mai_Shortcodes {
 
 	function get_entry_wrap_open( $atts, $object, $has_image_bg ) {
 
-		$flex_entry = array();
+		$entry_atts = array();
 
 		// Add href if linking element
 		if ( $this->is_linking_element( $atts, $has_image_bg ) ) {
-			$flex_entry['href'] = $this->get_entry_link( $atts, $object );
+			$entry_atts['href'] = $this->get_entry_link( $atts, $object );
 		}
 
 		// Set the entry classes
-		$flex_entry['class'] = $this->get_entry_classes( $atts );
+		$entry_atts['class'] = $this->get_entry_classes( $atts );
 
 		// Add the align classes
-	    $flex_entry['class'] = $this->add_entry_align_classes( $flex_entry['class'], $atts );
+	    $entry_atts['class'] = $this->add_entry_align_classes( $entry_atts['class'], $atts );
+
+	    $light_content = false;
 
 		if ( $this->is_image_bg( $atts ) && $has_image_bg ) {
 			// Get the object ID
 			$object_id = $this->get_object_id( $atts, $object );
 			if ( $object_id ) {
-				$flex_entry = $this->add_bg_image( $flex_entry, $atts, $object_id );
+				$entry_atts		 = $this->add_bg_image( $entry_atts, $atts, $object_id );
+				$light_content	 = true;
+	        	// Set dark overlay if we don't have one
+				$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
 			}
 		}
+
+        if ( $this->has_overlay( $atts ) ) {
+
+			$entry_atts['class'] .= ' overlay';
+
+			// Only add overlay classes if we have a valid overlay type
+		    switch ( $atts['overlay'] ) {
+		        case 'gradient':
+		        	$entry_atts['class'] .= ' overlay-gradient';
+		        	$light_content = true;
+		            break;
+		        case 'light':
+		        	$entry_atts['class'] .= ' overlay-light';
+		            break;
+		        case 'dark':
+		        	$entry_atts['class'] .= ' overlay-dark';
+		        	$light_content = true;
+		            break;
+		    }
+        }
+
+	    // Shade class
+	    $entry_atts['class'] .= $light_content ? ' light-content' : ' dark-content';
 
 		/**
 		 * Main entry col wrap.
 		 * If we use genesis_attr( 'entry' ) then it resets the classes.
 		 */
-		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts, $has_image_bg ), genesis_attr( 'flex-entry', $flex_entry ) );
+		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts, $has_image_bg ), genesis_attr( 'flex-entry', $entry_atts ) );
 	}
 
 	function get_entry_wrap_close( $atts, $has_image_bg ) {
@@ -1811,7 +1842,7 @@ final class Mai_Shortcodes {
 	    }
 
 		// $attributes['class'] .= ' overlay dark-bg';
-		$attributes['class'] .= ' dark-bg';
+		// $attributes['class'] .= ' dark-bg';
 
 		// Add the image background attributes
 		$attributes = mai_add_background_image_attributes( $attributes, $image_id, $atts['image_size'] );
