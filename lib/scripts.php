@@ -8,7 +8,7 @@ function mai_enqueue_scripts() {
 	$suffix = mai_get_suffix();
 
 	// Enqueue the main global js file
-	wp_enqueue_script( 'mai-theme-script', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/js/mai-theme{$suffix}.js", array('jquery'), MAI_PRO_ENGINE_VERSION, true );
+	wp_enqueue_script( 'mai-theme-script', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/mai-theme{$suffix}.js", array('jquery'), MAI_PRO_ENGINE_VERSION, true );
 	wp_localize_script( 'mai-theme-script', 'maiVars', array(
 		'mainMenu'		=> __( 'Menu', 'genesis' ),
 		'subMenu'		=> __( 'Menu', 'genesis' ),
