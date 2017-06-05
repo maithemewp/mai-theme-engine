@@ -31,8 +31,6 @@ function mai_do_sections_loop() {
 	// Loop through each section
 	foreach ( $sections as $section ) {
 
-		d( $section );
-
 		// Set the args
 		$args['title']			= isset( $section['title'] ) ? $section['title'] : '';
 		$args['height']			= isset( $section['height'] ) ? $section['height'] : '';

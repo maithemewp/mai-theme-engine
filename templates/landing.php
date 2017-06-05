@@ -8,10 +8,11 @@ function mai_landing_page_body_class( $classes ) {
 }
 
 // Remove site header elements
-add_filter( 'mai_header_before_content', '__return_false' );
-add_filter( 'mai_header_left_content', '__return_false' );
-add_filter( 'mai_header_right_content', '__return_false' );
-add_filter( 'mai_mobile_menu', '__return_false' );
+add_filter( '_mai_header_before', '__return_false' );
+add_filter( '_mai_header_left', '__return_false' );
+add_filter( '_mai_header_right', '__return_false' );
+add_filter( '_mai_header_after', '__return_false' );
+add_filter( '_mai_mobile_menu', '__return_false' );
 
 // Remove navigation
 remove_action( 'genesis_after_header', 'genesis_do_nav' );
