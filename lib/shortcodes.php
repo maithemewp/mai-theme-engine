@@ -641,8 +641,11 @@ final class Mai_Shortcodes {
         // If we have an image ID
         if ( $atts['image'] ) {
 
-        	// If we have content
-        	if ( null != $content ) {
+        	/**
+        	 * If we have content.
+        	 * Need to thoroughly check, because testing returned string of nbsp.
+        	 */
+        	if ( ! empty( trim( $content ) ) ) {
 	        	// Set dark overlay if we don't have one
 	        	$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
         	}

@@ -1,3 +1,6 @@
+#### 0.0.1.beta.10
+* Hotfix image overlay when no content on [col], when nbsp in content
+
 #### 0.0.1.beta.9
 * Hotfix image overlay when no content on [col]
 * Hotfix for button text-shadow in section area
