@@ -74,11 +74,11 @@ function mai_do_sections_metabox() {
 		'type'				=> 'select',
 		'select_all_button'	=> false,
 		'options'			=> array(
-			'none'				=> __( '- None -', 'mai-pro' ),
-			'overlay-gradient'	=> __( 'Gradient overlay', 'mai-pro' ),
-			'overlay-dark'		=> __( 'Dark overlay', 'mai-pro' ),
-			'overlay-light'		=> __( 'Light overlay', 'mai-pro' ),
-			'inner'				=> __( 'Add content inner styling', 'mai-pro' ),
+			''			=> __( '- None -', 'mai-pro' ),
+			'gradient'	=> __( 'Gradient overlay', 'mai-pro' ),
+			'light'		=> __( 'Light overlay', 'mai-pro' ),
+			'dark'		=> __( 'Dark overlay', 'mai-pro' ),
+			// 'inner'				=> __( 'Add content inner styling', 'mai-pro' ),
 		),
 	) );
 
@@ -91,9 +91,9 @@ function mai_do_sections_metabox() {
 		'type'				=> 'select',
 		'select_all_button'	=> false,
 		'options'			=> array(
-			'none'				=> __( '- None -', 'mai-pro' ),
-			'inner-dark'		=> __( 'Dark box', 'mai-pro' ),
-			'inner-light'		=> __( 'Light box', 'mai-pro' ),
+			''		=> __( '- None -', 'mai-pro' ),
+			'light' => __( 'Light box', 'mai-pro' ),
+			'dark'  => __( 'Dark box', 'mai-pro' ),
 		),
 	) );
 

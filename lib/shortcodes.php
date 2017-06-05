@@ -215,10 +215,10 @@ final class Mai_Shortcodes {
 	        'align'         => mai_sanitize_keys( $args['align'] ), // left, center, right
 	        'bg' 			=> sanitize_hex_color( $args['bg'] ), // 3 or 6 dig hex color
 	        'image'         => absint( $args['image'] ),
-	        'styles'		=> mai_sanitize_keys( $args['styles'] ), // overlay-gradient, overlay-dark, overlay-light
+	        'overlay'       => sanitize_key( $args['overlay'] ),
+	        'inner'         => sanitize_key( $args['inner'] ),
 	        'title'         => sanitize_text_field( $args['title'] ),
 	        'title_wrap'    => sanitize_key( $args['title_wrap'] ),
-	        // 'wrap'          => filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ),
 	        'content_width' => sanitize_key( $args['content_width'] ),
 	        'height'        => sanitize_key( $args['height'] ),
 	    );
@@ -228,6 +228,10 @@ final class Mai_Shortcodes {
 
 	    // Start all attributes as empty array
 	    $section_atts = $wrap_atts = $inner_atts = array();
+
+	    // Check if we have valid overlay and inner values
+		$has_overlay = $this->has_overlay( $args );
+		$has_inner	 = $this->has_inner( $args );
 
 	    // Maybe add section id
 	    if ( $args['id'] ) {
@@ -276,142 +280,143 @@ final class Mai_Shortcodes {
 	    // If we have an image ID
 	    if ( $args['image'] ) {
 
-	        // If no inner, add light-content class
-	    	// if ( ! in_array( 'inner', $args['styles'] ) ) {
-	            // $section_atts['class'] .= ' light-content';
-	        // }
-
 	        // Add the aspect ratio attributes
 	        $section_atts = mai_add_background_image_attributes( $section_atts, $args['image'], 'banner' );
 	    }
 
-	    // Maybe add an overlay, typically for image tint/style
-	    // if ( in_array( 'overlay', $args['styles'] ) ) {
-	        // $section_atts['class'] .= ' overlay';
-	    // }
-
-	    $light_content = false;
-
-	    $has_overlay = $this->has_overlay( $args );
-	    $has_inner 	 = $this->has_inner( $args );
 
 		if ( $has_overlay ) {
 
-		    if ( in_array( 'overlay-light', $args['styles'] ) ) {
-		        $section_atts['class'] .= ' overlay overlay-light';
-		    }
-		    elseif ( in_array( 'overlay-dark', $args['styles'] ) ) {
-		    	$light_content = true;
-		        $section_atts['class'] .= ' overlay overlay-dark';
-		    }
-		    elseif ( in_array( 'overlay-gradient', $args['styles'] ) ) {
-		    	$light_content = true;
-		        $section_atts['class'] .= ' overlay overlay-gradient';
+			$section_atts['class'] .= ' overlay';
+
+		    $light_content = false;
+
+			// Only add overlay classes if we have a valid overlay type
+		    switch ( $args['overlay'] ) {
+		        case 'gradient':
+		        	$section_atts['class'] .= ' overlay-gradient';
+		        	$light_content = true;
+		            break;
+		        case 'light':
+		        	$section_atts['class'] .= ' overlay-light';
+		            break;
+		        case 'dark':
+		        	$section_atts['class'] .= ' overlay-dark';
+		        	$light_content = true;
+		            break;
 		    }
 
+		    /**
+		     * Add content shade class if we don't have inner.
+		     * Inner will handle these classes if we have it.
+		     */
 		    if ( ! $has_inner ) {
 		    	$section_atts['class'] .= $light_content ? ' light-content' : ' dark-content';
 		    }
 
 		}
 
-	    // Maybe add a wrap, typically to contain content over the image
-	    // if ( $args['wrap'] ) {
+        $wrap_atts['class'] = 'wrap';
 
-	        $wrap_atts['class'] = 'wrap';
+        // Wrap height
+        if ( $args['height'] ) {
 
-	        // Wrap height
-	        if ( $args['height'] ) {
+            switch ( $args['height'] ) {
+                case 'auto';
+                    $wrap_atts['class'] .= ' height-auto';
+                    break;
+                case 'sm':
+                case 'small';
+                    $wrap_atts['class'] .= ' height-sm';
+                    break;
+                case 'md':
+                case 'medium':
+                    $wrap_atts['class'] .= ' height-md';
+                    break;
+                case 'lg':
+                case 'large':
+                    $wrap_atts['class'] .= ' height-lg';
+                    break;
+            }
 
-	            switch ( $args['height'] ) {
-	                case 'auto';
-	                    $wrap_atts['class'] .= ' height-auto';
-	                    break;
-	                case 'sm':
-	                case 'small';
-	                    $wrap_atts['class'] .= ' height-sm';
-	                    break;
-	                case 'md':
-	                case 'medium':
-	                    $wrap_atts['class'] .= ' height-md';
-	                    break;
-	                case 'lg':
-	                case 'large':
-	                    $wrap_atts['class'] .= ' height-lg';
-	                    break;
-	            }
+        }
 
-	        }
+        // Wrap content width
+        if ( $args['content_width'] ) {
 
-	        // Wrap content width
-	        if ( $args['content_width'] ) {
+            switch ( $args['content_width'] ) {
+                case 'auto':
+                    $wrap_atts['class'] .= ' width-auto';
+                    break;
+                case 'xs':
+                case 'extra-small':
+                    $wrap_atts['class'] .= ' width-xs';
+                    break;
+                case 'sm':
+                case 'small';
+                    $wrap_atts['class'] .= ' width-sm';
+                    break;
+                case 'md':
+                case 'medium':
+                    $wrap_atts['class'] .= ' width-md';
+                    break;
+                case 'lg':
+                case 'large':
+                    $wrap_atts['class'] .= ' width-lg';
+                    break;
+                case 'xl':
+                case 'extra-large':
+                    $wrap_atts['class'] .= ' width-xl';
+                    break;
+                case 'full':
+                    $wrap_atts['class'] .= ' width-full';
+                    break;
+            }
 
-	            switch ( $args['content_width'] ) {
-	                case 'auto':
-	                    $wrap_atts['class'] .= ' width-auto';
-	                    break;
-	                case 'xs':
-	                case 'extra-small':
-	                    $wrap_atts['class'] .= ' width-xs';
-	                    break;
-	                case 'sm':
-	                case 'small';
-	                    $wrap_atts['class'] .= ' width-sm';
-	                    break;
-	                case 'md':
-	                case 'medium':
-	                    $wrap_atts['class'] .= ' width-md';
-	                    break;
-	                case 'lg':
-	                case 'large':
-	                    $wrap_atts['class'] .= ' width-lg';
-	                    break;
-	                case 'xl':
-	                case 'extra-large':
-	                    $wrap_atts['class'] .= ' width-xl';
-	                    break;
-	                case 'full':
-	                    $wrap_atts['class'] .= ' width-full';
-	                    break;
-	            }
+        } else {
 
-	        } else {
+            // Add width classes based on layout
+            switch ( genesis_site_layout() ) {
+                case 'xs-content':
+                    $wrap_atts['class'] .= ' width-xs';
+                    break;
+                case 'sm-content':
+                    $wrap_atts['class'] .= ' width-sm';
+                    break;
+                case 'md-content':
+                    $wrap_atts['class'] .= ' width-md';
+                    break;
+                case 'lg-content':
+                    $wrap_atts['class'] .= ' width-lg';
+                    break;
+            }
 
-	            // Add width classes based on layout
-	            switch ( genesis_site_layout() ) {
-	                case 'xs-content':
-	                    $wrap_atts['class'] .= ' width-xs';
-	                    break;
-	                case 'sm-content':
-	                    $wrap_atts['class'] .= ' width-sm';
-	                    break;
-	                case 'md-content':
-	                    $wrap_atts['class'] .= ' width-md';
-	                    break;
-	                case 'lg-content':
-	                    $wrap_atts['class'] .= ' width-lg';
-	                    break;
-	            }
+        }
 
-	        }
-
-	        $wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts ) );
-	    // }
+        $wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts ) );
 
 	    // Maybe add an inner wrap, typically for content width/style
 		if ( $has_inner ) {
 
+			$inner_atts['class'] = ' inner';
+
 			$light_content = false;
 
-		    if ( in_array( 'inner-light', $args['styles'] ) ) {
-		        $inner_atts['class'] = 'inner inner-light';
-		    } elseif ( in_array( 'inner-dark', $args['styles'] ) ) {
-		    	$light_content = true;
-		        $inner_atts['class'] = 'inner inner-dark';
+		    switch ( $args['inner'] ) {
+		        case 'light':
+		        	$inner_atts['class'] .= ' inner-light';
+		            break;
+		        case 'dark':
+		        	$inner_atts['class'] .= ' inner-dark';
+		        	$light_content = true;
+		            break;
 		    }
 
+		    // Add content shade classes
 	    	$inner_atts['class'] .= $light_content ? ' light-content' : ' dark-content';
-	        $inner               = sprintf( '<div %s>', genesis_attr( 'section-inner', $inner_atts ) );
+
+	    	// Build the inner HTML
+	        $inner = sprintf( '<div %s>', genesis_attr( 'section-inner', $inner_atts ) );
 
 		}
 
@@ -451,15 +456,15 @@ final class Mai_Shortcodes {
 	    // Start all element variables as empty string
 	    $title = $wrap = $inner = '';
 
-	    // Maybe close wrap
-	    // if ( filter_var( $args['wrap'], FILTER_VALIDATE_BOOLEAN ) ) {
-	        $wrap = '</div>';
-	    // }
+	    // Check if we have valid inner values
+		$has_inner = $this->has_inner( $args );
 
 	    // Maybe close inner wrap
-	    if ( in_array( 'inner', mai_sanitize_keys( $args['styles'] ) ) ) {
-	        $outer = '</div>';
+	    if ( $has_inner ) {
+	        $inner = '</div>';
 	    }
+
+        $wrap = '</div>';
 
 	    // Build the closing markup, in reverse order so the close appropriately
 	    return sprintf( '%s%s</%s>',
@@ -478,7 +483,8 @@ final class Mai_Shortcodes {
 	        'align'         => '',
 	        'bg'			=> '',
 	        'image'         => '',
-	        'styles'        => '',
+	        'overlay' 		=> '',
+	        'inner' 		=> '',
 	        'title'         => '',
 	        'title_wrap'    => 'h2',
 	        'wrap'          => true,
@@ -636,7 +642,7 @@ final class Mai_Shortcodes {
         if ( $atts['image'] ) {
 
         	// Add light content class
-            $flex_col['class'] .= ' light-content';
+            $flex_col['class'] .= ' dark-bg';
 
             // Add the aspect ratio attributes
             $flex_col = mai_add_background_image_attributes( $flex_col, $atts['image'], $atts['image_size'] );
@@ -1691,11 +1697,13 @@ final class Mai_Shortcodes {
 	}
 
 	function has_overlay( $atts ) {
-		return array_intersect( array( 'overlay-light', 'overlay-dark', 'overlay-gradient' ), $atts['styles'] );
+		$valid_overlay_values = array( 'gradient', 'light', 'dark' );
+		return in_array( $atts['overlay'], $valid_overlay_values );
 	}
 
 	function has_inner( $atts ) {
-		return array_intersect( array( 'inner-light', 'inner-dark' ), $atts['styles'] );
+		$valid_inner_values = array( 'light', 'dark' );
+		return in_array( $atts['inner'], $valid_inner_values );
 	}
 
 	function is_entry_header_image( $atts ) {
@@ -1802,8 +1810,8 @@ final class Mai_Shortcodes {
 	    	return $attributes;
 	    }
 
-		// $attributes['class'] .= ' overlay light-content';
-		$attributes['class'] .= ' light-content';
+		// $attributes['class'] .= ' overlay dark-bg';
+		$attributes['class'] .= ' dark-bg';
 
 		// Add the image background attributes
 		$attributes = mai_add_background_image_attributes( $attributes, $image_id, $atts['image_size'] );

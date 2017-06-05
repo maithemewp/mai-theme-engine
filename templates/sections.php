@@ -31,21 +31,16 @@ function mai_do_sections_loop() {
 	// Loop through each section
 	foreach ( $sections as $section ) {
 
+		d( $section );
+
 		// Set the args
 		$args['title']			= isset( $section['title'] ) ? $section['title'] : '';
 		$args['height']			= isset( $section['height'] ) ? $section['height'] : '';
 		$args['content_width']	= isset( $section['content_width'] ) ? $section['content_width'] : '';
 		$args['bg']				= isset( $section['bg'] ) ? $section['bg'] : '';
 		$args['image']			= isset( $section['image_id'] ) ? $section['image_id'] : '';
-		$args['styles'] 		= array();
-
-		if ( 'none' != $section['overlay'] ) {
-			$args['styles'][] = $section['overlay'];
-		}
-
-		if ( 'none' != $section['inner'] ) {
-			$args['styles'][] = $section['inner'];
-		}
+		$args['overlay']		= isset( $section['overlay'] ) ? $section['overlay'] : '';
+		$args['inner']			= isset( $section['inner'] ) ? $section['inner'] : '';
 
 	    echo mai_get_section( $args, $section['content'] );
 
