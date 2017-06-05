@@ -204,7 +204,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	 */
 
 	$wp_customize->add_setting( 'banner_overlay', array(
-		'default'           => 0,
+		'default'           => '',
 		'sanitize_callback' => 'sanitize_text_field',
 	) );
 
@@ -214,13 +214,12 @@ function mai_register_customizer_settings( $wp_customize ) {
 		'priority'	=> 5,
 		'type'		=> 'select',
 		'choices'	=> array(
-			'none'		=> __( '- None -', 'genesis' ),
+			''			=> __( '- None -', 'genesis' ),
 			'light'		=> __( 'Light Overlay', 'mai-pro' ),
 			'dark'		=> __( 'Dark Overlay', 'mai-pro' ),
 			'gradient'	=> __( 'Gradient Overlay', 'mai-pro' ),
 		),
 	) );
-
 
 	/*****************************************************
 	 * Enable Banner Inner styling
@@ -239,7 +238,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	// ) );
 
 	$wp_customize->add_setting( 'banner_inner', array(
-		'default'           => 'none',
+		'default'           => '',
 		'sanitize_callback' => 'sanitize_text_field',
 	) );
 
@@ -249,7 +248,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 		'priority'	=> 5,
 		'type'		=> 'select',
 		'choices'	=> array(
-			'none'	=> __( '- None -', 'genesis' ),
+			''		=> __( '- None -', 'genesis' ),
 			'light'	=> __( 'Light Box', 'mai-pro' ),
 			'dark'	=> __( 'Dark Box', 'mai-pro' ),
 		),
