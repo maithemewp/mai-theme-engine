@@ -1,14 +1,4 @@
 /**
- * Swap out no-js for js body class
- */
-( function() {
-    var c = document.body.className;
-    c = c.replace( /no-js/, 'js' );
-    document.body.className = c;
-})();
-
-
-/**
  * Handle spacing for sticky-header and shrink-header.
  *
  * @version  1.0.0
