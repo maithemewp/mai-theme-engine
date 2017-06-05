@@ -641,8 +641,11 @@ final class Mai_Shortcodes {
         // If we have an image ID
         if ( $atts['image'] ) {
 
-        	// Set dark overlay if we don't have one
-        	$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
+        	// If we have content
+        	if ( null != $content ) {
+	        	// Set dark overlay if we don't have one
+	        	$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
+        	}
 
             // Add the aspect ratio attributes
             $flex_col = mai_add_background_image_attributes( $flex_col, $atts['image'], $atts['image_size'] );

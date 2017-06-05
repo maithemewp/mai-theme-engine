@@ -1,3 +1,7 @@
+#### 0.0.1.beta.9
+* Hotfix image overlay when no content on [col]
+* Hotfix for button text-shadow in section area
+
 #### 0.0.1.beta.8
 * Add 'Sections' page template
 * Add background color support for sections (via new template and 'bg' shortcode attribute)

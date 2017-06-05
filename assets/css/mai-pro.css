@@ -1138,25 +1138,25 @@ a.overlay:hover::after {
 /* these could go 3 levels deep with Section > Overlay > Inner */
 
 .light-content,
-.light-content *,
+.light-content *:not(.button),
 .dark-content .light-content,
-.dark-content .light-content *,
+.dark-content .light-content *:not(.button),
 .light-content .dark-content .light-content,
-.light-content .dark-content .light-content *,
+.light-content .dark-content .light-content *:not(.button),
 .dark-content .dark-content .light-content,
-.dark-content .dark-content .light-content * {
+.dark-content .dark-content .light-content *:not(.button) {
 	color: #fff;
 	text-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
 }
 
 .dark-content,
-.dark-content *,
+.dark-content *:not(.button),
 .light-content .dark-content,
-.light-content .dark-content *,
+.light-content .dark-content *:not(.button),
 .dark-content .light-content .dark-content,
-.dark-content .light-content .dark-content *,
+.dark-content .light-content .dark-content *:not(.button),
 .light-content .light-content .dark-content,
-.light-content .light-content .dark-content * {
+.light-content .light-content .dark-content *:not(.button) {
 	color: #323232;
 	text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
 }
