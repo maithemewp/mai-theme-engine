@@ -808,6 +808,7 @@ td {
 
 .site-inner,
 .site-header .wrap,
+.mai-aec .wrap,
 .nav-primary .wrap,
 .nav-secondary .wrap,
 .footer-widgets .wrap,
@@ -1815,6 +1816,14 @@ img.alignright,
 
 /* # Plugins
 ---------------------------------------------------------------------------------------------------- */
+
+/* ## Mai - Ads and Extra Content
+--------------------------------------------- */
+
+.mai-aec .wrap {
+	padding-top: 16px;
+	padding-bottom: 16px;
+}
 
 /* ## Jetpack
 --------------------------------------------- */
