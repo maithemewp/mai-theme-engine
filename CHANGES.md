@@ -1,3 +1,10 @@
+#### 0.0.1.beta.8
+* Add 'Sections' page template
+* Add background color support for sections (via new template and 'bg' shortcode attribute)
+* Add overlay and inner style options instead of just on/off (true/false)
+* More efficient site-header build
+* Add site-header hooks to prepare for TBA addon
+
 #### 0.0.1.beta.7
 * Top margin on flex-grid to match flex-entry bottom margin
 
