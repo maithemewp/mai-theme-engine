@@ -1,3 +1,5 @@
+* Remove duplicate aspect-ratio class from banner
+
 #### 0.0.1.beta.10
 * Hotfix image overlay when no content on [col], when nbsp in content
 
