@@ -16,7 +16,7 @@ function mai_singular_body_class( $classes ) {
  *
  * @link https://www.paulirish.com/2009/avoiding-the-fouc-v3/
  */
-add_filter('body_class', 'mai_js_detection_body_class');
+add_filter( 'body_class', 'mai_js_detection_body_class' );
 function mai_js_detection_body_class($classes) {
     $classes[] = 'no-js';
     return $classes;
@@ -26,11 +26,23 @@ function mai_js_detection_body_class($classes) {
  * Remove the .no-js class from the html element via JS.
  * This allows styles targetting browsers without JS.
  *
- * Props Sal Ferrarello for introducing me to this solution.
+ * Props Gary Jones for the initial push to start doing this
+ * Props Sal Ferrarello for introducing me to this solution
  *
+ * @link https://github.com/GaryJones/genesis-js-no-js/
  * @link https://www.paulirish.com/2009/avoiding-the-fouc-v3/
  */
 add_action( 'genesis_before', 'mai_js_detection_script', 1 );
 function mai_js_detection_script() {
-	echo "<script>(function(H){H.className=H.className.replace(/\bno-js\b/,'js')})(document.documentElement)</script>";
+    ?>
+    <script type="text/javascript">
+        //<![CDATA[
+        (function(){
+        var c = document.body.className;
+        c = c.replace(/no-js/, 'js');
+        document.body.className = c;
+        })();
+        //]]>
+    </script>
+    <?php
 }
