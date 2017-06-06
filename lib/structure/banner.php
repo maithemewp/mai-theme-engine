@@ -47,7 +47,7 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
     $args = array(
-		'class'			=> 'banner-area width-full aspect-ratio',
+		'class'			=> 'banner-area width-full',
 		'wrap'			=> true,
 		'bg' 			=> get_theme_mod( 'banner_background_color', '#f1f1f1' ),
 		'overlay' 		=> get_theme_mod( 'banner_overlay' ),
