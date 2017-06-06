@@ -1,5 +1,8 @@
+#### 0.0.1.beta.11
+* Breaking Change: Active child theme requires `add_theme_support( 'mai-pro-engine' );` to activate Mai Pro Engine plugin
 * Fix: Remove duplicate aspect-ratio class from banner
 * Fix: Process entry meta shortcodes in [grid]
+* Fix: no-js/js inline script not working
 
 #### 0.0.1.beta.10
 * Hotfix image overlay when no content on [col], when nbsp in content
