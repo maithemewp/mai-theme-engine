@@ -1,4 +1,5 @@
-* Remove duplicate aspect-ratio class from banner
+* Fix: Remove duplicate aspect-ratio class from banner
+* Fix: Process entry meta shortcodes in [grid]
 
 #### 0.0.1.beta.10
 * Hotfix image overlay when no content on [col], when nbsp in content

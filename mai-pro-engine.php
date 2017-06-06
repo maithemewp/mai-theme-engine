@@ -161,11 +161,11 @@ final class Mai_Pro_Engine {
             add_theme_support( 'genesis-responsive-viewport' );
 
             add_theme_support( 'genesis-menus', array(
-                'primary'       => __( 'Primary Menu', 'mai-pro' ),
-                'header_left'   => __( 'Header Left Menu', 'mai-pro' ),
-                'header_right'  => __( 'Header Right Menu', 'mai-pro' ),
-                'secondary'     => __( 'Footer Menu', 'mai-pro' ),
-                'mobile'        => __( 'Mobile Menu', 'mai-pro' ),
+                'primary'       => __( 'Primary Menu', 'mai-pro-engine' ),
+                'header_left'   => __( 'Header Left Menu', 'mai-pro-engine' ),
+                'header_right'  => __( 'Header Right Menu', 'mai-pro-engine' ),
+                'secondary'     => __( 'Footer Menu', 'mai-pro-engine' ),
+                'mobile'        => __( 'Mobile Menu', 'mai-pro-engine' ),
             ) );
 
             // Add support for structural wraps
@@ -284,6 +284,18 @@ final class Mai_Pro_Engine {
          */
         add_action( 'after_setup_theme', function(){
 
+            /**
+             * Deactivate theme and show notice
+             * if Mai Pro Engine is not supported in the child theme.
+             *
+             * @link https://10up.com/blog/2012/wordpress-plug-in-self-deactivation/
+             */
+            if ( ! current_theme_supports( 'mai-pro-engine' ) ) {
+                add_action( 'admin_init', array( $this, 'deactivate_plugin' ) );
+                add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+                return;
+            }
+
             // Lib
             foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
             foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
@@ -292,6 +304,18 @@ final class Mai_Pro_Engine {
 
         }, 8 );
 
+    }
+
+    function deactivate_plugin() {
+        deactivate_plugins( plugin_basename( __FILE__ ) );
+    }
+
+    function admin_notices() {
+        printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', __( '<strong>Your theme does not support the Mai Pro Engine plugin</strong>. As a result, this plugin has been deactivated.', 'mai-pro-engine' ) );
+        // Remove "Plugin activated" notice
+        if ( isset( $_GET['activate'] ) ) {
+            unset( $_GET['activate'] );
+        }
     }
 
 }
