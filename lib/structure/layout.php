@@ -41,17 +41,17 @@ function mai_register_layouts() {
 
     // Medium Content
     genesis_register_layout( 'md-content', array(
-        'label' => __( 'Medium Content', 'mai-pro' ),
+        'label' => __( 'Medium Content', 'mai-pro-engine' ),
         'img'   => $dir . 'mdc.gif',
     ) );
     // Small Content
     genesis_register_layout( 'sm-content', array(
-        'label' => __( 'Small Content', 'mai-pro' ),
+        'label' => __( 'Small Content', 'mai-pro-engine' ),
         'img'   => $dir . 'smc.gif',
     ) );
     // Extra Small Content
     genesis_register_layout( 'xs-content', array(
-        'label' => __( 'Extra Small Content', 'mai-pro' ),
+        'label' => __( 'Extra Small Content', 'mai-pro-engine' ),
         'img'   => $dir . 'xsc.gif',
     ) );
 

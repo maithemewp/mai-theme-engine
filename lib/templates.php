@@ -13,9 +13,9 @@
  */
 add_filter( 'theme_page_templates', 'mai_plugin_theme_page_templates' );
 function mai_plugin_theme_page_templates( $page_templates ) {
-	$page_templates['landing.php']	= __( 'Landing Page', 'mai-pro' );
-	$page_templates['sections.php']	= __( 'Sections', 'mai-pro' );
-	$page_templates['sitemap.php']	= __( 'Sitemap', 'mai-pro' );
+	$page_templates['landing.php']	= __( 'Landing Page', 'mai-pro-engine' );
+	$page_templates['sections.php']	= __( 'Sections', 'mai-pro-engine' );
+	$page_templates['sitemap.php']	= __( 'Sitemap', 'mai-pro-engine' );
 	return $page_templates;
 }
 

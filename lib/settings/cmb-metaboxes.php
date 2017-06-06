@@ -14,14 +14,14 @@
 add_action( 'cmb2_admin_init', 'mai_cmb2_add_metaboxes' );
 function mai_cmb2_add_metaboxes() {
 
-	$metabox_title = __( 'Mai Content Archives', 'mai-pro' );
-	$upload_label  = __( 'Banner Image', 'mai-pro' ); // Hidden on posts since show_names is false
-	$button_text   = __( 'Add Banner Image', 'mai-pro' );
+	$metabox_title = __( 'Mai Content Archives', 'mai-pro-engine' );
+	$upload_label  = __( 'Banner Image', 'mai-pro-engine' ); // Hidden on posts since show_names is false
+	$button_text   = __( 'Add Banner Image', 'mai-pro-engine' );
 
 	// Posts/Pages/CPTs
     $post = new_cmb2_box( array(
 		'id'			=> 'mai_post_banner',
-		'title'			=> __( 'Banner Area', 'mai-pro' ),
+		'title'			=> __( 'Banner Area', 'mai-pro-engine' ),
 		'object_types'	=> get_post_types( array('public' => true ), 'names' ),
 		'context'		=> 'side',
 		'priority'		=> 'low',

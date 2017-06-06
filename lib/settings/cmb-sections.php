@@ -21,7 +21,7 @@ function mai_do_sections_metabox() {
 	// Posts/Pages/CPTs
 	$sections = new_cmb2_box( array(
 		'id'			=> 'mai_sections',
-		'title'			=> __( 'Sections', 'mai-pro' ),
+		'title'			=> __( 'Sections', 'mai-pro-engine' ),
 		'object_types'	=> array( 'page' ),
 		'context'		=> 'normal',
 		'priority'		=> 'high',
@@ -34,16 +34,16 @@ function mai_do_sections_metabox() {
 	    'type'        => 'group',
 	    'repeatable'  => true,
 	    'options'     => array(
-			'group_title'	=> __( 'Section #{#}', 'mai-pro' ),
-			'add_button'	=> __( 'Add Section', 'mai-pro' ),
-			'remove_button'	=> __( 'Remove Section', 'mai-pro' ),
+			'group_title'	=> __( 'Section #{#}', 'mai-pro-engine' ),
+			'add_button'	=> __( 'Add Section', 'mai-pro-engine' ),
+			'remove_button'	=> __( 'Remove Section', 'mai-pro-engine' ),
 			'sortable'		=> true,
 	    ),
 	) );
 
 	// Background Color
 	$sections->add_group_field( $section, array(
-		'name'		 => __( 'Background Color', 'mai-pro' ),
+		'name'		 => __( 'Background Color', 'mai-pro-engine' ),
 		'id'		 => 'bg',
 		'before_row' => '<div class="cmb-section-settings"><div class="mai-row"><div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'type'		 => 'colorpicker',
@@ -52,76 +52,76 @@ function mai_do_sections_metabox() {
 
 	// Background Image
 	$sections->add_group_field( $section, array(
-		'name'			=> __( 'Background Image', 'mai-pro' ),
+		'name'			=> __( 'Background Image', 'mai-pro-engine' ),
 		'id'			=> 'image',
 		'after_row'		=> '</div>',
 		'type'			=> 'file',
 		'preview_size'	=> 'one-third',
 		'options'		=> array( 'url' => false ),
 		'text'			=> array(
-	        'add_upload_file_text' => __( 'Add Image', 'mai-pro' ),
+	        'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
 	    ),
 	) );
 
 	// Overlay
 	$sections->add_group_field( $section, array(
-		'name'				=> __( 'Overlay Style', 'mai-pro' ),
+		'name'				=> __( 'Overlay Style', 'mai-pro-engine' ),
 		'id'				=> 'overlay',
 		'before_row'		=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'type'				=> 'select',
 		'select_all_button'	=> false,
 		'options'			=> array(
-			''			=> __( '- None -', 'mai-pro' ),
-			'gradient'	=> __( 'Gradient', 'mai-pro' ),
-			'light'		=> __( 'Light', 'mai-pro' ),
-			'dark'		=> __( 'Dark', 'mai-pro' ),
+			''			=> __( '- None -', 'mai-pro-engine' ),
+			'gradient'	=> __( 'Gradient', 'mai-pro-engine' ),
+			'light'		=> __( 'Light', 'mai-pro-engine' ),
+			'dark'		=> __( 'Dark', 'mai-pro-engine' ),
 		),
 	) );
 
 	// Inner
 	$sections->add_group_field( $section, array(
-		'name'				=> __( 'Inner Style', 'mai-pro' ),
+		'name'				=> __( 'Inner Style', 'mai-pro-engine' ),
 		'id'				=> 'inner',
 		// 'before_row'		=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'after_row'			=> '</div>',
 		'type'				=> 'select',
 		'select_all_button'	=> false,
 		'options'			=> array(
-			''		=> __( '- None -', 'mai-pro' ),
-			'light' => __( 'Light Box', 'mai-pro' ),
-			'dark'  => __( 'Dark Box', 'mai-pro' ),
+			''		=> __( '- None -', 'mai-pro-engine' ),
+			'light' => __( 'Light Box', 'mai-pro-engine' ),
+			'dark'  => __( 'Dark Box', 'mai-pro-engine' ),
 		),
 	) );
 
 	// Height
 	$sections->add_group_field( $section, array(
-		'name'			=> __( 'Height', 'mai-pro' ),
+		'name'			=> __( 'Height', 'mai-pro-engine' ),
 		'id'			=> 'height',
 		'before_row'	=> '<div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'type'			=> 'select',
 		'default'		=> 'md',
 		'options'		=> array(
-			'auto'	=> __( 'Auto (Use height of content)', 'mai-pro' ),
-			'sm'	=> __( 'Small', 'mai-pro' ),
-			'md'	=> __( 'Medium', 'mai-pro' ),
-			'lg'	=> __( 'Large', 'mai-pro' ),
+			'auto'	=> __( 'Auto (Use height of content)', 'mai-pro-engine' ),
+			'sm'	=> __( 'Small', 'mai-pro-engine' ),
+			'md'	=> __( 'Medium', 'mai-pro-engine' ),
+			'lg'	=> __( 'Large', 'mai-pro-engine' ),
 		),
 	) );
 
 	// Content Width
 	$sections->add_group_field( $section, array(
-		'name'				=> __( 'Content Width', 'mai-pro' ),
+		'name'				=> __( 'Content Width', 'mai-pro-engine' ),
 		'id'				=> 'content_width',
 		'after_row'			=> '</div></div></div>',
 		'type'				=> 'select',
-		'show_option_none'	=> __( 'Default (Use Layout Width)', 'mai-pro' ),
+		'show_option_none'	=> __( 'Default (Use Layout Width)', 'mai-pro-engine' ),
 		'options'			=> array(
-			'xs'	=> __( 'Extra Small', 'mai-pro' ),
-			'sm'	=> __( 'Small', 'mai-pro' ),
-			'md'	=> __( 'Medium', 'mai-pro' ),
-			'lg'	=> __( 'Large', 'mai-pro' ),
-			'xl'	=> __( 'Extra Large', 'mai-pro' ),
-			'full'	=> __( 'Full Width', 'mai-pro' ),
+			'xs'	=> __( 'Extra Small', 'mai-pro-engine' ),
+			'sm'	=> __( 'Small', 'mai-pro-engine' ),
+			'md'	=> __( 'Medium', 'mai-pro-engine' ),
+			'lg'	=> __( 'Large', 'mai-pro-engine' ),
+			'xl'	=> __( 'Extra Large', 'mai-pro-engine' ),
+			'full'	=> __( 'Full Width', 'mai-pro-engine' ),
 		),
 	) );
 
@@ -131,7 +131,7 @@ function mai_do_sections_metabox() {
 		'id'	=> 'title',
 		'type'	=> 'text',
 		'attributes'  => array(
-			'placeholder' => __( 'Enter section title here', 'mai-pro' ),
+			'placeholder' => __( 'Enter section title here', 'mai-pro-engine' ),
 			'class'        => 'widefat',
 		),
 	) );

@@ -704,7 +704,7 @@ final class Mai_Shortcodes {
 			'link'					=> true,
 			'meta_key'				=> '',
 			'meta_value'			=> '',
-			'more_link_text'		=> apply_filters( 'mai_more_link_text', __( 'Read More', 'mai-pro' ) ),
+			'more_link_text'		=> apply_filters( 'mai_more_link_text', __( 'Read More', 'mai-pro-engine' ) ),
 			'no_content_message'	=> '',
 			'number'				=> '12',
 			'offset'				=> '0',
