@@ -172,7 +172,7 @@ function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
 
     $url = $screen_reader_html = $screen_reader_text = '';
 
-    $text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-pro' );
+    $text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-pro-engine' );
     $more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) );
 
     $object = mai_get_read_more_object( $object_or_id );
@@ -265,7 +265,7 @@ function mai_get_post_meta( $post = '' ) {
             $taxonomy = get_taxonomy($tax);
             $shortcodes .= '[post_terms taxonomy="' . $tax . '" before="' . $taxonomy->labels->singular_name . ': "]';
         }
-        $post_meta = $shortcodes;
+        $post_meta = sprintf( '<p class="entry-meta">%s</p>', do_shortcode( $shortcodes ) );
     }
     return $post_meta;
 }
