@@ -1833,6 +1833,11 @@ img.alignright,
 	padding-bottom: 16px;
 }
 
+.content .mai-aec .wrap {
+	padding-left: 0;
+	padding-right: 0;
+}
+
 /* ## Jetpack
 --------------------------------------------- */
 
