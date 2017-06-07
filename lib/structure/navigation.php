@@ -70,6 +70,11 @@ function mai_get_mobile_menu() {
 	$widget_header_right  = is_active_sidebar( 'header_right' );
 
 	// Menu locations
+	$mobile_nav = wp_nav_menu( array(
+		'theme_location' => 'mobile',
+		'echo'           => false,
+		'fallback_cb'    => false,
+	) );
 	$header_left_nav = wp_nav_menu( array(
 		'theme_location' => 'header_left',
 		'echo'           => false,
@@ -92,7 +97,7 @@ function mai_get_mobile_menu() {
 	) );
 
 	// Bail if no mobile menu content
-	if ( ! ( $widget_mobile || $widget_header_before || $widget_header_left || $widget_header_right || $header_left_nav || $header_right_nav || $primary_nav || $secondary_nav ) ) {
+	if ( ! ( $widget_mobile || $widget_header_before || $widget_header_left || $widget_header_right || $mobile_nav || $header_left_nav || $header_right_nav || $primary_nav || $secondary_nav ) ) {
 		return;
 	}
 
@@ -110,26 +115,35 @@ function mai_get_mobile_menu() {
 			 */
 			ob_start();
 
-				if ( $widget_mobile ) {
+				if ( $widget_mobile || $mobile_nav ) {
 
-					dynamic_sidebar( 'mobile_menu' );
+					if ( ! empty( $mobile_nav ) ) {
+						get_search_form();
+						echo $mobile_nav;
+					}
+
+					genesis_widget_area( 'mobile_menu' );
 
 				} else {
 
 					get_search_form();
 
 					if ( $widget_header_left || $header_left_nav ) {
+
 						if ( ! empty( $header_left_nav ) ) {
 							echo $header_left_nav;
 						}
+
 						genesis_widget_area( 'header_left' );
 					}
 
 					if ( $widget_header_left || $header_right_nav ) {
+
 						if ( ! empty( $header_right_nav ) ) {
 							echo $header_right_nav;
 						}
-						genesis_widget_area( 'header_left' );
+
+						genesis_widget_area( 'header_right' );
 					}
 
 					if ( ! empty( $primary_nav ) ) {

@@ -1,3 +1,6 @@
+#### 0.0.1.beta.12
+* Fix: Mobile menu nav location is the only one that should show when there is a menu assigned to it
+
 #### 0.0.1.beta.11
 * Breaking Change: Active child theme requires `add_theme_support( 'mai-pro-engine' );` to activate Mai Pro Engine plugin
 * Fix: Remove duplicate aspect-ratio class from banner
