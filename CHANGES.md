@@ -3,6 +3,7 @@
 * Fix: mai_add_background_image_attributes() wrong function name in archives when using featured image as background image.
 * Fix more link styling when over image background.
 * Slightly darker overlay when overlay is part of an entry link (featured image background).
+* Hide the "Hide Featured Image" field until there is actually a featured image saved to the post.
 
 #### 0.0.1.beta.14
 * Add wrap to header before/after hooks.
