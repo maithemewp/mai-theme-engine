@@ -1070,11 +1070,6 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	background-position: center;
 }
 
-.image-bg,
-.image-bg * {
-	color: #fff;
-}
-
 /* ## Inner
 --------------------------------------------- */
 

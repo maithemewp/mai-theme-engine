@@ -1,3 +1,6 @@
+#### 0.0.1.beta.19
+* image-bg class shouldn't change text colors
+
 #### 0.0.1.beta.18
 * Fix: light/dark content when buttons are in the content.
 
