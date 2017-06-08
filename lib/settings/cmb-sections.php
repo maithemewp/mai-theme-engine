@@ -47,7 +47,7 @@ function mai_do_sections_metabox() {
 		'id'		 => 'bg',
 		'before_row' => '<div class="cmb-section-settings"><div class="mai-row"><div class="mai-col mai-col-xs-12 mai-col-sm-6 mai-col-xl">',
 		'type'		 => 'colorpicker',
-		'default'	 => '#fff',
+		'default'	 => '', // Keep this empty, so CSS can control the defaults if left untouched
 	) );
 
 	// Background Image
