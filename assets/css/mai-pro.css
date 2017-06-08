@@ -1083,11 +1083,19 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 }
 
 .inner-light {
-	background-color: rgba(255, 255, 255, 0.7);
-    -webkit-box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);box-shadow: 0 1px 3px rgba(65, 64, 66, 0.6);
+	background-color: #fff;
+    -webkit-box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-bg .inner-light {
+	background-color: rgba(255, 255, 255, 0.8);
 }
 
 .inner-dark {
+	background-color: #323232;
+}
+
+.image-bg .inner-dark {
 	background-color: rgba(0, 0, 0, 0.7);
 }
 
@@ -1154,7 +1162,7 @@ a.overlay:hover::after {
 .dark-content .dark-content .light-content,
 .dark-content .dark-content .light-content *:not(.button) {
 	color: #fff;
-	text-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+	text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 
 .dark-content,
@@ -1166,7 +1174,7 @@ a.overlay:hover::after {
 .light-content .light-content .dark-content,
 .light-content .light-content .dark-content *:not(.button) {
 	color: #323232;
-	text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
+	text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
 }
 
 /* ## Avatar
