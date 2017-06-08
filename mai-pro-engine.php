@@ -138,6 +138,7 @@ final class Mai_Pro_Engine {
 
         // Includes (Vendor)
         require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
+        require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
         require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
 
         // Setup the updater

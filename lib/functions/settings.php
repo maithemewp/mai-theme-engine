@@ -248,19 +248,22 @@ function mai_get_footer_widgets_count() {
  * Get default accent color for Customizer.
  * Abstracted here since at least two functions use it.
  *
- * @since 1.0.0
- *
  * @return string Hex color code for accent color.
  */
 function mai_get_customizer_get_default_accent_color() {
     return '#067CCC';
 }
 
-function mai_get_color_shade( $color ) {
-
-    $luminosity = mai_get_color_luminosity( $color );
-
-    return ( $luminosity > 128 ) ? 'dark-content' : 'light-content';
+/**
+ * Check if a specific hex color is dark.
+ *
+ * @param   string  $hex_color  3 or 6 digit hex color, with or without the hash "#"
+ *
+ * @return  bool
+ */
+function mai_is_dark_color( $hex_color ) {
+    $color = new Mai_Color( $hex_color );
+    return $color->isDark();
 }
 
 /**
@@ -271,19 +274,11 @@ function mai_get_color_shade( $color ) {
  *
  * @return string Hex color code for contrasting color.
  */
-function mai_get_color_contrast_hex( $color ) {
-
-    $luminosity = mai_get_color_luminosity( $color );
-
-    return ( $luminosity > 128 ) ? '#000000' : '#ffffff';
-}
-
-function mai_get_color_luminosity( $color ) {
-
-    $hexcolor = str_replace( '#', '', $color );
-    $red      = hexdec( substr( $hexcolor, 0, 2 ) );
-    $green    = hexdec( substr( $hexcolor, 2, 2 ) );
-    $blue     = hexdec( substr( $hexcolor, 4, 2 ) );
-
-    return ( ( $red * 0.2126 ) + ( $green * 0.7152 ) + ( $blue * 0.0722 ) );
+function mai_get_content_shade_from_bg( $hex_color ) {
+    $color = new Mai_Color( $hex_color );
+    if ( $color->isLight() ) {
+        return 'dark-content';
+    } else {
+        return 'light-content';
+    }
 }
