@@ -1154,25 +1154,25 @@ a.overlay:hover::after {
 /* these could go 3 levels deep with Section > Overlay > Inner */
 
 .light-content,
-.light-content *:not(.button):not(.more-link),
+.light-content *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .dark-content .light-content,
-.dark-content .light-content *:not(.button):not(.more-link),
+.dark-content .light-content *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .light-content .dark-content .light-content,
-.light-content .dark-content .light-content *:not(.button):not(.more-link),
+.light-content .dark-content .light-content *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .dark-content .dark-content .light-content,
-.dark-content .dark-content .light-content *:not(.button):not(.more-link) {
+.dark-content .dark-content .light-content *:not(.button):not(button):not(input[type="submit"]):not(.more-link) {
 	color: #fff;
 	text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 
 .dark-content,
-.dark-content *:not(.button):not(.more-link),
+.dark-content *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .light-content .dark-content,
-.light-content .dark-content *:not(.button):not(.more-link),
+.light-content .dark-content *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .dark-content .light-content .dark-content,
-.dark-content .light-content .dark-content *:not(.button):not(.more-link),
+.dark-content .light-content .dark-content *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .light-content .light-content .dark-content,
-.light-content .light-content .dark-content *:not(.button):not(.more-link) {
+.light-content .light-content .dark-content *:not(.button):not(button):not(input[type="submit"]):not(.more-link) {
 	color: #323232;
 	text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
 }
@@ -1183,20 +1183,20 @@ a.light-content:hover {
 
 a.dark-content:hover,
 a.dark-content:focus,
-a.dark-content:hover *:not(.button):not(.more-link),
-a.dark-content:focus *:not(.button):not(.more-link),
+a.dark-content:hover *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
+a.dark-content:focus *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .light-content a.dark-content:hover,
 .light-content a.dark-content:focus,
-.light-content a.dark-content:hover *:not(.button):not(.more-link),
-.light-content a.dark-content:focus *:not(.button):not(.more-link),
+.light-content a.dark-content:hover *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
+.light-content a.dark-content:focus *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .dark-content .light-content a.dark-content:hover,
 .dark-content .light-content a.dark-content:focus,
-.dark-content .light-content a.dark-content:hover *:not(.button):not(.more-link),
-.dark-content .light-content a.dark-content:focus *:not(.button):not(.more-link),
+.dark-content .light-content a.dark-content:hover *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
+.dark-content .light-content a.dark-content:focus *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
 .light-content .light-content a.dark-content:hover,
 .light-content .light-content a.dark-content:focus,
-.light-content .light-content a.dark-content:hover *:not(.button):not(.more-link),
-.light-content .light-content a.dark-content:focus *:not(.button):not(.more-link) {
+.light-content .light-content a.dark-content:hover *:not(.button):not(button):not(input[type="submit"]):not(.more-link),
+.light-content .light-content a.dark-content:focus *:not(.button):not(button):not(input[type="submit"]):not(.more-link) {
 	color: #585858;
 }
 
