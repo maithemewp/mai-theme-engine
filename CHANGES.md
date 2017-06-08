@@ -1,3 +1,7 @@
+#### 0.0.1.beta.16
+* Archives/shortcodes with image set to background all link whether or not they have an image
+* New mai_get_processed_content() helper function to cleanup returned shorcode content
+
 #### 0.0.1.beta.15
 * New: Allow embeds in Sections template.
 * Fix: mai_add_background_image_attributes() wrong function name in archives when using featured image as background image.

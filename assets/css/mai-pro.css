@@ -1177,6 +1177,29 @@ a.overlay:hover::after {
 	text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
 }
 
+a.light-content:hover {
+
+}
+
+a.dark-content:hover,
+a.dark-content:focus,
+a.dark-content:hover *:not(.button):not(.more-link),
+a.dark-content:focus *:not(.button):not(.more-link),
+.light-content a.dark-content:hover,
+.light-content a.dark-content:focus,
+.light-content a.dark-content:hover *:not(.button):not(.more-link),
+.light-content a.dark-content:focus *:not(.button):not(.more-link),
+.dark-content .light-content a.dark-content:hover,
+.dark-content .light-content a.dark-content:focus,
+.dark-content .light-content a.dark-content:hover *:not(.button):not(.more-link),
+.dark-content .light-content a.dark-content:focus *:not(.button):not(.more-link),
+.light-content .light-content a.dark-content:hover,
+.light-content .light-content a.dark-content:focus,
+.light-content .light-content a.dark-content:hover *:not(.button):not(.more-link),
+.light-content .light-content a.dark-content:focus *:not(.button):not(.more-link) {
+	color: #585858;
+}
+
 /* ## Avatar
 --------------------------------------------- */
 

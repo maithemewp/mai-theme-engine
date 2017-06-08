@@ -80,6 +80,34 @@ final class Mai_Shortcodes {
 	}
 
 	/**
+	 * A big ol' helper/cleanup function to
+	 * enabled embeds inside the shortcodes and
+	 * keep the shorcodes from causing extra p's and br's.
+	 *
+	 * @param   string|HTML  $content  The unprocessed content.
+	 *
+	 * @return  string|HTML  The processed content.
+	 */
+	function get_processed_content( $content ) {
+		// Trim
+		$content = trim( $content );
+		// Embed any content
+		global $wp_embed;
+		$content = $wp_embed->autoembed( $content );
+		$content = $wp_embed->run_shortcode( $content );
+		// Auto <p>
+		$content = wpautop( $content );
+		// Clean up shortcodes
+		$content = $this->content_filter( $content );
+		// Parse shortcodes
+		$content = do_shortcode( $content );
+		// Cleanup, again
+		$content = shortcode_unautop( $content );
+		// Send it
+		return $content;
+	}
+
+	/**
 	 * Filter the content to remove empty <p></p> tags from shortcodes
 	 *
 	 * @link https://gist.github.com/bitfade/4555047
@@ -160,7 +188,7 @@ final class Mai_Shortcodes {
 	    	$attributes['class'] .= mai_sanitized_html_classes( $atts['color'] );
 	    }
 
-	    $output = sprintf( '<div %s>%s</div>', genesis_attr( 'mai-callout', $attributes ), do_shortcode( wpautop( trim($content) ) ) );
+	    $output = sprintf( '<div %s>%s</div>', genesis_attr( 'mai-callout', $attributes ), $this->get_processed_content( $content ) );
 
 	    return $output;
 	}
@@ -221,7 +249,7 @@ final class Mai_Shortcodes {
 	    $output = '';
 
 	    $output .= $this->get_section_open( $args );
-	    $output .= shortcode_unautop( do_shortcode( trim($content) ) );
+	    $output .= $this->get_processed_content( $content );
 	    $output .= $this->get_section_close( $args );
 
 	    return $output;
@@ -540,7 +568,7 @@ final class Mai_Shortcodes {
 		$html = '';
 
 		$html .= $this->get_row_wrap_open( $atts, 'columns' );
-		$html .= shortcode_unautop( do_shortcode( trim($content) ) );
+		$html .= $this->get_processed_content( $content );
 		$html .= $this->get_row_wrap_close( $atts );
 
 
@@ -675,9 +703,9 @@ final class Mai_Shortcodes {
 	     * Return the content with col wrap.
 	     * With flex-col attr so devs can filter elsewhere.
 	     *
-	     * Don't wpautop cause it breaks things if [grid] and possibly other stuff in there.
+	     * Only do_shortcode() on content because get_columns() wrap runs get_processed_content() which cleans things up.
 	     */
-	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), shortcode_unautop( do_shortcode( trim($content) ) ) );
+	    return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), do_shortcode( trim( $content ) ) );
 
 	}
 
@@ -956,7 +984,7 @@ final class Mai_Shortcodes {
 		$entry_atts = array();
 
 		// Add href if linking element
-		if ( $this->is_linking_element( $atts, $has_image_bg ) ) {
+		if ( $this->is_linking_element( $atts ) ) {
 			$entry_atts['href'] = $this->get_entry_link( $atts, $object );
 		}
 
@@ -968,14 +996,16 @@ final class Mai_Shortcodes {
 
 	    $light_content = false;
 
-		if ( $this->is_image_bg( $atts ) && $has_image_bg ) {
+		if ( $this->is_image_bg( $atts ) ) {
 			// Get the object ID
 			$object_id = $this->get_object_id( $atts, $object );
 			if ( $object_id ) {
-				$entry_atts		 = $this->add_bg_image( $entry_atts, $atts, $object_id );
-				$light_content	 = true;
-	        	// Set dark overlay if we don't have one
-				$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
+				$entry_atts = $this->add_bg_image( $entry_atts, $atts, $object_id );
+				if ( $has_image_bg ) {
+					$light_content	 = true;
+		        	// Set dark overlay if we don't have one
+					$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
+				}
 			}
 		}
 
@@ -987,7 +1017,7 @@ final class Mai_Shortcodes {
 		    switch ( $atts['overlay'] ) {
 		        case 'gradient':
 		        	$entry_atts['class'] .= ' overlay-gradient';
-		        	$light_content = true;
+		        	// $light_content = true;
 		            break;
 		        case 'light':
 		        	$entry_atts['class'] .= ' overlay-light';
@@ -1006,11 +1036,11 @@ final class Mai_Shortcodes {
 		 * Main entry col wrap.
 		 * If we use genesis_attr( 'entry' ) then it resets the classes.
 		 */
-		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts, $has_image_bg ), genesis_attr( 'flex-entry', $entry_atts ) );
+		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts ), genesis_attr( 'flex-entry', $entry_atts ) );
 	}
 
-	function get_entry_wrap_close( $atts, $has_image_bg ) {
-		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts, $has_image_bg ) );
+	function get_entry_wrap_close( $atts ) {
+		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts ) );
 	}
 
 	/**
@@ -1355,13 +1385,13 @@ final class Mai_Shortcodes {
                 $image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
 
                 // Get image vars
-                $do_image_bg = $has_image_bg = false;
+                $do_image = $has_image_bg = false;
 
                 // If showing image
                 if ( in_array( 'image', $atts['show'] ) ) {
                     $image_id = $this->get_image_id( $atts, get_the_ID() );
                     if ( $image_id ) {
-                        $do_image_bg = true;
+                        $do_image = true;
                         if ( $this->is_image_bg( $atts ) ) {
                             $has_image_bg = true;
                         }
@@ -1375,15 +1405,13 @@ final class Mai_Shortcodes {
 					$url = $this->get_entry_link( $atts, $post );
 
 					// Image
-					if ( $do_image_bg && ! $this->is_image_bg( $atts ) ) {
-						if ( $image_id ) {
-							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
-							if ( $image ) {
-								if ( $atts['link'] ) {
-									$image_html = sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, the_title_attribute( 'echo=0' ), $image );
-								} else {
-									$image_html = $image;
-								}
+					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
+						$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
+						if ( $image ) {
+							if ( $atts['link'] ) {
+								$image_html = sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, the_title_attribute( 'echo=0' ), $image );
+							} else {
+								$image_html = $image;
 							}
 						}
 					}
@@ -1443,7 +1471,7 @@ final class Mai_Shortcodes {
 
 							// Title
 							if ( in_array( 'title', $atts['show'] ) ) {
-								if ( $atts['link'] && ! $has_image_bg ) {
+								if ( ! $this->is_linking_element( $atts ) ) {
 									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
 								} else {
 									$title = get_the_title();
@@ -1496,12 +1524,12 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url, $has_image_bg );
+						$entry_content .= $this->get_more_link( $atts, $url );
 					}
 
 					// Add to cart link
 					if ( $atts['link'] && in_array( 'add_to_cart', $atts['show'] ) ) {
-						$entry_content .= $this->get_add_to_cart_link( $atts, $url, $has_image_bg );
+						$entry_content .= $this->get_add_to_cart_link( $atts, $url );
 					}
 
 					// Add entry content wrap if we have content
@@ -1519,7 +1547,7 @@ final class Mai_Shortcodes {
 						$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer' ), $entry_footer );
 					}
 
-				$html .= $this->get_entry_wrap_close( $atts, $has_image_bg );
+				$html .= $this->get_entry_wrap_close( $atts );
 
 			endwhile;
 			wp_reset_postdata();
@@ -1608,14 +1636,13 @@ final class Mai_Shortcodes {
 				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $image_id = '';
 
 				// Get image vars
-				$do_image_bg = $has_image_bg = false;
+				$do_image = $has_image_bg = false;
 
 				// If showing image
 				if ( in_array( 'image', $atts['show'] ) ) {
 					$image_id = $this->get_image_id( $atts, $term->term_id );
 					if ( $image_id ) {
-
-						$do_image_bg = true;
+						$do_image = true;
 						if ( $this->is_image_bg( $atts ) ) {
 							$has_image_bg = true;
 						}
@@ -1629,15 +1656,13 @@ final class Mai_Shortcodes {
 					$url = $this->get_entry_link( $atts, $term );
 
 					// Image
-					if ( $do_image_bg && ! $this->is_image_bg( $atts ) ) {
-						if ( $image_id ) {
-							$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
-							if ( $image ) {
-								if ( $atts['link'] ) {
-									$image_html = sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, esc_attr( $term->name ), $image );
-								} else {
-									$image_html = $image;
-								}
+					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
+						$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
+						if ( $image ) {
+							if ( $atts['link'] ) {
+								$image_html = sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, esc_attr( $term->name ), $image );
+							} else {
+								$image_html = $image;
 							}
 						}
 					}
@@ -1659,7 +1684,7 @@ final class Mai_Shortcodes {
 							}
 
 							// Title
-							if ( $atts['link'] && ! $has_image_bg ) {
+							if ( ! $this->is_linking_element( $atts ) ) {
 								$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
 							} else {
 								$title = $term->name;
@@ -1694,7 +1719,7 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url, $has_image_bg );
+						$entry_content .= $this->get_more_link( $atts, $url );
 					}
 
 					// Add entry content wrap if we have content
@@ -1702,7 +1727,7 @@ final class Mai_Shortcodes {
 						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content' ), $entry_content );
 					}
 
-				$html .= $this->get_entry_wrap_close( $atts, $has_image_bg );
+				$html .= $this->get_entry_wrap_close( $atts );
 
 			}
 
@@ -1722,8 +1747,8 @@ final class Mai_Shortcodes {
 		return sprintf( '<%s class="%s">%s</%s>', $atts['grid_title_wrap'], trim($classes), $atts['grid_title'], $atts['grid_title_wrap'] );
 	}
 
-	function get_entry_wrap_element( $atts, $has_image_bg ) {
-		return $this->is_linking_element( $atts, $has_image_bg ) ? 'a' : 'div';
+	function get_entry_wrap_element( $atts ) {
+		return $this->is_linking_element( $atts ) ? 'a' : 'div';
 	}
 
 	/**
@@ -1733,8 +1758,8 @@ final class Mai_Shortcodes {
 	 *
 	 * @return  bool
 	 */
-	function is_linking_element( $atts, $has_image_bg ) {
-		if ( $this->is_image_bg( $atts ) && $atts['link'] && $has_image_bg ) {
+	function is_linking_element( $atts ) {
+		if ( $this->is_image_bg( $atts ) && $atts['link'] ) {
 			return true;
 		}
 		return false;
@@ -1861,14 +1886,9 @@ final class Mai_Shortcodes {
 	 * @return  array              [description]
 	 */
 	function add_bg_image( $attributes, $atts, $object_id ) {
+
 		// Get the image ID
 		$image_id = $this->get_image_id( $atts, $object_id );
-	    if ( ! $image_id ) {
-	    	return $attributes;
-	    }
-
-		// $attributes['class'] .= ' overlay dark-bg';
-		// $attributes['class'] .= ' dark-bg';
 
 		// Add the image background attributes
 		$attributes = mai_add_background_image_attributes( $attributes, $image_id, $atts['image_size'] );
@@ -1908,8 +1928,8 @@ final class Mai_Shortcodes {
 	    return $image_id;
 	}
 
-	function get_more_link( $atts, $url, $has_image_bg ) {
-		if ( $this->is_image_bg( $atts ) && $has_image_bg ) {
+	function get_more_link( $atts, $url ) {
+		if ( $this->is_linking_element( $atts ) ) {
 			$link = sprintf( '<span class="more-link">%s</span>', $atts['more_link_text'] );
 		} else {
 			$link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $atts['more_link_text'] );
@@ -1917,11 +1937,11 @@ final class Mai_Shortcodes {
 	    return sprintf( '<p class="more-link-wrap">%s</p>', $link );
 	}
 
-	function get_add_to_cart_link( $atts, $url, $has_image_bg ) {
+	function get_add_to_cart_link( $atts, $url ) {
 		$link = '';
 		if ( class_exists( 'WooCommerce' ) ) {
 			$product = wc_get_product( get_the_ID() );
-			if ( $this->is_image_bg( $atts ) && $has_image_bg ) {
+			if ( $this->is_linking_element( $atts ) ) {
 				$link = sprintf( '<span class="more-link">%s</span>', $product->add_to_cart_text() );
 			} else {
 				ob_start();

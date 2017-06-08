@@ -30,8 +30,6 @@ function mai_do_sections_loop() {
 
 	global $wp_embed;
 
-	$content = '';
-
 	// Loop through each section
 	foreach ( $sections as $section ) {
 
@@ -47,16 +45,9 @@ function mai_do_sections_loop() {
 		$args['overlay']		= isset( $section['overlay'] ) ? $section['overlay'] : '';
 		$args['inner']			= isset( $section['inner'] ) ? $section['inner'] : '';
 
-		$section_content = $section['content'];
-		$section_content = $wp_embed->autoembed( $section_content );
-		$section_content = $wp_embed->run_shortcode( $section_content );
-		$section_content = wpautop( $section_content );
-		$section_content = mai_get_clean_content( $section_content );
-		$content .= mai_get_section( $args, $section_content );
+		echo mai_get_section( $args, $section['content'] );
 
 	}
-
-	echo $content;
 
 }
 

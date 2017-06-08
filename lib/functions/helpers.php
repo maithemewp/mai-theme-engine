@@ -278,22 +278,28 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
     global $_wp_additional_image_sizes;
 
     // Get the image
-    $image = wp_get_attachment_image_src( $image_id, $image_size, true );
+    $image = $image_id ? wp_get_attachment_image_src( $image_id, $image_size, true ) : false;
 
-    // Bail if no image
-    if ( ! $image ) {
-        return $attributes;
+    // If we have an image, add it as inline style
+    if ( $image ) {
+
+        // Make sure style attribute is set
+        $attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
+
+        // Add background image
+        $inline_style        = sprintf( 'background-image: url(%s);', $image[0] );
+        $attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
+
+        // Add image-bg class
+        $attributes['class'] .= ' image-bg';
+
     }
 
-    // Make sure style attribute is set
-    $attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
-
-    // Add background image
-    $inline_style        = sprintf( 'background-image: url(%s);', $image[0] );
-    $attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
-
-    // Add aspect ratio class, for JS to target
-    $attributes['class'] .= ' image-bg aspect-ratio';
+    /**
+     * Add aspect ratio class, for JS to target.
+     * We do this even without an image to maintain equal height elements.
+     */
+    $attributes['class'] .= ' aspect-ratio';
 
     // If image size is in the global (it should be)
     if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
@@ -302,15 +308,15 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
         $attributes['data-aspect-height'] = $registered_image['height'];
     }
     // Otherwise use the actual image dimensions
-    else {
+    elseif ( $image ) {
         $attributes['data-aspect-width']  = $image[1];
         $attributes['data-aspect-height'] = $image[2];
     }
     return $attributes;
 }
 
-function mai_get_clean_content( $content ) {
-    return Mai_Shortcodes()->content_filter( $content );
+function mai_get_processed_content( $content ) {
+    return Mai_Shortcodes()->get_processed_content( $content );
 }
 
 /**

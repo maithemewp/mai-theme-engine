@@ -389,15 +389,17 @@ function mai_do_entry_image_background() {
     // Anonomous attributes function
     $entry_attributes = function( $attributes ) use ( $image_id, $image_size ) {
 
+        // Make element a link whether we have an image or not
+        $attributes = mai_add_background_image_attributes( $attributes, $image_id, $image_size );
+        $attributes['href'] = get_permalink();
+
         // If we have an image
         if ( $image_id ) {
             // Add classes and href link
             $attributes['class'] .= ' overlay light-content';
-            $attributes['href'] = get_permalink();
             // Add image background attributes
-            $attributes = mai_add_background_image_attributes( $attributes, $image_id, $image_size );
         } else {
-            $attributes['class'] .= ' image-bg-none';
+            $attributes['class'] .= ' dark-content';
         }
 
         // Center the content even if we don't have an image
@@ -414,31 +416,27 @@ function mai_do_entry_image_background() {
         remove_filter( 'genesis_attr_entry', $entry_attributes );
     });
 
-    // If we have an image, change the entry markup
-    if ( $image_id ) {
+    // Create an anonomous markup functions
+    $markup_open = function( $open ) {
+        $open = str_replace( '<article', '<a', $open );
+        return $open;
+    };
+    $markup_close = function( $close ) {
+        $close = str_replace( '</article>', '</a>', $close );
+        return $close;
+    };
 
-        // Create an anonomous markup functions
-        $markup_open = function( $open ) {
-            $open = str_replace( '<article', '<a', $open );
-            return $open;
-        };
-        $markup_close = function( $close ) {
-            $close = str_replace( '</article>', '</a>', $close );
-            return $close;
-        };
+    // Change entry markup from 'arcticle' to 'a'
+    add_filter( 'genesis_markup_entry_open', $markup_open );
+    add_filter( 'genesis_markup_entry_close', $markup_close );
+    add_filter( 'genesis_link_post_title', '__return_false' );
 
-        // Change entry markup from 'arcticle' to 'a'
-        add_filter( 'genesis_markup_entry_open', $markup_open );
-        add_filter( 'genesis_markup_entry_close', $markup_close );
-        add_filter( 'genesis_link_post_title', '__return_false' );
-
-        // Remove the filters so any other loops aren't affected
-        add_action( 'genesis_after_entry', function() use ( $markup_open, $markup_close, $entry_attributes ) {
-            remove_filter( 'genesis_markup_entry_open', $markup_open );
-            remove_filter( 'genesis_markup_entry_close', $markup_close );
-            remove_filter( 'genesis_link_post_title', '__return_true' );
-        });
-    }
+    // Remove the filters so any other loops aren't affected
+    add_action( 'genesis_after_entry', function() use ( $markup_open, $markup_close, $entry_attributes ) {
+        remove_filter( 'genesis_markup_entry_open', $markup_open );
+        remove_filter( 'genesis_markup_entry_close', $markup_close );
+        remove_filter( 'genesis_link_post_title', '__return_true' );
+    });
 }
 
 /**
