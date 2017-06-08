@@ -1,4 +1,5 @@
 #### 0.0.1.beta.15
+* New: Allow embeds in Sections template.
 * Fix: mai_add_background_image_attributes() wrong function name in archives when using featured image as background image.
 * Fix more link styling when over image background.
 * Slightly darker overlay when overlay is part of an entry link (featured image background).
