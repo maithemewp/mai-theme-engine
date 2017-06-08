@@ -134,30 +134,15 @@ function mai_is_content_archive() {
     return $is_archive;
 }
 
+/**
+ * Get a section.
+ *
+ * @param  array  $args  The section args.
+ *
+ * @return string|HTML
+ */
 function mai_get_section( $args, $content ) {
     return Mai_Shortcodes()->get_section( $args, $content );
-}
-
-/**
- * Get the section opening markup
- *
- * @param  array  $args  The section args.
- *
- * @return string|HTML
- */
-function mai_get_section_open( $args ) {
-    return Mai_Shortcodes()->get_section_open( $args );
-}
-
-/**
- * Get the section closing markup
- *
- * @param  array  $args  The section args.
- *
- * @return string|HTML
- */
-function mai_get_section_close( $args ) {
-    return Mai_Shortcodes()->get_section_close( $args );
 }
 
 /**
