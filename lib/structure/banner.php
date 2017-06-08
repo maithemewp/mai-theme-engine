@@ -67,17 +67,15 @@ function mai_do_banner_area() {
     // Add a filter so devs can change these defaults
     $args = apply_filters( 'mai_banner_args', $args );
 
-    // Opening markup
-    echo mai_get_section_open( $args );
-
+    ob_start();
     /**
-     * Custom hook for banner content
-     * Won't get used if banner area is not displayed
+     * Custom hook for banner content.
+     * Won't get used if banner area is not displayed.
      */
 	do_action( 'mai_banner_content', $args );
+	$content = ob_get_clean();
 
-    // Closing markup
-    echo mai_get_section_close( $args );
+	echo mai_get_section( $args, $content );
 
 }
 

@@ -172,37 +172,32 @@ final class Mai_Shortcodes {
 	 * Add parameter of 'image=246' with an image ID from the media library to use a full width background image
 	 */
 	function get_section( $atts, $content = null ) {
+
 	    // Bail if no content
 	    if ( null == $content ) {
 	        return;
 	    }
 
-	    // Add shortcode class
-	    $atts['class'] = isset( $atts['class'] ) ? 'section-shortcode ' . $atts['class'] : 'section-shortcode';
-
-	    $output = '';
-
-	    $output .= $this->get_section_open( $atts );
-	    $output .= shortcode_unautop( do_shortcode( trim($content) ) );
-	    $output .= $this->get_section_close( $atts );
-
-	    return $output;
-	}
-
-	/**
-	 * Get opening section wrap
-	 * To be used in front-page.php and [section] shortcode
-	 *
-	 * @version  1.0.1
-	 *
-	 * @param    array  $args  Options for the wrapping markup
-	 *
-	 * @return   string|HTML
-	 */
-	function get_section_open( $args ) {
+	    $defaults = array(
+	        'wrapper'       => 'section',
+	        'id'            => '',
+	        'class'         => '',
+	        'align'         => '',
+	        'bg'			=> '',
+	        'image'         => '',
+	        'overlay' 		=> '',
+	        'inner' 		=> '',
+	        'title'         => '',
+	        'title_wrap'    => 'h2',
+	        'wrap'          => true,
+	        'content_width' => '',
+	        'height'        => 'md',
+	    );
+	    // Add filter to the defaults. Maybe different themes want to have the default something unique.
+	    $defaults = apply_filters( 'mai_section_defaults', $defaults );
 
 	    // Shortcode section atts
-	    $args = shortcode_atts( $this->get_section_defaults(), $args, 'section' );
+	    $args = shortcode_atts( $defaults, $atts, 'section' );
 
 	    // Add filter to change args. There is also a mai_section_defaults filter to manipulate earlier.
 	    $args = apply_filters( 'mai_section_args', $args );
@@ -222,6 +217,27 @@ final class Mai_Shortcodes {
 	        'content_width' => sanitize_key( $args['content_width'] ),
 	        'height'        => sanitize_key( $args['height'] ),
 	    );
+
+	    $output = '';
+
+	    $output .= $this->get_section_open( $args );
+	    $output .= shortcode_unautop( do_shortcode( trim($content) ) );
+	    $output .= $this->get_section_close( $args );
+
+	    return $output;
+	}
+
+	/**
+	 * Get opening section wrap
+	 * To be used in front-page.php and [section] shortcode
+	 *
+	 * @version  1.0.1
+	 *
+	 * @param    array  $args  Options for the wrapping markup
+	 *
+	 * @return   string|HTML
+	 */
+	function get_section_open( $args ) {
 
 	    // Start all element variables as empty string
 	    $title = $wrap = $inner = '';
@@ -266,15 +282,36 @@ final class Mai_Shortcodes {
 
 	    }
 
+	    $dark_bg = false;
+
+	    // Content shade
+	    if ( ! $has_inner ) {
+		    /**
+		     * If bg color and no image
+		     * bg shade is based on bg color.
+		     */
+		    if ( $args['bg'] && ! $args['image'] ) {
+		    	$dark_bg = mai_is_dark_color( $args['bg'] );
+	    	} elseif ( $args['image'] && ! $has_overlay ) {
+		        // For now, anytime we have an image it's considered dark
+		        $dark_bg = true;
+	    	} elseif ( $args['image'] && ( 'dark' == $args['overlay'] ) ) {
+	    		$dark_bg = true;
+	    	}
+
+		    /**
+		     * Add content shade class if we don't have inner.
+		     * Inner will handle these classes if we have it.
+		     */
+	    	$section_atts['class'] .= $dark_bg ? ' light-content' : ' dark-content';
+
+	    }
+
     	// Maybe add the inline background color
 	    if ( $args['bg'] ) {
+
 	    	// Add the background color
 		    $section_atts = mai_add_background_color_attributes( $section_atts, $args['bg'] );
-
-		    if ( ! $args['image'] ) {
-			    // Add color contrast class
-			    $section_atts['class'] .= ' ' . mai_get_color_shade( $args['bg'] );
-	    	}
 	    }
 
 	    // If we have an image ID
@@ -282,8 +319,16 @@ final class Mai_Shortcodes {
 
 	        // Add the aspect ratio attributes
 	        $section_atts = mai_add_background_image_attributes( $section_atts, $args['image'], 'banner' );
-	    }
 
+		    /**
+		     * Add content shade class if we don't have inner.
+		     * Inner will handle these classes if we have it.
+		     */
+		    if ( ! ( $has_overlay && $has_inner ) ) {
+		    	$section_atts['class'] .= $dark_bg ? ' light-content' : ' dark-content';
+		    }
+
+	    }
 
 		if ( $has_overlay ) {
 
@@ -295,23 +340,13 @@ final class Mai_Shortcodes {
 		    switch ( $args['overlay'] ) {
 		        case 'gradient':
 		        	$section_atts['class'] .= ' overlay-gradient';
-		        	$light_content = true;
 		            break;
 		        case 'light':
 		        	$section_atts['class'] .= ' overlay-light';
 		            break;
 		        case 'dark':
 		        	$section_atts['class'] .= ' overlay-dark';
-		        	$light_content = true;
 		            break;
-		    }
-
-		    /**
-		     * Add content shade class if we don't have inner.
-		     * Inner will handle these classes if we have it.
-		     */
-		    if ( ! $has_inner ) {
-		    	$section_atts['class'] .= $light_content ? ' light-content' : ' dark-content';
 		    }
 
 		}
@@ -400,7 +435,7 @@ final class Mai_Shortcodes {
 
 			$inner_atts['class'] = ' inner';
 
-			$light_content = false;
+			$dark_bg = false;
 
 		    switch ( $args['inner'] ) {
 		        case 'light':
@@ -408,12 +443,12 @@ final class Mai_Shortcodes {
 		            break;
 		        case 'dark':
 		        	$inner_atts['class'] .= ' inner-dark';
-		        	$light_content = true;
+		        	$dark_bg = true;
 		            break;
 		    }
 
 		    // Add content shade classes
-	    	$inner_atts['class'] .= $light_content ? ' light-content' : ' dark-content';
+	    	$inner_atts['class'] .= $dark_bg ? ' light-content' : ' dark-content';
 
 	    	// Build the inner HTML
 	        $inner = sprintf( '<div %s>', genesis_attr( 'section-inner', $inner_atts ) );
@@ -437,10 +472,9 @@ final class Mai_Shortcodes {
 	}
 
 	/**
-	 * Get closing section wrap
-	 * To be used in front-page.php and [section] shortcode
+	 * Get closing section wrap.
 	 *
-	 * This should share the same $args variable as opening function
+	 * This should share the same $args variable as opening function.
 	 *
 	 * @version  1.0.1
 	 *
@@ -449,9 +483,6 @@ final class Mai_Shortcodes {
 	 * @return   string|HTML
 	 */
 	function get_section_close( $args ) {
-
-	    // Get the args
-	    $args = wp_parse_args( $args, $this->get_section_defaults() );
 
 	    // Start all element variables as empty string
 	    $title = $wrap = $inner = '';
@@ -473,26 +504,6 @@ final class Mai_Shortcodes {
 	        sanitize_key( $args['wrapper'] )
 	    );
 
-	}
-
-	function get_section_defaults() {
-	    $defaults = array(
-	        'wrapper'       => 'section',
-	        'id'            => '',
-	        'class'         => '',
-	        'align'         => '',
-	        'bg'			=> '',
-	        'image'         => '',
-	        'overlay' 		=> '',
-	        'inner' 		=> '',
-	        'title'         => '',
-	        'title_wrap'    => 'h2',
-	        'wrap'          => true,
-	        'content_width' => '',
-	        'height'        => 'md',
-	    );
-	    // Add filter to the defaults. Maybe different themes want to have the default something unique.
-	    return apply_filters( 'mai_section_defaults', $defaults );
 	}
 
 	function get_columns( $atts, $content = null ) {
@@ -1271,9 +1282,18 @@ final class Mai_Shortcodes {
 			if ( 'current' == $atts['terms'] ) {
 				$terms		= array();
 				$post_terms	= wp_get_post_terms( get_the_ID(), $atts['taxonomy'] );
-				if ( is_wp_error( $post_terms ) ) {
+				if ( ! is_wp_error( $post_terms ) ) {
 					foreach ( $post_terms as $term ) {
-						$terms[] = $term->slug;
+						// Get the form by type
+					    switch ( $atts['tax_field'] ) {
+					        case 'slug':
+					            $terms[] = $term->slug;
+					            break;
+					        case 'term_id':
+					            $terms[] = $term->term_id;
+					            break;
+					    }
+
 					}
 				}
 			} else {
