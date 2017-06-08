@@ -1,4 +1,8 @@
+#### 0.0.1.beta.18
 * Fix: light/dark content when buttons are in the content.
+
+#### 0.0.1.beta.17
+* Hotfix: Update minified stylesheet.
 
 #### 0.0.1.beta.16
 * Archives/shortcodes with image set to background all link whether or not they have an image.
