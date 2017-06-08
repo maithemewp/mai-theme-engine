@@ -1,6 +1,8 @@
 #### 0.0.1.beta.13
 * Added PHPColors class for php color processing.
 * Section inner styling is now solid white if on a solid color background. Remains transparent over image background.
+* Section template no longer sets a default background color via each section's settings.
+* Fix: Move parsing of section shortcode atts to the main get_section function. (Props Hans Swolfs and Robin Cornett!)
 
 #### 0.0.1.beta.12
 * Fix: Mobile menu nav location is the only one that should show when there is a menu assigned to it.
