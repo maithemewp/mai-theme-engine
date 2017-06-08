@@ -309,6 +309,10 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
     return $attributes;
 }
 
+function mai_get_clean_content( $content ) {
+    return Mai_Shortcodes()->content_filter( $content );
+}
+
 /**
  * Helper function for getting the script/style `.min` suffix for minified files.
  *
