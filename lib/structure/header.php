@@ -120,7 +120,7 @@ function mai_do_header() {
 
 				$before_atts['class'] = 'header-before';
 
-				$before = sprintf( '<div %s>%s</div>', genesis_attr( 'header-before', $before_atts ), $before );
+				$before = sprintf( '<div %s><div class="wrap">%s</div></div>', genesis_attr( 'header-before', $before_atts ), $before );
 
 			}
 
@@ -170,7 +170,7 @@ function mai_do_header() {
 
 				$after_atts['class'] = 'header-after';
 
-				$after = sprintf( '<div %s>%s</div>', genesis_attr( 'header-after', $after_atts ), $after );
+				$after = sprintf( '<div %s><div class="wrap">%s</div></div>', genesis_attr( 'header-after', $after_atts ), $after );
 
 			}
 
