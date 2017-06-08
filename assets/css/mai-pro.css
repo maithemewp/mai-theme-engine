@@ -657,8 +657,8 @@ input[type="submit"].small,
 .woocommerce .product a.button,
 .woocommerce .product button.button,
 .woocommerce .product input.button {
-    color: #515151;
     background-color: #ebe9eb;
+    color: #515151;
 }
 
 .button.alt:hover,
@@ -1130,7 +1130,7 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 }
 
 .overlay.overlay-dark::after {
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .overlay.overlay-gradient::after {
@@ -1141,7 +1141,7 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 }
 
 a.overlay::after {
-	background-color: rgba(0, 0, 0, 0.25);
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 a.overlay:hover::after {
@@ -1154,25 +1154,25 @@ a.overlay:hover::after {
 /* these could go 3 levels deep with Section > Overlay > Inner */
 
 .light-content,
-.light-content *:not(.button),
+.light-content *:not(.button):not(.more-link),
 .dark-content .light-content,
-.dark-content .light-content *:not(.button),
+.dark-content .light-content *:not(.button):not(.more-link),
 .light-content .dark-content .light-content,
-.light-content .dark-content .light-content *:not(.button),
+.light-content .dark-content .light-content *:not(.button):not(.more-link),
 .dark-content .dark-content .light-content,
-.dark-content .dark-content .light-content *:not(.button) {
+.dark-content .dark-content .light-content *:not(.button):not(.more-link) {
 	color: #fff;
 	text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 
 .dark-content,
-.dark-content *:not(.button),
+.dark-content *:not(.button):not(.more-link),
 .light-content .dark-content,
-.light-content .dark-content *:not(.button),
+.light-content .dark-content *:not(.button):not(.more-link),
 .dark-content .light-content .dark-content,
-.dark-content .light-content .dark-content *:not(.button),
+.dark-content .light-content .dark-content *:not(.button):not(.more-link),
 .light-content .light-content .dark-content,
-.light-content .light-content .dark-content *:not(.button) {
+.light-content .light-content .dark-content *:not(.button):not(.more-link) {
 	color: #323232;
 	text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
 }
