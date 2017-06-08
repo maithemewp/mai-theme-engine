@@ -1,3 +1,6 @@
+#### 0.0.1.beta.14
+* Add wrap to header before/after hooks.
+
 #### 0.0.1.beta.13
 * Added PHPColors class for php color processing.
 * Section inner styling is now solid white if on a solid color background. Remains transparent over image background.
