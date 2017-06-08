@@ -395,7 +395,7 @@ function mai_do_entry_image_background() {
             $attributes['class'] .= ' overlay light-content';
             $attributes['href'] = get_permalink();
             // Add image background attributes
-            $attributes = mai_add_image_background_attributes( $attributes, $image_id, $image_size );
+            $attributes = mai_add_background_image_attributes( $attributes, $image_id, $image_size );
         } else {
             $attributes['class'] .= ' image-bg-none';
         }
