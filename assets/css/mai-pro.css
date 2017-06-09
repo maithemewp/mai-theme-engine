@@ -1146,12 +1146,19 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
 }
 
+a.overlay:hover,
+a.overlay:focus {
+	outline: 0;
+}
+
 a.overlay::after {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
-a.overlay:hover::after {
+a.overlay:hover::after,
+a.overlay:focus::after {
 	background-color: rgba(0, 0, 0, 0.6);
+	outline: 0;
 }
 
 /* ## Color Contrast
@@ -1160,6 +1167,12 @@ a.overlay:hover::after {
 .dark-content,
 a.dark-content:hover,
 a.dark-content:focus,
+.dark-content h1,
+.dark-content h2,
+.dark-content h3,
+.dark-content h4,
+.dark-content h5,
+.dark-content h6,
 .dark-content .archive-title,
 .dark-content > .entry-title,
 .dark-content > .entry-header > .entry-title,
@@ -1174,6 +1187,12 @@ a.dark-content:focus,
 .light-content,
 a.light-content:hover,
 a.light-content:focus,
+.light-content h1,
+.light-content h2,
+.light-content h3,
+.light-content h4,
+.light-content h5,
+.light-content h6,
 .light-content .archive-title,
 .light-content > .entry-title,
 .light-content > .entry-header > .entry-title,
@@ -2834,6 +2853,7 @@ img.alignright,
 a.entry:hover,
 a.entry:focus {
 	border-color: rgba(0, 0, 0, 0.2);
+	outline: none;
 }
 
 .entry.image-bg {
