@@ -13,6 +13,9 @@ remove_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 
 // Remove page title
 remove_action('genesis_entry_header', 'genesis_do_post_title');
 
+// Remove the post content
+remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
+
 // Add sections to the content
 add_action( 'genesis_entry_content', 'mai_do_sections_loop' );
 function mai_do_sections_loop() {
