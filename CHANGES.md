@@ -1,3 +1,6 @@
+#### 0.0.1.beta.24
+* Primary nav centers when logo is centered
+
 #### 0.0.1.beta.23
 * Fix: Wrong checked value for Hide Featured Image field
 

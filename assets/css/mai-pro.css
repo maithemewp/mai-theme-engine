@@ -2377,7 +2377,8 @@ img.alignright,
 	margin-top: -1px; /* hides bottom border on site header when primary nav is active */
 }
 
-.no-header-content ~ .nav-primary .menu {
+.no-header-content ~ .nav-primary .menu,
+.has-header-left.has-header-right ~ .nav-primary .menu {
 	-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;
 }
 
@@ -2414,8 +2415,8 @@ img.alignright,
 	color: #fff;
 }
 
-.has-header-left ~ .nav-primary .menu-item.search,
-.has-header-right ~ .nav-primary .menu-item.search {
+.has-header-left:not(.has-header-right) ~ .nav-primary .menu-item.search,
+.has-header-right:not(.has-header-left) ~ .nav-primary .menu-item.search {
 	margin-left: auto;
 }
 

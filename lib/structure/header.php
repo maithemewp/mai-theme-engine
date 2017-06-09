@@ -89,7 +89,7 @@ function mai_do_header() {
 	 */
 	add_filter( 'genesis_attr_site-header', function( $attributes ) use ( $left, $right ) {
 
-		if ( ! ( $left && $right ) ) {
+		if ( ! ( $left || $right ) ) {
 			$attributes['class'] .= ' no-header-content';
 		}
 
