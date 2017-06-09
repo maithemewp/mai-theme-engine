@@ -73,8 +73,6 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
         __( 'Hide featured image', 'mai-pro-engine' )
     );
 
-    $new_field = '';
-
 	// Return the new field
     return $new_field . $content;
 
