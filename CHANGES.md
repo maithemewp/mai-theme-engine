@@ -1,3 +1,6 @@
+#### 0.0.1.beta.23
+* Fix: Wrong checked value for Hide Featured Image field
+
 #### 0.0.1.beta.22
 * Better heading handling of headings in light/dark content.
 
