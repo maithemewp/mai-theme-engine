@@ -28,8 +28,6 @@ function mai_do_sections_loop() {
 		return;
 	}
 
-	global $wp_embed;
-
 	// Loop through each section
 	foreach ( $sections as $section ) {
 
