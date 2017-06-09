@@ -1,3 +1,8 @@
+#### 0.0.1.beta.21
+* Sections template in article, no longer replaces the loop.
+* Only remove section entry spacing on Sections template.
+* Fix: return checked() in sprintf().
+
 #### 0.0.1.beta.20
 * Much better light/dark content handling.
 
