@@ -846,26 +846,34 @@ td {
 	margin-bottom: 0;
 }
 
+.mai-sections .content > .entry {
+	background-color: transparent;
+	padding-top: 0;
+	padding-bottom: 0;
+	margin: 0;
+	border: none;
+}
+
 /* remove the bottom margin on the last section of Sections page template */
-.mai-sections .content > .section:last-of-type {
-	margin-bottom: 0;
+.mai-sections .content .section:last-of-type {
+	margin-bottom: -1px;
 }
 
 /* offset section if it's the first element in the content */
 .content-no-sidebars .entry-content > .section:first-child:first-of-type {
 	/* .content (margin-bottom) + .content .entry (padding) + .content .entry (border): (30px + 24px + 1px = 55px) */
-	margin-top: -55px;
+	/* margin-top: -55px; */
 }
 
 .has-banner-area .breadcrumb + .content-sidebar-wrap .content-no-sidebars .entry-content > .section:first-child:first-of-type {
 	/* .breadcrumb has -16px bottom-margin, so just .content .entry (padding 24px) + .content .entry (border 1px): (24px + 1px =  25px) */
-	margin-top: -25px;
+	/* margin-top: -25px; */
 }
 
 /* offset section if it's the last element in the content */
 .content-no-sidebars .entry-content > .section:last-child:last-of-type {
 	/* .content (margin-bottom) + .content .entry (padding) + .section (margin-bottom: (30px + 24px + 30px = 84px) */
-	margin-bottom: -84px;
+	/* margin-bottom: -84px; */
 }
 
 .entry,
@@ -878,6 +886,9 @@ td {
 	margin-bottom: 30px;
 }
 
+.entry-header:empty,
+.entry .entry-header:empty,
+.flex-entry .entry-header:empty,
 .entry-content:empty,
 .entry .entry-content:empty,
 .flex-entry .entry-content:empty {
@@ -1147,6 +1158,9 @@ a.overlay:hover::after {
 --------------------------------------------- */
 
 .dark-content,
+a.dark-content:hover,
+a.dark-content:focus,
+.dark-content .archive-title,
 .dark-content > .entry-title,
 .dark-content > .entry-header > .entry-title,
 .dark-content > .wrap > .entry-title,
@@ -1158,6 +1172,9 @@ a.overlay:hover::after {
 }
 
 .light-content,
+a.light-content:hover,
+a.light-content:focus,
+.light-content .archive-title,
 .light-content > .entry-title,
 .light-content > .entry-header > .entry-title,
 .light-content > .wrap > .entry-title,
