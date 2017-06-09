@@ -1,3 +1,6 @@
+#### 0.0.1.beta.20
+* Much better light/dark content handling.
+
 #### 0.0.1.beta.19
 * image-bg class shouldn't change text colors
 
