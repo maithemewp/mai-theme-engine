@@ -323,7 +323,7 @@ final class Mai_Shortcodes {
 	    	} elseif ( $args['image'] && ! $has_overlay ) {
 		        // For now, anytime we have an image it's considered dark
 		        $dark_bg = true;
-	    	} elseif ( $args['image'] && ( 'dark' == $args['overlay'] ) ) {
+	    	} elseif ( $args['image'] && in_array( $args['overlay'], array( 'dark', 'gradient' ) ) ) {
 	    		$dark_bg = true;
 	    	}
 
