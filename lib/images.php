@@ -69,9 +69,11 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
 
     // Build our new field
 	$new_field = sprintf( '<p><label for="mai_hide_featured_image"><input type="checkbox" id="mai_hide_featured_image" name="mai_hide_featured_image" %s>%s</label></p>',
-        checked( get_post_meta( $post_id, 'mai_hide_featured_image', true ) ),
+        checked( get_post_meta( $post_id, 'mai_hide_featured_image', true ), false, false ),
         __( 'Hide featured image', 'mai-pro-engine' )
     );
+
+    $new_field = '';
 
 	// Return the new field
     return $new_field . $content;
