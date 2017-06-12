@@ -93,8 +93,8 @@ final class Mai_Shortcodes {
 		$content = trim( $content );
 		// Embed any content
 		global $wp_embed;
-		$content = $wp_embed->autoembed( $content );
 		$content = $wp_embed->run_shortcode( $content );
+		$content = $wp_embed->autoembed( $content );
 		// Auto <p>
 		$content = wpautop( $content );
 		// Clean up shortcodes
