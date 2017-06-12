@@ -1873,6 +1873,11 @@ img.alignright,
 	padding-right: 0;
 }
 
+/* hide the add (no spacing) when no add is displaying (happens when ad units only display mobile/desktop) */
+.mai-aec .wrap:empty {
+	display: none;
+}
+
 /* ## Jetpack
 --------------------------------------------- */
 
@@ -2023,6 +2028,8 @@ img.alignright,
 	.shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
 		margin-top: 8px;
 		margin-bottom: 8px;
+		margin-left: 10px;
+		margin-right: 10px;
 	}
 	.site-header.has-header-right .site-title a,
 	.shrink-header .site-header.has-header-right .site-title a,
