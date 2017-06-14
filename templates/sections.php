@@ -36,12 +36,18 @@ function mai_do_sections_loop() {
 
 		// Set the args
 		$args['title']			= isset( $section['title'] ) ? $section['title'] : '';
+		$args['content']		= isset( $section['content'] ) ? $section['content'] : '';
 		$args['height']			= isset( $section['height'] ) ? $section['height'] : '';
 		$args['content_width']	= isset( $section['content_width'] ) ? $section['content_width'] : '';
 		$args['bg']				= isset( $section['bg'] ) ? $section['bg'] : '';
 		$args['image']			= isset( $section['image_id'] ) ? $section['image_id'] : '';
 		$args['overlay']		= isset( $section['overlay'] ) ? $section['overlay'] : '';
 		$args['inner']			= isset( $section['inner'] ) ? $section['inner'] : '';
+
+		// Skip if no title and no content
+		if ( empty( $args['title'] ) && empty( $args['content'] ) && empty( $args['image'] ) ) {
+			continue;
+		}
 
 		echo mai_get_section( $args, $section['content'] );
 
