@@ -1,8 +1,12 @@
+#### 0.0.1.beta.25
+* Fix: Static blog page no longer pulls first post excerpt.
+* Better error checking on section template array.
+
 #### 0.0.1.beta.24
-* Primary nav centers when logo is centered
+* Primary nav centers when logo is centered.
 
 #### 0.0.1.beta.23
-* Fix: Wrong checked value for Hide Featured Image field
+* Fix: Wrong checked value for Hide Featured Image field.
 
 #### 0.0.1.beta.22
 * Better heading handling of headings in light/dark content.

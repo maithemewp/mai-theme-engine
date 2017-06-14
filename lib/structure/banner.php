@@ -116,7 +116,7 @@ function mai_do_banner_content() {
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		printf( '<div %s>', genesis_attr( 'posts-page-description' ) );
 			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page_id ) );
-			echo wpautop( get_the_excerpt( $posts_page_id ) );
+			echo has_excerpt( $posts_page_id ) ? wpautop( get_the_excerpt( $posts_page_id ) ) : '';
 		echo '</div>';
 	}
 
