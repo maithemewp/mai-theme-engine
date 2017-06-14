@@ -52,7 +52,7 @@ function mai_do_banner_area() {
 		'bg' 			=> get_theme_mod( 'banner_background_color', '#f1f1f1' ),
 		'overlay' 		=> get_theme_mod( 'banner_overlay' ),
 		'inner' 		=> get_theme_mod( 'banner_inner' ),
-		'content_width'	=> get_theme_mod( 'banner_content_width', 'lg' ),
+		'content_width'	=> get_theme_mod( 'banner_content_width', 'auto' ),
 		'styles'		=> '',
     );
 

@@ -1,3 +1,5 @@
+* Fix: banner_content_width should default to 'auto'
+
 #### 0.0.1.beta.25
 * Fix: Static blog page no longer pulls first post excerpt.
 * Better error checking on section template array.
