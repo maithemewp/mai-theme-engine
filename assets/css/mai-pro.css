@@ -2970,7 +2970,7 @@ a.entry:focus {
 	line-height: 1;
 }
 
-.flex-entry > .entry-image-link {
+.entry-image-before-entry {
 	/* offset the entry padding and border */
 	width: calc( 100% + 50px );
 	margin-top: -25px;
@@ -2978,9 +2978,9 @@ a.entry:focus {
 	margin-right: -25px;
 }
 
-.flex-entry .entry-title + .entry-image-link,
-.flex-entry .entry-image-link + .entry-header,
-.flex-entry .entry-image-link + .entry-title,
+.flex-entry .entry-image-before-entry + .entry-header,
+.flex-entry .entry-image-before-title + .entry-title,
+.flex-entry .entry-title + .entry-image-after-title,
 .flex-entry .entry-header + .entry-content {
 	margin-top: 16px;
 }

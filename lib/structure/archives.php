@@ -377,6 +377,10 @@ function mai_do_post_image() {
         $attributes['class'] .= sprintf( ' entry-image-%s', $location );
         return $attributes;
     });
+
+    // Remove the alignment from the image
+    add_filter( 'genesis_pre_get_option_image_alignment', '__return_empty_string' );
+
 }
 
 
