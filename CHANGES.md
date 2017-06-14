@@ -1,3 +1,4 @@
+#### 0.0.1.beta.26
 * Fix: banner_content_width should default to 'auto'.
 * Fix: line height header left/right.
 * Fix: Sections metabox was forcing Publish metabox down.
