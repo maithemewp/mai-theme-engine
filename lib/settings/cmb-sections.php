@@ -23,7 +23,7 @@ function mai_do_sections_metabox() {
 		'id'			=> 'mai_sections',
 		'title'			=> __( 'Sections', 'mai-pro-engine' ),
 		'object_types'	=> array( 'page' ),
-		'context'		=> 'after_title',
+		// 'context'		=> 'after_editor', // Currently forces Publish metaboxes down
 		'classes' 		=> 'mai-metabox',
 		'show_on' 		=> array( 'key' => 'page-template', 'value' => 'sections.php' ),
 	) );

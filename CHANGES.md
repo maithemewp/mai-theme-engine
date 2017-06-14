@@ -1,5 +1,6 @@
 * Fix: banner_content_width should default to 'auto'
-* Fix line height header left/right
+* Fix: line height header left/right
+* Fix: Sections metabox was forcing Publish metaboxes down
 * Add top/bottom margin to header left/right widget-area
 
 #### 0.0.1.beta.25
