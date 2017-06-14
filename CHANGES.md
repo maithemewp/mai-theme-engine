@@ -1,5 +1,6 @@
 * Fix: banner_content_width should default to 'auto'
 * Fix line height header left/right
+* Add top/bottom margin to header left/right widget-area
 
 #### 0.0.1.beta.25
 * Fix: Static blog page no longer pulls first post excerpt.

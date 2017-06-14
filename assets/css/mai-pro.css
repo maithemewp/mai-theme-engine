@@ -2148,6 +2148,12 @@ img.alignright,
 	margin-bottom: 8px;
 }
 
+.header-left .widget-area,
+.header-right .widget-area {
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
 /* # Site Navigation
 ---------------------------------------------------------------------------------------------------- */
 
