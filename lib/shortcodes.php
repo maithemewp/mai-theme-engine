@@ -1409,7 +1409,10 @@ final class Mai_Shortcodes {
 						$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
 						if ( $image ) {
 							if ( $atts['link'] ) {
-								$image_html = sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, the_title_attribute( 'echo=0' ), $image );
+								// Add the location as a class to the image link
+								$image_class = str_replace( '_', '-', $atts['image_location'] );
+								$image_class = sprintf( ' entry-image-%s', $image_class );
+								$image_html  = sprintf( '<a href="%s" class="entry-image-link %s" title="%s">%s</a>', $url, $image_class, the_title_attribute( 'echo=0' ), $image );
 							} else {
 								$image_html = $image;
 							}
