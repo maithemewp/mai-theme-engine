@@ -2,6 +2,7 @@
 * Fix: banner_content_width should default to 'auto'.
 * Fix: line height header left/right.
 * Fix: Sections metabox was forcing Publish metabox down.
+* Fix: Link styling, and link color on dark background.
 * New: Add top/bottom margin to header left/right widget-area.
 * New: Add the location as a class to the image link.
 

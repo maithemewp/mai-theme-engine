@@ -152,6 +152,16 @@ a {
 	text-decoration: none;
 }
 
+.entry-content a {
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+}
+
+.entry-content a:hover,
+.entry-content a:focus {
+	border-bottom-style: solid;
+}
+
 p {
 	margin: 0 0 16px;
 	padding: 0;
@@ -1185,6 +1195,7 @@ a.dark-content:focus,
 }
 
 .light-content,
+.light-content a,
 a.light-content:hover,
 a.light-content:focus,
 .light-content h1,
