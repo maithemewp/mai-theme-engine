@@ -1,7 +1,8 @@
-* Fix: banner_content_width should default to 'auto'
-* Fix: line height header left/right
-* Fix: Sections metabox was forcing Publish metaboxes down
-* Add top/bottom margin to header left/right widget-area
+* Fix: banner_content_width should default to 'auto'.
+* Fix: line height header left/right.
+* Fix: Sections metabox was forcing Publish metabox down.
+* New: Add top/bottom margin to header left/right widget-area.
+* New: Add the location as a class to the image link.
 
 #### 0.0.1.beta.25
 * Fix: Static blog page no longer pulls first post excerpt.

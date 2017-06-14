@@ -2982,7 +2982,7 @@ a.entry:focus {
 .flex-entry .entry-image-link + .entry-header,
 .flex-entry .entry-image-link + .entry-title,
 .flex-entry .entry-header + .entry-content {
-	margin-top: 12px;
+	margin-top: 16px;
 }
 
 .flex-entry .entry-content .entry-image-link {

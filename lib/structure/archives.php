@@ -369,7 +369,16 @@ function mai_do_post_image() {
         remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
     }
 
+    // Add the location as a class to the image link
+    add_filter( 'genesis_attr_entry-image-link', function( $attributes ) use ( $location ) {
+        // Replace underscore with hyphen
+        $location = str_replace( '_', '-', $location );
+        // Add the class
+        $attributes['class'] .= sprintf( ' entry-image-%s', $location );
+        return $attributes;
+    });
 }
+
 
 /**
  * Add the entry image as a background image.
