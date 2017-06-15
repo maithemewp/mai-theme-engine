@@ -1,3 +1,5 @@
+* Fix: Entry Info wrap as a full element, not between words.
+
 #### 0.0.1.beta.28
 * Hotfix: Logo hover border.
 

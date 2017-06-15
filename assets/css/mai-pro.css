@@ -3094,7 +3094,7 @@ p.entry-meta {
 
 .entry-author,
 .entry-comments-link {
-	white-space: nowrap;
+	display: inline-block;
 }
 
 .entry-author,
