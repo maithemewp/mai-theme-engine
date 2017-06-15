@@ -1,3 +1,6 @@
+#### 0.0.1.beta.28
+* Hotfix: Logo hover border.
+
 #### 0.0.1.beta.27
 * Fix: Image alignment on Mai Archive Settings.
 * Fix: Better text link handling.

@@ -2097,6 +2097,11 @@ img.alignright,
 	margin-bottom: 32px;
 	margin-left: 16px;
 	margin-right: 16px;
+}
+
+.site-title a,
+.site-title a:hover,
+.site-title a:focus {
 	border: none;
 }
 
