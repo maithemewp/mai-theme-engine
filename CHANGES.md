@@ -1,4 +1,5 @@
 * Fix: Entry Info wrap as a full element, not between words.
+* Fix: Remove excess sidebar margin on mobile.
 
 #### 0.0.1.beta.28
 * Hotfix: Logo hover border.

@@ -3415,6 +3415,11 @@ li.comment {
 		display: -ms-flexbox;display: -webkit-box;display: flex;
 	}
 
+	.sidebar {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
 }
 
 @media only screen and (max-width: 544px) {}
