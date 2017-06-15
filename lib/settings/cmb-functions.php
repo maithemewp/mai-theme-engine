@@ -312,8 +312,9 @@ function _mai_cmb_image_alignment_config() {
 		'before_field'		=> __( 'Image Alignment:', 'genesis' ) . ' ',
 		'show_option_none'	=> __( '- None -', 'genesis' ),
 		'options'			=> array(
-			'alignleft'	 => __( 'Left', 'genesis' ),
-			'alignright' => __( 'Right', 'genesis' ),
+			'aligncenter'	=> __( 'Center', 'genesis' ),
+			'alignleft'		=> __( 'Left', 'genesis' ),
+			'alignright'	=> __( 'Right', 'genesis' ),
 		),
 	);
 }

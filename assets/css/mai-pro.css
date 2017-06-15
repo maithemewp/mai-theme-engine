@@ -152,13 +152,13 @@ a {
 	text-decoration: none;
 }
 
-.entry-content a {
+p > a {
 	border-bottom-width: 1px;
 	border-bottom-style: dotted;
 }
 
-.entry-content a:hover,
-.entry-content a:focus {
+p > a:hover,
+p > a:focus {
 	border-bottom-style: solid;
 }
 
@@ -317,6 +317,15 @@ a:focus,
 .sidebar .widget-title a:hover,
 .sidebar .widget-title a:focus {
 	color: rgba(0, 0, 0, 0.95);
+}
+
+.entry-title a:hover,
+.entry-title a:focus,
+.entry-content .entry-title a:hover,
+.entry-content .entry-title a:focus,
+.sidebar .widget-title a:hover,
+.sidebar .widget-title a:focus {
+	opacity: 0.7;
 }
 
 .banner-area .entry-title,
@@ -1212,7 +1221,7 @@ a.light-content:focus,
 .entry .light-content,
 .inner .light-content {
 	color: #fff;
-	text-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+	text-shadow: none;
 }
 
 /* ## Avatar
@@ -1281,6 +1290,15 @@ a.light-content:focus,
 
 /* ## WordPress
 --------------------------------------------- */
+
+.entry-image-link,
+.entry-image-link:hover,
+.entry-image-link:focus,
+.entry-content .entry-image-link,
+.entry-content .entry-image-link:hover,
+.entry-content .entry-image-link:focus {
+	border-bottom: none;
+}
 
 a.aligncenter img {
 	display: block;
@@ -2079,6 +2097,7 @@ img.alignright,
 	margin-bottom: 32px;
 	margin-left: 16px;
 	margin-right: 16px;
+	border: none;
 }
 
 .site-title .custom-logo {
@@ -3333,13 +3352,11 @@ li.comment {
 
 .site-footer a {
 	color: rgba(255, 255, 255, 0.75);
-	border-bottom: 1px dotted rgba(255, 255, 255, 0.75);
 }
 
 .site-footer a:hover,
 .site-footer a:focus {
 	color: rgba(255, 255, 255, 1);
-	border-bottom-style: solid;
 }
 
 .site-footer .menu-item a {

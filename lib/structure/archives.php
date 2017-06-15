@@ -277,6 +277,7 @@ function mai_do_content_archive_archive_options() {
 
     $content_archive_thumbnail = mai_get_archive_setting( 'content_archive_thumbnail', genesis_get_option( 'content_archive_thumbnail' ) );
     $image_size                = mai_get_archive_setting( 'image_size', genesis_get_option( 'image_size' ) );
+    $image_alignment           = mai_get_archive_setting( 'image_alignment', genesis_get_option( 'image_alignment' ) );
     $content_archive           = mai_get_archive_setting( 'content_archive', genesis_get_option( 'content_archive' ) );
     $content_archive_limit     = absint( mai_get_archive_setting( 'content_archive_limit', genesis_get_option( 'content_archive_limit' ) ) );
     $posts_nav                 = mai_get_archive_setting( 'posts_nav', genesis_get_option( 'posts_nav' ) );
@@ -294,6 +295,11 @@ function mai_do_content_archive_archive_options() {
     // Image Size
     add_filter( 'genesis_pre_get_option_image_size', function( $option ) use ( $image_size ) {
         return $image_size;
+    });
+
+    // Image Alignment
+    add_filter( 'genesis_pre_get_option_image_alignment', function( $option ) use ( $image_alignment ) {
+        return $image_alignment;
     });
 
     // Content Archive
@@ -377,9 +383,6 @@ function mai_do_post_image() {
         $attributes['class'] .= sprintf( ' entry-image-%s', $location );
         return $attributes;
     });
-
-    // Remove the alignment from the image
-    add_filter( 'genesis_pre_get_option_image_alignment', '__return_empty_string' );
 
 }
 

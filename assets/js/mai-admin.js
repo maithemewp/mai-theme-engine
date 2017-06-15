@@ -55,7 +55,6 @@
 
 		var $columns			= $( '#columns' ),
 			$includeImage		= $( '#content_archive_thumbnail' ),
-			$includeImage		= $( '#content_archive_thumbnail' ),
 			$imageLocation		= $( '.cmb2-id-image-location' ),
 			$imageSize			= $( '.cmb2-id-image-size' ),
 			$imageAlignment		= $( '.cmb2-id-image-alignment' ),
@@ -66,27 +65,27 @@
 		 * Maybe the image alignment field.
 		 */
 
-		// If more than 1 column
-		if ( $columns.val() > 1 ) {
-			// Hide image alignment field
-			_hideElement( $imageAlignment );
-		}
-		// On change of column count field
-		$columns.change(function() {
-			// If more than 1 column
-			if ( $(this).val() > 1 ) {
-				// Hide image alignment field
-				_hideElement( $imageAlignment );
-			}
-			// 1/none
-			else {
-				// If including an image
-				if ( $includeImage.is( ':checked' ) ) {
-					// Show the element
-					_showElement( $imageAlignment );
-				}
-			}
-		});
+		// // If more than 1 column
+		// if ( $columns.val() > 1 ) {
+		// 	// Hide image alignment field
+		// 	_hideElement( $imageAlignment );
+		// }
+		// // On change of column count field
+		// $columns.change(function() {
+		// 	// If more than 1 column
+		// 	if ( $(this).val() > 1 ) {
+		// 		// Hide image alignment field
+		// 		_hideElement( $imageAlignment );
+		// 	}
+		// 	// 1/none
+		// 	else {
+		// 		// If including an image
+		// 		if ( $includeImage.is( ':checked' ) ) {
+		// 			// Show the element
+		// 			_showElement( $imageAlignment );
+		// 		}
+		// 	}
+		// });
 
 		/**
 		 * Hide the image location, image size, and image alignment fields

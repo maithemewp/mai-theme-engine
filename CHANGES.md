@@ -1,3 +1,7 @@
+#### 0.0.1.beta.27
+* Fix: Image alignment on Mai Archive Settings.
+* Fix: Better text link handling.
+
 #### 0.0.1.beta.26
 * Fix: banner_content_width should default to 'auto'.
 * Fix: line height header left/right.
