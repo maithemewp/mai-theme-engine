@@ -169,7 +169,7 @@ final class Mai_Shortcodes {
 	function get_callout( $atts, $content = null ) {
 
 	    // Bail if no content
-	    if ( null == $content ) {
+	    if ( null === $content ) {
 	        return;
 	    }
 
@@ -202,7 +202,7 @@ final class Mai_Shortcodes {
 	function get_section( $atts, $content = null ) {
 
 	    // Bail if no content
-	    if ( null == $content ) {
+	    if ( null === $content ) {
 	        return;
 	    }
 
@@ -537,7 +537,7 @@ final class Mai_Shortcodes {
 	function get_columns( $atts, $content = null ) {
 
 		// Bail if no content
-		if ( null == $content ) {
+		if ( null === $content ) {
 			return;
 		}
 
@@ -634,7 +634,7 @@ final class Mai_Shortcodes {
 	function get_col_by_fraction( $fraction, $atts, $content ) {
 
 		// Bail if no background image and no content
-		if ( ! isset( $atts['image'] ) && null == $content ) {
+		if ( ! isset( $atts['image'] ) && null === $content ) {
 			return;
 		}
 
