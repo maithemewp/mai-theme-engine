@@ -1,3 +1,7 @@
+#### 0.0.1.beta.31
+* Fix: style attribute in shortcodes.
+* Fix: [grid] titles were still linking when link="false".
+
 #### 0.0.1.beta.30
 * Hotfix: Shortcode button code got in too early.
 
