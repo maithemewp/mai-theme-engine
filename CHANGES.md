@@ -1,3 +1,6 @@
+#### 0.0.1.beta.30
+* Hotfix: Shortcode button code got in too early.
+
 #### 0.0.1.beta.29
 * Fix: Entry Info wrap as a full element, not between words.
 * Fix: Remove excess sidebar margin on mobile.
