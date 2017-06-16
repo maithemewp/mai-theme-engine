@@ -1,3 +1,10 @@
+#### 0.0.1.beta.29
+* Fix: Entry Info wrap as a full element, not between words.
+* Fix: Remove excess sidebar margin on mobile.
+* Fix: Remove text-shadow on entries in a section.
+* Fix: Remove WooCommerce account navigation left margin.
+* Fix: Sections template and shortcode comparisons == vs === making section not display when only a title or image.
+
 #### 0.0.1.beta.28
 * Hotfix: Logo hover border.
 

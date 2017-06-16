@@ -1057,15 +1057,6 @@ td {
 	background-color: #fff;
 }
 
-.section,
-.has-sidebar .content .section {
-	/* background-color: #f0f0f0; */
-}
-
-body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
-	/* background-color: #fff; */
-}
-
 /* add top margin any time a section is after another element */
 .entry-content > *:not(.section) + .section {
 	margin-top: 30px;
@@ -1089,6 +1080,10 @@ body:not(.has-sidebar) .section:not(.image-bg):nth-of-type(even) {
 
 .section .width-full .col {
 	padding: calc(30px + 2vw);
+}
+
+.section .entry {
+	text-shadow: none;
 }
 
 /* ## Image Background
@@ -3094,7 +3089,7 @@ p.entry-meta {
 
 .entry-author,
 .entry-comments-link {
-	white-space: nowrap;
+	display: inline-block;
 }
 
 .entry-author,
@@ -3413,6 +3408,11 @@ li.comment {
 
 	.mai-toggle {
 		display: -ms-flexbox;display: -webkit-box;display: flex;
+	}
+
+	.sidebar {
+		margin-top: 0;
+		margin-bottom: 0;
 	}
 
 }
