@@ -560,7 +560,7 @@ final class Mai_Shortcodes {
 			'class'				=> mai_sanitize_html_classes( $atts['class'] ),
 			'gutter'			=> absint( $atts['gutter'] ),
 			'id'				=> sanitize_html_class( $atts['id'] ),
-			'style'				=> esc_attr( $atts['style'] ),
+			'style'				=> sanitize_text_field( $atts['style'] ),
 		);
 
 		$atts['row_class'] = trim( $atts['class'] . ' columns-shortcode' );
@@ -659,7 +659,7 @@ final class Mai_Shortcodes {
             'image'      => absint( $atts['image'] ),
             'image_size' => sanitize_key( $atts['image_size'] ),
             'overlay' 	 => sanitize_key( $atts['overlay'] ),
-            'style'      => esc_attr( $atts['style'] ),
+            'style'      => sanitize_text_field( $atts['style'] ),
 		);
 
 		$flex_col = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
@@ -694,9 +694,13 @@ final class Mai_Shortcodes {
         }
 
         // Maybe add an overlay, typically for image tint/style
-        // if ( in_array( 'overlay', $atts['styles'] ) ) {
         if ( $this->has_overlay( $atts ) ) {
             $flex_col['class'] .= sprintf( ' overlay overlay-%s', $atts['overlay'] );
+        }
+
+        // Maybe add inline styles
+        if ( isset( $atts['style'] ) && $atts['style'] ) {
+        	$flex_col['style'] = $atts['style'];
         }
 
 	    /**
@@ -966,6 +970,11 @@ final class Mai_Shortcodes {
 	    if ( ! empty( $atts['row_class'] ) ) {
 	    	$flex_row['class'] .= ' ' . $atts['row_class'];
 	    }
+
+        // Maybe add inline styles
+        if ( isset( $atts['style'] ) && $atts['style'] ) {
+        	$flex_col['style'] = $atts['style'];
+        }
 
 	    /**
 	     * Main content row wrap.
@@ -1474,7 +1483,7 @@ final class Mai_Shortcodes {
 
 							// Title
 							if ( in_array( 'title', $atts['show'] ) ) {
-								if ( ! $this->is_linking_element( $atts ) ) {
+								if ( ! $this->is_linking_element( $atts ) && $atts['link'] ) {
 									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
 								} else {
 									$title = get_the_title();
@@ -1687,7 +1696,7 @@ final class Mai_Shortcodes {
 							}
 
 							// Title
-							if ( ! $this->is_linking_element( $atts ) ) {
+							if ( ! $this->is_linking_element( $atts ) && $atts['link'] ) {
 								$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
 							} else {
 								$title = $term->name;
