@@ -1336,12 +1336,14 @@ img.alignnone,
 	margin-bottom: 12px;
 }
 
+.alignleft,
 a.alignleft,
 img.alignleft,
 .wp-caption.alignleft {
 	margin: 0 calc(.75vw + 1em) calc(.75vw + 1em) 0;
 }
 
+.alignright,
 a.alignright,
 img.alignright,
 .wp-caption.alignright {
