@@ -91,6 +91,11 @@ function mai_login_logo_css() {
 			padding: 0 !important;
 			margin: 0 !important;
 		}
+		.login h1 img {
+			display: block !important;
+			max-width: 100% !important;
+			height: auto !important;
+		}
 	</style>';
 
 	// Add the filter that adds the inline logo
