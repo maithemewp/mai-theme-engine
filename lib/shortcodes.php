@@ -238,7 +238,8 @@ final class Mai_Shortcodes {
 	        return;
 	    }
 
-	    $defaults = array(
+	    // Shortcode section atts
+	    $args = shortcode_atts( array(
 	        'wrapper'       => 'section',
 	        'id'            => '',
 	        'class'         => '',
@@ -252,15 +253,7 @@ final class Mai_Shortcodes {
 	        'wrap'          => true,
 	        'content_width' => '',
 	        'height'        => 'md',
-	    );
-	    // Add filter to the defaults. Maybe different themes want to have the default something unique.
-	    $defaults = apply_filters( 'mai_section_defaults', $defaults );
-
-	    // Shortcode section atts
-	    $args = shortcode_atts( $defaults, $atts, 'section' );
-
-	    // Add filter to change args. There is also a mai_section_defaults filter to manipulate earlier.
-	    $args = apply_filters( 'mai_section_args', $args );
+	    ), $atts, 'section' );
 
 	    // Sanitized args
 	    $args = array(
@@ -681,8 +674,6 @@ final class Mai_Shortcodes {
             'style'      => '', // HTML inline style
 		), $atts, 'col' );
 
-		$atts = apply_filters( 'mai_col_args', $atts );
-
 		// Sanitize atts
 		$atts = array(
             'align'      => mai_sanitize_keys( $atts['align'] ),
@@ -807,8 +798,6 @@ final class Mai_Shortcodes {
 			'infinite'				=> true,  // (slider only) Loop slider
 			'slidestoscroll' 		=> '1',   // (slider only) The amount of posts to scroll
 		), $atts, 'grid' );
-
-		$atts = apply_filters( 'mai_grid_defaults', $atts );
 
 		$atts = array(
 			'align'					=> mai_sanitize_keys( $atts['align'] ),
