@@ -1,3 +1,4 @@
+#### 0.0.1.beta.32
 * New: Admin notice to install Genesis Connect for WooCommerce when installing WooCommerce.
 * New: Side mobile menu close button.
 * Fix: Login logo when it's larger than login form width.
