@@ -1,3 +1,6 @@
+* New: mai_sanitize_hex_color() helper function
+* New: bg, class, id, and style attributes on [callout] shortcode
+
 #### 0.0.1.beta.32
 * New: Admin notice to install Genesis Connect for WooCommerce when installing WooCommerce.
 * New: Side mobile menu close button.

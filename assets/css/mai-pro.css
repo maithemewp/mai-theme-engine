@@ -1180,6 +1180,8 @@ a.overlay:focus::after {
 --------------------------------------------- */
 
 .dark-content,
+.dark-content a,
+.dark-content > p > a,
 a.dark-content:hover,
 a.dark-content:focus,
 .dark-content h1,
@@ -1201,6 +1203,7 @@ a.dark-content:focus,
 
 .light-content,
 .light-content a,
+.light-content > p > a,
 a.light-content:hover,
 a.light-content:focus,
 .light-content h1,

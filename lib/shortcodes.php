@@ -174,19 +174,51 @@ final class Mai_Shortcodes {
 	    }
 
 	    $defaults = array(
-	        'color' => '',
+			'bg'	=> '',
+			'class'	=> '',
+			'id' 	=> '',
+			'style' => '',
 	    );
 
-	    /**
-	     * Shortcode callout attributes
-	     */
+	    // Callout attributes
 	    $atts = shortcode_atts( $defaults, $atts, 'callout' );
 
-	    $attributes['class'] = 'callout';
+		// Sanitize atts
+		$atts = array(
+			'bg' 	=> mai_sanitize_hex_color( $atts['bg'] ), // 3 or 6 dig hex color with or without hash
+			'class' => mai_sanitize_html_classes( $atts['class'] ),
+			'id'    => sanitize_html_class( $atts['id'] ),
+			'style' => sanitize_text_field( $atts['style'] ),
+		);
 
-	    if ( $atts['color'] ) {
-	    	$attributes['class'] .= mai_sanitized_html_classes( $atts['color'] );
+	    // Maybe add an id
+	    if ( $atts['id'] ) {
+	        $attributes['id'] = $atts['id'];
 	    }
+
+        // Maybe add inline styles
+	    if ( $atts['style'] ) {
+        	$attributes['style'] = $atts['style'];
+	    }
+
+		// Set default class
+	    $attributes['class'] = trim( 'callout ' . $atts['class'] );
+
+	    $dark_bg = false;
+
+    	// Maybe add the inline background color
+	    if ( $atts['bg'] ) {
+
+	    	// Add the background color
+		    $attributes = mai_add_background_color_attributes( $attributes, $atts['bg'] );
+
+		    if ( mai_is_dark_color( $atts['bg'] ) ) {
+		    	$dark_bg = true;
+		    }
+	    }
+
+	    // Add content shade class
+    	$attributes['class'] .= $dark_bg ? ' light-content' : ' dark-content';
 
 	    $output = sprintf( '<div %s>%s</div>', genesis_attr( 'mai-callout', $attributes ), $this->get_processed_content( $content ) );
 
@@ -236,7 +268,7 @@ final class Mai_Shortcodes {
 	        'id'            => sanitize_html_class( $args['id'] ),
 	        'class'         => mai_sanitize_html_classes( $args['class'] ),
 	        'align'         => mai_sanitize_keys( $args['align'] ), // left, center, right
-	        'bg' 			=> sanitize_hex_color( $args['bg'] ), // 3 or 6 dig hex color
+	        'bg' 			=> mai_sanitize_hex_color( $args['bg'] ), // 3 or 6 dig hex color with or without hash
 	        'image'         => absint( $args['image'] ),
 	        'overlay'       => sanitize_key( $args['overlay'] ),
 	        'inner'         => sanitize_key( $args['inner'] ),
@@ -1780,7 +1812,6 @@ final class Mai_Shortcodes {
 	function is_image_bg( $atts ) {
 	    switch ( $atts['image_location'] ) {
 	        case 'bg':
-	        case 'background':
 	            $return = true;
 	            break;
 	        default:
