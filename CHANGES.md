@@ -1,3 +1,10 @@
+#### 0.0.1.beta.32
+* New: Admin notice to install Genesis Connect for WooCommerce when installing WooCommerce.
+* New: Side mobile menu close button.
+* Fix: Login logo when it's larger than login form width.
+* Fix: Margin on alignright elements.
+* Fix: Margin on Woo account nav items.
+
 #### 0.0.1.beta.31
 * Fix: style attribute in shortcodes.
 * Fix: [grid] titles were still linking when link="false".

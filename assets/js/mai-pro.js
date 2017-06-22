@@ -401,6 +401,11 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
         }
 
+        // On click of close button, close all
+        $(document).on( 'click', '.menu-close', function(e){
+            _closeAll();
+        });
+
     }
 
     /**
