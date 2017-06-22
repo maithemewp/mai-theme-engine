@@ -267,6 +267,43 @@ function mai_is_dark_color( $hex_color ) {
 }
 
 /**
+ * Sanitises a HEX value.
+ * The way this works is by splitting the string in 6 substrings.
+ * Each sub-string is individually sanitized, and the result is then returned.
+ *
+ * This function is part of the `Kirki_Color` class in the [Kirki](http://kirki.org) Toolkit.
+ * @link    https://aristath.github.io/blog/php-sanitize-hex-color
+ *
+ * @param   string      The 3 or 6 digit hex value with or without a hash.
+ * @param   boolean     Whether we want to include a hash (#) at the beginning or not.
+ *
+ * @return  string      The sanitized hex color.
+ */
+function mai_sanitize_hex_color( $color, $hash = true ) {
+
+    // Remove any spaces and special characters before and after the string
+    $color = trim( $color );
+
+    // Remove any trailing '#' symbols from the color value
+    $color = str_replace( '#', '', $color );
+
+    // If the string is 6 characters long then use it in pairs.
+    if ( 3 == strlen( $color ) ) {
+        $color = substr( $color, 0, 1 ) . substr( $color, 0, 1 ) . substr( $color, 1, 1 ) . substr( $color, 1, 1 ) . substr( $color, 2, 1 ) . substr( $color, 2, 1 );
+    }
+
+    $substr = array();
+    for ( $i = 0; $i <= 5; $i++ ) {
+        $default    = ( 0 == $i ) ? 'F' : ( $substr[$i-1] );
+        $substr[$i] = substr( $color, $i, 1 );
+        $substr[$i] = ( false === $substr[$i] || ! ctype_xdigit( $substr[$i] ) ) ? $default : $substr[$i];
+    }
+    $hex = implode( '', $substr );
+
+    return ( ! $hash ) ? $hex : '#' . $hex;
+}
+
+/**
  * Generate a hex value that has appropriate contrast
  * against the inputted value.
  *
