@@ -49,7 +49,6 @@ function mai_notice_script() {
 		return;
 	}
 
-	wp_add_inline_script( 'mai-admin', 'alert("Working!")' );
 	wp_add_inline_script( 'mai-admin',
 		'jQuery(document).on( "click", ".mai-woocommerce-notice .notice-dismiss", function() {
 			jQuery.ajax({
