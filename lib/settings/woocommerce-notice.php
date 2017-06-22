@@ -138,8 +138,8 @@ function mai_reset_woocommerce_notice() {
 add_action( 'deactivated_plugin', 'mai_reset_woocommerce_notice_on_deactivation', 10, 2 );
 function mai_reset_woocommerce_notice_on_deactivation( $plugin, $network_activation ) {
 
-	// Bail if not deactivating WooCommerce or Genesis Connect for WooCommerce.
-	if ( ! in_array( $plugin, array( 'woocommerce/woocommerce.php', 'genesis-connect-woocommerce/genesis-connect-woocommerce.php' ) ) ) {
+	// Bail if not deactivating WooCommerce and Genesis Connect for WooCommerce at the same time.
+	if ( $plugin !== 'woocommerce/woocommerce.php' && $plugin !== 'genesis-connect-woocommerce/genesis-connect-woocommerce.php'  ) {
 		return;
 	}
 

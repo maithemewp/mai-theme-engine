@@ -107,7 +107,13 @@ function mai_get_mobile_menu() {
 	$menu .= '<div id="mai-menu" class="mai-menu">';
 
 		$menu .= '<div class="mai-menu-outer">';
+
+		if ( mai_is_side_menu_enabled() ) {
+			$menu .= '<button class="button menu-close icon icon-left" role="button">' . __( 'Close', 'mai-pro-engine' ) . '</button>';
+		}
+
 		$menu .= '<div class="mai-menu-inner">';
+
 
 			/**
 			 * I hate to use output buffering
