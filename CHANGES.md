@@ -1,5 +1,6 @@
-* New: mai_sanitize_hex_color() helper function
-* New: bg, class, id, and style attributes on [callout] shortcode
+* New: mai_sanitize_hex_color() helper function.
+* New: bg, class, id, and style attributes on [callout] shortcode.
+* Fix: Remove filters from shortcodes in favor of core, built-in shortcode_atts_{$shortcode} filter.
 
 #### 0.0.1.beta.32
 * New: Admin notice to install Genesis Connect for WooCommerce when installing WooCommerce.
