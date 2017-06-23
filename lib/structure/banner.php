@@ -75,7 +75,7 @@ function mai_do_banner_area() {
 	do_action( 'mai_banner_content', $args );
 	$content = ob_get_clean();
 
-	echo mai_get_section( $args, $content );
+	echo mai_get_section( $content, $args );
 
 }
 
