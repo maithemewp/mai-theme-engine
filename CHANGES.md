@@ -1,3 +1,4 @@
+#### 0.0.1.beta.34
 * Fix: Switch param order in mai_get_section() helper function so we can use the function without being forced to set args.
 
 #### 0.0.1.beta.33
