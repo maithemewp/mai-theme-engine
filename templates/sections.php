@@ -51,7 +51,7 @@ function mai_do_sections_loop() {
 			continue;
 		}
 
-		echo mai_get_section( $args, $content );
+		echo mai_get_section( $content, $args );
 
 	}
 

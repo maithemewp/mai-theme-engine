@@ -1,3 +1,6 @@
+#### 0.0.1.beta.34
+* Fix: Switch param order in mai_get_section() helper function so we can use the function without being forced to set args.
+
 #### 0.0.1.beta.33
 * New: mai_sanitize_hex_color() helper function.
 * New: bg, class, id, and style attributes on [callout] shortcode.

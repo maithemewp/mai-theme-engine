@@ -137,11 +137,12 @@ function mai_is_content_archive() {
 /**
  * Get a section.
  *
- * @param  array  $args  The section args.
+ * @param  array  $content  The section content (required).
+ * @param  array  $args     The section args (optional).
  *
  * @return string|HTML
  */
-function mai_get_section( $args, $content ) {
+function mai_get_section( $content, $args = array() ) {
     return Mai_Shortcodes()->get_section( $args, $content );
 }
 
