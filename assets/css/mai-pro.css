@@ -1151,7 +1151,7 @@ td {
 }
 
 .overlay.overlay-dark::after {
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 .overlay.overlay-gradient::after {
@@ -1180,8 +1180,8 @@ a.overlay:focus::after {
 --------------------------------------------- */
 
 .dark-content,
-.dark-content a,
-.dark-content > p > a,
+.dark-content a:not(.button),
+.dark-content > p > a:not(.button),
 a.dark-content:hover,
 a.dark-content:focus,
 .dark-content h1,
@@ -1202,8 +1202,8 @@ a.dark-content:focus,
 }
 
 .light-content,
-.light-content a,
-.light-content > p > a,
+.light-content a:not(.button),
+.light-content > p > a:not(.button),
 a.light-content:hover,
 a.light-content:focus,
 .light-content h1,
@@ -3385,12 +3385,21 @@ li.comment {
 
 .site-footer {
 	background-color: #323232;
-	color: rgba(255, 255, 255, 0.5);
 	font-size: 14px;
 	text-align: center;
 	padding-top: 30px;
 	padding-bottom: 30px;
 	border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.site-footer,
+.site-footer .widget-title,
+.site-footer h2,
+.site-footer h3,
+.site-footer h4,
+.site-footer h5,
+.site-footer h6 {
+	color: rgba(255, 255, 255, 0.5);
 }
 
 .site-footer p {

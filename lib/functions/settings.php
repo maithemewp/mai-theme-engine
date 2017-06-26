@@ -284,6 +284,11 @@ function mai_sanitize_hex_color( $color, $hash = true ) {
     // Remove any spaces and special characters before and after the string
     $color = trim( $color );
 
+    // Bail if no color
+    if ( empty( $color ) ) {
+        return;
+    }
+
     // Remove any trailing '#' symbols from the color value
     $color = str_replace( '#', '', $color );
 
@@ -299,6 +304,14 @@ function mai_sanitize_hex_color( $color, $hash = true ) {
         $substr[$i] = ( false === $substr[$i] || ! ctype_xdigit( $substr[$i] ) ) ? $default : $substr[$i];
     }
     $hex = implode( '', $substr );
+
+    /**
+     * Bail if we somehow still have an empty color.
+     * We don't want to end up returning a hash-only string.
+     */
+    if ( empty( $hex ) ) {
+        return;
+    }
 
     return ( ! $hash ) ? $hex : '#' . $hex;
 }

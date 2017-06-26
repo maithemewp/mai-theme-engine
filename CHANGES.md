@@ -1,3 +1,9 @@
+#### 0.0.1.beta.35
+* Fix: Background image overlay on hover.
+* Fix: dark/light content button text-shadow.
+* Fix: Heading colors in Site Footer widget area.
+* Fix: mai_sanitize_hex_color() helper function was always returning a color.
+
 #### 0.0.1.beta.34
 * Fix: Switch param order in mai_get_section() helper function so we can use the function without being forced to set args.
 
