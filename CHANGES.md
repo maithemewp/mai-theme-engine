@@ -1,3 +1,4 @@
+#### 0.0.1.beta.35
 * Fix: Background image overlay on hover.
 * Fix: dark/light content button text-shadow.
 * Fix: Heading colors in Site Footer widget area.
