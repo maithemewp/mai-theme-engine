@@ -1,3 +1,5 @@
+* Change: Cross-sells now show in 2 columns intead of 3.
+
 #### 0.0.1.beta.35
 * Fix: Background image overlay on hover.
 * Fix: dark/light content button text-shadow.
