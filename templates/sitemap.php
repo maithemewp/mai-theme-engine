@@ -44,13 +44,13 @@ function mai_genesis_sitemap_output( $sitemap ) {
  * This function outputs sitemap-esque columns displaying all pages,
  * categories, authors, monthly archives, and recent posts.
  *
- * @uses genesis_a11y() to check for headings choice.
- * @uses genesis_sitemap() to generate the sitemap.
+ * @uses 	genesis_sitemap() to generate the sitemap.
  *
+ * @return  void
  */
 add_action( 'genesis_entry_content', 'mai_sitemap_template_content' );
 function mai_sitemap_template_content() {
-	genesis_sitemap( 'h2' );
+	genesis_sitemap( );
 }
 
 genesis();

@@ -171,6 +171,10 @@ function mai_do_flex_loop_before() {
                 $columns = 3;
             }
         }
+        // Cross-sells
+        elseif ( is_cart() ) {
+            $columns = 2;
+        }
     }
 
     // Create an anonomous function using the column count

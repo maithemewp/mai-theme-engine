@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         0.0.1.beta.35
+ * Version:         1.0.0
  *
  * GitHub URI:      bizbudding/mai-pro-engine
  *
@@ -66,7 +66,7 @@ final class Mai_Pro_Engine {
      */
     public function __clone() {
         // Cloning instances of the class is forbidden.
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'Mai_Pro_Engine' ), '1.0' );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'mai-pro-engine' ), '1.0' );
     }
 
     /**
@@ -78,7 +78,7 @@ final class Mai_Pro_Engine {
      */
     public function __wakeup() {
         // Unserializing instances of the class is forbidden.
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'Mai_Pro_Engine' ), '1.0' );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'mai-pro-engine' ), '1.0' );
     }
 
     /**
@@ -92,7 +92,7 @@ final class Mai_Pro_Engine {
 
         // Plugin version.
         if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
-            define( 'MAI_PRO_ENGINE_VERSION', '0.0.1.beta.35' );
+            define( 'MAI_PRO_ENGINE_VERSION', '1.0.0' );
         }
 
         // Plugin Folder Path.
