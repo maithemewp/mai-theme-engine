@@ -31,10 +31,7 @@ function mai_do_sections_metabox() {
 	$section = $sections->add_field( array(
 	    'id'          => 'mai_sections',
 	    'type'        => 'group',
-		// 'before_row' => '<div class="mai-row mai-gutter-30">',
-		// 'after_row'  => '</div>',
 	    'repeatable'  => true,
-
 	    'options'     => array(
 			'group_title'	=> __( 'Section #{#}', 'mai-pro-engine' ),
 			'add_button'	=> __( 'Add Section', 'mai-pro-engine' ),
@@ -100,11 +97,11 @@ function mai_do_sections_metabox() {
 
 	// Height
 	$sections->add_group_field( $section, array(
-		'name'			=> __( 'Height', 'mai-pro-engine' ),
-		'id'			=> 'height',
-		'type'			=> 'select',
-		'default'		=> 'md',
-		'options'		=> array(
+		'name'		=> __( 'Height', 'mai-pro-engine' ),
+		'id'		=> 'height',
+		'type'		=> 'select',
+		'default'	=> 'md',
+		'options'	=> array(
 			'auto'	=> __( 'Auto (Use height of content)', 'mai-pro-engine' ),
 			'sm'	=> __( 'Small', 'mai-pro-engine' ),
 			'md'	=> __( 'Medium', 'mai-pro-engine' ),
@@ -130,11 +127,11 @@ function mai_do_sections_metabox() {
 
 	// Title
 	$sections->add_group_field( $section, array(
-		'name'	=> 'Title',
-		'id'	=> 'title',
-		'type'	=> 'text',
+		'name'			=> 'Title',
+		'id'			=> 'title',
+		'type'			=> 'text',
 		'before_row'	=> '</div><div class="cmb-section-content mai-col mai-col-xs-12 mai-col-lg-8 mai-col-xl-9">',
-		'attributes'  => array(
+		'attributes'	=> array(
 			'placeholder' => __( 'Enter section title here', 'mai-pro-engine' ),
 			'class'        => 'widefat',
 		),
@@ -142,9 +139,9 @@ function mai_do_sections_metabox() {
 
 	// Content
 	$sections->add_group_field( $section, array(
-		'name'	=> 'Content',
-		'id'	=> 'content',
-		'type'	=> 'wysiwyg',
+		'name'		=> 'Content',
+		'id'		=> 'content',
+		'type'		=> 'wysiwyg',
 		'after_row'	=> '</div></div>',
 	) );
 
