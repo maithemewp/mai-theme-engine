@@ -1075,6 +1075,13 @@ td {
 	margin-right: calc(-50vw + 50%);
 }
 
+.section.banner-area > .wrap,
+.content-no-sidebars .section > .wrap {
+	/* IE fix for section wrap content not centering */
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .section .inner > p:last-child {
 	margin-bottom: 8px;
 }
