@@ -145,6 +145,32 @@
 
 	}
 
+	var $sections = $( '.mai-section' );
+
+	if ( $sections.length ) {
+
+        $.each( $sections, function(){
+
+        	var $section = $(this);
+
+    		$section.on( 'click', '.mai-section-settings-toggle', function(e) {
+
+    			e.preventDefault();
+
+				$section.toggleClass( 'mai-settings-open' );
+
+
+			});
+
+			$section.on( 'click', '.mai-section-settings-close', function(e) {
+    			e.preventDefault();
+				$section.removeClass( 'mai-settings-open' );
+			});
+
+        });
+
+	}
+
 	// Helper function to hide an element
 	function _hideElement( $element ) {
 		$element.hide();

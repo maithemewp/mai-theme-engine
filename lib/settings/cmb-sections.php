@@ -42,9 +42,9 @@ function mai_do_sections_metabox() {
 
 	// Settings
 	$sections->add_group_field( $section, array(
-		'name'		 => '<span class="dashicons dashicons-admin-generic"></span> ' . __( 'Settings', 'mai-pro-engine' ),
+		'name'		 => '<button class="button mai-section-settings-toggle"><span class="dashicons dashicons-admin-generic"></span>' . __( 'Settings', 'mai-pro-engine' ) . '</button>',
 		'id'		 => 'settings_title',
-		'before_row' => '<div class="cmb-section-row mai-row"><div class="cmb-section-settings mai-col mai-col-xs-12 mai-col-lg-4 mai-col-xl-3 mai-last-lg">',
+		'before_row' => '<div class="mai-section"><div class="mai-section-wrap"><div class="mai-section-settings"><div class="mai-section-settings-wrap"><button class="button mai-section-settings-close">' . __( 'Close', 'mai-pro-engine' ) . '</button>',
 		'type'		 => 'title',
 	) );
 
@@ -130,7 +130,7 @@ function mai_do_sections_metabox() {
 		'name'			=> 'Title',
 		'id'			=> 'title',
 		'type'			=> 'text',
-		'before_row'	=> '</div><div class="cmb-section-content mai-col mai-col-xs-12 mai-col-lg-8 mai-col-xl-9">',
+		'before_row'	=> '</div></div><div class="mai-section-content">',
 		'attributes'	=> array(
 			'placeholder' => __( 'Enter section title here', 'mai-pro-engine' ),
 			'class'        => 'widefat',
@@ -142,7 +142,7 @@ function mai_do_sections_metabox() {
 		'name'		=> 'Content',
 		'id'		=> 'content',
 		'type'		=> 'wysiwyg',
-		'after_row'	=> '</div></div>',
+		'after_row'	=> '</div></div></div>',
 	) );
 
 }
