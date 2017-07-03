@@ -44,8 +44,9 @@ function mai_do_sections_metabox() {
 	$sections->add_group_field( $section, array(
 		'name'		 => '<button class="button mai-section-settings-toggle"><span class="dashicons dashicons-admin-generic"></span>' . __( 'Settings', 'mai-pro-engine' ) . '</button>',
 		'id'		 => 'settings_title',
-		'before_row' => '<div class="mai-section"><div class="mai-section-wrap"><div class="mai-section-settings"><div class="mai-section-settings-wrap"><button class="button mai-section-settings-close">' . __( 'Close', 'mai-pro-engine' ) . '</button>',
+		'before_row' => '<div class="mai-section"><div class="mai-section-wrap"><div class="mai-section-settings"><div class="mai-section-settings-inner"><button class="button mai-section-settings-close">' . __( 'Close', 'mai-pro-engine' ) . '</button>',
 		'type'		 => 'title',
+		'classes'	 => 'mai-section-settings-toggle-wrap',
 	) );
 
 	// Background Color
@@ -75,7 +76,7 @@ function mai_do_sections_metabox() {
 		'type'				=> 'select',
 		'select_all_button'	=> false,
 		'options'			=> array(
-			''			=> __( '- None -', 'mai-pro-engine' ),
+			''			=> __( '- None -', 'genesis' ),
 			'gradient'	=> __( 'Gradient', 'mai-pro-engine' ),
 			'light'		=> __( 'Light', 'mai-pro-engine' ),
 			'dark'		=> __( 'Dark', 'mai-pro-engine' ),
@@ -89,7 +90,7 @@ function mai_do_sections_metabox() {
 		'type'				=> 'select',
 		'select_all_button'	=> false,
 		'options'			=> array(
-			''		=> __( '- None -', 'mai-pro-engine' ),
+			''		=> __( '- None -', 'genesis' ),
 			'light' => __( 'Light Box', 'mai-pro-engine' ),
 			'dark'  => __( 'Dark Box', 'mai-pro-engine' ),
 		),
@@ -123,6 +124,45 @@ function mai_do_sections_metabox() {
 			'xl'	=> __( 'Extra Large', 'mai-pro-engine' ),
 			'full'	=> __( 'Full Width', 'mai-pro-engine' ),
 		),
+	) );
+
+	// Content Width
+	$sections->add_group_field( $section, array(
+		'name'				=> __( 'Content Alignment', 'mai-pro-engine' ),
+		'id'				=> 'align',
+		'type'				=> 'select',
+		'show_option_none'	=> __( '- None -', 'genesis' ),
+		'options'			=> array(
+			'left'	 => __( 'Left', 'mai-pro-engine' ),
+			'center' => __( 'Center', 'mai-pro-engine' ),
+			'right'	 => __( 'Right', 'mai-pro-engine' ),
+		),
+	) );
+
+	// Advanced Settings
+	$sections->add_group_field( $section, array(
+		'name'			=> __( 'Advanced Settings', 'mai-pro-engine' ),
+		'id'			=> 'advanced_settings_title',
+		'type'			=> 'title',
+		'before_row'	=> '<div class="mai-section-advanced-settings">',
+		'classes'		=> 'mai-section-advanced-settings-title',
+	) );
+
+	// ID
+	$sections->add_group_field( $section, array(
+		'name'				=> 'HTML id',
+		'id'				=> 'id',
+		'type'				=> 'text',
+		'sanitization_cb'	=> 'sanitize_key',
+	) );
+
+	// Class
+	$sections->add_group_field( $section, array(
+		'name'				=> 'HTML additional classes',
+		'id'				=> 'class',
+		'type'				=> 'text',
+		'after_row'			=> '</div>',
+		'sanitization_cb'	=> 'mai_sanitize_html_classes',
 	) );
 
 	// Title
