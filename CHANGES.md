@@ -1,3 +1,7 @@
+* New: FacetWP support in [grid] shortcode.
+* Move section settings to slide out side panel.
+* Add additional settings to each section.
+
 #### 1.0.1.1
 * Remove unnecessary width declaration on img.
 
