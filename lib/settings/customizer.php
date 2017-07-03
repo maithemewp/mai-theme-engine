@@ -272,7 +272,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	 */
 
 	$wp_customize->add_setting( 'banner_align', array(
-		'default'			=> '',
+		'default'			=> 'center',
 		'sanitize_callback'	=> 'sanitize_key',
 	) );
 

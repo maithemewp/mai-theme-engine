@@ -1,3 +1,4 @@
+#### 1.0.3
 * New: Banner alignment setting.
 
 #### 1.0.2.1
