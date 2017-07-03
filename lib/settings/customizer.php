@@ -225,18 +225,6 @@ function mai_register_customizer_settings( $wp_customize ) {
 	 * Enable Banner Inner styling
 	 */
 
-	// $wp_customize->add_setting( 'enable_banner_inner', array(
-	// 	'default'           => 0,
-	// 	'sanitize_callback' => 'absint',
-	// ) );
-
-	// $wp_customize->add_control( 'enable_banner_inner', array(
-	// 	'label'    => __( 'Enable banner inner styling', 'mai-pro-engine' ),
-	// 	'section'  => $section,
-	// 	'priority' => 5,
-	// 	'type'     => 'checkbox',
-	// ) );
-
 	$wp_customize->add_setting( 'banner_inner', array(
 		'default'           => '',
 		'sanitize_callback' => 'sanitize_text_field',
@@ -276,6 +264,28 @@ function mai_register_customizer_settings( $wp_customize ) {
 			'lg'   => __( 'Large', 'mai-pro-engine' ),
 			'xl'   => __( 'Extra Large', 'mai-pro-engine' ),
 			'full' => __( 'Full Width', 'mai-pro-engine' ),
+		),
+	) );
+
+	/*****************************************************
+	 * Banner Alignment
+	 */
+
+	$wp_customize->add_setting( 'banner_align', array(
+		'default'			=> '',
+		'sanitize_callback'	=> 'sanitize_key',
+	) );
+
+	$wp_customize->add_control( 'banner_align', array(
+		'label'		=> __( 'Banner alignment', 'mai-pro-engine' ),
+		'section'	=> $section,
+		'priority'	=> 5,
+		'type'		=> 'select',
+		'choices'	=> array(
+			''		 => __( '- None -', 'genesis' ),
+			'left'	 => __( 'Left', 'mai-pro-engine' ),
+			'center' => __( 'Center', 'mai-pro-engine' ),
+			'right'	 => __( 'Right', 'mai-pro-engine' ),
 		),
 	) );
 
