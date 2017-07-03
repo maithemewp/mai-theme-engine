@@ -946,7 +946,7 @@ final class Mai_Shortcodes {
 	    $flex_row['class'] = 'row';
 
 	    // FacetWP support
-	    if ( $atts['facetwp'] ) {
+	    if ( isset( $atts['facetwp'] ) && $atts['facetwp'] ) {
 	    	$flex_row['class'] .= ' facetwp-template';
 	    }
 
@@ -1390,7 +1390,7 @@ final class Mai_Shortcodes {
 		}
 
 		// FacetWP support
-		if ( $atts['facetwp'] ) {
+		if ( isset( $atts['facetwp'] ) && $atts['facetwp'] ) {
 			$this->facetwp = $args['facetwp'] = true;
 		}
 
