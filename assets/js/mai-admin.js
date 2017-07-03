@@ -145,6 +145,68 @@
 
 	}
 
+	// Get the Sections metabox
+	var $sectionsRepeater = $( '#mai_sections_repeat' );
+
+	if ( $sectionsRepeater.length ) {
+
+		// Get the sections
+		var $sections = $( '.mai-section' );
+
+		// If we have any
+		if ( $sections.length ) {
+			// Loop through em
+	        $.each( $sections, function() {
+				// Handle section settings toggle
+				_sectionSettings( $(this) );
+			});
+		}
+
+		/**
+		 * Setup the settings events for new rows,
+		 * on creation (typically by clicking Add Section),
+		 */
+		$sectionsRepeater.on( 'cmb2_add_row', function( event, row ) {
+			var $section = $( row ).find( '.mai-section' );
+			if ( $section.length ) {
+				/**
+				 * If you add a new section while the settings of the last section are open
+				 * the new section starts visible.
+				 */
+				$section.removeClass( 'mai-settings-open' );
+				// Handle section settings toggle
+				_sectionSettings( $section );
+			}
+		});
+
+	}
+
+	// Helper function to toggle a section's settings
+	function _sectionSettings( $section ) {
+
+		var $button = $section.find( '.mai-section-settings-toggle' );
+
+        _toggleAria( $button, 'aria-pressed' );
+        _toggleAria( $button, 'aria-expanded' );
+
+		$section.on( 'click', '.mai-section-settings-toggle', function(e) {
+
+			e.preventDefault();
+
+			$section.toggleClass( 'mai-settings-open' );
+
+	        _toggleAria( $button, 'aria-pressed' );
+	        _toggleAria( $button, 'aria-expanded' );
+
+		});
+
+		$section.on( 'click', '.mai-section-settings-close', function(e) {
+			e.preventDefault();
+			$section.removeClass( 'mai-settings-open' );
+		});
+
+	}
+
 	// Helper function to hide an element
 	function _hideElement( $element ) {
 		$element.hide();
@@ -153,6 +215,18 @@
 	// Helper function to show an element
 	function _showElement( $element ) {
 		$element.show();
+	}
+
+	/**
+	 * Toggle aria attributes.
+	 * @param  {button} $this   passed through
+	 * @param  {aria-xx}        attribute aria attribute to toggle
+	 * @return {bool}           from _ariaReturn
+	 */
+	function _toggleAria( $this, attribute ) {
+	    $this.attr( attribute, function( index, value ) {
+	        return 'false' === value;
+	    });
 	}
 
 })( document, jQuery );

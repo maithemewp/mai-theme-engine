@@ -212,7 +212,7 @@
         // On click of the search button
         $this.on( 'click', 'button', function(e){
 
-            e.preventDefault()
+            e.preventDefault();
 
             toggleAria( $(this), 'aria-pressed' );
             toggleAria( $(this), 'aria-expanded' );

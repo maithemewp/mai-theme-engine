@@ -14,6 +14,8 @@
  */
 final class Mai_Shortcodes {
 
+	private $facetwp = false;
+
 	/**
 	 * Singleton
 	 * @var   Mai_Shortcodes The one true Mai_Shortcodes
@@ -77,6 +79,9 @@ final class Mai_Shortcodes {
 		add_shortcode( 'col_eleven_twelfths', 	array( $this, 'get_col_eleven_twelfths' ) );
 		add_shortcode( 'col_one_whole', 		array( $this, 'get_col_one_whole' ) );
 		add_shortcode( 'grid', 					array( $this, 'get_grid' ) );
+
+		// FacetWP support
+		add_filter( 'facetwp_is_main_query', array( $this, 'facetwp_is_main_query' ), 10, 2 );
 	}
 
 	/**
@@ -758,6 +763,7 @@ final class Mai_Shortcodes {
 			'entry_class'			=> '',
 			'exclude'				=> '',
 			'exclude_current'		=> false,
+			'facetwp'				=> true,
 			'grid_title'			=> '',
 			'grid_title_class'		=> '',
 			'grid_title_wrap'		=> 'h2',
@@ -815,6 +821,7 @@ final class Mai_Shortcodes {
 			'entry_class'			=> sanitize_text_field( $atts['entry_class'] ),
 			'exclude'				=> array_filter( explode( ',', sanitize_text_field( $atts['exclude'] ) ) ),
 			'exclude_current'		=> filter_var( $atts['exclude_current'], FILTER_VALIDATE_BOOLEAN ),
+			'facetwp'				=> filter_var( $atts['facetwp'], FILTER_VALIDATE_BOOLEAN ),
 			'grid_title'			=> sanitize_text_field( $atts['grid_title'] ),
 			'grid_title_class'		=> sanitize_text_field( $atts['grid_title_class'] ),
 			'grid_title_wrap'		=> sanitize_key( $atts['grid_title_wrap'] ),
@@ -937,6 +944,11 @@ final class Mai_Shortcodes {
 
 		// Main row class
 	    $flex_row['class'] = 'row';
+
+	    // FacetWP support
+	    if ( isset( $atts['facetwp'] ) && $atts['facetwp'] ) {
+	    	$flex_row['class'] .= ' facetwp-template';
+	    }
 
 	    $is_valid_gutter = false;
 	    // Gutter
@@ -1375,6 +1387,11 @@ final class Mai_Shortcodes {
 					'include_children' => $atts['tax_include_children'],
 				)
 			);
+		}
+
+		// FacetWP support
+		if ( isset( $atts['facetwp'] ) && $atts['facetwp'] ) {
+			$this->facetwp = $args['facetwp'] = true;
 		}
 
 		/**
@@ -2009,6 +2026,18 @@ final class Mai_Shortcodes {
 			$number = $atts['number'];
 		}
 		return intval( $number );
+	}
+
+	/**
+	 * Allow FacetWP to work with custom templates and WP_Query
+	 * by checking for a new 'facetwp' => true, parameter in the query
+	 * @uses  FacetWP
+	 */
+	function facetwp_is_main_query( $is_main_query, $query ) {
+	    if ( $this->facetwp && isset( $query->query_vars['facetwp'] ) ) {
+	        $is_main_query = true;
+	    }
+	    return $is_main_query;
 	}
 
 }
