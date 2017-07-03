@@ -1,3 +1,6 @@
+#### 1.0.2.1
+* Hotfix: z-index issue on sections template prohibiting editing of some fields.
+
 #### 1.0.2
 * New: FacetWP support in [grid] shortcode.
 * Move section settings to slide out side panel.
