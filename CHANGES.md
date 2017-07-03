@@ -1,3 +1,4 @@
+#### 1.0.2
 * New: FacetWP support in [grid] shortcode.
 * Move section settings to slide out side panel.
 * Add additional settings to each section.
