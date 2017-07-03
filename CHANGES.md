@@ -1,3 +1,6 @@
+#### 1.0.3
+* New: Banner alignment setting.
+
 #### 1.0.2.1
 * Hotfix: z-index issue on sections template prohibiting editing of some fields.
 

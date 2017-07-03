@@ -64,6 +64,25 @@ function mai_do_banner_area() {
 		$args['image'] = $image_id;
 	}
 
+	// Get the alignment setting
+	$alignment = get_theme_mod( 'banner_align', 'center' );
+
+	// Maybe add the alignment class
+	if ( $alignment ) {
+		// Get the form by type
+	    switch ( $alignment ) {
+	        case 'left':
+	        	$args['class'] .= ' text-xs-left';
+	            break;
+	        case 'center':
+	        	$args['class'] .= ' text-xs-center';
+	            break;
+	        case 'right':
+	        	$args['class'] .= ' text-xs-right';
+	            break;
+	    }
+	}
+
     // Add a filter so devs can change these defaults
     $args = apply_filters( 'mai_banner_args', $args );
 
