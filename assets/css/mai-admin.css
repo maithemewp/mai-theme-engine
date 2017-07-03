@@ -145,6 +145,7 @@
     -o-transition: opacity 0.3s ease-in-out;
     transition: opacity 0.3s ease-in-out;
     opacity: 0;
+    z-index: -1;
 }
 
 .mai-settings-open .mai-section-settings {
