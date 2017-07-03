@@ -65,7 +65,7 @@ function mai_do_banner_area() {
 	}
 
 	// Get the alignment setting
-	$alignment = get_theme_mod( 'banner_align', '' );
+	$alignment = get_theme_mod( 'banner_align', 'center' );
 
 	// Maybe add the alignment class
 	if ( $alignment ) {
