@@ -128,11 +128,11 @@ function mai_do_sections_metabox() {
 
 	// Content Width
 	$sections->add_group_field( $section, array(
-		'name'				=> __( 'Content Alignment', 'mai-pro-engine' ),
-		'id'				=> 'align',
-		'type'				=> 'select',
-		'show_option_none'	=> __( '- None -', 'genesis' ),
-		'options'			=> array(
+		'name'             => __( 'Content Alignment', 'mai-pro-engine' ),
+		'id'               => 'align',
+		'type'             => 'select',
+		'show_option_none' => __( '- None -', 'genesis' ),
+		'options'          => array(
 			'left'	 => __( 'Left', 'mai-pro-engine' ),
 			'center' => __( 'Center', 'mai-pro-engine' ),
 			'right'	 => __( 'Right', 'mai-pro-engine' ),
@@ -140,40 +140,40 @@ function mai_do_sections_metabox() {
 	) );
 
 	// Advanced Settings
-	$sections->add_group_field( $section, array(
-		'name'			=> __( 'Advanced Settings', 'mai-pro-engine' ),
-		'id'			=> 'advanced_settings_title',
-		'type'			=> 'title',
-		'before_row'	=> '<div class="mai-section-advanced-settings">',
-		'classes'		=> 'mai-section-advanced-settings-title',
+	$sections -> add_group_field( $section, array(
+		'name'       => __( 'Advanced Settings', 'mai-pro-engine' ),
+		'id'         => 'advanced_settings_title',
+		'type'       => 'title',
+		'before_row' => '<div class="mai-section-advanced-settings">',
+		'classes'    => 'mai-section-advanced-settings-title',
 	) );
 
 	// ID
-	$sections->add_group_field( $section, array(
-		'name'				=> 'HTML id',
-		'id'				=> 'id',
-		'type'				=> 'text',
-		'sanitization_cb'	=> 'sanitize_key',
+	$sections -> add_group_field( $section, array(
+		'name'            => 'HTML id',
+		'id'              => 'id',
+		'type'            => 'text',
+		'sanitization_cb' => 'sanitize_key',
 	) );
 
 	// Class
-	$sections->add_group_field( $section, array(
-		'name'				=> 'HTML additional classes',
-		'id'				=> 'class',
-		'type'				=> 'text',
-		'after_row'			=> '</div>',
-		'sanitization_cb'	=> 'mai_sanitize_html_classes',
+	$sections -> add_group_field( $section, array(
+		'name'            => 'HTML additional classes',
+		'id'              => 'class',
+		'type'            => 'text',
+		'after_row'       => '</div>',
+		'sanitization_cb' => 'mai_sanitize_html_classes',
 	) );
 
 	// Title
-	$sections->add_group_field( $section, array(
-		'name'			=> 'Title',
-		'id'			=> 'title',
-		'type'			=> 'text',
-		'before_row'	=> '</div></div><div class="mai-section-content">',
-		'attributes'	=> array(
+	$sections -> add_group_field( $section, array(
+		'name'       => 'Title',
+		'id'         => 'title',
+		'type'       => 'text',
+		'before_row' => '</div></div><div class="mai-section-content">',
+		'attributes' => array(
 			'placeholder' => __( 'Enter section title here', 'mai-pro-engine' ),
-			'class'        => 'widefat',
+			'class'       => 'widefat',
 		),
 	) );
 
