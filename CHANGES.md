@@ -1,3 +1,5 @@
+* Refactor archive settings output functions.
+
 #### 1.0.3
 * New: Banner alignment setting.
 
