@@ -172,6 +172,10 @@ function mai_do_banner_content() {
 		genesis_do_search_title();
 	}
 
+	elseif ( is_404() ) {
+		printf( '<div class="entry-title">%s</div>', __( '404', 'mai-pro-engine' ) );
+	}
+
 	// Bail if WooCommerce is not active
 	elseif ( class_exists( 'WooCommerce' ) ) {
 
