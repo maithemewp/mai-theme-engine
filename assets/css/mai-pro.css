@@ -1166,9 +1166,8 @@ td {
 }
 
 .overlay.overlay-gradient::after {
-	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(25%, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6)) );
-	background-image: -webkit-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
 	background-image: -o-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(25%, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6)) );
 	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
 }
 
@@ -2435,6 +2434,10 @@ img.alignright,
 	margin-top: -1px; /* hides bottom border on site header when primary nav is active */
 }
 
+.nav-primary .menu {
+	-ms-flex-wrap: wrap;flex-wrap: wrap;
+}
+
 .no-header-content ~ .nav-primary .menu,
 .has-header-left.has-header-right ~ .nav-primary .menu {
 	-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;
@@ -2482,7 +2485,8 @@ img.alignright,
 --------------------------------------------- */
 
 .nav-secondary .menu {
-	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
+	-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;
+	-ms-flex-wrap: wrap;flex-wrap: wrap;
 }
 
 .home .nav-secondary .current-menu-item > a,
