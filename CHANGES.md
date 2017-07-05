@@ -2,7 +2,7 @@
 
 ## 1.0.4
 * Changed: Refactor archive settings output functions.
-* Changed: Allow menu itmes to wrap on primary/secondary nav
+* Changed: Allow menu itmes to wrap on primary/secondary nav.
 * Fixed: Cleanup tabs/spaces.
 
 ## 1.0.3
