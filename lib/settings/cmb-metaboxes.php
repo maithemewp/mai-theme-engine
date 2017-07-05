@@ -19,7 +19,7 @@ function mai_cmb2_add_metaboxes() {
 	$button_text   = __( 'Add Banner Image', 'mai-pro-engine' );
 
 	// Posts/Pages/CPTs
-    $post = new_cmb2_box( array(
+	$post = new_cmb2_box( array(
 		'id'			=> 'mai_post_banner',
 		'title'			=> __( 'Banner Area', 'mai-pro-engine' ),
 		'object_types'	=> get_post_types( array('public' => true ), 'names' ),
@@ -27,24 +27,24 @@ function mai_cmb2_add_metaboxes() {
 		'priority'		=> 'low',
 		'classes' 		=> 'mai-metabox',
 		'show_on_cb'	=> '_mai_cmb_show_banner_visibility_field',
-    ) );
-    $post->add_field( _mai_cmb_banner_visibility_config() );
-    $post->add_field( _mai_cmb_banner_image_config() );
+	) );
+	$post->add_field( _mai_cmb_banner_visibility_config() );
+	$post->add_field( _mai_cmb_banner_image_config() );
 
-    // Static Blog and WooCommerce Shop
-    $static_archive = new_cmb2_box( array(
-        'id'               => 'mai_static_archive_settings',
-        'title'            => $metabox_title,
-        'object_types'     => array( 'page' ),
-        'context' 		   => 'normal',
-        'priority'		   => 'default',
-        'classes' 		   => 'mai-metabox mai-content-archive-metabox',
-        'show_on_cb' 	   => '_mai_cmb_show_if_static_archive',
-    ) );
-    $static_archive->add_field( _mai_cmb_remove_loop_config() );
-    $static_archive->add_field( _mai_cmb_content_enable_archive_settings_config() );
-    $static_archive->add_field( _mai_cmb_content_archive_settings_title_config() );
-    $static_archive->add_field( _mai_cmb_columns_config() );
+	// Static Blog and WooCommerce Shop
+	$static_archive = new_cmb2_box( array(
+		'id'           => 'mai_static_archive_settings',
+		'title'        => $metabox_title,
+		'object_types' => array( 'page' ),
+		'context'      => 'normal',
+		'priority'     => 'default',
+		'classes'      => 'mai-metabox mai-content-archive-metabox',
+		'show_on_cb'   => '_mai_cmb_show_if_static_archive',
+	) );
+	$static_archive->add_field( _mai_cmb_remove_loop_config() );
+	$static_archive->add_field( _mai_cmb_content_enable_archive_settings_config() );
+	$static_archive->add_field( _mai_cmb_content_archive_settings_title_config() );
+	$static_archive->add_field( _mai_cmb_columns_config() );
 	$static_archive->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$static_archive->add_field( _mai_cmb_image_location_config() );
 	$static_archive->add_field( _mai_cmb_image_size_config() );
@@ -53,26 +53,26 @@ function mai_cmb2_add_metaboxes() {
 	$static_archive->add_field( _mai_cmb_content_archive_limit_config() );
 	$static_archive->add_field( _mai_cmb_more_link_config() );
 	$static_archive->add_field( _mai_cmb_meta_config() );
-    $static_archive->add_field( _mai_cmb_posts_per_page_config() );
+	$static_archive->add_field( _mai_cmb_posts_per_page_config() );
 	$static_archive->add_field( _mai_cmb_posts_nav_config() );
 
-    // Taxonomy Terms
-    $term = new_cmb2_box( array(
-        'id'               => 'mai_term_settings',
-        'title'            => $metabox_title,
-        'object_types'     => array( 'term' ),
-        'taxonomies'       => get_taxonomies( array( 'public' => true ), 'names' ),
-        'new_term_section' => true,
-        'context' 		   => 'normal',
-        'priority'		   => 'low',
-        'classes' 		   => 'mai-metabox mai-content-archive-metabox',
-    ) );
-    $term->add_field( _mai_cmb_banner_visibility_config() );
-    $term->add_field( _mai_cmb_banner_image_config() );
-    $term->add_field( _mai_cmb_remove_loop_config() );
-    $term->add_field( _mai_cmb_content_archive_settings_title_config() );
-    $term->add_field( _mai_cmb_content_enable_archive_settings_config() );
-    $term->add_field( _mai_cmb_columns_config() );
+	// Taxonomy Terms
+	$term = new_cmb2_box( array(
+		'id'               => 'mai_term_settings',
+		'title'            => $metabox_title,
+		'object_types'     => array( 'term' ),
+		'taxonomies'       => get_taxonomies( array( 'public' => true ), 'names' ),
+		'new_term_section' => true,
+		'context'          => 'normal',
+		'priority'         => 'low',
+		'classes'          => 'mai-metabox mai-content-archive-metabox',
+	) );
+	$term->add_field( _mai_cmb_banner_visibility_config() );
+	$term->add_field( _mai_cmb_banner_image_config() );
+	$term->add_field( _mai_cmb_remove_loop_config() );
+	$term->add_field( _mai_cmb_content_archive_settings_title_config() );
+	$term->add_field( _mai_cmb_content_enable_archive_settings_config() );
+	$term->add_field( _mai_cmb_columns_config() );
 	$term->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$term->add_field( _mai_cmb_image_location_config() );
 	$term->add_field( _mai_cmb_image_size_config() );
@@ -81,24 +81,24 @@ function mai_cmb2_add_metaboxes() {
 	$term->add_field( _mai_cmb_content_archive_limit_config() );
 	$term->add_field( _mai_cmb_more_link_config() );
 	$term->add_field( _mai_cmb_meta_config() );
-    $term->add_field( _mai_cmb_posts_per_page_config() );
+	$term->add_field( _mai_cmb_posts_per_page_config() );
 	$term->add_field( _mai_cmb_posts_nav_config() );
 
-    // User Profiles
-    $user = new_cmb2_box( array(
-		'id'			=> 'mai_user_settings',
-		'title'			=> $metabox_title,
-		'object_types'	=> array( 'user' ),
-		'context'		=> 'normal',
-		'show_on_cb' 	=> 'mai_cmb_show_if_user_is_author_or_above',
-		'classes' 		=> 'mai-metabox mai-content-archive-metabox',
-    ) );
-    $user->add_field( _mai_cmb_banner_visibility_config() );
-    $user->add_field( _mai_cmb_banner_image_config() );
-    $user->add_field( _mai_cmb_remove_loop_config() );
-    $user->add_field( _mai_cmb_content_archive_settings_title_config() );
-    $user->add_field( _mai_cmb_content_enable_archive_settings_config() );
-    $user->add_field( _mai_cmb_columns_config() );
+	// User Profiles
+	$user = new_cmb2_box( array(
+		'id'           => 'mai_user_settings',
+		'title'        => $metabox_title,
+		'object_types' => array( 'user' ),
+		'context'      => 'normal',
+		'show_on_cb'   => 'mai_cmb_show_if_user_is_author_or_above',
+		'classes'      => 'mai-metabox mai-content-archive-metabox',
+	) );
+	$user->add_field( _mai_cmb_banner_visibility_config() );
+	$user->add_field( _mai_cmb_banner_image_config() );
+	$user->add_field( _mai_cmb_remove_loop_config() );
+	$user->add_field( _mai_cmb_content_archive_settings_title_config() );
+	$user->add_field( _mai_cmb_content_enable_archive_settings_config() );
+	$user->add_field( _mai_cmb_columns_config() );
 	$user->add_field( _mai_cmb_content_archive_thumbnail_config() );
 	$user->add_field( _mai_cmb_image_location_config() );
 	$user->add_field( _mai_cmb_image_size_config() );
@@ -107,6 +107,6 @@ function mai_cmb2_add_metaboxes() {
 	$user->add_field( _mai_cmb_content_archive_limit_config() );
 	$user->add_field( _mai_cmb_more_link_config() );
 	$user->add_field( _mai_cmb_meta_config() );
-    $user->add_field( _mai_cmb_posts_per_page_config() );
+	$user->add_field( _mai_cmb_posts_per_page_config() );
 	$user->add_field( _mai_cmb_posts_nav_config() );
 }

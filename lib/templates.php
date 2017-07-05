@@ -13,9 +13,9 @@
  */
 add_filter( 'theme_page_templates', 'mai_plugin_theme_page_templates' );
 function mai_plugin_theme_page_templates( $page_templates ) {
-	$page_templates['landing.php']	= __( 'Landing Page', 'mai-pro-engine' );
-	$page_templates['sections.php']	= __( 'Sections', 'mai-pro-engine' );
-	$page_templates['sitemap.php']	= __( 'Sitemap', 'mai-pro-engine' );
+	$page_templates['landing.php']  = __( 'Landing Page', 'mai-pro-engine' );
+	$page_templates['sections.php'] = __( 'Sections', 'mai-pro-engine' );
+	$page_templates['sitemap.php']  = __( 'Sitemap', 'mai-pro-engine' );
 	return $page_templates;
 }
 
@@ -70,9 +70,9 @@ function mai_search_results_template() {
 	}
 
 	// Layout (medium content)
- 	add_filter( 'genesis_pre_get_option_site_layout', '__mai_return_md_content' );
+	add_filter( 'genesis_pre_get_option_site_layout', '__mai_return_md_content' );
 
- 	// Columns
+	// Columns
 	add_filter( 'mai_pre_get_archive_setting_columns', function( $columns ) {
 		return 3;
 	});

@@ -3,11 +3,11 @@
 // Add singular body class to the head
 add_filter( 'body_class', 'mai_singular_body_class' );
 function mai_singular_body_class( $classes ) {
-    if ( ! is_singular() ) {
-    	return $classes;
-    }
-    $classes[] = 'singular';
-    return $classes;
+	if ( ! is_singular() ) {
+		return $classes;
+	}
+	$classes[] = 'singular';
+	return $classes;
 }
 
 /**
@@ -18,8 +18,8 @@ function mai_singular_body_class( $classes ) {
  */
 add_filter( 'body_class', 'mai_js_detection_body_class' );
 function mai_js_detection_body_class($classes) {
-    $classes[] = 'no-js';
-    return $classes;
+	$classes[] = 'no-js';
+	return $classes;
 }
 
 /**
@@ -34,15 +34,15 @@ function mai_js_detection_body_class($classes) {
  */
 add_action( 'genesis_before', 'mai_js_detection_script', 1 );
 function mai_js_detection_script() {
-    ?>
-    <script type="text/javascript">
-        //<![CDATA[
-        (function(){
-        var c = document.body.className;
-        c = c.replace(/no-js/, 'js');
-        document.body.className = c;
-        })();
-        //]]>
-    </script>
-    <?php
+	?>
+	<script type="text/javascript">
+		//<![CDATA[
+		(function(){
+		var c = document.body.className;
+		c = c.replace(/no-js/, 'js');
+		document.body.className = c;
+		})();
+		//]]>
+	</script>
+	<?php
 }

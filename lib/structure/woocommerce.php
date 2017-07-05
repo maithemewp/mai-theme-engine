@@ -112,16 +112,16 @@ function mai_woocommerce_default_layout( $layout ) {
 		$layout = 'md-content';
 	}
 	elseif ( is_product() ) {
-	    $layout = 'md-content';
+		$layout = 'md-content';
 	}
 	elseif ( is_account_page() ) {
-	    $layout = 'full-width-content';
+		$layout = 'full-width-content';
 	}
 	elseif ( is_cart() ) {
-	    $layout = 'md-content';
+		$layout = 'md-content';
 	}
 	elseif ( is_checkout() ) {
-	    $layout = 'md-content';
+		$layout = 'md-content';
 	}
 	return $layout;
 

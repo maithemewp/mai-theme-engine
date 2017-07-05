@@ -44,15 +44,9 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 	$style_formats = array(
 		// Each array child is a format with it's own settings
 		array(
-			'title' 	=> 'Section Title',
-			// 'selector'  => 'h2',
-			'block' 	=> 'h2',
-			'classes' 	=> 'heading',
-		),
-		array(
-			'title'		=> 'Button',
-			'selector'	=> 'a',
-			'classes'	=> 'button',
+			'title'    => 'Button',
+			'selector' => 'a',
+			'classes'  => 'button',
 		),
 	);
 	// Insert the array, JSON ENCODED, into 'style_formats'
@@ -63,17 +57,17 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 // Show the editor on the page set for is_home()
 add_action( 'edit_form_after_title', 'mai_posts_page_edit_form' );
 function mai_posts_page_edit_form() {
-    global $post, $post_type, $post_ID;
-    if ( $post_ID == get_option( 'page_for_posts' ) && empty( $post->post_content ) ) {
-        add_post_type_support( $post_type, 'editor' );
-    }
+	global $post, $post_type, $post_ID;
+	if ( $post_ID == get_option( 'page_for_posts' ) && empty( $post->post_content ) ) {
+		add_post_type_support( $post_type, 'editor' );
+	}
 }
 
 // Change login logo
 add_action( 'login_head',  'mai_login_logo_css' );
 function mai_login_logo_css() {
 
-	$logo_id  = get_theme_mod( 'custom_logo' );
+	$logo_id = get_theme_mod( 'custom_logo' );
 
 	// Bail if we don't have a custom logo
 	if ( ! $logo_id ) {
