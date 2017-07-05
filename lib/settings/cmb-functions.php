@@ -11,7 +11,7 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	 */
 	add_filter( 'cmb2_meta_box_url', 'mai_update_cmb2_meta_box_url' );
 	function mai_update_cmb2_meta_box_url( $url ) {
-	    return str_replace( '/Users/JiveDig/Plugins/mai-pro-engine/', MAI_PRO_ENGINE_PLUGIN_URL, $url );
+		return str_replace( '/Users/JiveDig/Plugins/mai-pro-engine/', MAI_PRO_ENGINE_PLUGIN_URL, $url );
 	}
 }
 
@@ -35,39 +35,39 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 
 function _mai_cmb_show_banner_visibility_field() {
 
-    // Bail if not enabled at all
-    if ( ! mai_is_banner_area_enabled_globally() ) {
-        return false;
-    }
+	// Bail if not enabled at all
+	if ( ! mai_is_banner_area_enabled_globally() ) {
+		return false;
+	}
 
-    $show = true;
+	$show = true;
 
-    global $pagenow, $typenow;
+	global $pagenow, $typenow;
 
-    // Get 'disabled' content, typecasted as array because it may return empty string if none
-    $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
+	// Get 'disabled' content, typecasted as array because it may return empty string if none
+	$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
 
-    // Posts
-    if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
+	// Posts
+	if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
 
-    	if ( in_array( $typenow, $disable_post_types ) ) {
-    		$show = false;
-    	}
+		if ( in_array( $typenow, $disable_post_types ) ) {
+			$show = false;
+		}
 
-    }
-    // Terms
-    elseif ( 'term.php' == $pagenow ) {
+	}
+	// Terms
+	elseif ( 'term.php' == $pagenow ) {
 
-        // Get taxonomy
-        $taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
+	// Get taxonomy
+		$taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
 
-        if ( array_intersect( get_taxonomy( $taxonomy )->object_type, $disable_post_types ) ) {
-    		$show = false;
-    	}
+		if ( array_intersect( get_taxonomy( $taxonomy )->object_type, $disable_post_types ) ) {
+			$show = false;
+		}
 
-    }
+	}
 
-    return $show;
+	return $show;
 }
 
 function _mai_cmb_show_banner_image_field() {
@@ -76,35 +76,35 @@ function _mai_cmb_show_banner_image_field() {
 		return false;
 	}
 
-    $show = true;
+	$show = true;
 
-    global $pagenow, $typenow;
+	global $pagenow, $typenow;
 
-    $disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
-    $disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+	$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
+	$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
 
-    // Posts
-    if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
+	// Posts
+	if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
 
-    	if ( in_array( $typenow, $disable_post_types ) ) {
-    		$show = false;
-    	}
+		if ( in_array( $typenow, $disable_post_types ) ) {
+			$show = false;
+		}
 
-    }
-    // Terms
-    elseif ( 'term.php' == $pagenow ) {
+	}
+	// Terms
+	elseif ( 'term.php' == $pagenow ) {
 
-        // Get taxonomy
-        $taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
+		// Get taxonomy
+		$taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
 
 		// Don't show field on Woo product categories, they have their own image field
 		if ( class_exists('WooCommerce') && 'product_cat' == $taxonomy ) {
 			$show = false;
 		} elseif ( in_array( $typenow, $disable_taxonomies ) ) {
-    		$show = false;
-    	}
+			$show = false;
+		}
 
-    }
+	}
 
 	return $show;
 }
@@ -124,15 +124,15 @@ function _mai_cmb_show_if_static_archive() {
 		return false;
 	}
 
-    $post_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-    $posts_page_id = get_option('page_for_posts');
-    $shop_page_id  = get_option('woocommerce_shop_page_id');
+	$post_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+	$posts_page_id = get_option('page_for_posts');
+	$shop_page_id  = get_option('woocommerce_shop_page_id');
 
-    // If static blog page or WooCommerce shop page
-    if ( ( $post_id == $posts_page_id ) || ( class_exists('WooCommerce') && ( $post_id == $shop_page_id ) ) ) {
-    	return true;
-    }
-    return false;
+	// If static blog page or WooCommerce shop page
+	if ( ( $post_id == $posts_page_id ) || ( class_exists('WooCommerce') && ( $post_id == $shop_page_id ) ) ) {
+		return true;
+	}
+	return false;
 }
 
 /**
@@ -152,136 +152,136 @@ function _mai_cmb_show_if_user_is_author_or_above() {
 }
 
 function _mai_cmb_banner_disable_post_types_config() {
-	$post_types			= get_post_types( array('public' => true ), 'objects' );
-	$post_type_options	= array();
-    foreach ( $post_types as $post_type ) {
+	$post_types        = get_post_types( array('public' => true ), 'objects' );
+	$post_type_options = array();
+	foreach ( $post_types as $post_type ) {
 		$post_type_options[$post_type->name] = $post_type->label;
-    }
+	}
 	return array(
-		'name'				=> __( 'Disable Banner Area on', 'mai-pro-engine' ),
-		'desc'				=> __( 'Disable the banner area for the above post types, single and archive pages, and any associated taxonomy archives.', 'mai-pro-engine' ),
-		'id'				=> 'banner_disable_post_types',
-		'type'				=> 'multicheck',
-		'select_all_button'	=> false,
-		'options'			=> $post_type_options,
-		'show_on_cb'		=> 'mai_is_banner_area_enabled_globally',
-    );
+		'name'              => __( 'Disable Banner Area on', 'mai-pro-engine' ),
+		'desc'              => __( 'Disable the banner area for the above post types, single and archive pages, and any associated taxonomy archives.', 'mai-pro-engine' ),
+		'id'                => 'banner_disable_post_types',
+		'type'              => 'multicheck',
+		'select_all_button' => false,
+		'options'           => $post_type_options,
+		'show_on_cb'        => 'mai_is_banner_area_enabled_globally',
+	);
 }
 
 function _mai_cmb_banner_visibility_config() {
 	return array(
-		'name'				=> __( 'Banner Visibility', 'mai-pro-engine' ),
-		'desc'				=> __( 'Hide the banner area', 'mai-pro-engine' ),
-		'id'				=> 'hide_banner',
-		'type'				=> 'checkbox',
-		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
-		'escape_cb'			=> '_mai_cmb_escape_one_zero',
-		'show_on_cb'		=> '_mai_cmb_show_banner_visibility_field',
-    );
+		'name'            => __( 'Banner Visibility', 'mai-pro-engine' ),
+		'desc'            => __( 'Hide the banner area', 'mai-pro-engine' ),
+		'id'              => 'hide_banner',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_show_banner_visibility_field',
+	);
 }
 
 function _mai_cmb_banner_image_config() {
 	return array(
-		'name'			=> __( 'Banner Image', 'mai-pro-engine' ),
-		'id'			=> 'banner',
-		'type'			=> 'file',
-		'preview_size'	=> 'one-third',
-		'options'		=> array( 'url' => false ),
-	    'text' 			=> array(
-	        'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
-	    ),
-	    'show_on_cb' 	=> '_mai_cmb_show_banner_image_field',
-    );
+		'name'         => __( 'Banner Image', 'mai-pro-engine' ),
+		'id'           => 'banner',
+		'type'         => 'file',
+		'preview_size' => 'one-third',
+		'options'      => array( 'url' => false ),
+		'text'         => array(
+			'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
+		),
+		'show_on_cb' => '_mai_cmb_show_banner_image_field',
+	);
 }
 
 function _mai_cmb_content_archive_settings_title_config() {
 	return array(
-		'name'	=> '',
-		'desc'	=> __( 'If enabled, these will override the default content archive settings', 'mai-pro-engine' ),
-		'type'	=> 'title',
-		'id'	=> 'mai_content_archives_title',
+		'name' => '',
+		'desc' => __( 'If enabled, these will override the default content archive settings', 'mai-pro-engine' ),
+		'type' => 'title',
+		'id'   => 'mai_content_archives_title',
 	);
 }
 
 function _mai_cmb_content_enable_archive_settings_config() {
 	return array(
-		'before_row'		=> '<div class="mai-archive-setting-wrap">',
-		'name'				=> __( 'Archive Settings', 'mai-pro-engine' ),
-		'desc'				=> __( 'Enable custom archive settings', 'mai-pro-engine' ),
-		'id'				=> 'enable_content_archive_settings',
-		'type'				=> 'checkbox',
-		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
-		'escape_cb'			=> '_mai_cmb_escape_one_zero',
-    );
+		'before_row'      => '<div class="mai-archive-setting-wrap">',
+		'name'            => __( 'Archive Settings', 'mai-pro-engine' ),
+		'desc'            => __( 'Enable custom archive settings', 'mai-pro-engine' ),
+		'id'              => 'enable_content_archive_settings',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+	);
 }
 
 function _mai_cmb_remove_loop_config() {
 	return array(
-		'after_row'			=> '</div>',
-		'name'				=> __( 'Hide Entries', 'mai-pro-engine' ),
-		'desc'				=> __( 'Hide entries from this archive', 'mai-pro-engine' ),
-		'id'				=> 'remove_loop',
-		'type'				=> 'checkbox',
-		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
-		'escape_cb'			=> '_mai_cmb_escape_one_zero',
-    );
+		'after_row'       => '</div>',
+		'name'            => __( 'Hide Entries', 'mai-pro-engine' ),
+		'desc'            => __( 'Hide entries from this archive', 'mai-pro-engine' ),
+		'id'              => 'remove_loop',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+	);
 }
 
 function _mai_cmb_columns_config() {
 	return array(
-		'before_row'	=> '<div class="mai-archive-settings-wrap">',
-		'name'			=> __( 'Content Columns', 'mai-pro-engine' ),
-		'desc'			=> __( 'Display content in multiple columns.', 'mai-pro-engine' ),
-		'id'			=> 'columns',
-		'type'			=> 'select',
-		'default'		=> 1,
-		'options'		=> array(
+		'before_row' => '<div class="mai-archive-settings-wrap">',
+		'name'       => __( 'Content Columns', 'mai-pro-engine' ),
+		'desc'       => __( 'Display content in multiple columns.', 'mai-pro-engine' ),
+		'id'         => 'columns',
+		'type'       => 'select',
+		'default'    => 1,
+		'options'    => array(
 			1 => __( '- None -', 'genesis' ),
 			2 => __( '2 Columns', 'mai-pro-engine' ),
 			3 => __( '3 Columns', 'mai-pro-engine' ),
 			4 => __( '4 Columns', 'mai-pro-engine' ),
 			6 => __( '6 Columns', 'mai-pro-engine' ),
 		),
-    );
+	);
 }
 
 function _mai_cmb_content_archive_config() {
 	return array(
-		'name'		=> __( 'Content', 'genesis' ),
-		'id'		=> 'content_archive',
-		'type'		=> 'select',
-		'default'	=> 'excerpts',
-		'options'	=> array(
-			'none'		=> __( 'No content', 'mai-pro-engine' ),
-			'full'		=> __( 'Entry content', 'genesis' ),
-			'excerpts'	=> __( 'Entry excerpts', 'genesis' ),
+		'name'    => __( 'Content', 'genesis' ),
+		'id'      => 'content_archive',
+		'type'    => 'select',
+		'default' => 'excerpts',
+		'options' => array(
+			'none'     => __( 'No content', 'mai-pro-engine' ),
+			'full'     => __( 'Entry content', 'genesis' ),
+			'excerpts' => __( 'Entry excerpts', 'genesis' ),
 		),
 	);
 }
 
 function _mai_cmb_content_archive_thumbnail_config() {
 	return array(
-		'name'				=> __( 'Featured Image', 'genesis' ),
-		'desc'				=> __( 'Include the Featured Image', 'mai-pro-engine' ),
-		'id'				=> 'content_archive_thumbnail',
-		'type'				=> 'checkbox',
-		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
-		'escape_cb'			=> '_mai_cmb_escape_one_zero',
-    );
+		'name'            => __( 'Featured Image', 'genesis' ),
+		'desc'            => __( 'Include the Featured Image', 'mai-pro-engine' ),
+		'id'              => 'content_archive_thumbnail',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+	);
 }
 
 function _mai_cmb_image_location_config() {
 	return array(
-		'name'			=> __( 'Image Location:', 'mai-pro-engine' ),
-		'id'			=> 'image_location',
-		'before_field'	=> __( 'Image Location:', 'mai-pro-engine' ) . ' ',
-		'type'			=> 'select',
-		'default'		=> 'before_entry',
-		'options'		=> array(
-			'background'	 => __( 'Background Image', 'mai-pro-engine' ),
-			'before_entry'	 => __( 'Before Entry', 'mai-pro-engine' ),
-			'before_title'	 => __( 'Before Title', 'mai-pro-engine' ),
-			'after_title'	 => __( 'After Title', 'mai-pro-engine' ),
+		'name'         => __( 'Image Location:', 'mai-pro-engine' ),
+		'id'           => 'image_location',
+		'before_field' => __( 'Image Location:', 'mai-pro-engine' ) . ' ',
+		'type'         => 'select',
+		'default'      => 'before_entry',
+		'options'      => array(
+			'background'     => __( 'Background Image', 'mai-pro-engine' ),
+			'before_entry'   => __( 'Before Entry', 'mai-pro-engine' ),
+			'before_title'   => __( 'Before Title', 'mai-pro-engine' ),
+			'after_title'    => __( 'After Title', 'mai-pro-engine' ),
 			'before_content' => __( 'Before Content', 'mai-pro-engine' ),
 		),
 	);
@@ -289,98 +289,98 @@ function _mai_cmb_image_location_config() {
 
 function _mai_cmb_image_size_config() {
 	// Get our image size options
-    $sizes = genesis_get_image_sizes();
-    $size_options = array();
-    foreach ( $sizes as $index => $value ) {
-    	$size_options[$index] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
-    }
+	$sizes = genesis_get_image_sizes();
+	$size_options = array();
+	foreach ( $sizes as $index => $value ) {
+		$size_options[$index] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
+	}
 	return array(
-		'name'			=> __( 'Image Size:', 'genesis' ),
-		'id'			=> 'image_size',
-		'type'			=> 'select',
-		'before_field'	=> __( 'Image Size:', 'genesis' ) . ' ',
-		'default'		=> 'one-third',
-		'options'		=> $size_options,
+		'name'         => __( 'Image Size:', 'genesis' ),
+		'id'           => 'image_size',
+		'type'         => 'select',
+		'before_field' => __( 'Image Size:', 'genesis' ) . ' ',
+		'default'      => 'one-third',
+		'options'      => $size_options,
 	);
 }
 
 function _mai_cmb_image_alignment_config() {
 	return array(
-		'name'				=> __( 'Image Alignment:', 'genesis' ),
-		'id'				=> 'image_alignment',
-		'type'				=> 'select',
-		'before_field'		=> __( 'Image Alignment:', 'genesis' ) . ' ',
-		'show_option_none'	=> __( '- None -', 'genesis' ),
-		'options'			=> array(
-			'aligncenter'	=> __( 'Center', 'genesis' ),
-			'alignleft'		=> __( 'Left', 'genesis' ),
-			'alignright'	=> __( 'Right', 'genesis' ),
+		'name'             => __( 'Image Alignment:', 'genesis' ),
+		'id'               => 'image_alignment',
+		'type'             => 'select',
+		'before_field'     => __( 'Image Alignment:', 'genesis' ) . ' ',
+		'show_option_none' => __( '- None -', 'genesis' ),
+		'options'          => array(
+			'aligncenter' => __( 'Center', 'genesis' ),
+			'alignleft'   => __( 'Left', 'genesis' ),
+			'alignright'  => __( 'Right', 'genesis' ),
 		),
 	);
 }
 
 function _mai_cmb_content_archive_limit_config() {
 	return array(
-		'name'			=> __( 'Limit content to', 'genesis' ),
-		'id'			=> 'content_archive_limit',
-		'type'			=> 'text_small',
-		'before_field'  => __( 'Limit content to', 'genesis' ) . ' ',
-		'after_field'	=> ' ' . __( 'characters', 'genesis' ),
-		'attributes'	=> array(
-			'type'		  => 'number',
-			'pattern'	  => '\d*',
+		'name'         => __( 'Limit content to', 'genesis' ),
+		'id'           => 'content_archive_limit',
+		'type'         => 'text_small',
+		'before_field' => __( 'Limit content to', 'genesis' ) . ' ',
+		'after_field'  => ' ' . __( 'characters', 'genesis' ),
+		'attributes'   => array(
+			'type'    => 'number',
+			'pattern' => '\d*',
 		),
-    );
+	);
 }
 
 function _mai_cmb_more_link_config() {
 	return array(
-		'name'				=> __( 'More Link', 'mai-pro-engine' ),
-		'desc'				=> __( 'Include the Read More link', 'mai-pro-engine' ),
-		'id'				=> 'more_link',
-		'type'				=> 'checkbox',
-		'sanitization_cb'	=> '_mai_cmb_sanitize_one_zero',
-		'escape_cb'			=> '_mai_cmb_escape_one_zero',
-    );
+		'name'            => __( 'More Link', 'mai-pro-engine' ),
+		'desc'            => __( 'Include the Read More link', 'mai-pro-engine' ),
+		'id'              => 'more_link',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+	);
 }
 
 function _mai_cmb_meta_config() {
 	return array(
-		'name'		=> __( 'Entry Meta', 'mai-pro-engine' ),
-		'id'		=> 'remove_meta',
-		'type'		=> 'multicheck',
-		'options'	=> array(
-			'post_info'	=> __( 'Remove Post Info', 'mai-pro-engine' ),
+		'name'    => __( 'Entry Meta', 'mai-pro-engine' ),
+		'id'      => 'remove_meta',
+		'type'    => 'multicheck',
+		'options' => array(
+			'post_info' => __( 'Remove Post Info', 'mai-pro-engine' ),
 			'post_meta' => __( 'Remove Post Meta', 'mai-pro-engine' ),
 		),
 		'select_all_button' => false,
-    );
+	);
 }
 
 function _mai_cmb_posts_per_page_config() {
 	return array(
-		'name'			=> __( 'Entries Per Page', 'mai-pro-engine' ),
-		'desc'			=> __( 'The max number of posts to show, per page.', 'mai-pro-engine' ),
-		'id'			=> 'posts_per_page',
-		'type'			=> 'text_small',
-		'default'		=> 12,
-		'attributes'	=> array(
-			'type'		  => 'number',
-			'pattern'	  => '\d*',
+		'name'       => __( 'Entries Per Page', 'mai-pro-engine' ),
+		'desc'       => __( 'The max number of posts to show, per page.', 'mai-pro-engine' ),
+		'id'         => 'posts_per_page',
+		'type'       => 'text_small',
+		'default'    => 12,
+		'attributes' => array(
+			'type'    => 'number',
+			'pattern' => '\d*',
 		),
-    );
+	);
 }
 
 function _mai_cmb_posts_nav_config() {
 	return array(
-		'after_row'	=> '</div>', // close .mai-archive-settings-wrap
-		'name'		=> __( 'Entry Pagination', 'genesis' ),
-		'id'		=> 'posts_nav',
-		'type'		=> 'select',
-		'default'	=> 'numeric',
-		'options'	=> array(
-			'prev-next'	=> __( 'Previous / Next', 'genesis' ),
-			'numeric'	=> __( 'Numeric', 'genesis' ),
+		'after_row' => '</div>', // close .mai-archive-settings-wrap
+		'name'      => __( 'Entry Pagination', 'genesis' ),
+		'id'        => 'posts_nav',
+		'type'      => 'select',
+		'default'   => 'numeric',
+		'options'   => array(
+			'prev-next' => __( 'Previous / Next', 'genesis' ),
+			'numeric'   => __( 'Numeric', 'genesis' ),
 		),
 	);
 }

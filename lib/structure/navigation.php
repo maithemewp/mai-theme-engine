@@ -64,9 +64,9 @@ add_action( 'genesis_entry_footer', 'genesis_prev_next_post_nav' );
 function mai_get_mobile_menu() {
 
 	// Widget areas
-	$widget_mobile		  = is_active_sidebar( 'mobile_menu' );
+	$widget_mobile        = is_active_sidebar( 'mobile_menu' );
 	$widget_header_before = is_active_sidebar( 'header_before' );
-	$widget_header_left	  = is_active_sidebar( 'header_left' );
+	$widget_header_left   = is_active_sidebar( 'header_left' );
 	$widget_header_right  = is_active_sidebar( 'header_right' );
 
 	// Menu locations

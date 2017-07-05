@@ -3,8 +3,8 @@
 // Add custom body class to the head
 add_filter( 'body_class', 'mai_sections_page_body_class' );
 function mai_sections_page_body_class( $classes ) {
-   $classes[] = 'mai-sections';
-   return $classes;
+	$classes[] = 'mai-sections';
+	return $classes;
 }
 
 // Remove breadcrumbs
@@ -35,16 +35,16 @@ function mai_do_sections_loop() {
 		$args = array();
 
 		// Set the args
-		$args['align']			= isset( $section['align'] ) ? $section['align'] : '';
-		$args['class']			= isset( $section['class'] ) ? $section['class'] : '';
-		$args['content_width']	= isset( $section['content_width'] ) ? $section['content_width'] : '';
-		$args['bg']				= isset( $section['bg'] ) ? $section['bg'] : '';
-		$args['height']			= isset( $section['height'] ) ? $section['height'] : '';
-		$args['id']				= isset( $section['id'] ) ? $section['id'] : '';
-		$args['image']			= isset( $section['image_id'] ) ? $section['image_id'] : '';
-		$args['inner']			= isset( $section['inner'] ) ? $section['inner'] : '';
-		$args['overlay']		= isset( $section['overlay'] ) ? $section['overlay'] : '';
-		$args['title']			= isset( $section['title'] ) ? $section['title'] : '';
+		$args['align']         = isset( $section['align'] ) ? $section['align'] : '';
+		$args['class']         = isset( $section['class'] ) ? $section['class'] : '';
+		$args['content_width'] = isset( $section['content_width'] ) ? $section['content_width'] : '';
+		$args['bg']            = isset( $section['bg'] ) ? $section['bg'] : '';
+		$args['height']        = isset( $section['height'] ) ? $section['height'] : '';
+		$args['id']            = isset( $section['id'] ) ? $section['id'] : '';
+		$args['image']         = isset( $section['image_id'] ) ? $section['image_id'] : '';
+		$args['inner']         = isset( $section['inner'] ) ? $section['inner'] : '';
+		$args['overlay']       = isset( $section['overlay'] ) ? $section['overlay'] : '';
+		$args['title']         = isset( $section['title'] ) ? $section['title'] : '';
 
 		// Set the content
 		$content = isset( $section['content'] ) ? $section['content'] : '';

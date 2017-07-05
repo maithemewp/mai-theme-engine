@@ -14,11 +14,11 @@
 // Remove the page title from the front page
 add_action( 'genesis_before_content_sidebar_wrap', 'mai_remove_front_page_post_title' );
 function mai_remove_front_page_post_title() {
-    // Bail if not front page
-    if ( ! is_front_page() ) {
-    	return;
-    }
-    // Remove post title
+	// Bail if not front page
+	if ( ! is_front_page() ) {
+		return;
+	}
+	// Remove post title
 	remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 }
 

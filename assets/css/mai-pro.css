@@ -938,15 +938,20 @@ td {
 }
 
 .width-full,
-.section .wrap.width-full {
-	padding-left: 0;
-	padding-right: 0;
+.section .wrap.width-full,
+.section.banner-area > .wrap.width-full {
 	margin-left: calc(-50vw + 50%);
 	margin-right: calc(-50vw + 50%);
 }
 
+.banner-area > .width-full,
 .content-no-sidebars .width-full {
 	max-width: 100%;
+}
+
+.content-no-sidebars .width-full {
+	padding-left: 0;
+	padding-right: 0;
 }
 
 .site-inner,
