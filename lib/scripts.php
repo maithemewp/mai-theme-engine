@@ -10,10 +10,10 @@ function mai_enqueue_scripts() {
 	// Enqueue the main global js file
 	wp_enqueue_script( 'mai-pro-engine', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/mai-pro{$suffix}.js", array('jquery'), MAI_PRO_ENGINE_VERSION, true );
 	wp_localize_script( 'mai-pro-engine', 'maiVars', array(
-		'mainMenu'		=> __( 'Menu', 'genesis' ),
-		'subMenu'		=> __( 'Menu', 'genesis' ),
-		'subMenuAria'	=> __( 'sub-menu toggle', 'genesis' ),
-		'search_box'	=> sprintf( '<div class="search-box" style="display:none;">%s</div>', get_search_form(false) ),
+		'mainMenu'    => __( 'Menu', 'genesis' ),
+		'subMenu'     => __( 'Menu', 'genesis' ),
+		'subMenuAria' => __( 'sub-menu toggle', 'genesis' ),
+		'search_box'  => sprintf( '<div class="search-box" style="display:none;">%s</div>', get_search_form(false) ),
 	) );
 
 	// Register script for later use

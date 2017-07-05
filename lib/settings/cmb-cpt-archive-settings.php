@@ -150,15 +150,15 @@ class Mai_Genesis_CPT_Settings_Metabox {
 		}
 
 	    $this->cmb = cmb2_get_metabox( array(
-			'id'			=> $this->metabox_id,
-			'title'			=> __( 'Mai Content Archive Settings', 'mai-pro-engine' ),
-			'classes' 		=> 'mai-metabox mai-content-archive-metabox',
-			'hookup'		=> false, 	// We'll handle ourselves. ( add_sanitized_values() )
-			'cmb_styles'	=> false, 	// We'll handle ourselves. ( admin_hooks() )
-			'context'		=> 'main', 	// Important for Genesis.
-			'priority'		=> 'low', 	// Defaults to 'high'.
-			'object_types'	=> array( $this->admin_hook ),
-			'show_on'		=> array(
+			'id'           => $this->metabox_id,
+			'title'        => __( 'Mai Content Archive Settings', 'mai-pro-engine' ),
+			'classes'      => 'mai-metabox mai-content-archive-metabox',
+			'hookup'       => false, 	// We'll handle ourselves. ( add_sanitized_values() )
+			'cmb_styles'   => false, 	// We'll handle ourselves. ( admin_hooks() )
+			'context'      => 'main', 	// Important for Genesis.
+			'priority'     => 'low', 	// Defaults to 'high'.
+			'object_types' => array( $this->admin_hook ),
+			'show_on'      => array(
 				// These are important, don't remove
 				'key'   => 'options-page',
 				'value' => array( $this->key, )

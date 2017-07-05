@@ -1,19 +1,26 @@
-#### 1.0.3
-* New: Banner alignment setting.
+# Changelog
 
-#### 1.0.2.1
-* Hotfix: z-index issue on sections template prohibiting editing of some fields.
+## 1.0.4
+* Changed: Refactor archive settings output functions.
+* Changed: Allow menu itmes to wrap on primary/secondary nav
+* Fixed: Cleanup tabs/spaces.
 
-#### 1.0.2
-* New: FacetWP support in [grid] shortcode.
-* Move section settings to slide out side panel.
-* Add additional settings to each section.
+## 1.0.3
+* Added: Banner alignment setting.
 
-#### 1.0.1.1
-* Remove unnecessary width declaration on img.
+## 1.0.2.1
+* Fixed: z-index issue on sections template prohibiting editing of some fields.
 
-#### 1.0.1
-* IE fix for full width section wrap not centering.
+## 1.0.2
+* Added: FacetWP support in [grid] shortcode.
+* Added: Add additional settings to each section.
+* Changed: Move section settings to slide out side panel.
 
-#### 1.0.0
+## 1.0.1.1
+* Fixed: Remove unnecessary width declaration on img.
+
+## 1.0.1
+* Fixed: IE fix for full width section wrap not centering.
+
+## 1.0.0
 * Initial release.

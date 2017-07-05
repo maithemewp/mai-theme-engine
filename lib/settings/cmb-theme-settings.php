@@ -168,7 +168,7 @@ class Mai_Genesis_Theme_Settings_Metabox {
 			'cmb_styles'   => false,  // We'll handle ourselves. (admin_hooks())
 			'context'      => 'main', // Important for Genesis.
 			'priority'     => 'low',  // Defaults to 'high'.
-			'classes' 	   => 'mai-metabox mai-content-archive-metabox',
+			'classes'      => 'mai-metabox mai-content-archive-metabox',
 			'show_on'      => array(
 				// These are important, don't remove.
 				'key'   => 'options-page',
@@ -178,10 +178,10 @@ class Mai_Genesis_Theme_Settings_Metabox {
 
 		$this->cmb->add_field( _mai_cmb_banner_disable_post_types_config() );
 		$this->cmb->add_field( array(
-			'name'	=> __( 'Archive Settings', 'mai-pro-engine' ),
-			'desc'	=> __( 'These options will affect any blog listings page, including archive, author, blog, category, search, and tag pages, unless overridden in the corresponding metabox.', 'mai-pro-engine' ),
-			'type'	=> 'title',
-			'id'	=> 'mai_content_archives_title',
+			'name' => __( 'Archive Settings', 'mai-pro-engine' ),
+			'desc' => __( 'These options will affect any blog listings page, including archive, author, blog, category, search, and tag pages, unless overridden in the corresponding metabox.', 'mai-pro-engine' ),
+			'type' => 'title',
+			'id'   => 'mai_content_archives_title',
 		) );
 		$this->cmb->add_field( _mai_cmb_columns_config() );
 		$this->cmb->add_field( _mai_cmb_content_archive_config() );

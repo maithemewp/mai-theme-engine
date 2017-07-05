@@ -3,8 +3,8 @@
 // Add custom body class to the head
 add_filter( 'body_class', 'mai_landing_page_body_class' );
 function mai_landing_page_body_class( $classes ) {
-   $classes[] = 'mai-landing';
-   return $classes;
+	$classes[] = 'mai-landing';
+	return $classes;
 }
 
 // Remove site header elements

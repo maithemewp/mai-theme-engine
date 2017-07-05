@@ -47,13 +47,13 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
     $args = array(
-		'class'			=> 'banner-area width-full',
-		'wrap'			=> true,
-		'bg' 			=> get_theme_mod( 'banner_background_color', '#f1f1f1' ),
-		'overlay' 		=> get_theme_mod( 'banner_overlay' ),
-		'inner' 		=> get_theme_mod( 'banner_inner' ),
-		'content_width'	=> get_theme_mod( 'banner_content_width', 'auto' ),
-		'styles'		=> '',
+		'class'         => 'banner-area width-full',
+		'wrap'          => true,
+		'bg'            => get_theme_mod( 'banner_background_color', '#f1f1f1' ),
+		'overlay'       => get_theme_mod( 'banner_overlay' ),
+		'inner'         => get_theme_mod( 'banner_inner' ),
+		'content_width' => get_theme_mod( 'banner_content_width', 'auto' ),
+		'styles'        => '',
     );
 
 	// Get the image ID
@@ -65,37 +65,36 @@ function mai_do_banner_area() {
 	}
 
 	// Get the alignment setting
-	$alignment = get_theme_mod( 'banner_align', 'center' );
+	$alignment = get_theme_mod( 'banner_align_text', 'center' );
 
 	// Maybe add the alignment class
 	if ( $alignment ) {
 		// Get the form by type
-	    switch ( $alignment ) {
-	        case 'left':
-	        	$args['class'] .= ' text-xs-left';
-	            break;
-	        case 'center':
-	        	$args['class'] .= ' text-xs-center';
-	            break;
-	        case 'right':
-	        	$args['class'] .= ' text-xs-right';
-	            break;
-	    }
+		switch ( $alignment ) {
+			case 'left':
+				$args['class'] .= ' text-xs-left';
+			break;
+			case 'center':
+				$args['class'] .= ' text-xs-center';
+			break;
+			case 'right':
+				$args['class'] .= ' text-xs-right';
+			break;
+		}
 	}
 
-    // Add a filter so devs can change these defaults
-    $args = apply_filters( 'mai_banner_args', $args );
+	// Add a filter so devs can change these defaults
+	$args = apply_filters( 'mai_banner_args', $args );
 
-    ob_start();
-    /**
-     * Custom hook for banner content.
-     * Won't get used if banner area is not displayed.
-     */
+	ob_start();
+	/**
+	 * Custom hook for banner content.
+	 * Won't get used if banner area is not displayed.
+	 */
 	do_action( 'mai_banner_content', $args );
 	$content = ob_get_clean();
 
 	echo mai_get_section( $content, $args );
-
 }
 
 /**
@@ -173,16 +172,20 @@ function mai_do_banner_content() {
 		genesis_do_search_title();
 	}
 
+	elseif ( is_404() ) {
+		printf( '<div class="entry-title">%s</div>', __( '404', 'mai-pro-engine' ) );
+	}
+
 	// Bail if WooCommerce is not active
 	elseif ( class_exists( 'WooCommerce' ) ) {
 
 		 if ( is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
 		    // Get our new data
-			// $post		= get_post( $shop_page_id );
-			$headline	= get_the_title( $shop_page_id );
-			$headline	= $headline ? sprintf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), strip_tags( $headline ) ) : '';
+			// $post       = get_post( $shop_page_id );
+			$headline   = get_the_title( $shop_page_id );
+			$headline   = $headline ? sprintf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), strip_tags( $headline ) ) : '';
 			$intro_text = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
-		    printf( '<div %s>%s</div>', genesis_attr( 'cpt-archive-description' ), $headline . $intro_text );
+			printf( '<div %s>%s</div>', genesis_attr( 'cpt-archive-description' ), $headline . $intro_text );
 		} elseif ( is_product() ) {
 
 			// Use an h2 on front page, since the product title will be h1
