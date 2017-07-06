@@ -1,5 +1,7 @@
 # Changelog
 
+* Fixed: Remove redundent conditional checks in flex loop.
+* Fixed: Better archive setting check for Woo custom taxos.
 * Fixed: Extra entry pagination margin.
 * Fixed: Table styling.
 

@@ -114,11 +114,6 @@ function mai_content_archive_posts_per_page( $query ) {
 add_action( 'genesis_before_while', 'mai_add_before_flex_loop_hook', 100 );
 function mai_add_before_flex_loop_hook() {
 
-	// Bail if not a content archive
-	if ( ! mai_is_content_archive() ) {
-		return;
-	}
-
 	// Bail if not a flex loop
 	if ( ! mai_is_flex_loop() ) {
 		return;
@@ -134,11 +129,6 @@ function mai_add_before_flex_loop_hook() {
  */
 add_action( 'genesis_after_endwhile', 'mai_add_after_flex_loop_hook' );
 function mai_add_after_flex_loop_hook() {
-
-	// Bail if not a content archive
-	if ( ! mai_is_content_archive() ) {
-		return;
-	}
 
 	// Bail if not a flex loop
 	if ( ! mai_is_flex_loop() ) {
