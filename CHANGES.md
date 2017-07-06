@@ -1,8 +1,18 @@
 # Changelog
 
+## 1.0.5
+* Added: Entry header/content/footer filters to [grid] shortcode entries.
+* Fixed: Remove nested links when showing excerpts or full content in archive flex loop.
+* Fixed: Remove redundent conditional checks in flex loop.
+* Fixed: Better archive setting check for Woo custom taxos.
+* Fixed: FacetWP arg is no longer true by default.
+* Fixed: Extra entry pagination margin.
+* Fixed: Table styling.
+* FIxed: Mobile menu toggle won't shrink if logo is big on smaller screens.
+
 ## 1.0.4
 * Changed: Refactor archive settings output functions.
-* Changed: Allow menu itmes to wrap on primary/secondary nav
+* Changed: Allow menu itmes to wrap on primary/secondary nav.
 * Fixed: Cleanup tabs/spaces.
 
 ## 1.0.3

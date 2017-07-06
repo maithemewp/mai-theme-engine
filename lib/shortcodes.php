@@ -763,7 +763,7 @@ final class Mai_Shortcodes {
 			'entry_class'          => '',
 			'exclude'              => '',
 			'exclude_current'      => false,
-			'facetwp'              => true,
+			'facetwp'              => false,
 			'grid_title'           => '',
 			'grid_title_class'     => '',
 			'grid_title_wrap'      => 'h2',
@@ -1509,37 +1509,39 @@ final class Mai_Shortcodes {
 					// Build entry header
 					if ( $this->is_entry_header_image( $atts ) || in_array( 'title', $atts['show'] ) || $entry_meta ) {
 
-						// Entry header open
-						$html .= sprintf( '<header %s>', genesis_attr( 'entry-header' ) );
+						// Image
+						if ( 'before_title' == $atts['image_location'] ) {
+							$entry_header .= $image_html;
+						}
 
-							// Image
-							if ( 'before_title' == $atts['image_location'] ) {
-								$html .= $image_html;
+						// Title
+						if ( in_array( 'title', $atts['show'] ) ) {
+							if ( ! $this->is_linking_element( $atts ) && $atts['link'] ) {
+								$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
+							} else {
+								$title = get_the_title();
 							}
+							$entry_header .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title' ), $title, $atts['title_wrap'] );
+						}
 
-							// Title
-							if ( in_array( 'title', $atts['show'] ) ) {
-								if ( ! $this->is_linking_element( $atts ) && $atts['link'] ) {
-									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
-								} else {
-									$title = get_the_title();
-								}
-								$html .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title' ), $title, $atts['title_wrap'] );
-							}
+						// Image
+						if ( 'after_title' == $atts['image_location'] ) {
+							$entry_header .= $image_html;
+						}
 
-							// Image
-							if ( 'after_title' == $atts['image_location'] ) {
-								$html .= $image_html;
-							}
+						// Entry Meta
+						if ( $entry_meta ) {
+							$entry_header .= $entry_meta;
+						}
 
-							// Entry Meta
-							if ( $entry_meta ) {
-								$html .= $entry_meta;
-							}
+					}
 
-						// Entry header close
-						$html .= '</header>';
+					// Add filter to the entry header
+					$entry_header = apply_filters( 'mai_flex_entry_header', $entry_header, $atts );
 
+					// Add entry header wrap if we have content
+					if ( $entry_header ) {
+						$html .= sprintf( '<header %s>%s</header>', genesis_attr( 'entry-header' ), $entry_header );
 					}
 
 					// Image
@@ -1580,6 +1582,9 @@ final class Mai_Shortcodes {
 						$entry_content .= $this->get_add_to_cart_link( $atts, $url );
 					}
 
+					// Add filter to the entry content
+					$entry_content = apply_filters( 'mai_flex_entry_content', $entry_content, $atts );
+
 					// Add entry content wrap if we have content
 					if ( $entry_content ) {
 						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content' ), $entry_content );
@@ -1589,6 +1594,9 @@ final class Mai_Shortcodes {
 					if ( in_array( 'meta', $atts['show'] ) ) {
 						$entry_footer = mai_get_post_meta( get_the_ID() );
 					}
+
+					// Add filter to the entry footer
+					$entry_footer = apply_filters( 'mai_flex_entry_footer', $entry_footer, $atts );
 
 					// Entry footer
 					if ( $entry_footer ) {
@@ -1681,7 +1689,7 @@ final class Mai_Shortcodes {
 
 			foreach ( $terms as $term ) {
 
-				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $image_id = '';
+				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
 
 				// Get image vars
 				$do_image = $has_image_bg = false;
@@ -1723,30 +1731,32 @@ final class Mai_Shortcodes {
 					// Build entry header
 					if ( $this->is_entry_header_image( $atts ) || in_array( 'title', $atts['show'] ) ) {
 
-						// Entry header open
-						$html .= sprintf( '<header %s>', genesis_attr( 'entry-header' ) );
+						// Image
+						if ( 'before_title' == $atts['image_location'] ) {
+							$entry_header .= $image_html;
+						}
 
-							// Image
-							if ( 'before_title' == $atts['image_location'] ) {
-								$html .= $image_html;
-							}
+						// Title
+						if ( ! $this->is_linking_element( $atts ) && $atts['link'] ) {
+							$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
+						} else {
+							$title = $term->name;
+						}
+						$entry_header .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title' ), $title, $atts['title_wrap'] );
 
-							// Title
-							if ( ! $this->is_linking_element( $atts ) && $atts['link'] ) {
-								$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
-							} else {
-								$title = $term->name;
-							}
-							$html .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title' ), $title, $atts['title_wrap'] );
+						// Image
+						if ( 'after_title' == $atts['image_location'] ) {
+							$entry_header .= $image_html;
+						}
 
-							// Image
-							if ( 'after_title' == $atts['image_location'] ) {
-								$html .= $image_html;
-							}
+					}
 
-						// Entry header close
-						$html .= '</header>';
+					// Add filter to the entry header
+					$entry_header = apply_filters( 'mai_flex_entry_header', $entry_header, $atts );
 
+					// Add entry header wrap if we have content
+					if ( $entry_header ) {
+						$html .= sprintf( '<header %s>%s</header>', genesis_attr( 'entry-header' ), $entry_header );
 					}
 
 					// Image
@@ -1770,9 +1780,20 @@ final class Mai_Shortcodes {
 						$entry_content .= $this->get_more_link( $atts, $url );
 					}
 
+					// Add filter to the entry content
+					$entry_content = apply_filters( 'mai_flex_entry_content', $entry_content, $atts );
+
 					// Add entry content wrap if we have content
 					if ( $entry_content ) {
 						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content' ), $entry_content );
+					}
+
+					// Add filter to the entry footer
+					$entry_footer = apply_filters( 'mai_flex_entry_footer', $entry_footer, $atts );
+
+					// Entry footer
+					if ( $entry_footer ) {
+						$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer' ), $entry_footer );
 					}
 
 				$html .= $this->get_entry_wrap_close( $atts );

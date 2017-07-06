@@ -43,7 +43,7 @@ function mai_get_archive_setting( $key, $fallback = false ) {
 				}
 			}
 			// If Woo product taxonomy
-			elseif ( is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+			elseif ( class_exists('WooCommerce') && $product_taxos = get_object_taxonomies( 'product', 'names' ) && is_tax( $product_taxos ) ) {
 				if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
 					$enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true );
 					if ( $enabled ) {

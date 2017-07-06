@@ -114,11 +114,6 @@ function mai_content_archive_posts_per_page( $query ) {
 add_action( 'genesis_before_while', 'mai_add_before_flex_loop_hook', 100 );
 function mai_add_before_flex_loop_hook() {
 
-	// Bail if not a content archive
-	if ( ! mai_is_content_archive() ) {
-		return;
-	}
-
 	// Bail if not a flex loop
 	if ( ! mai_is_flex_loop() ) {
 		return;
@@ -134,11 +129,6 @@ function mai_add_before_flex_loop_hook() {
  */
 add_action( 'genesis_after_endwhile', 'mai_add_after_flex_loop_hook' );
 function mai_add_after_flex_loop_hook() {
-
-	// Bail if not a content archive
-	if ( ! mai_is_content_archive() ) {
-		return;
-	}
 
 	// Bail if not a flex loop
 	if ( ! mai_is_flex_loop() ) {
@@ -281,6 +271,7 @@ function mai_do_content_archive_archive_options() {
 	$content_archive_thumbnail = mai_get_archive_setting( 'content_archive_thumbnail', genesis_get_option( 'content_archive_thumbnail' ) );
 	$image_size                = mai_get_archive_setting( 'image_size', genesis_get_option( 'image_size' ) );
 	$image_alignment           = mai_get_archive_setting( 'image_alignment', genesis_get_option( 'image_alignment' ) );
+	$image_location            = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
 	$content_archive           = mai_get_archive_setting( 'content_archive', genesis_get_option( 'content_archive' ) );
 	$content_archive_limit     = absint( mai_get_archive_setting( 'content_archive_limit', genesis_get_option( 'content_archive_limit' ) ) );
 	$posts_nav                 = mai_get_archive_setting( 'posts_nav', genesis_get_option( 'posts_nav' ) );
@@ -290,6 +281,23 @@ function mai_do_content_archive_archive_options() {
 		// Remove the post content
 		remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
 	} else {
+		// Background image
+		if ( 'background' === $image_location ) {
+			// Excerpts
+			if ( 'excerpts' === $content_archive ) {
+				// Remove links
+				add_filter( 'the_excerpt', function( $excerpt ) {
+					return strip_tags( $excerpt, '<p><br>' );
+				});
+			}
+			// Full content
+			elseif ( 'full' === $content_archive ) {
+				// Remove links
+				add_filter( 'the_content', function( $content ) {
+					return strip_tags( $content, '<p><br>' );
+				});
+			}
+		}
 		// Content Archive
 		add_filter( 'genesis_pre_get_option_content_archive', function( $option ) use ( $content_archive ) {
 			return $content_archive;
