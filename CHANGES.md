@@ -1,5 +1,6 @@
 # Changelog
 
+* Added: Entry header/content/footer filters to [grid] shortcode entries.
 * Fixed: Remove nested links when showing excerpts or full content in archive flex loop.
 * Fixed: Remove redundent conditional checks in flex loop.
 * Fixed: Better archive setting check for Woo custom taxos.
