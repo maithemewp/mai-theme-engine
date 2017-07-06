@@ -283,10 +283,20 @@ function mai_do_content_archive_archive_options() {
 	} else {
 		// Background image
 		if ( 'background' === $image_location ) {
-			// Remove links
-			add_filter( 'the_content', function( $content ) {
-				return strip_tags( $content, '<p><br>' );
-			});
+			// Excerpts
+			if ( 'excerpts' === $content_archive ) {
+				// Remove links
+				add_filter( 'the_excerpt', function( $excerpt ) {
+					return strip_tags( $excerpt, '<p><br>' );
+				});
+			}
+			// Full content
+			elseif ( 'full' === $content_archive ) {
+				// Remove links
+				add_filter( 'the_content', function( $content ) {
+					return strip_tags( $content, '<p><br>' );
+				});
+			}
 		}
 		// Content Archive
 		add_filter( 'genesis_pre_get_option_content_archive', function( $option ) use ( $content_archive ) {
