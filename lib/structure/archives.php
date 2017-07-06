@@ -271,6 +271,7 @@ function mai_do_content_archive_archive_options() {
 	$content_archive_thumbnail = mai_get_archive_setting( 'content_archive_thumbnail', genesis_get_option( 'content_archive_thumbnail' ) );
 	$image_size                = mai_get_archive_setting( 'image_size', genesis_get_option( 'image_size' ) );
 	$image_alignment           = mai_get_archive_setting( 'image_alignment', genesis_get_option( 'image_alignment' ) );
+	$image_location            = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
 	$content_archive           = mai_get_archive_setting( 'content_archive', genesis_get_option( 'content_archive' ) );
 	$content_archive_limit     = absint( mai_get_archive_setting( 'content_archive_limit', genesis_get_option( 'content_archive_limit' ) ) );
 	$posts_nav                 = mai_get_archive_setting( 'posts_nav', genesis_get_option( 'posts_nav' ) );
@@ -280,6 +281,13 @@ function mai_do_content_archive_archive_options() {
 		// Remove the post content
 		remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
 	} else {
+		// Background image
+		if ( 'background' === $image_location ) {
+			// Remove links
+			add_filter( 'the_content', function( $content ) {
+				return strip_tags( $content, '<p><br>' );
+			});
+		}
 		// Content Archive
 		add_filter( 'genesis_pre_get_option_content_archive', function( $option ) use ( $content_archive ) {
 			return $content_archive;

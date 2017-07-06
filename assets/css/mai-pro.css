@@ -2964,6 +2964,10 @@ img.alignright,
 	border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
+a.entry {
+	display: block;
+}
+
 a.entry:hover,
 a.entry:focus {
 	border-color: rgba(0, 0, 0, 0.2);
