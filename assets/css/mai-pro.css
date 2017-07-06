@@ -780,10 +780,20 @@ table {
 	line-height: 2;
 	width: 100%;
 	margin-bottom: 30px;
+	border: 1px solid #e6e6e6;
+}
+
+thead {
+	background-color: #f9f9f9;
 }
 
 tbody {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	border-bottom: 1px solid #e6e6e6;
+}
+
+th,
+td {
+	padding: 4px 14px;
 }
 
 th {
@@ -792,8 +802,7 @@ th {
 }
 
 td {
-	border-top: 1px solid rgba(0, 0, 0, 0.06);
-	padding: 6px 0;
+	border-top: 1px solid #e6e6e6;
 }
 
 /* # Structure and Layout
@@ -3182,6 +3191,11 @@ p.entry-meta {
 	font-size: 14px;
 	margin: 30px 0;
 	overflow: hidden;
+}
+
+.adjacent-entry-pagination .pagination-previous,
+.adjacent-entry-pagination .pagination-next {
+	margin: 0;
 }
 
 .adjacent-entry-pagination .pagination-previous a,
