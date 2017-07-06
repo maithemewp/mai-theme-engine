@@ -3,6 +3,7 @@
 * Fixed: Remove nested links when showing content in flex loop.
 * Fixed: Remove redundent conditional checks in flex loop.
 * Fixed: Better archive setting check for Woo custom taxos.
+* Fixed: FacetWP arg is no longer true by default.
 * Fixed: Extra entry pagination margin.
 * Fixed: Table styling.
 

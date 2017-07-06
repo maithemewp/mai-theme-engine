@@ -763,7 +763,7 @@ final class Mai_Shortcodes {
 			'entry_class'          => '',
 			'exclude'              => '',
 			'exclude_current'      => false,
-			'facetwp'              => true,
+			'facetwp'              => false,
 			'grid_title'           => '',
 			'grid_title_class'     => '',
 			'grid_title_wrap'      => 'h2',
