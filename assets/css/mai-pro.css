@@ -2564,6 +2564,7 @@ img.alignright,
 .mai-toggle,
 .mai-toggle:focus,
 .mai-toggle:hover {
+	-ms-flex-negative: 0;flex-shrink: 0;
 	width: 60px;
 	height: 50px;
 }

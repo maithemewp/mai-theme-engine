@@ -6,6 +6,7 @@
 * Fixed: FacetWP arg is no longer true by default.
 * Fixed: Extra entry pagination margin.
 * Fixed: Table styling.
+* FIxed: Mobile menu toggle won't shrink if logo is big on smaller screens.
 
 ## 1.0.4
 * Changed: Refactor archive settings output functions.
