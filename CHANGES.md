@@ -1,5 +1,8 @@
 # Changelog
 
+* Fixed: Extra entry pagination margin.
+* Fixed: Table styling.
+
 ## 1.0.4
 * Changed: Refactor archive settings output functions.
 * Changed: Allow menu itmes to wrap on primary/secondary nav.
