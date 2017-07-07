@@ -167,6 +167,10 @@ p {
 	padding: 0;
 }
 
+p:empty {
+	display: none;
+}
+
 ol,
 ul {
 	margin: 0;
