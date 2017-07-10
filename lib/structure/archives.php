@@ -281,23 +281,6 @@ function mai_do_content_archive_archive_options() {
 		// Remove the post content
 		remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
 	} else {
-		// Background image
-		if ( 'background' === $image_location ) {
-			// Excerpts
-			if ( 'excerpts' === $content_archive ) {
-				// Remove links
-				add_filter( 'the_excerpt', function( $excerpt ) {
-					return strip_tags( $excerpt, '<p><br>' );
-				});
-			}
-			// Full content
-			elseif ( 'full' === $content_archive ) {
-				// Remove links
-				add_filter( 'the_content', function( $content ) {
-					return strip_tags( $content, '<p><br>' );
-				});
-			}
-		}
 		// Content Archive
 		add_filter( 'genesis_pre_get_option_content_archive', function( $option ) use ( $content_archive ) {
 			return $content_archive;
@@ -374,11 +357,12 @@ function mai_do_post_image() {
 	elseif ( 'background' === $location ) {
 		// Add the entry image as a background image
 		add_action( 'genesis_before_entry', 'mai_do_entry_image_background' );
-		// Remove the meta because we can't have nested links
-		remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
-		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
-		remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
-		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
+		// Add the background image link
+		add_action( 'genesis_entry_header', 'mai_add_bg_image_link', 1 );
+		// Remove bg iamge link function so additional loops are not affected
+		add_action( 'genesis_after_endwhile', function() {
+			remove_action( 'genesis_entry_header', 'mai_add_bg_image_link', 1 );
+		});
 	}
 
 	// Add the location as a class to the image link
@@ -425,7 +409,7 @@ function mai_do_entry_image_background() {
 		}
 
 		// Center the content even if we don't have an image
-		$attributes['class'] .= ' center-xs middle-xs text-xs-center';
+		$attributes['class'] .= ' has-bg-link center-xs middle-xs text-xs-center';
 
 		return $attributes;
 	};
@@ -438,32 +422,14 @@ function mai_do_entry_image_background() {
 		remove_filter( 'genesis_attr_entry', $entry_attributes );
 	});
 
-	// Create an anonomous markup functions
-	$markup_open = function( $open ) {
-		$open = str_replace( '<article', '<a', $open );
-		return $open;
-	};
-	$markup_close = function( $close ) {
-		$close = str_replace( '</article>', '</a>', $close );
-		return $close;
-	};
+}
 
-	// Change entry markup from 'arcticle' to 'a'
-	add_filter( 'genesis_markup_entry_open', $markup_open );
-	add_filter( 'genesis_markup_entry_close', $markup_close );
-	add_filter( 'genesis_link_post_title', '__return_false' );
-
-	// Remove the filters so any other loops aren't affected
-	add_action( 'genesis_after_entry', function() use ( $markup_open, $markup_close, $entry_attributes ) {
-		remove_filter( 'genesis_markup_entry_open', $markup_open );
-		remove_filter( 'genesis_markup_entry_close', $markup_close );
-		remove_filter( 'genesis_link_post_title', '__return_true' );
-	});
+function mai_add_bg_image_link() {
+	printf( '<a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a>', get_permalink(), get_the_title() );
 }
 
 /**
  * Maybe remove the archive meta.
- * Forces meta to be removed if image background setting.
  *
  * @return  void
  */
