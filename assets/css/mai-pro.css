@@ -2969,7 +2969,7 @@ img.alignright,
 	border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-a.entry {
+a.entry:not(.col) {
 	display: block;
 }
 
