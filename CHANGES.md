@@ -1,6 +1,6 @@
 # Changelog
 
-* Changed: Use dedicated anchor link for flex loop bg image.
+* Changed: Use dedicated anchor link for flex loop and grid entry bg links.
 
 ## 1.0.5
 * Added: Entry header/content/footer filters to [grid] shortcode entries.
