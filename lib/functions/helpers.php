@@ -182,13 +182,13 @@ function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
 	$image_location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
 
     // If background image
-	if ( 'background' == $image_location ) {
-		$link = sprintf( '<span class="more-link">%s%s</span>', $screen_reader_html, $more_link_text );
-	} else {
+	// if ( 'background' == $image_location ) {
+		// $link = sprintf( '<span class="more-link">%s%s</span>', $screen_reader_html, $more_link_text );
+	// } else {
 		if ( $url ) {
 			$link = sprintf( '<a class="more-link" href="%s">%s%s</a>', $url, $screen_reader_html, $more_link_text );
 		}
-	}
+	// }
 
     // Bail if no link
 	if ( empty( $link ) ) {
@@ -293,6 +293,9 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 		// Add image-bg class
 		$attributes['class'] .= ' image-bg';
 
+	} else {
+		// Add image-bg class
+		$attributes['class'] .= ' image-bg-none';
 	}
 
 	/**

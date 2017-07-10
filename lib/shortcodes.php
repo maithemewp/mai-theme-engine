@@ -1023,11 +1023,6 @@ final class Mai_Shortcodes {
 
 		$entry_atts = array();
 
-		// Add href if linking element
-		if ( $this->is_linking_element( $atts ) ) {
-			$entry_atts['href'] = $this->get_entry_link( $atts, $object );
-		}
-
 		// Set the entry classes
 		$entry_atts['class'] = $this->get_entry_classes( $atts );
 
@@ -1047,6 +1042,11 @@ final class Mai_Shortcodes {
 					$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
 				}
 			}
+			if ( $this->has_bg_link( $atts ) ) {
+				// Add has-bg-link class for CSS
+				$entry_atts['class'] .= ' has-bg-link';
+			}
+
 		}
 
 		if ( $this->has_overlay( $atts ) ) {
@@ -1076,11 +1076,11 @@ final class Mai_Shortcodes {
 		 * Main entry col wrap.
 		 * If we use genesis_attr( 'entry' ) then it resets the classes.
 		 */
-		return sprintf( '<%s %s>', $this->get_entry_wrap_element( $atts ), genesis_attr( 'flex-entry', $entry_atts ) );
+		return sprintf( '<div %s>', genesis_attr( 'flex-entry', $entry_atts ) );
 	}
 
 	function get_entry_wrap_close( $atts ) {
-		return sprintf( '</%s>', $this->get_entry_wrap_element( $atts ) );
+		return '</div>';
 	}
 
 	/**
@@ -1446,6 +1446,7 @@ final class Mai_Shortcodes {
 				// Opening wrap
 				$html .= $this->get_entry_wrap_open( $atts, $post, $has_image_bg );
 
+
 					// Set url as a variable
 					$url = $this->get_entry_link( $atts, $post );
 
@@ -1454,7 +1455,7 @@ final class Mai_Shortcodes {
 						$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
 						if ( $image ) {
 							if ( $atts['link'] ) {
-											// Add the location as a class to the image link
+								// Add the location as a class to the image link
 								$image_class = str_replace( '_', '-', $atts['image_location'] );
 								$image_class = sprintf( ' entry-image-%s', $image_class );
 								$image_html  = sprintf( '<a href="%s" class="entry-image-link %s" title="%s">%s</a>', $url, $image_class, the_title_attribute( 'echo=0' ), $image );
@@ -1465,7 +1466,10 @@ final class Mai_Shortcodes {
 					}
 
 					// Image
-					if ( 'before_entry' == $atts['image_location'] ) {
+					if ( 'bg' == $atts['image_location'] && $atts['link'] ) {
+						$html .= mai_get_bg_image_link();
+					}
+					elseif ( 'before_entry' == $atts['image_location'] ) {
 						$html .= $image_html;
 					}
 
@@ -1516,7 +1520,7 @@ final class Mai_Shortcodes {
 
 						// Title
 						if ( in_array( 'title', $atts['show'] ) ) {
-							if ( ! $this->is_linking_element( $atts ) && $atts['link'] ) {
+							if ( $atts['link'] ) {
 								$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
 							} else {
 								$title = get_the_title();
@@ -1574,7 +1578,7 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url );
+						$entry_content .= $this->get_more_link( $atts, $url, get_the_title() );
 					}
 
 					// Add to cart link
@@ -1724,7 +1728,10 @@ final class Mai_Shortcodes {
 					}
 
 					// Image
-					if ( 'before_entry' == $atts['image_location'] ) {
+					if ( 'bg' == $atts['image_location'] && $atts['link'] ) {
+						$html .= mai_get_bg_image_link();
+					}
+					elseif ( 'before_entry' == $atts['image_location'] ) {
 						$html .= $image_html;
 					}
 
@@ -1737,7 +1744,7 @@ final class Mai_Shortcodes {
 						}
 
 						// Title
-						if ( ! $this->is_linking_element( $atts ) && $atts['link'] ) {
+						if ( $atts['link'] ) {
 							$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
 						} else {
 							$title = $term->name;
@@ -1777,7 +1784,7 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url );
+						$entry_content .= $this->get_more_link( $atts, $url, $term->name );
 					}
 
 					// Add filter to the entry content
@@ -1816,10 +1823,6 @@ final class Mai_Shortcodes {
 		return sprintf( '<%s class="%s">%s</%s>', $atts['grid_title_wrap'], trim($classes), $atts['grid_title'], $atts['grid_title_wrap'] );
 	}
 
-	function get_entry_wrap_element( $atts ) {
-		return $this->is_linking_element( $atts ) ? 'a' : 'div';
-	}
-
 	/**
 	 * Whether the main entry element should be a link or not.
 	 *
@@ -1827,7 +1830,7 @@ final class Mai_Shortcodes {
 	 *
 	 * @return  bool
 	 */
-	function is_linking_element( $atts ) {
+	function has_bg_link( $atts ) {
 		if ( $this->is_image_bg( $atts ) && $atts['link'] ) {
 			return true;
 		}
@@ -1996,26 +1999,35 @@ final class Mai_Shortcodes {
 		return $image_id;
 	}
 
-	function get_more_link( $atts, $url ) {
-		if ( $this->is_linking_element( $atts ) ) {
-			$link = sprintf( '<span class="more-link">%s</span>', $atts['more_link_text'] );
-		} else {
-			$link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $atts['more_link_text'] );
-		}
+	/**
+	 * Get the read more link with screen reader text.
+	 *
+	 * @param   array   $atts   The shortcode atts.
+	 * @param   string  $url    The url to link to.
+	 * @param   string  $title  The title for screen reader text.
+	 *
+	 * @return  string|HTML
+	 */
+	function get_more_link( $atts, $url, $title ) {
+		$link = sprintf( '<a class="more-link" href="%s">%s<span class="screen-reader-text">%s</span></a>', $url, $atts['more_link_text'], $title );
 		return sprintf( '<p class="more-link-wrap">%s</p>', $link );
 	}
 
+	/**
+	 * Get the add to cart link with screen reader text.
+	 *
+	 * @param   array   $atts   The shortcode atts.
+	 * @param   string  $url    The url to link to.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_add_to_cart_link( $atts, $url ) {
 		$link = '';
 		if ( class_exists( 'WooCommerce' ) ) {
 			$product = wc_get_product( get_the_ID() );
-			if ( $this->is_linking_element( $atts ) ) {
-				$link = sprintf( '<span class="more-link">%s</span>', $product->add_to_cart_text() );
-			} else {
-				ob_start();
-				woocommerce_template_loop_add_to_cart();
-				$link = ob_get_clean();
-			}
+			ob_start();
+			woocommerce_template_loop_add_to_cart();
+			$link = ob_get_clean();
 		}
 		return $link ? sprintf( '<p class="more-link-wrap">%s</p>', $link ) : '';
 	}

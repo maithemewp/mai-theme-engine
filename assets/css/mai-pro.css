@@ -20,6 +20,7 @@
 		- Section
 		- Image Background
 		- Overlay
+			- Background Link
 		- Color Contrast
 		- Avatar
 		- Search Form
@@ -165,6 +166,10 @@ p > a:focus {
 p {
 	margin: 0 0 16px;
 	padding: 0;
+}
+
+p:empty {
+	display: none;
 }
 
 ol,
@@ -1176,31 +1181,64 @@ td {
 
 .overlay.overlay-gradient::after {
 	background-image: -o-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
-	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(25%, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6)) );
-	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
+	background-image: -o-linear-gradient( top, rand theygba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
+	background-image: -webkit-gradient( linear, left top, left bottom, from(rand), to(rgba(0, 0, 0, 0.6)) );
+	background-image: linear-gradient( to bottom, rand theygba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
 }
 
-a.overlay:hover,
-a.overlay:focus {
-	outline: 0;
+/* ### Background Link
+--------------------------------------------- */
+
+.has-bg-link {
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
 }
 
-a.overlay::after {
+.has-bg-link.entry:hover,
+.has-bg-link.entry:focus {
+	border-color: rgba(0, 0, 0, 0.2);
+	outline: none;
+}
+
+.has-bg-link.overlay::after {
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
-a.overlay:hover::after,
-a.overlay:focus::after {
+.has-bg-link.overlay:hover::after,
+.has-bg-link.overlay:focus::after {
 	background-color: rgba(0, 0, 0, 0.6);
 	outline: 0;
+}
+
+.has-bg-link {
+	position: relative;
+}
+
+.bg-link {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.bg-link .entry-header,
+.bg-link .entry-content,
+.bg-link .entry-footer {
+	z-index: 2;
 }
 
 /* ## Color Contrast
 --------------------------------------------- */
 
 .dark-content,
-.dark-content a:not(.button),
-.dark-content > p > a:not(.button),
+.dark-content a:not(.button):not(.more-link),
+.dark-content > p > a:not(.button):not(.more-link),
 a.dark-content:hover,
 a.dark-content:focus,
 .dark-content h1,
@@ -1213,6 +1251,7 @@ a.dark-content:focus,
 .dark-content > .entry-title,
 .dark-content > .entry-header > .entry-title,
 .dark-content > .wrap > .entry-title,
+.dark-content .entry-meta,
 .section .dark-content,
 .entry .dark-content,
 .inner .dark-content {
@@ -1221,8 +1260,8 @@ a.dark-content:focus,
 }
 
 .light-content,
-.light-content a:not(.button),
-.light-content > p > a:not(.button),
+.light-content a:not(.button):not(.more-link),
+.light-content > p > a:not(.button):not(.more-link),
 a.light-content:hover,
 a.light-content:focus,
 .light-content h1,
@@ -1235,11 +1274,25 @@ a.light-content:focus,
 .light-content > .entry-title,
 .light-content > .entry-header > .entry-title,
 .light-content > .wrap > .entry-title,
+.light-content .entry-meta,
 .section .light-content,
 .entry .light-content,
 .inner .light-content {
 	color: #fff;
 	text-shadow: none;
+}
+
+.light-content .entry-content a:not(.button):not(.more-link),
+.light-content .entry-footer a:not(.button):not(.more-link) {
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+}
+
+.light-content .entry-content a:not(.button):not(.more-link):hover,
+.light-content .entry-content a:not(.button):not(.more-link):focus,
+.light-content .entry-footer a:not(.button):not(.more-link):hover,
+.light-content .entry-footer a:not(.button):not(.more-link):focus {
+	border-bottom-style: solid;
 }
 
 /* ## Avatar
@@ -2963,16 +3016,6 @@ img.alignright,
 .adjacent-entry-pagination {
 	background-color: #fff;
 	border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-a.entry {
-	display: block;
-}
-
-a.entry:hover,
-a.entry:focus {
-	border-color: rgba(0, 0, 0, 0.2);
-	outline: none;
 }
 
 .entry.image-bg {

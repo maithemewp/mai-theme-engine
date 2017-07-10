@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6
+* Added: Screen reader text to read more links in [grid].
+* Changed: Use dedicated anchor link for flex loop and grid entry bg links.
+
 ## 1.0.5
 * Added: Entry header/content/footer filters to [grid] shortcode entries.
 * Fixed: Remove nested links when showing excerpts or full content in archive flex loop.
