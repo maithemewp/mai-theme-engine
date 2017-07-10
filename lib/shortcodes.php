@@ -1578,7 +1578,7 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url );
+						$entry_content .= $this->get_more_link( $atts, $url, get_the_title() );
 					}
 
 					// Add to cart link
@@ -1784,7 +1784,7 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url );
+						$entry_content .= $this->get_more_link( $atts, $url, $term->name );
 					}
 
 					// Add filter to the entry content
@@ -1999,11 +1999,28 @@ final class Mai_Shortcodes {
 		return $image_id;
 	}
 
-	function get_more_link( $atts, $url ) {
-		$link = sprintf( '<a class="more-link" href="%s">%s</a>', $url, $atts['more_link_text'] );
+	/**
+	 * Get the read more link with screen reader text.
+	 *
+	 * @param   array   $atts   The shortcode atts.
+	 * @param   string  $url    The url to link to.
+	 * @param   string  $title  The title for screen reader text.
+	 *
+	 * @return  string|HTML
+	 */
+	function get_more_link( $atts, $url, $title ) {
+		$link = sprintf( '<a class="more-link" href="%s">%s<span class="screen-reader-text">%s</span></a>', $url, $atts['more_link_text'], $title );
 		return sprintf( '<p class="more-link-wrap">%s</p>', $link );
 	}
 
+	/**
+	 * Get the add to cart link with screen reader text.
+	 *
+	 * @param   array   $atts   The shortcode atts.
+	 * @param   string  $url    The url to link to.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_add_to_cart_link( $atts, $url ) {
 		$link = '';
 		if ( class_exists( 'WooCommerce' ) ) {
