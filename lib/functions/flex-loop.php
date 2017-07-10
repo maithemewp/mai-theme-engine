@@ -17,6 +17,10 @@ function mai_is_flex_loop() {
 	if ( $columns > 1 ) {
 		return true;
 	}
+	// If we are using featured image as bg image, it's a flex loop
+	if ( 'background' === mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) ) ) {
+		return true;
+	}
 	// Not a flex loop
 	return false;
 }
