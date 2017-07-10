@@ -358,10 +358,10 @@ function mai_do_post_image() {
 		// Add the entry image as a background image
 		add_action( 'genesis_before_entry', 'mai_do_entry_image_background' );
 		// Add the background image link
-		add_action( 'genesis_entry_header', 'mai_add_bg_image_link', 1 );
+		add_action( 'genesis_entry_header', 'mai_do_bg_image_link', 1 );
 		// Remove bg iamge link function so additional loops are not affected
 		add_action( 'genesis_after_endwhile', function() {
-			remove_action( 'genesis_entry_header', 'mai_add_bg_image_link', 1 );
+			remove_action( 'genesis_entry_header', 'mai_do_bg_image_link', 1 );
 		});
 	}
 
@@ -408,8 +408,11 @@ function mai_do_entry_image_background() {
 			$attributes['class'] .= ' dark-content';
 		}
 
+		// Add has-bg-link class for CSS
+		$attributes['class'] .= ' has-bg-link';
+
 		// Center the content even if we don't have an image
-		$attributes['class'] .= ' has-bg-link center-xs middle-xs text-xs-center';
+		$attributes['class'] .= ' center-xs middle-xs text-xs-center';
 
 		return $attributes;
 	};
@@ -424,8 +427,12 @@ function mai_do_entry_image_background() {
 
 }
 
-function mai_add_bg_image_link() {
-	printf( '<a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a>', get_permalink(), get_the_title() );
+function mai_do_bg_image_link() {
+	echo mai_get_bg_image_link();
+}
+
+function mai_get_bg_image_link() {
+	return sprintf( '<a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a>', get_permalink(), get_the_title() );
 }
 
 /**

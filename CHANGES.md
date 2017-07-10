@@ -1,5 +1,7 @@
 # Changelog
 
+* Changed: Use dedicated anchor link for flex loop bg image.
+
 ## 1.0.5
 * Added: Entry header/content/footer filters to [grid] shortcode entries.
 * Fixed: Remove nested links when showing excerpts or full content in archive flex loop.
