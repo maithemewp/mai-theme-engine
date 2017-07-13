@@ -255,7 +255,6 @@ final class Mai_Shortcodes {
 			'inner'         => '',
 			'title'         => '',
 			'title_wrap'    => 'h2',
-			'wrap'          => true,
 			'content_width' => '',
 			'height'        => 'md',
 		), $atts, 'section' );
@@ -305,7 +304,7 @@ final class Mai_Shortcodes {
 
 		// Check if we have valid overlay and inner values
 		$has_overlay = $this->has_overlay( $args );
-		$has_inner	 = $this->has_inner( $args );
+		$has_inner   = $this->has_inner( $args );
 
 		// Maybe add section id
 		if ( $args['id'] ) {
@@ -313,7 +312,7 @@ final class Mai_Shortcodes {
 		}
 
 		// Default section class
-		$section_atts['class'] = 'section row';
+		$section_atts['class'] = 'section';
 
 		// Maybe add additional section classes
 		if ( $args['class'] ) {
@@ -1899,7 +1898,7 @@ final class Mai_Shortcodes {
 	function get_entry_classes( $atts ) {
 
 		// We need classes to be an array so we can use them in get_post_class()
-		$classes = array( 'flex-entry', 'entry' );
+		$classes = array( 'flex-entry', 'entry', 'column' );
 
 		// Add any custom classes
 		if ( $atts['entry_class'] ) {

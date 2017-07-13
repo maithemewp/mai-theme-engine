@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.0.6
+ * Version:         1.0.7
  *
  * GitHub URI:      bizbudding/mai-pro-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Pro_Engine {
 
 		// Plugin version.
 		if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
-			define( 'MAI_PRO_ENGINE_VERSION', '1.0.6' );
+			define( 'MAI_PRO_ENGINE_VERSION', '1.0.7' );
 		}
 
 		// Plugin Folder Path.
@@ -207,6 +207,12 @@ final class Mai_Pro_Engine {
 			 */
 			remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
 			add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 999 );
+
+			// Load default favicon.
+			add_filter( 'genesis_pre_load_favicon', 'mai_default_favicon' );
+			function mai_default_favicon( $favicon ) {
+				return MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/favicon.png';
+			}
 
 			/**
 			 * Create the initial image sizes.

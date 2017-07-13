@@ -1,51 +1,6 @@
 /* ## Products - General
 --------------------------------------------- */
 
-.woocommerce .woocommerce-error,
-.woocommerce .woocommerce-info,
-.woocommerce .woocommerce-message {
-	display: -ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
-	padding: 20px;
-	-webkit-box-shadow: 0 1px 2px rgba(65, 64, 66, 0.1);
-	        box-shadow: 0 1px 2px rgba(65, 64, 66, 0.1);
-}
-
-.woocommerce .woocommerce-error::before,
-.woocommerce .woocommerce-info::before,
-.woocommerce .woocommerce-message::before {
-	position: static;
-}
-
-.woocommerce .woocommerce-error::before,
-.woocommerce .woocommerce-info::before,
-.woocommerce .woocommerce-message::before,
-.woocommerce .woocommerce-error a,
-.woocommerce .woocommerce-info a,
-.woocommerce .woocommerce-message a {
-	margin: 0 10px;
-}
-
-.woocommerce .woocommerce-error .button,
-.woocommerce .woocommerce-info .button,
-.woocommerce .woocommerce-message .button {
-	-ms-flex-order: 1;-webkit-box-ordinal-group: 2;order: 1;
-	margin-left: auto;
-}
-
-@media only screen and (max-width: 544px) {
-
-	.woocommerce .woocommerce-error,
-	.woocommerce .woocommerce-info,
-	.woocommerce .woocommerce-message {
-		-ms-flex-direction: column;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;
-		-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
-		-ms-flex-align: center;-webkit-box-align: center;align-items: center;
-		text-align: center;
-	}
-
-}
-
 .woocommerce .woocommerce-result-count,
 .woocommerce-page .woocommerce-result-count {
     float: left;

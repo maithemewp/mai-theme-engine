@@ -88,6 +88,7 @@ function mai_login_logo_css() {
 			display: block !important;
 			max-width: 100% !important;
 			height: auto !important;
+			margin: 0 auto !important;
 		}
 	</style>';
 
