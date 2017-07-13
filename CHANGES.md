@@ -2,8 +2,9 @@
 
 * Added: You can now align featured images left or right when post archives are in columns.
 * Added: Default favicon.
+* Changed: Odd sections now have a white background as a default.
 * Fixed: Center logo on logo screen.
-* Fixed: Section content alignment on Safari 7/8.
+* Fixed: Section content alignment on Safari 7/8 and IE11.
 
 ## 1.0.6
 * Added: Screen reader text to read more links in [grid].

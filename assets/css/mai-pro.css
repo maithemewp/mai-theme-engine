@@ -1277,16 +1277,20 @@ a.light-content:focus,
 	text-shadow: none;
 }
 
+.light-content .entry-header .entry-meta a,
 .light-content .entry-content a:not(.button):not(.more-link),
-.light-content .entry-footer a:not(.button):not(.more-link) {
+.light-content .entry-footer a {
 	border-bottom-width: 1px;
 	border-bottom-style: dotted;
 }
 
+.light-content .entry-header .entry-meta a:hover,
+.light-content .entry-header .entry-meta a:focus,
 .light-content .entry-content a:not(.button):not(.more-link):hover,
 .light-content .entry-content a:not(.button):not(.more-link):focus,
-.light-content .entry-footer a:not(.button):not(.more-link):hover,
-.light-content .entry-footer a:not(.button):not(.more-link):focus {
+.light-content .entry-footer a:hover,
+.light-content .entry-footer a:focus {
+	color: #fff;
 	border-bottom-style: solid;
 }
 
@@ -1394,7 +1398,7 @@ a.alignright {
 img.centered,
 .aligncenter {
 	display: block;
-	margin: 0 auto calc(.75vw + 1em);
+	margin: 0 auto 16px;
 }
 
 img.alignnone,
@@ -1406,14 +1410,14 @@ img.alignnone,
 a.alignleft,
 img.alignleft,
 .wp-caption.alignleft {
-	margin: 0 20px 24px 0;
+	margin: 0 22px 14px 0;
 }
 
 .alignright,
 a.alignright,
 img.alignright,
 .wp-caption.alignright {
-	margin: 0 0 24px 20px;
+	margin: 0 0 14px 22px;
 }
 
 .wp-caption-text,
@@ -3106,6 +3110,13 @@ img.alignright,
 	padding: 0;
 }
 
+.flex-entry.column .entry-header,
+.flex-entry.column .entry-content,
+.flex-entry.column .entry-footer {
+	/* fix IE11 wrap bug */
+	max-width: 100%;
+}
+
 .flex-entry.column .entry-image-link {
 	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
 	display: block;
@@ -3126,11 +3137,11 @@ img.alignright,
 .flex-entry .entry-title + .entry-image-after-title,
 .flex-entry .entry-header + .entry-content {
 	display: block;
-	margin-top: 16px;
+	margin-top: 14px;
 }
 
 .flex-entry .entry-content .entry-image-link {
-	margin-bottom: 12px;
+	margin-bottom: 14px;
 }
 
 .flex-entry.column .entry-image,
@@ -3167,7 +3178,11 @@ img.alignright,
 }
 
 .flex-entry .entry-header .entry-meta {
-	margin: 12px 0 0;
+	margin: 14px 0 0;
+}
+
+.flex-entry.column.image-bg .entry-footer .entry-meta {
+	border-top: none;
 }
 
 /* ## Entry Meta
@@ -3206,13 +3221,14 @@ p.entry-meta {
 	display: inline-block;
 }
 
+.entry-time,
 .entry-author,
 .entry-author a,
 .entry-comments-link,
 .entry-comments-link a,
 .post-edit-link,
 .post-edit-link a {
-	margin-left: 6px;
+	margin-right: 6px;
 }
 
 .entry-categories,
