@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.7.2
+* Fixed: Error when running PHP 5.3.
+
 ## 1.0.7.1
 * Fixed: Entry meta spacing.
 
