@@ -79,22 +79,22 @@ function mai_do_flex_entry_classes_by_columns( $columns ) {
 function mai_get_flex_entry_classes_by_columns( $columns ) {
 	switch ( (int)$columns ) {
 		case 1:
-			$classes = 'flex-entry column col col-xs-12';
+			$classes = 'flex-entry col col-xs-12';
 		break;
 		case 2:
-			$classes = 'flex-entry column col col-xs-12 col-sm-6';
+			$classes = 'flex-entry col col-xs-12 col-sm-6';
 		break;
 		case 3:
-			$classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-4';
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
 		break;
 		case 4:
-			$classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-3';
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-3';
 		break;
 		case 6:
-			$classes = 'flex-entry column col col-xs-6 col-sm-4 col-md-2';
+			$classes = 'flex-entry col col-xs-6 col-sm-4 col-md-2';
 		break;
 		default:
-			$classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-4';
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
 	}
 	return $classes;
 }
@@ -103,49 +103,49 @@ function mai_get_flex_entry_classes_by_columns( $columns ) {
 function mai_get_flex_entry_classes_by_fraction( $fraction ) {
 	switch ( $fraction ) {
 		case 'col':
-			$classes = 'flex-entry column col col-xs-12 col-sm-6 col-md';
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md';
 		break;
 		case 'col-auto':
-			$classes = 'flex-entry column col col-xs-12 col-sm-auto';
+			$classes = 'flex-entry col col-xs-12 col-sm-auto';
 		break;
 		case 'one-twelfth':
-			$classes = 'flex-entry column col col-xs-3 col-sm-2 col-md-1';
+			$classes = 'flex-entry col col-xs-3 col-sm-2 col-md-1';
 		break;
 		case 'one-sixth':
-			$classes = 'flex-entry column col col-xs-4 col-sm-2';
+			$classes = 'flex-entry col col-xs-4 col-sm-2';
 		break;
 		case 'one-fourth':
-			$classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-3';
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-3';
 		break;
 		case 'one-third':
-			$classes = 'flex-entry column col col-xs-12 col-sm-6 col-md-4';
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
 		break;
 		case 'five-twelfths':
-			$classes = 'flex-entry column col col-xs-12 col-sm-5';
+			$classes = 'flex-entry col col-xs-12 col-sm-5';
 		break;
 		case 'one-half':
-			$classes = 'flex-entry column col col-xs-12 col-sm-6';
+			$classes = 'flex-entry col col-xs-12 col-sm-6';
 		break;
 		case 'seven-twelfths':
-			$classes = 'flex-entry column col col-xs-12 col-sm-7';
+			$classes = 'flex-entry col col-xs-12 col-sm-7';
 		break;
 		case 'two-thirds':
-			$classes = 'flex-entry column col col-xs-12 col-sm-8';
+			$classes = 'flex-entry col col-xs-12 col-sm-8';
 		break;
 		case 'three-fourths':
-			$classes = 'flex-entry column col col-xs-12 col-sm-9';
+			$classes = 'flex-entry col col-xs-12 col-sm-9';
 		break;
 		case 'five-sixths':
-			$classes = 'flex-entry column col col-xs-12 col-sm-10';
+			$classes = 'flex-entry col col-xs-12 col-sm-10';
 		break;
 		case 'eleven-twelfths':
-			$classes = 'flex-entry column col col-xs-12 col-sm-11';
+			$classes = 'flex-entry col col-xs-12 col-sm-11';
 		break;
 		case 'one-whole':
-			$classes = 'flex-entry column col col-xs-12';
+			$classes = 'flex-entry col col-xs-12';
 		break;
 		default:
-			$classes = 'flex-entry column col col-xs-12 col-sm';
+			$classes = 'flex-entry col col-xs-12 col-sm';
 	}
 	return $classes;
 }

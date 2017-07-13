@@ -167,9 +167,18 @@ function mai_do_flex_loop_before() {
 		}
 	}
 
+	$img_location  = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
+	$img_alignment = mai_get_archive_setting( 'image_alignment', genesis_get_option( 'image_alignment' ) );
+
 	// Create an anonomous function using the column count
-	$flex_classes = function( $classes ) use ( $columns ) {
+	$flex_classes = function( $classes ) use ( $columns, $img_location, $img_alignment ) {
 		$classes[] = mai_get_flex_entry_classes_by_columns( $columns );
+		// If background image or image is not aligned
+		if ( 'background' === $img_location || empty( $img_alignment ) ) {
+			$classes[] = 'column';
+		} else {
+			$classes[] = 'image-' . $img_alignment;
+		}
 		return $classes;
 	};
 
@@ -204,15 +213,16 @@ function mai_woo_shortcode_before_loop( $atts ) {
 
 	// Create an anonomous function using the column count
 	$shortcode_columns = function( $columns ) use ( $atts ) {
-	return $atts['columns'];
+		return $atts['columns'];
 	};
+
 	// Set the columns to the Woo shortcode att
 	add_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
 
 	// Create an anonomous function using the column count
 	$entry_classes = function( $classes ) {
-	$classes[] .= 'entry';
-	return $classes;
+		$classes[] .= 'entry column';
+		return $classes;
 	};
 	// Add flex entry classes
 	add_filter( 'post_class', $entry_classes );
