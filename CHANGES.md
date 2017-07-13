@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.7.1
+* Fixed: Entry meta spacing.
+
 ## 1.0.7
 * Added: You can now align featured images left or right when post archives are in columns.
 * Added: Default favicon.
