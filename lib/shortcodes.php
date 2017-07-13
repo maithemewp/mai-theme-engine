@@ -667,6 +667,9 @@ final class Mai_Shortcodes {
 			return;
 		}
 
+		// Trim because testing returned string of nbsp.
+		$content = trim( $content );
+
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
 			'align'      => '',
@@ -707,11 +710,7 @@ final class Mai_Shortcodes {
 		// If we have an image ID
 		if ( $atts['image'] ) {
 
-			/**
-			 * If we have content.
-			 * Need to thoroughly check, because testing returned string of nbsp.
-			 */
-			$content = trim( $content );
+			// If we have content
 			if ( $content ) {
 				// Set dark overlay if we don't have one
 				$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
@@ -737,7 +736,7 @@ final class Mai_Shortcodes {
 		 *
 		 * Only do_shortcode() on content because get_columns() wrap runs get_processed_content() which cleans things up.
 		 */
-		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), do_shortcode( trim( $content ) ) );
+		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), do_shortcode( $content ) );
 
 	}
 
