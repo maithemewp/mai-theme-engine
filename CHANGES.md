@@ -1,5 +1,10 @@
 # Changelog
 
+* Added: You can now align featured images left or right when post archives are in columns.
+* Added: Default favicon.
+* Fixed: Center logo on logo screen.
+* Fixed: Section content alignment on Safari 7/8.
+
 ## 1.0.6
 * Added: Screen reader text to read more links in [grid].
 * Changed: Use dedicated anchor link for flex loop and grid entry bg links.

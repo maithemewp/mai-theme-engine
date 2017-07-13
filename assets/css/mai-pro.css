@@ -98,8 +98,8 @@ input[type="search"]{
 *::after {
 	-webkit-box-sizing: inherit;
 	        box-sizing: inherit;
-	min-height: 0;
-	min-width: 0;
+	min-height: 0%;
+	min-width: 0%;
 }
 
 /* ## Typographical Elements
@@ -1063,17 +1063,19 @@ td {
 --------------------------------------------- */
 
 .section {
-	-webkit-box-pack: center;-ms-flex-pack: center;justify-content: center;
+	-webkit-box-sizing: border-box;box-sizing: border-box;
+	display: -webkit-box;display: -ms-flexbox;display: flex;
 	-webkit-box-align: center;-ms-flex-align: center;align-items: center;
-	margin-bottom: 30px;
-}
-
-.section {
 	background-color: #f0f0f0;
+	margin-bottom: 30px;
 }
 
 .section:nth-of-type(odd) {
 	background-color: #fff;
+}
+
+.section > .wrap {
+	margin: auto;
 }
 
 /* add top margin any time a section is after another element */
@@ -1404,14 +1406,14 @@ img.alignnone,
 a.alignleft,
 img.alignleft,
 .wp-caption.alignleft {
-	margin: 0 calc(.75vw + 1em) calc(.75vw + 1em) 0;
+	margin: 0 20px 24px 0;
 }
 
 .alignright,
 a.alignright,
 img.alignright,
 .wp-caption.alignright {
-	margin: 0 0 calc(.75vw + 1em) calc(.75vw + 1em);
+	margin: 0 0 24px 20px;
 }
 
 .wp-caption-text,
@@ -1429,7 +1431,7 @@ img.alignright,
 .entry-content .wp-audio-shortcode,
 .entry-content .wp-playlist,
 .entry-content .wp-video {
-	margin: 0 0 calc(.75vw + 1em);
+	margin: 0 0 24px;
 }
 
 /* ## Genesis
@@ -2850,7 +2852,7 @@ img.alignright,
 }
 
 .mobile-menu a {
-	-ms-flex: 1 0 0px;-webkit-box-flex: 1;flex: 1 0 0;
+	-webkit-box-flex: 1;-ms-flex: 1 0 0%;flex: 1 0 0%;
 	max-width: 100%;
 	width: 100%;
 	background: transparent;
@@ -3104,14 +3106,14 @@ img.alignright,
 	padding: 0;
 }
 
-.flex-entry .entry-image-link {
+.flex-entry.column .entry-image-link {
 	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
 	display: block;
 	font-size: 0;
 	line-height: 1;
 }
 
-.entry-image-before-entry {
+.flex-entry.column .entry-image-before-entry:not(.aligncenter):not(.alignleft):not(.alignright) {
 	/* offset the entry padding and border */
 	width: calc( 100% + 50px );
 	margin-top: -25px;
@@ -3119,10 +3121,11 @@ img.alignright,
 	margin-right: -25px;
 }
 
-.flex-entry .entry-image-before-entry + .entry-header,
-.flex-entry .entry-image-before-title + .entry-title,
+.flex-entry.column .entry-image-before-entry + .entry-header,
+.flex-entry.column .entry-image-before-title + .entry-title,
 .flex-entry .entry-title + .entry-image-after-title,
 .flex-entry .entry-header + .entry-content {
+	display: block;
 	margin-top: 16px;
 }
 
@@ -3130,13 +3133,13 @@ img.alignright,
 	margin-bottom: 12px;
 }
 
-.flex-entry .entry-image,
-.flex-entry .wp-post-image {
+.flex-entry.column .entry-image,
+.flex-entry.column .wp-post-image {
 	width: 100%;
 	max-width: auto;
 }
 
-.flex-entry .entry-content {
+.flex-entry.column .entry-content {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex-direction: column;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;
 	-ms-flex: 1 0 auto;-webkit-box-flex: 1;flex: 1 0 auto;
