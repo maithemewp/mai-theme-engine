@@ -711,7 +711,8 @@ final class Mai_Shortcodes {
 			 * If we have content.
 			 * Need to thoroughly check, because testing returned string of nbsp.
 			 */
-			if ( ! empty( trim( $content ) ) ) {
+			$content = trim( $content );
+			if ( $content ) {
 				// Set dark overlay if we don't have one
 				$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
 			}
