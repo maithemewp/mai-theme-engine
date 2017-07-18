@@ -76,6 +76,8 @@ add_filter( 'previous_post_link', 'mai_adjacent_post_link_thumbnail', 10, 5 );
 add_filter( 'next_post_link', 'mai_adjacent_post_link_thumbnail', 10, 5 );
 function mai_adjacent_post_link_thumbnail( $output, $format, $link, $post, $adjacent ) {
 	$output = _mai_get_adjacent_post_output( $output, $post );
+	$output = str_replace( '&#x000AB;', '<span class="pagination-icon">&#x000AB;</span>', $output );
+	$output = str_replace( '&#x000BB;', '<span class="pagination-icon">&#x000BB;</span>', $output );
 	return $output;
 }
 
@@ -85,9 +87,9 @@ function _mai_get_adjacent_post_output( $output, $post ) {
 		$image = wp_get_attachment_image( $image_id, 'tiny' );
 		if ( $image ) {
 			// Previous
-			$output = str_replace( '&#x000AB;', '<span class="pagination-icon">&#x000AB;</span>' . $image, $output );
+			$output = str_replace( '&#x000AB;', '&#x000AB;' . $image, $output );
 			// Next
-			$output = str_replace( '&#x000BB;', $image . '<span class="pagination-icon">&#x000BB;</span>', $output );
+			$output = str_replace( '&#x000BB;', $image . '&#x000BB;', $output );
 		}
 	}
 	return $output;
