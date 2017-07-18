@@ -3285,6 +3285,7 @@ p.entry-meta {
 	height: 100%;
 	max-width: 100%;
 	color: rgba(0, 0, 0, 0.5);
+	line-height: 1.5;
 }
 
 .adjacent-entry-pagination a:hover {
@@ -3294,17 +3295,18 @@ p.entry-meta {
 
 .adjacent-entry-pagination .pagination-previous a {
 	-webkit-box-pack: start;-ms-flex-pack: start;justify-content: flex-start;
-	padding: 16px 16px 16px 8px;
+	padding: 16px 16px 16px 12px;
 }
 
 .adjacent-entry-pagination .pagination-next a {
 	-webkit-box-pack: end;-ms-flex-pack: end;justify-content: flex-end;
-	padding: 16px 8px 16px 16px;
+	padding: 16px 12px 16px 16px;
 }
 
 .adjacent-entry-pagination .pagination-icon {
 	-ms-flex-negative: 0;flex-shrink: 0;
-	font-size: 28px;
+	font-size: 24px;
+	margin-top: -2px;
 }
 
 .adjacent-entry-pagination a img {
@@ -3320,11 +3322,11 @@ p.entry-meta {
 }
 
 .adjacent-entry-pagination .pagination-previous .pagination-icon {
-	margin-right: 8px;
+	margin-right: 10px;
 }
 
 .adjacent-entry-pagination .pagination-next .pagination-icon {
-	margin-left: 8px;
+	margin-left: 10px;
 }
 
 .archive-pagination {
