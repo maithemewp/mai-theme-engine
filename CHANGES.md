@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.8
+* Added: Entry pagination now shows a 'tiny' thumbnail.
+* Fixed: Mai Pro front page now works as expected if set to display latest posts.
+* Fixed: Featured image caption display if featured image is set to auto-display.
+
 ## 1.0.7.2
 * Fixed: Error when running PHP 5.3.
 

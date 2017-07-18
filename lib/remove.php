@@ -18,6 +18,14 @@ function mai_remove_front_page_post_title() {
 	if ( ! is_front_page() ) {
 		return;
 	}
+	/**
+	 * Bail if home.
+	 * This would happen if front page is set to recent posts,
+	 * not a static page.
+	 */
+	if ( is_home() ) {
+		return;
+	}
 	// Remove post title
 	remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 }

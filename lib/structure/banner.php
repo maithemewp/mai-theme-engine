@@ -111,8 +111,13 @@ function mai_do_banner_content() {
 	genesis_do_cpt_archive_title_description();
 	genesis_do_date_archive_title();
 
+	// If front page displays your latest posts
+	if ( is_front_page() && is_home() ) {
+		printf( '<h1 class="archive-title">%s</h1>', __( 'Blog', 'genesis' ) );
+	}
+
 	// Add static front page banner content
-	if ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
+	elseif ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
 
 		// Remove post title
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
