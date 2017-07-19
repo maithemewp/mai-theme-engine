@@ -1455,9 +1455,8 @@ img.alignright,
 	color: rgba(0, 0, 0, 0.75);
 }
 
-.archive-description,
-.author-box {
-	/* margin-bottom: 30px; */
+.content .archive-description {
+	margin-bottom: 30px;
 }
 
 .author-box {
