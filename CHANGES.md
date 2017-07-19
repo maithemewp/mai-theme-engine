@@ -3,6 +3,7 @@
 #### 1.0.9
 * Added: Setting to allow featured images to be used as the banner image.
 * Added: Child category/taxonomy archives now fallback to their parent term banner image (up to 4 levels deep).
+* Added: [grid] slider can now autoplay via autoplay="true" and adjust autoplay speed with speed="3000".
 
 #### 1.0.8
 * Added: Entry pagination now shows a 'tiny' thumbnail.

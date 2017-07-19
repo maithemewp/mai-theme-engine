@@ -5,76 +5,81 @@
  */
 jQuery(document).ready(function($) {
 
-    var $sliders = $('.mai-slider');
+	var $sliders = $('.mai-slider');
 
-    if ( ! $sliders.length > 0 ) {
-        return;
-    }
+	if ( ! $sliders.length > 0 ) {
+		return;
+	}
 
-    $.each( $sliders, function() {
+	$.each( $sliders, function() {
 
-	    var arrows 			= Boolean( $(this).data('arrows') ),
-	        centerMode  	= Boolean( $(this).data('centermode') ),
-	    	dots 			= Boolean( $(this).data('dots') ),
-	    	fade 			= Boolean( $(this).data('fade') ),
-	        infinite  		= Boolean( $(this).data('infinite') ),
-	        slidesToScroll  = parseInt( $(this).data('slidestoscroll') ),
-	    	slidesToShow    = parseInt( $(this).data('slidestoshow') );
+		var arrows         = Boolean( $(this).data('arrows') ),
+			autoPlay       = Boolean( $(this).data('autoplay') ),
+			centerMode     = Boolean( $(this).data('centermode') ),
+			dots           = Boolean( $(this).data('dots') ),
+			fade           = Boolean( $(this).data('fade') ),
+			infinite       = Boolean( $(this).data('infinite') ),
+			slidesToScroll = parseInt( $(this).data('slidestoscroll') ),
+			slidesToShow   = parseInt( $(this).data('slidestoshow') );
+			speed          = parseInt( $(this).data('speed') );
 
-	    var desktopToShow,
-		    desktopToScroll,
-	    	tabletToShow,
-	    	tabletToScroll,
-	    	mobileToShow,
-	    	mobileToScroll;
+		var desktopToShow,
+			desktopToScroll,
+			tabletToShow,
+			tabletToScroll,
+			mobileToShow,
+			mobileToScroll;
 
-	    // Get desktoToShow
-	    if ( slidesToShow > 3 ) {
-	        desktopToShow = slidesToShow - 1;
-	    } else {
-	    	desktopToShow = slidesToShow;
-	    }
-	    // Get desktopToScroll
-        if ( slidesToScroll > desktopToShow ) {
-	        desktopToScroll = desktopToShow;
-        } else {
-        	desktopToScroll = slidesToScroll;
-        }
+		// Get desktoToShow
+		if ( slidesToShow > 3 ) {
+			desktopToShow = slidesToShow - 1;
+		} else {
+			desktopToShow = slidesToShow;
+		}
+		// Get desktopToScroll
+		if ( slidesToScroll > desktopToShow ) {
+			desktopToScroll = desktopToShow;
+		} else {
+			desktopToScroll = slidesToScroll;
+		}
 
-        // Get tabletToShow
-	    if ( desktopToShow > 2 ) {
-	        tabletToShow = desktopToShow - 1;
-	    } else {
-	    	tabletToShow = desktopToShow;
-	    }
-	    // Get tabletToScroll
-        if ( desktopToScroll > tabletToShow ) {
-	        tabletToScroll = tabletToShow;
-        } else {
-        	tabletToScroll = desktopToScroll;
-        }
+		// Get tabletToShow
+		if ( desktopToShow > 2 ) {
+			tabletToShow = desktopToShow - 1;
+		} else {
+			tabletToShow = desktopToShow;
+		}
+		// Get tabletToScroll
+		if ( desktopToScroll > tabletToShow ) {
+			tabletToScroll = tabletToShow;
+		} else {
+			tabletToScroll = desktopToScroll;
+		}
 
-        // Get mobileToShow
-	    if ( tabletToShow > 1 ) {
-	        mobileToShow = tabletToShow - 1;
-	    } else {
-	    	mobileToShow = tabletToShow;
-	    }
-	    // Get mobileToScroll
-        if ( tabletToScroll > mobileToShow ) {
-	        mobileToScroll = mobileToShow;
-        } else {
-        	mobileToScroll = tabletToScroll;
-        }
+		// Get mobileToShow
+		if ( tabletToShow > 1 ) {
+			mobileToShow = tabletToShow - 1;
+		} else {
+			mobileToShow = tabletToShow;
+		}
+		// Get mobileToScroll
+		if ( tabletToScroll > mobileToShow ) {
+			mobileToScroll = mobileToShow;
+		} else {
+			mobileToScroll = tabletToScroll;
+		}
 
 		$(this).slick({
 			adaptiveHeight: false, // true breaks things on image-bg aspect-ratio resize
 			arrows: arrows,
+			autoplay: autoPlay,
 			dots: dots,
-			fade: fade,
+			fade: fade, // Things seem to blow up if columns is > 1
 			infinite: infinite,
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,
+			autoplaySpeed: speed,
+			cssEase: fade ? 'linear' : 'ease', // Use linear if fade is true, otherwise default is ease
 			responsive: [{
 				breakpoint: 1200,
 				settings: {

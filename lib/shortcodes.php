@@ -795,13 +795,15 @@ final class Mai_Shortcodes {
 			'title_wrap'           => 'h3',
 			'class'                => '',
 			'id'                   => '',
-			'slider'               => false, // (slider only) Make the columns a slider
-			'arrows'               => true,  // (slider only) Whether to display arrows
-			'center_mode'          => false, // (slider only) Mobile 'peek'
-			'dots'                 => false, // (slider only) Whether to display dots
-			'fade'                 => false, // (slider only) Fade instead of left/right scroll (works requires slidestoshow 1)
-			'infinite'             => true,  // (slider only) Loop slider
-			'slidestoscroll'       => '1',   // (slider only) The amount of posts to scroll
+			'slider'               => false,  // (slider only) Make the columns a slider
+			'arrows'               => true,   // (slider only) Whether to display arrows
+			'autoplay'             => false,  // (slider only) Whether to autoplay the slider
+			'center_mode'          => false,  // (slider only) Mobile 'peek'
+			'dots'                 => false,  // (slider only) Whether to display dots
+			'fade'                 => false,  // (slider only) Fade instead of left/right scroll (works requires slidestoshow 1)
+			'infinite'             => true,   // (slider only) Loop slider
+			'slidestoscroll'       => '1',    // (slider only) The amount of posts to scroll
+			'speed'                => '3000', // (slider only) Autoplay Speed in milliseconds
 		), $atts, 'grid' );
 
 		$atts = array(
@@ -855,11 +857,13 @@ final class Mai_Shortcodes {
 			'id'                   => sanitize_html_class( $atts['id'] ),
 			'slider'               => filter_var( $atts['slider'], FILTER_VALIDATE_BOOLEAN ),
 			'arrows'               => filter_var( $atts['arrows'], FILTER_VALIDATE_BOOLEAN ),
+			'autoplay'             => filter_var( $atts['autoplay'], FILTER_VALIDATE_BOOLEAN ),
 			'center_mode'          => filter_var( $atts['center_mode'], FILTER_VALIDATE_BOOLEAN ),
 			'dots'                 => filter_var( $atts['dots'], FILTER_VALIDATE_BOOLEAN ),
 			'fade'                 => filter_var( $atts['fade'], FILTER_VALIDATE_BOOLEAN ),
 			'infinite'             => filter_var( $atts['infinite'], FILTER_VALIDATE_BOOLEAN ),
 			'slidestoscroll'       => absint( $atts['slidestoscroll'] ),
+			'speed'                => absint( $atts['speed'] ),
 		);
 
 		$html = '';
@@ -968,6 +972,7 @@ final class Mai_Shortcodes {
 
 			// Slider HTML data attributes
 			$flex_row['data-arrows']         = $atts['arrows'] ? 'true' : 'false';
+			$flex_row['data-autoplay']       = $atts['autoplay'] ? 'true' : 'false';
 			$flex_row['data-center']         = in_array( 'center', $atts['align'] ) ? 'true' : 'false';
 			$flex_row['data-centermode']     = $atts['center_mode'] ? 'true' : 'false';
 			$flex_row['data-dots']           = $atts['dots'] ? 'true' : 'false';
@@ -976,6 +981,7 @@ final class Mai_Shortcodes {
 			$flex_row['data-middle']         = in_array( 'middle', $atts['align'] ) ? 'true' : 'false';
 			$flex_row['data-slidestoscroll'] = $atts['slidestoscroll'];
 			$flex_row['data-slidestoshow']   = $atts['columns'];
+			$flex_row['data-speed']          = $atts['speed'];
 			$flex_row['data-gutter']         = $is_valid_gutter ? $atts['gutter'] : 0;
 
 		}
