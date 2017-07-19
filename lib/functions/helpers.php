@@ -196,7 +196,7 @@ function mai_get_section( $content, $args = array() ) {
  */
 function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
 
-	$url = $screen_reader_html = $screen_reader_text = '';
+	$link = $url = $screen_reader_html = $screen_reader_text = '';
 
 	$text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-pro-engine' );
 	$more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) );
@@ -213,24 +213,20 @@ function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
 		}
 	}
 
-    // Build the screen reader text html
+	// Build the screen reader text html
 	if ( $screen_reader_text ) {
 		$screen_reader_html = sprintf( '<span class="screen-reader-text">%s</span>', esc_html( $screen_reader_text ) );
 	}
 
-    // Get image location
+	// Get image location
 	$image_location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
 
-    // If background image
-	// if ( 'background' == $image_location ) {
-		// $link = sprintf( '<span class="more-link">%s%s</span>', $screen_reader_html, $more_link_text );
-	// } else {
-		if ( $url ) {
-			$link = sprintf( '<a class="more-link" href="%s">%s%s</a>', $url, $screen_reader_html, $more_link_text );
-		}
-	// }
+	// If background image
+	if ( $url ) {
+		$link = sprintf( '<a class="more-link" href="%s">%s%s</a>', $url, $screen_reader_html, $more_link_text );
+	}
 
-    // Bail if no link
+	// Bail if no link
 	if ( empty( $link ) ) {
 		return;
 	}
