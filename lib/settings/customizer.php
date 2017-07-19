@@ -167,6 +167,22 @@ function mai_register_customizer_settings( $wp_customize ) {
 	) );
 
 	/*****************************************************
+	 * Featured Image for Banner Image setting
+	 */
+
+	$wp_customize->add_setting( 'banner_featured_image', array(
+		'default'           => 0,
+		'sanitize_callback' => 'absint',
+	) );
+
+	$wp_customize->add_control( 'banner_featured_image', array(
+		'label'    => __( 'Use featured image as banner image', 'mai-pro-engine' ),
+		'section'  => $section,
+		'priority' => 5,
+		'type'     => 'checkbox',
+	) );
+
+	/*****************************************************
 	 * Banner BG Color
 	 */
 

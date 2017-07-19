@@ -12,21 +12,34 @@ function mai_get_banner_id() {
 	// Start of without an image
 	$image_id = false;
 
+	// Static front page
 	if ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
 		$image_id = get_post_meta( $front_page_id, 'banner_id', true );
+		// If no image and featured images as banner is enabled
+		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
+			$image_id = get_post_thumbnail_id( $front_page_id );
+		}
 	}
+
+	// Static blog page
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
+		// If no image and featured images as banner is enabled
+		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
+			$image_id = get_post_thumbnail_id( $posts_page_id );
+		}
 	}
 	// Single page/post/cpt, but not static front page or static home page
 	elseif ( is_singular() ) {
 		$image_id = get_post_meta( get_the_ID(), 'banner_id', true );
-
+		// If no image and featured images as banner is enabled
+		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
+			$image_id = get_post_thumbnail_id( get_the_ID() );
+		}
 		// If No image and CPT has genesis archive support
 		if ( ! $image_id ) {
-
+			// Get the post's post_type
 			$post_type = get_post_type();
-
 			// Posts
 			if ( 'post' == $post_type && $posts_page_id = get_option( 'page_for_posts' ) ) {
 				$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
@@ -53,8 +66,35 @@ function mai_get_banner_id() {
 		}
 		// If no image
 		if ( ! $image_id ) {
-			// Check the archive settings, so we can fall back to the taxo's post_type setting
-			$image_id = mai_get_archive_setting( 'banner_id', false );
+			// If a hierarchical taxonomy
+			if ( is_taxonomy_hierarchical( get_queried_object()->taxonomy ) && get_queried_object()->parent > 0 ) {
+				// Get the image ID from the parent category
+				$image_id = get_term_meta( get_queried_object()->parent, 'banner_id', true );
+				// If no parent image
+				if ( ! $image_id ) {
+					// Get the parent term
+					$parent = get_term_by( 'id', get_queried_object()->parent, get_queried_object()->taxonomy );
+					// If parent has a parent
+					if ( $parent->parent > 0 ) {
+						// Get the grandparent image
+						$image_id = get_term_meta( $parent->parent, 'banner_id', true );
+						// If no grandparent image
+						if ( ! $image_id ) {
+							$grandparent = get_term_by( 'id', $parent->term_id, get_queried_object()->taxonomy );
+							// If grandparent has a parent
+							if ( $grandparent->parent > 0 ) {
+								// Get the great-grandparent image
+								$image_id = get_term_meta( $grandparent->parent, 'banner_id', true );
+							}
+						}
+					}
+				}
+			}
+			// If still no image
+			if ( ! $image_id ) {
+				// Check the archive settings, so we can fall back to the taxo's post_type setting
+				$image_id = mai_get_archive_setting( 'banner_id', false );
+			}
 		}
 	}
 
