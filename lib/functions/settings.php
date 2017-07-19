@@ -160,20 +160,20 @@ function mai_is_banner_area_enabled() {
 		$enabled = false;
 	} else {
 
-		// Get 'disabled' content, typecasted as array because it may return empty string if none
-		$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
-
 		/**
 		 * If disabled via theme settings.
-		 * (by post_type)
 		 */
 
-		if ( is_singular() || is_post_type_archive() ) {
+		if ( is_singular() ) {
+			// Get 'disabled' content, typecasted as array because it may return empty string if none
+			$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
 			if ( in_array( get_post_type(), $disable_post_types ) ) {
 				$enabled = false;
 			}
-		} elseif ( is_tax() ) {
-			if ( array_intersect( get_taxonomy( get_queried_object()->taxonomy )->object_type, $disable_post_types ) ) {
+		} elseif ( is_category() || is_tag() || is_tax() ) {
+			// Get 'disabled' content, typecasted as array because it may return empty string if none
+			$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+			if ( in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
 				$enabled = false;
 			}
 		}

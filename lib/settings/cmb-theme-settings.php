@@ -177,6 +177,7 @@ class Mai_Genesis_Theme_Settings_Metabox {
 		), $this->key, 'options-page' );
 
 		$this->cmb->add_field( _mai_cmb_banner_disable_post_types_config() );
+		$this->cmb->add_field( _mai_cmb_banner_disable_taxonomies_config() );
 		$this->cmb->add_field( array(
 			'name' => __( 'Archive Settings', 'mai-pro-engine' ),
 			'desc' => __( 'These options will affect any blog listings page, including archive, author, blog, category, search, and tag pages, unless overridden in the corresponding metabox.', 'mai-pro-engine' ),

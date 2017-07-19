@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.0.10
+* Added: Setting to disable term archives by taxonomy.
+
 #### 1.0.9.1
 * Fixed: [grid] was not linking correctly when displaying taxonomy terms with image_location="bg".
 

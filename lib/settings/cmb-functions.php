@@ -152,18 +152,39 @@ function _mai_cmb_show_if_user_is_author_or_above() {
 }
 
 function _mai_cmb_banner_disable_post_types_config() {
-	$post_types        = get_post_types( array('public' => true ), 'objects' );
-	$post_type_options = array();
-	foreach ( $post_types as $post_type ) {
-		$post_type_options[$post_type->name] = $post_type->label;
+	$options    = array();
+	$post_types = get_post_types( array( 'public' => true ), 'objects' );
+	if ( $post_types ) {
+		foreach ( $post_types as $post_type ) {
+			$options[$post_type->name] = $post_type->label;
+		}
 	}
 	return array(
-		'name'              => __( 'Disable Banner Area on', 'mai-pro-engine' ),
-		'desc'              => __( 'Disable the banner area for the above post types, single and archive pages, and any associated taxonomy archives.', 'mai-pro-engine' ),
+		'name'              => __( 'Disable Banner Area on<br />(Post Types)', 'mai-pro-engine' ),
+		'desc'              => __( 'Disable the banner area for single post posts.', 'mai-pro-engine' ),
 		'id'                => 'banner_disable_post_types',
 		'type'              => 'multicheck',
 		'select_all_button' => false,
-		'options'           => $post_type_options,
+		'options'           => $options,
+		'show_on_cb'        => 'mai_is_banner_area_enabled_globally',
+	);
+}
+
+function _mai_cmb_banner_disable_taxonomies_config() {
+	$options    = array();
+	$taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
+	if ( $taxonomies ) {
+		foreach ( $taxonomies as $taxo ) {
+			$options[$taxo->name] = $taxo->label;
+		}
+	}
+	return array(
+		'name'              => __( 'Disable Banner Area on<br />(Taxonomies)', 'mai-pro-engine' ),
+		'desc'              => __( 'Disable the banner area for taxonomy archives.', 'mai-pro-engine' ),
+		'id'                => 'banner_disable_taxonomies',
+		'type'              => 'multicheck',
+		'select_all_button' => false,
+		'options'           => $options,
 		'show_on_cb'        => 'mai_is_banner_area_enabled_globally',
 	);
 }
