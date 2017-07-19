@@ -1,5 +1,6 @@
 ### Changelog
 
+#### 1.0.9.1
 * Fixed: [grid] was not linking correctly when displaying taxonomy terms with image_location="bg".
 
 #### 1.0.9
