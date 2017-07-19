@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.0.9.1
+* Fixed: [grid] was not linking correctly when displaying taxonomy terms with image_location="bg".
+
 #### 1.0.9
 * Added: Setting to allow featured images to be used as the banner image.
 * Added: Child category/taxonomy archives now fallback to their parent term banner image (up to 4 levels deep).

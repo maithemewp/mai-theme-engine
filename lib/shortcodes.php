@@ -1472,7 +1472,7 @@ final class Mai_Shortcodes {
 
 					// Image
 					if ( 'bg' == $atts['image_location'] && $atts['link'] ) {
-						$html .= mai_get_bg_image_link();
+						$html .= mai_get_bg_image_link( $url, get_the_title() );
 					}
 					elseif ( 'before_entry' == $atts['image_location'] ) {
 						$html .= $image_html;
@@ -1734,7 +1734,7 @@ final class Mai_Shortcodes {
 
 					// Image
 					if ( 'bg' == $atts['image_location'] && $atts['link'] ) {
-						$html .= mai_get_bg_image_link();
+						$html .= mai_get_bg_image_link( $url, $term->name );
 					}
 					elseif ( 'before_entry' == $atts['image_location'] ) {
 						$html .= $image_html;
