@@ -1,5 +1,6 @@
 ### Changelog
 
+#### 1.0.10
 * Added: Setting to disable term archives by taxonomy.
 
 #### 1.0.9.1
