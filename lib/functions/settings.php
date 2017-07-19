@@ -123,9 +123,22 @@ function mai_is_shrink_header_enabled() {
 	return filter_var( get_theme_mod( 'enable_shrink_header', 0 ), FILTER_VALIDATE_BOOLEAN );
 }
 
-
+/**
+ * Check if banner area is enabled globally
+ *
+ * @return bool
+ */
 function mai_is_banner_area_enabled_globally() {
 	return filter_var( get_theme_mod( 'enable_banner_area', 1 ), FILTER_VALIDATE_BOOLEAN );
+}
+
+/**
+ * Check if banner featured images is enabled
+ *
+ * @return bool
+ */
+function mai_is_banner_featured_image_enabled() {
+	return filter_var( get_theme_mod( 'banner_featured_image', 0 ), FILTER_VALIDATE_BOOLEAN );
 }
 
 /**

@@ -12,21 +12,34 @@ function mai_get_banner_id() {
 	// Start of without an image
 	$image_id = false;
 
+	// Static front page
 	if ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
 		$image_id = get_post_meta( $front_page_id, 'banner_id', true );
+		// If no image and featured images as banner is enabled
+		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
+			$image_id = get_post_thumbnail_id( $front_page_id );
+		}
 	}
+
+	// Static blog page
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
+		// If no image and featured images as banner is enabled
+		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
+			$image_id = get_post_thumbnail_id( $posts_page_id );
+		}
 	}
 	// Single page/post/cpt, but not static front page or static home page
 	elseif ( is_singular() ) {
 		$image_id = get_post_meta( get_the_ID(), 'banner_id', true );
-
+		// If no image and featured images as banner is enabled
+		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
+			$image_id = get_post_thumbnail_id( get_the_ID() );
+		}
 		// If No image and CPT has genesis archive support
 		if ( ! $image_id ) {
-
+			// Get the post's post_type
 			$post_type = get_post_type();
-
 			// Posts
 			if ( 'post' == $post_type && $posts_page_id = get_option( 'page_for_posts' ) ) {
 				$image_id = get_post_meta( $posts_page_id, 'banner_id', true );

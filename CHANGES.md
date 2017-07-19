@@ -1,5 +1,6 @@
 # Changelog
 
+* Added: Setting to allow featured images to be used as the banner image.
 * Added: Child category/taxonomy archives now fallback to their parent term banner image (up to 4 levels deep).
 
 ## 1.0.8
