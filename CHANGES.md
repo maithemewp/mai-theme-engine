@@ -1,5 +1,7 @@
 # Changelog
 
+* Added: Child category/taxonomy archives now fallback to their parent term banner image (up to 4 levels deep).
+
 ## 1.0.8
 * Added: Entry pagination now shows a 'tiny' thumbnail.
 * Fixed: Mai Pro front page now works as expected if set to display latest posts.

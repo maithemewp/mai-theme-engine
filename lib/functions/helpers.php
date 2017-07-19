@@ -53,8 +53,35 @@ function mai_get_banner_id() {
 		}
 		// If no image
 		if ( ! $image_id ) {
-			// Check the archive settings, so we can fall back to the taxo's post_type setting
-			$image_id = mai_get_archive_setting( 'banner_id', false );
+			// If a hierarchical taxonomy
+			if ( is_taxonomy_hierarchical( get_queried_object()->taxonomy ) && get_queried_object()->parent > 0 ) {
+				// Get the image ID from the parent category
+				$image_id = get_term_meta( get_queried_object()->parent, 'banner_id', true );
+				// If no parent image
+				if ( ! $image_id ) {
+					// Get the parent term
+					$parent = get_term_by( 'id', get_queried_object()->parent, get_queried_object()->taxonomy );
+					// If parent has a parent
+					if ( $parent->parent > 0 ) {
+						// Get the grandparent image
+						$image_id = get_term_meta( $parent->parent, 'banner_id', true );
+						// If no grandparent image
+						if ( ! $image_id ) {
+							$grandparent = get_term_by( 'id', $parent->term_id, get_queried_object()->taxonomy );
+							// If grandparent has a parent
+							if ( $grandparent->parent > 0 ) {
+								// Get the great-grandparent image
+								$image_id = get_term_meta( $grandparent->parent, 'banner_id', true );
+							}
+						}
+					}
+				}
+			}
+			// If still no image
+			if ( ! $image_id ) {
+				// Check the archive settings, so we can fall back to the taxo's post_type setting
+				$image_id = mai_get_archive_setting( 'banner_id', false );
+			}
 		}
 	}
 
