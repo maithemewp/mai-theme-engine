@@ -36,7 +36,7 @@ function mai_get_banner_id() {
 		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
 			$image_id = get_post_thumbnail_id( get_the_ID() );
 		}
-		// If No image and CPT has genesis archive support
+		// If no image and CPT has genesis archive support
 		if ( ! $image_id ) {
 			// Get the post's post_type
 			$post_type = get_post_type();
@@ -66,30 +66,8 @@ function mai_get_banner_id() {
 		}
 		// If no image
 		if ( ! $image_id ) {
-			// If a hierarchical taxonomy
-			if ( is_taxonomy_hierarchical( get_queried_object()->taxonomy ) && get_queried_object()->parent > 0 ) {
-				// Get the image ID from the parent category
-				$image_id = get_term_meta( get_queried_object()->parent, 'banner_id', true );
-				// If no parent image
-				if ( ! $image_id ) {
-					// Get the parent term
-					$parent = get_term_by( 'id', get_queried_object()->parent, get_queried_object()->taxonomy );
-					// If parent has a parent
-					if ( $parent->parent > 0 ) {
-						// Get the grandparent image
-						$image_id = get_term_meta( $parent->parent, 'banner_id', true );
-						// If no grandparent image
-						if ( ! $image_id ) {
-							$grandparent = get_term_by( 'id', $parent->term_id, get_queried_object()->taxonomy );
-							// If grandparent has a parent
-							if ( $grandparent->parent > 0 ) {
-								// Get the great-grandparent image
-								$image_id = get_term_meta( $grandparent->parent, 'banner_id', true );
-							}
-						}
-					}
-				}
-			}
+			// Get hierarchical taxonomy term meta
+			$image_id = mai_get_hierarchichal_term_meta( get_queried_object(), 'banner_id', false );
 			// If still no image
 			if ( ! $image_id ) {
 				// Check the archive settings, so we can fall back to the taxo's post_type setting
@@ -219,7 +197,7 @@ function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
 	}
 
 	// Get image location
-	$image_location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
+	$image_location = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 
 	// If background image
 	if ( $url ) {

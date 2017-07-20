@@ -13,12 +13,8 @@ function mai_is_flex_loop() {
 	}
 	// Get columns
 	$columns = mai_get_columns();
-	// If we have more than 1 column, it's a flex loop
-	if ( $columns > 1 ) {
-		return true;
-	}
-	// If we are using featured image as bg image, it's a flex loop
-	if ( 'background' === mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) ) ) {
+	// If we have more than 1 column or if we are using featured image as bg image, it's a flex loop
+	if ( ( $columns > 1 ) || ( 'background' === mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) ) ) ) {
 		return true;
 	}
 	// Not a flex loop
@@ -27,7 +23,7 @@ function mai_is_flex_loop() {
 
 function mai_get_columns() {
 	// Get the columns, fall back to theme settings
-	$columns = mai_get_archive_setting( 'columns', genesis_get_option( 'columns' ) );
+	$columns = mai_get_archive_setting( 'columns', true, genesis_get_option( 'columns' ) );
 	// If Woo shop or Woo taxonomy, default to 3 if 1 or less
 	if ( class_exists( 'WooCommerce' ) && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
 		if ( $columns <= 1 ) {
