@@ -119,7 +119,12 @@ function mai_get_grid( $args, $content = null ) {
 	return Mai_Shortcodes()->get_grid( $args, $content );
 }
 
-
+/**
+ * Check if viewing a content archive page.
+ * This is any archive page that may inherit (custom) archive settings.
+ *
+ * @return  bool
+ */
 function mai_is_content_archive() {
 
 	$is_archive = false;
@@ -270,6 +275,14 @@ function mai_get_post_meta( $post = '' ) {
 	return $post_meta;
 }
 
+/**
+ * Add background color HTML attributes to an element.
+ *
+ * @param   array   $attributes  The existing HTML attributes.
+ * @param   string  $color       The hex color code.
+ *
+ * @return  array   The modified attributes.
+ */
 function mai_add_background_color_attributes( $attributes, $color ) {
 
 	// Bail if no color to add
@@ -287,6 +300,15 @@ function mai_add_background_color_attributes( $attributes, $color ) {
 	return $attributes;
 }
 
+/**
+ * Add background color HTML attributes to an element.
+ *
+ * @param   array   $attributes  The existing HTML attributes.
+ * @param   string  $image_id    The image ID.
+ * @param   string  $image_size  The registered image size.
+ *
+ * @return  array   The modified attributes.
+ */
 function mai_add_background_image_attributes( $attributes, $image_id, $image_size ) {
 	// Get all registered image sizes
 	global $_wp_additional_image_sizes;
@@ -332,6 +354,13 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 	return $attributes;
 }
 
+/**
+ * Helper function to get processed (cleaned up) HTML content.
+ *
+ * @param   string|HTML  $content  The content to process.
+ *
+ * @return  string|HTML  The processed content.
+ */
 function mai_get_processed_content( $content ) {
 	return Mai_Shortcodes()->get_processed_content( $content );
 }
