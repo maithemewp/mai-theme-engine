@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.0.10
+ * Version:         1.0.10.develop.1
  *
  * GitHub URI:      bizbudding/mai-pro-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Pro_Engine {
 
 		// Plugin version.
 		if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
-			define( 'MAI_PRO_ENGINE_VERSION', '1.0.10' );
+			define( 'MAI_PRO_ENGINE_VERSION', '1.0.10.develop.1' );
 		}
 
 		// Plugin Folder Path.
