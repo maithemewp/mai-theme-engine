@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.0.11
+ * Version:         1.0.10-beta.1
  *
  * GitHub URI:      bizbudding/mai-pro-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Pro_Engine {
 
 		// Plugin version.
 		if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
-			define( 'MAI_PRO_ENGINE_VERSION', '1.0.11' );
+			define( 'MAI_PRO_ENGINE_VERSION', '1.0.10-beta.1' );
 		}
 
 		// Plugin Folder Path.
@@ -141,9 +141,6 @@ final class Mai_Pro_Engine {
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
 		// require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'Shortcode_Button/shortcode-button.php';
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
-
-		// Setup the updater
-		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
 
 		/**
 		 * Include files after theme is loaded, to mimic being run in a child theme.
@@ -309,6 +306,15 @@ final class Mai_Pro_Engine {
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
+
+			// Setup the updater
+			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
+			/**
+			 * Allow branch and updater object manipulation.
+			 * This let's us do beta releases via a branch change,
+			 * among other things.
+			 */
+			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
 
 		}, 8 );
 
