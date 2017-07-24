@@ -63,7 +63,7 @@ function mai_remove_content_archive_loop() {
 		return;
 	}
 	// Bail if not removing the loop
-	$remove_loop = mai_get_archive_setting_without_fallback( 'remove_loop' );
+	$remove_loop = mai_get_the_archive_setting( 'remove_loop' );
 	if ( ! $remove_loop ) {
 		return;
 	}

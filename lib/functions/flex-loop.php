@@ -30,7 +30,7 @@ function mai_get_columns() {
 			$columns = 3;
 		}
 	}
-	return absint( apply_filters( 'mai_get_columns', $columns ) );
+	return (int) apply_filters( 'mai_get_columns', $columns );
 }
 
 /**
@@ -54,9 +54,9 @@ function mai_get_flex_entry_classes_by( $option, $value ) {
 /**
  * Filter post_class to add flex classes by number of columns.
  *
- * @param  string  $columns  number of columns to get classes for
+ * @param   string  $columns  number of columns to get classes for
  *
- * @return  void        fires post_class filter which returns array of classes
+ * @return  void    fires post_class filter which returns array of classes
  */
 function mai_do_flex_entry_classes_by_columns( $columns ) {
 	add_filter( 'post_class', function( $classes ) use ( $columns ) {

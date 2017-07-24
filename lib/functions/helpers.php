@@ -67,7 +67,7 @@ function mai_get_banner_id() {
 		// If no image
 		if ( ! $image_id ) {
 			// Get hierarchical taxonomy term meta
-			$image_id = mai_get_hierarchichal_term_meta( get_queried_object(), 'banner_id', false );
+			$image_id = mai_get_term_meta_value_in_hierarchy( get_queried_object(), 'banner_id', false );
 			// If still no image
 			if ( ! $image_id ) {
 				// Check the archive settings, so we can fall back to the taxo's post_type setting
@@ -117,44 +117,6 @@ function mai_get_banner_id() {
  */
 function mai_get_grid( $args, $content = null ) {
 	return Mai_Shortcodes()->get_grid( $args, $content );
-}
-
-/**
- * Check if viewing a content archive page.
- * This is any archive page that may inherit (custom) archive settings.
- *
- * @return  bool
- */
-function mai_is_content_archive() {
-
-	$is_archive = false;
-
-	// Static blog page
-	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-		$is_archive = true;
-	}
-	// Term archive
-	elseif ( is_category() || is_tag() || is_tax() ) {
-		$is_archive = true;
-	}
-	// CPT archive
-	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-		$is_archive = true;
-	}
-	// Author archive
-	elseif ( is_author() ) {
-		$is_archive = true;
-	}
-	// WooCommerce shop page
-	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		$is_archive = true;
-	}
-	// Search results
-	elseif ( is_search() ) {
-		$is_archive = true;
-	}
-
-	return $is_archive;
 }
 
 /**
@@ -248,7 +210,7 @@ function mai_get_read_more_object( $object_or_id ) {
  *
  * @return string|HTML The post meta
  */
-function mai_get_post_meta( $post = '' ) {
+function mai_get_the_posts_meta( $post = '' ) {
 
 	if ( ! empty( $post ) ) {
 		$post = get_post( $post );
@@ -273,6 +235,44 @@ function mai_get_post_meta( $post = '' ) {
 		$post_meta = sprintf( '<p class="entry-meta">%s</p>', do_shortcode( $shortcodes ) );
 	}
 	return $post_meta;
+}
+
+/**
+ * Check if viewing a content archive page.
+ * This is any archive page that may inherit (custom) archive settings.
+ *
+ * @return  bool
+ */
+function mai_is_content_archive() {
+
+	$is_archive = false;
+
+	// Static blog page
+	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+		$is_archive = true;
+	}
+	// Term archive
+	elseif ( is_category() || is_tag() || is_tax() ) {
+		$is_archive = true;
+	}
+	// CPT archive
+	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+		$is_archive = true;
+	}
+	// Author archive
+	elseif ( is_author() ) {
+		$is_archive = true;
+	}
+	// WooCommerce shop page
+	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+		$is_archive = true;
+	}
+	// Search results
+	elseif ( is_search() ) {
+		$is_archive = true;
+	}
+
+	return $is_archive;
 }
 
 /**

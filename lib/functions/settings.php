@@ -1,15 +1,65 @@
 <?php
 
 /**
+ * Get an archive setting directly from the archive.
+ * Original built to get the 'remove_loop' setting,
+ * since that should be specific to each object (post/term/etc), and not have any fallbacks.
+ *
+ * @param  string  $key  The field key to check.
+ *
+ * @return mixed
+ */
+function mai_get_the_archive_setting( $key ) {
+
+	// Setup caches.
+	static $settings_cache = array();
+
+	// Check options cache.
+	if ( isset( $settings_cache[ $key ] ) ) {
+		// Option has been cached.
+		return $settings_cache[ $key ];
+	}
+
+	// Static blog page
+	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+		$setting = get_post_meta( $posts_page_id, $key, true );
+	}
+	// Term archive
+	elseif ( is_category() || is_tag() || is_tax() ) {
+		$setting = get_term_meta( get_queried_object()->term_id, $key, true );
+	}
+	// CPT archive
+	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+		$setting = genesis_get_cpt_option( $key );
+	}
+	// Author archive
+	elseif ( is_author() ) {
+		$setting = get_the_author_meta( $key, get_query_var( 'author' ) );
+	}
+	// WooCommerce shop page
+	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+		$setting = get_post_meta( $shop_page_id, $key, true );
+	}
+	// Nada
+	else {
+		$setting = null;
+	}
+
+	// Option has not been previously been cached, so cache now.
+	$settings_cache[ $key ] = is_array( $setting ) ? stripslashes_deep( $setting ) : stripslashes( wp_kses_decode_entities( $setting ) );
+	return $settings_cache[ $key ];
+}
+
+/**
  * Get an archive setting value with fallback.
  *
- * @param   string  $key            The field key to check.
- * @param   bool    $check_enabled  Whether to check if custom archive settings are enabled.
- * @param   mixed   $fallback       The value to fall back to if we don't get a value via setting.
+ * @param   string  $key                        The field key to check.
+ * @param   bool    $check_for_archive_setting  Whether to check if custom archive settings are enabled.
+ * @param   mixed   $fallback                   The value to fall back to if we don't get a value via setting.
  *
  * @return  mixed
  */
-function mai_get_archive_setting( $key, $check_enabled = true, $fallback = false ) {
+function mai_get_archive_setting( $key, $check_for_archive_setting = true, $fallback = false ) {
 
 	// Allow child theme to short circuit this function.
 	$pre = apply_filters( "mai_pre_get_archive_setting_{$key}", null );
@@ -27,7 +77,7 @@ function mai_get_archive_setting( $key, $check_enabled = true, $fallback = false
 	}
 
 	// Set value
-	$setting = mai_get_archive_setting_by_template( $key, $check_enabled, $fallback );
+	$setting = mai_get_archive_setting_by_template( $key, $check_for_archive_setting, $fallback );
 
 	// Option has not been previously been cached, so cache now.
 	$settings_cache[ $key ] = is_array( $setting ) ? stripslashes_deep( $setting ) : stripslashes( wp_kses_decode_entities( $setting ) );
@@ -39,13 +89,13 @@ function mai_get_archive_setting( $key, $check_enabled = true, $fallback = false
 /**
  * Get an archive setting value with fallback.
  *
- * @param   string  $key            The field key to check.
- * @param   bool    $check_enabled  Whether to check if custom archive settings are enabled.
- * @param   mixed   $fallback       The value to fall back to if we don't get a value via setting.
+ * @param   string  $key                        The field key to check.
+ * @param   bool    $check_for_archive_setting  Whether to check if custom archive settings are enabled.
+ * @param   mixed   $fallback                   The value to fall back to if we don't get a value via setting.
  *
  * @return  mixed
  */
-function mai_get_archive_setting_by_template( $key, $check_enabled, $fallback = false ) {
+function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, $fallback = false ) {
 	// Bail if not a content archive.
 	if ( ! mai_is_content_archive() ) {
 		return null;
@@ -54,27 +104,29 @@ function mai_get_archive_setting_by_template( $key, $check_enabled, $fallback = 
 	// Static blog page.
 	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
 		// If not checking enabled, or checking enabled and is enabled.
-		if ( ! $check_enabled || ( $check_enabled && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
+		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
 			$meta = get_post_meta( $posts_page_id, $key, true );
 		}
 	}
 	// Term archive
 	elseif ( is_category() || is_tag() || is_tax() ) {
+
 		// If checking enabled and is enabled.
-		if ( ! $check_enabled || ( $check_enabled && $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true ) ) ) {
+		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true ) ) ) {
 			$meta = get_term_meta( get_queried_object()->term_id, $key, true );
 		}
+
 		// If no meta
 		if ( ! $meta ) {
 			// Get hierarchical taxonomy term meta
-			$meta = mai_get_hierarchichal_term_meta( get_queried_object(), $key, $check_enabled );
+			$meta = mai_get_term_meta_value_in_hierarchy( get_queried_object(), $key, $check_for_archive_setting );
 			// If no meta
 			if ( ! $meta ) {
 				// If post taxonomy
 				if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
 					// If we have a static front page
 					if ( $posts_page_id = get_option( 'page_for_posts' ) ) {
-						if ( ! $check_enabled || ( $check_enabled && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
+						if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
 							$meta = get_post_meta( $posts_page_id, $key, true );
 						}
 					}
@@ -83,7 +135,7 @@ function mai_get_archive_setting_by_template( $key, $check_enabled, $fallback = 
 				elseif ( class_exists('WooCommerce') && $product_taxos = get_object_taxonomies( 'product', 'names' ) && is_tax( $product_taxos ) ) {
 					// If we have a Woo shop page
 					if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
-						if ( ! $check_enabled || ( $check_enabled && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
+						if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
 							$meta = get_post_meta( $shop_page_id, $key, true );
 						}
 					}
@@ -111,19 +163,19 @@ function mai_get_archive_setting_by_template( $key, $check_enabled, $fallback = 
 	}
 	// CPT archive
 	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-		if ( ! $check_enabled || ( $check_enabled && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
+		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
 			$meta = genesis_get_cpt_option( $key );
 		}
 	}
 	// Author archive
 	elseif ( is_author() ) {
-		if ( ! $check_enabled || ( $check_enabled && $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) ) ) ) {
+		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) ) ) ) {
 			$meta = get_the_author_meta( $key, get_query_var( 'author' ) );
 		}
 	}
 	// WooCommerce shop page
 	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		if ( ! $check_enabled || ( $check_enabled && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
+		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
 			$meta = get_post_meta( $shop_page_id, $key, true );
 		}
 	}
@@ -140,151 +192,149 @@ function mai_get_archive_setting_by_template( $key, $check_enabled, $fallback = 
 }
 
 /**
- * Get an archive setting value without a fallback.
- * Original built to get the 'remove_loop' setting,
- * since that should be specific to each object (post/term/etc), and not have any fallbacks.
+ * Get the metadata value for the term. This function walks up the term hierarchy,
+ * searching each parent level to find a value for the given meta key. When it finds
+ * one, it's returned.
  *
- * @param  string  $key  The field key to check.
+ * To perform an archive settings check, turn on the $check_for_archive_setting flag to
+ * true.  This extra check does the following:
+ *
+ *   1.  Checks each level's  `enable_content_archive_settings` value.
+ *   2.  If it's enabled, then that level's meta value is returned, regardless if
+ *          it has a value or not.
+ *
+ * It works a level override, forcing that level to return it's value.
+ *
+ * @param  WP_Term  $term                       Term object
+ * @param  string   $meta_key                   Meta key for the value you want to retrieve
+ * @param  bool     $check_for_archive_setting  Flag to check if the `enable_content_archive_settings`
+ *                                              is set.  When TRUE, check if this flag is set.
  *
  * @return mixed
  */
-function mai_get_archive_setting_without_fallback( $key ) {
-	// Static blog page
-	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-		$meta = get_post_meta( $posts_page_id, $key, true );
+function mai_get_term_meta_value_in_hierarchy(  WP_Term $term, $meta_key, $check_for_archive_setting = false ) {
+	$meta_keys = array( $meta_key );
+	if ( $check_for_archive_setting ) {
+		$meta_keys[] = 'enable_content_archive_settings';
 	}
-	// Term archive
-	elseif ( is_category() || is_tag() || is_tax() ) {
-		$meta = get_term_meta( get_queried_object()->term_id, $key, true );
+	$term_ancestors = mai_get_hierarchichal_term_metadata( $term, $meta_keys );
+	if ( false === $term_ancestors ) {
+		return;
 	}
-	// CPT archive
-	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-		$meta = genesis_get_cpt_option( $key );
+	// Loop through the objects until you find one that has a meta value.
+	foreach( (array) $term_ancestors as $term_ancestor ) {
+		// If checking content archive setting.
+		if ( $check_for_archive_setting ) {
+			// If setting is on.
+			if ( $term_ancestor->metadata2 ) {
+				return $term_ancestor->metadata1;
+			}
+		}
+		// Not checking for content archive, and we have a value
+		elseif ( $term_ancestor->metadata1 ) {
+			return $term_ancestor->metadata1;
+		}
+
 	}
-	// Author archive
-	elseif ( is_author() ) {
-		$meta = get_the_author_meta( $key, get_query_var( 'author' ) );
-	}
-	// WooCommerce shop page
-	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		$meta = get_post_meta( $shop_page_id, $key, true );
-	}
-	// If we have meta, return it
-	if ( isset( $meta ) ) {
-		return $meta;
-	}
-	return null;
+	// Whoops, didn't find one with a value for that meta key.
+	return;
 }
 
 /**
  * Get the specified metadata value for the term or from
  * one of it's parent terms.
  *
- * @param  WP_Term  $term           Term object
- * @param  string   $key            The meta key to retrieve.
- * @param  bool     $check_enabled  Whether to check if custom archive settings are enabled.
+ * @param  WP_Term       $term      Term object
+ * @param  string|array  $meta_key  The meta key(s) to retrieve.
  *
  * @return mixed|null
  */
-function mai_get_hierarchichal_term_meta( WP_Term $term, $key, $check_enabled ) {
+function mai_get_hierarchichal_term_metadata( WP_Term $term, $meta_key ) {
 	if ( ! is_taxonomy_hierarchical( $term->taxonomy ) ) {
 		return;
 	}
 	if ( ! mai_has_parent_term( $term ) ) {
 		return;
 	}
-	return mai_get_term_meta_recursively( $term, $key, $check_enabled );
+	return mai_get_terms_ancestory_tree( $term->term_id, $meta_key );
 }
 
 /**
- * Recursively get the term metadata by the specified meta key.
+ * Get an array of term ancestors for the given term id, meaning
+ * the SQL query starts at the given term id and then walks up
+ * the parent tree as it stores the columns.
  *
- * This function walks up the term hierarchical tree, searching for
- * a valid metadata value for the given meta key.
+ * The result is an array of stdClass objects that have the following:
+ *      term_id   => int
+ *      parent_id => int
+ *      metadata1 => value of that meta key's column
+ *      ..
+ *      metadataN => value of the meta key #N
  *
- * The recursive action stops when:
- *      1. The current term level has the metadata value.
- *      2. The current term level does not have a parent term.
+ * @param  integer  $term_id
+ * @param  array    $meta_keys  Array of meta key(s) to retrieve.
  *
- * @param  WP_Term     $term           Term object
- * @param  string      $key            The meta key to retrieve.
- * @param  bool        $check_enabled  Whether to check if custom archive settings are enabled.
- * @param  mixed|null  $meta
- *
- * @return mixed|null
+ * @return array|bool
  */
-function mai_get_term_meta_recursively( WP_Term $term, $key, $check_enabled, $meta = null ) {
-	// Setup level.
-	static $level = 1;
-	/**
-	 * If we're over the 4th level, we've gone too far.
-	 * If we allow too many levels things could get slow.
-	 */
-	if ( $level > 4 ) {
-		// Reset.
-		$level = 1;
-		// Return.
-		return $meta;
+function mai_get_terms_ancestory_tree( $term_id, array $meta_keys ) {
+	global $wpdb;
+	// Build the SQL Query first.
+	$sql_query = mai_build_terms_ancestory_tree_sql_query( $meta_keys );
+	// Assemble the values, i.e. get them in the right order
+	// to insert into the SQL query.
+	$values = $meta_keys;
+	array_unshift( $values, $term_id );
+	// Prepare the values and then insert into the SQL query.
+	// We are swapping out the %d/%f/%s placeholders with their value.
+	$sql_query = $wpdb->prepare( $sql_query, $values );
+	// Run the query to get records from the database.
+	$records = $wpdb->get_results( $sql_query );
+	// Check if we got records back from the database. If yes,
+	// return the records.
+	if ( $records && is_array( $records ) ) {
+		return $records;
 	}
-	// Increment the level.
-	$level++;
-	// We need to checking whether archive settings are enabled.
-	if ( $check_enabled ) {
-		// Enabled.
-		if ( $enabled = get_term_meta( $term->term_id, 'enable_content_archive_settings', true ) ) {
-			// Reset.
-			$level = 1;
-			// Return this level's meta.
-			return get_term_meta( $term->term_id, $key, true );
-		}
-		// Not enabled.
-		else {
-			// Try the parent(s)
-			$meta = mai_get_parent_term_meta_recursively( $term, $key, $check_enabled, $meta );
-		}
-	}
-	// Don't check if archive settings are enabled.
-	else {
-		$meta = get_term_meta( $term->term_id, $key, true );
-	}
-	if ( ! $meta ) {
-		// Try the parent(s)
-		return mai_get_parent_term_meta_recursively( $term, $key, $check_enabled, $meta );
-	}
-	// Reset.
-	$level = 1;
-	// Return.
-	return $meta;
+	// Oh poo, we something when wrong.
+	return false;
 }
 
 /**
- * Continue the recursive term meta function, on a parent.
+ * Build the SQL Query string.
  *
- * @param  WP_Term     $term           Term object
- * @param  string      $key            The meta key to retrieve.
- * @param  bool        $check_enabled  Whether to check if custom archive settings are enabled.
- * @param  mixed|null  $meta
+ * @param array $meta_keys Array of meta key(s) to retrieve.
  *
- * @return mixed|null
+ * @return string
  */
-function mai_get_parent_term_meta_recursively( $term, $key, $check_enabled, $meta ) {
-	// If no parent, use what we have.
-	if ( ! mai_has_parent_term( $term ) ) {
-		// Reset.
-		$level = 1;
-		// Return.
-		return $meta;
+function mai_build_terms_ancestory_tree_sql_query( array $meta_keys  ) {
+	global $wpdb;
+	$number_of_meta_keys = count( $meta_keys );
+	$sql_query = "SELECT t.term_id, @parent := t.parent AS parent_id";
+	for( $suffix_number = 1; $suffix_number <= $number_of_meta_keys; $suffix_number++ ) {
+		$sql_query .= sprintf( ', tm%1$d.meta_value AS metadata%1$d', $suffix_number );
 	}
-	// Get the parent term.
-	$parent_term = get_term_by( 'id', $term->parent, $term->taxonomy );
-	if ( false === $parent_term ) {
-		// Reset.
-		$level = 1;
-		// Return.
-		return $meta;
+	$sql_query .= "\n" .
+	"FROM (
+		SELECT *
+		FROM {$wpdb->term_taxonomy} AS tt
+			ORDER BY
+			CASE
+				WHEN tt.term_id > tt.parent THEN tt.term_id
+				ELSE tt.parent
+			END DESC
+	) AS t
+	JOIN (
+		SELECT @parent := %d
+	) AS tmp";
+	for( $suffix_number = 1; $suffix_number <= $number_of_meta_keys; $suffix_number++ ) {
+		$sql_query .= "\n" . sprintf(
+				'LEFT JOIN %1$s AS tm%2$d ON tm%2$d.term_id = @parent AND tm%2$d.meta_key = ',
+				$wpdb->termmeta,
+				$suffix_number
+			);
+		$sql_query .= '%s';
 	}
-	// Try again
-	return mai_get_term_meta_recursively( $parent_term, $key, $check_enabled, $meta );
+	$sql_query .= "\n" . "WHERE t.term_id = @parent;";
+	return $sql_query;
 }
 
 /**
