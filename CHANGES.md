@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.0.11
+* 7/24/17
+* Hierarchical taxonomy terms now check parents all the way up the tree for any archive settings (props @hellofromTonya).
+
 #### 1.0.10
 * Added: Setting to disable term archives by taxonomy.
 
