@@ -36,7 +36,7 @@ function mai_get_banner_id() {
 		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
 			$image_id = get_post_thumbnail_id( get_the_ID() );
 		}
-		// If No image and CPT has genesis archive support
+		// If no image and CPT has genesis archive support
 		if ( ! $image_id ) {
 			// Get the post's post_type
 			$post_type = get_post_type();
@@ -66,30 +66,8 @@ function mai_get_banner_id() {
 		}
 		// If no image
 		if ( ! $image_id ) {
-			// If a hierarchical taxonomy
-			if ( is_taxonomy_hierarchical( get_queried_object()->taxonomy ) && get_queried_object()->parent > 0 ) {
-				// Get the image ID from the parent category
-				$image_id = get_term_meta( get_queried_object()->parent, 'banner_id', true );
-				// If no parent image
-				if ( ! $image_id ) {
-					// Get the parent term
-					$parent = get_term_by( 'id', get_queried_object()->parent, get_queried_object()->taxonomy );
-					// If parent has a parent
-					if ( $parent->parent > 0 ) {
-						// Get the grandparent image
-						$image_id = get_term_meta( $parent->parent, 'banner_id', true );
-						// If no grandparent image
-						if ( ! $image_id ) {
-							$grandparent = get_term_by( 'id', $parent->term_id, get_queried_object()->taxonomy );
-							// If grandparent has a parent
-							if ( $grandparent->parent > 0 ) {
-								// Get the great-grandparent image
-								$image_id = get_term_meta( $grandparent->parent, 'banner_id', true );
-							}
-						}
-					}
-				}
-			}
+			// Get hierarchical taxonomy term meta
+			$image_id = mai_get_term_meta_value_in_hierarchy( get_queried_object(), 'banner_id', false );
 			// If still no image
 			if ( ! $image_id ) {
 				// Check the archive settings, so we can fall back to the taxo's post_type setting
@@ -141,39 +119,6 @@ function mai_get_grid( $args, $content = null ) {
 	return Mai_Shortcodes()->get_grid( $args, $content );
 }
 
-
-function mai_is_content_archive() {
-
-	$is_archive = false;
-
-	// Static blog page
-	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-		$is_archive = true;
-	}
-	// Term archive
-	elseif ( is_category() || is_tag() || is_tax() ) {
-		$is_archive = true;
-	}
-	// CPT archive
-	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-		$is_archive = true;
-	}
-	// Author archive
-	elseif ( is_author() ) {
-		$is_archive = true;
-	}
-	// WooCommerce shop page
-	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		$is_archive = true;
-	}
-	// Search results
-	elseif ( is_search() ) {
-		$is_archive = true;
-	}
-
-	return $is_archive;
-}
-
 /**
  * Get a section.
  *
@@ -219,7 +164,7 @@ function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
 	}
 
 	// Get image location
-	$image_location = mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) );
+	$image_location = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 
 	// If background image
 	if ( $url ) {
@@ -265,7 +210,7 @@ function mai_get_read_more_object( $object_or_id ) {
  *
  * @return string|HTML The post meta
  */
-function mai_get_post_meta( $post = '' ) {
+function mai_get_the_posts_meta( $post = '' ) {
 
 	if ( ! empty( $post ) ) {
 		$post = get_post( $post );
@@ -292,6 +237,52 @@ function mai_get_post_meta( $post = '' ) {
 	return $post_meta;
 }
 
+/**
+ * Check if viewing a content archive page.
+ * This is any archive page that may inherit (custom) archive settings.
+ *
+ * @return  bool
+ */
+function mai_is_content_archive() {
+
+	$is_archive = false;
+
+	// Static blog page
+	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+		$is_archive = true;
+	}
+	// Term archive
+	elseif ( is_category() || is_tag() || is_tax() ) {
+		$is_archive = true;
+	}
+	// CPT archive
+	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+		$is_archive = true;
+	}
+	// Author archive
+	elseif ( is_author() ) {
+		$is_archive = true;
+	}
+	// WooCommerce shop page
+	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+		$is_archive = true;
+	}
+	// Search results
+	elseif ( is_search() ) {
+		$is_archive = true;
+	}
+
+	return $is_archive;
+}
+
+/**
+ * Add background color HTML attributes to an element.
+ *
+ * @param   array   $attributes  The existing HTML attributes.
+ * @param   string  $color       The hex color code.
+ *
+ * @return  array   The modified attributes.
+ */
 function mai_add_background_color_attributes( $attributes, $color ) {
 
 	// Bail if no color to add
@@ -309,6 +300,15 @@ function mai_add_background_color_attributes( $attributes, $color ) {
 	return $attributes;
 }
 
+/**
+ * Add background color HTML attributes to an element.
+ *
+ * @param   array   $attributes  The existing HTML attributes.
+ * @param   string  $image_id    The image ID.
+ * @param   string  $image_size  The registered image size.
+ *
+ * @return  array   The modified attributes.
+ */
 function mai_add_background_image_attributes( $attributes, $image_id, $image_size ) {
 	// Get all registered image sizes
 	global $_wp_additional_image_sizes;
@@ -354,6 +354,13 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 	return $attributes;
 }
 
+/**
+ * Helper function to get processed (cleaned up) HTML content.
+ *
+ * @param   string|HTML  $content  The content to process.
+ *
+ * @return  string|HTML  The processed content.
+ */
 function mai_get_processed_content( $content ) {
 	return Mai_Shortcodes()->get_processed_content( $content );
 }

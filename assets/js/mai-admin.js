@@ -1,39 +1,14 @@
 ( function ( document, $, undefined ) {
     'use strict';
 
-	var $archiveMetabox		= $( '.mai-content-archive-metabox' ),
-		$removeLoop			= $( '#remove_loop' ),
-		$settingsEnabled	= $( '#enable_content_archive_settings' ),
-		$settingWrap   		= $( '.mai-archive-setting-wrap' ),
-		$settingsWrap   	= $( '.mai-archive-settings-wrap' );
+	var $archiveMetabox  = $( '.mai-content-archive-metabox' ),
+		$removeLoop      = $( '#remove_loop' ),
+		$settingsEnabled = $( '#enable_content_archive_settings' ),
+		$settingWrap     = $( '.mai-archive-setting-wrap' ),
+		$settingsWrap    = $( '.mai-archive-settings-wrap' );
 
 	// If we have an archive metabox
 	if ( $archiveMetabox.length > 0 ) {
-
-		// If removing the loop, hide all other settings
-		if ( $removeLoop.is( ':checked' ) ) {
-			_hideElement( $settingWrap );
-			_hideElement( $settingsWrap );
-		}
-		// On change of the 'hide entries' setting
-		$removeLoop.change( function() {
-			// If checking the box
-			if ( $(this).is( ':checked' ) ) {
-				// Hide all settings
-				_hideElement( $settingWrap );
-				_hideElement( $settingsWrap );
-			}
-			// Unchecking
-			else {
-				// Show the main archive setting
-				_showElement( $settingWrap );
-				// If archive settings are enabled
-				if ( $settingsEnabled.is( ':checked' ) ) {
-					// Show the archive settings
-					_showElement( $settingsWrap );
-				}
-			}
-		});
 
 		// If we have a setting (theme settings doesn't ) to enable archive settings and that setting is not checked, hide the archive settings
 		if ( $settingsEnabled.length > 0 && ! $settingsEnabled.is( ':checked' )  ) {
@@ -53,39 +28,13 @@
 			}
 		});
 
-		var $columns			= $( '#columns' ),
-			$includeImage		= $( '#content_archive_thumbnail' ),
-			$imageLocation		= $( '.cmb2-id-image-location' ),
-			$imageSize			= $( '.cmb2-id-image-size' ),
-			$imageAlignment		= $( '.cmb2-id-image-alignment' ),
-			$contentArchive		= $( '#content_archive' ),
-			$contentLimit		= $( '.cmb2-id-content-archive-limit' );
-
-		/**
-		 * Maybe the image alignment field.
-		 */
-
-		// // If more than 1 column
-		// if ( $columns.val() > 1 ) {
-		// 	// Hide image alignment field
-		// 	_hideElement( $imageAlignment );
-		// }
-		// // On change of column count field
-		// $columns.change(function() {
-		// 	// If more than 1 column
-		// 	if ( $(this).val() > 1 ) {
-		// 		// Hide image alignment field
-		// 		_hideElement( $imageAlignment );
-		// 	}
-		// 	// 1/none
-		// 	else {
-		// 		// If including an image
-		// 		if ( $includeImage.is( ':checked' ) ) {
-		// 			// Show the element
-		// 			_showElement( $imageAlignment );
-		// 		}
-		// 	}
-		// });
+		var $columns        = $( '#columns' ),
+			$includeImage   = $( '#content_archive_thumbnail' ),
+			$imageLocation  = $( '.cmb2-id-image-location' ),
+			$imageSize      = $( '.cmb2-id-image-size' ),
+			$imageAlignment = $( '.cmb2-id-image-alignment' ),
+			$contentArchive = $( '#content_archive' ),
+			$contentLimit   = $( '.cmb2-id-content-archive-limit' );
 
 		/**
 		 * Hide the image location, image size, and image alignment fields
@@ -156,7 +105,7 @@
 		// If we have any
 		if ( $sections.length ) {
 			// Loop through em
-	        $.each( $sections, function() {
+			$.each( $sections, function() {
 				// Handle section settings toggle
 				_sectionSettings( $(this) );
 			});
@@ -186,8 +135,8 @@
 
 		var $button = $section.find( '.mai-section-settings-toggle' );
 
-        _toggleAria( $button, 'aria-pressed' );
-        _toggleAria( $button, 'aria-expanded' );
+		_toggleAria( $button, 'aria-pressed' );
+		_toggleAria( $button, 'aria-expanded' );
 
 		$section.on( 'click', '.mai-section-settings-toggle', function(e) {
 
@@ -195,8 +144,8 @@
 
 			$section.toggleClass( 'mai-settings-open' );
 
-	        _toggleAria( $button, 'aria-pressed' );
-	        _toggleAria( $button, 'aria-expanded' );
+			_toggleAria( $button, 'aria-pressed' );
+			_toggleAria( $button, 'aria-expanded' );
 
 		});
 
@@ -224,9 +173,9 @@
 	 * @return {bool}           from _ariaReturn
 	 */
 	function _toggleAria( $this, attribute ) {
-	    $this.attr( attribute, function( index, value ) {
-	        return 'false' === value;
-	    });
+		$this.attr( attribute, function( index, value ) {
+			return 'false' === value;
+		});
 	}
 
 })( document, jQuery );

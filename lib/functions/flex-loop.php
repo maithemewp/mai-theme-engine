@@ -13,12 +13,8 @@ function mai_is_flex_loop() {
 	}
 	// Get columns
 	$columns = mai_get_columns();
-	// If we have more than 1 column, it's a flex loop
-	if ( $columns > 1 ) {
-		return true;
-	}
-	// If we are using featured image as bg image, it's a flex loop
-	if ( 'background' === mai_get_archive_setting( 'image_location', genesis_get_option( 'image_location' ) ) ) {
+	// If we have more than 1 column or if we are using featured image as bg image, it's a flex loop
+	if ( ( $columns > 1 ) || ( 'background' === mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) ) ) ) {
 		return true;
 	}
 	// Not a flex loop
@@ -27,14 +23,14 @@ function mai_is_flex_loop() {
 
 function mai_get_columns() {
 	// Get the columns, fall back to theme settings
-	$columns = mai_get_archive_setting( 'columns', genesis_get_option( 'columns' ) );
+	$columns = mai_get_archive_setting( 'columns', true, genesis_get_option( 'columns' ) );
 	// If Woo shop or Woo taxonomy, default to 3 if 1 or less
 	if ( class_exists( 'WooCommerce' ) && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
 		if ( $columns <= 1 ) {
 			$columns = 3;
 		}
 	}
-	return absint( apply_filters( 'mai_get_columns', $columns ) );
+	return (int) apply_filters( 'mai_get_columns', $columns );
 }
 
 /**
@@ -58,9 +54,9 @@ function mai_get_flex_entry_classes_by( $option, $value ) {
 /**
  * Filter post_class to add flex classes by number of columns.
  *
- * @param  string  $columns  number of columns to get classes for
+ * @param   string  $columns  number of columns to get classes for
  *
- * @return  void        fires post_class filter which returns array of classes
+ * @return  void    fires post_class filter which returns array of classes
  */
 function mai_do_flex_entry_classes_by_columns( $columns ) {
 	add_filter( 'post_class', function( $classes ) use ( $columns ) {

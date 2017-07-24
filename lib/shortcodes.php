@@ -1601,7 +1601,7 @@ final class Mai_Shortcodes {
 
 					// Meta
 					if ( in_array( 'meta', $atts['show'] ) ) {
-						$entry_footer = mai_get_post_meta( get_the_ID() );
+						$entry_footer = mai_get_the_posts_meta( get_the_ID() );
 					}
 
 					// Add filter to the entry footer
