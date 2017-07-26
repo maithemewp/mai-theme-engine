@@ -284,18 +284,6 @@ h6 {
 	margin: 30px auto;
 }
 
-.section .height-sm .heading {
-	margin-bottom: calc(15px + 1vw);
-}
-
-.section .height-md .heading {
-	margin-bottom: calc(30px + 2vw);
-}
-
-.section .height-lg .heading {
-	margin-bottom: calc(60px + 3vw);
-}
-
 /* ## Titles
 --------------------------------------------- */
 
@@ -1302,14 +1290,6 @@ a.light-content:focus,
 	border-radius: 50%;
 }
 
-.alignleft .avatar {
-	margin: 0 24px 12px 0;
-}
-
-.alignright .avatar {
-	margin: 0 0 12px 24px;
-}
-
 .comment .avatar {
 	float: left;
 	width: 80px;
@@ -1849,7 +1829,7 @@ img.alignright,
 	margin-bottom: 30px;
 }
 
-.entry-content .slick-dots,
+.mai-slider .slick-dots,
 .slick-dots {
 	display: block;
 	width: 100%;
@@ -1859,6 +1839,36 @@ img.alignright,
 	list-style: none;
 	padding: 0;
 	margin: 0;
+}
+
+.mai-slider[data-gutter="5"] .slick-dots {
+	margin-left: -2.5px;
+	margin-right: -2.5px;
+}
+
+.mai-slider[data-gutter="10"] .slick-dots {
+	margin-left: -5px;
+	margin-right: -5px;
+}
+
+.mai-slider[data-gutter="20"] .slick-dots {
+	margin-left: -10px;
+	margin-right: -10px;
+}
+
+.mai-slider[data-gutter="30"] .slick-dots {
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+.mai-slider[data-gutter="40"] .slick-dots {
+	margin-left: -20px;
+	margin-right: -20px;
+}
+
+.mai-slider[data-gutter="50"] .slick-dots {
+	margin-left: -25px;
+	margin-right: -25px;
 }
 
 .slick-dots li {
@@ -1935,10 +1945,6 @@ img.alignright,
 	margin-bottom: 20px;
 	border: none;
 	overflow: hidden;
-}
-
-.widget .entry:last-of-type {
-	margin-bottom: 0;
 }
 
 .widget .entry a.alignleft,
@@ -3140,12 +3146,16 @@ img.alignright,
 	margin-right: -25px;
 }
 
-.flex-entry.column .entry-image-before-entry + .entry-header,
 .flex-entry.column .entry-image-before-title + .entry-title,
 .flex-entry .entry-title + .entry-image-after-title,
 .flex-entry .entry-header + .entry-content {
 	display: block;
 	margin-top: 14px;
+}
+
+.flex-entry.column .entry-image-before-entry + .entry-header {
+	display: block;
+	margin-top: 20px;
 }
 
 .flex-entry .entry-content .entry-image-link {
