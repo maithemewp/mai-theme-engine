@@ -1,5 +1,7 @@
 ### Changelog
 
+#### 1.0.12
+* 7/26/17
 * Added: [grid] can now 'exclude_categories' from display. Example: Display all posts except those in the 'Recipes' category.
 * Fixed: [grid] Center slider dots.
 
