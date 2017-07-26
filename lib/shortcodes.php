@@ -761,6 +761,7 @@ final class Mai_Shortcodes {
 			'date_format'          => '',
 			'entry_class'          => '',
 			'exclude'              => '',
+			'exclude_categories'   => '', // Comma separated category IDs
 			'exclude_current'      => false,
 			'facetwp'              => false,
 			'grid_title'           => '',
@@ -821,6 +822,7 @@ final class Mai_Shortcodes {
 			'date_format'          => sanitize_text_field( $atts['date_format'] ),
 			'entry_class'          => sanitize_text_field( $atts['entry_class'] ),
 			'exclude'              => array_filter( explode( ',', sanitize_text_field( $atts['exclude'] ) ) ),
+			'exclude_categories'   => array_filter( explode( ',', sanitize_text_field( $atts['exclude_categories'] ) ) ),
 			'exclude_current'      => filter_var( $atts['exclude_current'], FILTER_VALIDATE_BOOLEAN ),
 			'facetwp'              => filter_var( $atts['facetwp'], FILTER_VALIDATE_BOOLEAN ),
 			'grid_title'           => sanitize_text_field( $atts['grid_title'] ),
@@ -1291,6 +1293,11 @@ final class Mai_Shortcodes {
 		// Exclude
 		if ( ! empty($atts['exclude']) ) {
 			$args['post__not_in'] = $atts['exclude'];
+		}
+
+		// Categories
+		if ( ! empty($atts['exclude_categories']) ) {
+			$args['category__not_in'] = $atts['exclude_categories'];
 		}
 
 		// If Exclude Current
