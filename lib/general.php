@@ -38,10 +38,30 @@ function mai_js_detection_script() {
 	<script type="text/javascript">
 		//<![CDATA[
 		(function(){
-		var c = document.body.className;
-		c = c.replace(/no-js/, 'js');
-		document.body.className = c;
+			var c = document.body.className;
+			c = c.replace(/no-js/, 'js');
+			document.body.className = c;
 		})();
+		jQuery(function( $ ) {
+			'use strict';
+			jQuery( 'p:empty' ).remove();
+		});
+		//]]>
+	</script>
+	<?php
+}
+
+/**
+ * Remove empty <p></p> tags from content.
+ * We have a bunch of cleanup in the shortcodes,
+ * but this seems much easier, though a bit of a hack.
+ */
+add_action( 'genesis_before', 'mai_html_cleanup_script', 1 );
+function mai_html_cleanup_script() {
+	?>
+	<script type="text/javascript">
+		//<![CDATA[
+		jQuery(function( $ ) { 'use strict'; jQuery( 'p:empty' ).remove(); });
 		//]]>
 	</script>
 	<?php
