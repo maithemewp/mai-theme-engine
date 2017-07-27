@@ -1935,13 +1935,9 @@ img.alignright,
 	overflow: hidden; /* fix avatar cut-off when floated left in widget */
 }
 
-.widget .entry,
-.content .widget .entry {
-	padding: 0;
-}
-
-.widget .entry {
+.widget .entry:not(.flex-entry) {
 	background-color: transparent;
+	padding: 0;
 	margin-bottom: 20px;
 	border: none;
 	overflow: hidden;
@@ -1958,7 +1954,7 @@ img.alignright,
 }
 
 .widget .entry-title {
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: normal;
 	line-height: 1.2;
 	margin-bottom: 12px;
