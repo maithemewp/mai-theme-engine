@@ -1458,7 +1458,6 @@ final class Mai_Shortcodes {
 				// Opening wrap
 				$html .= $this->get_entry_wrap_open( $atts, $post, $has_image_bg );
 
-
 					// Set url as a variable
 					$url = $this->get_entry_link( $atts, $post );
 
@@ -1469,7 +1468,7 @@ final class Mai_Shortcodes {
 							if ( $atts['link'] ) {
 								// Add the location as a class to the image link
 								$image_class = str_replace( '_', '-', $atts['image_location'] );
-								$image_class = sprintf( ' entry-image-%s', $image_class );
+								$image_class = sprintf( 'entry-image-%s', $image_class );
 								$image_html  = sprintf( '<a href="%s" class="entry-image-link %s" title="%s">%s</a>', $url, $image_class, the_title_attribute( 'echo=0' ), $image );
 							} else {
 								$image_html = $image;
