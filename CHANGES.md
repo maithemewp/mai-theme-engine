@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.0.12.1
+* 7/27/17
+* Changed: More efficient fix for removing empty <p> tags from shortcodes in widgets.
+
 #### 1.0.12
 * 7/26/17
 * Added: [grid] can now 'exclude_categories' from display. Example: Display all posts except those in the 'Recipes' category.
