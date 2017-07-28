@@ -1164,9 +1164,8 @@ td {
 
 .overlay.overlay-gradient::after {
 	background-image: -o-linear-gradient( top, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
-	background-image: -o-linear-gradient( top, rand theygba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
-	background-image: -webkit-gradient( linear, left top, left bottom, from(rand), to(rgba(0, 0, 0, 0.6)) );
-	background-image: linear-gradient( to bottom, rand theygba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
+	background-image: -webkit-gradient( linear, left top, left bottom, color-stop(25%, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.6)) );
+	background-image: linear-gradient( to bottom, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.6) );
 }
 
 /* ### Background Link
@@ -1416,6 +1415,10 @@ img.alignright,
 .entry-content .wp-playlist,
 .entry-content .wp-video {
 	margin: 0 0 24px;
+}
+
+.gallery {
+	margin-bottom: 30px;
 }
 
 /* ## Genesis
