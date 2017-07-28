@@ -1,5 +1,8 @@
 ### Changelog
 
+* Changed: Add bottom margin to galleries.
+* Fixed: Better browser support for gradient overlay.
+
 #### 1.0.12.1
 * 7/27/17
 * Changed: More efficient fix for removing empty <p> tags from shortcodes in widgets.
