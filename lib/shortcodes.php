@@ -223,9 +223,9 @@ final class Mai_Shortcodes {
 		}
 
 		// Add content shade class
-		$attributes['class'] .= $dark_bg ? ' light-content' : ' dark-content';
+		$attributes['class'] .= $dark_bg ? ' light-content' : '';
 
-		$output = sprintf( '<div %s>%s</div>', genesis_attr( 'mai-callout', $attributes ), $this->get_processed_content( $content ) );
+		$output = sprintf( '<div %s>%s</div>', genesis_attr( 'mai-callout', $attributes, $atts ), $this->get_processed_content( $content ) );
 
 		return $output;
 	}
@@ -360,7 +360,7 @@ final class Mai_Shortcodes {
 			 * Add content shade class if we don't have inner.
 			 * Inner will handle these classes if we have it.
 			 */
-			$section_atts['class'] .= $dark_bg ? ' light-content' : ' dark-content';
+			$section_atts['class'] .= $dark_bg ? ' light-content' : '';
 
 		}
 
@@ -382,7 +382,7 @@ final class Mai_Shortcodes {
 			 * Inner will handle these classes if we have it.
 			 */
 			if ( ! ( $has_overlay && $has_inner ) ) {
-				$section_atts['class'] .= $dark_bg ? ' light-content' : ' dark-content';
+				$section_atts['class'] .= $dark_bg ? ' light-content' : '';
 			}
 
 		}
@@ -485,7 +485,7 @@ final class Mai_Shortcodes {
 
 		}
 
-		$wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts ) );
+		$wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts, $args ) );
 
 		// Maybe add an inner wrap, typically for content width/style
 		if ( $has_inner ) {
@@ -505,10 +505,10 @@ final class Mai_Shortcodes {
 			}
 
 			// Add content shade classes
-			$inner_atts['class'] .= $dark_bg ? ' light-content' : ' dark-content';
+			$inner_atts['class'] .= $dark_bg ? ' light-content' : '';
 
 			// Build the inner HTML
-			$inner = sprintf( '<div %s>', genesis_attr( 'section-inner', $inner_atts ) );
+			$inner = sprintf( '<div %s>', genesis_attr( 'section-inner', $inner_atts, $args ) );
 
 		}
 
@@ -520,7 +520,7 @@ final class Mai_Shortcodes {
 		// Build the opening markup
 		return sprintf( '<%s %s>%s%s%s',
 			$args['wrapper'],
-			genesis_attr( 'section', $section_atts ),
+			genesis_attr( 'section', $section_atts, $args ),
 			$wrap,
 			$inner,
 			$title
@@ -736,7 +736,7 @@ final class Mai_Shortcodes {
 		 *
 		 * Only do_shortcode() on content because get_columns() wrap runs get_processed_content() which cleans things up.
 		 */
-		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col ), do_shortcode( $content ) );
+		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col, $atts ), do_shortcode( $content ) );
 
 	}
 
@@ -897,7 +897,7 @@ final class Mai_Shortcodes {
 		 * Main content row wrap.
 		 * With flex-row attr so devs can filter elsewhere.
 		 */
-		$html .= sprintf( '<div %s>', genesis_attr( 'flex-grid', $flex_grid ) );
+		$html .= sprintf( '<div %s>', genesis_attr( 'flex-grid', $flex_grid, $atts ) );
 
 		switch ( $atts['content_type'] ) {
 			case 'post':
@@ -1018,7 +1018,7 @@ final class Mai_Shortcodes {
 		 * Main content row wrap.
 		 * With flex-row attr so devs can filter elsewhere.
 		 */
-		return sprintf( '<div %s>', genesis_attr( 'flex-row', $flex_row ) );
+		return sprintf( '<div %s>', genesis_attr( 'flex-row', $flex_row, $atts ) );
 
 	}
 
@@ -1077,13 +1077,13 @@ final class Mai_Shortcodes {
 		}
 
 		// Shade class
-		$entry_atts['class'] .= $light_content ? ' light-content' : ' dark-content';
+		$entry_atts['class'] .= $light_content ? ' light-content' : '';
 
 		/**
 		 * Main entry col wrap.
 		 * If we use genesis_attr( 'entry' ) then it resets the classes.
 		 */
-		return sprintf( '<div %s>', genesis_attr( 'flex-entry', $entry_atts ) );
+		return sprintf( '<div %s>', genesis_attr( 'flex-entry', $entry_atts, $atts ) );
 	}
 
 	function get_entry_wrap_close( $atts ) {
@@ -1518,7 +1518,7 @@ final class Mai_Shortcodes {
 
 					// Build entry meta
 					if ( $date || $author ) {
-						$entry_meta .= sprintf( '<p %s>%s%s</p>', genesis_attr( 'entry-meta-before-content' ), $date, $author );
+						$entry_meta .= sprintf( '<p %s>%s%s</p>', genesis_attr( 'entry-meta-before-content', array(), $atts ), $date, $author );
 					}
 
 					// Build entry header
@@ -1536,7 +1536,7 @@ final class Mai_Shortcodes {
 							} else {
 								$title = get_the_title();
 							}
-							$entry_header .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title' ), $title, $atts['title_wrap'] );
+							$entry_header .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title', array(), $atts ), $title, $atts['title_wrap'] );
 						}
 
 						// Image
@@ -1556,7 +1556,7 @@ final class Mai_Shortcodes {
 
 					// Add entry header wrap if we have content
 					if ( $entry_header ) {
-						$html .= sprintf( '<header %s>%s</header>', genesis_attr( 'entry-header' ), $entry_header );
+						$html .= sprintf( '<header %s>%s</header>', genesis_attr( 'entry-header', array(), $atts ), $entry_header );
 					}
 
 					// Image
@@ -1602,7 +1602,7 @@ final class Mai_Shortcodes {
 
 					// Add entry content wrap if we have content
 					if ( $entry_content ) {
-						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content' ), $entry_content );
+						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content', array(), $atts ), $entry_content );
 					}
 
 					// Meta
@@ -1615,7 +1615,7 @@ final class Mai_Shortcodes {
 
 					// Entry footer
 					if ( $entry_footer ) {
-						$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer' ), $entry_footer );
+						$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer', array(), $atts ), $entry_footer );
 					}
 
 				$html .= $this->get_entry_wrap_close( $atts );
@@ -1760,7 +1760,7 @@ final class Mai_Shortcodes {
 						} else {
 							$title = $term->name;
 						}
-						$entry_header .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title' ), $title, $atts['title_wrap'] );
+						$entry_header .= sprintf( '<%s %s>%s</%s>', $atts['title_wrap'], genesis_attr( 'entry-title', array(), $atts ), $title, $atts['title_wrap'] );
 
 						// Image
 						if ( 'after_title' == $atts['image_location'] ) {
@@ -1774,7 +1774,7 @@ final class Mai_Shortcodes {
 
 					// Add entry header wrap if we have content
 					if ( $entry_header ) {
-						$html .= sprintf( '<header %s>%s</header>', genesis_attr( 'entry-header' ), $entry_header );
+						$html .= sprintf( '<header %s>%s</header>', genesis_attr( 'entry-header', array(), $atts ), $entry_header );
 					}
 
 					// Image
@@ -1803,7 +1803,7 @@ final class Mai_Shortcodes {
 
 					// Add entry content wrap if we have content
 					if ( $entry_content ) {
-						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content' ), $entry_content );
+						$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content', array(), $atts ), $entry_content );
 					}
 
 					// Add filter to the entry footer
@@ -1811,7 +1811,7 @@ final class Mai_Shortcodes {
 
 					// Entry footer
 					if ( $entry_footer ) {
-						$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer' ), $entry_footer );
+						$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer', array(), $atts ), $entry_footer );
 					}
 
 				$html .= $this->get_entry_wrap_close( $atts );
