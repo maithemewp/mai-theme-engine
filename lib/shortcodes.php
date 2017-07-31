@@ -754,7 +754,7 @@ final class Mai_Shortcodes {
 			'categories'           => '', // Comma separated category IDs
 			'columns'              => '3',
 			'content'              => 'post', // post_type name (comma separated if multiple), or taxonomy name
-			'content_limit'        => '', 	// Limit number of words
+			'content_limit'        => '', // Limit number of words
 			'content_type'         => '',
 			'date_after'           => '',
 			'date_before'          => '',
