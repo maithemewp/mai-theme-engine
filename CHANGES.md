@@ -1,5 +1,9 @@
 ### Changelog
 
+* Added: [grid] New filter on default args so developers can change the default settings for the shortcode.
+* Fixed: mai_get_grid() helper function unnecessarily requiring $content param.
+* Fixed: [grid] Image markup when image_location is before_entry link is false.
+
 #### 1.0.12.2
 ##### 7/28/17
 * Changed: Add bottom margin to galleries.

@@ -1465,13 +1465,13 @@ final class Mai_Shortcodes {
 					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
 						$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
 						if ( $image ) {
+							// Add the location as a class to the image link
+							$image_class = str_replace( '_', '-', $atts['image_location'] );
+							$image_class = sprintf( 'entry-image-%s', $image_class );
 							if ( $atts['link'] ) {
-								// Add the location as a class to the image link
-								$image_class = str_replace( '_', '-', $atts['image_location'] );
-								$image_class = sprintf( 'entry-image-%s', $image_class );
-								$image_html  = sprintf( '<a href="%s" class="entry-image-link %s" title="%s">%s</a>', $url, $image_class, the_title_attribute( 'echo=0' ), $image );
+								$image_html = sprintf( '<a href="%s" class="entry-image-link %s" title="%s">%s</a>', $url, $image_class, the_title_attribute( 'echo=0' ), $image );
 							} else {
-								$image_html = $image;
+								$image_html = sprintf( '<span class="entry-image-link %s" title="%s">%s</span>', $image_class, the_title_attribute( 'echo=0' ), $image );
 							}
 						}
 					}
