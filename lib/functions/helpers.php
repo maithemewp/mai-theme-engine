@@ -115,8 +115,8 @@ function mai_get_banner_id() {
  *
  * @return  string|HTML
  */
-function mai_get_grid( $args, $content = null ) {
-	return Mai_Shortcodes()->get_grid( $args, $content );
+function mai_get_grid( $args ) {
+	return Mai_Shortcodes()->get_grid( $args );
 }
 
 /**
