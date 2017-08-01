@@ -36,7 +36,7 @@ add_filter( 'genesis_post_info', 'mai_post_info' );
 function mai_post_info( $post_info ) {
 	$post_info = '[post_date] [post_author_posts_link]';
 	if ( ! mai_is_flex_loop() ) {
-		$post_info .= '[post_comments before=" //&nbsp;&nbsp;"] [post_edit before="&nbsp;//&nbsp;&nbsp;"]';
+		$post_info .= '[post_comments before="&nbsp;//&nbsp;&nbsp;"] [post_edit before="&nbsp;//&nbsp;&nbsp;"]';
 	}
 	return $post_info;
 }

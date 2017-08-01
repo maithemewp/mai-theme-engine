@@ -349,6 +349,12 @@ body.woocommerce-cart .cart input[name="update_cart"] {
 /* ## Checkout
 --------------------------------------------- */
 
+.woocommerce .cart_totals .button.alt.checkout-button {
+	width: 100%;
+	font-size: 18px;
+	padding: 16px 20px;
+}
+
 #add_payment_method #payment ul.payment_methods li,
 .woocommerce-cart #payment ul.payment_methods li,
 .woocommerce-checkout #payment ul.payment_methods li {

@@ -538,54 +538,32 @@ input[type="submit"],
 .entry-content .button,
 .entry-content .more-link,
 .menu-item.highlight a,
-.woocommerce #respond input#submit,
 .woocommerce a.button,
 .woocommerce button.button,
 .woocommerce input.button,
-.woocommerce #respond input#submit.alt,
-.woocommerce a.button.alt,
-.woocommerce button.button.alt,
-.woocommerce input.button.alt,
-.woocommerce #respond input#submit.alt.disabled,
-.woocommerce #respond input#submit.alt.disabled:hover,
-.woocommerce #respond input#submit.alt:disabled[disabled],
-.woocommerce #respond input#submit.alt:disabled[disabled]:hover,
-.woocommerce a.button.alt:disabled,
-.woocommerce a.button.alt:disabled:hover,
-.woocommerce a.button.alt:disabled[disabled],
-.woocommerce a.button.alt:disabled[disabled]:hover,
-.woocommerce button.button.alt.disabled,
-.woocommerce button.button.alt.disabled:hover,
-.woocommerce button.button.alt:disabled,
-.woocommerce button.button.alt:disabled:hover,
-.woocommerce button.button.alt:disabled[disabled],
-.woocommerce button.button.alt:disabled[disabled]:hover,
-.woocommerce input.button.alt.disabled,
-.woocommerce input.button.alt.disabled:hover,
-.woocommerce input.button.alt:disabled,
-.woocommerce input.button.alt:disabled:hover,
-.woocommerce input.button.alt:disabled[disabled],
-.woocommerce input.button.alt:disabled[disabled]:hover {
+.woocommerce .button.alt.single_add_to_cart_button,
+.woocommerce .button.alt.checkout-button {
 	display: -webkit-inline-box;display: -ms-inline-flexbox;display: inline-flex;
 	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
 	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
 	cursor: pointer;
 	width: auto;
 	white-space: normal;
-    background-image: none;
+	background-image: none;
 	background-color: #323232;
 	color: rgba(255, 255, 255, 1);
 	font-size: 100%;
 	font-weight: normal;
-    line-height: 1;
+	line-height: 1;
 	text-align: center;
 	text-decoration: none;
 	text-shadow: none;
-    margin: 0;
+	margin: 0;
 	border: none;
 	border-radius: 0;
-    -webkit-box-shadow: none;box-shadow: none;
-    white-space: nowrap;
+	white-space: nowrap;
+	-webkit-box-shadow: none;box-shadow: none;
+	-webkit-font-smoothing: antialiased;
 }
 
 button:hover,
@@ -605,23 +583,17 @@ input:focus[type="submit"],
 .menu-item.highlight.current-menu-item > a,
 .menu-item.highlight > a:hover,
 .menu-item.highlight > a:focus,
-.woocommerce #respond input#submit:hover,
-.woocommerce #respond input#submit:focus,
 .woocommerce a.button:hover,
 .woocommerce a.button:focus,
 .woocommerce button.button:hover,
 .woocommerce button.button:focus,
 .woocommerce input.button:hover,
 .woocommerce input.button:focus,
-.woocommerce #respond input#submit.alt:hover,
-.woocommerce #respond input#submit.alt:focus,
-.woocommerce a.button.alt:hover,
-.woocommerce a.button.alt:focus,
-.woocommerce button.button.alt:hover,
-.woocommerce button.button.alt:focus,
-.woocommerce input.button.alt:hover,
-.woocommerce input.button.alt:focus {
-    background-image: none;
+.woocommerce .button.alt.single_add_to_cart_button:hover,
+.woocommerce .button.alt.single_add_to_cart_button:focus,
+.woocommerce .button.alt.checkout-button:hover,
+.woocommerce .button.alt.checkout-button:focus {
+	background-image: none;
 	background-color: rgba(0, 0, 0, 1);
 	color: rgba(255, 255, 255, 1);
 	text-decoration: none;
@@ -656,12 +628,11 @@ input[type="submit"].small,
 .entry-content .more-link,
 .footer-widgets .button,
 .site-footer .button,
-.woocommerce .product #respond input#submit,
-.woocommerce .product a.button,
-.woocommerce .product button.button,
-.woocommerce .product input.button {
-    background-color: #ebe9eb;
-    color: #515151;
+.woocommerce .actions .button,
+.woocommerce a.button.alt,
+.woocommerce a.button.add_to_cart_button {
+	background-color: #ebe9eb;
+	color: #515151;
 }
 
 .button.alt:hover,
@@ -676,16 +647,14 @@ input[type="submit"].small,
 .footer-widgets .button:focus,
 .site-footer .button:hover,
 .site-footer .button:focus,
-.woocommerce .product #respond input#submit:hover,
-.woocommerce .product #respond input#submit:focus,
-.woocommerce .product a.button:hover,
-.woocommerce .product a.button:focus,
-.woocommerce .product button.button:hover,
-.woocommerce .product button.button:focus,
-.woocommerce .product input.button:hover,
-.woocommerce .product input.button:focus {
-    background-color: #dad8da;
-    color: #515151;
+.woocommerce .actions .button:hover,
+.woocommerce .actions .button:focus,
+.woocommerce a.button.alt:hover,
+.woocommerce a.button.alt:focus,
+.woocommerce a.button.add_to_cart_button:hover,
+.woocommerce a.button.add_to_cart_button:focus {
+	background-color: #dad8da;
+	color: #515151;
 }
 
 
