@@ -1,5 +1,29 @@
 ### Changelog
 
+* Added: [grid] New filter on default args so developers can change the default settings for the shortcode.
+* Changed: Better blockquote styling.
+* Fixed: mai_get_grid() helper function unnecessarily requiring $content param.
+* Fixed: [grid] Image markup when image_location is before_entry link is false.
+* Fixed: [grid] Slider dot color when on dark background.
+
+#### 1.0.12.2
+##### 7/28/17
+* Changed: Add bottom margin to galleries.
+* Fixed: Better browser support for gradient overlay.
+
+#### 1.0.12.1
+##### 7/27/17
+* Changed: More efficient fix for removing empty <p> tags from shortcodes in widgets.
+
+#### 1.0.12
+##### 7/26/17
+* Added: [grid] can now 'exclude_categories' from display. Example: Display all posts except those in the 'Recipes' category.
+* Fixed: [grid] Center slider dots.
+
+#### 1.0.11
+##### 7/24/17
+* Changed: Hierarchical taxonomy terms now check parents all the way up the tree for any archive settings (props @hellofromTonya).
+
 #### 1.0.10
 * Added: Setting to disable term archives by taxonomy.
 
