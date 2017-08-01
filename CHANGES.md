@@ -2,6 +2,7 @@
 
 * Added: [grid] New filter on default args so developers can change the default settings for the shortcode.
 * Changed: Better blockquote styling.
+* Changed: Better button style handling, especially with WooCommerce buttons.
 * Fixed: mai_get_grid() helper function unnecessarily requiring $content param.
 * Fixed: [grid] Image markup when image_location is before_entry link is false.
 * Fixed: [grid] Slider dot color when on dark background.
