@@ -89,15 +89,13 @@ progress,sub,sup{vertical-align:baseline}button,hr,input{overflow:visible}[type=
 
 html,
 input[type="search"]{
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	-webkit-box-sizing: border-box;box-sizing: border-box;
 }
 
 *,
 *::before,
 *::after {
-	-webkit-box-sizing: inherit;
-	        box-sizing: inherit;
+	-webkit-box-sizing: inherit;box-sizing: inherit;
 	min-height: 0%;
 	min-width: 0%;
 }
@@ -524,11 +522,6 @@ legend {
 	color: #fff;
 }
 
-.light-content::-moz-selection {
-	background-color: #fff;
-	color: #323232;
-}
-
 :focus {
 	color: #323232;
 	outline: dotted 1px rgba(0, 0, 0, 0.3);
@@ -701,12 +694,7 @@ input[type="button"].white,
 input[type="reset"].white,
 input[type="submit"].white,
 .button.white,
-.entry-content .button.white,
-.banner-area.light-content button,
-.banner-area.light-content input[type="button"],
-.banner-area.light-content input[type="reset"],
-.banner-area.light-content input[type="submit"],
-.banner-area.light-content .button {
+.entry-content .button.white {
 	background-color: #fff;
 	color: #323232;
 	text-shadow: none;
@@ -723,17 +711,7 @@ input[type="submit"].white:focus,
 .button.white:hover,
 .button.white:focus,
 .entry-content .button.white:hover,
-.entry-content .button.white:focus,
-.banner-area.light-content button:hover,
-.banner-area.light-content button:focus,
-.banner-area.light-content input[type="button"]:hover,
-.banner-area.light-content input[type="button"]:focus,
-.banner-area.light-content input[type="reset"]:hover,
-.banner-area.light-content input[type="reset"]:focus,
-.banner-area.light-content input[type="submit"]:hover,
-.banner-area.light-content input[type="submit"]:focus,
-.banner-area.light-content .button:hover,
-.banner-area.light-content .button:focus {
+.entry-content .button.white:focus {
 	background-color: #ebe9eb;
 	color: #323232;
 	text-shadow: none;
@@ -1221,50 +1199,19 @@ td {
 /* ## Color Contrast
 --------------------------------------------- */
 
-.dark-content,
-.dark-content a:not(.button):not(.more-link),
-.dark-content > p > a:not(.button):not(.more-link),
-a.dark-content:hover,
-a.dark-content:focus,
-.dark-content h1,
-.dark-content h2,
-.dark-content h3,
-.dark-content h4,
-.dark-content h5,
-.dark-content h6,
-.dark-content .archive-title,
-.dark-content > .entry-title,
-.dark-content > .entry-header > .entry-title,
-.dark-content > .wrap > .entry-title,
-.dark-content .entry-meta,
-.section .dark-content,
-.entry .dark-content,
-.inner .dark-content {
-	color: #323232;
-	text-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
-}
-
 .light-content,
-.light-content a:not(.button):not(.more-link),
-.light-content > p > a:not(.button):not(.more-link),
-a.light-content:hover,
-a.light-content:focus,
 .light-content h1,
 .light-content h2,
 .light-content h3,
 .light-content h4,
 .light-content h5,
 .light-content h6,
-.light-content .archive-title,
-.light-content > .entry-title,
-.light-content > .entry-header > .entry-title,
-.light-content > .wrap > .entry-title,
+.light-content a,
+.light-content.entry .entry-title a,
 .light-content .entry-meta,
-.section .light-content,
-.entry .light-content,
-.inner .light-content {
+.light-content .entry-header .entry-meta a,
+.light-content .entry-footer .entry-meta a {
 	color: #fff;
-	text-shadow: none;
 }
 
 .light-content .entry-header .entry-meta a,
