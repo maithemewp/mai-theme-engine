@@ -1,6 +1,6 @@
 ### Changelog
 
-* Fixed: Page template loader no longer runs on all pages. More efficient and fixes potential conflicts.
+* Fixed: Page template loader no longer runs on all pages. More efficient and fixes potential conflicts. Props @timothyjensen.
 
 #### 1.0.13
 ##### 8/1/17
