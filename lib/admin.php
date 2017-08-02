@@ -137,9 +137,13 @@ function mai_do_inline_login_logo( $output, $show ) {
 	}
 
 	// Get the logo
-	$logo_id  = get_theme_mod( 'custom_logo' );
+	$logo_id = get_theme_mod( 'custom_logo' );
 
-	return wp_get_attachment_image( get_theme_mod( 'custom_logo' ), 'full' );
+	if ( ! $logo_id ) {
+		return $output;
+	}
+
+	return wp_get_attachment_image( $logo_id, 'full' );
 }
 
 // Change login link

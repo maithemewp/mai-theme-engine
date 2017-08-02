@@ -1,5 +1,7 @@
 ### Changelog
 
+* Fixed: Page template loader no longer runs on all pages. More efficient and fixes potential conflicts.
+
 #### 1.0.13
 ##### 8/1/17
 * Added: [grid] New filter on default args so developers can change the default settings for the shortcode.

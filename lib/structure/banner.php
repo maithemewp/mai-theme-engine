@@ -46,7 +46,7 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
-    $args = array(
+	$args = array(
 		'class'         => 'banner-area width-full',
 		'wrap'          => true,
 		'bg'            => get_theme_mod( 'banner_background_color', '#f1f1f1' ),
@@ -54,7 +54,7 @@ function mai_do_banner_area() {
 		'inner'         => get_theme_mod( 'banner_inner' ),
 		'content_width' => get_theme_mod( 'banner_content_width', 'auto' ),
 		'styles'        => '',
-    );
+	);
 
 	// Get the image ID
 	$image_id = mai_get_banner_id();
@@ -185,8 +185,7 @@ function mai_do_banner_content() {
 	elseif ( class_exists( 'WooCommerce' ) ) {
 
 		 if ( is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		    // Get our new data
-			// $post       = get_post( $shop_page_id );
+			// Get our new data
 			$headline   = get_the_title( $shop_page_id );
 			$headline   = $headline ? sprintf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), strip_tags( $headline ) ) : '';
 			$intro_text = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
