@@ -31,6 +31,14 @@ function mai_plugin_theme_page_templates( $page_templates ) {
 add_filter( 'template_include', 'mai_plugin_include_theme_page_templates' );
 function mai_plugin_include_theme_page_templates( $template ) {
 
+	/**
+	 * Bail if not a single post/page/cpt.
+	 * We don't need page templates here anyway.
+	 */
+	if ( ! is_singular( 'page' ) ) {
+		return $template;
+	}
+
 	// Get current template
 	$template_name = get_post_meta( get_the_ID(), '_wp_page_template', true );
 
