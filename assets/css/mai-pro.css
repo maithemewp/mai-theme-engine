@@ -228,12 +228,15 @@ blockquote {
 blockquote::before {
 	position: absolute;
 	top: 12px;
-	left: -27px;
+	left: -28px;
 	content: '\201c';
-	color: rgba(0, 0, 0, 0.15);
+	color: rgba(0,0,0,.15);
+	font-family: Georgia,serif;
 	font-size: 60px;
+	font-weight: 400;
 	line-height: 1;
 }
+
 
 /* ## Headings
 --------------------------------------------- */
@@ -3042,7 +3045,7 @@ img.alignright,
 /* ## Grid Entries
 --------------------------------------------- */
 
-.flex-grid {
+p ~ .flex-grid {
 	margin-top: 30px;
 }
 
