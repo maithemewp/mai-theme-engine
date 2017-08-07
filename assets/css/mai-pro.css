@@ -2288,6 +2288,7 @@ img.alignright,
 	-ms-flex-pack: justify;-webkit-box-pack: justify;justify-content: space-between;
 	width: 199px;
 	font-size: 85%;
+	text-align: left;
 	word-wrap: break-word;
 	padding: 12px 18px;
 	margin: 0;

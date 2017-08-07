@@ -1,5 +1,7 @@
 ### Changelog
 
+* Fixed: Sub-menu text alignment when text wraps to a second line.
+
 #### 1.0.14 (8/7/17)
 * Changed: Better blockquote styling.
 * Changed: Remove excess grid top margin.
