@@ -179,10 +179,11 @@ function mai_do_sections_metabox() {
 
 	// Content
 	$sections->add_group_field( $section, array(
-		'name'      => 'Content',
-		'id'        => 'content',
-		'type'      => 'wysiwyg',
-		'after_row' => '</div></div></div>',
+		'name'            => 'Content',
+		'id'              => 'content',
+		'type'            => 'wysiwyg',
+		'after_row'       => '</div></div></div>',
+		'sanitization_cb' => 'mai_sanitize_post_content',
 	) );
 
 }
@@ -195,4 +196,11 @@ function mai_do_sections_metabox() {
  */
 function mai_set_checkbox_default_for_new_post( $default ) {
 	return isset( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
+}
+
+/**
+ * Sanitizes WYSIWYG fields like WordPress does for post_content fields.
+ */
+function mai_sanitize_post_content( $content ) {
+	return apply_filters( 'content_save_pre', $content );
 }
