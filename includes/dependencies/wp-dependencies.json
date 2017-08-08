@@ -1,0 +1,10 @@
+[
+	{
+		"name": "Kirki",
+		"host": "wordpress",
+		"slug": "kirki/kirki.php",
+		"uri": "https://wordpress.org/plugins/kirki/",
+		"branch": "trunk",
+		"optional": false
+	}
+]

@@ -136,7 +136,11 @@ final class Mai_Pro_Engine {
 	 */
 	private function setup() {
 
-		// Includes (Vendor)
+		// Dependencies.
+		foreach ( glob( MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies/*.php' ) as $file ) { include $file; }
+		WP_Dependency_Installer::instance()->run( MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies' );
+
+		// Includes (Vendor).
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
 		// require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'Shortcode_Button/shortcode-button.php';
