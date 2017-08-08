@@ -137,7 +137,7 @@ final class Mai_Pro_Engine {
 	private function setup() {
 
 		// Dependencies.
-		foreach ( glob( MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies/*.php' ) as $file ) { include $file; }
+		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies/wp-dependency-installer.php';
 		WP_Dependency_Installer::instance()->run( MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies' );
 
 		// Includes (Vendor).

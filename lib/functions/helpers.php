@@ -96,7 +96,8 @@ function mai_get_banner_id() {
 	 * use the default banner image.
 	 */
 	if ( ! $image_id ) {
-		if ( $default_id = get_theme_mod( 'banner_id' ) ) {
+		if ( $default_id = genesis_get_option( 'banner_id' ) ) {
+			d( $default_id );
 			$image_id = absint( $default_id );
 		}
 	}

@@ -354,7 +354,7 @@ function mai_has_parent_term( WP_Term $term ) {
  * @return bool
  */
 function mai_is_sticky_header_enabled() {
-	return filter_var( get_theme_mod( 'enable_sticky_header', 0 ), FILTER_VALIDATE_BOOLEAN );
+	return filter_var( genesis_get_option( 'enable_sticky_header' ), FILTER_VALIDATE_BOOLEAN );
 }
 
 /**
@@ -363,7 +363,7 @@ function mai_is_sticky_header_enabled() {
  * @return bool
  */
 function mai_is_shrink_header_enabled() {
-	return filter_var( get_theme_mod( 'enable_shrink_header', 0 ), FILTER_VALIDATE_BOOLEAN );
+	return filter_var( genesis_get_option( 'enable_shrink_header' ), FILTER_VALIDATE_BOOLEAN );
 }
 
 /**
@@ -372,7 +372,7 @@ function mai_is_shrink_header_enabled() {
  * @return bool
  */
 function mai_is_banner_area_enabled_globally() {
-	return filter_var( get_theme_mod( 'enable_banner_area', 1 ), FILTER_VALIDATE_BOOLEAN );
+	return filter_var( genesis_get_option( 'enable_banner_area' ), FILTER_VALIDATE_BOOLEAN );
 }
 
 /**
@@ -381,7 +381,7 @@ function mai_is_banner_area_enabled_globally() {
  * @return bool
  */
 function mai_is_banner_featured_image_enabled() {
-	return filter_var( get_theme_mod( 'banner_featured_image', 0 ), FILTER_VALIDATE_BOOLEAN );
+	return filter_var( genesis_get_option( 'banner_featured_image' ), FILTER_VALIDATE_BOOLEAN );
 }
 
 /**
@@ -398,23 +398,23 @@ function mai_is_banner_area_enabled() {
 
 	$enabled = true;
 
-	// If not enabled at all
+	// If not enabled at all.
 	if ( ! mai_is_banner_area_enabled_globally() ) {
 		$enabled = false;
 	} else {
 
 		/**
-		 * If disabled via theme settings.
+		 * If disabled per post_type or taxonomy.
 		 */
 
 		if ( is_singular() ) {
-			// Get 'disabled' content, typecasted as array because it may return empty string if none
+			// Get 'disabled' post types, typecasted as array because it may return empty string if none
 			$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
 			if ( in_array( get_post_type(), $disable_post_types ) ) {
 				$enabled = false;
 			}
 		} elseif ( is_category() || is_tag() || is_tax() ) {
-			// Get 'disabled' content, typecasted as array because it may return empty string if none
+			// Get 'disabled' taxonomies, typecasted as array because it may return empty string if none
 			$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
 			if ( in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
 				$enabled = false;
@@ -448,16 +448,8 @@ function mai_is_banner_area_enabled() {
 		}
 
 	}
-	return $enabled;
-}
 
-/**
- * Check if auto display of featured image is enabled
- *
- * @return bool
- */
-function mai_is_display_featured_image_enabled() {
-	return filter_var( get_theme_mod( 'enable_singular_image', 1 ), FILTER_VALIDATE_BOOLEAN );
+	return $enabled;
 }
 
 /**
@@ -466,7 +458,7 @@ function mai_is_display_featured_image_enabled() {
  * @return bool
  */
 function mai_is_side_menu_enabled() {
-	if ( 'side' != get_theme_mod( 'mobile_menu_style' ) ) {
+	if ( 'side' != genesis_get_option( 'mobile_menu_style' ) ) {
 		return false;
 	}
 	return true;
@@ -478,7 +470,7 @@ function mai_is_side_menu_enabled() {
  * @return int
  */
 function mai_get_footer_widgets_count() {
-	return get_theme_mod( 'footer_widget_count', 2 );
+	return genesis_get_option( 'footer_widget_count' );
 }
 
 /**

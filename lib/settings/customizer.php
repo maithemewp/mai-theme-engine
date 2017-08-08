@@ -20,7 +20,7 @@
  *
  * @return  void
  */
-add_action( 'customize_register', 'mai_register_customizer_general' );
+// add_action( 'customize_register', 'mai_register_customizer_general' );
 function mai_register_customizer_general( $wp_customize ) {
 
 	$section = 'mai-settings';
@@ -136,7 +136,7 @@ function mai_register_customizer_general( $wp_customize ) {
  *
  * @param  object $wp_customize the customizer object.
  */
-add_action( 'customize_register', 'mai_register_customizer_settings' );
+// add_action( 'customize_register', 'mai_register_customizer_settings' );
 function mai_register_customizer_settings( $wp_customize ) {
 
 	$section = 'mai-banner-area';
@@ -154,17 +154,17 @@ function mai_register_customizer_settings( $wp_customize ) {
 	 * Enable Banner Area
 	 */
 
-	$wp_customize->add_setting( 'enable_banner_area', array(
-		'default'           => 1,
-		'sanitize_callback' => 'absint',
-	) );
+	// $wp_customize->add_setting( 'enable_banner_area', array(
+	// 	'default'           => 1,
+	// 	'sanitize_callback' => 'absint',
+	// ) );
 
-	$wp_customize->add_control( 'enable_banner_area', array(
-		'label'    => __( 'Enable the banner area', 'mai-pro-engine' ),
-		'section'  => $section,
-		'priority' => 5,
-		'type'     => 'checkbox',
-	) );
+	// $wp_customize->add_control( 'enable_banner_area', array(
+	// 	'label'    => __( 'Enable the banner area', 'mai-pro-engine' ),
+	// 	'section'  => $section,
+	// 	'priority' => 5,
+	// 	'type'     => 'checkbox',
+	// ) );
 
 	/*****************************************************
 	 * Featured Image for Banner Image setting
