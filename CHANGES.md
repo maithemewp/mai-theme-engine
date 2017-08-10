@@ -1,5 +1,7 @@
 ### Changelog
 
+#### 1.0.15 (8/10/17)
+* Fixed: Error when /%category%/ was used in permalinks and your visit a 404's url.
 * Fixed: Sub-menu text alignment when text wraps to a second line.
 
 #### 1.0.14 (8/7/17)

@@ -111,49 +111,60 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 	// Term archive
 	elseif ( is_category() || is_tag() || is_tax() ) {
 
-		// If checking enabled and is enabled.
-		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true ) ) ) {
-			$meta = get_term_meta( get_queried_object()->term_id, $key, true );
-		}
+		$queried_object = get_queried_object();
 
-		// If no meta
-		if ( ! $meta ) {
-			// Get hierarchical taxonomy term meta
-			$meta = mai_get_term_meta_value_in_hierarchy( get_queried_object(), $key, $check_for_archive_setting );
+		/**
+		 * Check if we have an object.
+		 * We hit an issue when permlinks have /%category%/ in the base and a user
+		 * 404's via top level URL like example.com/non-existent-slug.
+		 * This returned true for is_category() and blew things up.
+		 */
+		if ( $queried_object ) {
+
+			// If checking enabled and is enabled.
+			if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_term_meta( $queried_object->term_id, 'enable_content_archive_settings', true ) ) ) {
+				$meta = get_term_meta( $queried_object->term_id, $key, true );
+			}
+
 			// If no meta
 			if ( ! $meta ) {
-				// If post taxonomy
-				if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-					// If we have a static front page
-					if ( $posts_page_id = get_option( 'page_for_posts' ) ) {
-						if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
-							$meta = get_post_meta( $posts_page_id, $key, true );
+				// Get hierarchical taxonomy term meta
+				$meta = mai_get_term_meta_value_in_hierarchy( $queried_object, $key, $check_for_archive_setting );
+				// If no meta
+				if ( ! $meta ) {
+					// If post taxonomy
+					if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
+						// If we have a static front page
+						if ( $posts_page_id = get_option( 'page_for_posts' ) ) {
+							if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
+								$meta = get_post_meta( $posts_page_id, $key, true );
+							}
 						}
 					}
-				}
-				// If Woo product taxonomy
-				elseif ( class_exists('WooCommerce') && $product_taxos = get_object_taxonomies( 'product', 'names' ) && is_tax( $product_taxos ) ) {
-					// If we have a Woo shop page
-					if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
-						if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
-							$meta = get_post_meta( $shop_page_id, $key, true );
+					// If Woo product taxonomy
+					elseif ( class_exists('WooCommerce') && $product_taxos = get_object_taxonomies( 'product', 'names' ) && is_tax( $product_taxos ) ) {
+						// If we have a Woo shop page
+						if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
+							if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
+								$meta = get_post_meta( $shop_page_id, $key, true );
+							}
 						}
 					}
-				}
-				else {
-					// Custom taxonomy archive
-					$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
-					if ( $tax ) {
-						/**
-						 * If the taxonomy is only registered to 1 post type.
-						 * Otherwise, how will we pick which post type archive to fall back to?
-						 * If more than one, we'll just have to use the fallback later.
-						 */
-						if ( 1 == count( $tax->object_type ) ) {
-							$post_type = reset( $tax->object_type );
-							// If we have a post type and it supports genesis-cpt-archive-settings
-							if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
-								$meta = genesis_get_cpt_option( $key, $post_type );
+					else {
+						// Custom taxonomy archive
+						$tax = isset( $queried_object->taxonomy ) ? get_taxonomy( $queried_object->taxonomy ) : false;
+						if ( $tax ) {
+							/**
+							 * If the taxonomy is only registered to 1 post type.
+							 * Otherwise, how will we pick which post type archive to fall back to?
+							 * If more than one, we'll just have to use the fallback later.
+							 */
+							if ( 1 == count( $tax->object_type ) ) {
+								$post_type = reset( $tax->object_type );
+								// If we have a post type and it supports genesis-cpt-archive-settings
+								if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+									$meta = genesis_get_cpt_option( $key, $post_type );
+								}
 							}
 						}
 					}
