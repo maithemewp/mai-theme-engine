@@ -1,7 +1,10 @@
 ### Changelog
 
+#### 1.0.15.1 (8/10/17)
+* Fixed: Sections template fields weren't full width.
+
 #### 1.0.15 (8/10/17)
-* Chagned: Sections metabox is now displayed directly after the title field.
+* Changed: Sections metabox is now displayed directly after the title field.
 * Changed: Update CMB2 to 2.2.5.2.
 * Fixed: Error when /%category%/ was used in permalinks and your visit a 404's url.
 * Fixed: Sub-menu text alignment when text wraps to a second line.
