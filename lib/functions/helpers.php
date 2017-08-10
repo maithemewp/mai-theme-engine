@@ -97,8 +97,17 @@ function mai_get_banner_id() {
 	 */
 	if ( ! $image_id ) {
 		if ( $default_id = genesis_get_option( 'banner_id' ) ) {
-			d( $default_id );
-			$image_id = absint( $default_id );
+// d( $default_id );
+			/**
+			 * If we have a URL.
+			 * This happens via the customizer filter since Kirki image field typically
+			 * uses image URL's instead of ID's like we want.
+			 */
+			// if ( genesis_is_customizer() && filter_var( $default_id, FILTER_VALIDATE_URL ) ) {
+				// $image_id = attachment_url_to_postid( $default_id );
+			// } else {
+				$image_id = absint( $default_id );
+			// }
 		}
 	}
 

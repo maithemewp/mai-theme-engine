@@ -1,21 +1,25 @@
 <?php
 
-// add_filter( 'kirki/values/get_value', 'mai_kirki_get_banner_id_field_value', 99, 2 );
-// function mai_kirki_get_banner_id_field_value( $value, $field_id ) {
-// 	// if ( 'banner_id' === $field_id ) {
-// 		return attachment_url_to_postid( $value );
-// 	// }
-// 	return $value;
-// }
 
-add_filter( 'pre_option_banner_id', 'my_theme_filter_banner_id', 99 );
-function my_theme_filter_banner_id( $banner_id ) {
-	// ddd( $banner_id );
-	// if ( ! genesis_is_customizer() ) {
-	// 	return $banner_id;
-	// }
-	return attachment_url_to_postid( $banner_id );
-}
+
+// add_action( 'customize_register', function() {
+
+// 	if ( ! genesis_is_customizer() ) {
+// 		return;
+// 	}
+
+// 	add_filter( 'option_genesis-settings', 'mai_kirki_banner_id_to_url' );
+// 	function mai_kirki_banner_id_to_url( $genesis_settings ) {
+// 		// d( $genesis_settings['banner_id'] );
+// 		$banner_id = (int) $genesis_settings['banner_id'];
+// 		if ( ! ( is_integer( $banner_id ) && $banner_id > 1 ) ) {
+// 			return $genesis_settings;
+// 		}
+// 		$genesis_settings['banner_id'] = wp_get_attachment_url( $banner_id );
+// 		return $genesis_settings;
+// 	}
+
+// }, 10 );
 
 /**
  * Register Customizer control for general settings.
@@ -170,19 +174,6 @@ function mai_customizer_general_settings( $wp_customize ) {
 			),
 		) );
 
-		// $wp_customize->add_setting( 'banner_id', array(
-		// 	'default'           => '',
-		// 	'sanitize_callback' => 'absint',
-		// 	'type'              => 'option',
-		// ) );
-		// $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'banner_id', array(
-		// 	'label'       => __( 'Banner Image', 'mai-pro-engine' ),
-		// 	'description' => __( 'Set a default banner image. Can be overridden per post/page.', 'mai-pro-engine' ),
-		// 	'section'     => 'mai_banner_area',
-		// 	'settings'    => 'banner_id',
-		// 	'priority'    => 10,
-		// ) ) );
-
 		// Default image
 		Kirki::add_field( 'mai_settings', array(
 			'type'            => 'image',
@@ -193,7 +184,10 @@ function mai_customizer_general_settings( $wp_customize ) {
 			'default'         => '',
 			'priority'        => 10,
 			'active_callback' => _mai_kirki_is_banner_area_enabled(),
-			'sanitize_callback' => '_mai_kirki_get_banner_id',
+			'choices'         => array(
+				'save_as' => 'id'
+			),
+			// 'sanitize_callback' => '_mai_kirki_get_banner_id',
 		) );
 
 		// Overlay
@@ -489,9 +483,9 @@ function mai_customizer_general_settings( $wp_customize ) {
 
 }
 
-function _mai_kirki_get_banner_id( $data ) {
-	return attachment_url_to_postid( $data );
-}
+// function _mai_kirki_get_banner_id( $data ) {
+// 	return attachment_url_to_postid( $data );
+// }
 
 function _mai_kirki_get_public_post_types_config() {
 	$options    = array();
