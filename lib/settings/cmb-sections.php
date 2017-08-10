@@ -23,7 +23,7 @@ function mai_do_sections_metabox() {
 		'id'           => 'mai_sections',
 		'title'        => __( 'Sections', 'mai-pro-engine' ),
 		'object_types' => array( 'page' ),
-		// 'context'   => 'after_editor', // Currently forces Publish metaboxes down: Change back when trunk is live https://wordpress.org/support/topic/new-after_title-and-after_editor-contexts-push-the-publish-metabox-down/
+		'context'      => 'after_editor', // Currently forces Publish metaboxes down: Change back when trunk is live https://wordpress.org/support/topic/new-after_title-and-after_editor-contexts-push-the-publish-metabox-down/
 		'classes'      => 'mai-metabox',
 		'show_on'      => array( 'key' => 'page-template', 'value' => 'sections.php' ),
 	) );
@@ -179,10 +179,11 @@ function mai_do_sections_metabox() {
 
 	// Content
 	$sections->add_group_field( $section, array(
-		'name'      => 'Content',
-		'id'        => 'content',
-		'type'      => 'wysiwyg',
-		'after_row' => '</div></div></div>',
+		'name'            => 'Content',
+		'id'              => 'content',
+		'type'            => 'wysiwyg',
+		'after_row'       => '</div></div></div>',
+		'sanitization_cb' => 'mai_sanitize_post_content',
 	) );
 
 }
@@ -195,4 +196,11 @@ function mai_do_sections_metabox() {
  */
 function mai_set_checkbox_default_for_new_post( $default ) {
 	return isset( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
+}
+
+/**
+ * Sanitizes WYSIWYG fields like WordPress does for post_content fields.
+ */
+function mai_sanitize_post_content( $content ) {
+	return apply_filters( 'content_save_pre', $content );
 }
