@@ -301,6 +301,11 @@ function mai_do_content_archive_archive_options() {
 	if ( ! mai_is_content_archive() ) {
 		return;
 	}
+
+	// CONVERT THESE TO STATIC VARIABLES
+	// AND DO EACH FILTER SEPARATELY?
+	// POST_NAV DOESN'T WORK HERE FOR WOO ARCHIVES CAUSE NO genesis_before_while HOOK
+
 	$content_archive_thumbnail = mai_get_archive_setting( 'content_archive_thumbnail', true, genesis_get_option( 'content_archive_thumbnail' ) );
 	$image_size                = mai_get_archive_setting( 'image_size', true, genesis_get_option( 'image_size' ) );
 	$image_alignment           = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );

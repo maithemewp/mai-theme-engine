@@ -3,31 +3,6 @@
 // Add custom archive support for CPT
 add_post_type_support( 'product', 'genesis-cpt-archives-settings' );
 
-add_action( 'genesis_before_loop', function() {
-	// $settings = get_option( 'genesis-settings' );
-	// $settings = get_option( 'genesis-cpt-archive-settings-product' );
-	// d( $settings );
-});
-
-// add_action( 'customize_register', function() {
-
-// 	if ( ! genesis_is_customizer() ) {
-// 		return;
-// 	}
-
-// 	add_filter( 'option_genesis-settings', 'mai_kirki_banner_id_to_url' );
-// 	function mai_kirki_banner_id_to_url( $genesis_settings ) {
-// 		// d( $genesis_settings['banner_id'] );
-// 		$banner_id = (int) $genesis_settings['banner_id'];
-// 		if ( ! ( is_integer( $banner_id ) && $banner_id > 1 ) ) {
-// 			return $genesis_settings;
-// 		}
-// 		$genesis_settings['banner_id'] = wp_get_attachment_url( $banner_id );
-// 		return $genesis_settings;
-// 	}
-
-// }, 10 );
-
 /**
  * Register Customizer control for general settings.
  *
@@ -392,6 +367,21 @@ function mai_kirki_do_content_archive_settings( $config, $section, $panel = '', 
 		);
 	}
 
+	// Banner image
+	Kirki::add_field( 'mai_settings', array(
+		'type'            => 'image',
+		'settings'        => 'banner_id',
+		'label'           => __( 'Banner image', 'mai-pro-engine' ),
+		'description'     => __( 'Set a default banner image. Can be overridden per post/page.', 'mai-pro-engine' ),
+		'section'         => $section,
+		'default'         => '',
+		'priority'        => 10,
+		'active_callback' => _mai_kirki_is_banner_area_enabled(),
+		'choices'         => array(
+			'save_as' => 'id'
+		),
+	) );
+
 	// Enable archive settings
 	Kirki::add_field( $config, array(
 		'type'     => 'switch',
@@ -577,7 +567,7 @@ function mai_kirki_do_product_archive_settings() {
 
 	$config  = 'mai_woo_product_archive_settings';
 	$option  = 'genesis-cpt-archive-settings-product';
-	$section = 'mai_settings';
+	$section = $config;
 
 	Kirki::add_config( $config, array(
 		'capability'  => 'edit_theme_options',
@@ -585,11 +575,26 @@ function mai_kirki_do_product_archive_settings() {
 		'option_name' => $option,
 	) );
 
-	Kirki::add_section( 'mai_settings', array(
+	Kirki::add_section( $config, array(
 		'title'      => __( 'Mai Product Archives', 'mai-pro-engine' ),
 		'panel'      => '',
 		'priority'   => 35,
 		'capability' => 'edit_theme_options',
+	) );
+
+	// Banner image
+	Kirki::add_field( $config, array(
+		'type'            => 'image',
+		'settings'        => 'banner_id',
+		'label'           => __( 'Banner image', 'mai-pro-engine' ),
+		'description'     => __( 'Set a banner image to be used on the shop and product category/tag pages. If none is set, the default banner image will be used.', 'mai-pro-engine' ),
+		'section'         => $section,
+		'default'         => '',
+		'priority'        => 10,
+		'active_callback' => _mai_kirki_is_banner_area_enabled(),
+		'choices'         => array(
+			'save_as' => 'id'
+		),
 	) );
 
 	// Columns
@@ -622,6 +627,37 @@ function mai_kirki_do_product_archive_settings() {
 		'choices'  => array(
 			1 => esc_attr__( 'Enable', 'mai-pro-engine' ),
 			0 => esc_attr__( 'Disable', 'mai-pro-engine' ),
+		),
+	) );
+
+	// Content Limit
+	Kirki::add_field( $config, array(
+		'type'        => 'number',
+		'settings'    => 'posts_per_page',
+		'label'       => __( 'Entries Per Page', 'mai-pro-engine' ),
+		'description' => __( 'The max number of posts to show, per page.', 'mai-pro-engine' ),
+		'section'     => $section,
+		'default'     => get_option( 'posts_per_page' ),
+		'priority'    => 10,
+		'choices'     => array(
+			'min'  => 0,
+			'max'  => 1000,
+			'step' => 1,
+		),
+	) );
+
+	// NOT WORKING
+	Kirki::add_field( $config, array(
+		'type'        => 'radio-buttonset',
+		'settings'    => 'posts_nav',
+		'label'       => __( 'Shop Pagination', 'genesis' ),
+		'section'     => $section,
+		'default'     => genesis_get_option( 'posts_nav' ),
+		'priority'    => 10,
+		'multiple'    => 1,
+		'choices'     => array(
+			'prev-next' => __( 'Previous / Next', 'genesis' ),
+			'numeric'   => __( 'Numeric', 'genesis' ),
 		),
 	) );
 

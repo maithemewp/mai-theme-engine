@@ -83,9 +83,9 @@ function mai_site_layout_fallback( $layout ) {
 		$layout = genesis_get_custom_field( '_genesis_layout', get_option( 'page_for_posts' ) );
 	}
 	// If Woo product taxonomy
-	elseif ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
-		$layout = genesis_get_custom_field( '_genesis_layout', get_option( 'woocommerce_shop_page_id' ) );
-	}
+	// elseif ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+	// 	$layout = genesis_get_custom_field( '_genesis_layout', get_option( 'woocommerce_shop_page_id' ) );
+	// }
 	// Must be custom taxonomy archive
 	else {
 		$tax = get_taxonomy( get_queried_object()->taxonomy );
