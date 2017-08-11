@@ -587,7 +587,7 @@ function mai_kirki_do_product_archive_settings() {
 		'type'            => 'image',
 		'settings'        => 'banner_id',
 		'label'           => __( 'Banner image', 'mai-pro-engine' ),
-		'description'     => __( 'Set a banner image to be used on the shop and product category/tag pages. If none is set, the default banner image will be used.', 'mai-pro-engine' ),
+		'description'     => __( 'Set a banner image for the shop and product category/tag pages. If none is set, the default banner image will be used.', 'mai-pro-engine' ),
 		'section'         => $section,
 		'default'         => '',
 		'priority'        => 10,
