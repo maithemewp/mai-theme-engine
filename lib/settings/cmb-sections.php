@@ -29,15 +29,15 @@ function mai_do_sections_metabox() {
 	) );
 
 	$section = $sections->add_field( array(
-	    'id'          => 'mai_sections',
-	    'type'        => 'group',
-	    'repeatable'  => true,
-	    'options'     => array(
+		'id'          => 'mai_sections',
+		'type'        => 'group',
+		'repeatable'  => true,
+		'options'     => array(
 			'group_title'   => __( 'Section #{#}', 'mai-pro-engine' ),
 			'add_button'    => __( 'Add Section', 'mai-pro-engine' ),
 			'remove_button' => __( 'Remove Section', 'mai-pro-engine' ),
 			'sortable'      => true,
-	    ),
+		),
 	) );
 
 	// Settings
@@ -65,8 +65,8 @@ function mai_do_sections_metabox() {
 		'preview_size' => 'one-third',
 		'options'      => array( 'url' => false ),
 		'text'         => array(
-	        'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
-	    ),
+			'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
+		),
 	) );
 
 	// Overlay
