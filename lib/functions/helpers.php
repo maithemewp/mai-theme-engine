@@ -87,9 +87,9 @@ function mai_get_banner_id() {
 	}
 
 	// WooCommerce shop page
-	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		$image_id = get_post_meta( $shop_page_id, 'banner_id', true );
-	}
+	// elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+	// 	$image_id = get_post_meta( $shop_page_id, 'banner_id', true );
+	// }
 
 	/**
 	 * If no banner, but we have a default,
@@ -97,17 +97,7 @@ function mai_get_banner_id() {
 	 */
 	if ( ! $image_id ) {
 		if ( $default_id = genesis_get_option( 'banner_id' ) ) {
-// d( $default_id );
-			/**
-			 * If we have a URL.
-			 * This happens via the customizer filter since Kirki image field typically
-			 * uses image URL's instead of ID's like we want.
-			 */
-			// if ( genesis_is_customizer() && filter_var( $default_id, FILTER_VALIDATE_URL ) ) {
-				// $image_id = attachment_url_to_postid( $default_id );
-			// } else {
-				$image_id = absint( $default_id );
-			// }
+			$image_id = absint( $default_id );
 		}
 	}
 

@@ -155,17 +155,22 @@ function mai_do_flex_loop_before() {
 	$columns = mai_get_columns();
 
 	// If a Woo product archive
-	if ( class_exists( 'WooCommerce' ) ) {
-		if ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) || is_product() ) {
-			if ( $columns <= 1 ) {
-				$columns = 3;
-			}
-		}
-		// Cross-sells
-		elseif ( is_cart() ) {
-			$columns = 2;
-		}
-	}
+	//
+	// WE NEED TO FILTER THE COLUMNS AND CHECK IF class_exists( 'WooCommerce' ) && is_cart() AND SET COLUMNS TO 2
+	// IT SHOULDN'T HAPPEN HERE
+	//
+	//
+	// if ( class_exists( 'WooCommerce' ) && is_cart() ) {
+		// if ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) || is_product() ) {
+		// 	if ( $columns <= 1 ) {
+		// 		$columns = 3;
+		// 	}
+		// }
+		// // Cross-sells
+		// elseif ( is_cart() ) {
+			// $columns = 2;
+		// }
+	// }
 
 	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
@@ -259,6 +264,24 @@ function mai_woo_shortcode_before_loop( $atts ) {
 		remove_filter( 'post_class', $entry_classes );
 		remove_filter( 'product_cat_class', $entry_classes );
 	});
+}
+
+add_action( 'woocommerce_before_main_content', 'mai_do_woo_product_archive_options' );
+function mai_do_woo_product_archive_options() {
+
+	// Bail if not the shop or product cat/tag archive
+	if ( ! ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
+		return;
+	}
+
+	// Remove product images from archive template
+	remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+
+	// If displaying the thumbnail
+	if ( mai_get_archive_setting( 'content_archive_thumbnail', true, genesis_get_cpt_option( 'content_archive_thumbnail' ) ) ) {
+		// Add back product images to archive template
+		add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+	}
 }
 
 /**

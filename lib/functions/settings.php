@@ -37,9 +37,9 @@ function mai_get_the_archive_setting( $key ) {
 		$setting = get_the_author_meta( $key, get_query_var( 'author' ) );
 	}
 	// WooCommerce shop page
-	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		$setting = get_post_meta( $shop_page_id, $key, true );
-	}
+	// elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+	// 	$setting = get_post_meta( $shop_page_id, $key, true );
+	// }
 	// Nada
 	else {
 		$setting = null;
@@ -132,14 +132,14 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 					}
 				}
 				// If Woo product taxonomy
-				elseif ( class_exists('WooCommerce') && $product_taxos = get_object_taxonomies( 'product', 'names' ) && is_tax( $product_taxos ) ) {
-					// If we have a Woo shop page
-					if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
-						if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
-							$meta = get_post_meta( $shop_page_id, $key, true );
-						}
-					}
-				}
+				// elseif ( class_exists('WooCommerce') && $product_taxos = get_object_taxonomies( 'product', 'names' ) && is_tax( $product_taxos ) ) {
+				// 	// If we have a Woo shop page
+				// 	if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
+				// 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
+				// 			$meta = get_post_meta( $shop_page_id, $key, true );
+				// 		}
+				// 	}
+				// }
 				else {
 					// Custom taxonomy archive
 					$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
@@ -163,6 +163,10 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 	}
 	// CPT archive
 	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+		// If Woo products archive
+		if ( class_exists( 'WooCommerce' ) && is_shop() ) {
+			$check_for_archive_setting = false;
+		}
 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
 			$meta = genesis_get_cpt_option( $key );
 		}
@@ -174,11 +178,11 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 		}
 	}
 	// WooCommerce shop page
-	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
-			$meta = get_post_meta( $shop_page_id, $key, true );
-		}
-	}
+	// elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+	// 	if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
+	// 		$meta = get_post_meta( $shop_page_id, $key, true );
+	// 	}
+	// }
 	// If we have meta, return it
 	if ( null !== $meta ) {
 		return $meta;
