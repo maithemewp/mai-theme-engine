@@ -1,5 +1,7 @@
 ### Changelog
 
+* Fixed issue when a form is in Woo short description.
+
 #### 1.0.15.1 (8/10/17)
 * Fixed: Sections template fields weren't full width.
 
