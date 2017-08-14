@@ -776,7 +776,7 @@ final class Mai_Shortcodes {
 			'link'                 => true,
 			'meta_key'             => '',
 			'meta_value'           => '',
-			'more_link_text'       => apply_filters( 'mai_more_link_text', __( 'Read More', 'mai-pro-engine' ) ),
+			'more_link_text'       => __( 'Read More', 'mai-pro-engine' ),
 			'no_content_message'   => '',
 			'number'               => '12',
 			'offset'               => '0',
@@ -1581,6 +1581,7 @@ final class Mai_Shortcodes {
 						$entry_content = wpautop( wp_trim_words( $entry_content, $atts['content_limit'], '&hellip;' ) );
 					}
 
+					// Price
 					if ( in_array( 'price', $atts['show'] ) ) {
 						ob_start();
 						woocommerce_template_loop_price();
@@ -1589,7 +1590,7 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url, get_the_title() );
+						$entry_content .= mai_get_read_more_link( $post, $atts['more_link_text'], 'post' );
 					}
 
 					// Add to cart link
@@ -1795,7 +1796,7 @@ final class Mai_Shortcodes {
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
-						$entry_content .= $this->get_more_link( $atts, $url, $term->name );
+						$entry_content .= mai_get_read_more_link( $term, $atts['more_link_text'], 'term' );
 					}
 
 					// Add filter to the entry content
@@ -1886,16 +1887,7 @@ final class Mai_Shortcodes {
 	function get_entry_link( $atts, $object_or_id ) {
 		switch ( $atts['content_type'] ) {
 			case 'post':
-				$link = '';
-				if ( in_array( 'add_to_cart', $atts['show'] ) ) {
-					if ( class_exists( 'WooCommerce' ) ) {
-						$product = wc_get_product( $object_or_id );
-						$link 	 = $product->add_to_cart_url();
-					}
-				}
-				if ( ! $link ) {
-					$link = get_permalink( $object_or_id );
-				}
+				$link = get_permalink( $object_or_id );
 			break;
 			case 'term':
 				$link = get_term_link( $object_or_id );
@@ -2008,20 +2000,6 @@ final class Mai_Shortcodes {
 			break;
 		}
 		return $image_id;
-	}
-
-	/**
-	 * Get the read more link with screen reader text.
-	 *
-	 * @param   array   $atts   The shortcode atts.
-	 * @param   string  $url    The url to link to.
-	 * @param   string  $title  The title for screen reader text.
-	 *
-	 * @return  string|HTML
-	 */
-	function get_more_link( $atts, $url, $title ) {
-		$link = sprintf( '<a class="more-link" href="%s">%s<span class="screen-reader-text">%s</span></a>', $url, $atts['more_link_text'], $title );
-		return sprintf( '<p class="more-link-wrap">%s</p>', $link );
 	}
 
 	/**
