@@ -1,6 +1,8 @@
 ### Changelog
 
-* Changed: More refined mai_get_read_more_link() function.
+* Changed: The mai_get_read_more_link() function now fires inside the loop and gives access to more data.
+* Changed: Now using genesis_attr filter for more-link element, for more control and filterable attributes.
+* Changed: [grid] When add_to_cart="true", only the Add To Cart button adds product to cart, image/title link to the product itself.
 * Fixed: Issue when a form is in Woo short description.
 
 #### 1.0.15.1 (8/10/17)
