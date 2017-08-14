@@ -107,6 +107,7 @@
 .single-product div.product form.cart,
 .single-product div.product p.cart {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
+	-ms-flex-wrap: wrap;flex-wrap: wrap;
 }
 
 .single-product div.product form.variations_form.cart {
