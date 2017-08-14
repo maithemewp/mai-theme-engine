@@ -2,12 +2,12 @@
 
 /**
  * Plugin Name:     Mai Pro Engine
- * Plugin URI:      https://maitheme.com/
+ * Plugin URI:      https://maipro.io/
  * Description:     The Mai Pro Engine plugin
  *
  * Version:         1.0.16
  *
- * GitHub URI:      bizbudding/mai-pro-engine
+ * GitHub URI:      maiprowp/mai-pro-engine
  *
  * Author:          Mike Hemberger, BizBudding Inc
  * Author URI:      https://bizbudding.com
@@ -308,7 +308,7 @@ final class Mai_Pro_Engine {
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
 			// Setup the updater
-			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
+			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
 			/**
 			 * Allow branch and updater object manipulation.
 			 * This let's us do beta releases via a branch change,
