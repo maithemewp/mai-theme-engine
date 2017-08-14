@@ -166,7 +166,11 @@ function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post' 
 
 	// If we have a url
 	if ( $url ) {
-		$link = sprintf( '<a class="more-link" href="%s">%s%s</a>', $url, $screen_reader_html, $more_link_text );
+		$attributes = array(
+			'class' => 'more-link',
+			'href'  => esc_url( $url ),
+		);
+		$link = sprintf( '<a %s>%s%s</a>', genesis_attr( 'more-link', $attributes ), $screen_reader_html, $more_link_text );
 	}
 
 	// Bail if no link
@@ -175,30 +179,6 @@ function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post' 
 	}
 
 	return sprintf( '<p class="more-link-wrap">%s</p>', $link );
-}
-
-/**
- * Get the object for a read more link.
- *
- * @param   int|object  $object_or_id  The object or ID, for now only post or term.
- *
- * @return  associated array, key is object type and value is the object
- */
-function mai_get_read_more_object( $object_or_id ) {
-	$type = array();
-	// Bail if no object_or_id
-	if ( ! $object_or_id ) {
-		return $type;
-	}
-	// If we have a post
-	if ( $object = get_post( $object_or_id ) ) {
-		$type['post'] = $object;
-	}
-	// No post, try a term
-	elseif ( $term = get_term( $object_or_id ) && ! is_wp_error( $term ) ) {
-		$type['term'] = $object;
-	}
-	return $type;
 }
 
 /**
