@@ -1,19 +1,75 @@
 <?php
-/**
- * Mai Pro Engine.
- *
- * @author   Mike Hemberger
- *
- * @version  1.0.0
- */
 
+/**
+ * Add the mai_before_flex_loop hook when appropriate.
+ *
+ * @return void
+ */
+add_action( 'genesis_before_while', 'mai_add_before_content_archive_hook', 100 );
+function mai_add_before_content_archive_hook() {
+
+	// Bail if not a flex loop
+	if ( ! mai_is_content_archive() ) {
+		return;
+	}
+
+	do_action( 'mai_before_content_archive' );
+}
+
+/**
+ * Add the mai_before_flex_loop hook when appropriate.
+ *
+ * @return void
+ */
+add_action( 'genesis_before_while', 'mai_add_before_flex_loop_hook', 100 );
+function mai_add_before_flex_loop_hook() {
+
+	// Bail if not a flex loop
+	if ( ! mai_is_flex_loop() ) {
+		return;
+	}
+
+	do_action( 'mai_before_flex_loop' );
+}
+
+/**
+ * Add the mai_after_flex_loop hook when appropriate.
+ *
+ * @return void
+ */
+add_action( 'genesis_after_endwhile', 'mai_add_after_flex_loop_hook' );
+function mai_add_after_flex_loop_hook() {
+
+	// Bail if not a flex loop
+	if ( ! mai_is_flex_loop() ) {
+		return;
+	}
+
+	do_action( 'mai_after_flex_loop' );
+}
+
+/**
+ * Add the mai_after_content_archive hook when appropriate.
+ *
+ * @return void
+ */
+add_action( 'genesis_after_endwhile', 'mai_add_after_content_archive_hook' );
+function mai_add_after_content_archive_hook() {
+
+	// Bail if not a flex loop
+	if ( ! mai_is_content_archive() ) {
+		return;
+	}
+
+	do_action( 'mai_after_content_archive' );
+}
 
 /**
  * Output the static blog page content before the posts.
  *
  * @return  void
  */
-add_action( 'genesis_before_loop', 'mai_do_blog_description', 20 );
+add_action( 'mai_before_content_archive', 'mai_do_blog_description', 20 );
 function mai_do_blog_description() {
 
 	// Bail if not the blog page
@@ -33,7 +89,7 @@ function mai_do_blog_description() {
  *
  * @return  void
  */
-add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
+add_action( 'mai_before_content_archive', 'mai_do_term_description', 20 );
 function mai_do_term_description() {
 
 	// Bail if not a taxonomy archive
@@ -55,13 +111,9 @@ function mai_do_term_description() {
  *
  * @return  void
  */
-add_action( 'genesis_before_loop', 'mai_remove_content_archive_loop' );
+add_action( 'mai_before_content_archive', 'mai_remove_content_archive_loop' );
 function mai_remove_content_archive_loop() {
 
-	// Bail if not a content archive
-	if ( ! mai_is_content_archive() ) {
-		return;
-	}
 	// Bail if not removing the loop
 	$remove_loop = mai_get_the_archive_setting( 'remove_loop' );
 	if ( ! $remove_loop ) {
@@ -107,38 +159,6 @@ function mai_content_archive_posts_per_page( $query ) {
 }
 
 /**
- * Add the mai_before_flex_loop hook when appropriate.
- *
- * @return void
- */
-add_action( 'genesis_before_while', 'mai_add_before_flex_loop_hook', 100 );
-function mai_add_before_flex_loop_hook() {
-
-	// Bail if not a flex loop
-	if ( ! mai_is_flex_loop() ) {
-		return;
-	}
-
-	do_action( 'mai_before_flex_loop' );
-}
-
-/**
- * Add the mai_after_flex_loop hook when appropriate.
- *
- * @return void
- */
-add_action( 'genesis_after_endwhile', 'mai_add_after_flex_loop_hook' );
-function mai_add_after_flex_loop_hook() {
-
-	// Bail if not a flex loop
-	if ( ! mai_is_flex_loop() ) {
-		return;
-	}
-
-	do_action( 'mai_after_flex_loop' );
-}
-
-/**
  * Flex loop opening html and column filters.
  * Add and remove the post/product class filters to create columns.
  *
@@ -153,24 +173,6 @@ function mai_do_flex_loop_before() {
 
 	// Get the archive column count
 	$columns = mai_get_columns();
-
-	// If a Woo product archive
-	//
-	// WE NEED TO FILTER THE COLUMNS AND CHECK IF class_exists( 'WooCommerce' ) && is_cart() AND SET COLUMNS TO 2
-	// IT SHOULDN'T HAPPEN HERE
-	//
-	//
-	// if ( class_exists( 'WooCommerce' ) && is_cart() ) {
-		// if ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) || is_product() ) {
-		// 	if ( $columns <= 1 ) {
-		// 		$columns = 3;
-		// 	}
-		// }
-		// // Cross-sells
-		// elseif ( is_cart() ) {
-			// $columns = 2;
-		// }
-	// }
 
 	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
@@ -294,17 +296,11 @@ function mai_do_woo_product_archive_options() {
  *
  * @return  void
  */
-add_action( 'genesis_before_while', 'mai_do_content_archive_archive_options' );
+add_action( 'mai_before_content_archive', 'mai_do_content_archive_archive_options' );
 function mai_do_content_archive_archive_options() {
-
-	// Bail if not a content archive
-	if ( ! mai_is_content_archive() ) {
-		return;
-	}
 
 	// CONVERT THESE TO STATIC VARIABLES
 	// AND DO EACH FILTER SEPARATELY?
-	// POST_NAV DOESN'T WORK HERE FOR WOO ARCHIVES CAUSE NO genesis_before_while HOOK
 
 	$content_archive_thumbnail = mai_get_archive_setting( 'content_archive_thumbnail', true, genesis_get_option( 'content_archive_thumbnail' ) );
 	$image_size                = mai_get_archive_setting( 'image_size', true, genesis_get_option( 'image_size' ) );
@@ -398,7 +394,7 @@ function mai_do_post_image() {
 		// Add the background image link
 		add_action( 'genesis_entry_header', 'mai_do_bg_image_link', 1 );
 		// Remove bg iamge link function so additional loops are not affected
-		add_action( 'genesis_after_endwhile', function() {
+		add_action( 'mai_after_content_archive', function() {
 			remove_action( 'genesis_entry_header', 'mai_do_bg_image_link', 1 );
 		});
 	}
@@ -496,13 +492,8 @@ function mai_get_bg_image_link( $url = '', $title = '' ) {
  *
  * @return  void
  */
-add_action( 'genesis_before_while', 'mai_archive_remove_meta' );
+add_action( 'mai_before_content_archive', 'mai_archive_remove_meta' );
 function mai_archive_remove_meta() {
-
-	// Bail if not a content archive
-	if ( ! mai_is_content_archive() ) {
-		return;
-	}
 
 	// Get the meta to remove
 	$meta_to_remove = (array) mai_get_archive_setting( 'remove_meta', true, genesis_get_option( 'remove_meta' ) );
