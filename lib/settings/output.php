@@ -9,6 +9,7 @@
  */
 add_filter( 'genesis_theme_settings_defaults', 'mai_theme_settings_defaults' );
 function mai_theme_settings_defaults( $settings ) {
+
 	// General
 	$settings['enable_sticky_header']      = 0;
 	$settings['enable_shrink_header']      = 0;
@@ -35,6 +36,9 @@ function mai_theme_settings_defaults( $settings ) {
 	$settings['image_alignment']           = '';
 	$settings['image_size']                = 'one-third';
 	$settings['remove_meta']               = array();
+
+	// Site Layout
+	$settings['single_post_layout']        = genesis_get_default_layout();
 
 	return $settings;
 }

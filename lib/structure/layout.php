@@ -73,13 +73,21 @@ function mai_site_layout_fallback( $layout ) {
 		return $layout;
 	}
 
-	// Bail if not a archive
-	if ( ! ( is_category() || is_tag() || is_tax() ) ) {
+	// Bail if not a single post or taxonomy archive
+	if ( ! ( is_singular() || is_category() || is_tag() || is_tax() ) ) {
 		return $layout;
 	}
 
+	if ( is_singular() ) {
+		if ( is_singular( 'post' ) ) {
+			$layout = genesis_get_option( 'single_post_layout' );
+		} elseif ( class_exists( 'WooCommerce' ) && is_singular( 'product' ) ) {
+			$layout = genesis_get_option( 'single_product_layout' );
+		}
+	}
+
 	// If post taxonomy
-	if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
+	elseif ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
 		$layout = genesis_get_custom_field( '_genesis_layout', get_option( 'page_for_posts' ) );
 	}
 	// If Woo product taxonomy
