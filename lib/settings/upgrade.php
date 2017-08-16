@@ -86,5 +86,11 @@ function mai_pro_update_1_1_0( $plugin_version, $option_version ) {
 	if ( ! empty( $settings ) ) {
 		// Update settings
 		genesis_update_settings( $settings );
+
+		foreach ( $mods as $mod ) {
+			remove_theme_mod( $mod );
+		}
+
+		remove_theme_mod( 'enable_singular_image' );
 	}
 }
