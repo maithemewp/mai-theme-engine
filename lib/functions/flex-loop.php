@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Helper function to check if archive is a flex loop
+ * Helper function to check if archive is a flex loop.
  * This doesn't check if viewing an actual archive, but this layout should not be an option if ! is_archive()
  *
- * @return bool   Whether the layout is a grid archive
+ * @return  bool  Whether the layout is a grid archive
  */
 function mai_is_flex_loop() {
 	// Bail if not a content archive
@@ -21,6 +21,11 @@ function mai_is_flex_loop() {
 	return false;
 }
 
+/**
+ * Helper function to get the column count, with Woo fallback and filter.
+ *
+ * @return  int  The number of columns
+ */
 function mai_get_columns() {
 	// If Woo shop or Woo taxonomy then fallback to 3.
 	if ( class_exists( 'WooCommerce' ) && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
@@ -68,7 +73,7 @@ function mai_do_flex_entry_classes_by_columns( $columns ) {
 /**
  * Get the classes needed for an entry from number of columns.
  *
- * @param  string  $columns  number of columns to get classes for
+ * @param  string  $columns  number of columns to get classes for.
  *
  * @return string  the classes
  */
@@ -95,7 +100,13 @@ function mai_get_flex_entry_classes_by_columns( $columns ) {
 	return $classes;
 }
 
-
+/**
+ * Get the classes needed for an entry from fraction name.
+ *
+ * @param  string  $fraction  The fraction name.
+ *
+ * @return string  the classes
+ */
 function mai_get_flex_entry_classes_by_fraction( $fraction ) {
 	switch ( $fraction ) {
 		case 'col':
