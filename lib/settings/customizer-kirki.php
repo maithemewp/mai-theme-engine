@@ -21,11 +21,6 @@ function mai_customizer_general_settings( $wp_customize ) {
 	// Remove Genesis 'Content Archives' section
 	$wp_customize->remove_section( 'genesis_archives' );
 
-	// Kirki::add_config( 'mai_settings', array(
-	// 	'capability'  => 'edit_theme_options',
-	// 	'option_type' => 'theme_mod',
-	// ) );
-
 	Kirki::add_config( 'mai_settings', array(
 		'capability'  => 'edit_theme_options',
 		'option_type' => 'option',
@@ -72,6 +67,16 @@ function mai_customizer_general_settings( $wp_customize ) {
 			),
 		) );
 
+		$singular_image_post_types = Kirki_Helper::get_post_types();
+		if ( $singular_image_post_types ) {
+			if ( isset( $singular_image_post_types['attachment'] ) ) {
+				unset( $singular_image_post_types['attachment'] );
+			}
+			if ( class_exists( 'WooCommerce' ) && isset( $singular_image_post_types['product'] ) ) {
+				unset( $singular_image_post_types['product'] );
+			}
+		}
+
 		// Display featured image.
 		Kirki::add_field( 'mai_settings', array(
 			'type'        => 'multicheck',
@@ -81,7 +86,7 @@ function mai_customizer_general_settings( $wp_customize ) {
 			'section'     => 'mai_general',
 			'default'     => array( 'post', 'page' ),
 			'priority'    => 10,
-			'choices'     => _mai_kirki_get_public_post_types_config(),
+			'choices'     => $singular_image_post_types,
 		) );
 
 		// Footer widgets.
@@ -105,7 +110,7 @@ function mai_customizer_general_settings( $wp_customize ) {
 		) );
 
 		Kirki::add_field( 'mai_settings', array(
-			'type'            => 'radio-buttonset',
+			'type'            => 'radio',
 			'settings'        => 'mobile_menu_style',
 			'label'           => __( 'Mobile menu style', 'mai-pro-engine' ),
 			'section'         => 'mai_general',
@@ -170,12 +175,11 @@ function mai_customizer_general_settings( $wp_customize ) {
 			'choices'         => array(
 				'save_as' => 'id'
 			),
-			// 'sanitize_callback' => '_mai_kirki_get_banner_id',
 		) );
 
 		// Overlay
 		Kirki::add_field( 'mai_settings', array(
-			'type'            => 'radio-buttonset',
+			'type'            => 'select',
 			'settings'        => 'banner_overlay',
 			'label'           => __( 'Enable overlay', 'mai-pro-engine' ),
 			'section'         => 'mai_banner_area',
@@ -184,7 +188,7 @@ function mai_customizer_general_settings( $wp_customize ) {
 			'multiple'        => 1,
 			'active_callback' => _mai_kirki_is_banner_area_enabled(),
 			'choices'         => array(
-				''         => __( '- None -', 'genesis' ),
+				''         => __( 'None', 'mai-pro-engine' ),
 				'light'    => __( 'Light', 'mai-pro-engine' ),
 				'dark'     => __( 'Dark', 'mai-pro-engine' ),
 				'gradient' => __( 'Gradient', 'mai-pro-engine' ),
@@ -193,7 +197,7 @@ function mai_customizer_general_settings( $wp_customize ) {
 
 		// Inner
 		Kirki::add_field( 'mai_settings', array(
-			'type'            => 'radio-buttonset',
+			'type'            => 'select',
 			'settings'        => 'banner_inner',
 			'label'           => __( 'Enable inner styling', 'mai-pro-engine' ),
 			'section'         => 'mai_banner_area',
@@ -210,7 +214,7 @@ function mai_customizer_general_settings( $wp_customize ) {
 
 		// Content width
 		Kirki::add_field( 'mai_settings', array(
-			'type'            => 'radio-buttonset',
+			'type'            => 'select',
 			'settings'        => 'banner_content_width',
 			'label'           => __( 'Content width', 'mai-pro-engine' ),
 			'section'         => 'mai_banner_area',
@@ -220,11 +224,11 @@ function mai_customizer_general_settings( $wp_customize ) {
 			'active_callback' => _mai_kirki_is_banner_area_enabled(),
 			'choices'         => array(
 				'auto' => __( 'Auto', 'mai-pro-engine' ),
-				'xs'   => __( 'XS', 'mai-pro-engine' ),
-				'sm'   => __( 'SM', 'mai-pro-engine' ),
-				'md'   => __( 'MD', 'mai-pro-engine' ),
-				'lg'   => __( 'LG', 'mai-pro-engine' ),
-				'xl'   => __( 'XL', 'mai-pro-engine' ),
+				'xs'   => __( 'Extra Small', 'mai-pro-engine' ),
+				'sm'   => __( 'Small', 'mai-pro-engine' ),
+				'md'   => __( 'Medium', 'mai-pro-engine' ),
+				'lg'   => __( 'Large', 'mai-pro-engine' ),
+				'xl'   => __( 'Extra Large', 'mai-pro-engine' ),
 				'full' => __( 'Full Width', 'mai-pro-engine' ),
 			),
 		) );
@@ -344,7 +348,7 @@ function mai_customizer_general_settings( $wp_customize ) {
 				'capability' => 'edit_theme_options',
 			) );
 
-			mai_kirki_do_content_archive_settings( $config, $section, 'mai_cpt_archives', $check_enabled );
+			mai_kirki_do_content_archive_settings( $config, $section, 'mai_cpt_archives', true );
 
 		}
 
@@ -648,7 +652,7 @@ function mai_kirki_do_product_archive_settings() {
 
 	// NOT WORKING
 	Kirki::add_field( $config, array(
-		'type'        => 'radio-buttonset',
+		'type'        => 'radio',
 		'settings'    => 'posts_nav',
 		'label'       => __( 'Shop Pagination', 'genesis' ),
 		'section'     => $section,
