@@ -101,15 +101,16 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 		return null;
 	}
 	$meta = null;
-	// Static blog page.
-	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-		// If not checking enabled, or checking enabled and is enabled.
-		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
-			$meta = get_post_meta( $posts_page_id, $key, true );
-		}
-	}
-	// Term archive
-	elseif ( is_category() || is_tag() || is_tax() ) {
+	// // Static blog page.
+	// if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+	// 	// If not checking enabled, or checking enabled and is enabled.
+	// 	if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
+	// 		$meta = get_post_meta( $posts_page_id, $key, true );
+	// 	}
+	// }
+	// // Term archive
+	// elseif ( is_category() || is_tag() || is_tax() ) {
+	if ( is_category() || is_tag() || is_tax() ) {
 
 		// If checking enabled and is enabled.
 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true ) ) ) {
@@ -124,13 +125,14 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 			if ( ! $meta ) {
 				// If post taxonomy
 				if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-					// If we have a static front page
-					if ( $posts_page_id = get_option( 'page_for_posts' ) ) {
-						if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
-							$meta = get_post_meta( $posts_page_id, $key, true );
-						}
-					}
-				}
+					$meta = genesis_get_cpt_option( $key );
+				// 	// If we have a static front page
+				// 	if ( $posts_page_id = get_option( 'page_for_posts' ) ) {
+				// 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
+				// 			$meta = get_post_meta( $posts_page_id, $key, true );
+				// 		}
+				// 	}
+				// }
 				// If Woo product taxonomy
 				// elseif ( class_exists('WooCommerce') && $product_taxos = get_object_taxonomies( 'product', 'names' ) && is_tax( $product_taxos ) ) {
 				// 	// If we have a Woo shop page
@@ -139,7 +141,7 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 				// 			$meta = get_post_meta( $shop_page_id, $key, true );
 				// 		}
 				// 	}
-				// }
+				}
 				else {
 					// Custom taxonomy archive
 					$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
@@ -164,12 +166,12 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 	// CPT archive
 	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
 		// If Woo products archive
-		if ( class_exists( 'WooCommerce' ) && is_shop() ) {
-			$check_for_archive_setting = false;
-		}
-		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
-			$meta = genesis_get_cpt_option( $key );
-		}
+		// if ( class_exists( 'WooCommerce' ) && is_shop() ) {
+		// 	$check_for_archive_setting = false;
+		// }
+		// if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
+		$meta = genesis_get_cpt_option( $key );
+		// }
 	}
 	// Author archive
 	elseif ( is_author() ) {

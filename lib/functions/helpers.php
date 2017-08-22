@@ -247,8 +247,8 @@ function mai_is_content_archive() {
 
 	$is_archive = false;
 
-	// Static blog page
-	if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+	// Blog
+	if ( is_home() ) {
 		$is_archive = true;
 	}
 	// Term archive
@@ -263,16 +263,26 @@ function mai_is_content_archive() {
 	elseif ( is_author() ) {
 		$is_archive = true;
 	}
-	// WooCommerce shop page
-	elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-		$is_archive = true;
-	}
 	// Search results
 	elseif ( is_search() ) {
 		$is_archive = true;
 	}
 
 	return $is_archive;
+}
+
+function mai_is_no_sidebar() {
+	$layout = genesis_site_layout();
+	$no_sidebars = array(
+		'full-width-content',
+		'md-content',
+		'sm-content',
+		'xs-content',
+	);
+	if ( in_array( $layout, $no_sidebars ) ) {
+		return false;
+	}
+	return true;
 }
 
 /**

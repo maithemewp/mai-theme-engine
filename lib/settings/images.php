@@ -41,12 +41,12 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
 /**
  * Save auto-display featured image meta
  *
- * @since  1.0.0
+ * @since   1.0.0
  *
- * @param  int   	$post_id 	The post ID.
- * @param  object   $post 		The post object.
+ * @param   int     $post_id  The post ID.
+ * @param   object  $post     The post object.
  *
- * @return void
+ * @return  void
  */
 add_action( 'save_post', 'mai_save_hide_featured_image_checkbox', 10, 2 );
 function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
@@ -74,7 +74,13 @@ function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
 	update_post_meta( $post_id, 'mai_hide_featured_image', $value );
 }
 
-// Add our image sizes to the media chooser
+/**
+ * Add our image sizes to the media chooser.
+ *
+ * @param   $sizes  The size options.
+ *
+ * @return  array   Modified size options.
+ */
 add_filter( 'image_size_names_choose', 'mai_do_media_chooser_sizes' );
 function mai_do_media_chooser_sizes( $sizes ) {
 	$addsizes = array(
@@ -94,13 +100,13 @@ function mai_do_media_chooser_sizes( $sizes ) {
  */
 add_action( 'admin_head', 'mai_remove_unsupported_flexgrid_gallery_options' );
 function mai_remove_unsupported_flexgrid_gallery_options() {
-    echo '<style type="text/css">
-        .gallery-settings .columns option[value="5"],
-        .gallery-settings .columns option[value="7"],
-        .gallery-settings .columns option[value="8"],
-        .gallery-settings .columns option[value="9"] {
-            display:none !important;
-            visibility: hidden !important;
-        }
-    </style>';
+	echo '<style type="text/css">
+		.gallery-settings .columns option[value="5"],
+		.gallery-settings .columns option[value="7"],
+		.gallery-settings .columns option[value="8"],
+		.gallery-settings .columns option[value="9"] {
+		    display:none !important;
+		    visibility: hidden !important;
+		}
+	</style>';
 }

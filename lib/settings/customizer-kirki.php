@@ -1,8 +1,5 @@
 <?php
 
-// Add custom archive support
-add_post_type_support( 'product', 'genesis-cpt-archives-settings' );
-
 /**
  * Register Customizer control for general settings.
  *
@@ -20,6 +17,9 @@ function mai_customizer_settings( $wp_customize ) {
 
 	// Remove Genesis 'Content Archives' section
 	$wp_customize->remove_section( 'genesis_archives' );
+
+	// Remove Genesis 'Site Layout' section
+	$wp_customize->remove_section( 'genesis_layout' );
 
 	Kirki::add_config( 'mai_settings', array(
 		'capability'  => 'edit_theme_options',
@@ -122,32 +122,6 @@ function mai_customizer_settings( $wp_customize ) {
 				'side'     => __( 'Side Menu', 'mai-pro-engine' ),
 			),
 		) );
-
-		// Single Post
-		// Kirki::add_field( 'mai_settings', array(
-		// 	'type'     => 'select',
-		// 	'settings' => 'single_post_layout',
-		// 	'label'    => __( 'Single Post Layout', 'mai-pro-engine' ),
-		// 	'section'  => 'genesis_layout',
-		// 	'default'  => genesis_get_option( 'layout' ),
-		// 	'priority' => 10,
-		// 	'choices'  => genesis_get_layouts_for_customizer(),
-		// ) );
-
-		// if ( class_exists( 'WooCommerce' ) ) {
-
-		// 	// Single Product
-		// 	Kirki::add_field( 'mai_settings', array(
-		// 		'type'     => 'select',
-		// 		'settings' => 'single_product_layout',
-		// 		'label'    => __( 'Single Post Layout', 'mai-pro-engine' ),
-		// 		'section'  => 'genesis_layout',
-		// 		'default'  => genesis_get_option( 'layout' ),
-		// 		'priority' => 10,
-		// 		'choices'  => genesis_get_layouts_for_customizer(),
-		// 	) );
-
-		// }
 
 	/* *****************
 	 * Mai Banner Area *
@@ -316,6 +290,64 @@ function mai_customizer_settings( $wp_customize ) {
 			'choices'         => Kirki_Helper::get_taxonomies(),
 		) );
 
+	/* **************** *
+	 * Mai Site Layouts *
+	 * **************** */
+	Kirki::add_section( 'mai_site_layouts', array(
+		'title'       => __( 'Mai Site Layouts', 'mai-pro-engine' ),
+		'description' => __( 'Set the layout for specific types of content. Layout will always fallback to the default site layout.', 'mai-pro-engine' ),
+		'panel'       => '',
+		'priority'    => 35,
+		'capability'  => 'edit_theme_options',
+	) );
+
+		// Default.
+		Kirki::add_field( 'mai_settings', array(
+			'type'     => 'select',
+			'settings' => 'site_layout',
+			'label'    => __( 'Site Default', 'mai-pro-engine' ),
+			'section'  => 'mai_site_layouts',
+			'default'  => genesis_get_option( 'layout' ),
+			'priority' => 10,
+			'choices'  => genesis_get_layouts_for_customizer(),
+		) );
+
+		$layout_choices = array_merge( array( '' => __( '- Site Default -', 'mai-pro-engine' ) ), genesis_get_layouts_for_customizer() );
+
+		// Single pages.
+		Kirki::add_field( 'mai_settings', array(
+			'type'     => 'select',
+			'settings' => 'layout_page',
+			'label'    => __( 'Pages', 'mai-pro-engine' ),
+			'section'  => 'mai_site_layouts',
+			'default'  => '',
+			'priority' => 10,
+			'choices'  => $layout_choices,
+		) );
+
+		// Single posts.
+		Kirki::add_field( 'mai_settings', array(
+			'type'     => 'select',
+			'settings' => 'layout_post',
+			'label'    => __( 'Posts', 'mai-pro-engine' ),
+			'section'  => 'mai_site_layouts',
+			'default'  => '',
+			'priority' => 10,
+			'choices'  => $layout_choices,
+		) );
+
+		// Archive Layout.
+		Kirki::add_field( 'mai_settings', array(
+			'type'        => 'select',
+			'settings'    => 'layout_archive',
+			'label'       => __( 'Archives', 'mai-pro-engine' ),
+			'description' => __( 'Blog, category, tag, author, search results, etc.', 'mai-pro-engine' ),
+			'section'     => 'mai_site_layouts',
+			'default'     => '',
+			'priority'    => 10,
+			'choices'     => $layout_choices,
+		) );
+
 	/* ******************** *
 	 * Mai Content Archives *
 	 * ******************** */
@@ -327,67 +359,24 @@ function mai_customizer_settings( $wp_customize ) {
 		'capability'  => 'edit_theme_options',
 	) );
 
-	// mai_kirki_do_content_archive_settings( 'mai_settings', 'mai_content_archives' );
-
-	// $post_types = Kirki_Helper::get_post_types();
-	$post_types = genesis_get_cpt_archive_types();
-	// $post_types = array( 'post' => get_post_type_object( 'post' ) ) + $post_types;
-// d( $post_types );
-
-	if ( $post_types ) {
-
-		// Kirki::add_panel( 'mai_cpt_archives', array(
-		// 	'priority' => 46,
-		// 	'title'    => __( 'Mai CPT Archives', 'mai-pro-engine' ),
-		// ) );
-
-		foreach ( $post_types as $name => $object ) {
-
-			// if ( class_exists( 'WooCommerce' ) && 'product' === $name ) {
-			// 	mai_kirki_do_product_archive_settings();
-			// 	continue;
-			// }
-
-			$section = 'mai_cpt_' . $name;
-
-			$option = sanitize_title_with_dashes( 'genesis-cpt-archive-settings-' . $name );
-			$config = str_replace( '-', '_', $option );
-
-			Kirki::add_config( $config, array(
-				'capability'  => 'edit_theme_options',
-				'option_type' => 'option',
-				'option_name' => $option,
-			) );
-
-			Kirki::add_section( $section, array(
-				'title'      => sprintf( __( 'Mai %s Settings' ), $object->label ),
-				'panel'      => '',
-				'priority'   => 35,
-				'capability' => 'edit_theme_options',
-			) );
-
-			mai_kirki_do_cpt_settings( $config, $section, $name, 'mai_cpt_archives', true );
-
-		}
-
-	}
+	mai_kirki_do_content_archive_settings( 'mai_settings', 'mai_content_archives' );
 
 }
 
 
 function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $panel = '', $check_enabled = false ) {
 
-	$active_callback = '';
+	// $active_callback = '';
 
-	if ( $check_enabled ) {
-		$active_callback = array(
-			array(
-				'setting'  => 'enable_content_archive_settings',
-				'operator' => '==',
-				'value'    => 1,
-			),
-		);
-	}
+	// if ( $check_enabled ) {
+	// 	$active_callback = array(
+	// 		array(
+	// 			'setting'  => 'enable_content_archive_settings',
+	// 			'operator' => '==',
+	// 			'value'    => 1,
+	// 		),
+	// 	);
+	// }
 
 	/**
 	 * Banner image.
@@ -407,42 +396,6 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 	// 	),
 	// ) );
 
-	// Archive Layout
-	Kirki::add_field( $config, array(
-		'type'     => 'select',
-		'settings' => 'layout',
-		'label'    => __( 'Archive Layout', 'mai-pro-engine' ),
-		'section'  => $section,
-		'default'  => genesis_get_option( 'layout' ),
-		'priority' => 10,
-		'choices'  => genesis_get_layouts_for_customizer(),
-	) );
-
-	// Single layout (stored in theme-settings)
-	Kirki::add_field( 'mai_settings', array(
-		'type'     => 'select',
-		'settings' => sprintf( 'single_%s_layout', $post_type ),
-		'label'    => __( 'Singular Layout', 'mai-pro-engine' ),
-		'section'  => $section,
-		'default'  => genesis_get_option( 'layout' ),
-		'priority' => 10,
-		'choices'  => genesis_get_layouts_for_customizer(),
-	) );
-
-	// Enable archive settings
-	Kirki::add_field( $config, array(
-		'type'     => 'switch',
-		'settings' => 'enable_content_archive_settings',
-		'label'    => __( 'Enable custom archive settings', 'mai-pro-engine' ),
-		'section'  => $section,
-		'default'  => 1,
-		'priority' => 10,
-		'choices'  => array(
-			1 => esc_attr__( 'Enable', 'mai-pro-engine' ),
-			0 => esc_attr__( 'Disable', 'mai-pro-engine' ),
-		),
-	) );
-
 	// Columns
 	Kirki::add_field( $config, array(
 		'type'        => 'select',
@@ -460,7 +413,6 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 			'4' => __( '4', 'mai-pro-engine' ),
 			'6' => __( '6', 'mai-pro-engine' ),
 		),
-		'active_callback' => $active_callback,
 	) );
 
 	// Content
@@ -477,7 +429,7 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 			'full'     => __( 'Entry content', 'genesis' ),
 			'excerpts' => __( 'Entry excerpts', 'genesis' ),
 		),
-		'active_callback' => $active_callback,
+		// 'active_callback' => $active_callback,
 	) );
 
 	// Content Limit
@@ -494,11 +446,11 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 			'max'  => 1000,
 			'step' => 1,
 		),
-		'active_callback' => array_merge( $active_callback, array(
+		'active_callback' => array(
 			'setting'  => 'content_archive',
 			'operator' => '!=',
 			'value'    => 'none',
-		) ),
+		),
 	) );
 
 	// More Link
@@ -513,7 +465,7 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 			1 => esc_attr__( 'Enable', 'mai-pro-engine' ),
 			0 => esc_attr__( 'Disable', 'mai-pro-engine' ),
 		),
-		'active_callback' => $active_callback,
+		// 'active_callback' => $active_callback,
 	) );
 
 	// Include the Featured Image
@@ -528,7 +480,7 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 			1 => esc_attr__( 'Enable', 'mai-pro-engine' ),
 			0 => esc_attr__( 'Disable', 'mai-pro-engine' ),
 		),
-		'active_callback' => $active_callback,
+		// 'active_callback' => $active_callback,
 	) );
 
 	// Image Location
@@ -547,11 +499,11 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 			'after_title'    => __( 'After Title', 'mai-pro-engine' ),
 			'before_content' => __( 'Before Content', 'mai-pro-engine' ),
 		),
-		'active_callback' => array_merge( $active_callback, array(
+		'active_callback' => array(
 			'setting'  => 'content_archive_thumbnail',
 			'operator' => '==',
 			'value'    => 1,
-		) ),
+		),
 	) );
 
 	// Image Size
@@ -564,11 +516,11 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 		'priority' => 10,
 		'multiple' => 1,
 		'choices'  => _mai_kirki_get_image_sizes_config(),
-		'active_callback' => array_merge( $active_callback, array(
+		'active_callback' => array(
 			'setting'  => 'content_archive_thumbnail',
 			'operator' => '==',
 			'value'    => 1,
-		) ),
+		),
 	) );
 
 	// Image Alignment
@@ -586,11 +538,11 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 			'alignleft'   => __( 'Left', 'genesis' ),
 			'alignright'  => __( 'Right', 'genesis' ),
 		),
-		'active_callback' => array_merge( $active_callback, array(
+		'active_callback' => array(
 			'setting'  => 'content_archive_thumbnail',
 			'operator' => '==',
 			'value'    => 1,
-		) ),
+		),
 	) );
 
 	// Entry Meta
@@ -604,278 +556,10 @@ function mai_kirki_do_content_archive_settings( $config, $section, $post_type, $
 			'post_info' => __( 'Remove Post Info', 'mai-pro-engine' ),
 			'post_meta' => __( 'Remove Post Meta', 'mai-pro-engine' ),
 		),
-		'active_callback' => $active_callback,
+		// 'active_callback' => $active_callback,
 	) );
 
 }
-
-function mai_kirki_do_cpt_settings( $config, $section, $post_type, $panel = '', $check_enabled = false ) {
-
-	// Single layout (stored in theme-settings)
-	Kirki::add_field( $config, array(
-		'type'     => 'select',
-		'settings' => sprintf( 'single_%s_layout', $post_type ),
-		'label'    => __( 'Singular Layout', 'mai-pro-engine' ),
-		'section'  => $section,
-		'default'  => genesis_get_option( 'layout' ),
-		'priority' => 10,
-		'choices'  => genesis_get_layouts_for_customizer(),
-	) );
-
-	// Archive Layout
-	Kirki::add_field( $config, array(
-		'type'     => 'select',
-		'settings' => 'layout',
-		'label'    => __( 'Archive Layout', 'mai-pro-engine' ),
-		'section'  => $section,
-		'default'  => genesis_get_option( 'layout' ),
-		'priority' => 10,
-		'choices'  => genesis_get_layouts_for_customizer(),
-	) );
-
-	// Columns
-	Kirki::add_field( $config, array(
-		'type'        => 'select',
-		'settings'    => 'columns',
-		'label'       => __( 'Columns', 'mai-pro-engine' ),
-		'description' => __( 'Display content in multiple columns.', 'mai-pro-engine' ),
-		'section'     => $section,
-		'default'     => '1',
-		'priority'    => 10,
-		'multiple'    => 1,
-		'choices'     => array(
-			'1' => __( 'None', 'mai-pro-engine' ),
-			'2' => __( '2', 'mai-pro-engine' ),
-			'3' => __( '3', 'mai-pro-engine' ),
-			'4' => __( '4', 'mai-pro-engine' ),
-			'6' => __( '6', 'mai-pro-engine' ),
-		),
-		'active_callback' => $active_callback,
-	) );
-
-	if ( post_type_supports( $post_type, 'editor' ) && post_type_supports( $post_type, 'excerpt' ) ) {
-
-		// Content
-		Kirki::add_field( $config, array(
-			'type'     => 'select',
-			'settings' => 'content_archive',
-			'label'    => __( 'Content', 'genesis' ),
-			'section'  => $section,
-			'default'  => 'excerpts',
-			'priority' => 10,
-			'multiple' => 1,
-			'choices'  => array(
-				'none'     => __( 'No content', 'mai-pro-engine' ),
-				'full'     => __( 'Entry content', 'genesis' ),
-				'excerpts' => __( 'Entry excerpts', 'genesis' ),
-			),
-		) );
-
-		// Content Limit
-		Kirki::add_field( $config, array(
-			'type'        => 'number',
-			'settings'    => 'content_archive_limit',
-			'label'       => __( 'Limit content to how many characters?', 'mai-pro-engine' ),
-			'description' => __( '(0 for no limit)', 'mai-pro-engine' ),
-			'section'     => $section,
-			'default'     => 0,
-			'priority'    => 10,
-			'choices'     => array(
-				'min'  => 0,
-				'max'  => 1000,
-				'step' => 1,
-			),
-			'active_callback' => array(
-				'setting'  => 'content_archive',
-				'operator' => '!=',
-				'value'    => 'none',
-			),
-		) );
-
-	}
-
-	if ( post_type_supports( $post_type, 'thumbnail' ) ) {
-
-		// Include the Featured Image
-		Kirki::add_field( $config, array(
-			'type'     => 'switch',
-			'settings' => 'content_archive_thumbnail',
-			'label'    => __( 'Featured Image', 'genesis' ),
-			'section'  => $section,
-			'default'  => 0,
-			'priority' => 10,
-			'choices'  => array(
-				1 => esc_attr__( 'Enable', 'mai-pro-engine' ),
-				0 => esc_attr__( 'Disable', 'mai-pro-engine' ),
-			),
-		) );
-
-		// Image Location
-		Kirki::add_field( $config, array(
-			'type'     => 'select',
-			'settings' => 'image_location',
-			'label'    => __( 'Image Location', 'genesis' ),
-			'section'  => $section,
-			'default'  => 'before_entry',
-			'priority' => 10,
-			'multiple' => 1,
-			'choices'  => array(
-				'background'     => __( 'Background Image', 'mai-pro-engine' ),
-				'before_entry'   => __( 'Before Entry', 'mai-pro-engine' ),
-				'before_title'   => __( 'Before Title', 'mai-pro-engine' ),
-				'after_title'    => __( 'After Title', 'mai-pro-engine' ),
-				'before_content' => __( 'Before Content', 'mai-pro-engine' ),
-			),
-			'active_callback' => array(
-				'setting'  => 'content_archive_thumbnail',
-				'operator' => '!=',
-				'value'    => 'none',
-			),
-		) );
-
-		// Image Size
-		Kirki::add_field( $config, array(
-			'type'     => 'select',
-			'settings' => 'image_size',
-			'label'    => __( 'Image Size', 'genesis' ),
-			'section'  => $section,
-			'default'  => 'one-third',
-			'priority' => 10,
-			'multiple' => 1,
-			'choices'  => _mai_kirki_get_image_sizes_config(),
-			'active_callback' => array(
-				'setting'  => 'content_archive_thumbnail',
-				'operator' => '==',
-				'value'    => 1,
-			),
-		) );
-
-		// Image Alignment
-		Kirki::add_field( $config, array(
-			'type'     => 'select',
-			'settings' => 'image_alignment',
-			'label'    => __( 'Image Alignment', 'genesis' ),
-			'section'  => $section,
-			'default'  => '',
-			'priority' => 10,
-			'multiple' => 1,
-			'choices'  => array(
-				''            => __( '- None -', 'genesis' ),
-				'aligncenter' => __( 'Center', 'genesis' ),
-				'alignleft'   => __( 'Left', 'genesis' ),
-				'alignright'  => __( 'Right', 'genesis' ),
-			),
-			'active_callback' => array(
-				'setting'  => 'content_archive_thumbnail',
-				'operator' => '==',
-				'value'    => 1,
-			),
-		) );
-
-	}
-
-}
-
-function mai_kirki_do_product_archive_settings() {
-
-	$config  = 'mai_woo_product_archive_settings';
-	$option  = 'genesis-cpt-archive-settings-product';
-	$section = $config;
-
-	Kirki::add_config( $config, array(
-		'capability'  => 'edit_theme_options',
-		'option_type' => 'option',
-		'option_name' => $option,
-	) );
-
-	Kirki::add_section( $config, array(
-		'title'      => __( 'Mai Product Archives', 'mai-pro-engine' ),
-		'panel'      => '',
-		'priority'   => 35,
-		'capability' => 'edit_theme_options',
-	) );
-
-	// Banner image
-	Kirki::add_field( $config, array(
-		'type'            => 'image',
-		'settings'        => 'banner_id',
-		'label'           => __( 'Banner image', 'mai-pro-engine' ),
-		'description'     => __( 'Set a banner image for the shop and product category/tag pages. If none is set, the default banner image will be used.', 'mai-pro-engine' ),
-		'section'         => $section,
-		'default'         => '',
-		'priority'        => 10,
-		'active_callback' => _mai_kirki_is_banner_area_enabled(),
-		'choices'         => array(
-			'save_as' => 'id'
-		),
-	) );
-
-	// Columns
-	Kirki::add_field( $config, array(
-		'type'        => 'radio-buttonset',
-		'settings'    => 'columns',
-		'label'       => __( 'Columns', 'mai-pro-engine' ),
-		'description' => __( 'Display content in multiple columns.', 'mai-pro-engine' ),
-		'section'     => $section,
-		'default'     => '3',
-		'priority'    => 10,
-		'multiple'    => 1,
-		'choices'     => array(
-			'1' => __( 'None', 'mai-pro-engine' ),
-			'2' => __( '2', 'mai-pro-engine' ),
-			'3' => __( '3', 'mai-pro-engine' ),
-			'4' => __( '4', 'mai-pro-engine' ),
-			'6' => __( '6', 'mai-pro-engine' ),
-		),
-	) );
-
-	// Include the Featured Image
-	Kirki::add_field( $config, array(
-		'type'     => 'switch',
-		'settings' => 'content_archive_thumbnail',
-		'label'    => __( 'Featured Image', 'genesis' ),
-		'section'  => $section,
-		'default'  => 1,
-		'priority' => 10,
-		'choices'  => array(
-			1 => esc_attr__( 'Enable', 'mai-pro-engine' ),
-			0 => esc_attr__( 'Disable', 'mai-pro-engine' ),
-		),
-	) );
-
-	// Content Limit
-	Kirki::add_field( $config, array(
-		'type'        => 'number',
-		'settings'    => 'posts_per_page',
-		'label'       => __( 'Entries Per Page', 'mai-pro-engine' ),
-		'description' => __( 'The max number of posts to show, per page.', 'mai-pro-engine' ),
-		'section'     => $section,
-		'default'     => get_option( 'posts_per_page' ),
-		'priority'    => 10,
-		'choices'     => array(
-			'min'  => 0,
-			'max'  => 1000,
-			'step' => 1,
-		),
-	) );
-
-	// NOT WORKING
-	Kirki::add_field( $config, array(
-		'type'        => 'radio',
-		'settings'    => 'posts_nav',
-		'label'       => __( 'Shop Pagination', 'genesis' ),
-		'section'     => $section,
-		'default'     => genesis_get_option( 'posts_nav' ),
-		'priority'    => 10,
-		'multiple'    => 1,
-		'choices'     => array(
-			'prev-next' => __( 'Previous / Next', 'genesis' ),
-			'numeric'   => __( 'Numeric', 'genesis' ),
-		),
-	) );
-
-}
-
 
 function _mai_kirki_get_public_post_types_config() {
 	$options    = array();

@@ -1,5 +1,9 @@
 <?php
 
+
+// admin_url( 'customize.php?autofocus[control]=control-name' )
+
+
 /**
  * CMB2 Genesis CPT Archive Metabox
  *
