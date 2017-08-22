@@ -27,17 +27,21 @@ function mai_do_entry_featured_image() {
 		return;
 	}
 
+	mai_do_featured_image();
+
+}
+
+function mai_do_featured_image( $size = 'featured' ) {
 	echo '<div class="featured-image">';
 		echo genesis_get_image( array(
 			'format' => 'html',
-			'size'   => 'featured',
+			'size'   => $size,
 			'attr'   => array( 'class' => 'wp-post-image' )
 			));
 	echo '</div>';
 
-	$caption = get_post(get_post_thumbnail_id())->post_excerpt;
+	$caption = get_post( get_post_thumbnail_id() )->post_excerpt;
 	if ( $caption ) {
 		echo '<span class="image-caption">' . $caption . '</span>';
 	}
-
 }

@@ -119,10 +119,9 @@ function mai_theme_settings_defaults( $settings ) {
  *
  * @return  array  The modified theme setting defaults.
  */
-add_filter( 'genesis_cpt_archive_settings_defaults', 'mai_cpt_archive_settings_defaults' );
+// add_filter( 'genesis_cpt_archive_settings_defaults', 'mai_cpt_archive_settings_defaults' );
 function mai_cpt_archive_settings_defaults( $settings ) {
-	$settings['layout_single']             = genesis_get_default_layout();
-	$settings['layout_archive']            = genesis_get_default_layout();
+	$settings['layout']                    = genesis_get_default_layout();
 	$settings['columns']                   = 3;
 	$settings['content_archive']           = 'full';
 	$settings['content_archive_limit']     = 0;

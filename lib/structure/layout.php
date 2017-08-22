@@ -37,7 +37,7 @@ add_action( 'init', 'mai_register_layouts' );
 function mai_register_layouts() {
 
 	// Layout image directory
-	$dir = MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/layouts/';
+	$dir = MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/layouts/';
 
 	// Medium Content
 	genesis_register_layout( 'md-content', array(
@@ -59,14 +59,10 @@ function mai_register_layouts() {
 /**
  * Maybe set fallbacks for archive layouts.
  *
- * If a post taxonomy, use the static blog page layout.
- * If Woo product taxonomy, use the shop page layout.
- * If a custom taxo, use the first post type the taxo is registered to.
- *
  * @return  array  The layouts.
  */
-add_filter( 'genesis_site_layout', 'mai_site_layout_fallback' );
-function mai_site_layout_fallback( $layout ) {
+add_filter( 'genesis_site_layout', 'mai_get_layout' );
+function mai_get_layout( $layout ) {
 
 	// Setup cache.
 	static $layout_cache = '';
@@ -79,10 +75,17 @@ function mai_site_layout_fallback( $layout ) {
 
 	global $wp_query;
 
-	// If viewing a singular page or post, or the posts page, but not the front page.
-	if ( is_singular() || ( is_home() && ! genesis_is_root_page() ) ) {
-		$post_id     = is_home() ? get_option( 'page_for_posts' ) : null;
-		$site_layout = genesis_get_custom_field( '_genesis_layout', $post_id );
+	// If home page.
+	if ( is_home() ) {
+		$site_layout = genesis_get_custom_field( '_genesis_layout', get_option( 'page_for_posts' ) );
+		if ( ! $site_layout ) {
+			$site_layout = genesis_get_option( 'layout_archive' );
+		}
+	}
+
+	// If viewing a singular page, post, or CPT.
+	elseif ( is_singular() ) {
+		$site_layout = genesis_get_custom_field( '_genesis_layout', get_the_ID() );
 		if ( ! $site_layout ) {
 			$site_layout = genesis_get_option( sprintf( 'layout_%s', get_post_type() ) );
 		}
@@ -97,18 +100,21 @@ function mai_site_layout_fallback( $layout ) {
 
 	// If viewing a custom taxonomy archive.
 	elseif ( is_tax() ) {
-		$tax = get_taxonomy( $wp_query->get_queried_object()->taxonomy );
-		if ( $tax ) {
-			/**
-			 * If we have a tax, get the first one.
-			 * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
-			 */
-			$post_type = reset( $tax->object_type );
-			// If we have a post type and it supports genesis-cpt-archive-settings
-			if ( post_type_exists( $post_type ) && genesis_has_post_type_archive_support( $post_type ) ) {
-				// $site_layout = genesis_get_cpt_option( 'layout', $post_type );
-				$site_layout = genesis_get_option( sprintf( 'layout_archive_%s', $post_type ) );
-				$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
+		$term        = $wp_query->get_queried_object();
+		$site_layout = $term ? get_term_meta( $term->term_id, 'layout', true) : '';
+		if ( ! $site_layout ) {
+			$tax = get_taxonomy( $wp_query->get_queried_object()->taxonomy );
+			if ( $tax ) {
+				/**
+				 * If we have a tax, get the first one.
+				 * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
+				 */
+				$post_type = reset( $tax->object_type );
+				// If we have a post type and it supports genesis-cpt-archive-settings
+				if ( post_type_exists( $post_type ) && genesis_has_post_type_archive_support( $post_type ) ) {
+					// $site_layout = genesis_get_option( sprintf( 'layout_archive_%s', $post_type ) );
+					$site_layout = genesis_get_cpt_option( 'layout', $post_type );
+				}
 			}
 		}
 		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
@@ -116,8 +122,8 @@ function mai_site_layout_fallback( $layout ) {
 
 	// If viewing a supported post type.
 	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-		// $site_layout = genesis_get_cpt_option( 'layout' );
-		$site_layout = genesis_get_option( sprintf( 'layout_archive_%s', $post_type ) );
+		// $site_layout = genesis_get_option( sprintf( 'layout_archive_%s', get_post_type() ) );
+		$site_layout = genesis_get_cpt_option( 'layout', get_post_type() );
 		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
 	}
 
@@ -258,7 +264,7 @@ function mai_sidebars_body_class( $classes ) {
 		'content-sidebar-sidebar',
 		'sidebar-sidebar-content',
 	);
-    // Add .no-sidebar body class if don't have any sidebars
+	// Add .no-sidebar body class if don't have any sidebars
 	if ( in_array( $layout, $no_sidebars ) ) {
 		$classes[] = 'no-sidebars';
 	} elseif ( in_array( $layout, $has_sidebar ) ) {

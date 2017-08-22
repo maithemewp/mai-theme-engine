@@ -28,11 +28,11 @@ function mai_is_flex_loop() {
  */
 function mai_get_columns() {
 	// If Woo shop or Woo taxonomy then fallback to 3.
-	if ( class_exists( 'WooCommerce' ) && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
-		$fallback = 3;
-	} else {
-		$fallback = genesis_get_option( 'columns' );
-	}
+	// if ( class_exists( 'WooCommerce' ) && ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {
+	// 	$fallback = 3;
+	// } else {
+	// 	$fallback = genesis_get_option( 'columns' );
+	// }
 	// Get the columns with fallback.
 	$columns = mai_get_archive_setting( 'columns', true, $fallback );
 	return (int) apply_filters( 'mai_get_columns', $columns );

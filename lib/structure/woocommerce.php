@@ -78,55 +78,6 @@ function mai_wc_get_template_part( $template, $slug, $name ) {
 	return $template;
 }
 
-/**
- * Set default WooCommerce layouts.
- * We need to hook in later to make give
- * a chance for template to exist.
- *
- * @return  void
- */
-// add_action( 'genesis_meta', 'mai_woocommerce_default_layouts' );
-function mai_woocommerce_default_layouts() {
-	// Bail if WooCommerce is not active
-	if ( ! class_exists( 'WooCommerce' ) ) {
-		return ;
-	}
-	// Run filter
-	add_filter( 'genesis_pre_get_option_site_layout', 'mai_woocommerce_default_layout' );
-}
-
-/**
- * genesis_site_layout() only calls genesis_get_option( 'site_layout' )
- * if a specific layout isn't chosen. So, it calls this for the default.
- *
- * @return  The site layout
- */
-function mai_woocommerce_default_layout( $layout ) {
-
-	// Bail if we have no layout or non-default layout is already chosen
-	if ( ! empty( $layout ) && $layout != genesis_get_default_layout() ) {
-		return $layout;
-	}
-
-	if ( is_shop() ) {
-		$layout = 'md-content';
-	}
-	elseif ( is_product() ) {
-		$layout = 'md-content';
-	}
-	elseif ( is_account_page() ) {
-		$layout = 'full-width-content';
-	}
-	elseif ( is_cart() ) {
-		$layout = 'md-content';
-	}
-	elseif ( is_checkout() ) {
-		$layout = 'md-content';
-	}
-	return $layout;
-
-}
-
 // Maybe remove woocommerce page title
 add_filter( 'woocommerce_show_page_title', 'mai_woocommerce_show_page_title' );
 function mai_woocommerce_show_page_title( $return ) {

@@ -16,7 +16,7 @@ function mai_update_database_version() {
 		return;
 	}
 	// Add new hook that fires during plugin update.
-	do_action( 'mai_pro_engine_update', MAI_PRO_ENGINE_VERSION, $option_version );
+	do_action( 'mai_pro_engine_update', MAI_PRO_ENGINE_VERSION, $option_version, $plugin_version );
 	// Update the version number option.
 	update_option( 'mai_pro_engine_version', MAI_PRO_ENGINE_VERSION );
 }
@@ -28,7 +28,7 @@ function mai_update_database_version() {
  * @return void.
  */
 add_action( 'mai_pro_engine_update', 'mai_pro_update_1_1_0' );
-function mai_pro_update_1_1_0( $plugin_version, $option_version ) {
+function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 
 	// Bail if we have an option version number and it's over 1.1.0
 	if ( isset( $option_version ) && ( $option_version >= '1.1.0' ) ) {
