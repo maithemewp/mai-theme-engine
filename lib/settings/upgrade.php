@@ -30,6 +30,11 @@ function mai_update_database_version() {
 add_action( 'mai_pro_engine_update', 'mai_pro_update_1_1_0' );
 function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 
+	// If new install and version is over 1.1.0
+	if ( $plugin_version >= '1.1.0' ) {
+		return;
+	}
+
 	// Bail if we have an option version number and it's over 1.1.0
 	if ( isset( $option_version ) && ( $option_version >= '1.1.0' ) ) {
 		return;
@@ -84,13 +89,20 @@ function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 	}
 
 	if ( ! empty( $settings ) ) {
-		// Update settings
+		// Update settings.
 		genesis_update_settings( $settings );
 
+		// Remove each theme mod from the array.
 		foreach ( $mods as $mod ) {
 			remove_theme_mod( $mod );
 		}
-
+		// enable_singular_image is not in the array because it was processed separately.
 		remove_theme_mod( 'enable_singular_image' );
 	}
+
+	// Woo upgrade, meta to cpt-archive-settings.
+	if ( class_exists( 'WooCommerce' ) ) {
+
+	}
+
 }

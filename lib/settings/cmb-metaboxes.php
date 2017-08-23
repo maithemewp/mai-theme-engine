@@ -31,7 +31,7 @@ function mai_cmb2_add_metaboxes() {
 	$post->add_field( _mai_cmb_banner_visibility_config() );
 	$post->add_field( _mai_cmb_banner_image_config() );
 
-	// Static Blog and WooCommerce Shop
+	// Static Blog
 	$static_archive = new_cmb2_box( array(
 		'id'           => 'mai_static_archive_settings',
 		'title'        => $metabox_title,

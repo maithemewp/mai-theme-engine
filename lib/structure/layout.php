@@ -64,6 +64,12 @@ function mai_register_layouts() {
 add_filter( 'genesis_site_layout', 'mai_get_layout' );
 function mai_get_layout( $layout ) {
 
+	/**
+	 * Remove layout filter from Genesis Connect for WooCommerce.
+	 * Mai Pro Engine handles this instead.
+	 */
+	remove_filter( 'genesis_pre_get_option_site_layout', 'genesiswooc_archive_layout' );
+
 	// Setup cache.
 	static $layout_cache = '';
 	// If cache is populated, return value.
@@ -121,7 +127,8 @@ function mai_get_layout( $layout ) {
 	}
 
 	// If viewing a supported post type.
-	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	elseif ( is_post_type_archive() ) {
 		// $site_layout = genesis_get_option( sprintf( 'layout_archive_%s', get_post_type() ) );
 		$site_layout = genesis_get_cpt_option( 'layout', get_post_type() );
 		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );

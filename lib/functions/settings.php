@@ -29,7 +29,8 @@ function mai_get_the_archive_setting( $key ) {
 		$setting = get_term_meta( get_queried_object()->term_id, $key, true );
 	}
 	// CPT archive
-	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	elseif ( is_post_type_archive() ) {
 		$setting = genesis_get_cpt_option( $key );
 	}
 	// Author archive
@@ -154,7 +155,8 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 						if ( 1 == count( $tax->object_type ) ) {
 							$post_type = reset( $tax->object_type );
 							// If we have a post type and it supports genesis-cpt-archive-settings
-							if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+							// if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+							if ( $post_type ) {
 								$meta = genesis_get_cpt_option( $key, $post_type );
 							}
 						}
@@ -164,7 +166,8 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 		}
 	}
 	// CPT archive
-	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	elseif ( is_post_type_archive() ) {
 		// If Woo products archive
 		// if ( class_exists( 'WooCommerce' ) && is_shop() ) {
 		// 	$check_for_archive_setting = false;
@@ -487,6 +490,13 @@ function mai_get_footer_widgets_count() {
  */
 function mai_get_customizer_get_default_accent_color() {
 	return '#067CCC';
+}
+
+function mai_get_customizer_post_type_settings_link( $post_type ) {
+	$query['autofocus[section]'] = sprintf( 'mai_%s_archive_settings', $post_type );
+	$query['url']                = get_post_type_archive_link( $post_type );
+	$section_link                = add_query_arg( $query, admin_url( 'customize.php' ) );
+	return $section_link;
 }
 
 /**

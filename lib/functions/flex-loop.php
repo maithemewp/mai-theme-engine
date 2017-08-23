@@ -34,7 +34,8 @@ function mai_get_columns() {
 	// 	$fallback = genesis_get_option( 'columns' );
 	// }
 	// Get the columns with fallback.
-	$columns = mai_get_archive_setting( 'columns', true, $fallback );
+	// $columns = mai_get_archive_setting( 'columns', true, $fallback );
+	$columns = mai_get_archive_setting( 'columns', true, genesis_get_option( 'columns' ) );
 	return (int) apply_filters( 'mai_get_columns', $columns );
 }
 

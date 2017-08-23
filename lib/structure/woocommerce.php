@@ -7,7 +7,6 @@
  * @version  1.0.0
  */
 
-
 /**
  * WooCommerce product gallery support.
  *
@@ -97,3 +96,89 @@ remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_
 
 // Replace Woocommerce Default pagination with Genesis Framework Pagination
 remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
+
+add_action( 'add_meta_boxes', 'mai_remove_woo_shop_meta_boxes', 99, 2 );
+function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
+
+	// Bail if Woo isn't active.
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+
+	// Bail if not a page.
+	if ( 'page' !== $post_type ) {
+		return;
+	}
+
+	// Bail if not the Woo shop page.
+	if ( $post->ID !== get_option( 'woocommerce_shop_page_id' ) ) {
+		return;
+	}
+
+	global $wp_meta_boxes;
+
+	// Create an array of meta boxes exceptions, ones that should not be removed (remove if you don't want/need)
+	$exceptions = array(
+		'slugdiv',
+		'submitdiv',
+		'pageparentdiv',
+		'authordiv',
+		'postexcerpt',
+	);
+
+	// Start looping.
+	foreach( $wp_meta_boxes as $page => $page_boxes ) {
+
+		// Skip if none.
+		if ( empty( $page_boxes ) ) {
+			continue;
+		}
+
+		// Loop through each page.
+		foreach( $page_boxes as $context => $box_context ) {
+
+			// Skip if none.
+			if ( empty( $box_context ) ) {
+				continue;
+			}
+
+			// Loop through each context.
+			foreach( $box_context as $box_type ) {
+
+				// Skip if none.
+				if ( empty( $box_type ) ) {
+					continue;
+				}
+
+				// Loop through each type.
+				foreach( $box_type as $id => $box ) {
+
+					// Skip if keeping.
+					if ( in_array( $id, $exceptions ) ) {
+						continue;
+					}
+
+					// Remove.
+					remove_meta_box( $id, $page, $context );
+
+				}
+
+			}
+
+		}
+
+	}
+
+	add_meta_box( 'mai_woo_shop_notice', __( 'Mai WooCommerce Shop', 'mai-pro-engine' ), 'mai_woo_shop_notice', 'page', 'normal' );
+
+}
+
+/**
+ * Outputs the content of the meta box
+ *
+ * @link  https://www.slushman.com/how-to-link-to-the-customizer/
+ */
+function mai_woo_shop_notice( $post ) {
+	$section_link = mai_get_customizer_post_type_settings_link( 'product' );
+	printf( '<a class="button" href="%s">%s</a>', esc_url( $section_link ), __( 'Edit Mai Product Settings', 'mai-pro-engine' ) );
+}

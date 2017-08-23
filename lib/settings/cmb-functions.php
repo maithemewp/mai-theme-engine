@@ -58,7 +58,7 @@ function _mai_cmb_show_banner_visibility_field() {
 	// Terms
 	elseif ( 'term.php' == $pagenow ) {
 
-	// Get taxonomy
+		// Get taxonomy
 		$taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
 
 		if ( array_intersect( get_taxonomy( $taxonomy )->object_type, $disable_post_types ) ) {
@@ -126,10 +126,9 @@ function _mai_cmb_show_if_static_archive() {
 
 	$post_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 	$posts_page_id = get_option('page_for_posts');
-	$shop_page_id  = get_option('woocommerce_shop_page_id');
 
-	// If static blog page or WooCommerce shop page
-	if ( ( $post_id == $posts_page_id ) || ( class_exists('WooCommerce') && ( $post_id == $shop_page_id ) ) ) {
+	// If static blog page.
+	if ( ( $post_id == $posts_page_id ) ) {
 		return true;
 	}
 	return false;

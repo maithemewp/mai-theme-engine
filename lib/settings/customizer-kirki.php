@@ -234,7 +234,7 @@ function mai_customizer_settings( $wp_customize ) {
 			'multiple'        => 1,
 			'active_callback' => _mai_kirki_is_banner_area_enabled(),
 			'choices'         => array(
-				''       => __( 'None', 'mai-pro-engine' ),
+				''       => __( 'Default', 'mai-pro-engine' ),
 				'left'   => __( 'Left', 'mai-pro-engine' ),
 				'center' => __( 'Center', 'mai-pro-engine' ),
 				'right'  => __( 'Right', 'mai-pro-engine' ),

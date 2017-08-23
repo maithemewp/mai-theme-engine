@@ -36,7 +36,7 @@ function mai_get_banner_id() {
 		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
 			$image_id = get_post_thumbnail_id( get_the_ID() );
 		}
-		// If no image and CPT has genesis archive support
+		// Fallback
 		if ( ! $image_id ) {
 			// Get the post's post_type
 			$post_type = get_post_type();
@@ -44,13 +44,14 @@ function mai_get_banner_id() {
 			if ( 'post' == $post_type && $posts_page_id = get_option( 'page_for_posts' ) ) {
 				$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
 			}
+			// // Products
+			// elseif ( class_exists( 'WooCommerce' ) && is_product() && $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
+			// 	$image_id = get_post_meta( $shop_page_id, 'banner_id', true );
+			// }
 			// CPTs
-			elseif ( genesis_has_post_type_archive_support( $post_type ) ) {
-				$image_id = genesis_get_cpt_option( 'banner_id' );
-			}
-			// Products
-			elseif ( class_exists( 'WooCommerce' ) && is_product() && $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
-				$image_id = get_post_meta( $shop_page_id, 'banner_id', true );
+			elseif ( post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
+				// genesis_has_post_type_archive_support( $post_type ) ) {
+				$image_id = genesis_get_cpt_option( 'banner_id', $post_type );
 			}
 		}
 	}
@@ -77,7 +78,8 @@ function mai_get_banner_id() {
 	}
 
 	// CPT archive
-	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
 		$image_id = genesis_get_cpt_option( 'banner_id' );
 	}
 
@@ -256,7 +258,8 @@ function mai_is_content_archive() {
 		$is_archive = true;
 	}
 	// CPT archive
-	elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
 		$is_archive = true;
 	}
 	// Author archive
@@ -362,6 +365,27 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 		$attributes['data-aspect-height'] = $image[2];
 	}
 	return $attributes;
+}
+
+function mai_is_admin_woo_shop_page() {
+	// False is Woo is not active.
+	if ( ! class_exists('WooCommerce') ) {
+		return false;
+	}
+	// False if not editing a page/post.
+	global $pagenow;
+	if ( 'post.php' != $pagenow ) {
+		return false;
+	}
+	// Get the ids.
+	$post_id      = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+	$shop_page_id = get_option( 'woocommerce_shop_page_id' );
+	// If WooCommerce shop page
+	if ( $post_id == $shop_page_id ) {
+		return true;
+	}
+	// Nope.
+	return false;
 }
 
 /**

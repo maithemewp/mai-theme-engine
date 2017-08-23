@@ -1,39 +1,82 @@
 <?php
 
-add_action( 'init', 'mai_do_cpt_archive_settings', 20 );
-function mai_do_cpt_archive_settings() {
+add_action( 'init', 'mai_do_cpt_settings', 999 );
+function mai_do_cpt_settings() {
 	/**
 	 * Get post types.
 	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
 	 */
-	$post_types = genesis_get_cpt_archive_types();
+	// $post_types = genesis_get_cpt_archive_types();
+
+	$args = array(
+		'public'       => true,
+		'show_ui'      => true,
+		'show_in_menu' => true,
+		'has_archive'  => true,
+		'_builtin'     => false,
+	);
+	$post_types = get_post_types( $args, 'names' );
+
 	if ( ! $post_types ) {
 		return;
 	}
-	foreach ( $post_types as $post_type => $post_type_object ) {
+
+	foreach ( $post_types as $post_type ) {
+
 		$args = array(
 			'columns'                          => genesis_get_option( 'columns' ),
-			'content_archive_thumbnail'        => genesis_get_option( 'content_archive_thumbnail' ),
 			sprintf( 'layout_%s', $post_type ) => '', // Single
 			'layout'                           => '', // Archive
-			'posts_per_page'                   => get_option( 'posts_per_page' ),
+			'posts_per_page'                   => 12, // get_option( 'posts_per_page' ) would be another db hit
 			'posts_nav'                        => genesis_get_option( 'posts_nav' ),
 		);
+
+		$supports = get_all_post_type_supports( $post_type );
+
+		if ( isset( $supports['genesis-entry-meta-before-content'] ) || isset( $supports['genesis-entry-meta-after-content'] ) ) {
+			$args['remove_meta'] = genesis_get_option( 'content_archive_thumbnail' );
+		}
+
+		if ( isset( $supports['editor'] ) || isset( $supports['excerpt'] ) ) {
+			$args['content_archive']       = genesis_get_option( 'content_archive' );
+			$args['content_archive_limit'] = genesis_get_option( 'content_archive_limit' );
+			$args['more_link']             = genesis_get_option( 'more_link' );
+			$args['more_link_text']        = genesis_get_option( 'more_link_text' );
+		}
+
+		if ( isset( $supports['thumbnail'] ) ) {
+			$args['content_archive_thumbnail'] = genesis_get_option( 'content_archive_thumbnail' );
+			$args['image_location']            = genesis_get_option( 'image_location' );
+			$args['image_size']                = genesis_get_option( 'image_size' );
+			$args['image_alignment']           = genesis_get_option( 'image_alignment' );
+		}
+
 		// Allow filter to easily modify settings for each post type.
-		$args = apply_filters( 'mai_cpt_archive_settings', $args, $post_type );
+		$args = apply_filters( 'mai_cpt_settings', $args, $post_type );
+
 		// Do the settings.
-		mai_archive_settings( $post_type, $args );
+		mai_cpt_settings( $post_type, $args );
 	}
 }
 
-// add_filter( 'mai_cpt_archive_settings', 'mai_woocommerce_archive_settings', 10, 2 );
-function mai_woocommerce_archive_settings( $args, $post_type ) {
+add_filter( 'mai_cpt_settings', 'mai_woocommerce_product_settings', 10, 2 );
+function mai_woocommerce_product_settings( $args, $post_type ) {
+	// Bail if CPT is not WooCommerce 'product'.
 	if ( ! ( class_exists( 'WooCommerce') && ( 'product' === $post_type ) ) ) {
 		return $args;
 	}
+	// Woo defaults.
 	return array(
 		'columns'                   => 3,
+		'content_archive'           => 'unset',
+		'content_archive_limit'     => 'unset',
+		'more_link'                 => 'unset',
+		'more_link_text'            => 'unset',
 		'content_archive_thumbnail' => 1,
+		'image_location'            => 'unset',
+		'image_size'                => 'unset',
+		'image_alignment'           => 'unset',
+		'remove_meta'               => 'unset',
 		'layout_product'            => 'md-content',         // Single
 		'layout'                    => 'full-width-content', // Archive
 		'posts_per_page'            => 12,
@@ -52,7 +95,7 @@ function mai_woocommerce_archive_settings( $args, $post_type ) {
  *
  * @return  void
  */
-function mai_archive_settings( $post_type, $args ) {
+function mai_cpt_settings( $post_type, $args ) {
 
 	// Bail if we don't have a post type.
 	if ( ! post_type_exists( $post_type ) ) {
@@ -60,11 +103,11 @@ function mai_archive_settings( $post_type, $args ) {
 	}
 
 	// Make sure the post type has g cpt archive support, so the correct actions and filters run as a default.
-	if ( ! genesis_has_post_type_archive_support( $post_type ) ) {
+	// if ( ! genesis_has_post_type_archive_support( $post_type ) ) {
 		// Genesis CPT Archive Support
-		add_post_type_support( $post_type, 'genesis-cpt-archives-settings' );
-		// add_post_type_support( $post_type, 'mai-archives-settings' );
-	}
+		// add_post_type_support( $post_type, 'genesis-cpt-archives-settings' );
+		add_post_type_support( $post_type, 'mai-cpt-settings' );
+	// }
 
 	$single_key = sprintf( 'layout_%s', $post_type );
 
@@ -130,10 +173,10 @@ function mai_archive_settings( $post_type, $args ) {
 			$unset = array_intersect_key( $unset, $options );
 			/**
 			 * If we have any items to update.
-			 * This should only happen if/when the mai_archive_settings() args change after first being setup.
+			 * This should only happen if/when the mai_cpt_settings() args change after first being setup.
 			 */
 			if ( ! empty( $unset ) ) {
-				// genesis_update_settings( $unset, GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type );
+				genesis_update_settings( $unset, GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type );
 			}
 		}
 		// No options, let's setup some defaults.
@@ -142,7 +185,7 @@ function mai_archive_settings( $post_type, $args ) {
 				// Unset $single_key because this is stored in theme settings, not cpt archive settings.
 				unset( $settings[$single_key] );
 			}
-			// genesis_update_settings( $settings, GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type );
+			genesis_update_settings( $settings, GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type );
 		}
 
 	}
@@ -192,46 +235,31 @@ function mai_register_archive_settings( $post_type, $args ) {
 		'capability' => 'edit_theme_options',
 	) );
 
-	// Single layout.
-	$single_key = sprintf( 'layout_%s', $post_type );
-	if ( isset( $args[$single_key]  )) {
-
-		Kirki::add_field( 'mai_settings', array(
-			'type'     => 'radio-image',
-			'settings' => $single_key,
-			'label'    => sprintf( __( '%s - Single', 'mai-pro-engine' ), $post_type_object->label ),
-			'section'  => $section,
-			'default'  => $args[$single_key],
-			'priority' => 10,
-			'choices'  => _mai_kirki_get_layout_images_with_site_default_config(),
-		) );
-
-	}
-
-	// Archive settings description.
+	// Banner image.
 	Kirki::add_field( $config, array(
-		'type'     => 'custom',
-		'settings' => 'archive_settings_description',
-		'label'    => __( 'Archive Settings', 'mai-pro-engine' ),
-		'section'  => $section,
-		'default'  => __( 'The settings below affect all archive pages related to this post type.', 'mai-pro-engine' ),
-		'priority' => 10,
+		'type'            => 'image',
+		'settings'        => 'banner_id',
+		'label'           => __( 'Banner image', 'mai-pro-engine' ),
+		'description'     => __( 'Set a default banner image. Can be overridden per %s.', 'mai-pro-engine' ),
+		'section'         => $section,
+		'default'         => '',
+		'priority'        => 10,
+		'active_callback' => _mai_kirki_is_banner_area_enabled(),
+		'choices'         => array(
+			'save_as' => 'id'
+		),
 	) );
 
-	// Archive Layout.
-	if ( isset( $args['layout'] ) ) {
 
-		Kirki::add_field( $config, array(
-			'type'     => 'radio-image',
-			'settings' => 'layout',
-			'label'    => sprintf( __( '%s - Archive', 'mai-pro-engine' ), $post_type_object->label ),
-			'section'  => $section,
-			'default'  => $args['layout'],
-			'priority' => 10,
-			'choices'  => _mai_kirki_get_layout_images_with_archives_default_config(),
-		) );
-
-	}
+	// // Archive settings description.
+	// Kirki::add_field( $config, array(
+	// 	'type'     => 'custom',
+	// 	'settings' => 'archive_settings_description',
+	// 	'label'    => sprintf( __( '%s - Archives Settings', 'mai-pro-engine' ), $post_type_object->label ),
+	// 	'section'  => $section,
+	// 	'default'  => __( 'The settings below affect all archive pages related to this post type.', 'mai-pro-engine' ),
+	// 	'priority' => 10,
+	// ) );
 
 	// Columns.
 	if ( isset( $args['columns'] ) ) {
@@ -469,6 +497,37 @@ function mai_register_archive_settings( $post_type, $args ) {
 				'prev-next' => __( 'Previous / Next', 'genesis' ),
 				'numeric'   => __( 'Numeric', 'genesis' ),
 			),
+		) );
+
+	}
+
+	// Archive Layout.
+	if ( isset( $args['layout'] ) ) {
+
+		Kirki::add_field( $config, array(
+			'type'     => 'radio-image',
+			'settings' => 'layout',
+			'label'    => sprintf( __( '%s - Archives Layout', 'mai-pro-engine' ), $post_type_object->label ),
+			'section'  => $section,
+			'default'  => $args['layout'],
+			'priority' => 10,
+			'choices'  => _mai_kirki_get_layout_images_with_archives_default_config(),
+		) );
+
+	}
+
+	// Single layout.
+	$single_key = sprintf( 'layout_%s', $post_type );
+	if ( isset( $args[$single_key]  )) {
+
+		Kirki::add_field( 'mai_settings', array(
+			'type'     => 'radio-image',
+			'settings' => $single_key,
+			'label'    => sprintf( __( '%s - Single Layout', 'mai-pro-engine' ), $post_type_object->label ),
+			'section'  => $section,
+			'default'  => $args[$single_key],
+			'priority' => 10,
+			'choices'  => _mai_kirki_get_layout_images_with_site_default_config(),
 		) );
 
 	}
