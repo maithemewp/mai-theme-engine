@@ -136,8 +136,8 @@ function mai_register_customizer_general( $wp_customize ) {
  *
  * @param  object $wp_customize the customizer object.
  */
-// add_action( 'customize_register', 'mai_register_customizer_settings' );
-function mai_register_customizer_settings( $wp_customize ) {
+// add_action( 'customize_register', 'mai_register_customizer_settings_og' );
+function mai_register_customizer_settings_og( $wp_customize ) {
 
 	$section = 'mai-banner-area';
 

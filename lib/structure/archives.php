@@ -155,7 +155,7 @@ function mai_content_archive_posts_per_page( $query ) {
 	if ( ! $posts_per_page ) {
 		return;
 	}
-	$query->set( 'posts_per_page', $posts_per_page );
+	$query->set( 'posts_per_page', absint( $posts_per_page ) );
 }
 
 /**
@@ -174,6 +174,7 @@ function mai_do_flex_loop_before() {
 	// Get the archive column count
 	$columns = mai_get_columns();
 
+	$align        = mai_get_archive_setting( 'content_archive_align', true, genesis_get_option( 'content_archive_align' ) );
 	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
 
@@ -186,6 +187,7 @@ function mai_do_flex_loop_before() {
 		} else {
 			$classes[] = 'image-' . $img_alignment;
 		}
+		// TODO: Get entry align classes here!!!!! text-xs-center
 		return $classes;
 	};
 

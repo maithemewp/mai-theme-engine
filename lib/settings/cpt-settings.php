@@ -1,7 +1,7 @@
 <?php
 
-add_action( 'init', 'mai_do_cpt_settings', 999 );
-function mai_do_cpt_settings() {
+// add_action( 'init', 'mai_do_cpt_settings_og', 999 );
+function mai_do_cpt_settings_og() {
 	/**
 	 * Get post types.
 	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
@@ -84,120 +84,9 @@ function mai_woocommerce_product_settings( $args, $post_type ) {
 	);
 }
 
-/**
- * Define the archive settings for a post type.
- * Args should either be false (to disable) or provide the default setting (to enable).
- *
- * This should be hooked into 'init' with a late priority (after 10) to ensure post_types are registered.
- *
- * @param   string  $post_type  The post type name.
- * @param   array   $args       The args to enable, with their default value. Include only the fields you want.
- *
- * @return  void
- */
-function mai_cpt_settings( $post_type, $args ) {
 
-	// Bail if we don't have a post type.
-	if ( ! post_type_exists( $post_type ) ) {
-		return;
-	}
 
-	// Make sure the post type has g cpt archive support, so the correct actions and filters run as a default.
-	// if ( ! genesis_has_post_type_archive_support( $post_type ) ) {
-		// Genesis CPT Archive Support
-		// add_post_type_support( $post_type, 'genesis-cpt-archives-settings' );
-		add_post_type_support( $post_type, 'mai-cpt-settings' );
-	// }
-
-	$single_key = sprintf( 'layout_%s', $post_type );
-
-	// Defaults.
-	$defaults = array(
-		$single_key                 => '',
-		'layout'                    => '',
-		'columns'                   => 1,
-		'content_archive'           => 'unset',
-		'content_archive_limit'     => 'unset',
-		'more_link'                 => 'unset',
-		'more_link_text'            => 'unset',
-		'content_archive_thumbnail' => 'unset',
-		'image_location'            => 'unset',
-		'image_size'                => 'unset',
-		'image_alignment'           => 'unset',
-		'remove_meta'               => 'unset',
-		'posts_per_page'            => 'unset',
-		'posts_nav'                 => 'unset',
-	);
-
-	// Parse.
-	$args = wp_parse_args( $args, $defaults );
-
-	// Sanitize.
-	$args = array(
-		$single_key                 => sanitize_key( $args[$single_key] ),
-		'layout'                    => sanitize_key( $args['layout'] ),
-		'columns'                   => (string) absint( $args['columns'] ),
-		'content_archive'           => ( 'unset' !== $args['content_archive'] ) ? sanitize_key( $args['content_archive'] ) : 'unset',
-		'content_archive_limit'     => ( 'unset' !== $args['content_archive_limit'] ) ? sanitize_key( $args['content_archive_limit'] ) : 'unset',
-		'content_archive_thumbnail' => ( ( 'unset' !== $args['content_archive_thumbnail'] ) && post_type_supports( $post_type, 'thumbnail' ) ) ? sanitize_key( $args['content_archive_thumbnail'] ) : 'unset',
-		'image_location'            => ( 'unset' !== $args['image_location'] ) ? sanitize_key( $args['image_location'] ) : 'unset',
-		'image_size'                => ( 'unset' !== $args['image_size'] ) ? sanitize_key( $args['image_size'] ) : 'unset',
-		'image_alignment'           => ( 'unset' !== $args['image_alignment'] ) ? sanitize_key( $args['image_alignment'] ) : 'unset',
-		'more_link'                 => ( 'unset' !== $args['more_link'] ) ? sanitize_key( $args['more_link'] ) : 'unset',
-		'more_link_text'            => ( 'unset' !== $args['more_link_text'] ) ? sanitize_key( $args['more_link_text'] ) : 'unset',
-		'remove_meta'               => ( ( 'unset' !== $args['remove_meta'] ) && ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) || post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) ) ? sanitize_key( $args['remove_meta'] ) : 'unset',
-		'posts_per_page'            => ( 'unset' !== $args['posts_per_page'] ) ? absint( $args['posts_per_page'] ) : 'unset',
-		'posts_nav'                 => ( 'unset' !== $args['posts_nav'] ) ? sanitize_key( $args['posts_nav'] ) : 'unset',
-	);
-
-	$settings = $args;
-	$unset    = array();
-
-	// Unset the 'unset' items.
-	foreach ( array_keys( $settings, 'unset', true ) as $key ) {
-		$unset[$key] = $settings[$key];
-		unset( $settings[$key] );
-	}
-
-	// If in admin or viewing customizer.
-	if ( is_admin() or is_customize_preview() ) {
-
-		$options = get_option( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type );
-
-		// If CPT options exist.
-		if ( $options ) {
-			/**
-			 * Get any options that need to be unset.
-			 * Returns an associative array containing all the entries of array1 which have keys that are present in all arguments.
-			 */
-			$unset = array_intersect_key( $unset, $options );
-			/**
-			 * If we have any items to update.
-			 * This should only happen if/when the mai_cpt_settings() args change after first being setup.
-			 */
-			if ( ! empty( $unset ) ) {
-				genesis_update_settings( $unset, GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type );
-			}
-		}
-		// No options, let's setup some defaults.
-		else {
-			if ( isset( $settings[$single_key] ) ) {
-				// Unset $single_key because this is stored in theme settings, not cpt archive settings.
-				unset( $settings[$single_key] );
-			}
-			genesis_update_settings( $settings, GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type );
-		}
-
-	}
-
-	// Register the archive settings.
-	add_action( 'customize_register', function() use ( $post_type, $settings ) {
-		mai_register_archive_settings( $post_type, $settings );
-	}, 22 );
-
-}
-
-function mai_register_archive_settings( $post_type, $args ) {
+function mai_register_archive_settings_og( $post_type, $args ) {
 
 	// Bail if Kirki isn't running.
 	if ( ! class_exists( 'Kirki' ) ) {
@@ -235,20 +124,20 @@ function mai_register_archive_settings( $post_type, $args ) {
 		'capability' => 'edit_theme_options',
 	) );
 
-	// Banner image.
-	Kirki::add_field( $config, array(
-		'type'            => 'image',
-		'settings'        => 'banner_id',
-		'label'           => __( 'Banner image', 'mai-pro-engine' ),
-		'description'     => __( 'Set a default banner image. Can be overridden per %s.', 'mai-pro-engine' ),
-		'section'         => $section,
-		'default'         => '',
-		'priority'        => 10,
-		'active_callback' => _mai_kirki_is_banner_area_enabled(),
-		'choices'         => array(
-			'save_as' => 'id'
-		),
-	) );
+	// // Banner image.
+	// Kirki::add_field( $config, array(
+	// 	'type'            => 'image',
+	// 	'settings'        => 'banner_id',
+	// 	'label'           => __( 'Banner image', 'mai-pro-engine' ),
+	// 	'description'     => __( 'Set a default banner image. Can be overridden per %s.', 'mai-pro-engine' ),
+	// 	'section'         => $section,
+	// 	'default'         => '',
+	// 	'priority'        => 10,
+	// 	'active_callback' => _mai_kirki_is_banner_area_enabled(),
+	// 	'choices'         => array(
+	// 		'save_as' => 'id'
+	// 	),
+	// ) );
 
 
 	// // Archive settings description.

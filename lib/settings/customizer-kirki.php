@@ -7,19 +7,63 @@
  *
  * @return  void
  */
-add_action( 'customize_register', 'mai_customizer_settings', 20 );
+// add_action( 'customize_register', 'mai_customizer_settings', 20 );
 function mai_customizer_settings( $wp_customize ) {
 
 	// Bail if Kirki isn't running.
-	if ( ! class_exists( 'Kirki' ) ) {
-		return;
-	}
+	// if ( ! class_exists( 'Kirki' ) ) {
+	// 	return;
+	// }
 
 	// Remove Genesis 'Content Archives' section
 	$wp_customize->remove_section( 'genesis_archives' );
 
 	// Remove Genesis 'Site Layout' section
 	$wp_customize->remove_section( 'genesis_layout' );
+
+// Multi-check field
+// http://wpsites.org/multiple-checkbox-customizer-control-10868/
+
+	$section = 'mai-settings';
+	/*****************************************************
+	 * Mai Theme Settings section
+	 */
+	$wp_customize->add_section( $section, array(
+		'description' => __( 'Customize your theme with sitewide changes.', 'mai-pro-engine' ),
+		'title'       => __( 'Mai Settings', 'mai-pro-engine' ),
+		'priority'    => 35,
+	) );
+	/*****************************************************
+	 * Enable Sticky Header setting
+	 */
+	$wp_customize->add_setting( 'enable_sticky_header', array(
+		'default'           => 0,
+		'sanitize_callback' => 'absint',
+	) );
+	$wp_customize->add_control( 'enable_sticky_header', array(
+		'label'    => __( 'Enable sticky header', 'mai-pro-engine' ),
+		'section'  => $section,
+		'type'     => 'checkbox',
+		'priority' => 5,
+	) );
+	/*****************************************************
+	 * Enable Shrinking Header setting
+	 */
+	$wp_customize->add_setting( 'enable_shrink_header', array(
+		'default'           => 0,
+		'sanitize_callback' => 'absint',
+	) );
+	$wp_customize->add_control( 'enable_shrink_header', array(
+		'label'    => __( 'Enable shrinking header', 'mai-pro-engine' ),
+		'section'  => $section,
+		'type'     => 'checkbox',
+		'priority' => 5,
+	) );
+
+
+
+// Trying this without Kirki.
+return;
 
 	Kirki::add_config( 'mai_settings', array(
 		'capability'  => 'edit_theme_options',
@@ -513,7 +557,7 @@ function mai_customizer_settings( $wp_customize ) {
  *
  * @return  void
  */
-add_action( 'customize_controls_print_styles', 'mai_do_customizer_css' );
+// add_action( 'customize_controls_print_styles', 'mai_do_customizer_css' );
 function mai_do_customizer_css() {
 	echo '<style type="text/css">
 		.customize-control-kirki-radio-image label:not(.customizer-text) {
@@ -521,6 +565,11 @@ function mai_do_customizer_css() {
 		}
 	</style>';
 }
+
+// add_action( 'customize_controls_enqueue_scripts', 'themedemo_customizer_style');
+// function themedemo_customizer_style() {
+	// wp_add_inline_style( 'customize-controls', '.wp-full-overlay-sidebar { background: #abcdef }');
+// }
 
 /**
  * Get the layout images array for radio-image choices with Kirki.

@@ -257,9 +257,9 @@ function mai_is_content_archive() {
 	elseif ( is_category() || is_tag() || is_tax() ) {
 		$is_archive = true;
 	}
-	// CPT archive
+	// CPT archive - this may be called too early to use get_post_type()
 	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-	elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
+	elseif ( is_post_type_archive() && post_type_supports( get_query_var( 'post_type' ), 'mai-cpt-settings' ) ) {
 		$is_archive = true;
 	}
 	// Author archive

@@ -137,8 +137,8 @@ final class Mai_Pro_Engine {
 	private function setup() {
 
 		// Dependencies.
-		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies/wp-dependency-installer.php';
-		WP_Dependency_Installer::instance()->run( MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies' );
+		// require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies/wp-dependency-installer.php';
+		// WP_Dependency_Installer::instance()->run( MAI_PRO_ENGINE_INCLUDES_DIR . 'dependencies' );
 
 		// Includes (Vendor).
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'CMB2/init.php';

@@ -3,8 +3,9 @@
 add_action( 'genesis_before', function() {
 	// delete_option( 'genesis-settings' );
 	// d( get_option( 'genesis-settings' ) );
-	// d( get_option( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . 'product' ) );
-	// d( genesis_get_option( 'layout_archive' ) );
+	// d( get_option( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . 'portfolio' ) );
+	// d( genesis_get_cpt_option( 'posts_per_page' ) );
+	// d( genesis_get_option( 'posts_per_page' ) );
 });
 
 
