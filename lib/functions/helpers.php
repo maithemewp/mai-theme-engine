@@ -1,6 +1,125 @@
 <?php
 
 /**
+ * Check if viewing a content archive page.
+ * This is any archive page that may inherit (custom) archive settings.
+ *
+ * @return  bool
+ */
+function mai_is_content_archive() {
+
+	$is_archive = false;
+
+	// Blog
+	if ( is_home() ) {
+		$is_archive = true;
+	}
+	// Term archive
+	elseif ( is_category() || is_tag() || is_tax() ) {
+		$is_archive = true;
+	}
+	// CPT archive - this may be called too early to use get_post_type()
+	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	elseif ( is_post_type_archive() && post_type_supports( get_query_var( 'post_type' ), 'mai-cpt-settings' ) ) {
+		$is_archive = true;
+	}
+	// Author archive
+	elseif ( is_author() ) {
+		$is_archive = true;
+	}
+	// Search results
+	elseif ( is_search() ) {
+		$is_archive = true;
+	}
+
+	return $is_archive;
+}
+
+/**
+ * Check if banner area is enabled.
+ *
+ * Force this in a template via:
+ * add_filter( 'theme_mod_enable_banner_area', '__return_true' );
+ *
+ * First check global settings, then archive setting (if applicable), then immediate setting.
+ *
+ * @return bool
+ */
+function mai_is_banner_area_enabled() {
+
+	$enabled = true;
+
+	// If not enabled at all.
+	if ( ! mai_is_banner_area_enabled_globally() ) {
+		$enabled = false;
+	} else {
+
+		/**
+		 * If disabled per post_type or taxonomy.
+		 */
+
+		// Singular page/post.
+		if ( is_singular( array( 'page', 'post' ) ) ) {
+			// Get 'disabled' post types, typecasted as array because it may return empty string if none
+			$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
+			if ( in_array( get_post_type(), $disable_post_types ) ) {
+				$enabled = false;
+			}
+		}
+		// Singular CPT.
+		elseif ( is_singular() ) {
+			$disable_post_type = (bool) genesis_get_option( sprintf( 'banner_disable_%s', get_post_type() ) );
+			if ( $disable_post_type ) {
+				$enabled = false;
+			}
+		}
+		// Post taxonomy archive.
+		elseif ( is_category() || is_tag() ) {
+			// Get 'disabled' taxonomies, typecasted as array because it may return empty string if none
+			$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+			if ( in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
+				$enabled = false;
+			}
+		}
+		// Custom taxonomy archive.
+		elseif ( is_tax() ) {
+			$disable_taxonomies = (array) genesis_get_option( sprintf( 'banner_disable_taxonomies_%s', get_post_type() ) );
+			if ( in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
+				$enabled = false;
+			}
+		}
+		/**
+		 * If still enabled,
+		 * check on the single object level.
+		 *
+		 * These conditionals were mostly adopted from mai_get_archive_setting() function.
+		 */
+		if ( $enabled ) {
+
+			$hidden = false;
+
+			// If single post/page/cpt
+			if ( is_singular() ) {
+				$hidden = get_post_meta( get_the_ID(), 'hide_banner', true );
+			}
+			// If content archive (the only other place we'd have this setting)
+			elseif ( mai_is_content_archive() ) {
+				$hidden = mai_get_archive_setting( 'hide_banner', false );
+			}
+
+			// If hidden, disable banner
+			if ( $hidden ) {
+				$enabled = false;
+			}
+
+		}
+
+	}
+
+	return $enabled;
+}
+
+/**
  * Get the banner image ID.
  *
  * First check immediate setting, then archive setting (if applicable), then fallback to default image.
@@ -110,6 +229,18 @@ function mai_get_banner_id() {
 }
 
 /**
+ * Get a section.
+ *
+ * @param  array  $content  The section content (required).
+ * @param  array  $args     The section args (optional).
+ *
+ * @return string|HTML
+ */
+function mai_get_section( $content, $args = array() ) {
+	return Mai_Shortcodes()->get_section( $args, $content );
+}
+
+/**
  * Helper function to get a grid of content.
  * This is a php version of the [grid] shortcode.
  *
@@ -122,15 +253,154 @@ function mai_get_grid( $args ) {
 }
 
 /**
- * Get a section.
+ * Helper function to check if archive is a flex loop.
+ * This doesn't check if viewing an actual archive, but this layout should not be an option if ! is_archive()
  *
- * @param  array  $content  The section content (required).
- * @param  array  $args     The section args (optional).
- *
- * @return string|HTML
+ * @return  bool  Whether the layout is a grid archive
  */
-function mai_get_section( $content, $args = array() ) {
-	return Mai_Shortcodes()->get_section( $args, $content );
+function mai_is_flex_loop() {
+	// Bail if not a content archive
+	if ( ! mai_is_content_archive() ) {
+		return false;
+	}
+	// Get columns
+	$columns = mai_get_columns();
+	// If we have more than 1 column or if we are using featured image as bg image, it's a flex loop
+	if ( ( $columns > 1 ) || ( 'background' === mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) ) ) ) {
+		return true;
+	}
+	// Not a flex loop
+	return false;
+}
+
+/**
+ * Helper function to get the column count, with Woo fallback and filter.
+ *
+ * @return  int  The number of columns
+ */
+function mai_get_columns() {
+	// Get the columns with fallback.
+	$columns = mai_get_archive_setting( 'columns', true, genesis_get_option( 'columns' ) );
+	return (int) apply_filters( 'mai_get_columns', $columns );
+}
+
+/**
+ * Get flex entry classes by
+ *
+ * @param   string      $option  'layout', 'columns', or 'fraction'
+ * @param   string|int  $value   layout name, number of columns, or fraction name
+ *
+ * @return  string               comma separated string of classes
+ */
+function mai_get_flex_entry_classes_by( $option, $value ) {
+	$classes = '';
+	if ( 'columns' == $option ) {
+		$classes = mai_get_flex_entry_classes_by_columns( $value );
+	} elseif ( 'fraction' == $option ) {
+		$classes = mai_get_flex_entry_classes_by_franction( $value );
+	}
+	return $classes;
+}
+
+/**
+ * Filter post_class to add flex classes by number of columns.
+ *
+ * @param   string  $columns  number of columns to get classes for
+ *
+ * @return  void    fires post_class filter which returns array of classes
+ */
+function mai_do_flex_entry_classes_by_columns( $columns ) {
+	add_filter( 'post_class', function( $classes ) use ( $columns ) {
+		$classes[] = mai_get_flex_entry_classes_by_columns( $columns );
+		return $classes;
+	});
+}
+
+/**
+ * Get the classes needed for an entry from number of columns.
+ *
+ * @param  string  $columns  number of columns to get classes for.
+ *
+ * @return string  the classes
+ */
+function mai_get_flex_entry_classes_by_columns( $columns ) {
+	switch ( (int)$columns ) {
+		case 1:
+			$classes = 'flex-entry col col-xs-12';
+		break;
+		case 2:
+			$classes = 'flex-entry col col-xs-12 col-sm-6';
+		break;
+		case 3:
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
+		break;
+		case 4:
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-3';
+		break;
+		case 6:
+			$classes = 'flex-entry col col-xs-6 col-sm-4 col-md-2';
+		break;
+		default:
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
+	}
+	return $classes;
+}
+
+/**
+ * Get the classes needed for an entry from fraction name.
+ *
+ * @param  string  $fraction  The fraction name.
+ *
+ * @return string  the classes
+ */
+function mai_get_flex_entry_classes_by_fraction( $fraction ) {
+	switch ( $fraction ) {
+		case 'col':
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md';
+		break;
+		case 'col-auto':
+			$classes = 'flex-entry col col-xs-12 col-sm-auto';
+		break;
+		case 'one-twelfth':
+			$classes = 'flex-entry col col-xs-3 col-sm-2 col-md-1';
+		break;
+		case 'one-sixth':
+			$classes = 'flex-entry col col-xs-4 col-sm-2';
+		break;
+		case 'one-fourth':
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-3';
+		break;
+		case 'one-third':
+			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
+		break;
+		case 'five-twelfths':
+			$classes = 'flex-entry col col-xs-12 col-sm-5';
+		break;
+		case 'one-half':
+			$classes = 'flex-entry col col-xs-12 col-sm-6';
+		break;
+		case 'seven-twelfths':
+			$classes = 'flex-entry col col-xs-12 col-sm-7';
+		break;
+		case 'two-thirds':
+			$classes = 'flex-entry col col-xs-12 col-sm-8';
+		break;
+		case 'three-fourths':
+			$classes = 'flex-entry col col-xs-12 col-sm-9';
+		break;
+		case 'five-sixths':
+			$classes = 'flex-entry col col-xs-12 col-sm-10';
+		break;
+		case 'eleven-twelfths':
+			$classes = 'flex-entry col col-xs-12 col-sm-11';
+		break;
+		case 'one-whole':
+			$classes = 'flex-entry col col-xs-12';
+		break;
+		default:
+			$classes = 'flex-entry col col-xs-12 col-sm';
+	}
+	return $classes;
 }
 
 /**
@@ -237,41 +507,6 @@ function mai_get_the_posts_meta( $post = '' ) {
 		$post_meta = sprintf( '<p class="entry-meta">%s</p>', do_shortcode( $shortcodes ) );
 	}
 	return $post_meta;
-}
-
-/**
- * Check if viewing a content archive page.
- * This is any archive page that may inherit (custom) archive settings.
- *
- * @return  bool
- */
-function mai_is_content_archive() {
-
-	$is_archive = false;
-
-	// Blog
-	if ( is_home() ) {
-		$is_archive = true;
-	}
-	// Term archive
-	elseif ( is_category() || is_tag() || is_tax() ) {
-		$is_archive = true;
-	}
-	// CPT archive - this may be called too early to use get_post_type()
-	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-	elseif ( is_post_type_archive() && post_type_supports( get_query_var( 'post_type' ), 'mai-cpt-settings' ) ) {
-		$is_archive = true;
-	}
-	// Author archive
-	elseif ( is_author() ) {
-		$is_archive = true;
-	}
-	// Search results
-	elseif ( is_search() ) {
-		$is_archive = true;
-	}
-
-	return $is_archive;
 }
 
 function mai_is_no_sidebar() {
@@ -397,94 +632,4 @@ function mai_is_admin_woo_shop_page() {
  */
 function mai_get_processed_content( $content ) {
 	return Mai_Shortcodes()->get_processed_content( $content );
-}
-
-/**
- * Helper function for getting the script/style `.min` suffix for minified files.
- *
- * @return string
- */
-function mai_get_suffix() {
-	$debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-	return $debug ? '' : '.min';
-}
-
-/**
- * Sanitize a string or array of classes.
- *
- * @param   string|array  $classes   The classes to sanitize.
- *
- * @return  string  Space-separated, sanitized classes.
- */
-function mai_sanitize_html_classes( $classes ) {
-	if ( ! is_array( $classes ) ) {
-		$classes = explode( ' ', $classes );
-	}
-	return implode( ' ', array_unique( array_map( 'sanitize_html_class', array_map( 'trim', $classes ) ) ) );
-}
-
-/**
- * Sanitize a string or array of keys.
- *
- * @param   string|array  $keys   The keys to sanitize.
- *
- * @return  array  Array of sanitized keys.
- */
-function mai_sanitize_keys( $keys ) {
-	if ( ! is_array( $keys ) ) {
-		$keys = explode( ',', $keys );
-	}
-	return array_map( 'sanitize_key', array_map( 'trim', array_filter($keys) ) );
-}
-
-/**
- * Kind of a gross function to run do_action in output buffering
- * and return the content of that hook.
- *
- * @param   string  $hook  The hook name to run.
- *
- * @return  string|HTML
- */
-function mai_get_do_action( $hook ) {
-    // Start buffer
-	ob_start();
-    // Add new hook
-	do_action( $hook );
-    // End buffer
-	$content = ob_get_clean();
-    // Return the content, filtered by of hook name with underscore prepended
-	return apply_filters( '_' . $hook, $content );
-}
-
-/**
- * Check if a string starts with another string.
- *
- * @link    http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
- *
- * @param   string  $haystack  The string to check against.
- * @param   string  $needle    The string to check if starts with.
- *
- * @return  bool
- */
-function mai_starts_with( $haystack, $needle ) {
-	$length = strlen( $needle );
-	return ( $needle === substr( $haystack, 0, $length ) );
-}
-
-/**
- * Check if a string ends with another string.
- *
- * @link    http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
- *
- * @param   string  $haystack  The string to check against.
- * @param   string  $needle    The string to check if starts with.
- *
- * @return  bool
- */
-function mai_ends_with( $haystack, $needle ) {
-	$length = strlen($needle);
-	if ( 0 == $length ) {
-		return true;
-	}
-	return ( $needle === substr( $haystack, -$length ) );
 }

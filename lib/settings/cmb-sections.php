@@ -194,13 +194,6 @@ function mai_do_sections_metabox() {
  * @param  bool  $default On/Off (true/false)
  * @return mixed          Returns true or '', the blank default
  */
-function mai_set_checkbox_default_for_new_post( $default ) {
-	return isset( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
-}
-
-/**
- * Sanitizes WYSIWYG fields like WordPress does for post_content fields.
- */
-function mai_sanitize_post_content( $content ) {
-	return apply_filters( 'content_save_pre', $content );
-}
+// function mai_set_checkbox_default_for_new_post( $default ) {
+// 	return isset( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
+// }

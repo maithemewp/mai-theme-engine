@@ -20,6 +20,51 @@ add_theme_support( 'wc-product-gallery-zoom' );
 add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 
+// Remove taxonomy archive description since Mai has this functionality already
+remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
+
+// Replace Woocommerce Default pagination with Genesis Framework Pagination
+remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
+
+// Maybe remove woocommerce page title
+add_filter( 'woocommerce_show_page_title', 'mai_woocommerce_show_page_title' );
+function mai_woocommerce_show_page_title( $return ) {
+	if ( mai_is_banner_area_enabled() ) {
+		if ( is_shop() ) {
+			return false;
+		}
+		if ( is_product() ) {
+			return false;
+		}
+	}
+	return false;
+}
+
+add_filter( 'mai_cpt_settings', 'mai_woocommerce_product_settings', 10, 2 );
+function mai_woocommerce_product_settings( $args, $post_type ) {
+	// Bail if CPT is not WooCommerce 'product'.
+	if ( ! ( class_exists( 'WooCommerce') && ( 'product' === $post_type ) ) ) {
+		return $args;
+	}
+	// Woo defaults.
+	return array(
+		'columns'                   => 3,
+		'content_archive'           => 'unset',
+		'content_archive_limit'     => 'unset',
+		'more_link'                 => 'unset',
+		'more_link_text'            => 'unset',
+		'content_archive_thumbnail' => 1,
+		'image_location'            => 'unset',
+		'image_size'                => 'unset',
+		'image_alignment'           => 'unset',
+		'remove_meta'               => 'unset',
+		'layout_product'            => 'md-content',         // Single
+		'layout'                    => 'full-width-content', // Archive
+		'posts_per_page'            => 12,
+		'posts_nav'                 => 'prev-next',
+	);
+}
+
 /**
  * Load WooCommerce templates in the plugin,
  * while still allowing the theme to override.
@@ -77,26 +122,12 @@ function mai_wc_get_template_part( $template, $slug, $name ) {
 	return $template;
 }
 
-// Maybe remove woocommerce page title
-add_filter( 'woocommerce_show_page_title', 'mai_woocommerce_show_page_title' );
-function mai_woocommerce_show_page_title( $return ) {
-	if ( mai_is_banner_area_enabled() ) {
-		if ( is_shop() ) {
-			return false;
-		}
-		if ( is_product() ) {
-			return false;
-		}
-	}
-	return false;
-}
-
-// Remove taxonomy archive description since Mai has this functionality already
-remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
-
-// Replace Woocommerce Default pagination with Genesis Framework Pagination
-remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
-
+/**
+ * Remove metaboxes on Woo shop admin page.
+ * Most settings are now in Customizer.
+ *
+ * @return void
+ */
 add_action( 'add_meta_boxes', 'mai_remove_woo_shop_meta_boxes', 99, 2 );
 function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
 
@@ -169,6 +200,7 @@ function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
 
 	}
 
+	// Add metabox shop notice.
 	add_meta_box( 'mai_woo_shop_notice', __( 'Mai WooCommerce Shop', 'mai-pro-engine' ), 'mai_woo_shop_notice', 'page', 'normal' );
 
 }

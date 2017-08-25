@@ -203,7 +203,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_background_color' ),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $settings_field );
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
 		)
 	) );
@@ -226,7 +226,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $settings_field );
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
 		)
 	) );
@@ -248,7 +248,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 			'priority'        => 10,
 			'type'            => 'checkbox',
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $settings_field );
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
 		)
 	);
@@ -277,7 +277,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 				'gradient' => __( 'Gradient', 'mai-pro-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $settings_field );
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
 		)
 	);
@@ -305,7 +305,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 				'dark'  => __( 'Dark Box', 'mai-pro-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $settings_field );
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
 		)
 	);
@@ -337,49 +337,43 @@ function mai_register_customizer_settings( $wp_customize ) {
 				'full' => __( 'Full Width', 'mai-pro-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $settings_field );
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
 		)
 	);
 
 	// Align text.
-	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'banner_align_text' ),
-		array(
-			'default'           => '',
-			'type'              => 'option',
-			'sanitize_callback' => 'sanitize_key',
-		)
-	);
-	$wp_customize->add_control(
-		'banner_align_text',
-		array(
-			'label'    => __( 'Text alignment', 'mai-pro-engine' ),
-			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_align_text' ),
-			'priority' => 10,
-			'type'     => 'select',
-			'choices'  => array(
-				''       => __( 'Default', 'mai-pro-engine' ),
-				'left'   => __( 'Left', 'mai-pro-engine' ),
-				'center' => __( 'Center', 'mai-pro-engine' ),
-				'right'  => __( 'Right', 'mai-pro-engine' ),
-			),
-			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $settings_field );
-			},
-		)
-	);
+	// $wp_customize->add_setting(
+	// 	_mai_customizer_get_field_name( $settings_field, 'banner_align_text' ),
+	// 	array(
+	// 		'default'           => '',
+	// 		'type'              => 'option',
+	// 		'sanitize_callback' => 'sanitize_key',
+	// 	)
+	// );
+	// $wp_customize->add_control(
+	// 	'banner_align_text',
+	// 	array(
+	// 		'label'    => __( 'Text alignment', 'mai-pro-engine' ),
+	// 		'section'  => $section,
+	// 		'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_align_text' ),
+	// 		'priority' => 10,
+	// 		'type'     => 'select',
+	// 		'choices'  => array(
+	// 			''       => __( 'Default', 'mai-pro-engine' ),
+	// 			'left'   => __( 'Left', 'mai-pro-engine' ),
+	// 			'center' => __( 'Center', 'mai-pro-engine' ),
+	// 			'right'  => __( 'Right', 'mai-pro-engine' ),
+	// 		),
+	// 		'active_callback' => function() use ( $wp_customize, $settings_field ) {
+	// 			return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
+	// 		},
+	// 	)
+	// );
 
-	// Disable post types. TODO: MAKE SINGLE SETTING 	banner_disable_{post_type} (genesis-settings)
-	//                     TODO: CPT SETTINGS disable_banner (key?)
-	// $disable_post_types = array();
-	// $post_types         = get_post_types( array( 'public' => true ), 'objects' );
-	// if ( $post_types ) {
-	// 	foreach ( $post_types as $post_type ) {
-	// 		$disable_post_types[$post_type->name] = $post_type->label;
-	// 	}
-	// }
+	/**
+	 * Disable post types.
+	 */
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_disable_post_types' ),
 		array(
@@ -401,15 +395,26 @@ function mai_register_customizer_settings( $wp_customize ) {
 					'post' => __( 'Posts', 'mai-pro-engine' ),
 					'page' => __( 'Pages', 'mai-pro-engine' ),
 				),
+				'active_callback' => function() use ( $wp_customize, $settings_field ) {
+					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
+				},
 			)
 		)
 	);
 
-	// Disable taxonomies.
+	/**
+	 * Disable taxonomies.
+	 * Only taxos registered to 'post' and 'page' post_type.
+	 * Custom taxos (on CPT's) are handled on the CPT settings panel.
+	 */
 	$disable_taxonomies = array();
-	$taxonomies         = get_object_taxonomies( array( 'page', 'post' ), 'objects' );
+	$taxonomies         = get_object_taxonomies( 'post', 'objects' );
 	if ( $taxonomies ) {
 		foreach ( $taxonomies as $taxo ) {
+			// If taxo is registered to more than one object.
+			if ( count( (array) $taxo->object_type ) > 1 ) {
+				continue;
+			}
 			$disable_taxonomies[$taxo->name] = $taxo->label;
 		}
 		$wp_customize->add_setting(
@@ -430,6 +435,9 @@ function mai_register_customizer_settings( $wp_customize ) {
 					'settings'    => _mai_customizer_get_field_name( $settings_field, 'banner_disable_taxonomies' ),
 					'priority'    => 10,
 					'choices'     => $disable_taxonomies,
+					'active_callback' => function() use ( $wp_customize, $settings_field ) {
+						return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
+					},
 				)
 			)
 		);
@@ -477,35 +485,94 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $genesis_settings, 'banner_id' ),
 			'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $genesis_settings );
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
 			},
 		)
 	) );
 
-	// Hide Banner singular (saves to genesis-settings option).
-	$hide_banner_key = sprintf( 'hide_banner_%s', $post_type );
+	// Hide CPT archive.
 	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $genesis_settings, $hide_banner_key ),
+		_mai_customizer_get_field_name( $settings_field, 'hide_banner' ),
 		array(
-			'default'           => '',
-			'type'              => 'option',
+			'default' => 0,
+			'type'    => 'option',
 		)
 	);
 	$wp_customize->add_control(
-		$hide_banner_key,
+		$prefix . 'hide_banner',
 		array(
-			'label'    => __( 'Hide Banner on single entries', 'mai-pro-engine' ),
+			'label'    => __( 'Hide banner on the main archive', 'mai-pro-engine' ),
 			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $genesis_settings, $hide_banner_key ),
+			'settings' => _mai_customizer_get_field_name( $settings_field, 'hide_banner' ),
 			'priority' => 10,
 			'type'     => 'checkbox',
 			'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
-				return _mai_customizer_is_banner_area_enabled( $wp_customize, $genesis_settings );
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
 			},
 		)
 	);
 
-	// Hide for archive here!?!?!?
+	// Disable singular (saves to genesis-settings option).
+	$disable_post_type = sprintf( 'banner_disable_%s', $post_type );
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $genesis_settings, $disable_post_type ),
+		array(
+			'default' => '',
+			'type'    => 'option',
+		)
+	);
+	$wp_customize->add_control(
+		$prefix . $disable_post_type,
+		array(
+			'label'    => __( 'Hide banner on single entries', 'mai-pro-engine' ),
+			'section'  => $section,
+			'settings' => _mai_customizer_get_field_name( $genesis_settings, $disable_post_type ),
+			'priority' => 10,
+			'type'     => 'checkbox',
+			'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
+			},
+		)
+	);
+
+	// Disable taxonomies (saves to genesis-settings option).
+	$disable_taxonomies = array();
+	$taxonomies         = get_object_taxonomies( $post_type, 'objects' );
+	if ( $taxonomies ) {
+		foreach ( $taxonomies as $taxo ) {
+			/**
+			 * If taxo is registered to more than one object.
+			 * We may need to account for these taxos later, but for now
+			 * this seems like an edge case. Most taxos are only registered to 1 object.
+			 */
+			if ( count( (array) $taxo->object_type ) > 1 ) {
+				continue;
+			}
+			$disable_taxonomies[$taxo->name] = $taxo->label;
+		}
+		$banner_disable_taxonomies = sprintf( 'banner_disable_taxonomies_%s', $post_type );
+		$wp_customize->add_setting(
+			_mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies ),
+			array(
+				'default'           => '',
+				'type'              => 'option',
+				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+			)
+		);
+		$wp_customize->add_control(
+			new Mai_Customize_Control_Multicheck( $wp_customize,
+				$prefix . $banner_disable_taxonomies,
+				array(
+					'label'       => __( 'Disable on (taxonomies)', 'mai-pro-engine' ),
+					'description' => __( 'Disable on the following taxonomy archives.', 'mai-pro-engine' ),
+					'section'     => $section,
+					'settings'    => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies ),
+					'priority'    => 10,
+					'choices'     => $disable_taxonomies,
+				)
+			)
+		);
+	}
 
 	// Columns.
 	if ( isset( $args['columns'] ) ) {
@@ -539,32 +606,6 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 
 	}
 
-	// Align.
-	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'content_archive_align' ),
-		array(
-			'default'           => $args['content_archive_align'],
-			'type'              => 'option',
-			'sanitize_callback' => 'sanitize_key',
-		)
-	);
-	$wp_customize->add_control(
-		$prefix . 'content_archive_align',
-		array(
-			'label'    => __( 'Archives: Align Content', 'mai-pro-engine' ),
-			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $settings_field, 'content_archive_align' ),
-			'priority' => 10,
-			'type'     => 'select',
-			'choices'  => array(
-				''       => __( '- None -', 'genesis' ),
-				'left'   => __( 'Left', 'genesis' ),
-				'center' => __( 'Center', 'genesis' ),
-				'right'  => __( 'Right', 'genesis' ),
-			),
-		)
-	);
-
 	// Content.
 	if ( isset( $args['content_archive'] ) ) {
 
@@ -597,12 +638,12 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			$wp_customize->add_control(
 				$prefix . 'content_archive',
 				array(
-					'label'       => __( 'Archives: Content', 'mai-pro-engine' ),
-					'section'     => $section,
-					'settings'    => _mai_customizer_get_field_name( $settings_field, 'content_archive' ),
-					'priority'    => 10,
-					'type'        => 'select',
-					'choices'     => $content_archive_choices,
+					'label'    => __( 'Archives: Content', 'mai-pro-engine' ),
+					'section'  => $section,
+					'settings' => _mai_customizer_get_field_name( $settings_field, 'content_archive' ),
+					'priority' => 10,
+					'type'     => 'select',
+					'choices'  => $content_archive_choices,
 				)
 			);
 
@@ -821,7 +862,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 		);
 		$wp_customize->add_control(
 			new Mai_Customize_Control_Multicheck( $wp_customize,
-				$remove_meta_single,
+				$prefix . $remove_meta_single,
 				array(
 					'label'    => __( 'Archives: Entry Meta', 'mai-pro-engine' ),
 					'section'  => $section,
@@ -924,7 +965,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			)
 		);
 		$wp_customize->add_control(
-			$single_key,
+			$prefix . $single_key,
 			array(
 				'label'    => __( 'Single: Layout', 'mai-pro-engine' ),
 				'section'  => $section,
@@ -987,8 +1028,9 @@ function mai_cpt_settings_init() {
 		// Allow filter to easily modify settings for each post type.
 		$args = apply_filters( 'mai_cpt_settings', $args, $post_type );
 
-		// Do the settings.
+		// Do the customizer settings.
 		mai_do_cpt_settings( $post_type, $args );
+
 	}
 }
 
@@ -1015,12 +1057,11 @@ function mai_do_cpt_settings( $post_type, $args ) {
 		return;
 	}
 
-	// Make sure the post type has g cpt archive support, so the correct actions and filters run as a default.
-	// if ( ! genesis_has_post_type_archive_support( $post_type ) ) {
-		// Genesis CPT Archive Support
-		// add_post_type_support( $post_type, 'genesis-cpt-archives-settings' );
-		add_post_type_support( $post_type, 'mai-cpt-settings' );
-	// }
+	/**
+	 * Add Mai CPT support here.
+	 * This happens here, internally only. Please don't add 'mai-cpt-settings' support to CPT's manually.
+	 */
+	add_post_type_support( $post_type, 'mai-cpt-settings' );
 
 	$single_key = sprintf( 'layout_%s', $post_type );
 
@@ -1058,13 +1099,13 @@ function mai_do_cpt_settings( $post_type, $args ) {
 		'image_alignment'           => ( 'unset' !== $args['image_alignment'] ) ? sanitize_key( $args['image_alignment'] ) : 'unset',
 		'more_link'                 => ( 'unset' !== $args['more_link'] ) ? sanitize_key( $args['more_link'] ) : 'unset',
 		'more_link_text'            => ( 'unset' !== $args['more_link_text'] ) ? sanitize_key( $args['more_link_text'] ) : 'unset',
-		'remove_meta'               => ( ( 'unset' !== $args['remove_meta'] ) && ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) || post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) ) ? sanitize_key( $args['remove_meta'] ) : 'unset',
+		'remove_meta'               => ( ( 'unset' !== $args['remove_meta'] ) && ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) || post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) ) ? array_map( 'sanitize_key', (array) $args['remove_meta'] ) : 'unset',
 		'posts_per_page'            => ( 'unset' !== $args['posts_per_page'] ) ? absint( $args['posts_per_page'] ) : 'unset',
 		'posts_nav'                 => ( 'unset' !== $args['posts_nav'] ) ? sanitize_key( $args['posts_nav'] ) : 'unset',
 	);
 
 	$settings_fields = $args;
-	$unset    = array();
+	$unset           = array();
 
 	// Unset the 'unset' items.
 	foreach ( array_keys( $settings_fields, 'unset', true ) as $key ) {
@@ -1107,6 +1148,11 @@ function mai_do_cpt_settings( $post_type, $args ) {
 	add_action( 'customize_register', function( $wp_customize ) use ( $post_type, $settings_fields ) {
 		mai_register_cpt_settings( $wp_customize, $post_type, $settings_fields );
 	}, 22 );
+
+	// Do the (CMB2) CPT archive settings.
+	if ( post_type_supports( $post_type, 'genesis-cpt-archives-settings' ) ) {
+		mai_do_genesis_cpt_archive_settings( $post_type );
+	}
 
 }
 
@@ -1188,7 +1234,7 @@ function mai_register_customize_control_multicheck() {
 
 }
 
-function _mai_customizer_is_banner_area_enabled( $wp_customize, $settings_field ) {
+function _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field ) {
 	return $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ) )->value();
 }
 

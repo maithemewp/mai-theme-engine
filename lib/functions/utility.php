@@ -102,49 +102,30 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 		return null;
 	}
 	$meta = null;
-	// // Static blog page.
-	// if ( is_home() && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-	// 	// If not checking enabled, or checking enabled and is enabled.
-	// 	if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
-	// 		$meta = get_post_meta( $posts_page_id, $key, true );
-	// 	}
-	// }
-	// // Term archive
-	// elseif ( is_category() || is_tag() || is_tax() ) {
-	if ( is_category() || is_tag() || is_tax() ) {
+	// Blog.
+	if ( is_home() ) {
+		$meta = genesis_get_option( $key );
+	}
+	// Taxonomy archive.
+	elseif ( is_category() || is_tag() || is_tax() ) {
 
 		// If checking enabled and is enabled.
 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true ) ) ) {
 			$meta = get_term_meta( get_queried_object()->term_id, $key, true );
 		}
 
-		// If no meta
+		// If no meta.
 		if ( ! $meta ) {
-			// Get hierarchical taxonomy term meta
+			// Get hierarchical taxonomy term meta.
 			$meta = mai_get_term_meta_value_in_hierarchy( get_queried_object(), $key, $check_for_archive_setting );
-			// If no meta
+			// If no meta.
 			if ( ! $meta ) {
-				// If post taxonomy
+				// If post or page taxonomy.
 				if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-					$meta = genesis_get_cpt_option( $key );
-				// 	// If we have a static front page
-				// 	if ( $posts_page_id = get_option( 'page_for_posts' ) ) {
-				// 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $posts_page_id, 'enable_content_archive_settings', true ) ) ) {
-				// 			$meta = get_post_meta( $posts_page_id, $key, true );
-				// 		}
-				// 	}
-				// }
-				// If Woo product taxonomy
-				// elseif ( class_exists('WooCommerce') && $product_taxos = get_object_taxonomies( 'product', 'names' ) && is_tax( $product_taxos ) ) {
-				// 	// If we have a Woo shop page
-				// 	if ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
-				// 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
-				// 			$meta = get_post_meta( $shop_page_id, $key, true );
-				// 		}
-				// 	}
+					$meta = genesis_get_option( $key );
 				}
+				// Custom taxonomy archive.
 				else {
-					// Custom taxonomy archive
 					$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
 					if ( $tax ) {
 						/**
@@ -152,7 +133,7 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 						 * Otherwise, how will we pick which post type archive to fall back to?
 						 * If more than one, we'll just have to use the fallback later.
 						 */
-						if ( 1 == count( $tax->object_type ) ) {
+						if ( 1 === count( (array) $tax->object_type ) ) {
 							$post_type = reset( $tax->object_type );
 							// If we have a post type and it supports genesis-cpt-archive-settings
 							// if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
@@ -165,29 +146,16 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 			}
 		}
 	}
-	// CPT archive
-	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+	// CPT archive.
 	elseif ( is_post_type_archive() ) {
-		// If Woo products archive
-		// if ( class_exists( 'WooCommerce' ) && is_shop() ) {
-		// 	$check_for_archive_setting = false;
-		// }
-		// if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
 		$meta = genesis_get_cpt_option( $key );
-		// }
 	}
-	// Author archive
+	// Author archive.
 	elseif ( is_author() ) {
 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) ) ) ) {
 			$meta = get_the_author_meta( $key, get_query_var( 'author' ) );
 		}
 	}
-	// WooCommerce shop page
-	// elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-	// 	if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_post_meta( $shop_page_id, 'enable_content_archive_settings', true ) ) ) {
-	// 		$meta = get_post_meta( $shop_page_id, $key, true );
-	// 	}
-	// }
 	// If we have meta, return it
 	if ( null !== $meta ) {
 		return $meta;
@@ -394,74 +362,6 @@ function mai_is_banner_featured_image_enabled() {
 }
 
 /**
- * Check if banner area is enabled.
- *
- * Force this in a template via:
- * add_filter( 'theme_mod_enable_banner_area', '__return_true' );
- *
- * First check global settings, then archive setting (if applicable), then immediate setting.
- *
- * @return bool
- */
-function mai_is_banner_area_enabled() {
-
-	$enabled = true;
-
-	// If not enabled at all.
-	if ( ! mai_is_banner_area_enabled_globally() ) {
-		$enabled = false;
-	} else {
-
-		/**
-		 * If disabled per post_type or taxonomy.
-		 */
-
-		if ( is_singular() ) {
-			// Get 'disabled' post types, typecasted as array because it may return empty string if none
-			$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
-			if ( in_array( get_post_type(), $disable_post_types ) ) {
-				$enabled = false;
-			}
-		} elseif ( is_category() || is_tag() || is_tax() ) {
-			// Get 'disabled' taxonomies, typecasted as array because it may return empty string if none
-			$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
-			if ( in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
-				$enabled = false;
-			}
-		}
-
-		/**
-		 * If still enabled,
-		 * check on the single object level.
-		 *
-		 * These conditionals were mostly adopted from mai_get_archive_setting() function.
-		 */
-		if ( $enabled ) {
-
-			$hidden = false;
-
-			// If single post/page/cpt
-			if ( is_singular() ) {
-				$hidden = get_post_meta( get_the_ID(), 'hide_banner', true );
-			}
-			// If content archive (the only other place we'd have this setting)
-			elseif ( mai_is_content_archive() ) {
-				$hidden = mai_get_archive_setting( 'hide_banner', false );
-			}
-
-			// If hidden, disable banner
-			if ( $hidden ) {
-				$enabled = false;
-			}
-
-		}
-
-	}
-
-	return $enabled;
-}
-
-/**
  * Check if side menu is enabled
  *
  * @return bool
@@ -575,4 +475,101 @@ function mai_get_content_shade_from_bg( $hex_color ) {
 		return 'dark-content';
 	}
 	return 'light-content';
+}
+
+/**
+ * Helper function for getting the script/style `.min` suffix for minified files.
+ *
+ * @return string
+ */
+function mai_get_suffix() {
+	$debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+	return $debug ? '' : '.min';
+}
+
+/**
+ * Sanitize a string or array of classes.
+ *
+ * @param   string|array  $classes   The classes to sanitize.
+ *
+ * @return  string  Space-separated, sanitized classes.
+ */
+function mai_sanitize_html_classes( $classes ) {
+	if ( ! is_array( $classes ) ) {
+		$classes = explode( ' ', $classes );
+	}
+	return implode( ' ', array_unique( array_map( 'sanitize_html_class', array_map( 'trim', $classes ) ) ) );
+}
+
+/**
+ * Sanitize a string or array of keys.
+ *
+ * @param   string|array  $keys   The keys to sanitize.
+ *
+ * @return  array  Array of sanitized keys.
+ */
+function mai_sanitize_keys( $keys ) {
+	if ( ! is_array( $keys ) ) {
+		$keys = explode( ',', $keys );
+	}
+	return array_map( 'sanitize_key', array_map( 'trim', array_filter($keys) ) );
+}
+
+/**
+ * Sanitizes WYSIWYG fields like WordPress does for post_content fields.
+ */
+function mai_sanitize_post_content( $content ) {
+	return apply_filters( 'content_save_pre', $content );
+}
+
+/**
+ * Kind of a gross function to run do_action in output buffering
+ * and return the content of that hook.
+ *
+ * @param   string  $hook  The hook name to run.
+ *
+ * @return  string|HTML
+ */
+function mai_get_do_action( $hook ) {
+    // Start buffer
+	ob_start();
+    // Add new hook
+	do_action( $hook );
+    // End buffer
+	$content = ob_get_clean();
+    // Return the content, filtered by of hook name with underscore prepended
+	return apply_filters( '_' . $hook, $content );
+}
+
+/**
+ * Check if a string starts with another string.
+ *
+ * @link    http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+ *
+ * @param   string  $haystack  The string to check against.
+ * @param   string  $needle    The string to check if starts with.
+ *
+ * @return  bool
+ */
+function mai_starts_with( $haystack, $needle ) {
+	$length = strlen( $needle );
+	return ( $needle === substr( $haystack, 0, $length ) );
+}
+
+/**
+ * Check if a string ends with another string.
+ *
+ * @link    http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+ *
+ * @param   string  $haystack  The string to check against.
+ * @param   string  $needle    The string to check if starts with.
+ *
+ * @return  bool
+ */
+function mai_ends_with( $haystack, $needle ) {
+	$length = strlen($needle);
+	if ( 0 == $length ) {
+		return true;
+	}
+	return ( $needle === substr( $haystack, -$length ) );
 }

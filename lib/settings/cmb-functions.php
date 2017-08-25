@@ -33,7 +33,7 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 	wp_enqueue_script( 'mai-cmb2' );
 }
 
-function _mai_cmb_show_banner_visibility_field() {
+function _mai_cmb_show_banner_visibility_field_nooooo_mooorrreeeee() {
 
 	// Bail if not enabled at all
 	if ( ! mai_is_banner_area_enabled_globally() ) {
@@ -70,8 +70,9 @@ function _mai_cmb_show_banner_visibility_field() {
 	return $show;
 }
 
-function _mai_cmb_show_banner_image_field() {
-	// Don't show field if banner area is globally disabled
+function _mai_cmb_show_banner_fields() {
+
+	// Don't show field if banner area is globally disabled.
 	if ( ! mai_is_banner_area_enabled_globally() ) {
 		return false;
 	}
@@ -80,28 +81,54 @@ function _mai_cmb_show_banner_image_field() {
 
 	global $pagenow, $typenow;
 
-	$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
-	$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+	// Posts.
+	if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
 
-	// Posts
-	if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
-
-		if ( in_array( $typenow, $disable_post_types ) ) {
-			$show = false;
+		// Post/Page.
+		if ( in_array( $typenow, array( 'post', 'page' ) ) ) {
+			if ( in_array( $typenow, (array) genesis_get_option( 'banner_disable_post_types' ) ) ) {
+				$show = false;
+			}
+		}
+		// CPT.
+		else {
+			$disable_post_type_key = sprintf( 'banner_disable_%s', $typenow );
+			if ( (bool) genesis_get_option( $disable_post_type_key ) ) {
+				$show = false;
+			}
 		}
 
 	}
-	// Terms
-	elseif ( 'term.php' == $pagenow ) {
+	// Terms.
+	elseif ( 'term.php' === $pagenow ) {
 
-		// Get taxonomy
+		// Get taxonomy.
 		$taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
 
-		// Don't show field on Woo product categories, they have their own image field
-		if ( class_exists('WooCommerce') && 'product_cat' == $taxonomy ) {
+		// Don't show field on Woo product categories/tags, they have their own image field.
+		if ( class_exists('WooCommerce') && in_array( $taxonomy, array( 'product_cat', 'product_tag' ) ) ) {
 			$show = false;
-		} elseif ( in_array( $typenow, $disable_taxonomies ) ) {
-			$show = false;
+		}
+		// Not a Woo tax.
+		else {
+			$taxo_object = get_taxonomy( $taxonomy );
+			// If taxo is registered to only one object. (taxo's registered to multiple objects are skipped for now).
+			if ( $taxonomy && ( 1 === count( (array) $taxo_object->object_type ) ) ) {
+				$disable_taxonomies = array();
+				// If a post taxonomy.
+				if ( in_array( 'post' , $taxo_object->object_type ) ) {
+					$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+				}
+				// CPT custom taxo.
+				else {
+					$disable_taxonomies = (array) genesis_get_option( sprintf( 'banner_disable_taxonomies_%s', $taxo_object->object_type[0] ) );
+				}
+
+				// If disabling.
+				if ( in_array( $taxonomy, $disable_taxonomies ) ) {
+					$show = false;
+				}
+			}
 		}
 
 	}
@@ -196,7 +223,7 @@ function _mai_cmb_banner_visibility_config() {
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
 		'escape_cb'       => '_mai_cmb_escape_one_zero',
-		'show_on_cb'      => '_mai_cmb_show_banner_visibility_field',
+		'show_on_cb'      => '_mai_cmb_show_banner_fields',
 	);
 }
 
@@ -210,7 +237,7 @@ function _mai_cmb_banner_image_config() {
 		'text'         => array(
 			'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
 		),
-		'show_on_cb' => '_mai_cmb_show_banner_image_field',
+		'show_on_cb' => '_mai_cmb_show_banner_fields',
 	);
 }
 
@@ -237,7 +264,7 @@ function _mai_cmb_content_enable_archive_settings_config() {
 
 function _mai_cmb_remove_loop_config() {
 	return array(
-		'after_row'       => '</div>',
+		// 'after_row'       => '</div>',
 		'name'            => __( 'Hide Entries', 'mai-pro-engine' ),
 		'desc'            => __( 'Hide entries from this archive', 'mai-pro-engine' ),
 		'id'              => 'remove_loop',
