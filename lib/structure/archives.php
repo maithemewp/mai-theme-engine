@@ -174,18 +174,30 @@ function mai_do_flex_loop_before() {
 	// Get the archive column count
 	$columns = mai_get_columns();
 
-	$align        = mai_get_archive_setting( 'content_archive_align', true, genesis_get_option( 'content_archive_align' ) );
+	$align         = mai_get_archive_setting( 'content_archive_align' );
 	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
 
 	// Create an anonomous function using the column count
-	$flex_classes = function( $classes ) use ( $columns, $img_location, $img_alignment ) {
+	$flex_classes = function( $classes ) use ( $columns, $align, $img_location, $img_alignment ) {
 		$classes[] = mai_get_flex_entry_classes_by_columns( $columns );
-		// If background image or image is not aligned
+		// If background image or image is not aligned.
 		if ( 'background' === $img_location || empty( $img_alignment ) ) {
 			$classes[] = 'column';
 		} else {
 			$classes[] = 'image-' . $img_alignment;
+		}
+		// Maybe align.
+		switch ( $align ) {
+			case 'left':
+				$classes[] = 'text-xs-left';
+			break;
+			case 'center':
+				$classes[] = 'text-xs-center';
+			break;
+			case 'right':
+				$classes[] = 'text-xs-right';
+			break;
 		}
 		// TODO: Get entry align classes here!!!!! text-xs-center
 		return $classes;

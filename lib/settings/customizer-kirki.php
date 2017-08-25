@@ -21,10 +21,8 @@ function mai_customizer_settings( $wp_customize ) {
 	// Remove Genesis 'Site Layout' section
 	$wp_customize->remove_section( 'genesis_layout' );
 
-// Multi-check field
-// http://wpsites.org/multiple-checkbox-customizer-control-10868/
-
 	$section = 'mai-settings';
+
 	/*****************************************************
 	 * Mai Theme Settings section
 	 */
