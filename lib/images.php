@@ -4,21 +4,17 @@
 add_action( 'genesis_before_entry', 'mai_do_entry_featured_image' );
 function mai_do_entry_featured_image() {
 
-	// Bail if not a single post.
-	if ( ! is_singular() ) {
+	// Bail if not a single entry with a featured image.
+	if ( ! ( is_singular() && has_post_thumbnail() ) ) {
 		return;
 	}
 
 	// Get post types to display featured image on.
-	$post_types = genesis_get_option( 'singular_image_post_types' );
+	$key     = sprintf( 'singular_image_%s', get_post_type() );
+	$display = genesis_get_option( $key );
 
-	// Bail if no post types.
-	if ( ! $post_types ) {
-		return;
-	}
-
-	// Bail if not a post type we want to display image on, or if there is no featured image.
-	if ( ! ( is_singular( $post_types ) && has_post_thumbnail() ) ) {
+	// Bail if not displaying.
+	if ( ! $display ) {
 		return;
 	}
 

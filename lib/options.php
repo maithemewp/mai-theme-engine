@@ -31,7 +31,8 @@ add_filter( 'genesis_options', function( $options, $setting ) {
 		// General
 		'enable_sticky_header'      => 0,
 		'enable_shrink_header'      => 0,
-		'singular_image_post_types' => array( 'post', 'page' ),
+		'singular_image_page'       => 1,
+		'singular_image_post'       => 1,
 		'footer_widget_count'       => '2',
 		'mobile_menu_style'         => 'standard',
 		// Banner

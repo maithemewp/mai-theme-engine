@@ -66,26 +66,14 @@ function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 	}
 
 	/**
-	 * This field is going from boolean to an array of post_types
-	 * so we need to do some manual processing.
+	 * This field is going from boolean for all, to individual keys per post type.
 	 */
 	$enable_singular_image = get_theme_mod( 'enable_singular_image' );
+
 	// If enabled singular image is checked/true.
 	if ( $enable_singular_image ) {
-		// Get the public post types.
-		$post_types = get_post_types( array( 'public' => true ), 'names' );
-		if ( $post_types ) {
-			// Remove attachment.
-			if ( isset( $singular_image_post_types['attachment'] ) ) {
-				unset( $singular_image_post_types['attachment'] );
-			}
-			// Remove Woo product.
-			if ( class_exists( 'WooCommerce' ) && isset( $singular_image_post_types['product'] ) ) {
-				unset( $singular_image_post_types['product'] );
-			}
-			// Set all remaining post types as the defaults.
-			$settings['singular_image_post_types'] = $post_types;
-		}
+		$settings['singular_image_page'] = 1;
+		$settings['singular_image_post'] = 1;
 	}
 
 	if ( ! empty( $settings ) ) {

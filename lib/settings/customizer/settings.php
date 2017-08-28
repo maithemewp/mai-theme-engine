@@ -35,7 +35,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			$prefix . 'header_customizer_heading',
 			array(
-				'label'    => __( 'Header Settings', 'mai-pro-engine' ),
+				'label'    => __( 'Header', 'mai-pro-engine' ),
 				'section'  => $section,
 				'settings' => _mai_customizer_get_field_name( $settings_field, 'header_customizer_heading' ),
 			)

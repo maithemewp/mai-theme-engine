@@ -103,20 +103,12 @@ function mai_register_customizer_field_types() {
 		 */
 		public function render_content() {
 
-			if ( ! ( empty( $this->label ) && empty( $this->description ) ) ) {
+			if ( ! empty( $this->label ) ) {
+				printf( '<span class="customize-control-title">%s</span>', esc_html( $this->label ) );
+			}
 
-				echo '<span style="display:block;margin-bottom:-14px;">';
-
-					if ( ! empty( $this->label ) ) {
-						printf( '<span class="customize-control-title">%s</span>', esc_html( $this->label ) );
-					}
-
-					if ( ! empty( $this->description ) ) {
-						printf( '<span class="description customize-control-description">%s</span>', $this->description );
-					}
-
-				echo '</span>';
-
+			if ( ! empty( $this->description ) ) {
+				printf( '<span class="description customize-control-description">%s</span>', $this->description );
 			}
 
 		}
@@ -148,7 +140,14 @@ function mai_register_customizer_field_types() {
 		 * @return void
 		 */
 		public function render_content() {
-			echo '<span style="display:block;height:10px;background:#1074a8;margin-left:-12px;margin-right:-12px;"></span>';
+			if ( ! empty( $this->label ) ) {
+				printf( '<span class="customize-control-title">%s</span>', esc_html( $this->label ) );
+			}
+
+			if ( ! empty( $this->description ) ) {
+				printf( '<span class="description customize-control-description">%s</span>', $this->description );
+			}
+			// echo '<span style="display:block;height:10px;background:#1074a8;margin-left:-12px;margin-right:-12px;"></span>';
 		}
 
 	}

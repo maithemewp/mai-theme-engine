@@ -1,5 +1,34 @@
 <?php
 
+/**
+ * This function adds some styles to the WordPress Customizer
+ */
+add_action( 'customize_controls_print_styles', 'mai_customizer_styles', 999 );
+function mai_customizer_styles() {
+	echo '<style type="text/css">
+		.customize-control-heading + .customize-control-checkbox,
+		.customize-control-heading + .customize-control-checkbox + .customize-control-checkbox {
+			margin-top: -12px !important;
+		}
+		.customize-control-heading ~ .customize-control-checkbox label {
+			padding-top: 3px !important;
+			padding-bottom: 3px !important;
+		}
+		.customize-control-break {
+			display: block !important;
+			min-height: 10px;
+			background: #656a6f;
+			color: #fff;
+			padding: 4px 12px;
+			margin-left: -12px;
+			margin-right: -12px;
+		}
+		.customize-control-break .customize-control-title {
+			margin-bottom: 0px;
+		}
+	</style>';
+}
+
 function _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field ) {
 	return $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ) )->value();
 }
