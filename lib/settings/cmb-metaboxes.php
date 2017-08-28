@@ -20,13 +20,13 @@ function mai_cmb2_add_metaboxes() {
 
 	// Single Posts/Pages/CPTs
 	$post = new_cmb2_box( array(
-		'id'			=> 'mai_post_banner',
-		'title'			=> __( 'Banner Area', 'mai-pro-engine' ),
-		'object_types'	=> get_post_types( array('public' => true ), 'names' ),
-		'context'		=> 'side',
-		'priority'		=> 'low',
-		'classes' 		=> 'mai-metabox',
-		'show_on_cb'	=> '_mai_cmb_show_banner_visibility_field',
+		'id'           => 'mai_post_banner',
+		'title'        => __( 'Banner Area', 'mai-pro-engine' ),
+		'object_types' => get_post_types( array('public' => true ), 'names' ),
+		'context'      => 'side',
+		'priority'     => 'low',
+		'classes'      => 'mai-metabox',
+		'show_on_cb'   => '_mai_cmb_show_banner_visibility_field',
 	) );
 	$post->add_field( _mai_cmb_banner_visibility_config() );
 	$post->add_field( _mai_cmb_banner_image_config() );

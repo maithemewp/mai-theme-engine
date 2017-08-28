@@ -98,7 +98,7 @@ class Mai_Genesis_CPT_Settings_Metabox {
 	 * @since 0.1.0
 	 */
 	public function hooks() {
-		add_action( 'admin_menu', array( $this, 'admin_hooks' ) );
+		add_action( 'admin_menu',      array( $this, 'admin_hooks' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'init_metabox' ) );
 	}
 
@@ -151,7 +151,6 @@ class Mai_Genesis_CPT_Settings_Metabox {
 				$cmb->get_sanitized_values( $_POST )
 			);
 		}
-
 		return $new_value;
 	}
 
