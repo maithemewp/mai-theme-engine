@@ -8,6 +8,8 @@
 add_action( 'customize_register', 'mai_register_customizer_content_archives_settings', 20 );
 function mai_register_customizer_content_archives_settings( $wp_customize ) {
 
+// d( mai_get_default_option( 'columns' ) );
+
 	/* ******************** *
 	 * Mai Content Archives *
 	 * ******************** */
@@ -32,26 +34,25 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'columns' ),
 		array(
-			'default'           => $args['columns'],
+			'default'           => mai_get_default_option( 'columns' ),
 			'type'              => 'option',
-			'sanitize_callback' => 'sanitize_key',
+			// 'sanitize_callback' => 'strip_tags',
 		)
 	);
 	$wp_customize->add_control(
 		'columns',
 		array(
-			'label'       => __( 'Columns', 'mai-pro-engine' ),
-			'description' => __( 'Display content in multiple columns.', 'mai-pro-engine' ),
-			'section'     => $section,
-			'settings'    => _mai_customizer_get_field_name( $settings_field, 'columns' ),
-			'priority'    => 10,
-			'type'        => 'select',
-			'choices'     => array(
-				'1' => __( 'None', 'mai-pro-engine' ),
-				'2' => __( '2', 'mai-pro-engine' ),
-				'3' => __( '3', 'mai-pro-engine' ),
-				'4' => __( '4', 'mai-pro-engine' ),
-				'6' => __( '6', 'mai-pro-engine' ),
+			'label'    => __( 'Columns', 'mai-pro-engine' ),
+			'section'  => $section,
+			'settings' => _mai_customizer_get_field_name( $settings_field, 'columns' ),
+			'priority' => 10,
+			'type'     => 'select',
+			'choices'  => array(
+				1 => __( 'None', 'mai-pro-engine' ),
+				2 => __( '2', 'mai-pro-engine' ),
+				3 => __( '3', 'mai-pro-engine' ),
+				4 => __( '4', 'mai-pro-engine' ),
+				6 => __( '6', 'mai-pro-engine' ),
 			),
 		)
 	);
@@ -60,7 +61,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'content_archive' ),
 		array(
-			'default'           => $args['content_archive'],
+			'default'           => mai_get_default_option( 'content_archive' ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_key',
 		)
@@ -85,7 +86,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'content_archive_limit' ),
 		array(
-			'default'           => $args['content_archive_limit'],
+			'default'           => mai_get_default_option( 'content_archive_limit' ),
 			'type'              => 'option',
 			'sanitize_callback' => 'absint',
 		)
@@ -128,7 +129,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'content_archive_thumbnail' ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( $args['content_archive_thumbnail'] ),
+			'default'           => mai_get_default_option( 'content_archive_thumbnail' ),
 			'type'              => 'option',
 			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
@@ -147,7 +148,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'image_location' ),
 		array(
-			'default'           => $args['image_location'],
+			'default'           => mai_get_default_option( 'image_location' ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_key',
 		)
@@ -177,7 +178,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'image_size' ),
 		array(
-			'default'           => $args['image_size'],
+			'default'           => mai_get_default_option( 'image_size' ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_key',
 		)
@@ -201,7 +202,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'image_alignment' ),
 		array(
-			'default'           => $args['image_alignment'],
+			'default'           => mai_get_default_option( 'image_alignment' ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_key',
 		)
@@ -250,7 +251,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'more_link' ),
 		array(
-			'default' => 0,
+			'default' => mai_get_default_option( 'more_link' ),
 			'type'    => 'option',
 		)
 	);
@@ -281,9 +282,9 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
 			array(
-				'default'           => $args['remove_meta'],
+				'default'           => mai_get_default_option( 'excerpts' ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+				'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
 			)
 		);
 		$wp_customize->add_control(
@@ -301,13 +302,12 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 
 		// Entry Meta single.
 		$remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
-
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
 			array(
-				'default'           => $args[$remove_meta_single_key],
+				'default'           => mai_get_default_option( $remove_meta_single_key ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+				'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
 			)
 		);
 		$wp_customize->add_control(
@@ -349,7 +349,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'posts_nav' ),
 		array(
-			'default'           => 'numeric',
+			'default'           => mai_get_default_option( 'posts_nav' ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_key',
 		)

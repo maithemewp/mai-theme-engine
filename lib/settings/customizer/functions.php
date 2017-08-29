@@ -60,9 +60,9 @@ function _mai_customizer_get_image_sizes_config() {
 	return $options;
 }
 
-function _mai_customizer_multicheck_sanitize_key( $values ) {
+function _mai_customizer_multicheck_strip_tags( $values ) {
 	$multi_values = ! is_array( $values ) ? explode( ',', $values ) : $values;
-	return ! empty( $multi_values ) ? array_map( 'sanitize_key', $multi_values ) : array();
+	return ! empty( $multi_values ) ? array_map( 'strip_tags', $multi_values ) : array();
 }
 
 function _mai_customizer_sanitize_one_zero( $value ) {

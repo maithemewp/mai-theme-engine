@@ -39,36 +39,39 @@ function mai_cpt_settings_init() {
 
 	foreach ( $post_types as $post_type => $object ) {
 
+		// Build post_type specific keys.
+		$layout_singular_key    = sprintf( 'layout_%s', $post_type );
+		$remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
+		$singular_image_key     = sprintf( 'singular_image_%s', $post_type );
+
 		$args = array(
-			'columns'                          => genesis_get_option( 'columns' ),
-			sprintf( 'layout_%s', $post_type ) => '', // Single
-			'layout'                           => '', // Archive
-			'posts_per_page'                   => 12, // get_option( 'posts_per_page' ) would be another db hit
-			'posts_nav'                        => genesis_get_option( 'posts_nav' ),
+			'columns'            => mai_get_default_cpt_option( 'columns', $post_type ),
+			$layout_singular_key => mai_get_default_cpt_option( $layout_singular_key, $post_type ), // Single
+			'layout'             => mai_get_default_cpt_option( 'layout', $post_type ), // Archive
+			'posts_per_page'     => 12, // get_option( 'posts_per_page' ) would be another db hit
+			'posts_nav'          => mai_get_default_cpt_option( 'posts_nav', $post_type ),
 		);
 
 		$supports = get_all_post_type_supports( $post_type );
 
 		if ( isset( $supports['genesis-entry-meta-before-content'] ) || isset( $supports['genesis-entry-meta-after-content'] ) ) {
-			$args['remove_meta']               = genesis_get_option( 'remove_meta' );
-			$remove_meta_single_key            = sprintf( 'remove_meta_%s', $post_type );
-			$args[$remove_meta_single_key]     = genesis_get_option( 'remove_meta_singular' ); // Use the default content archive setting
+			$args['remove_meta']               = mai_get_default_cpt_option( 'remove_meta', $post_type );
+			$args[$remove_meta_single_key]     = mai_get_default_cpt_option( $remove_meta_single_key, $post_type ); // Use the default content archive setting
 		}
 
 		if ( isset( $supports['editor'] ) || isset( $supports['excerpt'] ) ) {
-			$args['content_archive']           = genesis_get_option( 'content_archive' );
-			$args['content_archive_limit']     = genesis_get_option( 'content_archive_limit' );
-			$args['more_link']                 = genesis_get_option( 'more_link' );
-			$args['more_link_text']            = genesis_get_option( 'more_link_text' );
+			$args['content_archive']           = mai_get_default_cpt_option( 'content_archive', $post_type );
+			$args['content_archive_limit']     = mai_get_default_cpt_option( 'content_archive_limit', $post_type );
+			$args['more_link']                 = mai_get_default_cpt_option( 'more_link', $post_type );
+			$args['more_link_text']            = mai_get_default_cpt_option( 'more_link_text', $post_type );
 		}
 
 		if ( isset( $supports['thumbnail'] ) ) {
-			$args['content_archive_thumbnail'] = genesis_get_option( 'content_archive_thumbnail' );
-			$args['image_location']            = genesis_get_option( 'image_location' );
-			$args['image_size']                = genesis_get_option( 'image_size' );
-			$args['image_alignment']           = genesis_get_option( 'image_alignment' );
-			$singular_image_key                = sprintf( 'singular_image_%s', $post_type );
-			$args[$singular_image_key]         = genesis_get_option( 'singular_image_post' ); // Use the default for posts
+			$args['content_archive_thumbnail'] = mai_get_default_cpt_option( 'content_archive_thumbnail', $post_type );
+			$args['image_location']            = mai_get_default_cpt_option( 'image_location', $post_type );
+			$args['image_size']                = mai_get_default_cpt_option( 'image_size', $post_type );
+			$args['image_alignment']           = mai_get_default_cpt_option( 'image_alignment', $post_type );
+			$args[$singular_image_key]         = mai_get_default_cpt_option( $singular_image_key, $post_type ); // Use the default for posts
 		}
 
 		// Allow filter to easily modify settings for each post type.
@@ -115,9 +118,9 @@ function mai_do_cpt_settings( $post_type, $args ) {
 
 	// Defaults.
 	$defaults = array(
-		$layout_singular_key        => '',
-		'layout'                    => '',
-		'columns'                   => 1,
+		$layout_singular_key        => mai_get_default_cpt_option( $layout_singular_key, $post_type ),
+		'layout'                    => mai_get_default_cpt_option( 'layout', $post_type ),
+		'columns'                   => mai_get_default_cpt_option( 'columns', $post_type ),
 		'content_archive'           => 'unset',
 		'content_archive_limit'     => 'unset',
 		'more_link'                 => 'unset',
@@ -138,21 +141,21 @@ function mai_do_cpt_settings( $post_type, $args ) {
 
 	// Sanitize.
 	$args = array(
-		$layout_singular_key        => sanitize_key( $args[$layout_singular_key] ),
-		'layout'                    => sanitize_key( $args['layout'] ),
+		$layout_singular_key        => strip_tags( $args[$layout_singular_key] ),
+		'layout'                    => strip_tags( $args['layout'] ),
 		'columns'                   => (string) absint( $args['columns'] ),
-		'content_archive'           => ( 'unset' !== $args['content_archive'] ) ? sanitize_key( $args['content_archive'] ) : 'unset',
-		'content_archive_limit'     => ( 'unset' !== $args['content_archive_limit'] ) ? sanitize_key( $args['content_archive_limit'] ) : 'unset',
-		'content_archive_thumbnail' => ( ( 'unset' !== $args['content_archive_thumbnail'] ) && post_type_supports( $post_type, 'thumbnail' ) ) ? sanitize_key( $args['content_archive_thumbnail'] ) : 'unset',
-		'image_location'            => ( 'unset' !== $args['image_location'] ) ? sanitize_key( $args['image_location'] ) : 'unset',
-		'image_size'                => ( 'unset' !== $args['image_size'] ) ? sanitize_key( $args['image_size'] ) : 'unset',
-		'image_alignment'           => ( 'unset' !== $args['image_alignment'] ) ? sanitize_key( $args['image_alignment'] ) : 'unset',
+		'content_archive'           => ( 'unset' !== $args['content_archive'] ) ? strip_tags( $args['content_archive'] ) : 'unset',
+		'content_archive_limit'     => ( 'unset' !== $args['content_archive_limit'] ) ? strip_tags( $args['content_archive_limit'] ) : 'unset',
+		'content_archive_thumbnail' => ( ( 'unset' !== $args['content_archive_thumbnail'] ) && post_type_supports( $post_type, 'thumbnail' ) ) ? strip_tags( $args['content_archive_thumbnail'] ) : 'unset',
+		'image_location'            => ( 'unset' !== $args['image_location'] ) ? strip_tags( $args['image_location'] ) : 'unset',
+		'image_size'                => ( 'unset' !== $args['image_size'] ) ? strip_tags( $args['image_size'] ) : 'unset',
+		'image_alignment'           => ( 'unset' !== $args['image_alignment'] ) ? strip_tags( $args['image_alignment'] ) : 'unset',
 		'more_link'                 => ( 'unset' !== $args['more_link'] ) ? _mai_customizer_sanitize_one_zero( $args['more_link'] ) : 'unset',
-		'more_link_text'            => ( 'unset' !== $args['more_link_text'] ) ? sanitize_key( $args['more_link_text'] ) : 'unset',
-		'remove_meta'               => ( ( 'unset' !== $args['remove_meta'] ) && ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) || post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) ) ? array_map( 'sanitize_key', (array) $args['remove_meta'] ) : 'unset',
-		$remove_meta_single_key         => ( ( 'unset' !== $args[$remove_meta_single_key] ) && ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) || post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) ) ? _mai_customizer_sanitize_one_zero( $args[$remove_meta_single_key] ) : 'unset',
+		'more_link_text'            => ( 'unset' !== $args['more_link_text'] ) ? strip_tags( $args['more_link_text'] ) : 'unset',
+		'remove_meta'               => ( ( 'unset' !== $args['remove_meta'] ) && ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) || post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) ) ? array_map( 'strip_tags', (array) $args['remove_meta'] ) : 'unset',
+		$remove_meta_single_key     => ( ( 'unset' !== $args[$remove_meta_single_key] ) && ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) || post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) ) ? _mai_customizer_sanitize_one_zero( $args[$remove_meta_single_key] ) : 'unset',
 		'posts_per_page'            => ( 'unset' !== $args['posts_per_page'] ) ? absint( $args['posts_per_page'] ) : 'unset',
-		'posts_nav'                 => ( 'unset' !== $args['posts_nav'] ) ? sanitize_key( $args['posts_nav'] ) : 'unset',
+		'posts_nav'                 => ( 'unset' !== $args['posts_nav'] ) ? _mai_customizer_multicheck_strip_tags( $args['posts_nav'] ) : 'unset',
 		$singular_image_key         => ( 'unset' !== $args[$singular_image_key] ) ? _mai_customizer_sanitize_one_zero( $args[$singular_image_key] ) : 'unset',
 	);
 
@@ -230,8 +233,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 	$prefix           = sprintf( '%s_', $post_type );
 
 	// Keys
-	$singular_image_key     = sprintf( 'singular_image_%s', $post_type );
-	$remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
+	$banner_disable_key            = sprintf( 'banner_disable_%s', $post_type );
+	$banner_disable_taxonomies_key = sprintf( 'banner_disable_taxonomies_%s', $post_type );
+	$singular_image_key            = sprintf( 'singular_image_%s', $post_type );
+	$remove_meta_single_key        = sprintf( 'remove_meta_%s', $post_type );
+	$single_layout_key             = sprintf( 'layout_%s', $post_type );
 
 	// Mai {post type name} Settings.
 	$wp_customize->add_section(
@@ -254,9 +260,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 		new Mai_Customize_Control_Break( $wp_customize,
 			$prefix . 'cpt_banner_break',
 			array(
-				'label'    => __( 'Banner Area', 'mai-pro-engine' ),
-				'section'  => $section,
-				'settings' => _mai_customizer_get_field_name( $settings_field, 'cpt_banner_break' ),
+				'label'           => __( 'Banner Area', 'mai-pro-engine' ),
+				'section'         => $section,
+				'settings'        => _mai_customizer_get_field_name( $settings_field, 'cpt_banner_break' ),
 				'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
 					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
 				},
@@ -270,16 +276,16 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 		array(
 			'default'           => '',
 			'type'              => 'option',
-			'sanitize_callback' => 'absint',
+			// 'sanitize_callback' => 'absint',
 		)
 	);
 	$wp_customize->add_control(
 		new WP_Customize_Media_Control( $wp_customize,
 		$prefix . 'banner_id',
 		array(
-			'label'    => __( 'Default Banner Image', 'mai-pro-engine' ),
-			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
+			'label'           => __( 'Default Banner Image', 'mai-pro-engine' ),
+			'section'         => $section,
+			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 			'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
 			},
@@ -298,9 +304,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			$prefix . 'hide_banner_customizer_heading',
 			array(
-				'label'    => __( 'Hide banner on (archive/single)', 'mai-pro-engine' ),
-				'section'  => $section,
-				'settings' => _mai_customizer_get_field_name( $settings_field, 'hide_banner_customizer_heading' ),
+				'label'           => __( 'Hide banner on (archive/single)', 'mai-pro-engine' ),
+				'section'         => $section,
+				'settings'        => _mai_customizer_get_field_name( $settings_field, 'hide_banner_customizer_heading' ),
 				'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
 					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
 				},
@@ -319,11 +325,10 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 	$wp_customize->add_control(
 		$prefix . 'hide_banner',
 		array(
-			'label'    => __( 'Hide banner on the main archive', 'mai-pro-engine' ),
-			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $settings_field, 'hide_banner' ),
-			'priority' => 10,
-			'type'     => 'checkbox',
+			'label'           => __( 'Hide banner on the main archive', 'mai-pro-engine' ),
+			'section'         => $section,
+			'settings'        => _mai_customizer_get_field_name( $settings_field, 'hide_banner' ),
+			'type'            => 'checkbox',
 			'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
 			},
@@ -331,22 +336,20 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 	);
 
 	// Disable banner singular (saves to genesis-settings option).
-	$banner_disable_key = sprintf( 'banner_disable_%s', $post_type );
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $genesis_settings, $banner_disable_key ),
 		array(
-			'default' => '',
+			'default' => 0,
 			'type'    => 'option',
 		)
 	);
 	$wp_customize->add_control(
 		$prefix . $banner_disable_key,
 		array(
-			'label'    => __( 'Hide banner on single entries', 'mai-pro-engine' ),
-			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_key ),
-			'priority' => 10,
-			'type'     => 'checkbox',
+			'label'           => __( 'Hide banner on single entries', 'mai-pro-engine' ),
+			'section'         => $section,
+			'settings'        => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_key ),
+			'type'            => 'checkbox',
 			'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
 			},
@@ -368,25 +371,22 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			}
 			$disable_taxonomies[$taxo->name] = $taxo->label;
 		}
-		$banner_disable_taxonomies_key = sprintf( 'banner_disable_taxonomies_%s', $post_type );
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies_key ),
 			array(
 				'default'           => '',
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+				// 'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
 			)
 		);
 		$wp_customize->add_control(
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				$prefix . $banner_disable_taxonomies_key,
 				array(
-					'label'       => __( 'Disable banner on (taxonomies)', 'mai-pro-engine' ),
-					// 'description' => __( 'Disable on the following taxonomy archives.', 'mai-pro-engine' ),
-					'section'     => $section,
-					'settings'    => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies_key ),
-					'priority'    => 10,
-					'choices'     => $disable_taxonomies,
+					'label'    => __( 'Disable banner on (taxonomies)', 'mai-pro-engine' ),
+					'section'  => $section,
+					'settings' => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies_key ),
+					'choices'  => $disable_taxonomies,
 				)
 			)
 		);
@@ -419,7 +419,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			array(
 				'default'           => $args['layout'],
 				'type'              => 'option',
-				'sanitize_callback' => 'sanitize_key',
+				// 'sanitize_callback' => 'strip_tags',
 			)
 		);
 		$wp_customize->add_control(
@@ -428,7 +428,6 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 				'label'    => __( 'Archives', 'mai-pro-engine' ),
 				'section'  => $section,
 				'settings' => _mai_customizer_get_field_name( $settings_field, 'layout' ),
-				'priority' => 10,
 				'type'     => 'select',
 				'choices'  => array_merge( array( '' => __( '- Archives Default -', 'mai-pro-engine' ) ), genesis_get_layouts_for_customizer() ),
 			)
@@ -437,24 +436,22 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 	}
 
 	// Single layout (saves to genesis-settings option).
-	$single_key = sprintf( 'layout_%s', $post_type );
-	if ( isset( $args[$single_key]  )) {
+	if ( isset( $args[$single_layout_key]  )) {
 
 		$wp_customize->add_setting(
-			_mai_customizer_get_field_name( $genesis_settings, $single_key ),
+			_mai_customizer_get_field_name( $genesis_settings, $single_layout_key ),
 			array(
-				'default'           => $args[$single_key],
+				'default'           => $args[$single_layout_key],
 				'type'              => 'option',
-				'sanitize_callback' => 'sanitize_key',
+				// 'sanitize_callback' => 'strip_tags',
 			)
 		);
 		$wp_customize->add_control(
-			$prefix . $single_key,
+			$prefix . $single_layout_key,
 			array(
 				'label'    => __( 'Single Entries', 'mai-pro-engine' ),
 				'section'  => $section,
-				'settings' => _mai_customizer_get_field_name( $genesis_settings, $single_key ),
-				'priority' => 10,
+				'settings' => _mai_customizer_get_field_name( $genesis_settings, $single_layout_key ),
 				'type'     => 'select',
 				'choices'  => array_merge( array( '' => __( '- Site Default -', 'mai-pro-engine' ) ), genesis_get_layouts_for_customizer() ),
 			)
@@ -512,7 +509,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $genesis_settings, $singular_image_key ),
 			array(
-				'default' => 1,
+				'default' => $args[$singular_image_key],
 				'type'    => 'option',
 			)
 		);
@@ -546,7 +543,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			array(
 				'default'           => $args[$remove_meta_single_key],
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+				// 'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
 			)
 		);
 		$wp_customize->add_control(
@@ -587,7 +584,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'enable_content_archive_settings' ),
 		array(
-			'default' => 0,
+			'default' => $args['enable_content_archive_settings'],
 			'type'    => 'option',
 		)
 	);
@@ -610,7 +607,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			array(
 				'default'           => $args['columns'],
 				'type'              => 'option',
-				'sanitize_callback' => 'sanitize_key',
+				// 'sanitize_callback' => 'absint',
 			)
 		);
 		$wp_customize->add_control(
@@ -623,11 +620,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 				'priority'    => 10,
 				'type'        => 'select',
 				'choices'     => array(
-					'1' => __( 'None', 'mai-pro-engine' ),
-					'2' => __( '2', 'mai-pro-engine' ),
-					'3' => __( '3', 'mai-pro-engine' ),
-					'4' => __( '4', 'mai-pro-engine' ),
-					'6' => __( '6', 'mai-pro-engine' ),
+					1 => __( 'None', 'mai-pro-engine' ),
+					2 => __( '2', 'mai-pro-engine' ),
+					3 => __( '3', 'mai-pro-engine' ),
+					4 => __( '4', 'mai-pro-engine' ),
+					6 => __( '6', 'mai-pro-engine' ),
 				),
 				'active_callback' => function() use ( $wp_customize, $settings_field ) {
 					return $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'enable_content_archive_settings' ) )->value();
@@ -663,7 +660,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 				array(
 					'default'           => $args['content_archive'],
 					'type'              => 'option',
-					'sanitize_callback' => 'sanitize_key',
+					// 'sanitize_callback' => 'strip_tags',
 				)
 			);
 			$wp_customize->add_control(
@@ -689,7 +686,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 					array(
 						'default'           => $args['content_archive_limit'],
 						'type'              => 'option',
-						'sanitize_callback' => 'absint',
+						// 'sanitize_callback' => 'absint',
 					)
 				);
 				$wp_customize->add_control(
@@ -744,7 +741,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			array(
 				'default'           => _mai_customizer_sanitize_one_zero( $args['content_archive_thumbnail'] ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+				// 'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 			)
 		);
 		$wp_customize->add_control(
@@ -768,7 +765,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 				array(
 					'default'           => $args['image_location'],
 					'type'              => 'option',
-					'sanitize_callback' => 'sanitize_key',
+					// 'sanitize_callback' => 'strip_tags',
 				)
 			);
 			$wp_customize->add_control(
@@ -802,7 +799,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 				array(
 					'default'           => $args['image_size'],
 					'type'              => 'option',
-					'sanitize_callback' => 'sanitize_key',
+					// 'sanitize_callback' => 'strip_tags',
 				)
 			);
 			$wp_customize->add_control(
@@ -830,7 +827,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 				array(
 					'default'           => $args['image_alignment'],
 					'type'              => 'option',
-					'sanitize_callback' => 'sanitize_key',
+					// 'sanitize_callback' => 'strip_tags',
 				)
 			);
 			$wp_customize->add_control(
@@ -920,7 +917,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			array(
 				'default'           => $args['remove_meta'],
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+				// 'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
 			)
 		);
 		$wp_customize->add_control(
@@ -976,7 +973,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			array(
 				'default'           => $args['posts_nav'],
 				'type'              => 'option',
-				'sanitize_callback' => 'sanitize_key',
+				// 'sanitize_callback' => 'strip_tags',
 			)
 		);
 		$wp_customize->add_control(

@@ -17,11 +17,11 @@ function mai_remove_singular_meta() {
 
 	$post_type = get_post_type();
 
-	if ( 'post' === $post_type ) {
-		$remove_meta_key = 'remove_meta';
-	}  else {
+	// if ( 'post' === $post_type ) {
+		// $remove_meta_key = 'remove_meta';
+	// }  else {
 		$remove_meta_key = sprintf( 'remove_meta_%s', $post_type );
-	}
+	// }
 
 	// Get the meta to remove.
 	$meta_to_remove = (array) genesis_get_option( $remove_meta_key );

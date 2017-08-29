@@ -1,8 +1,16 @@
 <?php
 
 add_action( 'genesis_before', function() {
+	// d( genesis_get_option( 'layout_archive' ) );
+	// d( genesis_get_option( 'content_archive' ) );
+	// $post_types = genesis_get_cpt_archive_types();
+	// d( $post_types );
 	// delete_option( 'genesis-settings' );
+	// delete_option( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . 'product' );
+	// get_option( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . 'portfolio' );
+	// get_option( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . 'portfolio' );
 	// d( get_option( 'genesis-settings' ) );
+	// d( genesis_get_option( 'columns' ) );
 	// d( get_option( 'disable_banner_customizer_heading' ) );
 	// d( get_option( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . 'portfolio' ) );
 	// d( genesis_get_cpt_option( 'posts_per_page' ) );
@@ -10,32 +18,89 @@ add_action( 'genesis_before', function() {
 });
 
 
-add_filter( 'genesis_options', function( $options, $setting ) {
+add_filter( 'genesis_options', 'mai_genesis_options_defaults', 10, 2 );
+function mai_genesis_options_defaults( $options, $setting ) {
 
 	if ( GENESIS_SETTINGS_FIELD !== $setting ) {
 		return $options;
 	}
 
-	// Genesis default options.
-	$genesis_options = array(
-		'site_layout'               => 'md-content',
-		'content_archive'           => 'excerpt',
-		'content_archive_thumbnail' => 1,
-		'image_size'                => 'one-third',
-		'image_alignment'           => '',
-		'posts_nav'                 => 'numeric',
-	);
+	// Default options.
+	$all_options = mai_get_default_options();
 
-	// Mai custom options.
-	$mai_options = array(
-		// General
+	// New installs.
+	// if ( ! $options ) {
+		// return apply_filters( 'genesis_theme_settings_defaults', $all_options );
+		// return $all_options;
+	// }
+	// Existing installs, make sure new mai options exist.
+	// else {
+		foreach ( $all_options as $key => $value ) {
+			if ( ! isset( $options[$key] ) ) {
+				$options[$key] = $value;
+			}
+		}
+	// }
+	// Return the modified options.
+	// return apply_filters( 'genesis_theme_settings_defaults', $options, $setting );
+	return $options;
+}
+
+function mai_get_default_option( $key ) {
+	$options = mai_get_default_options();
+	return $options[$key];
+}
+
+function mai_get_default_options() {
+	$defaults = array(
+		// Genesis core.
+		'update'                    => 1,
+		'update_email'              => 0,
+		'update_email_address'      => '',
+		'blog_title'                => 'text',
+		'style_selection'           => '',
+		'site_layout'               => genesis_get_default_layout(),
+		'superfish'                 => 0,
+		'nav_extras'                => '',
+		'nav_extras_twitter_id'     => '',
+		'nav_extras_twitter_text'   => __( 'Follow me on Twitter', 'genesis' ),
+		'feed_uri'                  => '',
+		'redirect_feed'             => 0,
+		'comments_feed_uri'         => '',
+		'redirect_comments_feed'    => 0,
+		'comments_pages'            => 0,
+		'comments_posts'            => 1,
+		'trackbacks_pages'          => 0,
+		'trackbacks_posts'          => 1,
+		'breadcrumb_home'           => 0,
+		'breadcrumb_front_page'     => 0,
+		'breadcrumb_posts_page'     => 0,
+		'breadcrumb_single'         => 0,
+		'breadcrumb_page'           => 0,
+		'breadcrumb_archive'        => 0,
+		'breadcrumb_404'            => 0,
+		'breadcrumb_attachment'     => 0,
+		'content_archive'           => 'full',
+		'content_archive_thumbnail' => 0,
+		'image_size'                => 'one-third',
+		'image_alignment'           => 'alignleft',
+		'posts_nav'                 => 'numeric',
+		'blog_cat'                  => '',
+		'blog_cat_exclude'          => '',
+		'blog_cat_num'              => 10,
+		'header_scripts'            => '',
+		'footer_scripts'            => '',
+		// 'theme_version'             => PARENT_THEME_VERSION,
+		// 'db_version'                => PARENT_DB_VERSION,
+		// 'first_version'             => genesis_first_version(),
+		// Mai General.
 		'enable_sticky_header'      => 0,
 		'enable_shrink_header'      => 0,
 		'singular_image_page'       => 1,
 		'singular_image_post'       => 1,
-		'footer_widget_count'       => '2',
+		'footer_widget_count'       => 2,
 		'mobile_menu_style'         => 'standard',
-		// Banner
+		// Mai Banner.
 		'enable_banner_area'        => 1,
 		'banner_background_color'   => '#f1f1f1',
 		'banner_id'                 => '',
@@ -46,38 +111,236 @@ add_filter( 'genesis_options', function( $options, $setting ) {
 		'banner_featured_image'     => 0,
 		'banner_disable_post_types' => array(),
 		'banner_disable_taxonomies' => array(),
-		// Archives
-		'columns'                   => 3,
-		'more_link'                 => 1,
-		'image_location'            => 'before_entry',
-		'remove_meta'               => array(),
-		// Layouts
+		// Mai Archives.
+		'columns'                   => 1,
+		'more_link'                 => 0,
+		'image_location'            => 'before_title',
+		'remove_meta_post'          => array(),
+		// Mai Layouts.
 		'layout_page'               => '',
 		'layout_post'               => '',
-		'layout_archive'            => '',
+		'layout_archive'            => 'full-width-content',
+	);
+	return apply_filters( 'genesis_theme_settings_defaults', $defaults );
+}
+
+function mai_get_default_cpt_option( $key, $post_type ) {
+	if ( ! $post_type ) {
+		$post_type = get_post_type();
+	}
+	$options = get_default_cpt_options( $post_type );
+	return $options[$key];
+}
+
+// CANNOT REALLY PASS POST TYPE HERE. ERRORS! ARGH.
+function get_default_cpt_options( $post_type ) {
+	return array(
+		'enable_content_archive_settings'          => 0,
+		'columns'                                  => 3,
+		sprintf( 'layout_%s', $post_type )         => '', // (saves to 'genesis-settings' option)
+		'layout'                                   => mai_get_default_option( 'layout_archive' ),
+		'posts_per_page'                           => get_option( 'posts_per_page' ),
+		'posts_nav'                                => array(),
+		'remove_meta'                              => array(),
+		sprintf( 'remove_meta_%s', $post_type )    => array(), // (saves to 'genesis-settings' option)
+		'content_archive'                          => 'full',
+		'content_archive_limit'                    => 120,
+		'more_link'                                => '',
+		'more_link_text'                           => '',
+		'content_archive_thumbnail'                => '',
+		'image_location'                           => 'before_entry',
+		'image_size'                               => 'one-third',
+		'image_alignment'                          => '',
+		sprintf( 'singular_image_%s', $post_type ) => 1, // (saves to 'genesis-settings' option)
+	);
+}
+
+/**
+ * Add new custom genesis option filter.
+ *
+ * @param   array  $default_filters  The filters. The key is the name and value is the callback function/method.
+ *
+ * @return  array  The modified filters.
+ */
+add_filter( 'genesis_available_sanitizer_filters', 'mai_available_sanitizer_filters' );
+function mai_available_sanitizer_filters( $default_filters ) {
+	$default_filters['array_no_html'] = 'mai_array_no_html';
+	return $default_filters;
+}
+function mai_array_no_html( array $new_val, $old_val ) {
+	return array_map( 'strip_tags', $new_val );
+}
+
+/**
+ * Register each of the settings with a sanitization filter type.
+ *
+ * @return  void
+ */
+add_action( 'genesis_settings_sanitizer_init', 'mai_genesis_sanitizer_filters' );
+function mai_genesis_sanitizer_filters() {
+
+	genesis_add_option_filter(
+		'one_zero',
+		GENESIS_SETTINGS_FIELD,
+		array(
+			'enable_sticky_header',
+			'enable_shrink_header',
+			'singular_image_page',
+			'singular_image_post',
+			'enable_banner_area',
+			'banner_featured_image',
+			'more_link',
+			'more_link_text',
+		)
 	);
 
-	// All the options.
-	$all_options = array_merge( $genesis_options, $mai_options );
+	genesis_add_option_filter(
+		'no_html',
+		GENESIS_SETTINGS_FIELD,
+		array(
+			'mobile_menu_style',
+			'banner_background_color',
+			'banner_overlay',
+			'banner_inner',
+			'banner_content_width',
+			'banner_align_text',
+			'image_location',
+			'layout_page',
+			'layout_post',
+			'layout_archive',
+		)
+	);
 
-	// New installs.
-	if ( ! $options ) {
-		return apply_filters( 'genesis_theme_settings_defaults', $all_options );
+	genesis_add_option_filter(
+		'absint',
+		GENESIS_SETTINGS_FIELD,
+		array(
+			'footer_widget_count',
+			'banner_id',
+			'columns',
+		)
+	);
+
+	genesis_add_option_filter(
+		'array_no_html',
+		GENESIS_SETTINGS_FIELD,
+		array(
+			'banner_disable_post_types',
+			'banner_disable_taxonomies',
+			'remove_meta_post',
+		)
+	);
+
+	/**
+	 * Get post types.
+	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
+	 */
+	$post_types = genesis_get_cpt_archive_types();
+
+	if ( ! $post_types ) {
+		return;
 	}
-	// Existing installs, make sure new mai options exist.
-	else {
-		foreach ( $mai_options as $key => $value ) {
-			if ( ! isset( $options[$key] ) ) {
-				$options[$key] = $value;
-			}
-		}
+
+	/**
+	 * 'enable_content_archive_settings'
+	 * 'columns'
+	 * 'layout_{post_type}' (saves to 'genesis-settings' option)
+	 * 'layout'
+	 * 'posts_per_page'
+	 * 'posts_nav'
+	 * 'remove_meta'
+	 * 'remove_meta_{post_type}' (saves to 'genesis-settings' option)
+	 * 'content_archive'
+	 * 'content_archive_limit'
+	 * 'more_link'
+	 * 'more_link_text'
+	 * 'content_archive_thumbnail'
+	 * 'image_location'
+	 * 'image_size'
+	 * 'image_alignment'
+	 * 'singular_image_{post_type}' (saves to 'genesis-settings' option)
+	 */
+	foreach( $post_types as $post_type => $object ) {
+
+		/* ********************** *
+		 * GENESIS_SETTINGS_FIELD *
+		 * ********************** */
+
+		genesis_add_option_filter(
+			'one_zero',
+			GENESIS_SETTINGS_FIELD,
+			array(
+				sprintf( 'singular_image_%s', $post_type ),
+			)
+		);
+
+		genesis_add_option_filter(
+			'no_html',
+			GENESIS_SETTINGS_FIELD,
+			array(
+				sprintf( 'layout_%s', $post_type ),
+			)
+		);
+
+		genesis_add_option_filter(
+			'array_no_html',
+			GENESIS_SETTINGS_FIELD,
+			array(
+				sprintf( 'remove_meta_%s', $post_type ),
+			)
+		);
+
+		/* ****************************************************** *
+		 * GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type *
+		 * ****************************************************** */
+
+		$CPT_FIELD = GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type;
+
+		genesis_add_option_filter(
+			'one_zero',
+			$CPT_FIELD,
+			array(
+				'enable_content_archive_settings',
+				'more_link',
+				'content_archive_thumbnail',
+			)
+		);
+
+		genesis_add_option_filter(
+			'no_html',
+			$CPT_FIELD,
+			array(
+				'layout',
+				'posts_nav',
+				'content_archive',
+				'more_link_text',
+				'image_location',
+				'image_size',
+				'image_alignment',
+			)
+		);
+
+		genesis_add_option_filter(
+			'absint',
+			$CPT_FIELD,
+			array(
+				'columns',
+				'posts_per_page',
+				'content_archive_limit',
+			)
+		);
+
+		genesis_add_option_filter(
+			'array_no_html',
+			$CPT_FIELD,
+			array(
+				'remove_meta',
+			)
+		);
+
 	}
-	// Return the modified options.
-	return apply_filters( 'genesis_theme_settings_defaults', $options, $setting );
 
-}, 10, 2 );
-
-
+}
 
 
 

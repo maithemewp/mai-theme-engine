@@ -204,7 +204,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		array(
 			'default'           => '',
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+			'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
 		)
 	);
 	$wp_customize->add_control(
@@ -247,7 +247,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			array(
 				'default'           => '',
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+				'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
 			)
 		);
 		$wp_customize->add_control(

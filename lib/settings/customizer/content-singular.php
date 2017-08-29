@@ -48,7 +48,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'singular_image_page' ),
 		array(
-			'default' => 1,
+			'default' => mai_get_default_option( 'singular_image_page' ),
 			'type'    => 'option',
 		)
 	);
@@ -66,7 +66,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'singular_image_post' ),
 		array(
-			'default' => 1,
+			'default' => mai_get_default_option( 'singular_image_post' ),
 			'type'    => 'option',
 		)
 	);
@@ -100,9 +100,9 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
 			array(
-				'default'           => $args['remove_meta'],
+				'default'           => mai_get_default_option( 'remove_meta' ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+				'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
 			)
 		);
 		$wp_customize->add_control(

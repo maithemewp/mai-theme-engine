@@ -109,6 +109,7 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 	if ( is_home() ) {
 		$meta = genesis_get_option( $key );
 	}
+
 	// Taxonomy archive.
 	elseif ( is_category() || is_tag() || is_tax() ) {
 
@@ -119,16 +120,21 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 
 		// If no meta.
 		if ( ! $meta ) {
+
 			// Get hierarchical taxonomy term meta.
 			$meta = mai_get_term_meta_value_in_hierarchy( get_queried_object(), $key, $check_for_archive_setting );
+
 			// If no meta.
 			if ( ! $meta ) {
+
 				// If post or page taxonomy.
 				if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
 					$meta = genesis_get_option( $key );
 				}
+
 				// Custom taxonomy archive.
 				else {
+
 					$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
 					if ( $tax ) {
 						/**
@@ -151,26 +157,31 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 			}
 		}
 	}
+
 	// CPT archive.
 	elseif ( is_post_type_archive() ) {
 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
 			$meta = genesis_get_cpt_option( $key );
 		}
 	}
+
 	// Author archive.
 	elseif ( is_author() ) {
 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_the_author_meta( 'enable_content_archive_settings', get_query_var( 'author' ) ) ) ) {
 			$meta = get_the_author_meta( $key, get_query_var( 'author' ) );
 		}
 	}
+
 	// If we have meta, return it
 	if ( null !== $meta ) {
 		return $meta;
 	}
+
 	// If we have a fallback, return it
 	elseif ( $fallback ) {
 		return $fallback;
 	}
+
 	// Return
 	return null;
 }

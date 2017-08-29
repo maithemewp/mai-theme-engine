@@ -27,7 +27,7 @@ function mai_update_database_version() {
  *
  * @return void.
  */
-add_action( 'mai_pro_engine_update', 'mai_pro_update_1_1_0' );
+// add_action( 'mai_pro_engine_update', 'mai_pro_update_1_1_0' );
 function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 
 	// If new install and version is over 1.1.0
@@ -65,6 +65,8 @@ function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 		}
 	}
 
+	$settings['columns'] = absint( genesis_get_option( 'columns' ) );
+
 	/**
 	 * This field is going from boolean for all, to individual keys per post type.
 	 */
@@ -87,6 +89,8 @@ function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 		// enable_singular_image is not in the array because it was processed separately.
 		remove_theme_mod( 'enable_singular_image' );
 	}
+
+	// TODO: Archive stuff?!?!?
 
 	// Woo upgrade, meta to cpt-archive-settings.
 	if ( class_exists( 'WooCommerce' ) ) {
