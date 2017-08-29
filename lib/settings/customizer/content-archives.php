@@ -8,9 +8,12 @@
 add_action( 'customize_register', 'mai_register_customizer_content_archives_settings', 20 );
 function mai_register_customizer_content_archives_settings( $wp_customize ) {
 
-	/* ************ *
-	 * Mai Settings *
-	 * ************ */
+	/* ******************** *
+	 * Mai Content Archives *
+	 * ******************** */
+
+	// Remove Genesis "Content Archives" section.
+	$wp_customize->remove_section( 'genesis_archives' );
 
 	$section        = 'mai_content_archives';
 	$settings_field = 'genesis-settings';
@@ -21,7 +24,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 		$section,
 		array(
 			'title'    => __( 'Mai Content Archives', 'mai-pro-engine' ),
-			'priority' => '35',
+			'priority' => '37',
 		)
 	);
 
@@ -133,7 +136,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'content_archive_thumbnail',
 		array(
-			'label'    => __( 'Display the featured image', 'genesis' ),
+			'label'    => __( 'Display the Featured Image', 'mai-pro-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'content_archive_thumbnail' ),
 			'type'     => 'checkbox',
@@ -152,7 +155,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'image_location',
 		array(
-			'label'    => __( 'Image Location', 'genesis' ),
+			'label'    => __( 'Image Location', 'mai-pro-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'image_location' ),
 			'priority' => 10,

@@ -21,7 +21,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 		$section,
 		array(
 			'title'    => __( 'Mai Content Singular', 'mai-pro-engine' ),
-			'priority' => '35',
+			'priority' => '38',
 		)
 	);
 
@@ -94,23 +94,24 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 		}
 
 		// Entry Meta single.
-		$remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
+		// $remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
+		// $remove_meta_single_key = 'remove_meta';
 
 		$wp_customize->add_setting(
-			_mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
+			_mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
 			array(
-				'default'           => $args[$remove_meta_single_key],
+				'default'           => $args['remove_meta'],
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 			)
 		);
 		$wp_customize->add_control(
 			new Mai_Customize_Control_Multicheck( $wp_customize,
-				$remove_meta_single_key,
+				'remove_meta',
 				array(
 					'label'    => __( 'Post Entry Meta', 'mai-pro-engine' ),
 					'section'  => $section,
-					'settings' => _mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
+					'settings' => _mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
 					'priority' => 10,
 					'choices'  => $remove_meta_choices,
 				)

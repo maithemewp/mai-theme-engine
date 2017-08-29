@@ -148,6 +148,7 @@ function mai_get_banner_id() {
 			$image_id = get_post_thumbnail_id( $posts_page_id );
 		}
 	}
+
 	// Single page/post/cpt, but not static front page or static home page
 	elseif ( is_singular() ) {
 		$image_id = get_post_meta( get_the_ID(), 'banner_id', true );
@@ -160,11 +161,11 @@ function mai_get_banner_id() {
 			// Get the post's post_type
 			$post_type = get_post_type();
 			// Posts
-			if ( 'post' == $post_type && $posts_page_id = get_option( 'page_for_posts' ) ) {
+			if ( 'post' === $post_type && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
 				$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
 			}
-			// // Products
-			// elseif ( class_exists( 'WooCommerce' ) && is_product() && $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) {
+			// Products
+			// elseif ( class_exists( 'WooCommerce' ) && is_product() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
 			// 	$image_id = get_post_meta( $shop_page_id, 'banner_id', true );
 			// }
 			// CPTs
@@ -178,22 +179,34 @@ function mai_get_banner_id() {
 	// Term archive
 	elseif ( is_category() || is_tag() || is_tax() ) {
 		// If WooCommerce product category
-		if ( class_exists( 'WooCommerce' ) && is_tax( array( 'product_cat' ) ) ) {
+		if ( class_exists( 'WooCommerce' ) && is_tax( array( 'product_cat', 'product_tag' ) ) && ( $image_id = get_term_meta( get_queried_object()->term_id, 'thumbnail_id', true ) ) ) {
 			// Woo uses it's own image field/key
-			$image_id = get_term_meta( get_queried_object()->term_id, 'thumbnail_id', true );
+			$image_id = $image_id;
 		} else {
-			$image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
+			// $image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
+			$image_id = mai_get_archive_setting( 'banner_id', false, false );
 		}
+// d( $image_id );
 		// If no image
-		if ( ! $image_id ) {
+		// if ( ! $image_id ) {
 			// Get hierarchical taxonomy term meta
-			$image_id = mai_get_term_meta_value_in_hierarchy( get_queried_object(), 'banner_id', false );
+			// $image_id = mai_get_term_meta_value_in_hierarchy( get_queried_object(), 'banner_id', false );
 			// If still no image
-			if ( ! $image_id ) {
+			// if ( ! $image_id ) {
+// d( get_queried_object() );
+				// // Posts
+				// if ( 'post' === $post_type && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
+				// 	$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
+				// }
+				// // CPTs
+				// elseif ( post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
+				// 	// genesis_has_post_type_archive_support( $post_type ) ) {
+				// 	$image_id = genesis_get_cpt_option( 'banner_id', $post_type );
+				// }
 				// Check the archive settings, so we can fall back to the taxo's post_type setting
-				$image_id = mai_get_archive_setting( 'banner_id', false );
-			}
-		}
+				// $image_id = mai_get_archive_setting( 'banner_id', false );
+			// }
+		// }
 	}
 
 	// CPT archive

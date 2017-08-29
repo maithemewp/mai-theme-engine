@@ -20,7 +20,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		$section,
 		array(
 			'title'    => __( 'Mai Banner Area', 'mai-pro-engine' ),
-			'priority' => '35',
+			'priority' => '36',
 		)
 	);
 

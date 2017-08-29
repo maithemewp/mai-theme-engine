@@ -1,2 +1,94 @@
 <?php
 
+/**
+ * Register new Customizer elements.
+ *
+ * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
+ */
+add_action( 'customize_register', 'mai_register_customizer_site_layouts_settings', 20 );
+function mai_register_customizer_site_layouts_settings( $wp_customize ) {
+
+	/* **************** *
+	 * Mai Site Layouts *
+	 * **************** */
+
+	// Remove Genesis "Content Archives" section.
+	$wp_customize->remove_section( 'genesis_layout' );
+
+	$section        = 'mai_site_layouts';
+	$settings_field = 'genesis-settings';
+	$post_type      = 'post';
+
+	// Section.
+	$wp_customize->add_section(
+		$section,
+		array(
+			'title'    => __( 'Mai Site Layouts', 'mai-pro-engine' ),
+			'priority' => '40',
+		)
+	);
+
+	// Default Layout.
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $settings_field, 'site_layout' ),
+		array(
+			'default'           => genesis_get_option( 'site_layout' ),
+			'type'              => 'option',
+			'sanitize_callback' => 'sanitize_key',
+		)
+	);
+	$wp_customize->add_control(
+		'site_layout',
+		array(
+			'label'    => __( 'Default Layout', 'mai-pro-engine' ),
+			'section'  => $section,
+			'settings' => _mai_customizer_get_field_name( $settings_field, 'site_layout' ),
+			'priority' => 10,
+			'type'     => 'select',
+			'choices'  => genesis_get_layouts_for_customizer(),
+		)
+	);
+
+	// Archive Layout.
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $settings_field, 'layout_archive' ),
+		array(
+			'default'           => '',
+			'type'              => 'option',
+			'sanitize_callback' => 'sanitize_key',
+		)
+	);
+	$wp_customize->add_control(
+		'layout_archive',
+		array(
+			'label'    => __( 'Archives', 'mai-pro-engine' ),
+			'section'  => $section,
+			'settings' => _mai_customizer_get_field_name( $settings_field, 'layout_archive' ),
+			'priority' => 10,
+			'type'     => 'select',
+			'choices'  => array_merge( array( '' => __( '- Archives Default -', 'mai-pro-engine' ) ), genesis_get_layouts_for_customizer() ),
+		)
+	);
+
+	// Single layout (saves to genesis-settings option).
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $genesis_settings, 'layout_singular' ),
+		array(
+			'default'           => '',
+			'type'              => 'option',
+			'sanitize_callback' => 'sanitize_key',
+		)
+	);
+	$wp_customize->add_control(
+		'layout_singular',
+		array(
+			'label'    => __( 'Single Entries', 'mai-pro-engine' ),
+			'section'  => $section,
+			'settings' => _mai_customizer_get_field_name( $genesis_settings, 'layout_singular' ),
+			'priority' => 10,
+			'type'     => 'select',
+			'choices'  => array_merge( array( '' => __( '- Site Default -', 'mai-pro-engine' ) ), genesis_get_layouts_for_customizer() ),
+		)
+	);
+
+}

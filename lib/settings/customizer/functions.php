@@ -17,11 +17,13 @@ function mai_customizer_styles() {
 		.customize-control-break {
 			display: block !important;
 			min-height: 10px;
-			background: #656a6f;
-			color: #fff;
+			background: #d5d5d5;
+			color: #555d66;
 			padding: 4px 12px;
+			margin-top: 6px;
 			margin-left: -12px;
 			margin-right: -12px;
+			border-left: 4px solid #555d66;
 		}
 		.customize-control-break .customize-control-title {
 			margin-bottom: 0px;

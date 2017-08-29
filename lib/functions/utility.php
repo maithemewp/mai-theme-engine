@@ -97,11 +97,14 @@ function mai_get_archive_setting( $key, $check_for_archive_setting = true, $fall
  * @return  mixed
  */
 function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, $fallback = false ) {
+
 	// Bail if not a content archive.
 	if ( ! mai_is_content_archive() ) {
 		return null;
 	}
+
 	$meta = null;
+
 	// Blog.
 	if ( is_home() ) {
 		$meta = genesis_get_option( $key );
@@ -138,7 +141,9 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 							// If we have a post type and it supports genesis-cpt-archive-settings
 							// if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
 							if ( $post_type ) {
-								$meta = genesis_get_cpt_option( $key, $post_type );
+								if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings', $post_type ) ) ) {
+									$meta = genesis_get_cpt_option( $key, $post_type );
+								}
 							}
 						}
 					}
@@ -148,7 +153,9 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 	}
 	// CPT archive.
 	elseif ( is_post_type_archive() ) {
-		$meta = genesis_get_cpt_option( $key );
+		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
+			$meta = genesis_get_cpt_option( $key );
+		}
 	}
 	// Author archive.
 	elseif ( is_author() ) {
