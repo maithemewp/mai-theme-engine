@@ -32,7 +32,7 @@ function mai_customizer_styles() {
 }
 
 function _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field ) {
-	return $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ) )->value();
+	return (bool) $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ) )->value();
 }
 
 /**
@@ -63,6 +63,11 @@ function _mai_customizer_get_image_sizes_config() {
 function _mai_customizer_multicheck_strip_tags( $values ) {
 	$multi_values = ! is_array( $values ) ? explode( ',', $values ) : $values;
 	return ! empty( $multi_values ) ? array_map( 'strip_tags', $multi_values ) : array();
+}
+
+function _mai_customizer_multicheck_sanitize_key( $values ) {
+	$multi_values = ! is_array( $values ) ? explode( ',', $values ) : $values;
+	return ! empty( $multi_values ) ? array_map( 'sanitize_key', $multi_values ) : array();
 }
 
 function _mai_customizer_sanitize_one_zero( $value ) {

@@ -229,7 +229,6 @@ function mai_get_term_meta_value_in_hierarchy(  WP_Term $term, $meta_key, $check
 		elseif ( $term_ancestor->metadata1 ) {
 			return $term_ancestor->metadata1;
 		}
-
 	}
 	// Whoops, didn't find one with a value for that meta key.
 	return;
@@ -375,8 +374,15 @@ function mai_is_banner_area_enabled_globally() {
  *
  * @return bool
  */
-function mai_is_banner_featured_image_enabled() {
-	return filter_var( genesis_get_option( 'banner_featured_image' ), FILTER_VALIDATE_BOOLEAN );
+function mai_is_banner_featured_image_enabled( $post_id = '' ) {
+	if ( ! $post_id ) {
+		$post_id = get_the_ID();
+	}
+	$post_type = get_post_type( $post_id );
+	if ( $post_type && post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
+		return filter_var( genesis_get_option( sprintf( 'banner_featured_image_%s', $post_type ) ), FILTER_VALIDATE_BOOLEAN );
+	}
+	return (bool) in_array( $post_type, (array) filter_var( genesis_get_option( 'banner_featured_image' ), FILTER_VALIDATE_BOOLEAN ) );
 }
 
 /**

@@ -121,9 +121,9 @@ function mai_remove_content_archive_loop() {
 	}
 
 	// Remove the loop
-	remove_action( 'genesis_loop', 'genesis_do_loop' );
+	remove_action( 'genesis_loop',           'genesis_do_loop' );
 	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
-	remove_action( 'genesis_after_loop', 'genesis_posts_nav' );
+	remove_action( 'genesis_after_loop',     'genesis_posts_nav' );
 }
 
 /**
@@ -147,11 +147,11 @@ function mai_content_archive_posts_per_page( $query ) {
 	// Get the posts_per_page
 	$posts_per_page = mai_get_archive_setting( 'posts_per_page', true );
 	/**
-	* posts_per_page setting doesn't fallback to genesis_option,
-	* if requires the core WP posts_per_page setting.
-	* Instead of crazy conditionals in our helper function,
-	* let's just bail here and let WP do it's thing.
-	*/
+	 * posts_per_page setting doesn't fallback to genesis_option,
+	 * if requires the core WP posts_per_page setting.
+	 * Instead of crazy conditionals in our helper function,
+	 * let's just bail here and let WP do it's thing.
+	 */
 	if ( ! $posts_per_page ) {
 		return;
 	}
@@ -330,15 +330,16 @@ function mai_do_content_archive_archive_options() {
 	remove_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
 
 	// If we're showing the image
-	if ( $content_archive_thumbnail ) {
+	if ( $content_archive_thumbnail && $image_location ) {
 
 		// Add the image back, in a custom location
-		mai_do_post_image();
+		mai_do_archive_image( $image_location );
 
 		// Image Size
 		add_filter( 'genesis_pre_get_option_image_size', function( $option ) use ( $image_size ) {
 			return $image_size;
 		});
+
 		// Image Alignment
 		add_filter( 'genesis_pre_get_option_image_alignment', function( $option ) use ( $image_alignment ) {
 			return $image_alignment;
@@ -359,13 +360,11 @@ function mai_do_content_archive_archive_options() {
  *
  * @return  void
  */
-function mai_do_post_image() {
-
-	$location = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
+function mai_do_archive_image( $location ) {
 
 	// Bail if no location
 	if ( ! $location ) {
-	    return;
+		return;
 	}
 
 	/**

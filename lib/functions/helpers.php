@@ -20,7 +20,8 @@ function mai_is_content_archive() {
 	}
 	// CPT archive - this may be called too early to use get_post_type()
 	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-	elseif ( is_post_type_archive() && post_type_supports( get_query_var( 'post_type' ), 'mai-cpt-settings' ) ) {
+	// elseif ( is_post_type_archive() && post_type_supports( get_query_var( 'post_type' ), 'mai-cpt-settings' ) ) {
+	elseif ( is_post_type_archive() ) {
 		$is_archive = true;
 	}
 	// Author archive
@@ -73,6 +74,12 @@ function mai_is_banner_area_enabled() {
 				$enabled = false;
 			}
 		}
+		elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
+			$disabled = mai_get_the_archive_setting( 'hide_banner' );
+			if ( $disabled ) {
+				$enabled = false;
+			}
+		}
 		// Post taxonomy archive.
 		elseif ( is_category() || is_tag() ) {
 			// Get 'disabled' taxonomies, typecasted as array because it may return empty string if none
@@ -103,6 +110,8 @@ function mai_is_banner_area_enabled() {
 				$hidden = get_post_meta( get_the_ID(), 'hide_banner', true );
 			}
 			// If content archive (the only other place we'd have this setting)
+			//
+			// TODO: This breaks for CPT archive, it also hides taxonomies if CPT is set to hide.
 			elseif ( mai_is_content_archive() ) {
 				$hidden = mai_get_archive_setting( 'hide_banner', false );
 			}
@@ -144,7 +153,7 @@ function mai_get_banner_id() {
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
 		// If no image and featured images as banner is enabled
-		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
+		if ( ! $image_id && mai_is_banner_featured_image_enabled( $posts_page_id ) ) {
 			$image_id = get_post_thumbnail_id( $posts_page_id );
 		}
 	}
@@ -164,14 +173,12 @@ function mai_get_banner_id() {
 			if ( 'post' === $post_type && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
 				$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
 			}
-			// Products
-			// elseif ( class_exists( 'WooCommerce' ) && is_product() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-			// 	$image_id = get_post_meta( $shop_page_id, 'banner_id', true );
-			// }
 			// CPTs
 			elseif ( post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
-				// genesis_has_post_type_archive_support( $post_type ) ) {
-				$image_id = genesis_get_cpt_option( 'banner_id', $post_type );
+				if ( mai_is_banner_featured_image_enabled( get_the_ID() ) ) {
+					$image_id = get_post_thumbnail_id( $posts_page_id );
+				}
+				$image_id = $image_id ? $image_id : genesis_get_cpt_option( 'banner_id', $post_type );
 			}
 		}
 	}
@@ -210,7 +217,6 @@ function mai_get_banner_id() {
 	}
 
 	// CPT archive
-	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
 	elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
 		$image_id = genesis_get_cpt_option( 'banner_id' );
 	}
@@ -263,6 +269,29 @@ function mai_get_section( $content, $args = array() ) {
  */
 function mai_get_grid( $args ) {
 	return Mai_Shortcodes()->get_grid( $args );
+}
+
+/**
+ * Display the featured image.
+ * Must be used in the loop.
+ *
+ * @param   string  $size  The image size to use.
+ *
+ * @return  void
+ */
+function mai_do_featured_image( $size = 'featured' ) {
+	echo '<div class="featured-image">';
+		echo genesis_get_image( array(
+			'format' => 'html',
+			'size'   => $size,
+			'attr'   => array( 'class' => 'wp-post-image' )
+			));
+	echo '</div>';
+
+	$caption = get_post( get_post_thumbnail_id() )->post_excerpt;
+	if ( $caption ) {
+		echo '<span class="image-caption">' . $caption . '</span>';
+	}
 }
 
 /**

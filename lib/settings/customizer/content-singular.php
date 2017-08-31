@@ -27,7 +27,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 
 	// Featured Image - heading only.
 	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'featured_image_heading' ),
+		_mai_customizer_get_field_name( $settings_field, 'singular_featured_image_heading' ),
 		array(
 			'default' => '',
 			'type'    => 'option',
@@ -35,11 +35,11 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	);
 	$wp_customize->add_control(
 		new Mai_Customize_Control_Content( $wp_customize,
-			'featured_image_heading',
+			'singular_featured_image_heading',
 			array(
 				'label'    => __( 'Featured Image', 'mai-pro-engine' ),
 				'section'  => $section,
-				'settings' => _mai_customizer_get_field_name( $settings_field, 'featured_image_heading' ),
+				'settings' => false,
 			)
 		)
 	);
@@ -48,8 +48,9 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'singular_image_page' ),
 		array(
-			'default' => mai_get_default_option( 'singular_image_page' ),
-			'type'    => 'option',
+			'default'           => mai_get_default_option( 'singular_image_page' ),
+			'type'              => 'option',
+			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -66,8 +67,9 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'singular_image_post' ),
 		array(
-			'default' => mai_get_default_option( 'singular_image_post' ),
-			'type'    => 'option',
+			'default'           => mai_get_default_option( 'singular_image_post' ),
+			'type'              => 'option',
+			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -93,25 +95,21 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-pro-engine' );
 		}
 
-		// Entry Meta single.
-		// $remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
-		// $remove_meta_single_key = 'remove_meta';
-
 		$wp_customize->add_setting(
-			_mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
+			_mai_customizer_get_field_name( $settings_field, 'remove_meta_post' ),
 			array(
-				'default'           => mai_get_default_option( 'remove_meta' ),
+				'default'           => mai_get_default_option( 'remove_meta_post' ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
+				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 			)
 		);
 		$wp_customize->add_control(
 			new Mai_Customize_Control_Multicheck( $wp_customize,
-				'remove_meta',
+				'remove_meta_post',
 				array(
 					'label'    => __( 'Post Entry Meta', 'mai-pro-engine' ),
 					'section'  => $section,
-					'settings' => _mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
+					'settings' => _mai_customizer_get_field_name( $settings_field, 'remove_meta_post' ),
 					'priority' => 10,
 					'choices'  => $remove_meta_choices,
 				)

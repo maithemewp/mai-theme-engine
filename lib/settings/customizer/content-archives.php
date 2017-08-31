@@ -8,8 +8,6 @@
 add_action( 'customize_register', 'mai_register_customizer_content_archives_settings', 20 );
 function mai_register_customizer_content_archives_settings( $wp_customize ) {
 
-// d( mai_get_default_option( 'columns' ) );
-
 	/* ******************** *
 	 * Mai Content Archives *
 	 * ******************** */
@@ -36,7 +34,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 		array(
 			'default'           => mai_get_default_option( 'columns' ),
 			'type'              => 'option',
-			// 'sanitize_callback' => 'strip_tags',
+			'sanitize_callback' => 'absint',
 		)
 	);
 	$wp_customize->add_control(
@@ -45,7 +43,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'label'    => __( 'Columns', 'mai-pro-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'columns' ),
-			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
 				1 => __( 'None', 'mai-pro-engine' ),
@@ -72,7 +69,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'label'    => __( 'Content', 'mai-pro-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'content_archive' ),
-			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
 				'none'     => __( 'No content', 'mai-pro-engine' ),
@@ -101,14 +97,15 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'priority'        => 10,
 			'type'            => 'number',
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return ( 'none' != $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive' ) )->value() );
+				return (bool) ( 'none' !== $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive' ) )->value() );
+				// return in_array( $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive' ) )->value(), array( 'full', 'excerpts' ) );
 			},
 		)
 	);
 
 	// Featured Image - heading only.
 	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'archive_featured_image_heading' ),
+		_mai_customizer_get_field_name( $settings_field, 'archives_featured_image_heading' ),
 		array(
 			'default' => '',
 			'type'    => 'option',
@@ -116,11 +113,11 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	);
 	$wp_customize->add_control(
 		new Mai_Customize_Control_Content( $wp_customize,
-			'archive_featured_image_heading',
+			'archives_featured_image_heading',
 			array(
 				'label'    => __( 'Featured Image', 'mai-pro-engine' ),
 				'section'  => $section,
-				'settings' => _mai_customizer_get_field_name( $settings_field, 'archive_featured_image_heading' ),
+				'settings' => false,
 			)
 		)
 	);
@@ -159,7 +156,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'label'    => __( 'Image Location', 'mai-pro-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'image_location' ),
-			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
 				'background'     => __( 'Background Image', 'mai-pro-engine' ),
@@ -213,7 +209,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'label'    => __( 'Image Alignment', 'genesis' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'image_alignment' ),
-			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
 				''            => __( '- None -', 'genesis' ),
@@ -230,7 +225,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 
 	// Read More link - heading only.
 	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'more_link_heading' ),
+		_mai_customizer_get_field_name( $settings_field, 'archives_more_link_heading' ),
 		array(
 			'default' => '',
 			'type'    => 'option',
@@ -238,11 +233,11 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	);
 	$wp_customize->add_control(
 		new Mai_Customize_Control_Content( $wp_customize,
-			'more_link_heading',
+			'archives_more_link_heading',
 			array(
 				'label'    => __( 'Read More Link', 'mai-pro-engine' ),
 				'section'  => $section,
-				'settings' => _mai_customizer_get_field_name( $settings_field, 'more_link_heading' ),
+				'settings' => false,
 			)
 		)
 	);
@@ -251,8 +246,9 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'more_link' ),
 		array(
-			'default' => mai_get_default_option( 'more_link' ),
-			'type'    => 'option',
+			'default'           => mai_get_default_option( 'more_link' ),
+			'type'              => 'option',
+			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -261,7 +257,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'label'    => __( 'Display the Read More link', 'mai-pro-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'more_link' ),
-			'priority' => 10,
 			'type'     => 'checkbox',
 		)
 	);
@@ -282,9 +277,9 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
 			array(
-				'default'           => mai_get_default_option( 'excerpts' ),
+				'default'           => mai_get_default_option( 'remove_meta' ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
+				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 			)
 		);
 		$wp_customize->add_control(
@@ -294,34 +289,32 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 					'label'    => __( 'Entry Meta', 'mai-pro-engine' ),
 					'section'  => $section,
 					'settings' => _mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
-					'priority' => 10,
 					'choices'  => $remove_meta_choices,
 				)
 			)
 		);
 
 		// Entry Meta single.
-		$remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
-		$wp_customize->add_setting(
-			_mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
-			array(
-				'default'           => mai_get_default_option( $remove_meta_single_key ),
-				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_multicheck_strip_tags',
-			)
-		);
-		$wp_customize->add_control(
-			new Mai_Customize_Control_Multicheck( $wp_customize,
-				$remove_meta_single_key,
-				array(
-					'label'    => __( 'Entry Meta', 'mai-pro-engine' ),
-					'section'  => $section,
-					'settings' => _mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
-					'priority' => 10,
-					'choices'  => $remove_meta_choices,
-				)
-			)
-		);
+		// $remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
+		// $wp_customize->add_setting(
+		// 	_mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
+		// 	array(
+		// 		'default'           => mai_get_default_option( $remove_meta_single_key ),
+		// 		'type'              => 'option',
+		// 		'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+		// 	)
+		// );
+		// $wp_customize->add_control(
+		// 	new Mai_Customize_Control_Multicheck( $wp_customize,
+		// 		$remove_meta_single_key,
+		// 		array(
+		// 			'label'    => __( 'Entry Meta', 'mai-pro-engine' ),
+		// 			'section'  => $section,
+		// 			'settings' => _mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
+		// 			'choices'  => $remove_meta_choices,
+		// 		)
+		// 	)
+		// );
 
 	}
 
@@ -329,7 +322,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		'posts_per_page',
 		array(
-			'default'           => get_option( 'posts_per_page' ),
+			'default'           => mai_get_default_option( 'posts_per_page' ),
 			'type'              => 'option',
 			'sanitize_callback' => 'absint',
 		)
@@ -340,7 +333,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'label'    => __( 'Posts Per Page', 'mai-pro-engine' ),
 			'section'  => $section,
 			'settings' => 'posts_per_page',
-			'priority' => 10,
 			'type'     => 'number',
 		)
 	);
@@ -360,7 +352,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'label'    => __( 'Pagination', 'genesis' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'posts_nav' ),
-			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
 				'prev-next' => __( 'Previous / Next', 'genesis' ),

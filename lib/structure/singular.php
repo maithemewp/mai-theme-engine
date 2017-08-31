@@ -1,11 +1,62 @@
 <?php
+
 /**
- * Mai Pro Engine.
+ * Add featured image to single posts.
  *
- * @author   Mike Hemberger
+ * @see     mai_woo_remove_featured_image() for Woo version.
  *
- * @version  1.0.0
+ * @return  void
  */
+add_action( 'genesis_before_entry', 'mai_do_entry_featured_image' );
+function mai_do_entry_featured_image() {
+
+	// Bail if not a single entry with a featured image.
+	if ( ! ( is_singular() && has_post_thumbnail() ) ) {
+		return;
+	}
+
+	// Get post types to display featured image on.
+	$key     = sprintf( 'singular_image_%s', get_post_type() );
+	$display = genesis_get_option( $key );
+
+	// Bail if not displaying.
+	if ( ! $display ) {
+		return;
+	}
+
+	// Bail if hide featured image is checked.
+	if ( get_post_meta( get_the_ID(), 'mai_hide_featured_image', true ) ) {
+		return;
+	}
+
+	mai_do_featured_image();
+
+}
+
+/**
+ * Maybe remove the WooCommerce single product image.
+ *
+ * @see     mai_do_entry_featured_image() for similar standard CPT.
+ *
+ * @return  void
+ */
+add_action( 'woocommerce_before_main_content', 'mai_woo_remove_featured_image' );
+function mai_woo_remove_featured_image() {
+	// Bail if not a single product.
+	if ( ! is_product() ) {
+		return;
+	}
+	// Get post types to display featured image on.
+	$key     = sprintf( 'singular_image_%s', get_post_type() );
+	$display = genesis_get_option( $key );
+
+	// Remove image if not displaying.
+	if ( ! $display ) {
+		// Remove product images from single template
+		remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
+	}
+}
+
 
 add_action( 'genesis_before_loop', 'mai_remove_singular_meta' );
 function mai_remove_singular_meta() {

@@ -34,7 +34,7 @@ function mai_register_customizer_site_layouts_settings( $wp_customize ) {
 		array(
 			'default'           => genesis_get_default_layout(),
 			'type'              => 'option',
-			// 'sanitize_callback' => 'sanitize_key',
+			'sanitize_callback' => 'sanitize_key',
 		)
 	);
 	$wp_customize->add_control(
@@ -55,7 +55,7 @@ function mai_register_customizer_site_layouts_settings( $wp_customize ) {
 		array(
 			'default'           => mai_get_default_option( 'layout_archive' ),
 			'type'              => 'option',
-			// 'sanitize_callback' => 'sanitize_key',
+			'sanitize_callback' => 'sanitize_key',
 		)
 	);
 	$wp_customize->add_control(
@@ -76,7 +76,7 @@ function mai_register_customizer_site_layouts_settings( $wp_customize ) {
 		array(
 			'default'           => mai_get_default_option( 'layout_page' ),
 			'type'              => 'option',
-			// 'sanitize_callback' => 'sanitize_key',
+			'sanitize_callback' => 'sanitize_key',
 		)
 	);
 	$wp_customize->add_control(
@@ -97,7 +97,7 @@ function mai_register_customizer_site_layouts_settings( $wp_customize ) {
 		array(
 			'default'           => mai_get_default_option( 'layout_post' ),
 			'type'              => 'option',
-			// 'sanitize_callback' => 'sanitize_key',
+			'sanitize_callback' => 'sanitize_key',
 		)
 	);
 	$wp_customize->add_control(

@@ -48,21 +48,23 @@ function mai_woocommerce_product_settings( $args, $post_type ) {
 	}
 	// Woo defaults.
 	return array(
+		'layout_product'                  => 'md-content',         // Single
+		'layout'                          => 'full-width-content', // Archive
+		'singular_image_product'          => 1,
+		'remove_meta_product'             => 'unset',
 		'enable_content_archive_settings' => 1,
 		'columns'                         => 3,
 		'content_archive'                 => 'unset',
 		'content_archive_limit'           => 'unset',
-		'more_link'                       => 'unset',
-		'more_link_text'                  => 'unset',
 		'content_archive_thumbnail'       => 1,
 		'image_location'                  => 'unset',
 		'image_size'                      => 'unset',
 		'image_alignment'                 => 'unset',
+		'more_link'                       => 'unset',
+		'more_link_text'                  => 'unset',
 		'remove_meta'                     => 'unset',
-		'layout_product'                  => 'md-content',         // Single
-		'layout'                          => 'full-width-content', // Archive
 		'posts_per_page'                  => 12,
-		'posts_nav'                       => 'prev-next',
+		'posts_nav'                       => 'numeric',
 	);
 }
 

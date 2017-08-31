@@ -24,6 +24,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 		)
 	);
 
+	// Header heading.
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'header_customizer_heading' ),
 		array(
@@ -33,11 +34,11 @@ function mai_register_customizer_settings( $wp_customize ) {
 	);
 	$wp_customize->add_control(
 		new Mai_Customize_Control_Content( $wp_customize,
-			$prefix . 'header_customizer_heading',
+			'header_customizer_heading',
 			array(
 				'label'    => __( 'Header', 'mai-pro-engine' ),
 				'section'  => $section,
-				'settings' => _mai_customizer_get_field_name( $settings_field, 'header_customizer_heading' ),
+				'settings' => false,
 			)
 		)
 	);
@@ -46,8 +47,9 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'enable_sticky_header' ),
 		array(
-			'default' => 0,
-			'type'    => 'option',
+			'default'           => 0,
+			'type'              => 'option',
+			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -64,8 +66,9 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'enable_shrink_header' ),
 		array(
-			'default' => 0,
-			'type'    => 'option',
+			'default'           => 0,
+			'type'              => 'option',
+			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -82,9 +85,9 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'footer_widget_count' ),
 		array(
-			'default'           => '2',
+			'default'           => 2,
 			'type'              => 'option',
-			'sanitize_callback' => 'sanitize_key',
+			'sanitize_callback' => 'absint',
 		)
 	);
 	$wp_customize->add_control(
@@ -97,12 +100,12 @@ function mai_register_customizer_settings( $wp_customize ) {
 			'priority'    => 10,
 			'type'        => 'select',
 			'choices'     => array(
-				'0' => __( 'None', 'mai-pro-engine' ),
-				'1' => __( '1', 'mai-pro-engine' ),
-				'2' => __( '2', 'mai-pro-engine' ),
-				'3' => __( '3', 'mai-pro-engine' ),
-				'4' => __( '4', 'mai-pro-engine' ),
-				'6' => __( '6', 'mai-pro-engine' ),
+				0 => __( 'None', 'mai-pro-engine' ),
+				1 => __( '1', 'mai-pro-engine' ),
+				2 => __( '2', 'mai-pro-engine' ),
+				3 => __( '3', 'mai-pro-engine' ),
+				4 => __( '4', 'mai-pro-engine' ),
+				6 => __( '6', 'mai-pro-engine' ),
 			),
 		)
 	);

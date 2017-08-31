@@ -1,7 +1,7 @@
 <?php
 
 
-add_action( 'customize_register', 'mai_register_customizer_field_types' );
+add_action( 'customize_register', 'mai_register_customizer_field_types', 8 );
 function mai_register_customizer_field_types() {
 
 	/**
@@ -83,6 +83,43 @@ function mai_register_customizer_field_types() {
 	 * @since  1.0.0
 	 * @access public
 	 */
+	class Mai_Customize_Control_Break extends WP_Customize_Control {
+
+		/**
+		 * The type of customize control being rendered.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @var    string
+		 */
+		public $type = 'break';
+
+		/**
+		 * Displays the control content.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 * @return void
+		 */
+		public function render_content() {
+
+			if ( ! empty( $this->label ) ) {
+				printf( '<span class="customize-control-title">%s</span>', esc_html( $this->label ) );
+			}
+
+			if ( ! empty( $this->description ) ) {
+				printf( '<span class="description customize-control-description">%s</span>', $this->description );
+			}
+		}
+
+	}
+
+	/**
+	 * Multiple checkbox customize control class.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 */
 	class Mai_Customize_Control_Content extends WP_Customize_Control {
 
 		/**
@@ -110,44 +147,6 @@ function mai_register_customizer_field_types() {
 			if ( ! empty( $this->description ) ) {
 				printf( '<span class="description customize-control-description">%s</span>', $this->description );
 			}
-
-		}
-
-	}
-
-	/**
-	 * Multiple checkbox customize control class.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 */
-	class Mai_Customize_Control_Break extends WP_Customize_Control {
-
-		/**
-		 * The type of customize control being rendered.
-		 *
-		 * @since  1.0.0
-		 * @access public
-		 * @var    string
-		 */
-		public $type = 'break';
-
-		/**
-		 * Displays the control content.
-		 *
-		 * @since  1.0.0
-		 * @access public
-		 * @return void
-		 */
-		public function render_content() {
-			if ( ! empty( $this->label ) ) {
-				printf( '<span class="customize-control-title">%s</span>', esc_html( $this->label ) );
-			}
-
-			if ( ! empty( $this->description ) ) {
-				printf( '<span class="description customize-control-description">%s</span>', $this->description );
-			}
-			// echo '<span style="display:block;height:10px;background:#1074a8;margin-left:-12px;margin-right:-12px;"></span>';
 		}
 
 	}
