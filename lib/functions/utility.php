@@ -37,10 +37,6 @@ function mai_get_the_archive_setting( $key ) {
 	elseif ( is_author() ) {
 		$setting = get_the_author_meta( $key, get_query_var( 'author' ) );
 	}
-	// WooCommerce shop page
-	// elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-	// 	$setting = get_post_meta( $shop_page_id, $key, true );
-	// }
 	// Nada
 	else {
 		$setting = null;
@@ -159,7 +155,7 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 	}
 
 	// CPT archive.
-	elseif ( is_post_type_archive() ) {
+	elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
 			$meta = genesis_get_cpt_option( $key );
 		}

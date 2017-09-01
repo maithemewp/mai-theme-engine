@@ -1,5 +1,9 @@
 <?php
 
+// add_action( 'customize_render_control_portfolio_banner_id', function(){
+	// echo '<div>Hiii!</div>';
+// });
+
 /**
  * Setup CPT's customizer and Archive Settings fields.
  *
@@ -276,6 +280,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 		$prefix . 'banner_id',
 		array(
 			'label'           => __( 'Default Banner Image', 'mai-pro-engine' ),
+			'description'     => __( 'This will be the default banner image for archives and single entries.', 'mai-pro-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 			'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
@@ -318,7 +323,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 	$wp_customize->add_control(
 		$prefix . 'hide_banner',
 		array(
-			'label'           => __( 'Hide banner on the main archive', 'mai-pro-engine' ),
+			'label'           => __( 'Hide banner on main archive', 'mai-pro-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'hide_banner' ),
 			'type'            => 'checkbox',
@@ -377,10 +382,13 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $args ) {
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				$prefix . $banner_disable_taxonomies_key,
 				array(
-					'label'    => __( 'Disable banner on (taxonomies)', 'mai-pro-engine' ),
-					'section'  => $section,
-					'settings' => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies_key ),
-					'choices'  => $disable_taxonomies,
+					'label'           => __( 'Disable banner on (taxonomies)', 'mai-pro-engine' ),
+					'section'         => $section,
+					'settings'        => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies_key ),
+					'choices'         => $disable_taxonomies,
+					'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
+						return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
+					},
 				)
 			)
 		);

@@ -74,24 +74,32 @@ function mai_is_banner_area_enabled() {
 				$enabled = false;
 			}
 		}
-		elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
-			$disabled = mai_get_the_archive_setting( 'hide_banner' );
-			if ( $disabled ) {
-				$enabled = false;
-			}
-		}
+
+		// elseif ( mai_is_content_archive() ) {
+		// 	$disabled = mai_get_archive_setting( 'hide_banner', false );
+		// 	if ( $disable_post_type ) {
+		// 		$enabled = false;
+		// 	}
+		// }
+		// elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
+		// 	$disabled = genesis_get_cpt_option( 'hide_banner' );
+		// 	if ( $disabled ) {
+		// 		$enabled = false;
+		// 	}
+		// }
+
 		// Post taxonomy archive.
 		elseif ( is_category() || is_tag() ) {
 			// Get 'disabled' taxonomies, typecasted as array because it may return empty string if none
 			$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
-			if ( in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
+			if ( $disable_taxonomies && in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
 				$enabled = false;
 			}
 		}
 		// Custom taxonomy archive.
 		elseif ( is_tax() ) {
 			$disable_taxonomies = (array) genesis_get_option( sprintf( 'banner_disable_taxonomies_%s', get_post_type() ) );
-			if ( in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
+			if ( $disable_taxonomies && in_array( get_queried_object()->taxonomy, $disable_taxonomies ) ) {
 				$enabled = false;
 			}
 		}
@@ -105,18 +113,17 @@ function mai_is_banner_area_enabled() {
 
 			$hidden = false;
 
-			// If single post/page/cpt
+			// If single post/page/cpt.
 			if ( is_singular() ) {
 				$hidden = get_post_meta( get_the_ID(), 'hide_banner', true );
 			}
 			// If content archive (the only other place we'd have this setting)
-			//
-			// TODO: This breaks for CPT archive, it also hides taxonomies if CPT is set to hide.
 			elseif ( mai_is_content_archive() ) {
-				$hidden = mai_get_archive_setting( 'hide_banner', false );
+				// Get the setting directly, without fallbacks.
+				$hidden = mai_get_the_archive_setting( 'hide_banner' );
 			}
 
-			// If hidden, disable banner
+			// If hidden, disable banner.
 			if ( $hidden ) {
 				$enabled = false;
 			}

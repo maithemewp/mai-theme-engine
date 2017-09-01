@@ -6,6 +6,9 @@
 add_action( 'customize_controls_print_styles', 'mai_customizer_styles', 999 );
 function mai_customizer_styles() {
 	echo '<style type="text/css">
+		.customize-section-description-container + .customize-control-break {
+			// margin-top: -8px;
+		}
 		.customize-control-heading + .customize-control-checkbox,
 		.customize-control-heading + .customize-control-checkbox + .customize-control-checkbox {
 			margin-top: -12px !important;
@@ -15,7 +18,6 @@ function mai_customizer_styles() {
 			padding-bottom: 3px !important;
 		}
 		.customize-control-break {
-			display: block !important;
 			min-height: 10px;
 			background: #d5d5d5;
 			color: #555d66;

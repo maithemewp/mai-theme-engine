@@ -88,51 +88,6 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		)
 	) );
 
-	// Banner featured image, heading only.
-	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'banner_featured_image_heading' ),
-		array(
-			'default' => '',
-			'type'    => 'option',
-		)
-	);
-	$wp_customize->add_control(
-		new Mai_Customize_Control_Content( $wp_customize,
-			'banner_featured_image_heading',
-			array(
-				'label'           => __( 'Featured Image on', 'mai-pro-engine' ),
-				'section'         => $section,
-				'settings'        => false,
-				'active_callback' => function() use ( $wp_customize, $settings_field ) {
-					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
-				},
-			)
-		)
-	);
-
-	// Banner featured image.
-	// $wp_customize->add_setting(
-	// 	_mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
-	// 	array(
-	// 		'default'           => 0,
-	// 		'type'              => 'option',
-	// 		'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
-	// 	)
-	// );
-	// $wp_customize->add_control(
-	// 	'banner_featured_image',
-	// 	array(
-	// 		'label'           => __( 'Use featured image as banner image', 'mai-pro-engine' ),
-	// 		'section'         => $section,
-	// 		'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
-	// 		'priority'        => 10,
-	// 		'type'            => 'checkbox',
-	// 		'active_callback' => function() use ( $wp_customize, $settings_field ) {
-	// 			return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
-	// 		},
-	// 	)
-	// );
-
 	// Banner featured image.
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
@@ -146,11 +101,12 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		new Mai_Customize_Control_Multicheck( $wp_customize,
 			'banner_featured_image',
 			array(
-				'label'    => __( 'Use featured image as banner image', 'mai-pro-engine' ),
-				'section'  => $section,
-				'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
-				'priority' => 10,
-				'choices'  => array(
+				'label'       => __( 'Featured Image', 'mai-pro-engine' ),
+				'description' => __( 'Use featured image as banner image on:', 'mai-pro-engine' ),
+				'section'     => $section,
+				'settings'    => _mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
+				'priority'    => 10,
+				'choices'     => array(
 					'post' => __( 'Posts', 'mai-pro-engine' ),
 					'page' => __( 'Pages', 'mai-pro-engine' ),
 				),

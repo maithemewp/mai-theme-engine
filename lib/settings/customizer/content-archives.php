@@ -97,7 +97,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'priority'        => 10,
 			'type'            => 'number',
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
-				return (bool) ( 'none' !== $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive' ) )->value() );
+				return (bool) ( 'full' === $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive' ) )->value() );
 				// return in_array( $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive' ) )->value(), array( 'full', 'excerpts' ) );
 			},
 		)
