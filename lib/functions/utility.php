@@ -378,7 +378,7 @@ function mai_is_banner_featured_image_enabled( $post_id = '' ) {
 	if ( $post_type && post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
 		return filter_var( genesis_get_option( sprintf( 'banner_featured_image_%s', $post_type ) ), FILTER_VALIDATE_BOOLEAN );
 	}
-	return (bool) in_array( $post_type, (array) filter_var( genesis_get_option( 'banner_featured_image' ), FILTER_VALIDATE_BOOLEAN ) );
+	return in_array( $post_type, (array) genesis_get_option( 'banner_featured_image' ) );
 }
 
 /**

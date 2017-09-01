@@ -72,6 +72,7 @@ function mai_get_layout( $layout ) {
 
 	// Setup cache.
 	static $layout_cache = '';
+
 	// If cache is populated, return value.
 	if ( '' !== $layout_cache ) {
 		return esc_attr( $layout_cache );

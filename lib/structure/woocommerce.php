@@ -20,6 +20,12 @@ add_theme_support( 'wc-product-gallery-zoom' );
 add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 
+add_action( 'init', 'mai_woocommerce_int', 99 );
+function mai_woocommerce_int() {
+	remove_post_type_support( 'product', 'genesis-entry-meta-before-content' );
+	remove_post_type_support( 'product', 'genesis-entry-meta-after-content' );
+}
+
 // Remove taxonomy archive description since Mai has this functionality already
 remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
 
@@ -40,32 +46,50 @@ function mai_woocommerce_show_page_title( $return ) {
 	return false;
 }
 
-add_filter( 'mai_cpt_settings', 'mai_woocommerce_product_settings', 10, 2 );
-function mai_woocommerce_product_settings( $args, $post_type ) {
+add_filter( 'mai_cpt_settings', 'mai_woocommerce_product_default_settings', 10, 2 );
+function mai_woocommerce_product_default_settings( $settings, $post_type ) {
 	// Bail if CPT is not WooCommerce 'product'.
 	if ( ! ( class_exists( 'WooCommerce') && ( 'product' === $post_type ) ) ) {
-		return $args;
+		return $settings;
+	}
+	$settings['remove_meta_product']   = false;
+	$settings['content_archive']       = false;
+	$settings['content_archive_limit'] = false;
+	$settings['image_location']        = false;
+	$settings['image_size']            = false;
+	$settings['image_alignment']       = false;
+	$settings['more_link']             = false;
+	$settings['more_link_text']        = false;
+	$settings['remove_meta']           = false;
+	return $settings;
+}
+
+add_filter( 'genesis_theme_settings_defaults', 'mai_woo_product_theme_settings_defaults' );
+function mai_woo_product_theme_settings_defaults( $settings ) {
+	// Bail if CPT is not WooCommerce 'product'.
+	if ( ! class_exists( 'WooCommerce') ) {
+		return $settings;
 	}
 	// Woo defaults.
-	return array(
-		'layout_product'                  => 'md-content',         // Single
-		'layout'                          => 'full-width-content', // Archive
-		'singular_image_product'          => 1,
-		'remove_meta_product'             => 'unset',
-		'enable_content_archive_settings' => 1,
-		'columns'                         => 3,
-		'content_archive'                 => 'unset',
-		'content_archive_limit'           => 'unset',
-		'content_archive_thumbnail'       => 1,
-		'image_location'                  => 'unset',
-		'image_size'                      => 'unset',
-		'image_alignment'                 => 'unset',
-		'more_link'                       => 'unset',
-		'more_link_text'                  => 'unset',
-		'remove_meta'                     => 'unset',
-		'posts_per_page'                  => 12,
-		'posts_nav'                       => 'numeric',
-	);
+	$settings['banner_disable_product'] = 1;
+	$settings['layout_product']         = 'md-content';
+	$settings['singular_image_product'] = 1;
+	return $settings;
+}
+
+add_filter( 'genesis_cpt_archive_settings_defaults', 'mai_woo_product_cpt_archive_settings', 10, 2 );
+function mai_woo_product_cpt_archive_settings( $settings, $post_type ) {
+	// Bail if CPT is not WooCommerce 'product'.
+	if ( ! class_exists( 'WooCommerce') || 'product' !== $post_type ) {
+		return $settings;
+	}
+	// Woo defaults.
+	$settings['layout']                          = 'full-width-content';
+	$settings['enable_content_archive_settings'] = 1;
+	$settings['columns']                         = 3;
+	$settings['content_archive_thumbnail']       = 1;
+	$settings['posts_per_page']                  = 12;
+	return $settings;
 }
 
 /**

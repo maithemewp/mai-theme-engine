@@ -169,7 +169,7 @@ function mai_get_banner_id() {
 	elseif ( is_singular() ) {
 		$image_id = get_post_meta( get_the_ID(), 'banner_id', true );
 		// If no image and featured images as banner is enabled
-		if ( ! $image_id && mai_is_banner_featured_image_enabled() ) {
+		if ( ! $image_id && mai_is_banner_featured_image_enabled( get_the_ID() ) ) {
 			$image_id = get_post_thumbnail_id( get_the_ID() );
 		}
 		// Fallback
@@ -182,10 +182,11 @@ function mai_get_banner_id() {
 			}
 			// CPTs
 			elseif ( post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
-				if ( mai_is_banner_featured_image_enabled( get_the_ID() ) ) {
-					$image_id = get_post_thumbnail_id( $posts_page_id );
-				}
-				$image_id = $image_id ? $image_id : genesis_get_cpt_option( 'banner_id', $post_type );
+				// if ( mai_is_banner_featured_image_enabled( get_the_ID() ) ) {
+					// $image_id = get_post_thumbnail_id( $posts_page_id );
+				// }
+				// $image_id = $image_id ? $image_id : genesis_get_cpt_option( 'banner_id', $post_type );
+				$image_id = genesis_get_cpt_option( 'banner_id', $post_type );
 			}
 		}
 	}

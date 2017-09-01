@@ -98,7 +98,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'type'            => 'number',
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return (bool) ( 'full' === $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive' ) )->value() );
-				// return in_array( $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive' ) )->value(), array( 'full', 'excerpts' ) );
 			},
 		)
 	);
@@ -293,28 +292,6 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 				)
 			)
 		);
-
-		// Entry Meta single.
-		// $remove_meta_single_key = sprintf( 'remove_meta_%s', $post_type );
-		// $wp_customize->add_setting(
-		// 	_mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
-		// 	array(
-		// 		'default'           => mai_get_default_option( $remove_meta_single_key ),
-		// 		'type'              => 'option',
-		// 		'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
-		// 	)
-		// );
-		// $wp_customize->add_control(
-		// 	new Mai_Customize_Control_Multicheck( $wp_customize,
-		// 		$remove_meta_single_key,
-		// 		array(
-		// 			'label'    => __( 'Entry Meta', 'mai-pro-engine' ),
-		// 			'section'  => $section,
-		// 			'settings' => _mai_customizer_get_field_name( $settings_field, $remove_meta_single_key ),
-		// 			'choices'  => $remove_meta_choices,
-		// 		)
-		// 	)
-		// );
 
 	}
 

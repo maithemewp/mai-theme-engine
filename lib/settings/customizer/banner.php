@@ -107,8 +107,8 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 				'settings'    => _mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
 				'priority'    => 10,
 				'choices'     => array(
-					'post' => __( 'Posts', 'mai-pro-engine' ),
 					'page' => __( 'Pages', 'mai-pro-engine' ),
+					'post' => __( 'Posts', 'mai-pro-engine' ),
 				),
 				'active_callback' => function() use ( $wp_customize, $settings_field ) {
 					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
@@ -225,8 +225,8 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 				'settings'    => _mai_customizer_get_field_name( $settings_field, 'banner_disable_post_types' ),
 				'priority'    => 10,
 				'choices'     => array(
-					'post' => __( 'Posts', 'mai-pro-engine' ),
 					'page' => __( 'Pages', 'mai-pro-engine' ),
+					'post' => __( 'Posts', 'mai-pro-engine' ),
 				),
 				'active_callback' => function() use ( $wp_customize, $settings_field ) {
 					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
