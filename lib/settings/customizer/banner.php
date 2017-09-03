@@ -28,7 +28,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ),
 		array(
-			'default'           => 0,
+			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( 'enable_banner_area' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
@@ -47,7 +47,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_background_color' ),
 		array(
-			'default'           => '#f1f1f1',
+			'default'           => sanitize_hex_color( mai_get_default_option( 'banner_background_color' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_hex_color',
 		)
@@ -69,7 +69,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 		array(
-			'default'           => '',
+			'default'           => absint( mai_get_default_option( 'banner_id' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => 'absint',
 		)
@@ -92,7 +92,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
 		array(
-			'default'           => array(),
+			'default'           => _mai_customizer_multicheck_sanitize_key( mai_get_default_option( 'banner_featured_image' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 		)
@@ -121,7 +121,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_overlay' ),
 		array(
-			'default'           => '',
+			'default'           => sanitize_key( mai_get_default_option( 'banner_overlay' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_key',
 		)
@@ -150,7 +150,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_inner' ),
 		array(
-			'default'           => '',
+			'default'           => sanitize_key( mai_get_default_option( 'banner_inner' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_key',
 		)
@@ -178,7 +178,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_content_width' ),
 		array(
-			'default'           => 'auto',
+			'default'           => sanitize_key( mai_get_default_option( 'banner_content_width' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => 'sanitize_key',
 		)
@@ -210,7 +210,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_disable_post_types' ),
 		array(
-			'default'           => array(),
+			'default'           => _mai_customizer_multicheck_sanitize_key( mai_get_default_option( 'banner_disable_post_types' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 		)
@@ -253,7 +253,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'banner_disable_taxonomies' ),
 			array(
-				'default'           => array(),
+				'default'           => _mai_customizer_multicheck_sanitize_key( mai_get_default_option( '_mai_customizer_multicheck_sanitize_key' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 			)

@@ -2,6 +2,7 @@
 
 /**
  * Filter the default options, adding our custom settings.
+ * CPT settings defaults are filtered in /customizer/custom-post-types.php
  *
  * @param   array   $options  The genesis options.
  * @param   string  $setting  The setting key/name.
@@ -25,49 +26,6 @@ function mai_genesis_options_defaults( $options, $setting ) {
 
 	// Return the modified options.
 	return $options;
-}
-
-/**
- * Filter the default options, adding our custom post type settings.
- *
- * @param   array   $options  The genesis options.
- * @param   string  $setting  The setting key/name.
- *
- * @return  array   The modified options.
- */
-add_filter( 'genesis_options', 'mai_genesis_cpt_options_defaults', 10, 2 );
-function mai_genesis_cpt_options_defaults( $options, $setting ) {
-
-	// Bail if 'genesis-settings' or 'genesis-seo-settings'.
-	if ( in_array( $options, array( GENESIS_SETTINGS_FIELD, GENESIS_SEO_SETTINGS_FIELD, ) ) ) {
-		return $options;
-	}
-
-	/**
-	 * Get post types.
-	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
-	 */
-	$post_types = genesis_get_cpt_archive_types();
-
-	if ( ! $post_types ) {
-		return $options;
-	}
-
-	foreach ( $post_types as $post_type => $object ) {
-		// Bail if not this post_type's settings.
-		if ( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type === $setting ) {
-			// Default options.
-			foreach ( (array) mai_get_default_cpt_options( $post_type ) as $key => $value ) {
-				if ( ! isset( $options[$key] ) ) {
-					$options[$key] = $value;
-				}
-			}
-		}
-	}
-
-	// Return the modified options.
-	return $options;
-
 }
 
 /**

@@ -82,6 +82,8 @@ function mai_woo_product_theme_settings_defaults( $settings ) {
 }
 
 /**
+ * WHY IS THIS NOT RUNNING IN THE CUSTOMIZER?!?!?!?!
+ *
  * Set some cpt-archive-settings defaults for WooCommerce Shop/Products.
  *
  * @param  array   $settings   The default settings (already modified by Mai).
@@ -92,7 +94,7 @@ function mai_woo_product_theme_settings_defaults( $settings ) {
 add_filter( 'genesis_cpt_archive_settings_defaults', 'mai_woo_product_cpt_archive_settings', 10, 2 );
 function mai_woo_product_cpt_archive_settings( $settings, $post_type ) {
 	// Bail if CPT is not WooCommerce 'product'.
-	if ( ! class_exists( 'WooCommerce') || 'product' !== $post_type ) {
+	if ( ! class_exists( 'WooCommerce') && 'product' !== $post_type ) {
 		return $settings;
 	}
 	// Woo defaults.

@@ -28,7 +28,7 @@ function cmb2_test_before_form( $cmb_id, $object_id, $object_type, $cmb ) {
 	if ( ! in_array( $cmb_id, $mai_cmb ) ) {
 		return;
 	}
-
+	// Enqueue scripts and styles, previously registered.
 	wp_enqueue_style( 'mai-admin' );
 	wp_enqueue_script( 'mai-admin' );
 }

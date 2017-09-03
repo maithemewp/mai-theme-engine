@@ -218,28 +218,32 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		)
 	);
 
-	// Banner Image
-	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'banner_id' ),
-		array(
-			'default'           => absint( mai_get_default_cpt_option( 'banner_id' ) ),
-			'type'              => 'option',
-			'sanitize_callback' => 'absint',
-		)
-	);
-	$wp_customize->add_control(
-		new WP_Customize_Media_Control( $wp_customize,
-		$prefix . 'banner_id',
-		array(
-			'label'           => __( 'Default Banner Image', 'mai-pro-engine' ),
-			'description'     => __( 'This will be the default banner image for archives and single entries.', 'mai-pro-engine' ),
-			'section'         => $section,
-			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
-			'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
-				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
-			},
-		)
-	) );
+	if ( $settings['banner_id'] ) {
+
+		// Banner Image
+		$wp_customize->add_setting(
+			_mai_customizer_get_field_name( $settings_field, 'banner_id' ),
+			array(
+				'default'           => absint( mai_get_default_cpt_option( 'banner_id' ) ),
+				'type'              => 'option',
+				'sanitize_callback' => 'absint',
+			)
+		);
+		$wp_customize->add_control(
+			new WP_Customize_Media_Control( $wp_customize,
+			$prefix . 'banner_id',
+			array(
+				'label'           => __( 'Default Banner Image', 'mai-pro-engine' ),
+				'description'     => __( 'This will be the default banner image for archives and single entries.', 'mai-pro-engine' ),
+				'section'         => $section,
+				'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
+				'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
+					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $genesis_settings );
+				},
+			)
+		) );
+
+	}
 
 	// Disable banner, heading only.
 	$wp_customize->add_setting(
