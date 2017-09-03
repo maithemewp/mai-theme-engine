@@ -1,11 +1,4 @@
 <?php
-/**
- * Mai Pro Engine.
- *
- * @author   Mike Hemberger
- *
- * @version  1.0.0
- */
 
 /**
  * Add custom banner area body class.

@@ -1,14 +1,4 @@
 <?php
-/**
- * Mai Pro.
- *
- * This file adds the Genesis Connect for WooCommerce notice to the Mai Pro Engine.
- *
- * @package Mai Pro Engine
- * @author  Mike Hemberger
- * @license GPL-2.0+
- * @link    https://maipro.io
- */
 
 /**
  * Remove the default WooCommerce Notice.

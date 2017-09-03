@@ -78,7 +78,6 @@ class Mai_Genesis_CPT_Settings_Metabox {
 			self::$instances[ $post_type ] = new self( $post_type );
 			self::$instances[ $post_type ]->hooks();
 		}
-
 		return self::$instances[ $post_type ];
 	}
 

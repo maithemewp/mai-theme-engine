@@ -30,7 +30,6 @@ function mai_do_entry_featured_image() {
 	}
 
 	mai_do_featured_image();
-
 }
 
 /**
@@ -42,6 +41,7 @@ function mai_do_entry_featured_image() {
  */
 add_action( 'woocommerce_before_main_content', 'mai_woo_remove_featured_image' );
 function mai_woo_remove_featured_image() {
+
 	// Bail if not a single product.
 	if ( ! is_product() ) {
 		return;
@@ -57,7 +57,11 @@ function mai_woo_remove_featured_image() {
 	}
 }
 
-
+/**
+ * Remove the entry meta on single posts.
+ *
+ * @return  void.
+ */
 add_action( 'genesis_before_loop', 'mai_remove_singular_meta' );
 function mai_remove_singular_meta() {
 
@@ -66,16 +70,10 @@ function mai_remove_singular_meta() {
 		return;
 	}
 
-	$post_type = get_post_type();
-
-	// if ( 'post' === $post_type ) {
-		// $remove_meta_key = 'remove_meta';
-	// }  else {
-		$remove_meta_key = sprintf( 'remove_meta_%s', $post_type );
-	// }
-
 	// Get the meta to remove.
-	$meta_to_remove = (array) genesis_get_option( $remove_meta_key );
+	$post_type       = get_post_type();
+	$remove_meta_key = sprintf( 'remove_meta_%s', $post_type );
+	$meta_to_remove  = (array) genesis_get_option( $remove_meta_key );
 
 	// Bail if not removing any meta.
 	if ( ! $meta_to_remove ) {

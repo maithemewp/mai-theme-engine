@@ -1,35 +1,5 @@
 <?php
 
-// Filter the default options, adding our custom settings.
-add_filter( 'genesis_options', function( $options, $setting ) {
-
-	/**
-	 * Get post types.
-	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
-	 */
-	$post_types = genesis_get_cpt_archive_types();
-
-	if ( ! $post_types ) {
-		return $options;
-	}
-
-	foreach ( $post_types as $post_type => $object ) {
-		// Bail if not this post_type's settings.
-		if ( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type === $setting ) {
-			// Default options.
-			foreach ( (array) mai_get_default_cpt_options( $post_type ) as $key => $value ) {
-				if ( ! isset( $options[$key] ) ) {
-					$options[$key] = $value;
-				}
-			}
-		}
-	}
-
-	// Return the modified options.
-	return $options;
-
-}, 10, 2 );
-
 /**
  * Setup CPT's customizer and Archive Settings fields.
  *
@@ -67,10 +37,12 @@ function mai_cpt_settings_init() {
 	 */
 	$post_types = genesis_get_cpt_archive_types();
 
+	// Bail if no post types.
 	if ( ! $post_types ) {
 		return;
 	}
 
+	// Loop through the post types.
 	foreach ( $post_types as $post_type => $object ) {
 
 		/**
@@ -79,27 +51,32 @@ function mai_cpt_settings_init() {
 		 */
 		add_post_type_support( $post_type, 'mai-cpt-settings' );
 
-		// // Filter the default options, adding our custom settings.
-		// add_filter( 'genesis_options', function( $options, $setting ) use ( $post_type ) {
+		/**
+		 * Filter the default options, adding our custom post type settings.
+		 *
+		 * @param   array   $options  The genesis options.
+		 * @param   string  $setting  The setting key/name.
+		 *
+		 * @return  array   The modified options.
+		 */
+		add_filter( 'genesis_options', function( $options, $setting ) use ( $post_type ) {
 
-		// 	// Bail if not this post_type's settings.
-		// 	if ( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type !== $setting ) {
-		// 		return $options;
-		// 	}
+			// Bail if not this post_type's settings.
+			if ( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type !== $setting ) {
+				return $options;
+			}
 
-		// 	// Default options.
-		// 	foreach ( (array) mai_get_default_cpt_options( $post_type ) as $key => $value ) {
-		// 		if ( ! isset( $options[$key] ) ) {
-		// 			$options[$key] = $value;
-		// 		}
-		// 	}
+			// Default options.
+			foreach ( (array) mai_get_default_cpt_options( $post_type ) as $key => $value ) {
+				if ( ! isset( $options[$key] ) ) {
+					$options[$key] = $value;
+				}
+			}
 
-		// 	// Return the modified options.
-		// 	return $options;
+			// Return the modified options.
+			return $options;
 
-		// }, 10, 2 );
-
-// d( genesis_get_option( 'layout_product' ) );
+		}, 10, 2 );
 
 		// Build post_type specific keys (for genesis-settings).
 		$banner_featured_image_key     = sprintf( 'banner_featured_image_%s', $post_type );
@@ -160,7 +137,7 @@ function mai_cpt_settings_init() {
 		}
 
 		/**
-		 * Allow filter to easily modify settings for each post type.
+		 * Filter to enabled/disable settings for each post type.
 		 * This is great for adding CPT support for specific plugins like Woo/EDD/etc.
 		 */
 		$settings = apply_filters( 'mai_cpt_settings', $settings, $post_type );
@@ -179,7 +156,15 @@ function mai_cpt_settings_init() {
 }
 
 
-
+/**
+ * Register the customizer settings sections and fields.
+ *
+ * @param   object  $wp_customize  The customizeer object.
+ * @param   string  $post_type     The registered post the name.
+ * @param   array   $settings      The settings to enabled/disable. Key is setting name and value is bool.
+ *
+ * @return  void.
+ */
 function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 
 	// Bail if we don't have a post type.
@@ -237,7 +222,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 		array(
-			'default'           => genesis_get_cpt_option( 'banner_id' ),
+			'default'           => absint( mai_get_default_cpt_option( 'banner_id' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => 'absint',
 		)
@@ -282,7 +267,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'hide_banner' ),
 		array(
-			'default'           => genesis_get_cpt_option( 'hide_banner' ),
+			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_cpt_option( 'hide_banner' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
@@ -304,7 +289,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $genesis_settings, $banner_disable_key ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( genesis_get_option( $banner_disable_key ) ),
+			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( $banner_disable_key ) ),
 			'type'              => 'option',
 			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
@@ -340,7 +325,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies_key ),
 			array(
-				'default'           => _mai_customizer_multicheck_sanitize_key( genesis_get_option( $banner_disable_taxonomies_key ) ),
+				'default'           => _mai_customizer_multicheck_sanitize_key( mai_get_default_option( $banner_disable_taxonomies_key ) ),
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 			)
@@ -387,7 +372,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $genesis_settings, $banner_featured_image_key ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( genesis_get_option( $banner_featured_image_key ) ),
+			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( $banner_featured_image_key ) ),
 			'type'              => 'option',
 			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
@@ -431,7 +416,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'layout' ),
 			array(
-				'default'           => sanitize_key( genesis_get_cpt_option( 'layout' ) ),
+				'default'           => sanitize_key( mai_get_default_cpt_option( 'layout' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => 'sanitize_key',
 			)
@@ -455,7 +440,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $genesis_settings, $single_layout_key ),
 			array(
-				'default'           => sanitize_key( genesis_get_option( $single_layout_key ) ),
+				'default'           => sanitize_key( mai_get_default_option( $single_layout_key ) ),
 				'type'              => 'option',
 				'sanitize_callback' => 'sanitize_key',
 			)
@@ -518,16 +503,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			)
 		);
 
-		$featured_image_default = _mai_customizer_sanitize_one_zero( genesis_get_option( $singular_image_key ) );
-// if ( $post_type == 'product' ) {
-// 	d( $featured_image_default );
-// }
-
 		// Featured Image (saves to genesis-settings option).
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $genesis_settings, $singular_image_key ),
 			array(
-				'default'           => _mai_customizer_sanitize_one_zero( genesis_get_option( $singular_image_key ) ),
+				'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( $singular_image_key ) ),
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 			)
@@ -560,7 +540,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $genesis_settings, $remove_meta_single_key ),
 			array(
-				'default'           =>  _mai_customizer_multicheck_sanitize_key( genesis_get_option( $remove_meta_single_key ) ),
+				'default'           =>  _mai_customizer_multicheck_sanitize_key( mai_get_default_option( $remove_meta_single_key ) ),
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 			)
@@ -603,7 +583,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'enable_content_archive_settings' ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( genesis_get_cpt_option( 'enable_content_archive_settings' ) ),
+			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_cpt_option( 'enable_content_archive_settings' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 		)
@@ -625,7 +605,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'columns' ),
 			array(
-				'default'           => absint( genesis_get_cpt_option( 'columns' ) ),
+				'default'           => absint( mai_get_default_cpt_option( 'columns' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => 'absint',
 			)
@@ -677,7 +657,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			$wp_customize->add_setting(
 				_mai_customizer_get_field_name( $settings_field, 'content_archive' ),
 				array(
-					'default'           => sanitize_key( genesis_get_cpt_option( 'content_archive' ) ),
+					'default'           => sanitize_key( mai_get_default_cpt_option( 'content_archive' ) ),
 					'type'              => 'option',
 					'sanitize_callback' => 'sanitize_key',
 				)
@@ -703,7 +683,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 				$wp_customize->add_setting(
 					_mai_customizer_get_field_name( $settings_field, 'content_archive_limit' ),
 					array(
-						'default'           => absint( genesis_get_cpt_option( 'content_archive_limit' ) ),
+						'default'           => absint( mai_get_default_cpt_option( 'content_archive_limit' ) ),
 						'type'              => 'option',
 						'sanitize_callback' => 'absint',
 					)
@@ -758,7 +738,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'content_archive_thumbnail' ),
 			array(
-				'default'           => _mai_customizer_sanitize_one_zero( genesis_get_cpt_option( 'content_archive_thumbnail' ) ),
+				'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_cpt_option( 'content_archive_thumbnail' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 			)
@@ -782,7 +762,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			$wp_customize->add_setting(
 				_mai_customizer_get_field_name( $settings_field, 'image_location' ),
 				array(
-					'default'           => sanitize_key( genesis_get_cpt_option( 'image_location' ) ),
+					'default'           => sanitize_key( mai_get_default_cpt_option( 'image_location' ) ),
 					'type'              => 'option',
 					'sanitize_callback' => 'sanitize_key',
 				)
@@ -816,7 +796,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			$wp_customize->add_setting(
 				_mai_customizer_get_field_name( $settings_field, 'image_size' ),
 				array(
-					'default'           => sanitize_key( genesis_get_cpt_option( 'image_size' ) ),
+					'default'           => sanitize_key( mai_get_default_cpt_option( 'image_size' ) ),
 					'type'              => 'option',
 					'sanitize_callback' => 'sanitize_key',
 				)
@@ -844,7 +824,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			$wp_customize->add_setting(
 				_mai_customizer_get_field_name( $settings_field, 'image_alignment' ),
 				array(
-					'default'           => sanitize_key( genesis_get_cpt_option( 'image_alignment' ) ),
+					'default'           => sanitize_key( mai_get_default_cpt_option( 'image_alignment' ) ),
 					'type'              => 'option',
 					'sanitize_callback' => 'sanitize_key',
 				)
@@ -902,7 +882,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'more_link' ),
 			array(
-				'default'           => _mai_customizer_sanitize_one_zero( genesis_get_cpt_option( 'more_link' ) ),
+				'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_cpt_option( 'more_link' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
 			)
@@ -939,7 +919,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
 			array(
-				'default'           => _mai_customizer_multicheck_sanitize_key( genesis_get_cpt_option( 'remove_meta' ) ),
+				'default'           => _mai_customizer_multicheck_sanitize_key( mai_get_default_cpt_option( 'remove_meta' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 			)
@@ -968,7 +948,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'posts_per_page' ),
 			array(
-				'default'           => absint( genesis_get_cpt_option( 'posts_per_page' ) ),
+				'default'           => absint( mai_get_default_cpt_option( 'posts_per_page' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => 'absint',
 			)
@@ -995,7 +975,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'posts_nav' ),
 			array(
-				'default'           => sanitize_key( genesis_get_cpt_option( 'posts_nav' ) ),
+				'default'           => sanitize_key( mai_get_default_cpt_option( 'posts_nav' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => 'sanitize_key',
 			)

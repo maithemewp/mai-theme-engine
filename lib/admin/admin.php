@@ -100,21 +100,18 @@ function mai_login_logo_css() {
 /**
  * Add login logo filters if we have a custom logo.
  *
- * @return  void
+ * @return void
  */
 function mai_do_login_logo_filter() {
-
 	// Replace site title with the logo
 	add_filter( 'bloginfo', 'mai_do_inline_login_logo', 10, 2 );
-
 	// Hook in after the login form to remove the filter
 	add_action( 'login_footer', 'mai_remove_login_logo_filter' );
 }
-
 /**
  * Remove the filter that adds login logo as the blog name.
  *
- * @return  void
+ * @return void
  */
 function mai_remove_login_logo_filter() {
 	remove_filter( 'bloginfo', 'mai_do_inline_login_logo', 10, 2 );
@@ -127,7 +124,7 @@ function mai_remove_login_logo_filter() {
  * @param   string  $output  The site name.
  * @param   string  $show    Which bloginfo data to filter.
  *
- * @return  string|HTML 	 The inline image HTML
+ * @return  string|HTML      The inline image HTML
  */
 function mai_do_inline_login_logo( $output, $show ) {
 

@@ -35,13 +35,8 @@ remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
 // Maybe remove woocommerce page title
 add_filter( 'woocommerce_show_page_title', 'mai_woocommerce_show_page_title' );
 function mai_woocommerce_show_page_title( $return ) {
-	if ( mai_is_banner_area_enabled() ) {
-		if ( is_shop() ) {
-			return false;
-		}
-		if ( is_product() ) {
-			return false;
-		}
+	if ( mai_is_banner_area_enabled() && ( is_shop() || is_product() ) ) {
+		return false;
 	}
 	return false;
 }

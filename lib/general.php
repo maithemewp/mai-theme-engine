@@ -1,6 +1,45 @@
 <?php
 
-// Add singular body class to the head
+/**
+ * Add body class to enabled specific settings.
+ *
+ * @param   array  $classes  The body classes.
+ *
+ * @return  array  $classes  The modified classes.
+ */
+add_filter( 'body_class', 'mai_do_settings_body_classes' );
+function mai_do_settings_body_classes( $classes ) {
+	/**
+	 * Add sticky header styling
+	 */
+	if ( mai_is_sticky_header_enabled() && ! is_page_template( 'landing.php' ) ) {
+		$classes[] = 'sticky-header';
+	}
+
+	/**
+	 * Add shrink header styling
+	 */
+	if ( mai_is_shrink_header_enabled() && ! is_page_template( 'landing.php' ) ) {
+		$classes[] = 'shrink-header';
+	}
+
+	/**
+	 * Use a side mobile menu in place of the standard the mobile menu
+	 */
+	if ( mai_is_side_menu_enabled() ) {
+		$classes[] = 'side-menu';
+	}
+
+	return $classes;
+}
+
+/**
+ * Add singular body class to the head.
+ *
+ * @param   array  $classes  The body classes.
+ *
+ * @return  array  $classes  The modified classes.
+ */
 add_filter( 'body_class', 'mai_singular_body_class' );
 function mai_singular_body_class( $classes ) {
 	if ( ! is_singular() ) {
@@ -15,6 +54,10 @@ function mai_singular_body_class( $classes ) {
  * This get's changed to "js" if JS is enabled.
  *
  * @link https://www.paulirish.com/2009/avoiding-the-fouc-v3/
+ *
+ * @param   array  $classes  The body classes.
+ *
+ * @return  array  $classes  The modified classes.
  */
 add_filter( 'body_class', 'mai_js_detection_body_class' );
 function mai_js_detection_body_class($classes) {

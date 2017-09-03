@@ -11,9 +11,9 @@
  */
 add_filter( 'shortcode_atts_post_date', 'mai_post_date_defaults' );
 function mai_post_date_defaults( $atts ) {
-	$atts['after']	= '';
-	$atts['before']	= '';
-	$atts['format']	= 'M j, Y';
+	$atts['after']  = '';
+	$atts['before'] = '';
+	$atts['format'] = 'M j, Y';
 	return $atts;
 }
 

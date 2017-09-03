@@ -83,7 +83,6 @@ function _mai_cmb_show_banner_fields() {
 
 	// Posts.
 	if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
-
 		// Post/Page.
 		if ( in_array( $typenow, array( 'post', 'page' ) ) ) {
 			if ( in_array( $typenow, (array) genesis_get_option( 'banner_disable_post_types' ) ) ) {
@@ -97,7 +96,6 @@ function _mai_cmb_show_banner_fields() {
 				$show = false;
 			}
 		}
-
 	}
 	// Terms.
 	elseif ( 'term.php' === $pagenow ) {
@@ -109,7 +107,7 @@ function _mai_cmb_show_banner_fields() {
 		if ( class_exists('WooCommerce') && in_array( $taxonomy, array( 'product_cat', 'product_tag' ) ) ) {
 			$show = false;
 		}
-		// Not a Woo tax.
+		// Not a Woo default taxo.
 		else {
 			$taxo_object = get_taxonomy( $taxonomy );
 			// If taxo is registered to only one object. (taxo's registered to multiple objects are skipped for now).

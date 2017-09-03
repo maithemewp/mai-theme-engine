@@ -67,8 +67,7 @@ function mai_woocommerce_styles( $styles ) {
 		return $styles;
 	}
 
-	unset( $styles['woocommerce-layout'] );		 	// Remove the layout
-	// unset( $styles['woocommerce-general'] );	 	// Remove the gloss
-	// unset( $styles['woocommerce-smallscreen'] ); // Remove the smallscreen optimisation
+	unset( $styles['woocommerce-layout'] );
+
 	return $styles;
 }

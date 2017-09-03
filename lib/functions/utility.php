@@ -5,9 +5,9 @@
  * Original built to get the 'remove_loop' setting,
  * since that should be specific to each object (post/term/etc), and not have any fallbacks.
  *
- * @param  string  $key  The field key to check.
+ * @param   string  $key  The field key to check.
  *
- * @return mixed
+ * @return  mixed
  */
 function mai_get_the_archive_setting( $key ) {
 
@@ -29,7 +29,6 @@ function mai_get_the_archive_setting( $key ) {
 		$setting = get_term_meta( get_queried_object()->term_id, $key, true );
 	}
 	// CPT archive
-	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
 	elseif ( is_post_type_archive() ) {
 		$setting = genesis_get_cpt_option( $key );
 	}

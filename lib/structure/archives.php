@@ -116,7 +116,7 @@ function mai_remove_content_archive_loop() {
 
 	// Bail if not removing the loop
 	$remove_loop = mai_get_the_archive_setting( 'remove_loop' );
-	if ( ! $remove_loop ) {
+	if ( ! (bool) $remove_loop ) {
 		return;
 	}
 
@@ -233,44 +233,49 @@ function mai_woo_shortcode_before_loop( $atts ) {
 		return $classes;
 	};
 	// Add flex entry classes
-	add_filter( 'post_class', $entry_classes );
+	add_filter( 'post_class',        $entry_classes );
 	add_filter( 'product_cat_class', $entry_classes );
 
 	// Remove the filters setting the columns
 	add_action( 'woocommerce_shortcode_after_recent_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
 		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class', $entry_classes );
+		remove_filter( 'post_class',        $entry_classes );
 		remove_filter( 'product_cat_class', $entry_classes );
 	});
 	add_action( 'woocommerce_shortcode_after_sale_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
 		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class', $entry_classes );
+		remove_filter( 'post_class',        $entry_classes );
 		remove_filter( 'product_cat_class', $entry_classes );
 	});
 	add_action( 'woocommerce_shortcode_after_best_selling_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
 		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class', $entry_classes );
+		remove_filter( 'post_class',        $entry_classes );
 		remove_filter( 'product_cat_class', $entry_classes );
 	});
 	add_action( 'woocommerce_shortcode_after_top_rated_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
 		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class', $entry_classes );
+		remove_filter( 'post_class',        $entry_classes );
 		remove_filter( 'product_cat_class', $entry_classes );
 	});
 	add_action( 'woocommerce_shortcode_after_featured_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
 		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class', $entry_classes );
+		remove_filter( 'post_class',        $entry_classes );
 		remove_filter( 'product_cat_class', $entry_classes );
 	});
 	add_action( 'woocommerce_shortcode_after_related_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
 		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class', $entry_classes );
+		remove_filter( 'post_class',        $entry_classes );
 		remove_filter( 'product_cat_class', $entry_classes );
 	});
 }
 
-add_action( 'woocommerce_before_main_content', 'mai_do_woo_product_archive_options' );
-function mai_do_woo_product_archive_options() {
+/**
+ * Remove the woocommerce archive images and maybe add them back.
+ *
+ * @return  void.
+ */
+add_action( 'woocommerce_before_main_content', 'mai_do_woo_product_archive_image' );
+function mai_do_woo_product_archive_image() {
 
 	// Bail if not the shop or product cat/tag archive
 	if ( ! ( is_shop() || is_tax( get_object_taxonomies( 'product', 'names' ) ) ) ) {

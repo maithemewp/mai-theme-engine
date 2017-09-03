@@ -1,15 +1,4 @@
 <?php
-/**
- * Mai Theme.
- *
- * WARNING: This file is part of the core Mai Theme framework.
- * The goal is to keep all files in /lib/ untouched.
- * That way we can easily update the core structure of the theme on existing sites without breaking things
- *
- * @author   Mike Hemberger
- *
- * @version  1.0.0
- */
 
 // Remove the page title from the front page
 add_action( 'genesis_before_content_sidebar_wrap', 'mai_remove_front_page_post_title' );

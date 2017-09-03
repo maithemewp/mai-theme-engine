@@ -1,6 +1,10 @@
 <?php
 
-
+/**
+ * Register custom customizer controls/fields.
+ *
+ * @return  void.
+ */
 add_action( 'customize_register', 'mai_register_customizer_field_types', 8 );
 function mai_register_customizer_field_types() {
 

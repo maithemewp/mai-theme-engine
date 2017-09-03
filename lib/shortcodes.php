@@ -1,11 +1,4 @@
 <?php
-/**
- * Mai Pro Engine.
- *
- * @author   Mike Hemberger
- *
- * @version  1.1.0
- */
 
 /**
  * Main Mai_Shortcodes Class.
@@ -61,24 +54,24 @@ final class Mai_Shortcodes {
 		add_filter( 'the_content', array( $this, 'content_filter' ) );
 
 		// Create shortcodes
-		add_shortcode( 'callout', 				array( $this, 'get_callout' ) );
-		add_shortcode( 'section', 				array( $this, 'get_section' ) );
-		add_shortcode( 'columns', 				array( $this, 'get_columns' ) );
-		add_shortcode( 'col', 					array( $this, 'get_col' ) );
-		add_shortcode( 'col_auto', 				array( $this, 'get_col_auto' ) );
-		add_shortcode( 'col_one_twelfth', 		array( $this, 'get_col_one_twelfth' ) );
-		add_shortcode( 'col_one_sixth', 		array( $this, 'get_col_one_sixth' ) );
-		add_shortcode( 'col_one_fourth', 		array( $this, 'get_col_one_fourth' ) );
-		add_shortcode( 'col_one_third', 		array( $this, 'get_col_one_third' ) );
-		add_shortcode( 'col_five_twelfths', 	array( $this, 'get_col_five_twelfths' ) );
-		add_shortcode( 'col_one_half', 			array( $this, 'get_col_one_half' ) );
-		add_shortcode( 'col_seven_twelfths', 	array( $this, 'get_col_seven_twelfths' ) );
-		add_shortcode( 'col_two_thirds', 		array( $this, 'get_col_two_thirds' ) );
-		add_shortcode( 'col_three_fourths', 	array( $this, 'get_col_three_fourths' ) );
-		add_shortcode( 'col_five_sixths', 		array( $this, 'get_col_five_sixths' ) );
-		add_shortcode( 'col_eleven_twelfths', 	array( $this, 'get_col_eleven_twelfths' ) );
-		add_shortcode( 'col_one_whole', 		array( $this, 'get_col_one_whole' ) );
-		add_shortcode( 'grid', 					array( $this, 'get_grid' ) );
+		add_shortcode( 'callout',              array( $this, 'get_callout' ) );
+		add_shortcode( 'section',              array( $this, 'get_section' ) );
+		add_shortcode( 'columns',              array( $this, 'get_columns' ) );
+		add_shortcode( 'col',                  array( $this, 'get_col' ) );
+		add_shortcode( 'col_auto',             array( $this, 'get_col_auto' ) );
+		add_shortcode( 'col_one_twelfth',      array( $this, 'get_col_one_twelfth' ) );
+		add_shortcode( 'col_one_sixth',        array( $this, 'get_col_one_sixth' ) );
+		add_shortcode( 'col_one_fourth',       array( $this, 'get_col_one_fourth' ) );
+		add_shortcode( 'col_one_third',        array( $this, 'get_col_one_third' ) );
+		add_shortcode( 'col_five_twelfths',    array( $this, 'get_col_five_twelfths' ) );
+		add_shortcode( 'col_one_half',         array( $this, 'get_col_one_half' ) );
+		add_shortcode( 'col_seven_twelfths',   array( $this, 'get_col_seven_twelfths' ) );
+		add_shortcode( 'col_two_thirds',       array( $this, 'get_col_two_thirds' ) );
+		add_shortcode( 'col_three_fourths',    array( $this, 'get_col_three_fourths' ) );
+		add_shortcode( 'col_five_sixths',      array( $this, 'get_col_five_sixths' ) );
+		add_shortcode( 'col_eleven_twelfths',  array( $this, 'get_col_eleven_twelfths' ) );
+		add_shortcode( 'col_one_whole',        array( $this, 'get_col_one_whole' ) );
+		add_shortcode( 'grid',                 array( $this, 'get_grid' ) );
 
 		// FacetWP support
 		add_filter( 'facetwp_is_main_query', array( $this, 'facetwp_is_main_query' ), 10, 2 );
@@ -161,10 +154,10 @@ final class Mai_Shortcodes {
 	function cleanup_shortcode_html( $content ) {
 
 		$array = array (
-			'<p></p>'	=> '',
-			'<p>['		=> '[',
-			']</p>'		=> ']',
-			']<br />'	=> ']'
+			'<p></p>' => '',
+			'<p>['    => '[',
+			']</p>'   => ']',
+			']<br />' => ']'
 		);
 		$content = strtr( $content, $array );
 
@@ -1375,7 +1368,6 @@ final class Mai_Shortcodes {
 								$terms[] = $term->term_id;
 							break;
 						}
-
 					}
 				}
 			} else {
@@ -1503,8 +1495,8 @@ final class Mai_Shortcodes {
 						/**
 						 * If author has no link this shortcode defaults to genesis_post_author_shortcode() [post_author]
 						 */
-						$author_before	  = $atts['author_before'] ? ' before="' . $atts['author_before'] . '"' : '';
-						$author_after	  = $atts['author_after'] ? ' after="' . $atts['author_after'] . '"' : '';
+						$author_before = $atts['author_before'] ? ' before="' . $atts['author_before'] . '"' : '';
+						$author_after  = $atts['author_after'] ? ' after="' . $atts['author_after'] . '"' : '';
 						// Can't have a nested link if we have a background image
 						if ( $has_image_bg ) {
 							$author_shortcode_name = 'post_author';
@@ -1825,7 +1817,6 @@ final class Mai_Shortcodes {
 	}
 
 	function get_grid_title( $atts ) {
-
 		// Bail if no title
 		if ( empty( $atts['grid_title'] ) ) {
 			return;
@@ -1890,7 +1881,7 @@ final class Mai_Shortcodes {
 				if ( in_array( 'add_to_cart', $atts['show'] ) ) {
 					if ( class_exists( 'WooCommerce' ) ) {
 						$product = wc_get_product( $object_or_id );
-						$link 	 = $product->add_to_cart_url();
+						$link    = $product->add_to_cart_url();
 					}
 				}
 				if ( ! $link ) {
@@ -1927,7 +1918,7 @@ final class Mai_Shortcodes {
 		}
 
 		// If dealing with a post object
-		if ( 'post' == $atts['content_type'] ) {
+		if ( 'post' === $atts['content_type'] ) {
 
 			/**
 			 * Merge our new classes with the default WP generated classes.
