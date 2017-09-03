@@ -1,20 +1,30 @@
 <?php
 
+/**
+ * Remove the admin page editor on Sections template pages.
+ *
+ * @return  void.
+ */
 add_action( 'admin_head', 'hide_editor' );
 function hide_editor() {
 	global $pagenow;
 
-	if ( 'post.php' != $pagenow ) {
+	if ( 'post.php' !== $pagenow ) {
 		return;
 	}
 	if ( ! isset( $_GET['post'] ) ) {
 		return;
 	}
-	if ( 'sections.php' == get_page_template_slug( absint( $_GET['post'] ) ) ) {
-		remove_post_type_support('page', 'editor');
+	if ( 'sections.php' === get_page_template_slug( absint( $_GET['post'] ) ) ) {
+		remove_post_type_support( 'page', 'editor' );
 	}
 }
 
+/**
+ * Add the CMB2 Sections repeater group.
+ *
+ * @return  void.
+ */
 add_action( 'cmb2_admin_init', 'mai_do_sections_metabox' );
 function mai_do_sections_metabox() {
 
@@ -187,13 +197,3 @@ function mai_do_sections_metabox() {
 	) );
 
 }
-
-/**
- * Only return default value if we don't have a post ID (in the 'post' query variable)
- *
- * @param  bool  $default On/Off (true/false)
- * @return mixed          Returns true or '', the blank default
- */
-// function mai_set_checkbox_default_for_new_post( $default ) {
-// 	return isset( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
-// }

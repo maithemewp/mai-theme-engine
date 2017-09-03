@@ -121,6 +121,11 @@ class Mai_Genesis_CPT_Settings_Metabox {
 	 * @since 0.1.0
 	 */
 	public function add_meta_box() {
+
+		// Custom CSS/JS.
+		wp_enqueue_style( 'mai-admin' );
+		wp_enqueue_script( 'mai-admin' );
+
 		$cmb = $this->init_metabox();
 		add_meta_box(
 			$cmb->cmb_id,

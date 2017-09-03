@@ -12,10 +12,10 @@ function mai_admin_enqueue_scripts() {
 	$suffix = mai_get_suffix();
 
 	// Add an editor stylesheet
-	add_editor_style( '/assets/css/mai-editor{$suffix}.css' );
+	add_editor_style( "/assets/css/mai-editor{$suffix}.css" );
 
-	wp_enqueue_style( 'mai-admin', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/css/mai-admin{$suffix}.css", array(), MAI_PRO_ENGINE_VERSION );
-	wp_enqueue_script( 'mai-admin', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/js/mai-admin{$suffix}.js", array( 'jquery' ), MAI_PRO_ENGINE_VERSION, true );
+	wp_register_style( 'mai-admin', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/css/mai-admin{$suffix}.css", array(), MAI_PRO_ENGINE_VERSION );
+	wp_register_script( 'mai-admin', MAI_PRO_ENGINE_PLUGIN_URL . "/assets/js/mai-admin{$suffix}.js", array( 'jquery' ), MAI_PRO_ENGINE_VERSION, true );
 }
 
 /**

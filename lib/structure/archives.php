@@ -111,8 +111,13 @@ function mai_do_term_description() {
  *
  * @return  void
  */
-add_action( 'mai_before_content_archive', 'mai_remove_content_archive_loop' );
+add_action( 'genesis_before_loop', 'mai_remove_content_archive_loop' );
 function mai_remove_content_archive_loop() {
+
+	// Bail if not a content archive
+	if ( ! mai_is_content_archive() ) {
+		return;
+	}
 
 	// Bail if not removing the loop
 	$remove_loop = mai_get_the_archive_setting( 'remove_loop' );

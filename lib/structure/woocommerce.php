@@ -20,6 +20,7 @@ add_theme_support( 'wc-product-gallery-zoom' );
 add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 
+// Remove genesis entry meta support.
 add_action( 'init', 'mai_woocommerce_int', 99 );
 function mai_woocommerce_int() {
 	remove_post_type_support( 'product', 'genesis-entry-meta-before-content' );
@@ -41,6 +42,7 @@ function mai_woocommerce_show_page_title( $return ) {
 	return false;
 }
 
+// Disable customizer settings for WooCommerce Shop/Products.
 add_filter( 'mai_cpt_settings', 'mai_woocommerce_product_default_settings', 10, 2 );
 function mai_woocommerce_product_default_settings( $settings, $post_type ) {
 	// Bail if CPT is not WooCommerce 'product'.
@@ -59,6 +61,13 @@ function mai_woocommerce_product_default_settings( $settings, $post_type ) {
 	return $settings;
 }
 
+/**
+ * Set some genesis-settings defaults for WooCommerce Shop/Products.
+ *
+ * @param  array  $settings  The default settings (already modified by Mai).
+ *
+ * @param  array  The modified settings.
+ */
 add_filter( 'genesis_theme_settings_defaults', 'mai_woo_product_theme_settings_defaults' );
 function mai_woo_product_theme_settings_defaults( $settings ) {
 	// Bail if CPT is not WooCommerce 'product'.
@@ -72,6 +81,14 @@ function mai_woo_product_theme_settings_defaults( $settings ) {
 	return $settings;
 }
 
+/**
+ * Set some cpt-archive-settings defaults for WooCommerce Shop/Products.
+ *
+ * @param  array   $settings   The default settings (already modified by Mai).
+ * @param  string  $post_type  The post type name.
+ *
+ * @param  array   The modified settings.
+ */
 add_filter( 'genesis_cpt_archive_settings_defaults', 'mai_woo_product_cpt_archive_settings', 10, 2 );
 function mai_woo_product_cpt_archive_settings( $settings, $post_type ) {
 	// Bail if CPT is not WooCommerce 'product'.
@@ -91,7 +108,7 @@ function mai_woo_product_cpt_archive_settings( $settings, $post_type ) {
  * Load WooCommerce templates in the plugin,
  * while still allowing the theme to override.
  *
- * @return  string  The template file location
+ * @return  string  The template file location.
  */
 add_filter( 'wc_get_template', 'mai_wc_get_template', 10, 4 );
 function mai_wc_get_template( $template, $template_name, $args, $template_path ) {
@@ -120,7 +137,7 @@ function mai_wc_get_template( $template, $template_name, $args, $template_path )
  * Load WooCommerce templates in the plugin,
  * while still allowing the theme to override.
  *
- * @return  string  The template file location
+ * @return  string  The template file location.
  */
 add_filter( 'wc_get_template_part', 'mai_wc_get_template_part', 10, 3 );
 function mai_wc_get_template_part( $template, $slug, $name ) {
@@ -148,7 +165,7 @@ function mai_wc_get_template_part( $template, $slug, $name ) {
  * Remove metaboxes on Woo shop admin page.
  * Most settings are now in Customizer.
  *
- * @return void
+ * @return void.
  */
 add_action( 'add_meta_boxes', 'mai_remove_woo_shop_meta_boxes', 99, 2 );
 function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
@@ -228,7 +245,7 @@ function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
 }
 
 /**
- * Outputs the content of the meta box
+ * Outputs the content of the meta box.
  *
  * @link  https://www.slushman.com/how-to-link-to-the-customizer/
  */

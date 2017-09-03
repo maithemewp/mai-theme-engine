@@ -1,6 +1,39 @@
 <?php
 
 /**
+ * Only enqueue our admin CSS/JS when showing our CMB2 forms.
+ *
+ * @param  array   $cmb_id       The current box ID.
+ * @param  int     $object_id    The ID of the current object.
+ * @param  string  $object_type  The type of object you are working with.
+ *                               Usually `post` (this applies to all post-types).
+ *                               Could also be `comment`, `user` or `options-page`.
+ * @param  array  $cmb           This CMB2 object.
+ *
+ * @return void.
+ */
+add_action( 'cmb2_before_form', 'cmb2_test_before_form', 10, 4 );
+function cmb2_test_before_form( $cmb_id, $object_id, $object_type, $cmb ) {
+	/**
+	 * Default CMB2 forms.
+	 * Note: CPT Archive Settings metaboxes handled in Mai_Genesis_CPT_Settings_Metabox class.
+	 */
+	$mai_cmb = array(
+		'mai_sections',
+		'mai_post_banner',
+		'mai_term_settings',
+		'mai_user_settings',
+	);
+	// Bail if not our CMB2 metabox.
+	if ( ! in_array( $cmb_id, $mai_cmb ) ) {
+		return;
+	}
+
+	wp_enqueue_style( 'mai-admin' );
+	wp_enqueue_script( 'mai-admin' );
+}
+
+/**
  * Add metaboxes for banner image and archive settings.
  *
  * To get banner image:
@@ -9,7 +42,7 @@
  * $term_banner_image = wp_get_attachment_image( get_term_meta( $term_id, 'banner_id', true ), 'banner' );
  * $user_banner_image = wp_get_attachment_image( get_user_meta( $user_id, 'banner_id', true ), 'banner' );
  *
- * @return  void
+ * @return  void.
  */
 add_action( 'cmb2_admin_init', 'mai_cmb2_add_metaboxes' );
 function mai_cmb2_add_metaboxes() {
@@ -85,4 +118,34 @@ function mai_cmb2_add_metaboxes() {
 	$user->add_field( _mai_cmb_posts_per_page_config() );
 	$user->add_field( _mai_cmb_posts_nav_config() );
 
+}
+
+/**
+ * Add custom meta box(es) to Genesis Theme Settings page
+ *
+ * @param   string $_genesis_theme_settings_pagehook
+ *
+ * @return  void.
+ */
+add_action( 'genesis_theme_settings_metaboxes', 'mai_theme_settings_customizer_link' );
+function mai_theme_settings_customizer_link( $pagehook ) {
+	// Add metabox shop notice.
+	add_meta_box( 'mai_theme_settings_customizer_links', __( 'Mai Theme Settings', 'mai-pro-engine' ), 'mai_do_theme_settings_customizer_links', $pagehook, 'main', 'high' );
+}
+
+/**
+ * Outputs the content of the meta box.
+ *
+ * @link    https://www.slushman.com/how-to-link-to-the-customizer/
+ *
+ * @return  void.
+ */
+function mai_do_theme_settings_customizer_links() {
+	// Mai Settings.
+	printf( '<p><strong>%s</strong></p>', __( 'Theme settings are available in the customizer, with live preview.', 'mai-pro-engine' ) );
+	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_settings' ), __( 'Mai Settings', 'mai-pro-engine' ) );
+	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_banner_area' ), __( 'Mai Banner Area', 'mai-pro-engine' ) );
+	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_content_archives' ), __( 'Mai Content Archives', 'mai-pro-engine' ) );
+	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_content_singular' ), __( 'Mai Content Singular', 'mai-pro-engine' ) );
+	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_site_layouts' ), __( 'Mai Site Layouts', 'mai-pro-engine' ) );
 }

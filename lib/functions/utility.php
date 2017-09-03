@@ -411,11 +411,34 @@ function mai_get_customizer_get_default_accent_color() {
 	return '#067CCC';
 }
 
+/**
+ * Get a direct link to open a specific customizer panel.
+ * Optionally include a frontend URL to preview.
+ *
+ * @param   string  $section  The name of the section to open.
+ * @param   string  $url      The preview URL.
+ *
+ * @return  string  The customizer URL.
+ */
+function mai_get_customizer_section_link( $section, $url = '' ) {
+	$query['autofocus[section]'] = $section;
+	if ( $url ) {
+		$query['url'] = esc_url( $url );
+	}
+	return add_query_arg( $query, admin_url( 'customize.php' ) );
+}
+
+/**
+ * Get a direct link to open a specific CPT settings customizer panel.
+ *
+ * @param   string  $post_type  The registered CPT name.
+ *
+ * @return  string  The customizer URL.
+ */
 function mai_get_customizer_post_type_settings_link( $post_type ) {
-	$query['autofocus[section]'] = sprintf( 'mai_%s_archive_settings', $post_type );
-	$query['url']                = get_post_type_archive_link( $post_type );
-	$section_link                = add_query_arg( $query, admin_url( 'customize.php' ) );
-	return $section_link;
+	$section = sprintf( 'mai_%s_archive_settings', $post_type );
+	$url     = get_post_type_archive_link( $post_type );
+	return mai_get_customizer_section_link( $section, $url );
 }
 
 /**
