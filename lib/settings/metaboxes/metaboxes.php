@@ -142,10 +142,12 @@ function mai_theme_settings_customizer_link( $pagehook ) {
  */
 function mai_do_theme_settings_customizer_links() {
 	// Mai Settings.
-	printf( '<p><strong>%s</strong></p>', __( 'Theme settings are available in the customizer, with live preview.', 'mai-pro-engine' ) );
+	printf( '<p><strong>%s</strong></p>', __( 'Edit theme settings in the customizer:', 'mai-pro-engine' ) );
 	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_settings' ), __( 'Mai Settings', 'mai-pro-engine' ) );
 	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_banner_area' ), __( 'Mai Banner Area', 'mai-pro-engine' ) );
 	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_content_archives' ), __( 'Mai Content Archives', 'mai-pro-engine' ) );
 	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_content_singular' ), __( 'Mai Content Singular', 'mai-pro-engine' ) );
 	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'mai_site_layouts' ), __( 'Mai Site Layouts', 'mai-pro-engine' ) );
+	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'genesis_breadcrumbs' ), __( 'Breadcrumbs', 'mai-pro-engine' ) );
+	printf( '<p><a class="button" href="%s">%s</a></p>', mai_get_customizer_section_link( 'genesis_comments' ), __( 'Comments & Trackbacks', 'mai-pro-engine' ) );
 }
