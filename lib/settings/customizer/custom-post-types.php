@@ -338,7 +338,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				$prefix . $banner_disable_taxonomies_key,
 				array(
-					'label'           => __( 'Disable banner on (taxonomies)', 'mai-pro-engine' ),
+					'label'           => __( 'Hide banner on (taxonomies)', 'mai-pro-engine' ),
 					'section'         => $section,
 					'settings'        => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies_key ),
 					'choices'         => $disable_taxonomies,

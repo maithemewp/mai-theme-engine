@@ -36,9 +36,10 @@ function mai_register_customizer_settings( $wp_customize ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			'header_customizer_heading',
 			array(
-				'label'    => __( 'Header', 'mai-pro-engine' ),
-				'section'  => $section,
-				'settings' => false,
+				'label'       => __( 'Header', 'mai-pro-engine' ),
+				'description' => __( 'These settings are disabled on mobile.', 'mai-pro-engine' ),
+				'section'     => $section,
+				'settings'    => false,
 			)
 		)
 	);
