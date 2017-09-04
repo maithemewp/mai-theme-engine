@@ -21,6 +21,18 @@
 	vertical-align: top;
 }
 
+.woocommerce div.product p.price,
+.woocommerce div.product span.price {
+	color: #00cd51;
+}
+
+.woocommerce span.onsale {
+	background-color: #00cd51;
+	min-height: auto;
+	line-height: 1.75;
+	border-radius: 0;
+}
+
 /* ## Products - Archive
 --------------------------------------------- */
 
