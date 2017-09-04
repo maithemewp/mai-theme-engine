@@ -30,9 +30,6 @@ function mai_do_custom_logo( $title, $inside, $wrap ) {
 	// A little fallback, in case a SEO plugin is active.
 	$wrap = genesis_is_root_page() && ! genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : $wrap;
 
-	// Wrap homepage site title in p tags if static front page.
-	$wrap = is_front_page() && ! is_home() ? 'p' : $wrap;
-
 	// And finally, $wrap in h1 if HTML5 & semantic headings enabled.
 	$wrap = genesis_html5() && genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
 
