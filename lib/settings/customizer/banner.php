@@ -206,6 +206,35 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		)
 	);
 
+	// Text align.
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $settings_field, 'banner_align_text' ),
+		array(
+			'default'           => sanitize_key( mai_get_default_option( 'banner_align_text' ) ),
+			'type'              => 'option',
+			'sanitize_callback' => 'sanitize_key',
+		)
+	);
+	$wp_customize->add_control(
+		'banner_align_text',
+			array(
+			'label'    => __( 'Text alignment', 'mai-pro-engine' ),
+			'section'  => $section,
+			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_align_text' ),
+			'priority' => 10,
+			'type'     => 'select',
+			'choices'  => array(
+				''       => __( '- None -', 'genesis' ),
+				'left'   => __( 'Left', 'mai-pro-engine' ),
+				'center' => __( 'Center', 'mai-pro-engine' ),
+				'right'  => __( 'Right', 'mai-pro-engine' ),
+			),
+			'active_callback' => function() use ( $wp_customize, $settings_field ) {
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
+			},
+		)
+	);
+
 	// Disable post types.
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_disable_post_types' ),
@@ -253,7 +282,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'banner_disable_taxonomies' ),
 			array(
-				'default'           => _mai_customizer_multicheck_sanitize_key( mai_get_default_option( '_mai_customizer_multicheck_sanitize_key' ) ),
+				'default'           => _mai_customizer_multicheck_sanitize_key( mai_get_default_option( 'banner_disable_taxonomies' ) ),
 				'type'              => 'option',
 				'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
 			)
