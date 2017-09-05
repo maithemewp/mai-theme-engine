@@ -15,7 +15,7 @@ function mai_do_entry_featured_image() {
 		return;
 	}
 
-	// Get post types to display featured image on.
+	// Check if auto-displaying the featured image.
 	$key     = sprintf( 'singular_image_%s', get_post_type() );
 	$display = genesis_get_option( $key );
 

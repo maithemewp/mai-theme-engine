@@ -17,14 +17,12 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
 
 	global $typenow;
 
-	// Get the post types. This matches the output in mai_do_entry_featured_image
-	$post_types = array( 'page', 'post' );
+	// Check if auto-displaying the featured image.
+	$key     = sprintf( 'singular_image_%s', $typenow );
+	$display = genesis_get_option( $key );
 
-	// Remove attachments
-	unset( $post_types['attachment'] );
-
-	// Bail if not viewing a public post type
-	if ( ! in_array( $typenow, $post_types ) ) {
+	// Bail if not displaying.
+	if ( ! $display ) {
 		return $content;
 	}
 
@@ -56,22 +54,19 @@ function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
 		return;
 	}
 
-	// Get all public post types
-	$post_types = get_post_types( array( 'public' => true ), 'names' );
-
-	// Remove attachments
-	unset( $post_types['attachment'] );
+	/**
+	 * Get post types.
+	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
+	 */
+	$post_types = (array) genesis_get_cpt_archive_types();
 
 	// Bail if not saving a public post type
 	if ( ! in_array( $post->post_type, $post_types ) ) {
 		return;
 	}
 
-	// Convert to 1/0
-	$value = absint( filter_var( $_POST[ 'mai_hide_featured_image' ], FILTER_VALIDATE_BOOLEAN ) );
-
 	// Save our meta field
-	update_post_meta( $post_id, 'mai_hide_featured_image', $value );
+	update_post_meta( $post_id, 'mai_hide_featured_image', mai_sanitize_one_zero( $_POST[ 'mai_hide_featured_image' ] ) );
 }
 
 /**
@@ -84,10 +79,11 @@ function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
 add_filter( 'image_size_names_choose', 'mai_do_media_chooser_sizes' );
 function mai_do_media_chooser_sizes( $sizes ) {
 	$addsizes = array(
-		'featured'   => __( 'Featured'),
-		'one-half'   => __( 'One Half'),
-		'one-third'  => __( 'One Third'),
-		'one-fourth' => __( 'One Fourth'),
+		'featured'   => __( 'Featured', 'mai-pro-engine' ),
+		'one-half'   => __( 'One Half', 'mai-pro-engine' ),
+		'one-third'  => __( 'One Third', 'mai-pro-engine' ),
+		'one-fourth' => __( 'One Fourth', 'mai-pro-engine' ),
+		'banner'     => __( 'Banner', 'mai-pro-engine' ),
 	);
 	$newsizes = array_merge( $sizes, $addsizes );
 	return $newsizes;

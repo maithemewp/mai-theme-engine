@@ -48,9 +48,9 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'singular_image_page' ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( 'singular_image_page' ) ),
+			'default'           => mai_sanitize_one_zero( mai_get_default_option( 'singular_image_page' ) ),
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -67,9 +67,9 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'singular_image_post' ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( 'singular_image_post' ) ),
+			'default'           => mai_sanitize_one_zero( mai_get_default_option( 'singular_image_post' ) ),
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(

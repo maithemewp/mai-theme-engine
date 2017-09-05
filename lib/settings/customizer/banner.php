@@ -28,9 +28,9 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( 'enable_banner_area' ) ),
+			'default'           => mai_sanitize_one_zero( mai_get_default_option( 'enable_banner_area' ) ),
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(

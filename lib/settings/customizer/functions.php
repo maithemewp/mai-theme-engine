@@ -84,14 +84,3 @@ function _mai_customizer_multicheck_sanitize_key( $values ) {
 	$multi_values = ! is_array( $values ) ? explode( ',', $values ) : $values;
 	return ! empty( $multi_values ) ? array_map( 'sanitize_key', $multi_values ) : array();
 }
-
-/**
- * Helper function to sanitize a value to be either the integers 1 or 0.
- *
- * @param   mixed  $value  The value to sanitize.
- *
- * @return  int    The sanitized value. Either 1 or 0.
- */
-function _mai_customizer_sanitize_one_zero( $value ) {
-	return absint( filter_var( $value, FILTER_VALIDATE_BOOLEAN ) );
-}

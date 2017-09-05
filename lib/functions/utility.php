@@ -558,6 +558,17 @@ function mai_sanitize_keys( $keys ) {
 }
 
 /**
+ * Helper function to sanitize a value to be either the integers 1 or 0.
+ *
+ * @param   mixed  $value  The value to sanitize.
+ *
+ * @return  int    The sanitized value. Either 1 or 0.
+ */
+function mai_sanitize_one_zero( $value ) {
+	return absint( filter_var( $value, FILTER_VALIDATE_BOOLEAN ) );
+}
+
+/**
  * Sanitizes WYSIWYG fields like WordPress does for post_content fields.
  */
 function mai_sanitize_post_content( $content ) {

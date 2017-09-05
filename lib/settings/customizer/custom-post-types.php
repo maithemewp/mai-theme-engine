@@ -271,9 +271,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'hide_banner' ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_cpt_option( 'hide_banner' ) ),
+			'default'           => mai_sanitize_one_zero( mai_get_default_cpt_option( 'hide_banner' ) ),
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -293,9 +293,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $genesis_settings, $banner_disable_key ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( $banner_disable_key ) ),
+			'default'           => mai_sanitize_one_zero( mai_get_default_option( $banner_disable_key ) ),
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -376,9 +376,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $genesis_settings, $banner_featured_image_key ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( $banner_featured_image_key ) ),
+			'default'           => mai_sanitize_one_zero( mai_get_default_option( $banner_featured_image_key ) ),
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -511,9 +511,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $genesis_settings, $singular_image_key ),
 			array(
-				'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_option( $singular_image_key ) ),
+				'default'           => mai_sanitize_one_zero( mai_get_default_option( $singular_image_key ) ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+				'sanitize_callback' => 'mai_sanitize_one_zero',
 			)
 		);
 		$wp_customize->add_control(
@@ -587,9 +587,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'enable_content_archive_settings' ),
 		array(
-			'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_cpt_option( 'enable_content_archive_settings' ) ),
+			'default'           => mai_sanitize_one_zero( mai_get_default_cpt_option( 'enable_content_archive_settings' ) ),
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -742,9 +742,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'content_archive_thumbnail' ),
 			array(
-				'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_cpt_option( 'content_archive_thumbnail' ) ),
+				'default'           => mai_sanitize_one_zero( mai_get_default_cpt_option( 'content_archive_thumbnail' ) ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+				'sanitize_callback' => 'mai_sanitize_one_zero',
 			)
 		);
 		$wp_customize->add_control(
@@ -886,9 +886,9 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_setting(
 			_mai_customizer_get_field_name( $settings_field, 'more_link' ),
 			array(
-				'default'           => _mai_customizer_sanitize_one_zero( mai_get_default_cpt_option( 'more_link' ) ),
+				'default'           => mai_sanitize_one_zero( mai_get_default_cpt_option( 'more_link' ) ),
 				'type'              => 'option',
-				'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+				'sanitize_callback' => 'mai_sanitize_one_zero',
 			)
 		);
 		$wp_customize->add_control(

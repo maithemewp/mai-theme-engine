@@ -50,7 +50,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 		array(
 			'default'           => 0,
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(
@@ -69,7 +69,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 		array(
 			'default'           => 0,
 			'type'              => 'option',
-			'sanitize_callback' => '_mai_customizer_sanitize_one_zero',
+			'sanitize_callback' => 'mai_sanitize_one_zero',
 		)
 	);
 	$wp_customize->add_control(

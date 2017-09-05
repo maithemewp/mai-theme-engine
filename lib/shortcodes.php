@@ -738,6 +738,14 @@ final class Mai_Shortcodes {
 		// Save original atts in a variable for filtering later
 		$original_atts = $atts;
 
+		// Get default slidestoscroll.
+		$slidestoscroll = 3;
+		if ( isset( $atts['slidestoscroll'] ) ) {
+			$slidestoscroll = $atts['slidestoscroll'];
+		} elseif ( isset( $atts['columns'] ) ) {
+			$slidestoscroll = $atts['columns'];
+		}
+
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
 			'align'                => '', // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
@@ -789,15 +797,15 @@ final class Mai_Shortcodes {
 			'title_wrap'           => 'h3',
 			'class'                => '',
 			'id'                   => '',
-			'slider'               => false,                                       // (slider only) Make the columns a slider
-			'arrows'               => true,                                        // (slider only) Whether to display arrows
-			'autoplay'             => false,                                       // (slider only) Whether to autoplay the slider
-			'center_mode'          => false,                                       // (slider only) Mobile 'peek'
-			'dots'                 => false,                                       // (slider only) Whether to display dots
-			'fade'                 => false,                                       // (slider only) Fade instead of left/right scroll (works requires slidestoshow 1)
-			'infinite'             => true,                                        // (slider only) Loop slider
-			'slidestoscroll'       => isset( $atts['columns'] ) ? $atts['columns'] : '3',   // (slider only) The amount of posts to scroll. Defaults to the amount of columns to show.
-			'speed'                => '3000',                                      // (slider only) Autoplay Speed in milliseconds
+			'slider'               => false,             // (slider only) Make the columns a slider
+			'arrows'               => true,              // (slider only) Whether to display arrows
+			'autoplay'             => false,             // (slider only) Whether to autoplay the slider
+			'center_mode'          => false,             // (slider only) Mobile 'peek'
+			'dots'                 => false,             // (slider only) Whether to display dots
+			'fade'                 => false,             // (slider only) Fade instead of left/right scroll (works requires slidestoshow 1)
+			'infinite'             => true,              // (slider only) Loop slider
+			'slidestoscroll'       => $slidestoscroll,   // (slider only) The amount of posts to scroll. Defaults to the amount of columns to show.
+			'speed'                => '3000',            // (slider only) Autoplay Speed in milliseconds
 		), $atts, 'grid' );
 
 		$atts = array(
