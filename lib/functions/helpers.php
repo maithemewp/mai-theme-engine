@@ -456,28 +456,29 @@ function mai_get_flex_entry_classes_by_fraction( $fraction ) {
 /**
  * Helper function to get a read more link for a post or term
  *
- * @param  int|WP_Post|WP_term?  $object
- * @param  string                $text
+ * @param  int|WP_Post|WP_term?  $object  The object to get read more link for.
+ * @param  string                $text    The "Read More" text.
+ * @param  string                $type    The object type ('post' or 'term').
  *
- * @return HTML string for the link
+ * @return HTML string for the link.
  */
-function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
+function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post' ) {
 
 	$link = $url = $screen_reader_html = $screen_reader_text = '';
 
 	$text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-pro-engine' );
-	$more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text ) );
+	$more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text, $object_or_id, $type ) );
 
-	$object = mai_get_read_more_object( $object_or_id );
-
-	if ( $object ) {
-		if ( isset( $object['post'] ) ) {
-			$url                = get_permalink( $object['post'] );
-			$screen_reader_text = $object['post']->post_title;
-		} elseif ( isset( $object['term'] ) ) {
-			$url                = get_term_link( $object['term'] );
-			$screen_reader_text = $object['term']->name;
-		}
+	switch ( $type ) {
+		case 'post':
+			$url                = get_permalink( $object_or_id );
+			$screen_reader_text = get_the_title( $object_or_id );
+		break;
+		case 'term':
+			$term               = is_object( $object_or_id ) ? $object_or_id : get_term( $object_or_id );
+			$url                = get_term_link( $term );
+			$screen_reader_text = $term->name;
+		break;
 	}
 
 	// Build the screen reader text html
@@ -485,12 +486,13 @@ function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
 		$screen_reader_html = sprintf( '<span class="screen-reader-text">%s</span>', esc_html( $screen_reader_text ) );
 	}
 
-	// Get image location
-	$image_location = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
-
-	// If background image
+	// If we have a url
 	if ( $url ) {
-		$link = sprintf( '<a class="more-link" href="%s">%s%s</a>', $url, $screen_reader_html, $more_link_text );
+		$attributes = array(
+			'class' => 'more-link',
+			'href'  => esc_url( $url ),
+		);
+		$link = sprintf( '<a %s>%s%s</a>', genesis_attr( 'more-link', $attributes ), $screen_reader_html, $more_link_text );
 	}
 
 	// Bail if no link
@@ -499,30 +501,6 @@ function mai_get_read_more_link( $object_or_id = '', $text = '' ) {
 	}
 
 	return sprintf( '<p class="more-link-wrap">%s</p>', $link );
-}
-
-/**
- * Get the object for a read more link.
- *
- * @param   int|object  $object_or_id  The object or ID, for now only post or term.
- *
- * @return  associated array, key is object type and value is the object
- */
-function mai_get_read_more_object( $object_or_id ) {
-	$type = array();
-	// Bail if no object_or_id
-	if ( ! $object_or_id ) {
-		return $type;
-	}
-	// If we have a post
-	if ( $object = get_post($object_or_id) ) {
-		$type['post'] = $object;
-	}
-	// No post, try a term
-	elseif ( $term = get_term( $object_or_id ) && ! is_wp_error( $term ) ) {
-		$type['term'] = $object;
-	}
-	return $type;
 }
 
 /**

@@ -7,17 +7,17 @@
 	max-width: 100% !important;
 }
 
-.mai-metabox .cmb-repeatable-group .cmb-th,
-.mai-metabox .cmb-repeatable-group .cmb-td {
+.mai-metabox .cmb-repeat-group-wrap .cmb-th,
+.mai-metabox .cmb-repeat-group-wrap .cmb-td {
 	float: none;
 	width: 100% !important;
 }
 
-.mai-metabox .cmb-repeatable-group .cmb-th label {
+.mai-metabox .cmb-repeat-group-wrap .cmb-th label {
 	font-size: 14px;
 }
 
-.mai-metabox .cmb-repeatable-group .cmb2-upload-button {
+.mai-metabox .cmb-repeat-group-wrap .cmb2-upload-button {
 	float: none !important;
 }
 

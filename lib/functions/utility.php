@@ -108,42 +108,53 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 	// Taxonomy archive.
 	elseif ( is_category() || is_tag() || is_tax() ) {
 
-		// If checking enabled and is enabled.
-		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_term_meta( get_queried_object()->term_id, 'enable_content_archive_settings', true ) ) ) {
-			$meta = get_term_meta( get_queried_object()->term_id, $key, true );
-		}
+		$queried_object = get_queried_object();
 
-		// If no meta.
-		if ( ! $meta ) {
+		/**
+		 * Check if we have an object.
+		 * We hit an issue when permlinks have /%category%/ in the base and a user
+		 * 404's via top level URL like example.com/non-existent-slug.
+		 * This returned true for is_category() and blew things up.
+		 */
+		if ( $queried_object ) {
 
-			// Get hierarchical taxonomy term meta.
-			$meta = mai_get_term_meta_value_in_hierarchy( get_queried_object(), $key, $check_for_archive_setting );
+			// If checking enabled and is enabled.
+			if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = get_term_meta( $queried_object->term_id, 'enable_content_archive_settings', true ) ) ) {
+				$meta = get_term_meta( $queried_object->term_id, $key, true );
+			}
 
-			// If no meta.
+			// If no meta
 			if ( ! $meta ) {
 
-				// If post or page taxonomy.
-				if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-					$meta = genesis_get_option( $key );
-				}
+				// Get hierarchical taxonomy term meta
+				$meta = mai_get_term_meta_value_in_hierarchy( $queried_object, $key, $check_for_archive_setting );
 
-				// Custom taxonomy archive.
-				else {
+				// If no meta
+				if ( ! $meta ) {
 
-					$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
-					if ( $tax ) {
-						/**
-						 * If the taxonomy is only registered to 1 post type.
-						 * Otherwise, how will we pick which post type archive to fall back to?
-						 * If more than one, we'll just have to use the fallback later.
-						 */
-						if ( 1 === count( (array) $tax->object_type ) ) {
-							$post_type = reset( $tax->object_type );
-							// If we have a post type and it supports genesis-cpt-archive-settings
-							// if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
-							if ( $post_type ) {
-								if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings', $post_type ) ) ) {
-									$meta = genesis_get_cpt_option( $key, $post_type );
+					// If post or page taxonomy.
+					if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
+						$meta = genesis_get_option( $key );
+					}
+
+					// Custom taxonomy archive.
+					else {
+
+						$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
+						if ( $tax ) {
+							/**
+							 * If the taxonomy is only registered to 1 post type.
+							 * Otherwise, how will we pick which post type archive to fall back to?
+							 * If more than one, we'll just have to use the fallback later.
+							 */
+							if ( 1 === count( (array) $tax->object_type ) ) {
+								$post_type = reset( $tax->object_type );
+								// If we have a post type and it supports genesis-cpt-archive-settings
+								// if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+								if ( $post_type ) {
+									if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings', $post_type ) ) ) {
+										$meta = genesis_get_cpt_option( $key, $post_type );
+									}
 								}
 							}
 						}
@@ -584,13 +595,13 @@ function mai_sanitize_post_content( $content ) {
  * @return  string|HTML
  */
 function mai_get_do_action( $hook ) {
-    // Start buffer
+	// Start buffer
 	ob_start();
-    // Add new hook
+	// Add new hook
 	do_action( $hook );
-    // End buffer
+	// End buffer
 	$content = ob_get_clean();
-    // Return the content, filtered by of hook name with underscore prepended
+	// Return the content, filtered by of hook name with underscore prepended
 	return apply_filters( '_' . $hook, $content );
 }
 
