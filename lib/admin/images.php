@@ -83,7 +83,6 @@ function mai_do_media_chooser_sizes( $sizes ) {
 		'one-half'   => __( 'One Half', 'mai-pro-engine' ),
 		'one-third'  => __( 'One Third', 'mai-pro-engine' ),
 		'one-fourth' => __( 'One Fourth', 'mai-pro-engine' ),
-		'banner'     => __( 'Banner', 'mai-pro-engine' ),
 	);
 	$newsizes = array_merge( $sizes, $addsizes );
 	return $newsizes;
