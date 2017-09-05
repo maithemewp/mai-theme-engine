@@ -3,8 +3,6 @@
 /**
  * Add checkbox to save auto-display featured image meta
  *
- * @since  1.0.0
- *
  * @return void
  */
 add_filter( 'admin_post_thumbnail_html', 'mai_hide_featured_image_checkbox', 10, 3 );
@@ -38,8 +36,6 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
 
 /**
  * Save auto-display featured image meta
- *
- * @since   1.0.0
  *
  * @param   int     $post_id  The post ID.
  * @param   object  $post     The post object.

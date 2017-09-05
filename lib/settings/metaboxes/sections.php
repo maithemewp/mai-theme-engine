@@ -197,3 +197,50 @@ function mai_do_sections_metabox() {
 	) );
 
 }
+
+/**
+ * Save section meta content to the_content for search indexing and SEO content analysis.
+ *
+ * @param   int     $post_id  The ID of the current object
+ * @param   string  $updated  Array of field ids that were updated.
+ *                            Will only include field ids that had values change.
+ * @param   array   $cmb      This CMB2 object
+ *
+ * @return  void.
+ */
+add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
+
+	// Get the sections
+	$sections = get_post_meta( $post_id, 'mai_sections', true );
+
+	// Bail if no sections
+	if ( ! $sections ) {
+		return;
+	}
+
+	$content = '';
+
+	// Loop through each section
+	foreach ( $sections as $section ) {
+
+		// Add h2 titles to the_content.
+		$content .= ! empty( $section['title'] ) ? sprintf( '<h2>%s</h2>', sanitize_text_field( $section['title'] ) ) : '';
+
+		// Add section content to the_content.
+		$content .= ! empty( $section['content'] ) ? mai_get_processed_content( $section['content'] ) : '';
+
+	}
+
+	// Remove this function so it doesn't cause infinite loop error.
+	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+
+	// Update the post content in the DB.
+	$updated = wp_update_post( array(
+		'ID'           => $post_id,
+		'post_content' => $content,
+	) );
+
+	// Add this function back.
+	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+}
