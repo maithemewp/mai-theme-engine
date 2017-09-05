@@ -317,11 +317,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	if ( $taxonomies ) {
 		foreach ( $taxonomies as $taxo ) {
 			/**
-			 * If taxo is registered to more than one object.
+			 * If taxo is not public, or is registered to more than one object.
 			 * We may need to account for these taxos later, but for now
 			 * this seems like an edge case. Most taxos are only registered to 1 object.
 			 */
-			if ( count( (array) $taxo->object_type ) > 1 ) {
+			if ( ! $taxo->public || ( count( (array) $taxo->object_type ) > 1 ) ) {
 				continue;
 			}
 			$disable_taxonomies[$taxo->name] = $taxo->label;

@@ -273,8 +273,8 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$taxonomies         = get_object_taxonomies( 'post', 'objects' );
 	if ( $taxonomies ) {
 		foreach ( $taxonomies as $taxo ) {
-			// If taxo is registered to more than one object.
-			if ( count( (array) $taxo->object_type ) > 1 ) {
+			// If taxo is not public or is registered to more than one object.
+			if ( ! $taxo->public || ( count( (array) $taxo->object_type ) > 1 ) ) {
 				continue;
 			}
 			$disable_taxonomies[$taxo->name] = $taxo->label;

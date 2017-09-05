@@ -2,41 +2,44 @@
 
 /**
  * Maybe run the version updater.
+ * Mostly taken from G core. Some original inspiration from link below.
  *
  * @link   https://www.sitepoint.com/wordpress-plugin-updates-right-way/
  *
  * @return void
  */
-add_action( 'admin_init', 'mai_update_database_version' );
+add_action( 'admin_init', 'mai_update_database_version', 20 );
 function mai_update_database_version() {
+
 	// Get the version number saved in the db.
-	$option_version = get_option( 'mai_pro_engine_version' );
-	// Bail if the version is the version.
-	if ( MAI_PRO_ENGINE_VERSION === $option_version ) {
+	$option_db_version = get_option( 'mai_db_version' );
+
+	// Bail if the saved version is the version is greater than or equal to the current version.
+	if ( $option_db_version >= MAI_PRO_ENGINE_DB_VERSION ) {
 		return;
 	}
-	// Add new hook that fires during plugin update.
-	do_action( 'mai_pro_engine_update', MAI_PRO_ENGINE_VERSION, $option_version, $plugin_version );
+
+	if ( $option_db_version < '1100' ) {
+		mai_upgrade_1100();
+	}
+
 	// Update the version number option.
-	update_option( 'mai_pro_engine_version', MAI_PRO_ENGINE_VERSION );
+	update_option( 'mai_db_version', MAI_PRO_ENGINE_DB_VERSION );
 }
 
 /**
  * Convert theme mods to theme settings (options).
- * This is for versions < 1.1.0.
  *
- * @return void.
+ * @since 1.1.0
  */
-// add_action( 'mai_pro_engine_update', 'mai_pro_update_1_1_0' );
-function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
+function mai_upgrade_1100() {
 
-	// If new install and version is over 1.1.0
-	if ( $plugin_version >= '1.1.0' ) {
-		return;
-	}
-
-	// Bail if we have an option version number and it's over 1.1.0
-	if ( isset( $option_version ) && ( $option_version >= '1.1.0' ) ) {
+	/**
+	 * Bail if no theme_mod.
+	 * This would happen if first install of the theme is already >= db version 1100.
+	 * We use a mod that won't return something that could be falsey.
+	 */
+	if ( ! get_theme_mod( 'banner_background_color' ) ) {
 		return;
 	}
 
@@ -58,18 +61,20 @@ function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 		'banner_content_width',
 		'banner_align_text',
 	);
-	foreach( $mods as $mod ) {
-		$theme_mod = get_theme_mod( $mod );
-		if ( $theme_mod ) {
-			$settings[$theme_mod] = $theme_mod;
+	foreach( $mods as $key ) {
+		$value = get_theme_mod( $key );
+		if ( $value ) {
+			$settings[$key] = $value;
 		}
 	}
 
-	$settings['columns'] = absint( genesis_get_option( 'columns' ) );
+	// This was a string before, now let's force absint.
+	$settings['footer_widget_count'] = absint( $settings['footer_widget_count'] );
 
 	/**
-	 * This field is going from boolean for all, to individual keys per post type.
+	 * These fields is going from boolean for all, to individual keys per post type.
 	 */
+	$banner_featured_image = get_theme_mod( 'banner_featured_image' );
 	$enable_singular_image = get_theme_mod( 'enable_singular_image' );
 
 	// If enabled singular image is checked/true.
@@ -78,7 +83,40 @@ function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 		$settings['singular_image_post'] = 1;
 	}
 
+	/**
+	 * These originally had all the sites post_types and taxos.
+	 * Since 1.1.0 we move post_types and taxos to post_type specific keys.
+	 */
+	$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
+	$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+
+	// Get post types.
+	$post_types = genesis_get_cpt_archive_types();
+
+	if ( $post_types ) {
+		foreach ( $post_types as $post_type => $object ) {
+			// Banner featured image.
+			$settings[ sprintf( 'banner_featured_image_%s', $post_type ) ] = $banner_featured_image;
+			// Banner disable post type.
+			if ( in_array( $post_type, $disable_post_types ) ) {
+				$settings[ sprintf( 'banner_disable_%s', $post_type ) ] = 1;
+			}
+			// Banner disable taxonomies.
+			$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+			if ( $taxonomies ) {
+				foreach ( $taxonomies as $name => $object ) {
+					if ( in_array( $name, $disable_taxonomies ) )
+					$settings[ sprintf( 'banner_disable_taxonomies_%s', $post_type ) ][] = $name;
+				}
+			}
+			// Display featured image.
+			$settings[ sprintf( 'singular_image_%s', $post_type ) ] = ( class_exists( 'WooCommerce' ) && 'product' === $post_type ) ? 1 : $enable_singular_image;
+		}
+	}
+
+	// Update.
 	if ( ! empty( $settings ) ) {
+
 		// Update settings.
 		genesis_update_settings( $settings );
 
@@ -90,11 +128,52 @@ function mai_pro_update_1_1_0( $option_version, $plugin_version ) {
 		remove_theme_mod( 'enable_singular_image' );
 	}
 
-	// TODO: Archive stuff?!?!?
-
-	// Woo upgrade, meta to cpt-archive-settings.
-	if ( class_exists( 'WooCommerce' ) ) {
-
+	// Static blog.
+	if ( $blog_page_id = get_option( 'page_for_posts' ) ) {
+		// Update the settings.
+		genesis_update_settings( _mai_upgrade_1100_get_static_archive_settings( $blog_page_id ), GENESIS_SETTINGS_FIELD );
 	}
 
+	// Woo upgrade, meta to cpt-archive-settings.
+	if ( class_exists( 'WooCommerce' ) && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+		$settings                = array();
+		$settings['banner_id']   = get_post_meta( $shop_page_id, 'banner_id', true );
+		$settings['hide_banner'] = get_post_meta( $shop_page_id, 'hide_banner', true );
+		$settings                = array_merge( $settings, _mai_upgrade_1100_get_static_archive_settings( $shop_page_id ) );
+		// Update the settings.
+		genesis_update_settings( $settings, GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . 'product' );
+	}
+
+
+}
+
+function _mai_upgrade_1100_get_static_archive_settings( $post_id ) {
+	$settings             = array();
+	$cpt_archive_settings = get_post_meta( $post_id, 'enabled_custom_archive_settings', true );
+	if ( $cpt_archive_settings ) {
+		$settings['columns']                   = get_post_meta( $post_id, 'columns', true );
+		$settings['content_archive']           = get_post_meta( $post_id, 'content_archive', true );
+		$settings['content_archive_thumbnail'] = get_post_meta( $post_id, 'content_archive_thumbnail', true );
+		$settings['content_archive_limit']     = get_post_meta( $post_id, 'columns', true );
+		$settings['image_location']            = get_post_meta( $post_id, 'image_location', true );
+		$settings['image_size']                = get_post_meta( $post_id, 'image_size', true );
+		$settings['image_alignment']           = get_post_meta( $post_id, 'image_alignment', true );
+		$settings['more_link']                 = get_post_meta( $post_id, 'more_link', true );
+		$settings['remove_meta']               = get_post_meta( $post_id, 'remove_meta', true );
+		$settings['posts_per_page']            = get_post_meta( $post_id, 'posts_per_page', true );
+		$settings['posts_nav']                 = get_post_meta( $post_id, 'posts_nav', true );
+	}
+	delete_post_meta( $post_id, 'enabled_custom_archive_settings' );
+	delete_post_meta( $post_id, 'columns' );
+	delete_post_meta( $post_id, 'content_archive' );
+	delete_post_meta( $post_id, 'content_archive_thumbnail' );
+	delete_post_meta( $post_id, 'content_archive_limit' );
+	delete_post_meta( $post_id, 'image_location' );
+	delete_post_meta( $post_id, 'image_size' );
+	delete_post_meta( $post_id, 'image_alignment' );
+	delete_post_meta( $post_id, 'more_link' );
+	delete_post_meta( $post_id, 'remove_meta' );
+	delete_post_meta( $post_id, 'posts_per_page' );
+	delete_post_meta( $post_id, 'posts_nav' );
+	return $settings;
 }
