@@ -34,15 +34,6 @@ function mai_update_database_version() {
  */
 function mai_upgrade_1100() {
 
-	/**
-	 * Bail if no theme_mod.
-	 * This would happen if first install of the theme is already >= db version 1100.
-	 * We use a mod that won't return something that could be falsey.
-	 */
-	if ( ! get_theme_mod( 'footer_widget_count' ) ) {
-		return;
-	}
-
 	// New settings.
 	$settings = array();
 
@@ -69,10 +60,12 @@ function mai_upgrade_1100() {
 	}
 
 	// This was a string before, now let's force absint.
-	$settings['footer_widget_count'] = absint( $settings['footer_widget_count'] );
+	if ( isset( $settings['footer_widget_count'] ) ) {
+		$settings['footer_widget_count'] = absint( $settings['footer_widget_count'] );
+	}
 
 	/**
-	 * These fields is going from boolean for all, to individual keys per post type.
+	 * These fields are going from boolean for all, to individual keys per post type.
 	 */
 	$banner_featured_image = get_theme_mod( 'banner_featured_image' );
 	$enable_singular_image = get_theme_mod( 'enable_singular_image' );
@@ -141,8 +134,11 @@ function mai_upgrade_1100() {
 					$settings[ sprintf( 'banner_disable_taxonomies_%s', $post_type ) ][] = $name;
 				}
 			}
-			// Display featured image.
-			$settings[ sprintf( 'singular_image_%s', $post_type ) ] = ( class_exists( 'WooCommerce' ) && 'product' === $post_type ) ? 1 : $enable_singular_image;
+			// If we have a value from this theme_mod.
+			if ( false !=== $enable_singular_image ) {
+				// Display featured image.
+				$settings[ sprintf( 'singular_image_%s', $post_type ) ] = ( class_exists( 'WooCommerce' ) && 'product' === $post_type ) ? 1 : mai_sanitize_one_zero( $enable_singular_image );
+			}
 		}
 	}
 
