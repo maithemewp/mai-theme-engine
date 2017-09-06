@@ -135,7 +135,7 @@ function mai_upgrade_1100() {
 				}
 			}
 			// If we have a value from this theme_mod.
-			if ( false !=== $enable_singular_image ) {
+			if ( false !== $enable_singular_image ) {
 				// Display featured image.
 				$settings[ sprintf( 'singular_image_%s', $post_type ) ] = ( class_exists( 'WooCommerce' ) && 'product' === $post_type ) ? 1 : mai_sanitize_one_zero( $enable_singular_image );
 			}
