@@ -39,7 +39,7 @@ function mai_upgrade_1100() {
 	 * This would happen if first install of the theme is already >= db version 1100.
 	 * We use a mod that won't return something that could be falsey.
 	 */
-	if ( ! get_theme_mod( 'banner_background_color' ) ) {
+	if ( ! get_theme_mod( 'footer_widget_count' ) ) {
 		return;
 	}
 
@@ -89,6 +89,38 @@ function mai_upgrade_1100() {
 	 */
 	$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
 	$disable_taxonomies = (array) genesis_get_option( 'banner_disable_taxonomies' );
+
+	$settings['banner_disable_post_types'] = $settings['banner_disable_taxonomies'] = array();
+
+	// Remove other non-default post types from this setting.
+	foreach( $disable_post_types as $post_type ) {
+		if ( in_array( $post_type, array( 'page', 'post' ) ) ) {
+			$settings['banner_disable_post_types'][] = $post_type;
+		}
+	}
+
+	// Remove other non-post taxos from this setting.
+	if ( $disable_taxonomies ) {
+
+		$keeper_taxos = array();
+		$taxonomies  = get_object_taxonomies( 'post', 'objects' );
+		if ( $taxonomies ) {
+			foreach ( $taxonomies as $taxo ) {
+				// If taxo is not public or is registered to more than one object.
+				if ( ! $taxo->public || ( count( (array) $taxo->object_type ) > 1 ) ) {
+					continue;
+				}
+				$keeper_taxos[] = $taxo->name;
+			}
+		}
+
+		foreach( $disable_taxonomies as $taxo ) {
+			if ( in_array( $taxo, $keeper_taxos ) ) {
+				$settings['banner_disable_taxonomies'][] = $taxo;
+			}
+		}
+
+	}
 
 	// Get post types.
 	$post_types = genesis_get_cpt_archive_types();
