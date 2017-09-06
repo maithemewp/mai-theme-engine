@@ -352,9 +352,6 @@ function mai_do_woo_product_archive_image() {
 add_action( 'mai_before_content_archive', 'mai_do_content_archive_archive_options' );
 function mai_do_content_archive_archive_options() {
 
-	// CONVERT THESE TO STATIC VARIABLES
-	// AND DO EACH FILTER SEPARATELY?
-
 	$content_archive_thumbnail = mai_get_archive_setting( 'content_archive_thumbnail', true, genesis_get_option( 'content_archive_thumbnail' ) );
 	$image_size                = mai_get_archive_setting( 'image_size', true, genesis_get_option( 'image_size' ) );
 	$image_alignment           = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
