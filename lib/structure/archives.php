@@ -329,11 +329,13 @@ function mai_do_woo_product_archive_image() {
 
 	// Remove product images from archive template
 	remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+	remove_action( 'woocommerce_before_subcategory_title', 'woocommerce_subcategory_thumbnail', 10 );
 
 	// If displaying the thumbnail
-	if ( mai_get_archive_setting( 'content_archive_thumbnail', true, genesis_get_cpt_option( 'content_archive_thumbnail' ) ) ) {
+	if ( (bool) mai_get_archive_setting( 'content_archive_thumbnail', true, genesis_get_cpt_option( 'content_archive_thumbnail' ) ) ) {
 		// Add back product images to archive template
 		add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+		add_action( 'woocommerce_before_subcategory_title', 'woocommerce_subcategory_thumbnail', 10 );
 	}
 }
 
