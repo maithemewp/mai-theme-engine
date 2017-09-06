@@ -1,11 +1,4 @@
 <?php
-/**
- * Mai Pro Engine.
- *
- * @author   Mike Hemberger
- *
- * @version  1.1.0
- */
 
 /**
  * Main Mai_Shortcodes Class.
@@ -61,24 +54,24 @@ final class Mai_Shortcodes {
 		add_filter( 'the_content', array( $this, 'content_filter' ) );
 
 		// Create shortcodes
-		add_shortcode( 'callout', 				array( $this, 'get_callout' ) );
-		add_shortcode( 'section', 				array( $this, 'get_section' ) );
-		add_shortcode( 'columns', 				array( $this, 'get_columns' ) );
-		add_shortcode( 'col', 					array( $this, 'get_col' ) );
-		add_shortcode( 'col_auto', 				array( $this, 'get_col_auto' ) );
-		add_shortcode( 'col_one_twelfth', 		array( $this, 'get_col_one_twelfth' ) );
-		add_shortcode( 'col_one_sixth', 		array( $this, 'get_col_one_sixth' ) );
-		add_shortcode( 'col_one_fourth', 		array( $this, 'get_col_one_fourth' ) );
-		add_shortcode( 'col_one_third', 		array( $this, 'get_col_one_third' ) );
-		add_shortcode( 'col_five_twelfths', 	array( $this, 'get_col_five_twelfths' ) );
-		add_shortcode( 'col_one_half', 			array( $this, 'get_col_one_half' ) );
-		add_shortcode( 'col_seven_twelfths', 	array( $this, 'get_col_seven_twelfths' ) );
-		add_shortcode( 'col_two_thirds', 		array( $this, 'get_col_two_thirds' ) );
-		add_shortcode( 'col_three_fourths', 	array( $this, 'get_col_three_fourths' ) );
-		add_shortcode( 'col_five_sixths', 		array( $this, 'get_col_five_sixths' ) );
-		add_shortcode( 'col_eleven_twelfths', 	array( $this, 'get_col_eleven_twelfths' ) );
-		add_shortcode( 'col_one_whole', 		array( $this, 'get_col_one_whole' ) );
-		add_shortcode( 'grid', 					array( $this, 'get_grid' ) );
+		add_shortcode( 'callout',              array( $this, 'get_callout' ) );
+		add_shortcode( 'section',              array( $this, 'get_section' ) );
+		add_shortcode( 'columns',              array( $this, 'get_columns' ) );
+		add_shortcode( 'col',                  array( $this, 'get_col' ) );
+		add_shortcode( 'col_auto',             array( $this, 'get_col_auto' ) );
+		add_shortcode( 'col_one_twelfth',      array( $this, 'get_col_one_twelfth' ) );
+		add_shortcode( 'col_one_sixth',        array( $this, 'get_col_one_sixth' ) );
+		add_shortcode( 'col_one_fourth',       array( $this, 'get_col_one_fourth' ) );
+		add_shortcode( 'col_one_third',        array( $this, 'get_col_one_third' ) );
+		add_shortcode( 'col_five_twelfths',    array( $this, 'get_col_five_twelfths' ) );
+		add_shortcode( 'col_one_half',         array( $this, 'get_col_one_half' ) );
+		add_shortcode( 'col_seven_twelfths',   array( $this, 'get_col_seven_twelfths' ) );
+		add_shortcode( 'col_two_thirds',       array( $this, 'get_col_two_thirds' ) );
+		add_shortcode( 'col_three_fourths',    array( $this, 'get_col_three_fourths' ) );
+		add_shortcode( 'col_five_sixths',      array( $this, 'get_col_five_sixths' ) );
+		add_shortcode( 'col_eleven_twelfths',  array( $this, 'get_col_eleven_twelfths' ) );
+		add_shortcode( 'col_one_whole',        array( $this, 'get_col_one_whole' ) );
+		add_shortcode( 'grid',                 array( $this, 'get_grid' ) );
 
 		// FacetWP support
 		add_filter( 'facetwp_is_main_query', array( $this, 'facetwp_is_main_query' ), 10, 2 );
@@ -161,10 +154,10 @@ final class Mai_Shortcodes {
 	function cleanup_shortcode_html( $content ) {
 
 		$array = array (
-			'<p></p>'	=> '',
-			'<p>['		=> '[',
-			']</p>'		=> ']',
-			']<br />'	=> ']'
+			'<p></p>' => '',
+			'<p>['    => '[',
+			']</p>'   => ']',
+			']<br />' => ']'
 		);
 		$content = strtr( $content, $array );
 
@@ -231,19 +224,19 @@ final class Mai_Shortcodes {
 	}
 
 	/**
-	 * Add new section shortcode
-	 * On layouts with no sidebar it will be a full browser/window width section
+	 * Add new section shortcode.
+	 * On layouts with no sidebar it will be a full browser/window width section.
 	 *
-	 * Add parameter of 'image=246' with an image ID from the media library to use a full width background image
+	 * Add parameter of 'image=246' with an image ID from the media library to use a full width background image.
 	 */
 	function get_section( $atts, $content = null ) {
 
 		// Bail if no content
 		if ( null === $content ) {
-		    return;
+			return;
 		}
 
-		// Shortcode section atts
+		// Shortcode section atts.
 		$args = shortcode_atts( array(
 			'wrapper'       => 'section',
 			'id'            => '',
@@ -259,7 +252,7 @@ final class Mai_Shortcodes {
 			'height'        => 'md',
 		), $atts, 'section' );
 
-		// Sanitized args
+		// Sanitized args.
 		$args = array(
 			'wrapper'       => sanitize_key( $args['wrapper'] ),
 			'id'            => sanitize_html_class( $args['id'] ),
@@ -277,24 +270,25 @@ final class Mai_Shortcodes {
 
 		$output = '';
 
-		$output .= $this->get_section_open( $args );
+		$output .= $this->get_section_open( $args, $content );
 		$output .= $this->get_processed_content( $content );
-		$output .= $this->get_section_close( $args );
+		$output .= $this->get_section_close( $args, $content );
 
 		return $output;
 	}
 
 	/**
-	 * Get opening section wrap
-	 * To be used in front-page.php and [section] shortcode
+	 * Get opening section wrap.
+	 * To be used in front-page.php and [section] shortcode.
 	 *
 	 * @version  1.0.1
 	 *
-	 * @param    array  $args  Options for the wrapping markup
+	 * @param    array   $args     Options for the wrapping markup.
+	 * @param    string  $content  The shortcode content.
 	 *
 	 * @return   string|HTML
 	 */
-	function get_section_open( $args ) {
+	function get_section_open( $args, $content ) {
 
 		// Start all element variables as empty string
 		$title = $wrap = $inner = '';
@@ -304,7 +298,7 @@ final class Mai_Shortcodes {
 
 		// Check if we have valid overlay and inner values
 		$has_overlay = $this->has_overlay( $args );
-		$has_inner   = $this->has_inner( $args );
+		$has_inner   = $this->has_inner( $args, $content );
 
 		// Maybe add section id
 		if ( $args['id'] ) {
@@ -408,84 +402,89 @@ final class Mai_Shortcodes {
 
 		}
 
-		$wrap_atts['class'] = 'wrap';
+		// Maybe build opening wrap.
+		if ( ! empty( $content ) ) {
 
-		// Wrap height
-		if ( $args['height'] ) {
+			$wrap_atts['class'] = 'wrap';
 
-			switch ( $args['height'] ) {
-				case 'auto';
-					$wrap_atts['class'] .= ' height-auto';
-				break;
-				case 'sm':
-				case 'small';
-					$wrap_atts['class'] .= ' height-sm';
-				break;
-				case 'md':
-				case 'medium':
-					$wrap_atts['class'] .= ' height-md';
-				break;
-				case 'lg':
-				case 'large':
-					$wrap_atts['class'] .= ' height-lg';
-				break;
+			// Wrap height
+			if ( $args['height'] ) {
+
+				switch ( $args['height'] ) {
+					case 'auto';
+						$wrap_atts['class'] .= ' height-auto';
+					break;
+					case 'sm':
+					case 'small';
+						$wrap_atts['class'] .= ' height-sm';
+					break;
+					case 'md':
+					case 'medium':
+						$wrap_atts['class'] .= ' height-md';
+					break;
+					case 'lg':
+					case 'large':
+						$wrap_atts['class'] .= ' height-lg';
+					break;
+				}
+
 			}
+
+			// Wrap content width
+			if ( $args['content_width'] ) {
+
+				switch ( $args['content_width'] ) {
+					case 'auto':
+						$wrap_atts['class'] .= ' width-auto';
+					break;
+					case 'xs':
+					case 'extra-small':
+						$wrap_atts['class'] .= ' width-xs';
+					break;
+					case 'sm':
+					case 'small';
+						$wrap_atts['class'] .= ' width-sm';
+					break;
+					case 'md':
+					case 'medium':
+						$wrap_atts['class'] .= ' width-md';
+					break;
+					case 'lg':
+					case 'large':
+						$wrap_atts['class'] .= ' width-lg';
+					break;
+					case 'xl':
+					case 'extra-large':
+						$wrap_atts['class'] .= ' width-xl';
+					break;
+					case 'full':
+						$wrap_atts['class'] .= ' width-full';
+					break;
+				}
+
+			} else {
+
+				// Add width classes based on layout
+				switch ( genesis_site_layout() ) {
+					case 'xs-content':
+						$wrap_atts['class'] .= ' width-xs';
+					break;
+					case 'sm-content':
+						$wrap_atts['class'] .= ' width-sm';
+					break;
+					case 'md-content':
+						$wrap_atts['class'] .= ' width-md';
+					break;
+					case 'lg-content':
+						$wrap_atts['class'] .= ' width-lg';
+					break;
+				}
+
+			}
+
+			$wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts, $args ) );
 
 		}
-
-		// Wrap content width
-		if ( $args['content_width'] ) {
-
-			switch ( $args['content_width'] ) {
-				case 'auto':
-					$wrap_atts['class'] .= ' width-auto';
-				break;
-				case 'xs':
-				case 'extra-small':
-					$wrap_atts['class'] .= ' width-xs';
-				break;
-				case 'sm':
-				case 'small';
-					$wrap_atts['class'] .= ' width-sm';
-				break;
-				case 'md':
-				case 'medium':
-					$wrap_atts['class'] .= ' width-md';
-				break;
-				case 'lg':
-				case 'large':
-					$wrap_atts['class'] .= ' width-lg';
-				break;
-				case 'xl':
-				case 'extra-large':
-					$wrap_atts['class'] .= ' width-xl';
-				break;
-				case 'full':
-					$wrap_atts['class'] .= ' width-full';
-				break;
-			}
-
-		} else {
-
-			// Add width classes based on layout
-			switch ( genesis_site_layout() ) {
-				case 'xs-content':
-					$wrap_atts['class'] .= ' width-xs';
-				break;
-				case 'sm-content':
-					$wrap_atts['class'] .= ' width-sm';
-				break;
-				case 'md-content':
-					$wrap_atts['class'] .= ' width-md';
-				break;
-				case 'lg-content':
-					$wrap_atts['class'] .= ' width-lg';
-				break;
-			}
-
-		}
-
-		$wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts, $args ) );
 
 		// Maybe add an inner wrap, typically for content width/style
 		if ( $has_inner ) {
@@ -535,26 +534,30 @@ final class Mai_Shortcodes {
 	 *
 	 * @version  1.0.1
 	 *
-	 * @param    array  $args  Options for the wrapping markup
+	 * @param    array   $args     Options for the wrapping markup.
+	 * @param    string  $content  The shortcode content.
 	 *
 	 * @return   string|HTML
 	 */
-	function get_section_close( $args ) {
+	function get_section_close( $args, $content ) {
 
-		// Start all element variables as empty string
+		// Start all element variables as empty string.
 		$title = $wrap = $inner = '';
 
-		// Check if we have valid inner values
-		$has_inner = $this->has_inner( $args );
+		// Check if we have valid inner values.
+		$has_inner = $this->has_inner( $args, $content );
 
-		// Maybe close inner wrap
+		// Maybe close inner wrap.
 		if ( $has_inner ) {
 			$inner = '</div>';
 		}
 
-		$wrap = '</div>';
+		// Maybe close wrap.
+		if ( ! empty( $content ) ) {
+			$wrap = '</div>';
+		}
 
-		// Build the closing markup, in reverse order so the close appropriately
+		// Build the closing markup, in reverse order so the close appropriately.
 		return sprintf( '%s%s</%s>',
 			$inner,
 			$wrap,
@@ -745,6 +748,14 @@ final class Mai_Shortcodes {
 		// Save original atts in a variable for filtering later
 		$original_atts = $atts;
 
+		// Get default slidestoscroll.
+		$slidestoscroll = 3;
+		if ( isset( $atts['slidestoscroll'] ) ) {
+			$slidestoscroll = $atts['slidestoscroll'];
+		} elseif ( isset( $atts['columns'] ) ) {
+			$slidestoscroll = $atts['columns'];
+		}
+
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
 			'align'                => '', // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
@@ -796,15 +807,15 @@ final class Mai_Shortcodes {
 			'title_wrap'           => 'h3',
 			'class'                => '',
 			'id'                   => '',
-			'slider'               => false,  // (slider only) Make the columns a slider
-			'arrows'               => true,   // (slider only) Whether to display arrows
-			'autoplay'             => false,  // (slider only) Whether to autoplay the slider
-			'center_mode'          => false,  // (slider only) Mobile 'peek'
-			'dots'                 => false,  // (slider only) Whether to display dots
-			'fade'                 => false,  // (slider only) Fade instead of left/right scroll (works requires slidestoshow 1)
-			'infinite'             => true,   // (slider only) Loop slider
-			'slidestoscroll'       => '1',    // (slider only) The amount of posts to scroll
-			'speed'                => '3000', // (slider only) Autoplay Speed in milliseconds
+			'slider'               => false,             // (slider only) Make the columns a slider
+			'arrows'               => true,              // (slider only) Whether to display arrows
+			'autoplay'             => false,             // (slider only) Whether to autoplay the slider
+			'center_mode'          => false,             // (slider only) Mobile 'peek'
+			'dots'                 => false,             // (slider only) Whether to display dots
+			'fade'                 => false,             // (slider only) Fade instead of left/right scroll (works requires slidestoshow 1)
+			'infinite'             => true,              // (slider only) Loop slider
+			'slidestoscroll'       => $slidestoscroll,   // (slider only) The amount of posts to scroll. Defaults to the amount of columns to show.
+			'speed'                => '3000',            // (slider only) Autoplay Speed in milliseconds
 		), $atts, 'grid' );
 
 		$atts = array(
@@ -1375,7 +1386,6 @@ final class Mai_Shortcodes {
 								$terms[] = $term->term_id;
 							break;
 						}
-
 					}
 				}
 			} else {
@@ -1503,8 +1513,8 @@ final class Mai_Shortcodes {
 						/**
 						 * If author has no link this shortcode defaults to genesis_post_author_shortcode() [post_author]
 						 */
-						$author_before	  = $atts['author_before'] ? ' before="' . $atts['author_before'] . '"' : '';
-						$author_after	  = $atts['author_after'] ? ' after="' . $atts['author_after'] . '"' : '';
+						$author_before = $atts['author_before'] ? ' before="' . $atts['author_before'] . '"' : '';
+						$author_after  = $atts['author_after'] ? ' after="' . $atts['author_after'] . '"' : '';
 						// Can't have a nested link if we have a background image
 						if ( $has_image_bg ) {
 							$author_shortcode_name = 'post_author';
@@ -1826,7 +1836,6 @@ final class Mai_Shortcodes {
 	}
 
 	function get_grid_title( $atts ) {
-
 		// Bail if no title
 		if ( empty( $atts['grid_title'] ) ) {
 			return;
@@ -1866,9 +1875,9 @@ final class Mai_Shortcodes {
 		return in_array( $atts['overlay'], $valid_overlay_values );
 	}
 
-	function has_inner( $atts ) {
+	function has_inner( $atts, $content ) {
 		$valid_inner_values = array( 'light', 'dark' );
-		return in_array( $atts['inner'], $valid_inner_values );
+		return ( ! empty( $content ) && in_array( $atts['inner'], $valid_inner_values ) );
 	}
 
 	function is_entry_header_image( $atts ) {
@@ -1887,7 +1896,16 @@ final class Mai_Shortcodes {
 	function get_entry_link( $atts, $object_or_id ) {
 		switch ( $atts['content_type'] ) {
 			case 'post':
-				$link = get_permalink( $object_or_id );
+				$link = '';
+				if ( in_array( 'add_to_cart', $atts['show'] ) ) {
+					if ( class_exists( 'WooCommerce' ) ) {
+						$product = wc_get_product( $object_or_id );
+						$link    = $product->add_to_cart_url();
+					}
+				}
+				if ( ! $link ) {
+					$link = get_permalink( $object_or_id );
+				}
 			break;
 			case 'term':
 				$link = get_term_link( $object_or_id );
@@ -1919,7 +1937,7 @@ final class Mai_Shortcodes {
 		}
 
 		// If dealing with a post object
-		if ( 'post' == $atts['content_type'] ) {
+		if ( 'post' === $atts['content_type'] ) {
 
 			/**
 			 * Merge our new classes with the default WP generated classes.

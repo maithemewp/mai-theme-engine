@@ -236,4 +236,4 @@ function mai_genesis_theme_settings_metabox() {
 }
 
 // Get it started.
-mai_genesis_theme_settings_metabox();
+// mai_genesis_theme_settings_metabox();

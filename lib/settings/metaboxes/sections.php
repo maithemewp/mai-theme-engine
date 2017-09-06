@@ -1,20 +1,30 @@
 <?php
 
+/**
+ * Remove the admin page editor on Sections template pages.
+ *
+ * @return  void.
+ */
 add_action( 'admin_head', 'hide_editor' );
 function hide_editor() {
 	global $pagenow;
 
-	if ( 'post.php' != $pagenow ) {
+	if ( 'post.php' !== $pagenow ) {
 		return;
 	}
 	if ( ! isset( $_GET['post'] ) ) {
 		return;
 	}
-	if ( 'sections.php' == get_page_template_slug( absint( $_GET['post'] ) ) ) {
-		remove_post_type_support('page', 'editor');
+	if ( 'sections.php' === get_page_template_slug( absint( $_GET['post'] ) ) ) {
+		remove_post_type_support( 'page', 'editor' );
 	}
 }
 
+/**
+ * Add the CMB2 Sections repeater group.
+ *
+ * @return  void.
+ */
 add_action( 'cmb2_admin_init', 'mai_do_sections_metabox' );
 function mai_do_sections_metabox() {
 
@@ -29,15 +39,15 @@ function mai_do_sections_metabox() {
 	) );
 
 	$section = $sections->add_field( array(
-	    'id'          => 'mai_sections',
-	    'type'        => 'group',
-	    'repeatable'  => true,
-	    'options'     => array(
+		'id'          => 'mai_sections',
+		'type'        => 'group',
+		'repeatable'  => true,
+		'options'     => array(
 			'group_title'   => __( 'Section #{#}', 'mai-pro-engine' ),
 			'add_button'    => __( 'Add Section', 'mai-pro-engine' ),
 			'remove_button' => __( 'Remove Section', 'mai-pro-engine' ),
 			'sortable'      => true,
-	    ),
+		),
 	) );
 
 	// Settings
@@ -65,8 +75,8 @@ function mai_do_sections_metabox() {
 		'preview_size' => 'one-third',
 		'options'      => array( 'url' => false ),
 		'text'         => array(
-	        'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
-	    ),
+			'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
+		),
 	) );
 
 	// Overlay
@@ -149,7 +159,7 @@ function mai_do_sections_metabox() {
 	) );
 
 	// ID
-	$sections -> add_group_field( $section, array(
+	$sections->add_group_field( $section, array(
 		'name'            => 'HTML id',
 		'id'              => 'id',
 		'type'            => 'text',
@@ -157,7 +167,7 @@ function mai_do_sections_metabox() {
 	) );
 
 	// Class
-	$sections -> add_group_field( $section, array(
+	$sections->add_group_field( $section, array(
 		'name'            => 'HTML additional classes',
 		'id'              => 'class',
 		'type'            => 'text',
@@ -166,7 +176,7 @@ function mai_do_sections_metabox() {
 	) );
 
 	// Title
-	$sections -> add_group_field( $section, array(
+	$sections->add_group_field( $section, array(
 		'name'       => 'Title',
 		'id'         => 'title',
 		'type'       => 'text',
@@ -189,18 +199,48 @@ function mai_do_sections_metabox() {
 }
 
 /**
- * Only return default value if we don't have a post ID (in the 'post' query variable)
+ * Save section meta content to the_content for search indexing and SEO content analysis.
  *
- * @param  bool  $default On/Off (true/false)
- * @return mixed          Returns true or '', the blank default
+ * @param   int     $post_id  The ID of the current object
+ * @param   string  $updated  Array of field ids that were updated.
+ *                            Will only include field ids that had values change.
+ * @param   array   $cmb      This CMB2 object
+ *
+ * @return  void.
  */
-function mai_set_checkbox_default_for_new_post( $default ) {
-	return isset( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
-}
+add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 
-/**
- * Sanitizes WYSIWYG fields like WordPress does for post_content fields.
- */
-function mai_sanitize_post_content( $content ) {
-	return apply_filters( 'content_save_pre', $content );
+	// Get the sections
+	$sections = get_post_meta( $post_id, 'mai_sections', true );
+
+	// Bail if no sections
+	if ( ! $sections ) {
+		return;
+	}
+
+	$content = '';
+
+	// Loop through each section
+	foreach ( $sections as $section ) {
+
+		// Add h2 titles to the_content.
+		$content .= ! empty( $section['title'] ) ? sprintf( '<h2>%s</h2>', sanitize_text_field( $section['title'] ) ) : '';
+
+		// Add section content to the_content.
+		$content .= ! empty( $section['content'] ) ? mai_get_processed_content( $section['content'] ) : '';
+
+	}
+
+	// Remove this function so it doesn't cause infinite loop error.
+	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+
+	// Update the post content in the DB.
+	$updated = wp_update_post( array(
+		'ID'           => $post_id,
+		'post_content' => $content,
+	) );
+
+	// Add this function back.
+	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
 }

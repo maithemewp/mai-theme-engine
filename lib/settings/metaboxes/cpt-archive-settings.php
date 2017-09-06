@@ -1,6 +1,19 @@
 <?php
 
 /**
+ * Helper function to get/return the Mai_Genesis_CPT_Settings_Metabox object.
+ *
+ * @since  0.1.0
+ *
+ * @param  string $post_type Post type slug
+ *
+ * @return Mai_Genesis_CPT_Settings_Metabox object
+ */
+function mai_do_genesis_cpt_archive_settings( $post_type ) {
+	return Mai_Genesis_CPT_Settings_Metabox::get_instance( $post_type );
+}
+
+/**
  * CMB2 Genesis CPT Archive Metabox
  *
  * @version 0.1.0
@@ -18,6 +31,12 @@ class Mai_Genesis_CPT_Settings_Metabox {
  	 * @var string
  	 */
 	protected $post_type = '';
+
+	/**
+ 	 * CPT slug
+ 	 * @var array
+ 	 */
+	protected $settings_fields = array();
 
 	/**
  	 * CPT slug
@@ -59,7 +78,6 @@ class Mai_Genesis_CPT_Settings_Metabox {
 			self::$instances[ $post_type ] = new self( $post_type );
 			self::$instances[ $post_type ]->hooks();
 		}
-
 		return self::$instances[ $post_type ];
 	}
 
@@ -79,7 +97,7 @@ class Mai_Genesis_CPT_Settings_Metabox {
 	 * @since 0.1.0
 	 */
 	public function hooks() {
-		add_action( 'admin_menu', array( $this, 'admin_hooks' ) );
+		add_action( 'admin_menu',      array( $this, 'admin_hooks' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'init_metabox' ) );
 	}
 
@@ -103,6 +121,11 @@ class Mai_Genesis_CPT_Settings_Metabox {
 	 * @since 0.1.0
 	 */
 	public function add_meta_box() {
+
+		// Custom CSS/JS.
+		wp_enqueue_style( 'mai-admin' );
+		wp_enqueue_script( 'mai-admin' );
+
 		$cmb = $this->init_metabox();
 		add_meta_box(
 			$cmb->cmb_id,
@@ -132,7 +155,6 @@ class Mai_Genesis_CPT_Settings_Metabox {
 				$cmb->get_sanitized_values( $_POST )
 			);
 		}
-
 		return $new_value;
 	}
 
@@ -149,9 +171,9 @@ class Mai_Genesis_CPT_Settings_Metabox {
 			return $this->cmb;
 		}
 
-	    $this->cmb = cmb2_get_metabox( array(
+		$this->cmb = cmb2_get_metabox( array(
 			'id'           => $this->metabox_id,
-			'title'        => __( 'Mai Content Archive Settings', 'mai-pro-engine' ),
+			'title'        => __( 'Mai Archive Settings', 'mai-pro-engine' ),
 			'classes'      => 'mai-metabox mai-content-archive-metabox',
 			'hookup'       => false, 	// We'll handle ourselves. ( add_sanitized_values() )
 			'cmb_styles'   => false, 	// We'll handle ourselves. ( admin_hooks() )
@@ -165,22 +187,22 @@ class Mai_Genesis_CPT_Settings_Metabox {
 			),
 		), $this->key, 'options-page' );
 
-	    $this->cmb->add_field( _mai_cmb_banner_visibility_config() );
-	    $this->cmb->add_field( _mai_cmb_banner_image_config() );
-	    $this->cmb->add_field( _mai_cmb_remove_loop_config() );
-	    $this->cmb->add_field( _mai_cmb_content_enable_archive_settings_config() );
-	    $this->cmb->add_field( _mai_cmb_content_archive_settings_title_config() );
-	    $this->cmb->add_field( _mai_cmb_columns_config() );
-		$this->cmb->add_field( _mai_cmb_content_archive_thumbnail_config() );
-		$this->cmb->add_field( _mai_cmb_image_location_config() );
-		$this->cmb->add_field( _mai_cmb_image_size_config() );
-		$this->cmb->add_field( _mai_cmb_image_alignment_config() );
-		$this->cmb->add_field( _mai_cmb_content_archive_config() );
-		$this->cmb->add_field( _mai_cmb_content_archive_limit_config() );
-		$this->cmb->add_field( _mai_cmb_more_link_config() );
-		$this->cmb->add_field( _mai_cmb_meta_config() );
-	    $this->cmb->add_field( _mai_cmb_posts_per_page_config() );
-		$this->cmb->add_field( _mai_cmb_posts_nav_config() );
+		$this->cmb->add_field( _mai_cmb_banner_image_config() );
+		$this->cmb->add_field( _mai_cmb_banner_visibility_config() );
+		$this->cmb->add_field( _mai_cmb_remove_loop_config() );
+		// $this->cmb->add_field( _mai_cmb_content_enable_archive_settings_config() );
+		// $this->cmb->add_field( _mai_cmb_content_archive_settings_title_config() );
+		// $this->cmb->add_field( _mai_cmb_columns_config() );
+		// $this->cmb->add_field( _mai_cmb_content_archive_thumbnail_config() );
+		// $this->cmb->add_field( _mai_cmb_image_location_config() );
+		// $this->cmb->add_field( _mai_cmb_image_size_config() );
+		// $this->cmb->add_field( _mai_cmb_image_alignment_config() );
+		// $this->cmb->add_field( _mai_cmb_content_archive_config() );
+		// $this->cmb->add_field( _mai_cmb_content_archive_limit_config() );
+		// $this->cmb->add_field( _mai_cmb_more_link_config() );
+		// $this->cmb->add_field( _mai_cmb_meta_config() );
+		// $this->cmb->add_field( _mai_cmb_posts_per_page_config() );
+		// $this->cmb->add_field( _mai_cmb_posts_nav_config() );
 
 		return $this->cmb;
 	}
@@ -204,41 +226,4 @@ class Mai_Genesis_CPT_Settings_Metabox {
 		throw new Exception( 'Invalid property: ' . $field );
 	}
 
-}
-
-/**
- * Add CMB2 metabox and fields to Genesis CPT Archive Settings pages
- *
- * @since   1.0.0
- *
- * @return  void
- */
-add_action( 'wp_loaded', 'mai_do_cpt_archive_settings_metaboxes' );
-function mai_do_cpt_archive_settings_metaboxes() {
-
-	// Bail if not admin
-	if ( ! is_admin() ) {
-		return;
-	}
-
-    $post_types = genesis_get_cpt_archive_types();
-    foreach( $post_types as $post_type ) {
-        if ( genesis_has_post_type_archive_support( $post_type->name ) ) {
-        	mai_do_genesis_cpt_settings( $post_type->name );
-        }
-    }
-
-}
-
-/**
- * Helper function to get/return the Mai_Genesis_CPT_Settings_Metabox object.
- *
- * @since  0.1.0
- *
- * @param  string $post_type Post type slug
- *
- * @return Mai_Genesis_CPT_Settings_Metabox object
- */
-function mai_do_genesis_cpt_settings( $post_type ) {
-	return Mai_Genesis_CPT_Settings_Metabox::get_instance( $post_type );
 }

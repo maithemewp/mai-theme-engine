@@ -91,39 +91,28 @@ final class Mai_Pro_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		if ( ! defined( 'MAI_PRO_ENGINE_VERSION' ) ) {
-			define( 'MAI_PRO_ENGINE_VERSION', '1.0.16' );
-		}
+		define( 'MAI_PRO_ENGINE_VERSION', '1.0.16' );
+
+		// DB version.
+		define( 'MAI_PRO_ENGINE_DB_VERSION', '1100' );
 
 		// Plugin Folder Path.
-		if ( ! defined( 'MAI_PRO_ENGINE_PLUGIN_DIR' ) ) {
-			define( 'MAI_PRO_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-		}
+		define( 'MAI_PRO_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 		// Plugin Lib Path
-		if ( ! defined( 'MAI_PRO_ENGINE_LIB_DIR' ) ) {
-			define( 'MAI_PRO_ENGINE_LIB_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'lib/' );
-		}
+		define( 'MAI_PRO_ENGINE_LIB_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'lib/' );
 
 		// Plugin Includes Path
-		if ( ! defined( 'MAI_PRO_ENGINE_INCLUDES_DIR' ) ) {
-			define( 'MAI_PRO_ENGINE_INCLUDES_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'includes/' );
-		}
+		define( 'MAI_PRO_ENGINE_INCLUDES_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'includes/' );
 
 		// Plugin Folder URL.
-		if ( ! defined( 'MAI_PRO_ENGINE_PLUGIN_URL' ) ) {
-			define( 'MAI_PRO_ENGINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-		}
+		define( 'MAI_PRO_ENGINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 		// Plugin Root File.
-		if ( ! defined( 'MAI_PRO_ENGINE_PLUGIN_FILE' ) ) {
-			define( 'MAI_PRO_ENGINE_PLUGIN_FILE', __FILE__ );
-		}
+		define( 'MAI_PRO_ENGINE_PLUGIN_FILE', __FILE__ );
 
 		// Plugin Base Name
-		if ( ! defined( 'MAI_PRO_ENGINE_BASENAME' ) ) {
-			define( 'MAI_PRO_ENGINE_BASENAME', dirname( plugin_basename( __FILE__ ) ) );
-		}
+		define( 'MAI_PRO_ENGINE_BASENAME', dirname( plugin_basename( __FILE__ ) ) );
 
 	}
 
@@ -136,7 +125,7 @@ final class Mai_Pro_Engine {
 	 */
 	private function setup() {
 
-		// Includes (Vendor)
+		// Includes (Vendor).
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
 		// require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'Shortcode_Button/shortcode-button.php';
@@ -303,8 +292,10 @@ final class Mai_Pro_Engine {
 
 			// Lib
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'admin/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
-			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/customizer/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
 			// Setup the updater

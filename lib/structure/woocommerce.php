@@ -7,7 +7,6 @@
  * @version  1.0.0
  */
 
-
 /**
  * WooCommerce product gallery support.
  *
@@ -21,11 +20,97 @@ add_theme_support( 'wc-product-gallery-zoom' );
 add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 
+// Remove genesis entry meta support.
+add_action( 'init', 'mai_woocommerce_int', 99 );
+function mai_woocommerce_int() {
+	remove_post_type_support( 'product', 'genesis-entry-meta-before-content' );
+	remove_post_type_support( 'product', 'genesis-entry-meta-after-content' );
+}
+
+// Remove taxonomy archive description since Mai has this functionality already
+remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
+
+// Replace Woocommerce Default pagination with Genesis Framework Pagination
+remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
+
+// Maybe remove woocommerce page title
+add_filter( 'woocommerce_show_page_title', 'mai_woocommerce_show_page_title' );
+function mai_woocommerce_show_page_title( $return ) {
+	if ( mai_is_banner_area_enabled() && ( is_shop() || is_product() ) ) {
+		return false;
+	}
+	return false;
+}
+
+// Disable customizer settings for WooCommerce Shop/Products.
+add_filter( 'mai_cpt_settings', 'mai_woocommerce_product_default_settings', 10, 2 );
+function mai_woocommerce_product_default_settings( $settings, $post_type ) {
+	// Bail if CPT is not WooCommerce 'product'.
+	if ( ! ( class_exists( 'WooCommerce') && ( 'product' === $post_type ) ) ) {
+		return $settings;
+	}
+	$settings['remove_meta_product']   = false;
+	$settings['content_archive']       = false;
+	$settings['content_archive_limit'] = false;
+	$settings['image_location']        = false;
+	$settings['image_size']            = false;
+	$settings['image_alignment']       = false;
+	$settings['more_link']             = false;
+	$settings['more_link_text']        = false;
+	$settings['remove_meta']           = false;
+	return $settings;
+}
+
+/**
+ * Set some genesis-settings defaults for WooCommerce Shop/Products.
+ *
+ * @param  array  $settings  The default settings (already modified by Mai).
+ *
+ * @param  array  The modified settings.
+ */
+add_filter( 'genesis_theme_settings_defaults', 'mai_woo_product_theme_settings_defaults' );
+function mai_woo_product_theme_settings_defaults( $settings ) {
+	// Bail if CPT is not WooCommerce 'product'.
+	if ( ! class_exists( 'WooCommerce') ) {
+		return $settings;
+	}
+	// Woo defaults.
+	$settings['banner_disable_product'] = 1;
+	$settings['layout_product']         = 'md-content';
+	$settings['singular_image_product'] = 1;
+	return $settings;
+}
+
+/**
+ * WHY IS THIS NOT RUNNING IN THE CUSTOMIZER?!?!?!?!
+ *
+ * Set some cpt-archive-settings defaults for WooCommerce Shop/Products.
+ *
+ * @param  array   $settings   The default settings (already modified by Mai).
+ * @param  string  $post_type  The post type name.
+ *
+ * @param  array   The modified settings.
+ */
+add_filter( 'genesis_cpt_archive_settings_defaults', 'mai_woo_product_cpt_archive_settings', 10, 2 );
+function mai_woo_product_cpt_archive_settings( $settings, $post_type ) {
+	// Bail if CPT is not WooCommerce 'product'.
+	if ( ! class_exists( 'WooCommerce') && 'product' !== $post_type ) {
+		return $settings;
+	}
+	// Woo defaults.
+	$settings['layout']                          = 'full-width-content';
+	$settings['enable_content_archive_settings'] = 1;
+	$settings['columns']                         = 3;
+	$settings['content_archive_thumbnail']       = 1;
+	$settings['posts_per_page']                  = 12;
+	return $settings;
+}
+
 /**
  * Load WooCommerce templates in the plugin,
  * while still allowing the theme to override.
  *
- * @return  string  The template file location
+ * @return  string  The template file location.
  */
 add_filter( 'wc_get_template', 'mai_wc_get_template', 10, 4 );
 function mai_wc_get_template( $template, $template_name, $args, $template_path ) {
@@ -54,7 +139,7 @@ function mai_wc_get_template( $template, $template_name, $args, $template_path )
  * Load WooCommerce templates in the plugin,
  * while still allowing the theme to override.
  *
- * @return  string  The template file location
+ * @return  string  The template file location.
  */
 add_filter( 'wc_get_template_part', 'mai_wc_get_template_part', 10, 3 );
 function mai_wc_get_template_part( $template, $slug, $name ) {
@@ -79,70 +164,94 @@ function mai_wc_get_template_part( $template, $slug, $name ) {
 }
 
 /**
- * Set default WooCommerce layouts.
- * We need to hook in later to make give
- * a chance for template to exist.
+ * Remove metaboxes on Woo shop admin page.
+ * Most settings are now in Customizer.
  *
- * @return  void
+ * @return void.
  */
-// add_action( 'genesis_meta', 'mai_woocommerce_default_layouts' );
-function mai_woocommerce_default_layouts() {
-	// Bail if WooCommerce is not active
+add_action( 'add_meta_boxes', 'mai_remove_woo_shop_meta_boxes', 99, 2 );
+function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
+
+	// Bail if Woo isn't active.
 	if ( ! class_exists( 'WooCommerce' ) ) {
-		return ;
+		return;
 	}
-	// Run filter
-	add_filter( 'genesis_pre_get_option_site_layout', 'mai_woocommerce_default_layout' );
+
+	// Bail if not a page.
+	if ( 'page' !== $post_type ) {
+		return;
+	}
+
+	// Bail if not the Woo shop page.
+	if ( $post->ID !== get_option( 'woocommerce_shop_page_id' ) ) {
+		return;
+	}
+
+	global $wp_meta_boxes;
+
+	// Create an array of meta boxes exceptions, ones that should not be removed (remove if you don't want/need)
+	$exceptions = array(
+		'slugdiv',
+		'submitdiv',
+		'pageparentdiv',
+		'authordiv',
+		'postexcerpt',
+	);
+
+	// Start looping.
+	foreach( $wp_meta_boxes as $page => $page_boxes ) {
+
+		// Skip if none.
+		if ( empty( $page_boxes ) ) {
+			continue;
+		}
+
+		// Loop through each page.
+		foreach( $page_boxes as $context => $box_context ) {
+
+			// Skip if none.
+			if ( empty( $box_context ) ) {
+				continue;
+			}
+
+			// Loop through each context.
+			foreach( $box_context as $box_type ) {
+
+				// Skip if none.
+				if ( empty( $box_type ) ) {
+					continue;
+				}
+
+				// Loop through each type.
+				foreach( $box_type as $id => $box ) {
+
+					// Skip if keeping.
+					if ( in_array( $id, $exceptions ) ) {
+						continue;
+					}
+
+					// Remove.
+					remove_meta_box( $id, $page, $context );
+
+				}
+
+			}
+
+		}
+
+	}
+
+	// Add metabox shop notice.
+	add_meta_box( 'mai_woo_shop_notice', __( 'Mai WooCommerce Shop', 'mai-pro-engine' ), 'mai_woo_shop_notice', 'page', 'normal' );
+
 }
 
 /**
- * genesis_site_layout() only calls genesis_get_option( 'site_layout' )
- * if a specific layout isn't chosen. So, it calls this for the default.
+ * Outputs the content of the meta box.
  *
- * @return  The site layout
+ * @link  https://www.slushman.com/how-to-link-to-the-customizer/
  */
-function mai_woocommerce_default_layout( $layout ) {
-
-	// Bail if we have no layout or non-default layout is already chosen
-	if ( ! empty( $layout ) && $layout != genesis_get_default_layout() ) {
-		return $layout;
-	}
-
-	if ( is_shop() ) {
-		$layout = 'md-content';
-	}
-	elseif ( is_product() ) {
-		$layout = 'md-content';
-	}
-	elseif ( is_account_page() ) {
-		$layout = 'full-width-content';
-	}
-	elseif ( is_cart() ) {
-		$layout = 'md-content';
-	}
-	elseif ( is_checkout() ) {
-		$layout = 'md-content';
-	}
-	return $layout;
-
+function mai_woo_shop_notice( $post ) {
+	$section_link = mai_get_customizer_post_type_settings_link( 'product' );
+	printf( '<a class="button" href="%s">%s</a>', esc_url( $section_link ), __( 'Edit Mai Product Settings', 'mai-pro-engine' ) );
 }
-
-// Maybe remove woocommerce page title
-add_filter( 'woocommerce_show_page_title', 'mai_woocommerce_show_page_title' );
-function mai_woocommerce_show_page_title( $return ) {
-	if ( mai_is_banner_area_enabled() ) {
-		if ( is_shop() ) {
-			return false;
-		}
-		if ( is_product() ) {
-			return false;
-		}
-	}
-	return false;
-}
-
-// Remove taxonomy archive description since Mai has this functionality already
-remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
-
-// Replace Woocommerce Default pagination with Genesis Framework Pagination
-remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );

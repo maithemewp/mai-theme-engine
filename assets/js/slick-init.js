@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
 
 	var $sliders = $('.mai-slider');
 
-	if ( ! $sliders.length > 0 ) {
+	if ( ! $sliders.length ) {
 		return;
 	}
 
@@ -30,39 +30,45 @@ jQuery(document).ready(function($) {
 			mobileToShow,
 			mobileToScroll;
 
-		// Get desktoToShow
+		/**
+		 * Default show/scroll is over 1200px.
+		 * Note: Seems to be a bug with slidesToScroll when centermode is true.
+		 * @link https://github.com/kenwheeler/slick/issues/2328
+		 */
+
+		// Get desktoToShow (1200 breakpoint).
 		if ( slidesToShow > 3 ) {
 			desktopToShow = slidesToShow - 1;
 		} else {
 			desktopToShow = slidesToShow;
 		}
-		// Get desktopToScroll
+		// Get desktopToScroll (1200 breakpoint).
 		if ( slidesToScroll > desktopToShow ) {
 			desktopToScroll = desktopToShow;
 		} else {
 			desktopToScroll = slidesToScroll;
 		}
 
-		// Get tabletToShow
+		// Get tabletToShow (992 breakpoint).
 		if ( desktopToShow > 2 ) {
 			tabletToShow = desktopToShow - 1;
 		} else {
 			tabletToShow = desktopToShow;
 		}
-		// Get tabletToScroll
+		// Get tabletToScroll (992 breakpoint).
 		if ( desktopToScroll > tabletToShow ) {
 			tabletToScroll = tabletToShow;
 		} else {
 			tabletToScroll = desktopToScroll;
 		}
 
-		// Get mobileToShow
+		// Get mobileToShow (768 breakpoint).
 		if ( tabletToShow > 1 ) {
 			mobileToShow = tabletToShow - 1;
 		} else {
 			mobileToShow = tabletToShow;
 		}
-		// Get mobileToScroll
+		// Get mobileToScroll (768 breakpoint).
 		if ( tabletToScroll > mobileToShow ) {
 			mobileToScroll = mobileToShow;
 		} else {
@@ -109,15 +115,15 @@ jQuery(document).ready(function($) {
 		var center = Boolean( $(this).data('center') ),
 			middle = Boolean( $(this).data('middle') );
 
-	    if ( center ) {
-		    $slickTrack.addClass('center-xs');
+		if ( center ) {
+			$slickTrack.addClass('center-xs');
 		}
 
-	    if ( middle ) {
-		    $slickTrack.addClass('middle-xs');
+		if ( middle ) {
+			$slickTrack.addClass('middle-xs');
 		}
 
-    });
+	});
 
 	function _isEven(value) {
 		if ( value%2 == 0 ) {

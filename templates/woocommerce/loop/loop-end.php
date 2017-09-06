@@ -1,8 +1,8 @@
 <?php
 /**
- * *************************************************************
- * Remove all markup and add 'mai_after_flex_loop' hook
- * *************************************************************
+ * ************************************************************************************ *
+ * Remove all markup and add 'mai_after_content_archive' and mai_after_flex_loop' hooks *
+ * ************************************************************************************ *
  *
  * Product Loop End
  *
@@ -13,4 +13,5 @@
  */
 
 do_action( 'mai_after_flex_loop' );
+do_action( 'mai_after_content_archive' );
 ?>

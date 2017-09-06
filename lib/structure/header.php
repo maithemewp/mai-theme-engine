@@ -1,21 +1,13 @@
 <?php
-/**
- * Mai Pro Engine.
- *
- * @author   Mike Hemberger
- *
- * @version  1.0.0
- */
-
 
 /**
  * Add an image inline in the site title element for the main logo
  *
  * The custom logo is then added via the Customiser
  *
-* @param  	string  $title 	 All the mark up title.
-* @param  	string  $inside  Mark up inside the title.
-* @param  	string  $wrap 	 Mark up on the title.
+* @param   string  $title   All the mark up title.
+* @param   string  $inside  Mark up inside the title.
+* @param   string  $wrap    Mark up on the title.
 *
 * @return  string|HTML  The title markup
  */
@@ -26,7 +18,7 @@ function mai_do_custom_logo( $title, $inside, $wrap ) {
 
 	// If the custom logo function and custom logo exist, set the logo image element inside the wrapping tags.
 	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
-		$inside = sprintf( '<span class="screen-reader-text">%s</span>%s' , esc_html( $site_title ), get_custom_logo() );
+		$inside = get_custom_logo();
 	} else {
 		// If no custom logo, wrap around the site name.
 		$inside = sprintf( '<a href="%s" title="%s">%s</a>', trailingslashit( home_url() ), esc_attr( $site_title ), esc_html( $site_title ) );
@@ -37,9 +29,6 @@ function mai_do_custom_logo( $title, $inside, $wrap ) {
 
 	// A little fallback, in case a SEO plugin is active.
 	$wrap = genesis_is_root_page() && ! genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : $wrap;
-
-	// Wrap homepage site title in p tags if static front page.
-	$wrap = is_front_page() && ! is_home() ? 'p' : $wrap;
 
 	// And finally, $wrap in h1 if HTML5 & semantic headings enabled.
 	$wrap = genesis_html5() && genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
@@ -54,7 +43,7 @@ function mai_do_custom_logo( $title, $inside, $wrap ) {
  * Add class for screen readers to site description.
  * This will keep the site description markup but will not have any visual presence on the page.
  *
- * @param 	array  $attributes Current attributes.
+ * @param   array  $attributes Current attributes.
  *
  * @return  array  The attributes.
  */

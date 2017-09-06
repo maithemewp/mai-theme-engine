@@ -1,5 +1,5 @@
 ( function ( document, $, undefined ) {
-    'use strict';
+	'use strict';
 
 	var $archiveMetabox  = $( '.mai-content-archive-metabox' ),
 		$removeLoop      = $( '#remove_loop' ),

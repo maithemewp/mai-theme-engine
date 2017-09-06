@@ -1,11 +1,4 @@
 <?php
-/**
- * Mai Pro Engine.
- *
- * @author   Mike Hemberger
- *
- * @version  1.0.0
- */
 
 /**
  * Add custom banner area body class.
@@ -49,10 +42,11 @@ function mai_do_banner_area() {
 	$args = array(
 		'class'         => 'banner-area width-full',
 		'wrap'          => true,
-		'bg'            => get_theme_mod( 'banner_background_color', '#f1f1f1' ),
-		'overlay'       => get_theme_mod( 'banner_overlay' ),
-		'inner'         => get_theme_mod( 'banner_inner' ),
-		'content_width' => get_theme_mod( 'banner_content_width', 'auto' ),
+		'bg'            => genesis_get_option( 'banner_background_color' ),
+		'overlay'       => genesis_get_option( 'banner_overlay' ),
+		'inner'         => genesis_get_option( 'banner_inner' ),
+		'content_width' => genesis_get_option( 'banner_content_width' ),
+		'height'        => 'sm',
 		'styles'        => '',
 	);
 
@@ -65,12 +59,12 @@ function mai_do_banner_area() {
 	}
 
 	// Get the alignment setting
-	$alignment = get_theme_mod( 'banner_align_text', 'center' );
+	$align_text = genesis_get_option( 'banner_align_text' );
 
-	// Maybe add the alignment class
-	if ( $alignment ) {
+	// Maybe add the align_text class
+	if ( $align_text ) {
 		// Get the form by type
-		switch ( $alignment ) {
+		switch ( $align_text ) {
 			case 'left':
 				$args['class'] .= ' text-xs-left';
 			break;
