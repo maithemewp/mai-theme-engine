@@ -1,5 +1,13 @@
 ### Changelog
 
+#### 1.1.0-beta.1 (9/6/17)
+* Added: Post type specific settings: Default layouts, auto-display feaured image, hide banner, and much more.
+* Changed: Move core settings from theme_mods and metaboxes to options in the Customizer. Hooray, live previews!
+* Changed: Sections page template now also saves section content to 'content' column in the DB, for search indexing and SEO analysis (via Yoast/etc).
+* Changed: [grid] slidestoscroll now defaults to the amount of columns in the grid.
+* Fixed: Site header not using h1 on front page.
+* Fixed: Various other minor bug fixes:
+
 #### 1.0.16 (8/14/17)
 * Changed: The mai_get_read_more_link() function now fires inside the loop and gives access to more data.
 * Changed: Now using genesis_attr filter for more-link element, for more control and filterable attributes.
