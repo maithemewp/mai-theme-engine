@@ -64,15 +64,6 @@ function mai_cmb2_add_metaboxes() {
 	$post->add_field( _mai_cmb_banner_visibility_config() );
 	$post->add_field( _mai_cmb_banner_image_config() );
 
-	// TEST CONTENT!
-	$post->add_field( array(
-		'name'            => 'Content',
-		'id'              => 'test_content',
-		'type'            => 'wysiwyg',
-		'sanitization_cb' => false,
-		// 'sanitization_cb' => 'mai_sanitize_post_content',
-	) );
-
 	// Taxonomy Terms
 	$term = new_cmb2_box( array(
 		'id'               => 'mai_term_settings',
