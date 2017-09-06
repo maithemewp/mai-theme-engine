@@ -159,7 +159,7 @@ function mai_do_sections_metabox() {
 	) );
 
 	// ID
-	$sections -> add_group_field( $section, array(
+	$sections->add_group_field( $section, array(
 		'name'            => 'HTML id',
 		'id'              => 'id',
 		'type'            => 'text',
@@ -167,7 +167,7 @@ function mai_do_sections_metabox() {
 	) );
 
 	// Class
-	$sections -> add_group_field( $section, array(
+	$sections->add_group_field( $section, array(
 		'name'            => 'HTML additional classes',
 		'id'              => 'class',
 		'type'            => 'text',
@@ -176,7 +176,7 @@ function mai_do_sections_metabox() {
 	) );
 
 	// Title
-	$sections -> add_group_field( $section, array(
+	$sections->add_group_field( $section, array(
 		'name'       => 'Title',
 		'id'         => 'title',
 		'type'       => 'text',

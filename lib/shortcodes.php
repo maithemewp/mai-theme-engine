@@ -224,19 +224,19 @@ final class Mai_Shortcodes {
 	}
 
 	/**
-	 * Add new section shortcode
-	 * On layouts with no sidebar it will be a full browser/window width section
+	 * Add new section shortcode.
+	 * On layouts with no sidebar it will be a full browser/window width section.
 	 *
-	 * Add parameter of 'image=246' with an image ID from the media library to use a full width background image
+	 * Add parameter of 'image=246' with an image ID from the media library to use a full width background image.
 	 */
 	function get_section( $atts, $content = null ) {
 
 		// Bail if no content
 		if ( null === $content ) {
-		    return;
+			return;
 		}
 
-		// Shortcode section atts
+		// Shortcode section atts.
 		$args = shortcode_atts( array(
 			'wrapper'       => 'section',
 			'id'            => '',
@@ -252,7 +252,7 @@ final class Mai_Shortcodes {
 			'height'        => 'md',
 		), $atts, 'section' );
 
-		// Sanitized args
+		// Sanitized args.
 		$args = array(
 			'wrapper'       => sanitize_key( $args['wrapper'] ),
 			'id'            => sanitize_html_class( $args['id'] ),
@@ -270,24 +270,25 @@ final class Mai_Shortcodes {
 
 		$output = '';
 
-		$output .= $this->get_section_open( $args );
+		$output .= $this->get_section_open( $args, $content );
 		$output .= $this->get_processed_content( $content );
-		$output .= $this->get_section_close( $args );
+		$output .= $this->get_section_close( $args, $content );
 
 		return $output;
 	}
 
 	/**
-	 * Get opening section wrap
-	 * To be used in front-page.php and [section] shortcode
+	 * Get opening section wrap.
+	 * To be used in front-page.php and [section] shortcode.
 	 *
 	 * @version  1.0.1
 	 *
-	 * @param    array  $args  Options for the wrapping markup
+	 * @param    array   $args     Options for the wrapping markup.
+	 * @param    string  $content  The shortcode content.
 	 *
 	 * @return   string|HTML
 	 */
-	function get_section_open( $args ) {
+	function get_section_open( $args, $content ) {
 
 		// Start all element variables as empty string
 		$title = $wrap = $inner = '';
@@ -297,7 +298,7 @@ final class Mai_Shortcodes {
 
 		// Check if we have valid overlay and inner values
 		$has_overlay = $this->has_overlay( $args );
-		$has_inner   = $this->has_inner( $args );
+		$has_inner   = $this->has_inner( $args, $content );
 
 		// Maybe add section id
 		if ( $args['id'] ) {
@@ -401,84 +402,89 @@ final class Mai_Shortcodes {
 
 		}
 
-		$wrap_atts['class'] = 'wrap';
+		// Maybe build opening wrap.
+		if ( ! empty( $content ) ) {
 
-		// Wrap height
-		if ( $args['height'] ) {
+			$wrap_atts['class'] = 'wrap';
 
-			switch ( $args['height'] ) {
-				case 'auto';
-					$wrap_atts['class'] .= ' height-auto';
-				break;
-				case 'sm':
-				case 'small';
-					$wrap_atts['class'] .= ' height-sm';
-				break;
-				case 'md':
-				case 'medium':
-					$wrap_atts['class'] .= ' height-md';
-				break;
-				case 'lg':
-				case 'large':
-					$wrap_atts['class'] .= ' height-lg';
-				break;
+			// Wrap height
+			if ( $args['height'] ) {
+
+				switch ( $args['height'] ) {
+					case 'auto';
+						$wrap_atts['class'] .= ' height-auto';
+					break;
+					case 'sm':
+					case 'small';
+						$wrap_atts['class'] .= ' height-sm';
+					break;
+					case 'md':
+					case 'medium':
+						$wrap_atts['class'] .= ' height-md';
+					break;
+					case 'lg':
+					case 'large':
+						$wrap_atts['class'] .= ' height-lg';
+					break;
+				}
+
 			}
+
+			// Wrap content width
+			if ( $args['content_width'] ) {
+
+				switch ( $args['content_width'] ) {
+					case 'auto':
+						$wrap_atts['class'] .= ' width-auto';
+					break;
+					case 'xs':
+					case 'extra-small':
+						$wrap_atts['class'] .= ' width-xs';
+					break;
+					case 'sm':
+					case 'small';
+						$wrap_atts['class'] .= ' width-sm';
+					break;
+					case 'md':
+					case 'medium':
+						$wrap_atts['class'] .= ' width-md';
+					break;
+					case 'lg':
+					case 'large':
+						$wrap_atts['class'] .= ' width-lg';
+					break;
+					case 'xl':
+					case 'extra-large':
+						$wrap_atts['class'] .= ' width-xl';
+					break;
+					case 'full':
+						$wrap_atts['class'] .= ' width-full';
+					break;
+				}
+
+			} else {
+
+				// Add width classes based on layout
+				switch ( genesis_site_layout() ) {
+					case 'xs-content':
+						$wrap_atts['class'] .= ' width-xs';
+					break;
+					case 'sm-content':
+						$wrap_atts['class'] .= ' width-sm';
+					break;
+					case 'md-content':
+						$wrap_atts['class'] .= ' width-md';
+					break;
+					case 'lg-content':
+						$wrap_atts['class'] .= ' width-lg';
+					break;
+				}
+
+			}
+
+			$wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts, $args ) );
 
 		}
-
-		// Wrap content width
-		if ( $args['content_width'] ) {
-
-			switch ( $args['content_width'] ) {
-				case 'auto':
-					$wrap_atts['class'] .= ' width-auto';
-				break;
-				case 'xs':
-				case 'extra-small':
-					$wrap_atts['class'] .= ' width-xs';
-				break;
-				case 'sm':
-				case 'small';
-					$wrap_atts['class'] .= ' width-sm';
-				break;
-				case 'md':
-				case 'medium':
-					$wrap_atts['class'] .= ' width-md';
-				break;
-				case 'lg':
-				case 'large':
-					$wrap_atts['class'] .= ' width-lg';
-				break;
-				case 'xl':
-				case 'extra-large':
-					$wrap_atts['class'] .= ' width-xl';
-				break;
-				case 'full':
-					$wrap_atts['class'] .= ' width-full';
-				break;
-			}
-
-		} else {
-
-			// Add width classes based on layout
-			switch ( genesis_site_layout() ) {
-				case 'xs-content':
-					$wrap_atts['class'] .= ' width-xs';
-				break;
-				case 'sm-content':
-					$wrap_atts['class'] .= ' width-sm';
-				break;
-				case 'md-content':
-					$wrap_atts['class'] .= ' width-md';
-				break;
-				case 'lg-content':
-					$wrap_atts['class'] .= ' width-lg';
-				break;
-			}
-
-		}
-
-		$wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts, $args ) );
 
 		// Maybe add an inner wrap, typically for content width/style
 		if ( $has_inner ) {
@@ -528,26 +534,30 @@ final class Mai_Shortcodes {
 	 *
 	 * @version  1.0.1
 	 *
-	 * @param    array  $args  Options for the wrapping markup
+	 * @param    array   $args     Options for the wrapping markup.
+	 * @param    string  $content  The shortcode content.
 	 *
 	 * @return   string|HTML
 	 */
-	function get_section_close( $args ) {
+	function get_section_close( $args, $content ) {
 
-		// Start all element variables as empty string
+		// Start all element variables as empty string.
 		$title = $wrap = $inner = '';
 
-		// Check if we have valid inner values
-		$has_inner = $this->has_inner( $args );
+		// Check if we have valid inner values.
+		$has_inner = $this->has_inner( $args, $content );
 
-		// Maybe close inner wrap
+		// Maybe close inner wrap.
 		if ( $has_inner ) {
 			$inner = '</div>';
 		}
 
-		$wrap = '</div>';
+		// Maybe close wrap.
+		if ( ! empty( $content ) ) {
+			$wrap = '</div>';
+		}
 
-		// Build the closing markup, in reverse order so the close appropriately
+		// Build the closing markup, in reverse order so the close appropriately.
 		return sprintf( '%s%s</%s>',
 			$inner,
 			$wrap,
@@ -1865,9 +1875,9 @@ final class Mai_Shortcodes {
 		return in_array( $atts['overlay'], $valid_overlay_values );
 	}
 
-	function has_inner( $atts ) {
+	function has_inner( $atts, $content ) {
 		$valid_inner_values = array( 'light', 'dark' );
-		return in_array( $atts['inner'], $valid_inner_values );
+		return ( ! empty( $content ) && in_array( $atts['inner'], $valid_inner_values ) );
 	}
 
 	function is_entry_header_image( $atts ) {
