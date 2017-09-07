@@ -9,8 +9,8 @@
  *
  * GitHub URI:      maiprowp/mai-pro-engine
  *
- * Author:          Mike Hemberger, BizBudding Inc
- * Author URI:      https://bizbudding.com
+ * Author:          MaiPro.io
+ * Author URI:      https://maipro.io
  */
 
 // Exit if accessed directly.
