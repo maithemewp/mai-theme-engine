@@ -53,7 +53,7 @@ function mai_upgrade_1100() {
 	);
 	foreach( $mods as $key ) {
 		$value = get_theme_mod( $key );
-		if ( $value ) {
+		if ( false !== $value ) {
 			$settings[$key] = $value;
 			$mods_to_delete[] = $key;
 		}
@@ -71,7 +71,7 @@ function mai_upgrade_1100() {
 	$enable_singular_image = get_theme_mod( 'enable_singular_image' );
 
 	// If enabled singular image is checked/true.
-	if ( $enable_singular_image ) {
+	if ( false !== $enable_singular_image ) {
 		$settings['singular_image_page'] = 1;
 		$settings['singular_image_post'] = 1;
 	}
@@ -129,7 +129,7 @@ function mai_upgrade_1100() {
 
 	if ( $post_types ) {
 		foreach ( $post_types as $post_type => $object ) {
-			if ( $banner_featured_image ) {
+			if ( false !== $banner_featured_image ) {
 				// Banner featured image.
 				$settings[ sprintf( 'banner_featured_image_%s', $post_type ) ] = $banner_featured_image;
 			}
@@ -169,7 +169,7 @@ function mai_upgrade_1100() {
 	}
 
 	// This is not in array because it was dealt with separately.
-	if ( $enable_singular_image ) {
+	if ( false !== $enable_singular_image ) {
 		remove_theme_mod( 'enable_singular_image' );
 	}
 
