@@ -3089,11 +3089,11 @@ p ~ .flex-grid {
 }
 
 .flex-entry.column .entry-image-before-entry:not(.aligncenter):not(.alignleft):not(.alignright) {
-	/* offset the entry padding and border */
-	width: calc( 100% + 50px );
-	margin-top: -25px;
-	margin-left: -25px;
-	margin-right: -25px;
+	/* offset the entry padding */
+	width: calc(100% + 48px);
+	margin-top: -24px;
+	margin-left: -24px;
+	margin-right: -24px;
 }
 
 .flex-entry.column .entry-image-before-title + .entry-title,

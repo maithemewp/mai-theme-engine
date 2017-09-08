@@ -1,5 +1,7 @@
 ### Changelog
 
+* Changed: Allow borders to show around flex-entry images.
+
 #### 1.1.0.1 (9/8/17)
 * Fixed: [grid] slider jump when scrolling/swiping a slider partially out of the viewport.
 
