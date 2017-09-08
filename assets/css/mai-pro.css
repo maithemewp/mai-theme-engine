@@ -392,7 +392,7 @@ a:focus,
 	z-index: 100000; /* Above WP toolbar. */
 	text-decoration: none;
 	-webkit-box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
-	        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
 }
 
 .more-link {
@@ -794,9 +794,9 @@ td {
 .nav-secondary .wrap,
 .footer-widgets .wrap,
 .site-footer .wrap,
-.section .wrap {
-	padding-left: calc(1vw + .75em);
-	padding-right: calc(1vw + .75em);
+.section > .wrap {
+	padding-left: 24px;
+	padding-right: 24px;
 }
 
 .wrap {
@@ -926,7 +926,7 @@ td {
 .wrap,
 .width-xl,
 .section .wrap.width-xl {
-	max-width: 1200px;
+	max-width: 1248px;
 }
 
 .width-lg,
@@ -1079,7 +1079,7 @@ td {
 
 .inner-light {
 	background-color: #fff;
-    -webkit-box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-bg .inner-light {
@@ -1625,7 +1625,7 @@ img.alignright,
 	border: none;
 	border-radius: 50%;
 	-webkit-box-shadow: 0 0 4px rgba(65, 64, 66, 0.2);
-	        box-shadow: 0 0 4px rgba(65, 64, 66, 0.2);
+	box-shadow: 0 0 4px rgba(65, 64, 66, 0.2);
 	outline: none;
 	cursor: pointer;
 	opacity: .75;
@@ -2018,25 +2018,25 @@ img.alignright,
  * If JS is not enabled, header will remain static
  --------------------------------------------- */
 
-/* jQuery handles the position */
-.sticky-header .site-header {
+ /* jQuery handles the position */
+ .sticky-header .site-header {
  	width: 100%;
  	z-index: 99;
-}
+ }
 
 
-@media only screen and (min-width: 545px) {
+ @media only screen and (min-width: 545px) {
 
-	.sticky-header.mai-standard-menu-activated {
-		overflow: hidden;
-	}
+ 	.sticky-header.mai-standard-menu-activated {
+ 		overflow: hidden;
+ 	}
 
-	.sticky-header.mai-standard-menu-activated .site-header {
-	 	max-height: 100vh;
-	 	overflow-y: auto;
-	}
+ 	.sticky-header.mai-standard-menu-activated .site-header {
+ 		max-height: 100vh;
+ 		overflow-y: auto;
+ 	}
 
-}
+ }
 
 /* ## Shrink Header
 --------------------------------------------- */
@@ -2046,8 +2046,8 @@ img.alignright,
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 	-webkit-transform: translateX(0) scale(1);
-	    -ms-transform: translateX(0) scale(1);
-	        transform: translateX(0) scale(1);
+	-ms-transform: translateX(0) scale(1);
+	transform: translateX(0) scale(1);
 }
 
 .shrink-header .site-header.shrink .site-title a {
@@ -2057,20 +2057,20 @@ img.alignright,
 
 .shrink-header .site-header.has-header-right.shrink .site-title a {
 	-webkit-transform: translateX(-14%) scale(0.7);
-	    -ms-transform: translateX(-14%) scale(0.7);
-	        transform: translateX(-14%) scale(0.7);
+	-ms-transform: translateX(-14%) scale(0.7);
+	transform: translateX(-14%) scale(0.7);
 }
 
 .shrink-header .site-header.has-header-left.shrink .site-title a {
 	-webkit-transform: translateX(14%) scale(0.7);
-	    -ms-transform: translateX(14%) scale(0.7);
-	        transform: translateX(14%) scale(0.7);
+	-ms-transform: translateX(14%) scale(0.7);
+	transform: translateX(14%) scale(0.7);
 }
 
 .shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
 	-webkit-transform: translateX(0) scale(0.7);
-	    -ms-transform: translateX(0) scale(0.7);
-	        transform: translateX(0) scale(0.7);
+	-ms-transform: translateX(0) scale(0.7);
+	transform: translateX(0) scale(0.7);
 }
 
 @media only screen and (max-width: 768px) {
@@ -2098,15 +2098,15 @@ img.alignright,
 	.shrink-header .site-header.has-header-left.has-header-right .site-title a,
 	.shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
 		-webkit-transform: translateX(-14%) scale(0.7);
-		    -ms-transform: translateX(-14%) scale(0.7);
-		        transform: translateX(-14%) scale(0.7);
+		-ms-transform: translateX(-14%) scale(0.7);
+		transform: translateX(-14%) scale(0.7);
 	}
 	.site-header.has-header-left .site-title a,
 	.shrink-header .site-header.has-header-left .site-title a,
 	.shrink-header .site-header.has-header-left.shrink .site-title a {
 		-webkit-transform: translateX(14%) scale(0.7);
-		    -ms-transform: translateX(14%) scale(0.7);
-		        transform: translateX(14%) scale(0.7);
+		-ms-transform: translateX(14%) scale(0.7);
+		transform: translateX(14%) scale(0.7);
 	}
 
 }
@@ -2166,7 +2166,7 @@ img.alignright,
 .header-before .widget-area {
 	display: -webkit-box;display: -ms-flexbox;display: flex;
 	-webkit-box-pack: end;-ms-flex-pack: end;justify-content: flex-end;
-    -webkit-box-align: center;-ms-flex-align: center;align-items: center;
+	-webkit-box-align: center;-ms-flex-align: center;align-items: center;
 }
 
 .header-before .widget {
@@ -2175,11 +2175,12 @@ img.alignright,
 }
 
 .header-before .widget_text {
-	-webkit-box-flex: 1;-ms-flex-positive: 1;flex-grow: 1;
-	text-align: center;
 	padding: 8px;
 }
 
+.header-before .widget_text p:last-child {
+	margin-bottom: 0;
+}
 
 .header-before .menu-item a,
 .header-before .nav-header .nav-search {
@@ -2334,7 +2335,7 @@ img.alignright,
 	height: 100%;
 	background: transparent;
 	border: none;
-    -webkit-box-shadow: none;box-shadow: none;
+	-webkit-box-shadow: none;box-shadow: none;
 	text-align: center;
 	padding: 0;
 	margin: 0;
@@ -2387,8 +2388,8 @@ img.alignright,
 
 .genesis-nav-menu .search-box input[type="submit"] {
 	border-radius: 0 3px 3px 0;
-    -webkit-box-shadow: none;box-shadow: none;
-    margin: 0 0 0 -1px;
+	-webkit-box-shadow: none;box-shadow: none;
+	margin: 0 0 0 -1px;
 }
 
 .genesis-nav-menu .search-box .search-close {
@@ -2563,7 +2564,7 @@ img.alignright,
 	margin: 0;
 	border: none;
 	border-radius: 0;
-    -webkit-box-shadow: none;box-shadow: none;
+	-webkit-box-shadow: none;box-shadow: none;
 }
 
 .mai-toggle:focus,
@@ -2962,7 +2963,7 @@ img.alignright,
 	float: none;
 	margin: 0 0 10px;
 	-webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
-	        box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
 }
 
 /* ## Entries
@@ -3603,7 +3604,7 @@ li.comment {
 	*::after {
 		background: transparent !important;
 		-webkit-box-shadow: none !important;
-		        box-shadow: none !important;
+		box-shadow: none !important;
 		color: #000 !important;
 		text-shadow: none !important;
 	}
