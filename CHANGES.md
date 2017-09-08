@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.0.1 (9/8/17)
+* Fixed: [grid] slider jump when scrolling/swiping a slider partially out of the viewport.
+
 #### 1.1.0 (9/8/17)
 * Added: Post type specific settings: Default layouts, auto-display feaured image, hide banner, and much more.
 * Changed: Move core settings from theme_mods and metaboxes to options in the Customizer. Hooray, live previews!
