@@ -35,7 +35,7 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
 }
 
 /**
- * Save auto-display featured image meta
+ * Save auto-display featured image meta.
  *
  * @param   int     $post_id  The post ID.
  * @param   object  $post     The post object.
@@ -50,11 +50,14 @@ function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
 		return;
 	}
 
+	// Default post types.
+	$post_types = array( 'page', 'post' );
+
 	/**
 	 * Get post types.
 	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
 	 */
-	$post_types = (array) genesis_get_cpt_archive_types();
+	$post_types = array_merge( $post_types, (array) genesis_get_cpt_archive_types_names() );
 
 	// Bail if not saving a public post type
 	if ( ! in_array( $post->post_type, $post_types ) ) {
