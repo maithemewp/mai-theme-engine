@@ -1,8 +1,10 @@
 ### Changelog
 
+#### 1.1.1 (9/11/17)
 * Changed: Allow borders to show around flex-entry images.
 * Changed: Site header padding consistency.
 * Fixed: Sidebar order on Sidebar-Content layout.
+* Fixed: Hiding featured image on a page/post not saving correctly.
 
 #### 1.1.0.1 (9/8/17)
 * Fixed: [grid] slider jump when scrolling/swiping a slider partially out of the viewport.
