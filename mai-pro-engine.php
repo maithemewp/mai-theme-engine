@@ -5,7 +5,7 @@
  * Plugin URI:      https://maipro.io/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.1.0.1
+ * Version:         1.1.1
  *
  * GitHub URI:      maiprowp/mai-pro-engine
  *
@@ -91,7 +91,7 @@ final class Mai_Pro_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_PRO_ENGINE_VERSION', '1.1.0.1' );
+		define( 'MAI_PRO_ENGINE_VERSION', '1.1.1' );
 
 		// DB version.
 		define( 'MAI_PRO_ENGINE_DB_VERSION', '1100' );
