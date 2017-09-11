@@ -3281,6 +3281,7 @@ p.entry-meta {
 
 .adjacent-entry-pagination a img {
 	-webkit-box-flex: 0;-ms-flex: 0 0 auto;flex: 0 0 auto;
+	max-width: 32%;
 }
 
 .adjacent-entry-pagination .pagination-previous a img {

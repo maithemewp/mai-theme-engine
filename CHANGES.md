@@ -1,5 +1,7 @@
 ### Changelog
 
+* Fixed: Max width on entry pagination images.
+
 #### 1.1.1 (9/11/17)
 * Changed: Allow borders to show around flex-entry images.
 * Changed: Site header padding consistency.
