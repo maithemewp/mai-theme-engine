@@ -788,7 +788,6 @@ td {
 }
 
 .site-inner,
-.site-header .wrap,
 .mai-aec .wrap,
 .nav-primary .wrap,
 .nav-secondary .wrap,
@@ -1979,6 +1978,8 @@ img.alignright,
 .site-header > .wrap {
 	margin-top: 4px;
 	margin-bottom: 4px;
+	padding-left: 12px;
+	padding-right: 12px;
 }
 
 /* forces logo and mobile toggle on same line */

@@ -1,6 +1,7 @@
 ### Changelog
 
 * Changed: Allow borders to show around flex-entry images.
+* Changed: Site header padding consistency.
 * Fixed: Sidebar order on Sidebar-Content layout.
 
 #### 1.1.0.1 (9/8/17)
