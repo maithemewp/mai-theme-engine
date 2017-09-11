@@ -159,93 +159,6 @@ function mai_get_layout( $layout ) {
 }
 
 /**
- * Maybe set fallbacks for archive layouts.
- *
- * If a post taxonomy, use the static blog page layout.
- * If Woo product taxonomy, use the shop page layout.
- * If a custom taxo, use the first post type the taxo is registered to.
- *
- * @return  array  The layouts.
- */
-// add_filter( 'genesis_site_layout', 'mai_site_layout_fallback_og' );
-function mai_site_layout_fallback_og( $layout ) {
-
-	// Bail if a custom layout is already set
-	if ( $layout && ( $layout != genesis_get_default_layout() ) ) {
-		return $layout;
-	}
-
-	// Bail if not a single post or taxonomy archive
-	// if ( ! ( is_singular() || is_category() || is_tag() || is_tax() ) ) {
-	// 	return $layout;
-	// }
-
-	// Bail if not a single post or an archive.
-	if ( ! ( is_singular() || mai_is_content_archive() ) ) {
-		return $layout;
-	}
-	// Singular.
-	if ( is_singular() ) {
-		if ( is_singular( 'page' ) ) {
-			$layout = genesis_get_option( 'layout_page' );
-		}
-		elseif ( is_singular( 'post' ) ) {
-			$layout = genesis_get_option( 'layout_post' );
-		}
-		elseif ( ( $post_type = get_post_type() ) && genesis_has_post_type_archive_support( $post_type ) ) {
-			$layout = genesis_get_cpt_option( 'layout_single', $post_type );
-		}
-	}
-	// Post taxonomy archive.
-	elseif ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-		$layout = genesis_get_custom_field( '_genesis_layout', get_option( 'page_for_posts' ) );
-		if ( ! $layout ) {
-			$layout = genesis_get_option( 'layout_archive' );
-		}
-	}
-	// If Woo product taxonomy
-	// elseif ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
-	// 	$layout = genesis_get_custom_field( '_genesis_layout', get_option( 'woocommerce_shop_page_id' ) );
-	// }
-	// Custom taxonomy archive.
-	elseif ( is_tax() ) {
-		$tax = get_taxonomy( get_queried_object()->taxonomy );
-		if ( $tax ) {
-			/**
-			 * If we have a tax, get the first one.
-			 * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
-			 */
-			$post_type = reset( $tax->object_type );
-			// If we have a post type and it supports genesis-cpt-archive-settings
-			if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
-				$layout = genesis_get_cpt_option( 'layout', $post_type );
-			}
-		}
-		if ( ! $layout ) {
-			$layout = genesis_get_option( 'layout_archive' );
-		}
-	}
-	// CPT archive.
-	elseif ( is_post_type_archive() && ( $post_type = get_post_type() ) ) {
-		$layout = genesis_get_cpt_option( 'layout_archive', $post_type );
-		if ( ! $layout ) {
-			$layout = genesis_get_option( 'layout_archive' );
-		}
-	}
-	// Some other archive (blog/author/search/etc).
-	else {
-		$layout = genesis_get_option( 'layout_archive' );
-	}
-
-	// Return null, to continue the normal function routine.
-	if ( ! genesis_get_layout( $layout ) ) {
-		$layout = null;
-	}
-
-	return $layout;
-}
-
-/**
  * Maybe add no-sidebars body class to the head.
  *
  * @param   array  $classes  The body classes.
@@ -384,7 +297,7 @@ function mai_do_layout() {
 			$classes = ' col col-xs-12 col-lg-4';
 		}
 		if ( in_array( $layout, $single_primary_first ) ) {
-			$classes .= ' first-lg';
+			$classes .= ' first-md';
 		}
 		$attributes['class'] .= $classes;
 		return $attributes;
