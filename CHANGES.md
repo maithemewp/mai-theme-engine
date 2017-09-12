@@ -1,5 +1,6 @@
 ### Changelog
 
+* Fixed: Posts per page setting not working on CPT archives.
 * Fixed: Max width on entry pagination images.
 
 #### 1.1.1 (9/11/17)
