@@ -164,8 +164,11 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 		}
 	}
 
-	// CPT archive.
-	elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
+	/**
+	 * CPT archive.
+	 * This may be called too early to use get_post_type().
+	 */
+	elseif ( is_post_type_archive() && post_type_supports( get_query_var( 'post_type' ), 'mai-cpt-settings' ) ) {
 		if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings' ) ) ) {
 			$meta = genesis_get_cpt_option( $key );
 		}
