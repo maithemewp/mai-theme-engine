@@ -2176,7 +2176,7 @@ img.alignright,
 }
 
 .header-before .widget_text {
-	padding: 8px;
+	padding: 8px 12px;
 }
 
 .header-before .widget_text p:last-child {
@@ -3069,10 +3069,6 @@ img.alignright,
 
 p ~ .flex-grid {
 	margin-top: 30px;
-}
-
-.flex-entry {
-	padding: 0;
 }
 
 .flex-entry.column .entry-header,
