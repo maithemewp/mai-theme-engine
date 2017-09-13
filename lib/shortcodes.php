@@ -578,7 +578,7 @@ final class Mai_Shortcodes {
 			'align'      => '',
 			'align_cols' => '',
 			'align_text' => '',
-			'class'      => '',	 // HTML classes (space separated)
+			'class'      => '',   // HTML classes (space separated)
 			'gutter'     => '30', // Space between columns (5, 10, 20, 30, 40, 50) only
 			'id'         => '',   // Add HTML id
 			'style'      => '',   // Inline styles
@@ -676,6 +676,8 @@ final class Mai_Shortcodes {
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
 			'align'      => '',
+			'bg'         => '',
+			'bottom'     => '',
 			'class'      => '',
 			'id'         => '',
 			'image'      => '',
@@ -687,6 +689,8 @@ final class Mai_Shortcodes {
 		// Sanitize atts
 		$atts = array(
 			'align'      => mai_sanitize_keys( $atts['align'] ),
+			'bg'         => mai_sanitize_hex_color( $atts['bg'] ), // 3 or 6 dig hex color with or without hash
+			'bottom'     => ! empty( $atts['bottom'] ) ? absint( $atts['bottom'] ) : '',
 			'class'      => mai_sanitize_html_classes( $atts['class'] ),
 			'id'         => sanitize_html_class( $atts['id'] ),
 			'image'      => absint( $atts['image'] ),
@@ -695,20 +699,20 @@ final class Mai_Shortcodes {
 			'style'      => sanitize_text_field( $atts['style'] ),
 		);
 
-		$flex_col = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
+		$attributes = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
 
 		// ID
 		if ( ! empty( $atts['wrapper_id'] ) ) {
-			$flex_col['id'] = $atts['wrapper_id'];
+			$attributes['id'] = $atts['wrapper_id'];
 		}
 
 		// Classes
 		if ( ! empty( $atts['class'] ) ) {
-			$flex_col['class'] .= ' ' . $atts['class'];
+			$attributes['class'] .= ' ' . $atts['class'];
 		}
 
 		// Add the align classes
-		$flex_col['class'] = $this->add_entry_align_classes( $flex_col['class'], $atts, 'columns' );
+		$attributes['class'] = $this->add_entry_align_classes( $attributes['class'], $atts, 'columns' );
 
 		// If we have an image ID
 		if ( $atts['image'] ) {
@@ -720,17 +724,41 @@ final class Mai_Shortcodes {
 			}
 
 			// Add the aspect ratio attributes
-			$flex_col = mai_add_background_image_attributes( $flex_col, $atts['image'], $atts['image_size'] );
+			$attributes = mai_add_background_image_attributes( $attributes, $atts['image'], $atts['image_size'] );
 		}
 
 		// Maybe add an overlay, typically for image tint/style
 		if ( $this->has_overlay( $atts ) ) {
-			$flex_col['class'] .= sprintf( ' overlay overlay-%s', $atts['overlay'] );
+			$attributes['class'] .= sprintf( ' overlay overlay-%s', $atts['overlay'] );
+		}
+
+		$dark_bg = false;
+
+		// Maybe add the inline background color
+		if ( $atts['bg'] ) {
+
+			// Add the background color
+			$attributes = mai_add_background_color_attributes( $attributes, $atts['bg'] );
+
+			if ( mai_is_dark_color( $atts['bg'] ) ) {
+				$dark_bg = true;
+			}
+		}
+
+		// Add content shade class
+		$attributes['class'] .= $dark_bg ? ' light-content' : '';
+
+		// Add bottom margin classes.
+		if ( ! empty( $atts['bottom'] ) ) {
+			$bottom = $this->get_bottom_class( $atts );
+			if ( $bottom ) {
+				$attributes['class'] .= $bottom;
+			}
 		}
 
 		// Maybe add inline styles
 		if ( isset( $atts['style'] ) && $atts['style'] ) {
-			$flex_col['style'] = $atts['style'];
+			$attributes['style'] = $atts['style'];
 		}
 
 		/**
@@ -739,7 +767,7 @@ final class Mai_Shortcodes {
 		 *
 		 * Only do_shortcode() on content because get_columns() wrap runs get_processed_content() which cleans things up.
 		 */
-		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col, $atts ), do_shortcode( $content ) );
+		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $attributes, $atts ), do_shortcode( $content ) );
 
 	}
 
@@ -764,6 +792,7 @@ final class Mai_Shortcodes {
 			'author_after'         => '',
 			'author_before'        => '',
 			'authors'              => '', // Comma separated author/user IDs
+			'bottom'               => '', // Bottom margin. 0, 5, 10, 20, 30, 40, 50, 60.
 			'categories'           => '', // Comma separated category IDs
 			'columns'              => '3',
 			'content'              => 'post', // post_type name (comma separated if multiple), or taxonomy name
@@ -828,6 +857,7 @@ final class Mai_Shortcodes {
 			'author_after'         => sanitize_key( $atts['author_after'] ),
 			'author_before'        => sanitize_key( $atts['author_before'] ),
 			'authors'              => $atts['authors'], // Validated later
+			'bottom'               => ! empty( $atts['bottom'] ) ? absint( $atts['bottom'] ) : '',
 			'categories'           => array_filter( explode( ',', sanitize_text_field( $atts['categories'] ) ) ),
 			'columns'              => absint( $atts['columns'] ),
 			'content'              => array_filter( explode( ',', sanitize_text_field( $atts['content'] ) ) ),
@@ -946,7 +976,7 @@ final class Mai_Shortcodes {
 		} else {
 
 			$taxos = get_taxonomies( array(
-			   'public' => true,
+				'public' => true,
 			), 'names' );
 
 			if ( array_intersect( $content_types, $taxos ) == $content_types ) {
@@ -1379,8 +1409,8 @@ final class Mai_Shortcodes {
 		// Tax query
 		if ( ! empty($atts['taxonomy']) && ! empty($atts['terms']) ) {
 			if ( 'current' == $atts['terms'] ) {
-				$terms		= array();
-				$post_terms	= wp_get_post_terms( get_the_ID(), $atts['taxonomy'] );
+				$terms      = array();
+				$post_terms = wp_get_post_terms( get_the_ID(), $atts['taxonomy'] );
 				if ( ! is_wp_error( $post_terms ) ) {
 					foreach ( $post_terms as $term ) {
 						// Get the form by type
@@ -1920,6 +1950,14 @@ final class Mai_Shortcodes {
 			$classes[] = 'image-' . $atts['image_align'];
 		}
 
+		// Add bottom margin classes.
+		if ( ! empty( $atts['bottom'] ) ) {
+			$bottom = $this->get_bottom_class( $atts );
+			if ( $bottom ) {
+				$classes[] = $bottom;
+			}
+		}
+
 		// Add any custom classes
 		if ( $atts['entry_class'] ) {
 			$classes = array_merge( $classes, explode( ' ', $atts['entry_class'] ) );
@@ -1947,6 +1985,39 @@ final class Mai_Shortcodes {
 
 		// Turn array into a string of space separated classes
 		return implode( ' ', $classes );
+	}
+
+	function get_bottom_class( $atts ) {
+		$class = '';
+		if ( $atts['bottom'] ) {
+			switch ( $atts['bottom'] ) {
+				case 0:
+					$class = 'bottom-xs-0';
+				break;
+				case 5:
+					$class = 'bottom-xs-5';
+				break;
+				case 10:
+					$class = 'bottom-xs-10';
+				break;
+				case 20:
+					$class = 'bottom-xs-20';
+				break;
+				case 30:
+					$class = 'bottom-xs-30';
+				break;
+				case 40:
+					$class = 'bottom-xs-40';
+				break;
+				case 50:
+					$class = 'bottom-xs-50';
+				break;
+				case 60:
+					$class = 'bottom-xs-60';
+				break;
+			}
+		}
+		return $class;
 	}
 
 	function get_image_html( $atts, $image_id, $url, $att_title ) {

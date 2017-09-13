@@ -1,7 +1,10 @@
 ### Changelog
 
+* Added: [grid] New "image_align" parameter. Accepts left, center, or right. This allows [grid] to display content exactly like default archives (e.g. the blog).
+* Added: [col] New "bg" parameter. Accepts hex value. Example: [col bg="#000000"].
+* Added: [grid] [col] New "bottom" parameter. This allows you to define the bottom margin (spacing) on each entry/column. Example: [col bottom="10"]. This would add 10px of margin to the bottom. Valid values are 0, 5, 10, 20, 30, 40, 50, 60.
 * Fixed: Posts per page setting not working on CPT archives.
-* Fixed: Max width on entry pagination images.
+* Fixed: Max width on entry pagination images when images weren't regenerated after activating Mai Pro.
 
 #### 1.1.1 (9/11/17)
 * Changed: Allow borders to show around flex-entry images.

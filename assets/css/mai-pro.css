@@ -2176,7 +2176,7 @@ img.alignright,
 }
 
 .header-before .widget_text {
-	padding: 8px;
+	padding: 8px 12px;
 }
 
 .header-before .widget_text p:last-child {
@@ -3071,10 +3071,6 @@ p ~ .flex-grid {
 	margin-top: 30px;
 }
 
-.flex-entry {
-	padding: 0;
-}
-
 .flex-entry.column .entry-header,
 .flex-entry.column .entry-content,
 .flex-entry.column .entry-footer {
@@ -3115,8 +3111,8 @@ p ~ .flex-grid {
 
 .flex-entry.column .entry-image,
 .flex-entry.column .wp-post-image {
-	/* width: 100%; */
-	/* max-width: auto; */
+	width: 100%;
+	max-width: auto;
 }
 
 .flex-entry.column .entry-content {
