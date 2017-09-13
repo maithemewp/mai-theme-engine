@@ -578,7 +578,7 @@ final class Mai_Shortcodes {
 			'align'      => '',
 			'align_cols' => '',
 			'align_text' => '',
-			'class'      => '',	 // HTML classes (space separated)
+			'class'      => '',   // HTML classes (space separated)
 			'gutter'     => '30', // Space between columns (5, 10, 20, 30, 40, 50) only
 			'id'         => '',   // Add HTML id
 			'style'      => '',   // Inline styles
@@ -676,6 +676,8 @@ final class Mai_Shortcodes {
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
 			'align'      => '',
+			'bg'         => '',
+			'bottom'     => '',
 			'class'      => '',
 			'id'         => '',
 			'image'      => '',
@@ -687,6 +689,8 @@ final class Mai_Shortcodes {
 		// Sanitize atts
 		$atts = array(
 			'align'      => mai_sanitize_keys( $atts['align'] ),
+			'bg'         => mai_sanitize_hex_color( $atts['bg'] ), // 3 or 6 dig hex color with or without hash
+			'bottom'     => ! empty( $atts['bottom'] ) ? absint( $atts['bottom'] ) : '',
 			'class'      => mai_sanitize_html_classes( $atts['class'] ),
 			'id'         => sanitize_html_class( $atts['id'] ),
 			'image'      => absint( $atts['image'] ),
@@ -695,20 +699,20 @@ final class Mai_Shortcodes {
 			'style'      => sanitize_text_field( $atts['style'] ),
 		);
 
-		$flex_col = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
+		$attributes = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
 
 		// ID
 		if ( ! empty( $atts['wrapper_id'] ) ) {
-			$flex_col['id'] = $atts['wrapper_id'];
+			$attributes['id'] = $atts['wrapper_id'];
 		}
 
 		// Classes
 		if ( ! empty( $atts['class'] ) ) {
-			$flex_col['class'] .= ' ' . $atts['class'];
+			$attributes['class'] .= ' ' . $atts['class'];
 		}
 
 		// Add the align classes
-		$flex_col['class'] = $this->add_entry_align_classes( $flex_col['class'], $atts, 'columns' );
+		$attributes['class'] = $this->add_entry_align_classes( $attributes['class'], $atts, 'columns' );
 
 		// If we have an image ID
 		if ( $atts['image'] ) {
@@ -720,17 +724,41 @@ final class Mai_Shortcodes {
 			}
 
 			// Add the aspect ratio attributes
-			$flex_col = mai_add_background_image_attributes( $flex_col, $atts['image'], $atts['image_size'] );
+			$attributes = mai_add_background_image_attributes( $attributes, $atts['image'], $atts['image_size'] );
 		}
 
 		// Maybe add an overlay, typically for image tint/style
 		if ( $this->has_overlay( $atts ) ) {
-			$flex_col['class'] .= sprintf( ' overlay overlay-%s', $atts['overlay'] );
+			$attributes['class'] .= sprintf( ' overlay overlay-%s', $atts['overlay'] );
+		}
+
+		$dark_bg = false;
+
+		// Maybe add the inline background color
+		if ( $atts['bg'] ) {
+
+			// Add the background color
+			$attributes = mai_add_background_color_attributes( $attributes, $atts['bg'] );
+
+			if ( mai_is_dark_color( $atts['bg'] ) ) {
+				$dark_bg = true;
+			}
+		}
+
+		// Add content shade class
+		$attributes['class'] .= $dark_bg ? ' light-content' : '';
+
+		// Add bottom margin classes.
+		if ( ! empty( $atts['bottom'] ) ) {
+			$bottom = $this->get_bottom_class( $atts );
+			if ( $bottom ) {
+				$attributes['class'] .= $bottom;
+			}
 		}
 
 		// Maybe add inline styles
 		if ( isset( $atts['style'] ) && $atts['style'] ) {
-			$flex_col['style'] = $atts['style'];
+			$attributes['style'] = $atts['style'];
 		}
 
 		/**
@@ -739,7 +767,7 @@ final class Mai_Shortcodes {
 		 *
 		 * Only do_shortcode() on content because get_columns() wrap runs get_processed_content() which cleans things up.
 		 */
-		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $flex_col, $atts ), do_shortcode( $content ) );
+		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $attributes, $atts ), do_shortcode( $content ) );
 
 	}
 
@@ -761,7 +789,10 @@ final class Mai_Shortcodes {
 			'align'                => '', // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
 			'align_cols'           => '', // "top, left" Comma separted
 			'align_text'           => '', // "center" Comma separted
+			'author_after'         => '',
+			'author_before'        => '',
 			'authors'              => '', // Comma separated author/user IDs
+			'bottom'               => '', // Bottom margin. 0, 5, 10, 20, 30, 40, 50, 60.
 			'categories'           => '', // Comma separated category IDs
 			'columns'              => '3',
 			'content'              => 'post', // post_type name (comma separated if multiple), or taxonomy name
@@ -782,6 +813,7 @@ final class Mai_Shortcodes {
 			'hide_empty'           => true,
 			'ids'                  => '',
 			'ignore_sticky_posts'  => true, // normal WP_Query is false
+			'image_align'          => '',
 			'image_location'       => 'before_entry',
 			'image_size'           => 'one-third',
 			'link'                 => true,
@@ -822,7 +854,10 @@ final class Mai_Shortcodes {
 			'align'                => mai_sanitize_keys( $atts['align'] ),
 			'align_cols'           => mai_sanitize_keys( $atts['align_cols'] ),
 			'align_text'           => mai_sanitize_keys( $atts['align_text'] ),
+			'author_after'         => sanitize_key( $atts['author_after'] ),
+			'author_before'        => sanitize_key( $atts['author_before'] ),
 			'authors'              => $atts['authors'], // Validated later
+			'bottom'               => ! empty( $atts['bottom'] ) ? absint( $atts['bottom'] ) : '',
 			'categories'           => array_filter( explode( ',', sanitize_text_field( $atts['categories'] ) ) ),
 			'columns'              => absint( $atts['columns'] ),
 			'content'              => array_filter( explode( ',', sanitize_text_field( $atts['content'] ) ) ),
@@ -843,6 +878,7 @@ final class Mai_Shortcodes {
 			'hide_empty'           => filter_var( $atts['hide_empty'], FILTER_VALIDATE_BOOLEAN ),
 			'ids'                  => array_filter( explode( ',', sanitize_text_field( $atts['ids'] ) ) ),
 			'ignore_sticky_posts'  => filter_var( $atts['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN ),
+			'image_align'          => sanitize_key( $atts['image_align'] ),
 			'image_location'       => sanitize_key( $atts['image_location'] ),
 			'image_size'           => sanitize_key( $atts['image_size'] ),
 			'link'                 => filter_var( $atts['link'], FILTER_VALIDATE_BOOLEAN ),
@@ -940,7 +976,7 @@ final class Mai_Shortcodes {
 		} else {
 
 			$taxos = get_taxonomies( array(
-			   'public' => true,
+				'public' => true,
 			), 'names' );
 
 			if ( array_intersect( $content_types, $taxos ) == $content_types ) {
@@ -1373,8 +1409,8 @@ final class Mai_Shortcodes {
 		// Tax query
 		if ( ! empty($atts['taxonomy']) && ! empty($atts['terms']) ) {
 			if ( 'current' == $atts['terms'] ) {
-				$terms		= array();
-				$post_terms	= wp_get_post_terms( get_the_ID(), $atts['taxonomy'] );
+				$terms      = array();
+				$post_terms = wp_get_post_terms( get_the_ID(), $atts['taxonomy'] );
 				if ( ! is_wp_error( $post_terms ) ) {
 					foreach ( $post_terms as $term ) {
 						// Get the form by type
@@ -1473,21 +1509,11 @@ final class Mai_Shortcodes {
 
 					// Image
 					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
-						$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
-						if ( $image ) {
-							// Add the location as a class to the image link
-							$image_class = str_replace( '_', '-', $atts['image_location'] );
-							$image_class = sprintf( 'entry-image-%s', $image_class );
-							if ( $atts['link'] ) {
-								$image_html = sprintf( '<a href="%s" class="entry-image-link %s" title="%s">%s</a>', $url, $image_class, the_title_attribute( 'echo=0' ), $image );
-							} else {
-								$image_html = sprintf( '<span class="entry-image-link %s" title="%s">%s</span>', $image_class, the_title_attribute( 'echo=0' ), $image );
-							}
-						}
+						$image_html = $this->get_image_html( $atts, $image_id, $url, the_title_attribute( 'echo=0' ) );
 					}
 
 					// Image
-					if ( 'bg' == $atts['image_location'] && $atts['link'] ) {
+					if ( ( 'bg' == $atts['image_location'] ) && $atts['link'] ) {
 						$html .= mai_get_bg_image_link( $url, get_the_title() );
 					}
 					elseif ( 'before_entry' == $atts['image_location'] ) {
@@ -1571,7 +1597,7 @@ final class Mai_Shortcodes {
 
 					// Image
 					if ( 'before_content' == $atts['image_location'] ) {
-						$html .= $image_html;
+						$entry_content .= $image_html;
 					}
 
 					// Excerpt
@@ -1716,6 +1742,7 @@ final class Mai_Shortcodes {
 			foreach ( $terms as $term ) {
 
 				$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
+				$image_atts = array();
 
 				// Get image vars
 				$do_image = $has_image_bg = false;
@@ -1739,18 +1766,11 @@ final class Mai_Shortcodes {
 
 					// Image
 					if ( $do_image && ! $this->is_image_bg( $atts ) ) {
-						$image = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
-						if ( $image ) {
-							if ( $atts['link'] ) {
-								$image_html = sprintf( '<a href="%s" class="entry-image-link" title="%s">%s</a>', $url, esc_attr( $term->name ), $image );
-							} else {
-								$image_html = $image;
-							}
-						}
+						$image_html = $this->get_image_html( $atts, $image_id, $url, esc_attr( $term->name ) );
 					}
 
 					// Image
-					if ( 'bg' == $atts['image_location'] && $atts['link'] ) {
+					if ( ( 'bg' == $atts['image_location'] ) && $atts['link'] ) {
 						$html .= mai_get_bg_image_link( $url, $term->name );
 					}
 					elseif ( 'before_entry' == $atts['image_location'] ) {
@@ -1790,7 +1810,7 @@ final class Mai_Shortcodes {
 
 					// Image
 					if ( 'before_content' == $atts['image_location'] ) {
-						$html .= $image_html;
+						$entry_content .= $image_html;
 					}
 
 					// Excerpt/Content
@@ -1920,7 +1940,23 @@ final class Mai_Shortcodes {
 	function get_entry_classes( $atts ) {
 
 		// We need classes to be an array so we can use them in get_post_class()
-		$classes = array( 'flex-entry', 'entry', 'column' );
+		// $classes = array( 'flex-entry', 'entry', 'column' );
+		$classes = array( 'flex-entry', 'entry' );
+
+		// If background image or image is not aligned.
+		if ( 'bg' === $atts['image_location'] || empty( $atts['image_align'] ) ) {
+			$classes[] = 'column';
+		} else {
+			$classes[] = 'image-' . $atts['image_align'];
+		}
+
+		// Add bottom margin classes.
+		if ( ! empty( $atts['bottom'] ) ) {
+			$bottom = $this->get_bottom_class( $atts );
+			if ( $bottom ) {
+				$classes[] = $bottom;
+			}
+		}
 
 		// Add any custom classes
 		if ( $atts['entry_class'] ) {
@@ -1949,6 +1985,70 @@ final class Mai_Shortcodes {
 
 		// Turn array into a string of space separated classes
 		return implode( ' ', $classes );
+	}
+
+	function get_bottom_class( $atts ) {
+		$class = '';
+		if ( $atts['bottom'] ) {
+			switch ( $atts['bottom'] ) {
+				case 0:
+					$class = 'bottom-xs-0';
+				break;
+				case 5:
+					$class = 'bottom-xs-5';
+				break;
+				case 10:
+					$class = 'bottom-xs-10';
+				break;
+				case 20:
+					$class = 'bottom-xs-20';
+				break;
+				case 30:
+					$class = 'bottom-xs-30';
+				break;
+				case 40:
+					$class = 'bottom-xs-40';
+				break;
+				case 50:
+					$class = 'bottom-xs-50';
+				break;
+				case 60:
+					$class = 'bottom-xs-60';
+				break;
+			}
+		}
+		return $class;
+	}
+
+	function get_image_html( $atts, $image_id, $url, $att_title ) {
+		$image      = wp_get_attachment_image( $image_id, $atts['image_size'], false, array( 'class' => 'wp-post-image' ) );
+		$image_atts = array();
+		// Add the default class and add location as a class to the image link.
+		$image_atts['class'] = 'entry-image-link';
+		if ( $atts['image_location'] ) {
+			$image_atts['class'] .= sprintf( ' entry-image-%s', str_replace( '_', '-', $atts['image_location'] ) );
+		}
+		if ( $atts['image_align'] ) {
+			switch ( $atts['image_align'] ) {
+				case 'left':
+					$image_atts['class'] .= ' alignleft';
+				break;
+				case 'center':
+					$image_atts['class'] .= ' aligncenter';
+				break;
+				case 'right':
+					$image_atts['class'] .= ' alignright';
+				break;
+			}
+		}
+		$image_atts['title'] = $att_title;
+		if ( $atts['link'] ) {
+			$image_atts['href'] = $url;
+			$image_wrap = 'a';
+		} else {
+			$image_wrap = 'span';
+		}
+		return sprintf( '<%s %s>%s</%s>', $image_wrap, genesis_attr( 'grid-entry-image-link', $image_atts ), $image, $image_wrap );
 	}
 
 	function get_object_id( $atts, $object ) {

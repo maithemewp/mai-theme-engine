@@ -2176,7 +2176,7 @@ img.alignright,
 }
 
 .header-before .widget_text {
-	padding: 8px;
+	padding: 8px 12px;
 }
 
 .header-before .widget_text p:last-child {
@@ -3071,10 +3071,6 @@ p ~ .flex-grid {
 	margin-top: 30px;
 }
 
-.flex-entry {
-	padding: 0;
-}
-
 .flex-entry.column .entry-header,
 .flex-entry.column .entry-content,
 .flex-entry.column .entry-footer {
@@ -3281,6 +3277,7 @@ p.entry-meta {
 
 .adjacent-entry-pagination a img {
 	-webkit-box-flex: 0;-ms-flex: 0 0 auto;flex: 0 0 auto;
+	max-width: 32%;
 }
 
 .adjacent-entry-pagination .pagination-previous a img {
