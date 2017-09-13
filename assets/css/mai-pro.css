@@ -3115,8 +3115,8 @@ p ~ .flex-grid {
 
 .flex-entry.column .entry-image,
 .flex-entry.column .wp-post-image {
-	width: 100%;
-	max-width: auto;
+	/* width: 100%; */
+	/* max-width: auto; */
 }
 
 .flex-entry.column .entry-content {
