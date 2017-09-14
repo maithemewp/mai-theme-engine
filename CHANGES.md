@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.3.1 (9/14/17)
+* Fixed: Header/Footer scripts getting slashed when updating settings via the Customizer.
+
 #### 1.1.3 (9/14/17)
 * Fixed: Critical bug where saving Genesis > Theme Settings were resetting all custom settings.
 * Fixed: Hide Featured Image setting unable to save as unchecked after saving as checked.
