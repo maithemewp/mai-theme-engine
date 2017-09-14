@@ -1,6 +1,26 @@
 <?php
 
 /**
+ * This filter makes sure our custom settings are not wiped out when updating via Genesis > Theme Settings.
+ * In 1.1.2 we were made aware of a critical bug where our custom settings were cleared anytime
+ * a user would hit "Save" in Genesis > Theme Settings.
+ *
+ * @since   1.1.3
+ *
+ * @return  array
+ */
+add_filter( 'pre_update_option_genesis-settings', 'mai_enforce_custom_genesis_settings', 8, 2 );
+function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
+	$settings = get_option( 'genesis-settings' );
+	foreach ( $settings as $setting => $value ) {
+		if ( ! isset( $new_value[ $setting ] ) ) {
+			$new_value[ $setting ] = $value;
+		}
+	}
+	return $new_value;
+}
+
+/**
  * Filter the default options, adding our custom settings.
  * CPT settings defaults are filtered in /customizer/custom-post-types.php
  *

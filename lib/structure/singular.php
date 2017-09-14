@@ -50,6 +50,11 @@ function mai_woo_remove_featured_image() {
 	$key     = sprintf( 'singular_image_%s', get_post_type() );
 	$display = genesis_get_option( $key );
 
+	// Bail if hide featured image is checked.
+	if ( get_post_meta( get_the_ID(), 'mai_hide_featured_image', true ) ) {
+		$display = false;
+	}
+
 	// Remove image if not displaying.
 	if ( ! $display ) {
 		// Remove product images from single template
