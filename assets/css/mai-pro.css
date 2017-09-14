@@ -872,6 +872,7 @@ td {
 .entry-content:empty,
 .entry .entry-content:empty,
 .flex-entry.column .entry-content:empty,
+.flex-entry .entry-header + .entry-content:empty,
 .flex-entry .entry-content:empty {
 	display: none;
 }
