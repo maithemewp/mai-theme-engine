@@ -1,5 +1,9 @@
 ### Changelog
 
+* Fixed: Critical bug where saving Genesis > Theme Settings were resetting all custom settings.
+* Fixed: Hide Featured Image setting unable to save as unchecked after saving as checked.
+* Fixed: Hide Featured Image setting not hiding image on WooCommerce products.
+
 #### 1.1.2 (9/13/17)
 * Added: [grid] New "image_align" parameter. Accepts left, center, or right. This allows [grid] to display content exactly like default archives (e.g. the blog).
 * Added: [col] New "bg" parameter. Accepts hex value. Example: [col bg="#000000"].
