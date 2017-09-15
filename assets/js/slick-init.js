@@ -76,16 +76,17 @@ jQuery(document).ready(function($) {
 		}
 
 		$(this).slick({
-			adaptiveHeight: false, // true breaks things on image-bg aspect-ratio resize
+			adaptiveHeight: false, // true breaks things on image-bg aspect-ratio resize.
 			arrows: arrows,
 			autoplay: autoPlay,
 			dots: dots,
-			fade: fade, // Things seem to blow up if columns is > 1
+			fade: fade,           // Things seem to blow up if columns is > 1.
+			focusOnChange: false, // This is Slick default as of 1.8.0, but i want to make sure, cause if true it makes things really jumpy.
 			infinite: infinite,
 			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,
 			autoplaySpeed: speed,
-			cssEase: fade ? 'linear' : 'ease', // Use linear if fade is true, otherwise default is ease
+			cssEase: fade ? 'linear' : 'ease', // Use linear if fade is true, otherwise default is ease.
 			responsive: [{
 				breakpoint: 1200,
 				settings: {
