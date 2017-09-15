@@ -46,6 +46,7 @@ function mai_woo_remove_featured_image() {
 	if ( ! is_product() ) {
 		return;
 	}
+
 	// Get post types to display featured image on.
 	$key     = sprintf( 'singular_image_%s', get_post_type() );
 	$display = genesis_get_option( $key );
