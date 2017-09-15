@@ -384,6 +384,15 @@ function mai_do_content_archive_archive_options() {
 		// Add the image back, in a custom location
 		mai_do_archive_image( $image_location );
 
+		/**
+		 * Content Archive Thumbnail.
+		 * We need to force this option because genesis_do_post_image() checks if 'content_archive_thumbnail' is enabled,
+		 * even though Mai Pro has its own requirements to display, it won't without forcing this.
+		 */
+		add_filter( 'genesis_pre_get_option_content_archive_thumbnail', function( $option ) use ( $content_archive_thumbnail ) {
+			return $content_archive_thumbnail;
+		});
+
 		// Image Size
 		add_filter( 'genesis_pre_get_option_image_size', function( $option ) use ( $image_size ) {
 			return $image_size;

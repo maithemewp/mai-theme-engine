@@ -17,7 +17,7 @@ function mai_enqueue_scripts() {
 	) );
 
 	// Register script for later use
-	wp_register_script( 'mai-slick', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/slick{$suffix}.js", array( 'jquery' ), '1.7.1', true );
+	wp_register_script( 'mai-slick', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/slick{$suffix}.js", array( 'jquery' ), '1.8.0', true );
 	wp_register_script( 'mai-slick-init', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/slick-init{$suffix}.js", array( 'mai-slick' ), MAI_PRO_ENGINE_VERSION, true );
 
 }
