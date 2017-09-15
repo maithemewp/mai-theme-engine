@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.5 (9/15/17)
+* Fixed: CPT settings from Customizer getting changed when saving CPT Archive Settings in the backend.
+
 #### 1.1.4 (9/15/17)
 * Fixed: CPT archive images would not display when using custom archive settings if Mai Content Archives images were not set to display.
 * Fixed: Some default settings were getting changed when updating/saving via Genesis > Theme Settings.

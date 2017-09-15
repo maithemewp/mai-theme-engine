@@ -45,6 +45,8 @@ function mai_cpt_settings_init() {
 	// Loop through the post types.
 	foreach ( $post_types as $post_type => $object ) {
 
+		$settings_field = GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type;
+
 		/**
 		 * Add Mai CPT support here.
 		 * This should happen here, internally only. Please don't add 'mai-cpt-settings' support to CPT's manually.
@@ -52,17 +54,59 @@ function mai_cpt_settings_init() {
 		add_post_type_support( $post_type, 'mai-cpt-settings' );
 
 		/**
+		 * This filter makes sure our custom settings are not wiped out when updating via CPT > Archive Settings.
+		 * In 1.1.2 we were made aware of a critical bug where our custom settings were cleared anytime
+		 * a user would hit "Save" in CPT > Archive Settings.
+		 *
+		 * @since   1.1.5
+		 *
+		 * @return  array
+		 */
+		add_filter( "pre_update_option_{$settings_field}", function( $new_value, $old_value ) use ( $settings_field, $post_type ) {
+
+			// Bail if this isn't happening from a form submission page.
+			if ( ! isset( $_POST ) || empty( $_POST ) ) {
+				return $new_value;
+			}
+
+			// Bail if this isn't happening on a page that's submitting a 'genesis-settings' form.
+			if ( ! isset( $_POST[ $settings_field ] ) || empty( $_POST[ $settings_field ] ) ) {
+				return $new_value;
+			}
+
+			// Get the submitted and existing settings values.
+			$values   = $_POST[ $settings_field ];
+			$settings = get_option( $settings_field );
+
+			// Loop through em.
+			foreach ( (array) $settings as $key => $value ) {
+				/**
+				 * If a custom setting is not part of the $_POST submission,
+				 * we need to add to the $new_value array it so it's not lost.
+				 */
+				if ( ! isset( $values[ $key ] ) ) {
+					$new_value[ $key ] = genesis_get_cpt_option( $key, $post_type );
+				}
+			}
+
+			return $new_value;
+
+		}, 10, 2 );
+
+		/**
 		 * Filter the default options, adding our custom post type settings.
+		 *
+		 * @since   1.1.0
 		 *
 		 * @param   array   $options  The genesis options.
 		 * @param   string  $setting  The setting key/name.
 		 *
 		 * @return  array   The modified options.
 		 */
-		add_filter( 'genesis_options', function( $options, $setting ) use ( $post_type ) {
+		add_filter( 'genesis_options', function( $options, $setting ) use ( $settings_field, $post_type ) {
 
 			// Bail if not this post_type's settings.
-			if ( GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type !== $setting ) {
+			if ( $settings_field !== $setting ) {
 				return $options;
 			}
 

@@ -18,7 +18,7 @@ function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
 	}
 
 	// Bail if this isn't happening on a page that's submitting a 'genesis-settings' form.
-	if ( ! isset( $_POST['genesis-settings'] ) || empty( $_POST['genesis-settings'] ) ) {
+	if ( ! isset( $_POST[ 'genesis-settings' ] ) || empty( $_POST[ 'genesis-settings' ] ) ) {
 		return $new_value;
 	}
 
