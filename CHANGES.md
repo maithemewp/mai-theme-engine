@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.5.1 (9/20/17)
+* Fixed: Missing closing div on site header row.
+
 #### 1.1.5 (9/15/17)
 * Fixed: CPT settings from Customizer getting changed when saving CPT Archive Settings in the backend.
 

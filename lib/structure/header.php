@@ -104,7 +104,7 @@ function mai_do_header() {
 
 		if ( 'open' == $original_output ) {
 
-			// Build header before markup
+			// Build header before markup.
 			if ( $before ) {
 
 				$before_atts['class'] = 'header-before';
@@ -113,18 +113,18 @@ function mai_do_header() {
 
 			}
 
-			// Default classes
+			// Default classes.
 			$row['class'] = 'site-header-row row middle-xs';
 
-			// Justification
+			// Justification.
 			$row['class'] .= ( $left || $right ) ? ' between-xs' : ' around-xs';
 
-			// Output with row open
+			// Output with row open.
 			$output = $before . $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
 
 		} elseif ( 'close' == $original_output ) {
 
-			// Build header left markup
+			// Build header left markup.
 			if ( $left ) {
 
 				$left_atts['class'] = 'header-left col col-xs';
@@ -139,7 +139,7 @@ function mai_do_header() {
 
 			}
 
-			// Build header right markup
+			// Build header right markup.
 			if ( $right ) {
 
 				$right_atts['class'] = 'header-right col col-xs';
@@ -154,7 +154,7 @@ function mai_do_header() {
 
 			}
 
-			// Build header after markup
+			// Build header after markup.
 			if ( $after ) {
 
 				$after_atts['class'] = 'header-after';
@@ -163,7 +163,8 @@ function mai_do_header() {
 
 			}
 
-			$output = $left . $right . $output . $after . $mobile;
+			// Output with row close.
+			$output = $left . $right . $output . $after . $mobile . '</div>';
 
 		}
 
