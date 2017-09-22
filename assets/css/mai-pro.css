@@ -3094,16 +3094,12 @@ p ~ .flex-grid {
 	margin-right: -24px;
 }
 
+.flex-entry.column .entry-image-before-entry + .entry-header,
 .flex-entry.column .entry-image-before-title + .entry-title,
 .flex-entry .entry-title + .entry-image-after-title,
 .flex-entry .entry-header + .entry-content {
 	display: block;
 	margin-top: 14px;
-}
-
-.flex-entry.column .entry-image-before-entry + .entry-header {
-	display: block;
-	margin-top: 20px;
 }
 
 .flex-entry .entry-content .entry-image-link {
