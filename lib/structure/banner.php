@@ -48,6 +48,7 @@ function mai_do_banner_area() {
 		'content_width' => genesis_get_option( 'banner_content_width' ),
 		'height'        => 'sm',
 		'styles'        => '',
+		'text_size'     => 'lg',
 	);
 
 	// Get the image ID

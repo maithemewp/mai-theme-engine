@@ -245,6 +245,7 @@ final class Mai_Shortcodes {
 			'bg'            => '',
 			'image'         => '',
 			'overlay'       => '',
+			'text_size'     => '',
 			'inner'         => '',
 			'title'         => '',
 			'title_wrap'    => 'h2',
@@ -261,6 +262,7 @@ final class Mai_Shortcodes {
 			'bg'            => mai_sanitize_hex_color( $args['bg'] ), // 3 or 6 dig hex color with or without hash
 			'image'         => absint( $args['image'] ),
 			'overlay'       => sanitize_key( $args['overlay'] ),
+			'text_size'     => sanitize_key( $args['text_size'] ),
 			'inner'         => sanitize_key( $args['inner'] ),
 			'title'         => sanitize_text_field( $args['title'] ),
 			'title_wrap'    => sanitize_key( $args['title_wrap'] ),
@@ -333,6 +335,34 @@ final class Mai_Shortcodes {
 
 		}
 
+		// Text size.
+		if ( $args['text_size'] ) {
+
+			switch ( $args['text_size'] ) {
+				case 'xs':
+				case 'extra-small';
+					$section_atts['class'] .= ' text-xs';
+				break;
+				case 'sm':
+				case 'small';
+					$section_atts['class'] .= ' text-sm';
+				break;
+				case 'md':
+				case 'medium';
+					$section_atts['class'] .= ' text-md';
+				break;
+				case 'lg':
+				case 'large':
+					$section_atts['class'] .= ' text-lg';
+				break;
+				case 'xl':
+				case 'extra-large':
+					$section_atts['class'] .= ' text-xl';
+				break;
+			}
+
+		}
+
 		$dark_bg = false;
 
 		// Content shade
@@ -344,7 +374,7 @@ final class Mai_Shortcodes {
 			if ( $args['bg'] && ! $args['image'] ) {
 				$dark_bg = mai_is_dark_color( $args['bg'] );
 			} elseif ( $args['image'] && ! $has_overlay ) {
-			    // For now, anytime we have an image it's considered dark
+				// For now, anytime we have an image it's considered dark
 				$dark_bg = true;
 			} elseif ( $args['image'] && in_array( $args['overlay'], array( 'dark', 'gradient' ) ) ) {
 				$dark_bg = true;
