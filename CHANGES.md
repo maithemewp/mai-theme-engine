@@ -1,5 +1,8 @@
 ### Changelog
 
+* Fixed: Big mobile menus getting cut off when logged in and showing toolbar.
+* Fixed: [grid] Title spacing when showing image before entry.
+
 #### 1.1.5.1 (9/20/17)
 * Fixed: Missing closing div on site header row.
 

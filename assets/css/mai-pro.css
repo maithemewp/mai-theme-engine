@@ -2778,10 +2778,18 @@ img.alignright,
 	top: 32px;
 }
 
+.admin-bar.side-menu .mai-menu-inner {
+	height: calc( 100% - 32px );
+}
+
 @media only screen and (max-width: 782px) {
 
 	.admin-bar.side-menu .mai-menu-outer {
 		top: 46px;
+	}
+
+	.admin-bar.side-menu .mai-menu-inner {
+		height: calc( 100% - 46px );
 	}
 
 }
