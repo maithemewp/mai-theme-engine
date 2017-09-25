@@ -14,29 +14,23 @@
 add_filter( 'genesis_seo_title','mai_do_custom_logo', 10, 3 );
 function mai_do_custom_logo( $title, $inside, $wrap ) {
 
-	$site_title = get_bloginfo( 'name' );
-
-	// If the custom logo function and custom logo exist, set the logo image element inside the wrapping tags.
-	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
-		$inside = get_custom_logo();
-	} else {
-		// If no custom logo, wrap around the site name.
-		$inside = sprintf( '<a href="%s" title="%s">%s</a>', trailingslashit( home_url() ), esc_attr( $site_title ), esc_html( $site_title ) );
+	// If no custom logo, return the original title.
+	if ( ! ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) ) {
+		return $title;
 	}
 
-	// Determine which wrapping tags to use.
-	$wrap = genesis_is_root_page() && 'title' === genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : 'p';
+	// Build the title with logo.
+	return genesis_markup( array(
+		'open'    => sprintf( "<{$wrap} %s>", genesis_attr( 'site-title' ) ),
+		'close'   => "</{$wrap}>",
+		'content' => get_custom_logo(),
+		'context' => 'site-title',
+		'echo'    => false,
+		'params'  => array(
+			'wrap' => $wrap,
+		),
+	) );
 
-	// A little fallback, in case a SEO plugin is active.
-	$wrap = genesis_is_root_page() && ! genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : $wrap;
-
-	// And finally, $wrap in h1 if HTML5 & semantic headings enabled.
-	$wrap = genesis_html5() && genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
-
-	// Rebuild the markup
-	$title = sprintf( '<%s %s>%s</%s>', $wrap, genesis_attr( 'site-title' ), $inside, $wrap );
-
-	return $title;
 }
 
 /**
