@@ -170,6 +170,10 @@
 	position: relative;
 }
 
+.mai-settings-open .mai-section-content:hover {
+	cursor: pointer;
+}
+
 .mai-settings-open .mai-section-content::after {
 	opacity: 1;
 	z-index: 1;
@@ -205,6 +209,10 @@
 
 .mai-settings-open .mai-section-settings .mai-section-settings-toggle-wrap {
 	margin-bottom: 0;
+}
+
+.mai-section-settings select {
+	width: 100%;
 }
 
 .mai-section-settings .cmb2-media-status .img-status img {
