@@ -33,7 +33,7 @@ function mai_do_sections_loop() {
 		'bg',
 		'class',
 		'content_width',
-		'font_size',
+		'text_size',
 		'height',
 		'id',
 		'inner',
