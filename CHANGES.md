@@ -1,7 +1,8 @@
 ### Changelog
 
 * Added: Add "Text Size" field to Sections template (and [section] shortcode).
-* Changed: Convert all font sizes to rem/em for module-based sizing. Uses "Major Third" sizing ratio.
+* Changed: Section settings now close when clicking on section content field in a Sections template.
+* Changed: Convert all font sizes to rem/em for 'module' or 'component' based font sizing. Uses "Major Third" sizing ratio.
 * Fixed: Big mobile menus getting cut off when logged in and showing toolbar.
 * Fixed: [grid] Title spacing when showing image before entry.
 
