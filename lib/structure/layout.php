@@ -271,7 +271,7 @@ function mai_do_layout() {
 	 * The breakpoint classes here need to match with the sidebar classes and total 12
 	 * to avoid flash of full-width containers on page load
 	 */
-    add_filter( 'genesis_attr_content', function( $attributes ) use ( $layout, $no_sidebars, $double_sidebars, $double_secondary_first_content_last ) {
+	add_filter( 'genesis_attr_content', function( $attributes ) use ( $layout, $no_sidebars, $double_sidebars, $double_secondary_first_content_last ) {
 		$classes = '';
 		// Add .content-no-sidebar class if don't have any sidebars
 		if ( in_array( $layout, $no_sidebars ) ) {
@@ -287,7 +287,7 @@ function mai_do_layout() {
 		}
 		$attributes['class'] .= $classes;
 		return $attributes;
-    });
+	});
 
 	// Add flexington column classes to the primary sidebar
 	add_filter( 'genesis_attr_sidebar-primary', function( $attributes ) use ( $layout, $double_sidebars, $single_primary_first ) {
