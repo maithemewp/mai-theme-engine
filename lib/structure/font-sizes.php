@@ -35,6 +35,6 @@ function mai_footer_widgets_text_size( $attributes ) {
  */
 add_filter( 'genesis_attr_site-footer', 'mai_site_footer_text_size' );
 function mai_site_footer_text_size( $attributes ) {
-	$attributes['class'] .= ' text-xs';
+	$attributes['class'] .= ' text-sm';
 	return $attributes;
 }

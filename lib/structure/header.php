@@ -107,7 +107,7 @@ function mai_do_header() {
 			// Build header before markup.
 			if ( $before ) {
 
-				$before_atts['class'] = 'header-before';
+				$before_atts['class'] = 'header-before text-sm';
 
 				$before = sprintf( '<div %s><div class="wrap">%s</div></div>', genesis_attr( 'header-before', $before_atts ), $before );
 
