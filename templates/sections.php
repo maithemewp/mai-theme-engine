@@ -28,28 +28,37 @@ function mai_do_sections_loop() {
 		return;
 	}
 
-	// Loop through each section
+	$settings = array(
+		'align',
+		'bg',
+		'class',
+		'content_width',
+		'font_size',
+		'height',
+		'id',
+		'inner',
+		'overlay',
+		'title',
+	);
+
+	// Loop through each section.
 	foreach ( $sections as $section ) {
 
-		// Reset args
+		// Reset args.
 		$args = array();
 
-		// Set the args
-		$args['align']         = isset( $section['align'] ) ? $section['align'] : '';
-		$args['class']         = isset( $section['class'] ) ? $section['class'] : '';
-		$args['content_width'] = isset( $section['content_width'] ) ? $section['content_width'] : '';
-		$args['bg']            = isset( $section['bg'] ) ? $section['bg'] : '';
-		$args['height']        = isset( $section['height'] ) ? $section['height'] : '';
-		$args['id']            = isset( $section['id'] ) ? $section['id'] : '';
-		$args['image']         = isset( $section['image_id'] ) ? $section['image_id'] : '';
-		$args['inner']         = isset( $section['inner'] ) ? $section['inner'] : '';
-		$args['overlay']       = isset( $section['overlay'] ) ? $section['overlay'] : '';
-		$args['title']         = isset( $section['title'] ) ? $section['title'] : '';
+		// Set the args.
+		foreach ( $settings as $setting ) {
+			$args[ $setting ] = isset( $section[ $setting ] ) ? $section[ $setting ] : '';
+		}
 
-		// Set the content
+		// Set the bg image.
+		$args['image'] = isset( $section['image_id'] ) ? $section['image_id'] : '';
+
+		// Set the content.
 		$content = isset( $section['content'] ) ? $section['content'] : '';
 
-		// Skip if no title and no content and no image
+		// Skip if no title and no content and no image.
 		if ( empty( $args['title'] ) && empty( $args['image'] ) && empty( $content ) ) {
 			continue;
 		}
