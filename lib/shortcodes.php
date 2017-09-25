@@ -245,7 +245,7 @@ final class Mai_Shortcodes {
 			'bg'            => '',
 			'image'         => '',
 			'overlay'       => '',
-			'font_size'     => '',
+			'text_size'     => '',
 			'inner'         => '',
 			'title'         => '',
 			'title_wrap'    => 'h2',
@@ -262,7 +262,7 @@ final class Mai_Shortcodes {
 			'bg'            => mai_sanitize_hex_color( $args['bg'] ), // 3 or 6 dig hex color with or without hash
 			'image'         => absint( $args['image'] ),
 			'overlay'       => sanitize_key( $args['overlay'] ),
-			'font_size'     => sanitize_key( $args['font_size'] ),
+			'text_size'     => sanitize_key( $args['text_size'] ),
 			'inner'         => sanitize_key( $args['inner'] ),
 			'title'         => sanitize_text_field( $args['title'] ),
 			'title_wrap'    => sanitize_key( $args['title_wrap'] ),
@@ -336,9 +336,9 @@ final class Mai_Shortcodes {
 		}
 
 		// Text size.
-		if ( $args['font_size'] ) {
+		if ( $args['text_size'] ) {
 
-			switch ( $args['font_size'] ) {
+			switch ( $args['text_size'] ) {
 				case 'xs':
 				case 'extra-small';
 					$section_atts['class'] .= ' text-xs';
