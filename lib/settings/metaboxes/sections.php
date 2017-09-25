@@ -136,16 +136,31 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Content Width
+	// Content Alignment
 	$sections->add_group_field( $section, array(
 		'name'             => __( 'Content Alignment', 'mai-pro-engine' ),
 		'id'               => 'align',
 		'type'             => 'select',
 		'show_option_none' => __( '- None -', 'genesis' ),
 		'options'          => array(
-			'left'	 => __( 'Left', 'mai-pro-engine' ),
+			'left'   => __( 'Left', 'mai-pro-engine' ),
 			'center' => __( 'Center', 'mai-pro-engine' ),
-			'right'	 => __( 'Right', 'mai-pro-engine' ),
+			'right'  => __( 'Right', 'mai-pro-engine' ),
+		),
+	) );
+
+	// Text Size
+	$sections->add_group_field( $section, array(
+		'name'    => __( 'Text Size', 'mai-pro-engine' ),
+		'id'      => 'text_size',
+		'type'    => 'select',
+		'default' => 'md',
+		'options' => array(
+			'xs' => __( 'Extra Small', 'mai-pro-engine' ),
+			'sm' => __( 'Small', 'mai-pro-engine' ),
+			'md' => __( 'Medium', 'mai-pro-engine' ),
+			'lg' => __( 'Large', 'mai-pro-engine' ),
+			'xl' => __( 'Extra Large', 'mai-pro-engine' ),
 		),
 	) );
 
