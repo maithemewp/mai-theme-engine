@@ -119,6 +119,7 @@ class CMB2 extends CMB2_Base {
 		'admin_menu_hook'  => 'admin_menu', // Alternately 'network_admin_menu' to add network-level options page.
 		'display_cb'       => false, // Override the options-page form output (CMB2_Hookup::options_page_output()).
 		'save_button'      => '', // The text for the options-page save button. Defaults to 'Save'.
+		'disable_settings_errors' => false, // On settings pages (not options-general.php sub-pages), allows disabling.
 	);
 
 	/**
@@ -202,6 +203,12 @@ class CMB2 extends CMB2_Base {
 		 * @param array $cmb This CMB2 object
 		 */
 		do_action( "cmb2_init_{$this->cmb_id}", $this );
+
+		// Hook in the hookup... how meta.
+		add_action( "cmb2_init_hookup_{$this->cmb_id}", array( 'CMB2_hookup', 'maybe_init_and_hookup' ) );
+
+		// Hook in the rest api functionality.
+		add_action( "cmb2_init_hookup_{$this->cmb_id}", array( 'CMB2_REST', 'maybe_init_and_hookup' ) );
 	}
 
 	/**
