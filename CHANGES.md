@@ -1,5 +1,6 @@
 ### Changelog
 
+#### 1.1.6 (9/29/17)
 * Added: Banner "Height" setting in customizer.
 * Added: [section] Add "Text Size" field to Sections template (and [section text_size="lg"] shortcode).
 * Added: [section] Add "wrap_class" parameter to section shortcode to add a class to the wrap div.
