@@ -45,18 +45,20 @@ function mai_post_info( $post_info ) {
 add_filter( 'genesis_post_meta','mai_post_meta', 11 );
 function mai_post_meta( $post_meta ) {
 	global $post;
-	$taxos = get_post_taxonomies($post);
-	if ( $taxos ) {
 
-		// Skip if Post Formats and Yoast prominent keyworks
-		$taxos = array_diff( $taxos, array( 'post_format', 'yst_prominent_words' ) );
+	$taxos = get_object_taxonomies( $post, 'objects' );
+
+	if ( $taxos ) {
 
 		$taxos = apply_filters( 'mai_post_meta_taxos', $taxos );
 
 		$post_meta = $shortcodes = '';
-		foreach ( $taxos as $tax ) {
-			$taxonomy = get_taxonomy($tax);
-			$shortcodes .= '[post_terms taxonomy="' . $tax . '" before="' . $taxonomy->labels->singular_name . ': "]';
+		foreach ( $taxos as $taxonomy ) {
+			// Skip if not a public taxonomy.
+			if ( ! $taxonomy->public ) {
+				continue;
+			}
+			$shortcodes .= '[post_terms taxonomy="' . $taxonomy->name . '" before="' . $taxonomy->labels->singular_name . ': "]';
 		}
 		$post_meta = $shortcodes;
 	}
