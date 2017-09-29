@@ -33,7 +33,7 @@ function mai_do_sections_metabox() {
 		'id'           => 'mai_sections',
 		'title'        => __( 'Sections', 'mai-pro-engine' ),
 		'object_types' => array( 'page' ),
-		'context'      => 'after_editor', // Currently forces Publish metaboxes down: Change back when trunk is live https://wordpress.org/support/topic/new-after_title-and-after_editor-contexts-push-the-publish-metabox-down/
+		'context'      => 'after_editor',
 		'classes'      => 'mai-metabox',
 		'show_on'      => array( 'key' => 'page-template', 'value' => 'sections.php' ),
 	) );
@@ -113,10 +113,10 @@ function mai_do_sections_metabox() {
 		'type'    => 'select',
 		'default' => 'md',
 		'options' => array(
-			'auto' => __( 'Auto (Use height of content)', 'mai-pro-engine' ),
-			'sm'   => __( 'Small', 'mai-pro-engine' ),
-			'md'   => __( 'Medium', 'mai-pro-engine' ),
-			'lg'   => __( 'Large', 'mai-pro-engine' ),
+			'auto'  => __( 'Auto (Use height of content)', 'mai-pro-engine' ),
+			'sm'    => __( 'Small', 'mai-pro-engine' ),
+			'md'    => __( 'Medium', 'mai-pro-engine' ),
+			'lg'    => __( 'Large', 'mai-pro-engine' ),
 		),
 	) );
 
@@ -151,21 +151,21 @@ function mai_do_sections_metabox() {
 
 	// Text Size
 	$sections->add_group_field( $section, array(
-		'name'    => __( 'Text Size', 'mai-pro-engine' ),
-		'id'      => 'text_size',
-		'type'    => 'select',
-		'default' => 'md',
+		'name'             => __( 'Text Size', 'mai-pro-engine' ),
+		'id'               => 'text_size',
+		'type'             => 'select',
+		'show_option_none' => __( '- None -', 'genesis' ),
 		'options' => array(
 			'xs' => __( 'Extra Small', 'mai-pro-engine' ),
 			'sm' => __( 'Small', 'mai-pro-engine' ),
-			'md' => __( 'Medium', 'mai-pro-engine' ),
+			'md' => __( 'Medium (Default)', 'mai-pro-engine' ),
 			'lg' => __( 'Large', 'mai-pro-engine' ),
 			'xl' => __( 'Extra Large', 'mai-pro-engine' ),
 		),
 	) );
 
 	// Advanced Settings
-	$sections -> add_group_field( $section, array(
+	$sections->add_group_field( $section, array(
 		'name'       => __( 'Advanced Settings', 'mai-pro-engine' ),
 		'id'         => 'advanced_settings_title',
 		'type'       => 'title',
