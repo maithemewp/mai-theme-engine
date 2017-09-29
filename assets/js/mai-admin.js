@@ -149,6 +149,11 @@
 
 		});
 
+		$section.on( 'click', '.mai-section-content', function(e) {
+			e.preventDefault();
+			$section.removeClass( 'mai-settings-open' );
+		});
+
 		$section.on( 'click', '.mai-section-settings-close', function(e) {
 			e.preventDefault();
 			$section.removeClass( 'mai-settings-open' );

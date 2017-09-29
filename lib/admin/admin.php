@@ -90,6 +90,10 @@ function mai_login_logo_css() {
 			height: auto !important;
 			margin: 0 auto !important;
 		}
+		.login #login_error,
+		.login .message {
+			margin-top: 16px !important;
+		}
 	</style>';
 
 	// Add the filter that adds the inline logo

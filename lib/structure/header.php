@@ -11,32 +11,51 @@
 *
 * @return  string|HTML  The title markup
  */
-add_filter( 'genesis_seo_title','mai_do_custom_logo', 10, 3 );
-function mai_do_custom_logo( $title, $inside, $wrap ) {
+add_filter( 'genesis_seo_title','mai_custom_logo', 10, 3 );
+function mai_custom_logo( $title, $inside, $wrap ) {
 
-	$site_title = get_bloginfo( 'name' );
-
-	// If the custom logo function and custom logo exist, set the logo image element inside the wrapping tags.
-	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
-		$inside = get_custom_logo();
-	} else {
-		// If no custom logo, wrap around the site name.
-		$inside = sprintf( '<a href="%s" title="%s">%s</a>', trailingslashit( home_url() ), esc_attr( $site_title ), esc_html( $site_title ) );
+	// If no custom logo, return the original title.
+	if ( ! ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) ) {
+		return $title;
 	}
 
-	// Determine which wrapping tags to use.
-	$wrap = genesis_is_root_page() && 'title' === genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : 'p';
+	// Build the title with logo.
+	return genesis_markup( array(
+		'open'    => sprintf( "<{$wrap} %s>", genesis_attr( 'site-title' ) ),
+		'close'   => "</{$wrap}>",
+		'content' => get_custom_logo(),
+		'context' => 'site-title',
+		'echo'    => false,
+		'params'  => array(
+			'wrap' => $wrap,
+		),
+	) );
 
-	// A little fallback, in case a SEO plugin is active.
-	$wrap = genesis_is_root_page() && ! genesis_get_seo_option( 'home_h1_on' ) ? 'h1' : $wrap;
+}
 
-	// And finally, $wrap in h1 if HTML5 & semantic headings enabled.
-	$wrap = genesis_html5() && genesis_get_seo_option( 'semantic_headings' ) ? 'h1' : $wrap;
+/**
+ * If the front page is a static page, wrap the site title in an <h1>.
+ *
+ * @param $wrap
+ *
+ * @return string
+ */
+add_filter( 'genesis_site_title_wrap', 'mai_site_title_wrap' );
+function mai_site_title_wrap( $wrap ) {
 
-	// Rebuild the markup
-	$title = sprintf( '<%s %s>%s</%s>', $wrap, genesis_attr( 'site-title' ), $inside, $wrap );
+	// Bail if not a singular Sections template without banner enabled.
+	if ( ! is_singular() && ! is_page_template( 'sections.php' ) && ! mai_is_banner_area_enabled() ) {
+		return $wrap;
+	}
 
-	return $title;
+	$has_title = mai_sections_has_title( get_the_ID() );
+
+	// If no title, use h1 on title.
+	if ( ! $has_title ) {
+		$wrap = 'h1';
+	}
+
+	return $wrap;
 }
 
 /**
@@ -107,17 +126,17 @@ function mai_do_header() {
 			// Build header before markup.
 			if ( $before ) {
 
-				$before_atts['class'] = 'header-before';
+				$before_atts['class'] = 'header-before text-sm';
 
 				$before = sprintf( '<div %s><div class="wrap">%s</div></div>', genesis_attr( 'header-before', $before_atts ), $before );
 
 			}
 
 			// Default classes.
-			$row['class'] = 'site-header-row row middle-xs';
+			$row['class'] = 'site-header-row row middle-xs between-xs';
 
 			// Justification.
-			$row['class'] .= ( $left || $right ) ? ' between-xs' : ' around-xs';
+			$row['class'] .= ( ! $left || $right ) ? ' around-md' : '';
 
 			// Output with row open.
 			$output = $before . $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );

@@ -108,6 +108,7 @@ function mai_get_default_options() {
 		'banner_id'                 => '',
 		'banner_overlay'            => '',
 		'banner_inner'              => '',
+		'banner_height'             => 'md',
 		'banner_content_width'      => 'auto',
 		'banner_align_text'         => 'center',
 		'banner_featured_image'     => 0,
@@ -134,9 +135,10 @@ function mai_get_default_options() {
 
 	/**
 	 * Get post types.
-	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
+	 *
+	 * @return  array  Post types  array( 'name' => object )
 	 */
-	$post_types = genesis_get_cpt_archive_types();
+	$post_types = mai_get_cpt_settings_post_types();
 
 	if ( $post_types ) {
 		// Loop through em.

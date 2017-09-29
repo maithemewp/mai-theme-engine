@@ -33,9 +33,10 @@ function mai_cpt_settings_init() {
 
 	/**
 	 * Get post types.
-	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
+	 *
+	 * @return  array  Post types  array( 'name' => object )
 	 */
-	$post_types = genesis_get_cpt_archive_types();
+	$post_types = mai_get_cpt_settings_post_types();
 
 	// Bail if no post types.
 	if ( ! $post_types ) {

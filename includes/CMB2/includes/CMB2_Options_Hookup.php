@@ -106,8 +106,8 @@ class CMB2_Options_Hookup extends CMB2_hookup {
 			add_action( "admin_print_styles-{$page_hook}", array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
 		}
 
-		if ( ! empty( $_GET['updated'] ) ) {
-			if ( 'true' === $_GET['updated'] ) {
+		if ( ! empty( $_GET['settings-updated'] ) ) {
+			if ( 'true' === $_GET['settings-updated'] ) {
 				add_settings_error( "{$this->option_key}-notices", '', __( 'Settings updated.', 'cmb2' ), 'updated' );
 			} else {
 				add_settings_error( "{$this->option_key}-notices", '', __( 'Nothing to update.', 'cmb2' ), 'notice-warning' );
@@ -121,7 +121,7 @@ class CMB2_Options_Hookup extends CMB2_hookup {
 	 * @since  2.2.5
 	 */
 	public function options_page_output() {
-		settings_errors( "{$this->option_key}-notices" );
+		$this->maybe_output_settings_notices();
 
 		$callback = $this->cmb->prop( 'display_cb' );
 		if ( is_callable( $callback ) ) {
@@ -140,6 +140,23 @@ class CMB2_Options_Hookup extends CMB2_hookup {
 			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Outputs the settings notices if a) not a sub-page of 'options-general.php'
+	 * (because settings_errors() already called in wp-admin/options-head.php),
+	 * and b) the 'disable_settings_errors' prop is not set or truthy.
+	 *
+	 * @since  2.2.5
+	 * @return void
+	 */
+	public function maybe_output_settings_notices() {
+		global $parent_file;
+
+		// The settings sub-pages will already have settings_errors() called in wp-admin/options-head.php
+		if ( 'options-general.php' !== $parent_file && ! $this->cmb->prop( 'disable_settings_errors' ) ) {
+			settings_errors( "{$this->option_key}-notices" );
+		}
 	}
 
 	/**
@@ -174,7 +191,7 @@ class CMB2_Options_Hookup extends CMB2_hookup {
 				->save_fields( $this->option_key, $this->cmb->object_type(), $_POST )
 				->was_updated(); // Will be false if no values were changed/updated.
 
-			$url = add_query_arg( 'updated', $updated ? 'true' : 'false', $url );
+			$url = add_query_arg( 'settings-updated', $updated ? 'true' : 'false', $url );
 		}
 
 		wp_safe_redirect( esc_url_raw( $url ), WP_Http::SEE_OTHER );
@@ -199,4 +216,21 @@ class CMB2_Options_Hookup extends CMB2_hookup {
 		return update_site_option( $this->option_key, $option_value );
 	}
 
+	/**
+	 * Magic getter for our object.
+	 *
+	 * @param string $field
+	 * @throws Exception Throws an exception if the field is invalid.
+	 * @return mixed
+	 */
+	public function __get( $field ) {
+		switch ( $field ) {
+			case 'object_type':
+			case 'option_key':
+			case 'cmb':
+				return $this->{$field};
+			default:
+				throw new Exception( sprintf( esc_html__( 'Invalid %1$s property: %2$s', 'cmb2' ), __CLASS__, $field ) );
+		}
+	}
 }

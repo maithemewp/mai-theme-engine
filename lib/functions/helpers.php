@@ -579,13 +579,14 @@ function mai_add_background_color_attributes( $attributes, $color ) {
 /**
  * Add background color HTML attributes to an element.
  *
- * @param   array   $attributes  The existing HTML attributes.
- * @param   string  $image_id    The image ID.
- * @param   string  $image_size  The registered image size.
+ * @param   array   $attributes    The existing HTML attributes.
+ * @param   string  $image_id      The image ID.
+ * @param   string  $image_size    The registered image size.
+ * @param   bool    $aspect_ratio  Whether to add aspect ratio class and attributes.
  *
  * @return  array   The modified attributes.
  */
-function mai_add_background_image_attributes( $attributes, $image_id, $image_size ) {
+function mai_add_background_image_attributes( $attributes, $image_id, $image_size, $aspect_ratio = true ) {
 	// Get all registered image sizes
 	global $_wp_additional_image_sizes;
 
@@ -610,23 +611,28 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 		$attributes['class'] .= ' image-bg-none';
 	}
 
-	/**
-	 * Add aspect ratio class, for JS to target.
-	 * We do this even without an image to maintain equal height elements.
-	 */
-	$attributes['class'] .= ' aspect-ratio';
+	if ( $aspect_ratio ) {
 
-	// If image size is in the global (it should be)
-	if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
-		$registered_image = $_wp_additional_image_sizes[ $image_size ];
-		$attributes['data-aspect-width']  = $registered_image['width'];
-		$attributes['data-aspect-height'] = $registered_image['height'];
+		/**
+		 * Add aspect ratio class, for JS to target.
+		 * We do this even without an image to maintain equal height elements.
+		 */
+		$attributes['class'] .= ' aspect-ratio';
+
+		// If image size is in the global (it should be)
+		if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
+			$registered_image = $_wp_additional_image_sizes[ $image_size ];
+			$attributes['data-aspect-width']  = $registered_image['width'];
+			$attributes['data-aspect-height'] = $registered_image['height'];
+		}
+		// Otherwise use the actual image dimensions
+		elseif ( $image ) {
+			$attributes['data-aspect-width']  = $image[1];
+			$attributes['data-aspect-height'] = $image[2];
+		}
+
 	}
-	// Otherwise use the actual image dimensions
-	elseif ( $image ) {
-		$attributes['data-aspect-width']  = $image[1];
-		$attributes['data-aspect-height'] = $image[2];
-	}
+
 	return $attributes;
 }
 
@@ -649,6 +655,37 @@ function mai_is_admin_woo_shop_page() {
 	}
 	// Nope.
 	return false;
+}
+
+function mai_get_cpt_settings_post_types() {
+	return apply_filters( 'mai_cpt_settings_post_types', genesis_get_cpt_archive_types() );
+}
+
+function mai_sections_has_title( $post_id ) {
+
+	// Get the sections.
+	$sections = get_post_meta( $post_id, 'mai_sections', true );
+
+	// No sections.
+	if ( ! $sections ) {
+		return false;
+	}
+
+	// No title yet.
+	$has_title = false;
+
+	// Loop through each section.
+	foreach ( (array) $sections as $section ) {
+		// Skip if no title.
+		if ( empty( $section['title'] ) ) {
+			continue;
+		}
+		// We have a title, change variable and break the loop.
+		$has_title = true;
+		break;
+	}
+
+	return $has_title;
 }
 
 /**

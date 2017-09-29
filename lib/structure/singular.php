@@ -100,6 +100,17 @@ function mai_remove_singular_meta() {
 	}
 }
 
+// Add slow scroll class to comments link
+add_filter( 'genesis_post_comments_shortcode', 'mai_slow_scroll_comments_link', 10, 2 );
+function mai_slow_scroll_comments_link( $output, $atts ) {
+	if ( ! is_singular() ) {
+		return $output;
+	}
+	$output = str_replace( 'a href', 'a class="scroll-to" href', $output );
+	$output = str_replace( trailingslashit( get_permalink() ), '', $output );
+	return $output;
+}
+
 /**
  * Add Flexington classes for comments.
  */

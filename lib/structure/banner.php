@@ -46,8 +46,9 @@ function mai_do_banner_area() {
 		'overlay'       => genesis_get_option( 'banner_overlay' ),
 		'inner'         => genesis_get_option( 'banner_inner' ),
 		'content_width' => genesis_get_option( 'banner_content_width' ),
-		'height'        => 'sm',
+		'height'        => genesis_get_option( 'banner_height' ),
 		'styles'        => '',
+		'text_size'     => 'lg',
 	);
 
 	// Get the image ID
@@ -118,35 +119,29 @@ function mai_do_banner_content() {
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
-		// Use an h2 on front page, since the site title/logo is h1
-		add_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
-		function mai_filter_entry_title_wrap( $wrap ) {
-			return 'h2';
-		}
-
 		genesis_do_post_title();
-		echo has_excerpt( get_the_ID() ) ? wpautop( get_the_excerpt( get_the_ID() ) ) : '';
-
+		echo has_excerpt( $front_page_id ) ? get_the_excerpt( $front_page_id ) : '';
 	}
 
 	// Do static blog banner content
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		printf( '<div %s>', genesis_attr( 'posts-page-description' ) );
 			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page_id ) );
-			echo has_excerpt( $posts_page_id ) ? wpautop( get_the_excerpt( $posts_page_id ) ) : '';
+			echo has_excerpt( $posts_page_id ) ? get_the_excerpt( $posts_page_id ) : '';
 		echo '</div>';
 	}
 
 	// Do singular banner content
 	elseif ( is_singular() && ! is_front_page() && ! is_home() ) {
 
+		global $post;
 		// Remove post title
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
 		genesis_do_post_title();
-		echo has_excerpt( get_the_ID() ) ? wpautop( get_the_excerpt( get_the_ID() ) ) : '';
+		echo has_excerpt( get_the_ID() ) ? get_the_excerpt( get_the_ID() ) : '';
 	}
 
 	// Do author archive banner content
@@ -178,16 +173,20 @@ function mai_do_banner_content() {
 	// Bail if WooCommerce is not active
 	elseif ( class_exists( 'WooCommerce' ) ) {
 
-		 if ( is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+		if ( is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+
 			// Get our new data
 			$headline   = get_the_title( $shop_page_id );
 			$headline   = $headline ? sprintf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), strip_tags( $headline ) ) : '';
 			$intro_text = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
 			printf( '<div %s>%s</div>', genesis_attr( 'cpt-archive-description' ), $headline . $intro_text );
+
 		} elseif ( is_product() ) {
 
-			// Use an h2 on front page, since the product title will be h1
-			// We have to do this up top because is_singular() will output product title
+			/**
+			 * Use an h2 on front page, since the product title will be h1.
+			 * We have to do this up top because is_singular() will output product title
+			 */
 			add_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
 			function mai_filter_entry_title_wrap( $wrap ) {
 				return 'h2';
