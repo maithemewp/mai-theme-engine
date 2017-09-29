@@ -174,6 +174,36 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		)
 	);
 
+	// Height.
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $settings_field, 'banner_height' ),
+		array(
+			'default'           => sanitize_key( mai_get_default_option( 'banner_height' ) ),
+			'type'              => 'option',
+			'sanitize_callback' => 'sanitize_key',
+		)
+	);
+	$wp_customize->add_control(
+		'banner_height',
+		array(
+			'label'    => __( 'Height', 'mai-pro-engine' ),
+			'section'  => $section,
+			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_height' ),
+			'priority' => 10,
+			'type'     => 'select',
+			'choices'  => array(
+				'xs' => __( 'Extra Small', 'mai-pro-engine' ),
+				'sm' => __( 'Small', 'mai-pro-engine' ),
+				'md' => __( 'Medium', 'mai-pro-engine' ),
+				'lg' => __( 'Large', 'mai-pro-engine' ),
+				'xl' => __( 'Extra Large', 'mai-pro-engine' ),
+			),
+			'active_callback' => function() use ( $wp_customize, $settings_field ) {
+				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
+			},
+		)
+	);
+
 	// Content width.
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'banner_content_width' ),
