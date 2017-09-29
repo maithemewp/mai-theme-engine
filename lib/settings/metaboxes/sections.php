@@ -113,10 +113,10 @@ function mai_do_sections_metabox() {
 		'type'    => 'select',
 		'default' => 'md',
 		'options' => array(
-			'auto'  => __( 'Auto (Use height of content)', 'mai-pro-engine' ),
-			'sm'    => __( 'Small', 'mai-pro-engine' ),
-			'md'    => __( 'Medium', 'mai-pro-engine' ),
-			'lg'    => __( 'Large', 'mai-pro-engine' ),
+			'auto' => __( 'Auto (Use height of content)', 'mai-pro-engine' ),
+			'sm'   => __( 'Small', 'mai-pro-engine' ),
+			'md'   => __( 'Medium', 'mai-pro-engine' ),
+			'lg'   => __( 'Large', 'mai-pro-engine' ),
 		),
 	) );
 
