@@ -1,11 +1,22 @@
 ### Changelog
 
-* Added: Add "Text Size" field to Sections template (and [section] shortcode).
-* Changed: Section settings now close when clicking on section content field in a Sections template.
+* Added: Banner "Height" setting in customizer.
+* Added: [section] Add "Text Size" field to Sections template (and [section text_size="lg"] shortcode).
+* Added: [section] Add "wrap_class" parameter to section shortcode to add a class to the wrap div.
+* Added: Filter on 'mai_cpt_settings_post_types' to change which post types get Mai customizer settings support.
+* Added: Single post comments link now slow scrolls to the comments section.
+* Changed: Smarter handling of h1 on site-title, banner, and/or first section title, depending on what is used.
 * Changed: Convert all font sizes to rem/em for 'module' or 'component' based font sizing. Uses "Major Third" sizing ratio.
+* Changed: Sections template now shows breadcrumbs if they are enabled for Pages.
+* Changed: Section settings now close when clicking on section content field in a Sections template.
 * Changed: More thorough and more efficient filter to add custom logo.
+* Changed: Bump normalize.css to 7.0.0.
+* Changed: Move all media queries to mobile-first.
+* Fixed: Single post footer entry meta no longer shows private taxonomies.
 * Fixed: Big mobile menus getting cut off when logged in and showing toolbar.
 * Fixed: [grid] Title spacing when showing image before entry.
+* Fixed: Sections template now properly formats quotes to smart quotes, apostrophes, dashes, ellipses, the trademark symbol, and the multiplication symbol. Via wptexturize().
+* Fixed: Admin login logo spacing when error/notice is displayed.
 
 #### 1.1.5.1 (9/20/17)
 * Fixed: Missing closing div on site header row.
