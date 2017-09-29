@@ -94,7 +94,7 @@ final class Mai_Pro_Engine {
 		define( 'MAI_PRO_ENGINE_VERSION', '1.1.5.1' );
 
 		// DB version.
-		define( 'MAI_PRO_ENGINE_DB_VERSION', '1100' );
+		define( 'MAI_PRO_ENGINE_DB_VERSION', '1160' );
 
 		// Plugin Folder Path.
 		define( 'MAI_PRO_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
