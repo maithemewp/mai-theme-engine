@@ -657,6 +657,16 @@ function mai_is_admin_woo_shop_page() {
 	return false;
 }
 
+/**
+ * Filter the CPT's that get archive settings.
+ * Add via:
+ * $post_types['cpt_name'] = get_post_type_object( 'cpt_name' );
+ *
+ * Remove via:
+ * unset( $post_types['cpt_name'] );
+ *
+ * @return  array  key = post type name and value = post type object.
+ */
 function mai_get_cpt_settings_post_types() {
 	return apply_filters( 'mai_cpt_settings_post_types', genesis_get_cpt_archive_types() );
 }
