@@ -110,8 +110,7 @@ body {
 }
 
 html {
-	/* minimal responsive scaling */
-	font-size: calc(90% + .1vw);
+	font-size: 100%;
 }
 
 body {
@@ -150,10 +149,7 @@ body {
 h1,
 h1.entry-title,
 .banner-area .entry-title,
-.banner-area .archive-title {
-	font-size: 2.441rem; /* rem, so no modular scaling */
-}
-
+.banner-area .archive-title,
 .heading {
 	font-size: 1.953rem;
 }
@@ -309,7 +305,11 @@ h6 {
 .heading {
 	font-weight: bold;
 	text-align: center;
-	margin: 30px auto;
+	margin-bottom: 30px;
+}
+
+.inner > .heading {
+	margin-bottom: 16px;
 }
 
 /* ## Titles
@@ -839,8 +839,7 @@ td {
 	word-break: break-word; /* Non standard for WebKit */
 }
 
-.content,
-.sidebar {
+.content {
 	margin-top: 30px;
 	margin-bottom: 30px;
 }
@@ -862,23 +861,6 @@ td {
 /* remove the bottom margin on the last section of Sections page template */
 .mai-sections .content .section:last-of-type {
 	margin-bottom: -1px;
-}
-
-/* offset section if it's the first element in the content */
-.content-no-sidebars .entry-content > .section:first-child:first-of-type {
-	/* .content (margin-bottom) + .content .entry (padding) + .content .entry (border): (30px + 24px + 1px = 55px) */
-	/* margin-top: -55px; */
-}
-
-.has-banner-area .breadcrumb + .content-sidebar-wrap .content-no-sidebars .entry-content > .section:first-child:first-of-type {
-	/* .breadcrumb has -16px bottom-margin, so just .content .entry (padding 24px) + .content .entry (border 1px): (24px + 1px =  25px) */
-	/* margin-top: -25px; */
-}
-
-/* offset section if it's the last element in the content */
-.content-no-sidebars .entry-content > .section:last-child:last-of-type {
-	/* .content (margin-bottom) + .content .entry (padding) + .section (margin-bottom: (30px + 24px + 30px = 84px) */
-	/* margin-bottom: -84px; */
 }
 
 .entry,
@@ -992,24 +974,29 @@ td {
 	padding-bottom: 0;
 }
 
+.height-xs {
+	padding-top: calc(1.25rem + 1.25vw);
+	padding-bottom: calc(1.25rem + 1.25vw);
+}
+
 .height-sm {
-	padding-top: calc(12px + 2vw);
-	padding-bottom: calc(12px + 2vw);
+	padding-top: calc(1.25rem + 2.441vw);
+	padding-bottom: calc(1.25rem + 2.441vw);
 }
 
 .height-md {
-	padding-top: calc(60px + 3vw);
-	padding-bottom: calc(60px + 3vw);
+	padding-top: calc(1.25rem + 5.96vw);
+	padding-bottom: calc(1.25rem + 5.96vw);
 }
 
 .height-lg {
-	padding-top: calc(120px + 4vw);
-	padding-bottom: calc(120px + 4vw);
+	padding-top: calc(1.25rem + 9.313vw);
+	padding-bottom: calc(1.25rem + 9.313vw);
 }
 
 .height-xl {
-	padding-top: calc(240px + 5vw);
-	padding-bottom: calc(240px + 5vw);
+	padding-top: calc(1.25rem + 14.552vw);
+	padding-bottom: calc(1.25rem + 14.552vw);
 }
 
 .columns > .col {
@@ -1099,7 +1086,7 @@ td {
 --------------------------------------------- */
 
 .inner {
-	padding: calc(1vw + .5em) calc(1vw + 1.5em);
+	padding: 1.563rem;
 }
 
 .inner-light {
@@ -1387,7 +1374,7 @@ img.alignright,
 .breadcrumb {
 	font-size: 0.8em;
 	margin-top: 12px;
-	margin-bottom: -16px; /* offset .content top margin */
+	margin-bottom: 12px;
 }
 
 .breadcrumb a {
@@ -1398,8 +1385,14 @@ img.alignright,
 	color: rgba(0, 0, 0, 0.75);
 }
 
+body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
+	/* offset .content top margin */
+	margin-top: -30px;
+}
+
 .content .archive-description {
 	clear: both; /* mostly for Woo taxonomy results count and ordering */
+	margin-top: 16px;
 	margin-bottom: 30px;
 }
 
@@ -2250,11 +2243,20 @@ img.alignright,
 /* # Site Navigation
 ---------------------------------------------------------------------------------------------------- */
 
+.header-before,
+.header-left,
+.header-right,
+.nav-primary,
+.nav-secondary {
+	display: none;
+}
+
 /* ## General Navigation
 --------------------------------------------- */
 
 .genesis-nav-menu {
-	clear: both;display: -ms-flexbox;display: -webkit-box;display: flex;
+	clear: both;
+	display: -ms-flexbox;display: -webkit-box;display: flex;
 	line-height: 1; /* Fix IE bug, line-height added back on span[itemprop="name"] */
 }
 
@@ -2426,10 +2428,6 @@ img.alignright,
 /* ## Header Navigation
 --------------------------------------------- */
 
-.nav-header {
-	display: -ms-inline-flexbox;display: -webkit-inline-box;display: inline-flex;
-}
-
 .nav-header a {
 	padding: 10px 16px;
 	margin: 0 2px;
@@ -2567,7 +2565,7 @@ img.alignright,
 --------------------------------------------- */
 
 .mai-toggle {
-	display: none;
+	display: -ms-flexbox;display: -webkit-box;display: flex;
 }
 
 .mai-toggle,
@@ -3469,6 +3467,11 @@ li.comment {
 /* # Sidebars
 ---------------------------------------------------------------------------------------------------- */
 
+.sidebar {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
 .sidebar .widget p:last-child,
 .sidebar .widget ul > li:last-of-type,
 .sidebar .widget-area .widget:last-of-type {
@@ -3591,7 +3594,37 @@ li.comment {
 
 @media only screen and (min-width: 993px) {}
 
-@media only screen and (min-width: 769px) {}
+@media only screen and (min-width: 769px) {
+
+	h1,
+	h1.entry-title,
+	.banner-area .entry-title,
+	.banner-area .archive-title {
+		font-size: 2.441rem;
+	}
+
+	.header-before,
+	.header-left,
+	.header-right,
+	.nav-primary,
+	.nav-secondary {
+		display: block;
+	}
+
+	.nav-header {
+		display: -webkit-inline-box;display: -ms-inline-flexbox;display: inline-flex;
+	}
+
+	.mai-toggle {
+		display: none;
+	}
+
+	.sidebar {
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
+
+}
 
 @media only screen and (min-width: 545px) {}
 
@@ -3602,26 +3635,7 @@ li.comment {
 
 @media only screen and (max-width: 992px) {}
 
-@media only screen and (max-width: 768px) {
-
-	.header-before,
-	.header-left,
-	.header-right,
-	.nav-primary,
-	.nav-secondary {
-		display: none;
-	}
-
-	.mai-toggle {
-		display: -ms-flexbox;display: -webkit-box;display: flex;
-	}
-
-	.sidebar {
-		margin-top: 0;
-		margin-bottom: 0;
-	}
-
-}
+@media only screen and (max-width: 768px) {}
 
 @media only screen and (max-width: 544px) {}
 
