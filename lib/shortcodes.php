@@ -82,26 +82,23 @@ final class Mai_Shortcodes {
 	 * enabled embeds inside the shortcodes and
 	 * keep the shorcodes from causing extra p's and br's.
 	 *
+	 * Most of the order comes from /wp-includes/default-filters.php
+	 *
 	 * @param   string|HTML  $content  The unprocessed content.
 	 *
 	 * @return  string|HTML  The processed content.
 	 */
 	function get_processed_content( $content ) {
-		// Trim
-		$content = trim( $content );
-		// Embed any content
 		global $wp_embed;
-		$content = $wp_embed->run_shortcode( $content );
-		$content = $wp_embed->autoembed( $content );
-		// Auto <p>
+		$content = trim( $content );
+		$content = wptexturize( $content );
 		$content = wpautop( $content );
-		// Clean up shortcodes
-		$content = $this->content_filter( $content );
-		// Parse shortcodes
-		$content = do_shortcode( $content );
-		// Cleanup, again
+		$content = $this->content_filter( $content ); // after wpautop, before shortcodes are parsed.
 		$content = shortcode_unautop( $content );
-		// Send it
+		$content = do_shortcode( $content );
+		$content = convert_smilies( $content );
+		$content = $wp_embed->autoembed( $content );
+		$content = $wp_embed->run_shortcode( $content );
 		return $content;
 	}
 
@@ -135,33 +132,21 @@ final class Mai_Shortcodes {
 			'grid',
 		);
 
-		// Array of custom shortcodes requiring the fix
+		// Array of custom shortcodes requiring the fix.
 		$shortcodes = join( '|', $shortcodes );
 
-		$content = $this->cleanup_shortcode_html( $content );
+		// Cleanup.
+		$content = strtr( $content, array ( '<p></p>' => '', '<p>[' => '[', ']</p>' => ']', ']<br />' => ']' ) );
 
-		// Opening tag
+		// Opening tag.
 		$content = preg_replace( "/(<p>)?\[($shortcodes)(\s[^\]]+)?\](<\/p>|<br \/>)?/", "[$2$3]", $content );
 
-		// Closing tag
+		// Closing tag.
 		$content = preg_replace( "/(<p>)?\[\/($shortcodes)](<\/p>|<br \/>)?/", "[/$2]", $content );
 
-		// Return fixed shortcodes
+		// Return fixed shortcodes.
 		return $content;
 
-	}
-
-	function cleanup_shortcode_html( $content ) {
-
-		$array = array (
-			'<p></p>' => '',
-			'<p>['    => '[',
-			']</p>'   => ']',
-			']<br />' => ']'
-		);
-		$content = strtr( $content, $array );
-
-		return $content;
 	}
 
 	function get_callout( $atts, $content = null ) {
@@ -238,36 +223,38 @@ final class Mai_Shortcodes {
 
 		// Shortcode section atts.
 		$args = shortcode_atts( array(
-			'wrapper'       => 'section',
-			'id'            => '',
-			'class'         => '',
 			'align'         => '',
 			'bg'            => '',
-			'image'         => '',
-			'overlay'       => '',
-			'text_size'     => '',
-			'inner'         => '',
-			'title'         => '',
-			'title_wrap'    => 'h2',
+			'class'         => '',
 			'content_width' => '',
 			'height'        => 'md',
+			'id'            => '',
+			'image'         => '',
+			'inner'         => '',
+			'overlay'       => '',
+			'text_size'     => '',
+			'title'         => '',
+			'title_wrap'    => 'h2',
+			'wrapper'       => 'section',
+			'wrap_class'    => '',
 		), $atts, 'section' );
 
 		// Sanitized args.
 		$args = array(
-			'wrapper'       => sanitize_key( $args['wrapper'] ),
-			'id'            => sanitize_html_class( $args['id'] ),
-			'class'         => mai_sanitize_html_classes( $args['class'] ),
 			'align'         => mai_sanitize_keys( $args['align'] ), // left, center, right
 			'bg'            => mai_sanitize_hex_color( $args['bg'] ), // 3 or 6 dig hex color with or without hash
-			'image'         => absint( $args['image'] ),
-			'overlay'       => sanitize_key( $args['overlay'] ),
-			'text_size'     => sanitize_key( $args['text_size'] ),
-			'inner'         => sanitize_key( $args['inner'] ),
-			'title'         => sanitize_text_field( $args['title'] ),
-			'title_wrap'    => sanitize_key( $args['title_wrap'] ),
+			'class'         => mai_sanitize_html_classes( $args['class'] ),
 			'content_width' => sanitize_key( $args['content_width'] ),
 			'height'        => sanitize_key( $args['height'] ),
+			'id'            => sanitize_html_class( $args['id'] ),
+			'image'         => absint( $args['image'] ),
+			'inner'         => sanitize_key( $args['inner'] ),
+			'overlay'       => sanitize_key( $args['overlay'] ),
+			'text_size'     => sanitize_key( $args['text_size'] ),
+			'title'         => sanitize_text_field( $args['title'] ),
+			'title_wrap'    => sanitize_key( $args['title_wrap'] ),
+			'wrapper'       => sanitize_key( $args['wrapper'] ),
+			'wrap_class'    => mai_sanitize_html_classes( $args['wrap_class'] ),
 		);
 
 		$output = '';
@@ -395,11 +382,14 @@ final class Mai_Shortcodes {
 			$section_atts = mai_add_background_color_attributes( $section_atts, $args['bg'] );
 		}
 
-		// If we have an image ID
+		// If we have an image ID.
 		if ( $args['image'] ) {
 
+			// If using aspect ratio.
+			$has_aspect_ratio = empty( $content ) ? true : false;
+
 			// Add the aspect ratio attributes
-			$section_atts = mai_add_background_image_attributes( $section_atts, $args['image'], 'banner' );
+			$section_atts = mai_add_background_image_attributes( $section_atts, $args['image'], 'banner', $has_aspect_ratio );
 
 			/**
 			 * Add content shade class if we don't have inner.
@@ -444,6 +434,10 @@ final class Mai_Shortcodes {
 					case 'auto';
 						$wrap_atts['class'] .= ' height-auto';
 					break;
+					case 'xs':
+					case 'extra-small';
+						$wrap_atts['class'] .= ' height-xs';
+					break;
 					case 'sm':
 					case 'small';
 						$wrap_atts['class'] .= ' height-sm';
@@ -455,6 +449,10 @@ final class Mai_Shortcodes {
 					case 'lg':
 					case 'large':
 						$wrap_atts['class'] .= ' height-lg';
+					break;
+					case 'xl':
+					case 'extra-large':
+						$wrap_atts['class'] .= ' height-xl';
 					break;
 				}
 
@@ -510,6 +508,10 @@ final class Mai_Shortcodes {
 					break;
 				}
 
+			}
+
+			if ( $args['wrap_class'] ) {
+				$wrap_atts['class'] .= ' ' . $args['wrap_class'];
 			}
 
 			$wrap = sprintf( '<div %s>', genesis_attr( 'section-wrap', $wrap_atts, $args ) );
@@ -1107,19 +1109,20 @@ final class Mai_Shortcodes {
 
 		$entry_atts = array();
 
-		// Set the entry classes
+		// Set the entry classes.
 		$entry_atts['class'] = $this->get_entry_classes( $atts );
 
-		// Add the align classes
+		// Add the align classes.
 		$entry_atts['class'] = $this->add_entry_align_classes( $entry_atts['class'], $atts );
 
 		$light_content = false;
 
 		if ( $this->is_image_bg( $atts ) ) {
-			// Get the object ID
+			// Get the object ID.
 			$object_id = $this->get_object_id( $atts, $object );
 			if ( $object_id ) {
-				$entry_atts = $this->add_bg_image( $entry_atts, $atts, $object_id );
+				// Add background image with aspect ratio attributes.
+				$entry_atts = mai_add_background_image_attributes( $entry_atts, $this->get_image_id( $atts, $object_id ), $atts['image_size'] );
 				if ( $has_image_bg ) {
 					$light_content	 = true;
 					// Set dark overlay if we don't have one
@@ -2097,25 +2100,6 @@ final class Mai_Shortcodes {
 			break;
 		}
 		return $id;
-	}
-
-	/**
-	 * Maybe add the featured image as inline style.
-	 *
-	 * @param   array  $attributes  The genesis_attr attributes
-	 * @param   array  $atts        The shortcode atts
-	 *
-	 * @return  array              [description]
-	 */
-	function add_bg_image( $attributes, $atts, $object_id ) {
-
-		// Get the image ID
-		$image_id = $this->get_image_id( $atts, $object_id );
-
-		// Add the image background attributes
-		$attributes = mai_add_background_image_attributes( $attributes, $image_id, $atts['image_size'] );
-
-		return $attributes;
 	}
 
 	/**
