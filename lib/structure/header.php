@@ -11,8 +11,8 @@
 *
 * @return  string|HTML  The title markup
  */
-add_filter( 'genesis_seo_title','mai_do_custom_logo', 10, 3 );
-function mai_do_custom_logo( $title, $inside, $wrap ) {
+add_filter( 'genesis_seo_title','mai_custom_logo', 10, 3 );
+function mai_custom_logo( $title, $inside, $wrap ) {
 
 	// If no custom logo, return the original title.
 	if ( ! ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) ) {
@@ -31,6 +31,31 @@ function mai_do_custom_logo( $title, $inside, $wrap ) {
 		),
 	) );
 
+}
+
+/**
+ * If the front page is a static page, wrap the site title in an <h1>.
+ *
+ * @param $wrap
+ *
+ * @return string
+ */
+add_filter( 'genesis_site_title_wrap', 'mai_site_title_wrap' );
+function mai_site_title_wrap( $wrap ) {
+
+	// Bail if not a singular Sections template without banner enabled.
+	if ( ! is_singular() && ! is_page_template( 'sections.php' ) && ! mai_is_banner_area_enabled() ) {
+		return $wrap;
+	}
+
+	$has_title = mai_sections_has_title( get_the_ID() );
+
+	// If no title, use h1 on title.
+	if ( ! $has_title ) {
+		$wrap = 'h1';
+	}
+
+	return $wrap;
 }
 
 /**
@@ -108,10 +133,10 @@ function mai_do_header() {
 			}
 
 			// Default classes.
-			$row['class'] = 'site-header-row row middle-xs';
+			$row['class'] = 'site-header-row row middle-xs between-xs';
 
 			// Justification.
-			$row['class'] .= ( $left || $right ) ? ' between-xs' : ' around-xs';
+			$row['class'] .= ( ! $left || $right ) ? ' around-md' : '';
 
 			// Output with row open.
 			$output = $before . $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
