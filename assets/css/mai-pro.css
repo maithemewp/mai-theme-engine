@@ -975,28 +975,28 @@ td {
 }
 
 .height-xs {
-	padding-top: calc(1.25rem + 1.25vw);
-	padding-bottom: calc(1.25rem + 1.25vw);
+	padding-top: calc(1rem + 1vw);
+	padding-bottom: calc(1rem + 1vw);
 }
 
 .height-sm {
-	padding-top: calc(1.25rem + 2.441vw);
-	padding-bottom: calc(1.25rem + 2.441vw);
+	padding-top: calc(1rem + 1.953vw);
+	padding-bottom: calc(1rem + 1.953vw);
 }
 
 .height-md {
-	padding-top: calc(1.25rem + 5.96vw);
-	padding-bottom: calc(1.25rem + 5.96vw);
+	padding-top: calc(1rem + 3.815vw);
+	padding-bottom: calc(1rem + 3.815vw);
 }
 
 .height-lg {
-	padding-top: calc(1.25rem + 9.313vw);
-	padding-bottom: calc(1.25rem + 9.313vw);
+	padding-top: calc(1rem + 7.451vw);
+	padding-bottom: calc(1rem + 7.451vw);
 }
 
 .height-xl {
-	padding-top: calc(1.25rem + 14.552vw);
-	padding-bottom: calc(1.25rem + 14.552vw);
+	padding-top: calc(1rem + 14.552vw);
+	padding-bottom: calc(1rem + 14.552vw);
 }
 
 .columns > .col {

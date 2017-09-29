@@ -23,8 +23,8 @@ function mai_update_database_version() {
 		mai_upgrade_1100();
 	}
 
-	if ( $option_db_version < '1160' ) {
-		mai_upgrade_1160();
+	if ( $option_db_version < '1161' ) {
+		mai_upgrade_1161();
 	}
 
 	// Update the version number option.
@@ -34,9 +34,9 @@ function mai_update_database_version() {
 /**
  * Update banner_height to 'md' if banner image is set.
  *
- * @since 1.1.6
+ * @since 1.1.6.1
  */
-function mai_upgrade_1160() {
+function mai_upgrade_1161() {
 
 	// Banner disabled.
 	if ( ! mai_is_banner_area_enabled_globally() ) {
@@ -47,10 +47,9 @@ function mai_upgrade_1160() {
 	if ( genesis_get_option( 'banner_id' ) ) {
 		// Update banner_height.
 		genesis_update_settings( array(
-			'banner_height' => 'md',
+			'banner_height' => 'lg',
 		) );
 	}
-
 
 }
 

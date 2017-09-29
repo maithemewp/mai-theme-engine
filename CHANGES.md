@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 1.1.6.1 (9/29/17)
+* Added: Extra Small and Extra Large height options to Sections template.
+* Fixed: Height ratios for more consistent scaling.
+* Fixed: Banner height upgrade default to 'lg' if image used.
+
 #### 1.1.6 (9/29/17)
 * Added: Banner "Height" setting in customizer.
 * Added: [section] Add "Text Size" field to Sections template (and [section text_size="lg"] shortcode).
