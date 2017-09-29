@@ -1,32 +1,32 @@
 <?php
 
-// Add custom body class to the head
+// Add custom body class to the head.
 add_filter( 'body_class', 'mai_sections_page_body_class' );
 function mai_sections_page_body_class( $classes ) {
 	$classes[] = 'mai-sections';
 	return $classes;
 }
 
-// Remove breadcrumbs
-remove_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 12 );
-
-// Remove page title
+// Remove page title.
 remove_action('genesis_entry_header', 'genesis_do_post_title');
 
-// Remove the post content
+// Remove the post content.
 remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
 
-// Add sections to the content
+// Add sections to the content.
 add_action( 'genesis_entry_content', 'mai_do_sections_loop' );
 function mai_do_sections_loop() {
 
-	// Get the sections
+	// Get the sections.
 	$sections = get_post_meta( get_the_ID(), 'mai_sections', true );
 
-	// Bail if no sections
+	// Bail if no sections.
 	if ( ! $sections ) {
 		return;
 	}
+
+	$has_banner = mai_is_banner_area_enabled();
+	$has_h1     = false;
 
 	$settings = array(
 		'align',
@@ -52,6 +52,12 @@ function mai_do_sections_loop() {
 			$args[ $setting ] = isset( $section[ $setting ] ) ? $section[ $setting ] : '';
 		}
 
+		// Use h1 for title if no banner, no h1 yet, and we have title.
+		if ( ! $has_banner && ! $has_h1 && ! empty( $section['title'] ) ) {
+			$args['title_wrap'] = 'h1';
+			$has_h1             = true;
+		}
+
 		// Set the bg image.
 		$args['image'] = isset( $section['image_id'] ) ? $section['image_id'] : '';
 
@@ -64,7 +70,6 @@ function mai_do_sections_loop() {
 		}
 
 		echo mai_get_section( $content, $args );
-
 	}
 
 }
