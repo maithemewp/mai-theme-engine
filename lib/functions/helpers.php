@@ -8,6 +8,12 @@
  */
 function mai_is_content_archive() {
 
+	global $wp_query;
+
+	if ( ! $wp_query->is_main_query() ) {
+		return false;
+	}
+
 	$is_archive = false;
 
 	// Blog
@@ -19,8 +25,6 @@ function mai_is_content_archive() {
 		$is_archive = true;
 	}
 	// CPT archive - this may be called too early to use get_post_type()
-	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-	// elseif ( is_post_type_archive() && post_type_supports( get_query_var( 'post_type' ), 'mai-cpt-settings' ) ) {
 	elseif ( is_post_type_archive() ) {
 		$is_archive = true;
 	}
