@@ -28,9 +28,9 @@
  *
  * @return  void
  */
-add_action( 'init', 'mai_cpt_settings_init_og', 999 );
-function mai_cpt_settings_init_og() {
-return;
+add_action( 'init', 'mai_cpt_settings_init', 999 );
+function mai_cpt_settings_init() {
+
 	/**
 	 * Get post types.
 	 *
@@ -440,28 +440,24 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		)
 	);
 
-	if ( $settings['layout'] && $settings[$single_layout_key] ) {
-
-		// Layouts break.
-		$wp_customize->add_setting(
-			_mai_customizer_get_field_name( $settings_field, 'cpt_archive_layouts_break' ),
+	// Layouts break.
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $settings_field, 'cpt_archive_layouts_break' ),
+		array(
+			'default' => '',
+			'type'    => 'option',
+		)
+	);
+	$wp_customize->add_control(
+		new Mai_Customize_Control_Break( $wp_customize,
+			$prefix . 'cpt_archive_layouts_break',
 			array(
-				'default' => '',
-				'type'    => 'option',
+				'label'    => __( 'Layouts', 'mai-pro-engine' ),
+				'section'  => $section,
+				'settings' => false,
 			)
-		);
-		$wp_customize->add_control(
-			new Mai_Customize_Control_Break( $wp_customize,
-				$prefix . 'cpt_archive_layouts_break',
-				array(
-					'label'    => __( 'Layouts', 'mai-pro-engine' ),
-					'section'  => $section,
-					'settings' => false,
-				)
-			)
-		);
-
-	}
+		)
+	);
 
 	// Archive Layout.
 	if ( $settings['layout'] ) {

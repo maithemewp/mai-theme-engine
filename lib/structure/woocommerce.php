@@ -23,9 +23,6 @@ add_theme_support( 'wc-product-gallery-slider' );
 // Remove genesis entry meta support.
 add_action( 'init', 'mai_woocommerce_int', 99 );
 function mai_woocommerce_int() {
-	if ( ! class_exists( 'WooCommerce') ) {
-		return;
-	}
 	remove_post_type_support( 'product', 'genesis-entry-meta-before-content' );
 	remove_post_type_support( 'product', 'genesis-entry-meta-after-content' );
 }
@@ -85,6 +82,8 @@ function mai_woo_product_theme_settings_defaults( $settings ) {
 }
 
 /**
+ * WHY IS THIS NOT RUNNING IN THE CUSTOMIZER?!?!?!?!
+ *
  * Set some cpt-archive-settings defaults for WooCommerce Shop/Products.
  *
  * @param  array   $settings   The default settings (already modified by Mai).

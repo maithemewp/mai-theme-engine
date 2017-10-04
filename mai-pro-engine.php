@@ -125,9 +125,6 @@ final class Mai_Pro_Engine {
 	 */
 	private function setup() {
 
-		// Classes.
-		require_once MAI_PRO_ENGINE_PLUGIN_DIR . 'classes/class-cpt-settings.php';
-
 		// Includes (Vendor).
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
@@ -297,7 +294,6 @@ final class Mai_Pro_Engine {
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'admin/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
-			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'integrations/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/customizer/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }

@@ -1,8 +1,5 @@
 ### Changelog
 
-* Added: Genesis column classes for backwards compatibility with existing sites and plugins.
-* Fixed: Added is_main_query() check to content archive function.
-
 #### 1.1.6.1 (9/29/17)
 * Added: Extra Small and Extra Large height options to Sections template.
 * Fixed: Height ratios for more consistent scaling.
