@@ -1956,6 +1956,58 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	display: none;
 }
 
+/* ## Genesis Author Pro
+--------------------------------------------- */
+
+.archive.mai-author-pro .content .entry {
+	text-align: center;
+}
+
+.archive.mai-author-pro .author-pro-featured-image {
+	position: relative;
+	overflow: hidden;
+}
+
+.single-books .genesis-author-pro-book-description {
+	/* clear: none; */
+	/* float: left; */
+}
+
+.single-books .genesis-author-pro-book-details {
+	/* float: right; */
+}
+
+.archive.genesis-author-pro .author-pro-featured-image,
+.author-pro-featured-image a,
+.single-books .author-pro-featured-image {
+	/* display: inline-block; */
+	/* max-width: 100%; */
+	/* overflow: hidden; */
+	/* position: relative; */
+}
+
+.author-pro-featured-image.image-aligncenter {
+	/* text-align: center; */
+}
+
+.book-featured-text-banner {
+	/* -moz-transform: rotate(45deg); */
+	/* -ms-transform: rotate(45deg); */
+	/* -o-transform: rotate(45deg); */
+	/* -webkit-transform: rotate(45deg); */
+	/* background-color: #000; */
+	/* color: #fff; */
+	/* font-size: 10px; */
+	/* font-weight: 700; */
+	/* padding: 6px 12px; */
+	/* position: absolute; */
+	/* right: -35px; */
+	/* text-align: center; */
+	/* text-transform: uppercase; */
+	/* top: 30px; */
+	/* width: 160px; */
+	}
+
 /* ## Jetpack
 --------------------------------------------- */
 
