@@ -921,7 +921,7 @@ td {
 
 .banner-area > .width-full,
 .content-no-sidebars .width-full {
-	max-width: 100%;
+	max-width: 100vw;
 }
 
 .content-no-sidebars .width-full {
