@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.6.2 (10/10/17)
+* Fixed: Duplicate h1's on some posts/pages under certain conditions.
+
 #### 1.1.6.1 (9/29/17)
 * Added: Extra Small and Extra Large height options to Sections template.
 * Fixed: Height ratios for more consistent scaling.
