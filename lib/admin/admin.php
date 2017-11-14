@@ -19,6 +19,17 @@ function mai_admin_enqueue_scripts() {
 }
 
 /**
+ * Yoast (and possibly others) run do_shortcode on category descriptions in admin list,
+ * which blows things up on [grid] when parent="current" and it searches for the category/post ID.
+ *
+ * @return  string
+ */
+add_filter( 'category_description', 'mai_limit_term_description' );
+function mai_limit_term_description( $desc ) {
+	return wp_trim_words( strip_tags( $desc ), 24, '...' );
+}
+
+/**
  * Adds a new select bar to the WP editor
  * Insert 'styleselect' into the $buttons array
  * _2 places the new button on the second line

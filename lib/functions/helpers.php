@@ -280,7 +280,7 @@ function mai_get_section( $content, $args = array() ) {
  * @return  string|HTML
  */
 function mai_get_grid( $args ) {
-	return Mai_Shortcodes()->get_grid( $args );
+	return Mai_Shortcodes()->get_grid( $args, $args );
 }
 
 /**

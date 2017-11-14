@@ -1484,14 +1484,14 @@ final class Mai_Shortcodes {
 		}
 
 		/**
-		 * Temporarily disabled cause this is coming from [grid] and [columns] now
-		 *
 		 * Filter the arguments passed to WP_Query.
 		 *
-		 * @param array $args          Parsed arguments to pass to WP_Query.
-		 * @param array $original_atts Original attributes passed to the shortcode.
+		 * @param   array  $args           Parsed arguments to pass to WP_Query.
+		 * @param   array  $original_atts  Original attributes passed to the shortcode.
+		 *
+		 * @return  array  The args,
 		 */
-		// $args = apply_filters( 'mai_grid_args', $args, $original_atts );
+		$args = apply_filters( 'mai_grid_args', $args, $original_atts );
 
 		// Get our query
 		$query = new WP_Query( $args );
@@ -1700,7 +1700,7 @@ final class Mai_Shortcodes {
 	}
 
 
-	function get_terms( $atts ) {
+	function get_terms( $atts, $original_atts ) {
 
 		$number = $this->get_number( $atts );
 
@@ -1747,13 +1747,23 @@ final class Mai_Shortcodes {
 		}
 
 		// If post parent attribute, set up parent
-		if ( ! empty($atts['parent']) ) {
+		if ( ! is_admin() && ! empty($atts['parent']) ) {
 			if ( ( is_category() || is_tag() || is_tax() ) && 'current' == $atts['parent'] ) {
 				$args['parent'] = get_queried_object_id();
 			} else {
 				$args['parent'] = intval( $atts['parent'] );
 			}
 		}
+
+		/**
+		 * Filter the arguments passed to WP_Query.
+		 *
+		 * @param   array  $args           Parsed arguments to pass to WP_Query.
+		 * @param   array  $original_atts  Original attributes passed to the shortcode.
+		 *
+		 * @return  array  The args,
+		 */
+		$args = apply_filters( 'mai_grid_args', $args, $original_atts );
 
 		$terms = get_terms( $args );
 

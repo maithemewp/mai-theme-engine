@@ -44,8 +44,13 @@ function mai_custom_logo( $title, $inside, $wrap ) {
 add_filter( 'genesis_site_title_wrap', 'mai_site_title_wrap' );
 function mai_site_title_wrap( $wrap ) {
 
-	// Bail if not a singular Sections template without banner enabled.
-	if ( ! ( is_singular() && is_page_template( 'sections.php' ) && mai_is_banner_area_enabled() ) ) {
+	// Bail if not a singular Sections template.
+	if ( ! ( is_singular() && is_page_template( 'sections.php' ) ) ) {
+		return $wrap;
+	}
+
+	// Bail if banner area is enabled since this should have the h1.
+	if ( mai_is_banner_area_enabled() ) {
 		return $wrap;
 	}
 
