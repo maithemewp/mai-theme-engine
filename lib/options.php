@@ -12,31 +12,18 @@
 add_filter( 'pre_update_option_genesis-settings', 'mai_enforce_custom_genesis_settings', 10, 2 );
 function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
 
-	// Bail if this isn't happening from a form submission page.
-	if ( ! isset( $_POST ) || empty( $_POST ) ) {
-		return $new_value;
-	}
-
-	// Bail if this isn't happening on a page that's submitting a 'genesis-settings' form.
-	if ( ! isset( $_POST[ 'genesis-settings' ] ) || empty( $_POST[ 'genesis-settings' ] ) ) {
-		return $new_value;
-	}
-
-	// Get the submitted and existing settings values.
-	$values   = $_POST[ 'genesis-settings' ];
 	$settings = get_option( 'genesis-settings' );
 
 	// Loop through em.
 	foreach ( (array) $settings as $key => $value ) {
 		/**
-		 * If a custom setting is not part of the $_POST submission,
+		 * If a custom setting is not part of what's getting updated,
 		 * we need to add to the $new_value array it so it's not lost.
 		 */
 		if ( ! isset( $values[ $key ] ) ) {
 			$new_value[ $key ] = genesis_get_option( $key );
 		}
 	}
-
 	return $new_value;
 }
 

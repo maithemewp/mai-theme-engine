@@ -1,5 +1,10 @@
 ### Changelog
 
+#### 1.1.7 (10/14/17)
+* Fixed: Some custom settings getting cleared during Genesis updates.
+* Fixed: Shortcodes getting parsed by Yoast/WPSEO would break things if [grid] was used with parent="current" as a parameter.
+* Fixed: Duplicate h1's, again.
+
 #### 1.1.6.2 (10/10/17)
 * Fixed: Duplicate h1's on some posts/pages under certain conditions.
 
