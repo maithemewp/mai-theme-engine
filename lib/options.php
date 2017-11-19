@@ -12,16 +12,14 @@
 add_filter( 'pre_update_option_genesis-settings', 'mai_enforce_custom_genesis_settings', 10, 2 );
 function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
 
-	$settings = get_option( 'genesis-settings' );
-
-	// Loop through em.
-	foreach ( (array) $settings as $key => $value ) {
+	// Loop through the old values array.
+	foreach ( (array) $old_value as $key => $value ) {
 		/**
 		 * If a custom setting is not part of what's getting updated,
 		 * we need to add to the $new_value array it so it's not lost.
 		 */
-		if ( ! isset( $values[ $key ] ) ) {
-			$new_value[ $key ] = genesis_get_option( $key );
+		if ( ! isset( $new_value[ $key ] ) ) {
+			$new_value[ $key ] = $old_value[ $key ];
 		}
 	}
 	return $new_value;
