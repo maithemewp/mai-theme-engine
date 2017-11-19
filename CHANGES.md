@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.7.1 (10/18/17)
+* Fixed: Some custom Mai settings were not saving correctly in customizer.
+
 #### 1.1.7 (10/14/17)
 * Fixed: Some custom settings getting cleared during Genesis updates.
 * Fixed: Shortcodes getting parsed by Yoast/WPSEO would break things if [grid] was used with parent="current" as a parameter.
