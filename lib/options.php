@@ -27,26 +27,6 @@ function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
 	return $new_value;
 }
 
-function write_to_file( $value ) {
-	/**
-	 * This function for testing & debuggin only.
-	 * Do not leave this function working on your site.
-	 */
-	$file   = dirname(FILE) . '/__data.txt';
-	$handle = fopen( $file, 'a' );
-	ob_start();
-	if ( is_array( $value ) || is_object( $value ) ) {
-		print_r( $value );
-	} elseif ( is_bool( $value ) ) {
-		var_dump( $value );
-	} else {
-		echo $value;
-	}
-	echo "\r\n\r\n";
-	fwrite( $handle, ob_get_clean() );
-	fclose( $handle );
-}
-
 /**
  * Filter the default options, adding our custom settings.
  * CPT settings defaults are filtered in /customizer/custom-post-types.php
