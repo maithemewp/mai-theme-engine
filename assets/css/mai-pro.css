@@ -873,6 +873,7 @@ td {
 	margin-bottom: 30px;
 }
 
+.callout:empty,
 .entry-header:empty,
 .entry .entry-header:empty,
 .flex-entry .entry-header:empty,
@@ -3189,6 +3190,10 @@ p.entry-meta {
 	color: #555;
 	font-size: 0.8em;
 	margin-bottom: 16px;
+}
+
+.entry-header .entry-meta > * {
+	display: inline-block;
 }
 
 .entry-header .entry-meta a {
