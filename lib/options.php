@@ -16,13 +16,35 @@ function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
 	foreach ( (array) $old_value as $key => $value ) {
 		/**
 		 * If a custom setting is not part of what's getting updated,
+		 * or the new value is different than the old,
 		 * we need to add to the $new_value array it so it's not lost.
 		 */
-		if ( ! isset( $new_value[ $key ] ) ) {
+		if ( ! isset( $new_value[ $key ] ) || $value !== $new_value[ $key ] ) {
 			$new_value[ $key ] = $old_value[ $key ];
 		}
 	}
+
 	return $new_value;
+}
+
+function write_to_file( $value ) {
+	/**
+	 * This function for testing & debuggin only.
+	 * Do not leave this function working on your site.
+	 */
+	$file   = dirname(FILE) . '/__data.txt';
+	$handle = fopen( $file, 'a' );
+	ob_start();
+	if ( is_array( $value ) || is_object( $value ) ) {
+		print_r( $value );
+	} elseif ( is_bool( $value ) ) {
+		var_dump( $value );
+	} else {
+		echo $value;
+	}
+	echo "\r\n\r\n";
+	fwrite( $handle, ob_get_clean() );
+	fclose( $handle );
 }
 
 /**
