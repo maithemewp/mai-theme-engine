@@ -873,6 +873,7 @@ td {
 	margin-bottom: 30px;
 }
 
+.callout:empty,
 .entry-header:empty,
 .entry .entry-header:empty,
 .flex-entry .entry-header:empty,
