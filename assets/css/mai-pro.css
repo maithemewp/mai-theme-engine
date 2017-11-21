@@ -3191,6 +3191,10 @@ p.entry-meta {
 	margin-bottom: 16px;
 }
 
+.entry-header .entry-meta > * {
+	display: inline-block;
+}
+
 .entry-header .entry-meta a {
 	color: rgba(0,0,0,0.6);
 }
