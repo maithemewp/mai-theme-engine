@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.8.1 (10/22/17)
+* Fixed: More full-proof genesis-settings pre update option filter.
+
 #### 1.1.8 (10/21/17)
 * Changed: Sections template no longer loads a template file, so you can use Sections template in Dashboard but still use front-page.php (or other template) in your theme.
 * Changed: Entry header meta now wraps to it’s own line on smaller screens.
