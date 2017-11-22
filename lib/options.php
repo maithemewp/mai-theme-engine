@@ -5,6 +5,8 @@
  * In 1.1.2 we were made aware of a critical bug where our custom settings were cleared anytime
  * a user would hit "Save" in Genesis > Theme Settings.
  *
+ * This also prevents custom Mai settings from getting lost anytime 'genesis-settings' option is updated elsewhere.
+ *
  * @since   1.1.3
  *
  * @return  array
@@ -12,17 +14,17 @@
 add_filter( 'pre_update_option_genesis-settings', 'mai_enforce_custom_genesis_settings', 10, 2 );
 function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
 
-	// Loop through the old values array.
-	foreach ( (array) $old_value as $key => $value ) {
-		/**
-		 * If a custom setting is not part of what's getting updated,
-		 * or the new value is different than the old,
-		 * we need to add to the $new_value array it so it's not lost.
-		 */
-		if ( ! isset( $new_value[ $key ] ) || $value !== $new_value[ $key ] ) {
-			$new_value[ $key ] = $old_value[ $key ];
+	// If this is happening from a form submission page.
+	if ( isset( $_POST ) || ! empty( $_POST ) ) {
+		// If this is happening on a page that's submitting a 'genesis-settings' form.
+		if ( isset( $_POST[ 'genesis-settings' ] ) || ! empty( $_POST[ 'genesis-settings' ] ) ) {
+			// New value is the only genesis settings left in the form.
+			$new_value = $_POST[ 'genesis-settings' ];
 		}
 	}
+
+	// Make sure we don't lose old settings that don't exist in the $new_value array.
+	$new_value = wp_parse_args( $new_value, $old_value );
 
 	return $new_value;
 }
