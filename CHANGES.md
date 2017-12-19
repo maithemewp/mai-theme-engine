@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.9 (12/49/17)
+* Added: [grid] 'date_query_before' and 'date_query_after' parameters. They accept any values that strtotime() accepts. To show only posts within the last 30 days you can just use date_query_after="30 days ago".
+
 #### 1.1.8.1 (10/22/17)
 * Fixed: More full-proof genesis-settings pre update option filter.
 
