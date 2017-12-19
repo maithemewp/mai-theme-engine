@@ -833,6 +833,8 @@ final class Mai_Shortcodes {
 			'date_after'           => '',
 			'date_before'          => '',
 			'date_format'          => '',
+			'date_query_after'     => '',
+			'date_query_before'    => '',
 			'entry_class'          => '',
 			'exclude'              => '',
 			'exclude_categories'   => '', // Comma separated category IDs
@@ -898,6 +900,8 @@ final class Mai_Shortcodes {
 			'date_after'           => sanitize_text_field( $atts['date_after'] ),
 			'date_before'          => sanitize_text_field( $atts['date_before'] ),
 			'date_format'          => sanitize_text_field( $atts['date_format'] ),
+			'date_query_after'     => sanitize_text_field( $atts['date_query_after'] ),
+			'date_query_before'    => sanitize_text_field( $atts['date_query_before'] ),
 			'entry_class'          => sanitize_text_field( $atts['entry_class'] ),
 			'exclude'              => array_filter( explode( ',', sanitize_text_field( $atts['exclude'] ) ) ),
 			'exclude_categories'   => array_filter( explode( ',', sanitize_text_field( $atts['exclude_categories'] ) ) ),
@@ -908,7 +912,7 @@ final class Mai_Shortcodes {
 			'grid_title_wrap'      => sanitize_key( $atts['grid_title_wrap'] ),
 			'gutter'               => absint( $atts['gutter'] ),
 			'hide_empty'           => filter_var( $atts['hide_empty'], FILTER_VALIDATE_BOOLEAN ),
-			'ids'                  => array_filter( explode( ',', sanitize_text_field( $atts['ids'] ) ) ),
+			'ids'                  => array_filter( array_map( 'absint', explode( ',', sanitize_text_field( $atts['ids'] ) ) ) ),
 			'ignore_sticky_posts'  => filter_var( $atts['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN ),
 			'image_align'          => sanitize_key( $atts['image_align'] ),
 			'image_location'       => sanitize_key( $atts['image_location'] ),
@@ -1368,6 +1372,17 @@ final class Mai_Shortcodes {
 		// Categories
 		if ( ! empty($atts['categories']) ) {
 			$args['category__in'] = $atts['categories'];
+		}
+
+		// Date query.
+		if ( ! empty( $atts['date_query_after'] ) || ! empty( $atts['date_query_before'] ) ) {
+			$args['date_query'] = array();
+			if ( ! empty( $atts['date_query_after'] ) ) {
+				$args['date_query']['after'] = $atts['date_query_after'];
+			}
+			if ( ! empty( $atts['date_query_before'] ) ) {
+				$args['date_query']['before'] = $atts['date_query_before'];
+			}
 		}
 
 		// Exclude
