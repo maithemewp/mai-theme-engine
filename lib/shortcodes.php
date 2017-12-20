@@ -707,31 +707,50 @@ final class Mai_Shortcodes {
 
 		// Pull in shortcode attributes and set defaults
 		$atts = shortcode_atts( array(
-			'align'      => '',
-			'bg'         => '',
+			'align'      => '', // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
+			'align_cols' => '', // "top, left" Comma separted
+			'align_text' => '', // "center" Comma separted
+			'bg'         => '', // 3 or 6 dig hex color with or without hash
 			'bottom'     => '',
 			'class'      => '',
 			'id'         => '',
-			'image'      => '',
+			'image'      => '', // image id or 'featured' if link is a post id
 			'image_size' => 'one-third',
-			'overlay'    => '',
+			'overlay'    => '', // 'dark', 'light', 'gradient', or none/false to force disable
+			'link'       => '',
 			'style'      => '', // HTML inline style
 		), $atts, 'col' );
 
 		// Sanitize atts
 		$atts = array(
 			'align'      => mai_sanitize_keys( $atts['align'] ),
-			'bg'         => mai_sanitize_hex_color( $atts['bg'] ), // 3 or 6 dig hex color with or without hash
-			'bottom'     => ! empty( $atts['bottom'] ) ? absint( $atts['bottom'] ) : '',
+			'align_cols' => mai_sanitize_keys( $atts['align_cols'] ),
+			'align_text' => mai_sanitize_keys( $atts['align_text'] ),
+			'bg'         => mai_sanitize_hex_color( $atts['bg'] ),
+			'bottom'     => ! empty( $atts['bottom'] ) ? absint( $atts['bottom'] ): '',
 			'class'      => mai_sanitize_html_classes( $atts['class'] ),
 			'id'         => sanitize_html_class( $atts['id'] ),
-			'image'      => absint( $atts['image'] ),
+			'image'      => sanitize_key( $atts['image'] ),
 			'image_size' => sanitize_key( $atts['image_size'] ),
 			'overlay'    => sanitize_key( $atts['overlay'] ),
+			'link'       => sanitize_text_field( $atts['link'] ), // URL or post ID
 			'style'      => sanitize_text_field( $atts['style'] ),
 		);
 
 		$attributes = array( 'class' => mai_get_flex_entry_classes_by_fraction( $fraction ) );
+
+		// URL.
+		$bg_link = $bg_link_title = '';
+		if ( ! empty( $atts['link'] ) ) {
+			if ( is_numeric( $atts['link'] ) ) {
+				$bg_link_url   = get_permalink( (int) $atts['link'] );
+				$bg_link_title = get_the_title( (int) $atts['link'] );
+			} else {
+				$bg_link_url   = esc_url( $atts['link'] );
+			}
+			$bg_link              = mai_get_bg_image_link( $bg_link_url, $bg_link_title );
+			$attributes['class'] .= ' has-bg-link';
+		}
 
 		// ID
 		if ( ! empty( $atts['wrapper_id'] ) ) {
@@ -746,25 +765,7 @@ final class Mai_Shortcodes {
 		// Add the align classes
 		$attributes['class'] = $this->add_entry_align_classes( $attributes['class'], $atts, 'columns' );
 
-		// If we have an image ID
-		if ( $atts['image'] ) {
-
-			// If we have content
-			if ( $content ) {
-				// Set dark overlay if we don't have one
-				$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
-			}
-
-			// Add the aspect ratio attributes
-			$attributes = mai_add_background_image_attributes( $attributes, $atts['image'], $atts['image_size'] );
-		}
-
-		// Maybe add an overlay, typically for image tint/style
-		if ( $this->has_overlay( $atts ) ) {
-			$attributes['class'] .= sprintf( ' overlay overlay-%s', $atts['overlay'] );
-		}
-
-		$dark_bg = false;
+		$light_content = false;
 
 		// Maybe add the inline background color
 		if ( $atts['bg'] ) {
@@ -773,18 +774,58 @@ final class Mai_Shortcodes {
 			$attributes = mai_add_background_color_attributes( $attributes, $atts['bg'] );
 
 			if ( mai_is_dark_color( $atts['bg'] ) ) {
-				$dark_bg = true;
+				$light_content = true;
+			}
+		}
+
+		// If we have an image ID
+		if ( $atts['image'] ) {
+
+			// If we have content
+			if ( $content ) {
+				// Set dark overlay if we don't have one
+				$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
+				$light_content   = true;
+			}
+
+			// If showing featured image and link is a post ID.
+			if ( ( 'featured' == $atts['image'] ) && is_numeric( $atts['link'] ) ) {
+				$image_id = get_post_thumbnail_id( absint( $atts['link'] ) );
+			} else {
+				$image_id = absint( $atts['image'] );
+			}
+
+			// Add the aspect ratio attributes
+			$attributes = mai_add_background_image_attributes( $attributes, $image_id, $atts['image_size'] );
+		}
+
+		if ( $this->has_overlay( $atts ) ) {
+			$attributes['class'] .= ' overlay';
+			// Only add overlay classes if we have a valid overlay type
+			switch ( $atts['overlay'] ) {
+				case 'gradient':
+					$attributes['class'] .= ' overlay-gradient';
+					$light_content = false;
+				break;
+				case 'light':
+					$attributes['class'] .= ' overlay-light';
+					$light_content = false;
+				break;
+				case 'dark':
+					$attributes['class'] .= ' overlay-dark';
+					$light_content = true;
+				break;
 			}
 		}
 
 		// Add content shade class
-		$attributes['class'] .= $dark_bg ? ' light-content' : '';
+		$attributes['class'] .= $light_content ? ' light-content' : '';
 
 		// Add bottom margin classes.
 		if ( ! empty( $atts['bottom'] ) ) {
 			$bottom = $this->get_bottom_class( $atts );
 			if ( $bottom ) {
-				$attributes['class'] .= $bottom;
+				$attributes['class'] .= ' ' . $bottom;
 			}
 		}
 
@@ -799,8 +840,7 @@ final class Mai_Shortcodes {
 		 *
 		 * Only do_shortcode() on content because get_columns() wrap runs get_processed_content() which cleans things up.
 		 */
-		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-col', $attributes, $atts ), do_shortcode( $content ) );
-
+		return sprintf( '<div %s>%s%s</div>', genesis_attr( 'flex-col', $attributes, $atts ), do_shortcode( $content ), $bg_link );
 	}
 
 	function get_grid( $atts ) {
@@ -1137,7 +1177,6 @@ final class Mai_Shortcodes {
 				// Add has-bg-link class for CSS
 				$entry_atts['class'] .= ' has-bg-link';
 			}
-
 		}
 
 		if ( $this->has_overlay( $atts ) ) {
@@ -1274,6 +1313,9 @@ final class Mai_Shortcodes {
 		 * "align" forces the text to align along with the cols.
 		 */
 		if ( ! empty( $atts['align'] ) ) {
+
+			$classes .= ' column';
+
 			// Left
 			if ( in_array( 'left', $atts['align'] ) ) {
 				$classes .= ' top-xs text-xs-left';
@@ -1308,6 +1350,11 @@ final class Mai_Shortcodes {
 
 			// Align text
 			if ( ! empty( $atts['align_text'] ) ) {
+
+				// Column.
+				if ( ! empty( array_intersect( array( 'top', 'middle', 'bottom' ), $atts['align_text'] ) ) ) {
+					$classes .= ' column';
+				}
 
 				// Left
 				if ( in_array( 'left', $atts['align_text']) ) {
@@ -1561,10 +1608,7 @@ final class Mai_Shortcodes {
 					}
 
 					// Image
-					if ( ( 'bg' == $atts['image_location'] ) && $atts['link'] ) {
-						$html .= mai_get_bg_image_link( $url, get_the_title() );
-					}
-					elseif ( 'before_entry' == $atts['image_location'] ) {
+					if ( 'before_entry' == $atts['image_location'] ) {
 						$html .= $image_html;
 					}
 
@@ -1703,6 +1747,11 @@ final class Mai_Shortcodes {
 						$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer', array(), $atts ), $entry_footer );
 					}
 
+					// Image
+					if ( ( 'bg' == $atts['image_location'] ) && $atts['link'] ) {
+						$html .= mai_get_bg_image_link( $url, get_the_title() );
+					}
+
 				$html .= $this->get_entry_wrap_close( $atts );
 
 			endwhile;
@@ -1828,10 +1877,7 @@ final class Mai_Shortcodes {
 					}
 
 					// Image
-					if ( ( 'bg' == $atts['image_location'] ) && $atts['link'] ) {
-						$html .= mai_get_bg_image_link( $url, $term->name );
-					}
-					elseif ( 'before_entry' == $atts['image_location'] ) {
+					if ( 'before_entry' == $atts['image_location'] ) {
 						$html .= $image_html;
 					}
 
@@ -1905,6 +1951,11 @@ final class Mai_Shortcodes {
 
 				$html .= $this->get_entry_wrap_close( $atts );
 
+			}
+
+			// Image
+			if ( ( 'bg' == $atts['image_location'] ) && $atts['link'] ) {
+				$html .= mai_get_bg_image_link( $url, $term->name );
 			}
 
 		$html .= $this->get_row_wrap_close( $atts );
