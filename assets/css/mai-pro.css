@@ -1156,22 +1156,6 @@ td {
 	transition: all 0.2s ease-in-out;
 }
 
-.has-bg-link.entry:hover,
-.has-bg-link.entry:focus {
-	border-color: rgba(0, 0, 0, 0.2);
-	outline: none;
-}
-
-.has-bg-link.overlay::after {
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
-.has-bg-link.overlay:hover::after,
-.has-bg-link.overlay:focus::after {
-	background-color: rgba(0, 0, 0, 0.6);
-	outline: 0;
-}
-
 .has-bg-link {
 	position: relative;
 }
@@ -1188,9 +1172,27 @@ td {
 	z-index: 1;
 }
 
-.bg-link .entry-header,
-.bg-link .entry-content,
-.bg-link .entry-footer {
+.bg-link,
+.bg-link:hover,
+.bg-link:focus {
+	border: none;
+	outline: none;
+}
+
+.bg-link:hover,
+.bg-link:focus {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.image-bg .bg-link:hover,
+.image-bg .bg-link:focus {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.has-bg-link > *,
+.has-bg-link .entry-header,
+.has-bg-link .entry-content,
+.has-bg-link .entry-footer {
 	z-index: 2;
 }
 
@@ -3035,6 +3037,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 }
 
 .content .entry,
+.flex-entry.image-bg,
 .author-box,
 .sidebar .widget,
 .after-entry .widget,

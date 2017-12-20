@@ -1,6 +1,12 @@
 ### Changelog
 
-#### 1.1.9 (12/49/17)
+#### 1.1.10 (12/20/17)
+* Added: [col] 'link' param which accepts a url or a post ID to make the entire col a link.
+* Changed: [col] 'image' param now accepts 'featured' to use a post's featured image when 'link' is set to a post ID.
+* Fixed: [col] 'align' and 'bottom' params not working as expected.
+* Fixed: Overlay and image-bg background-colors and hover colors.
+
+#### 1.1.9 (12/19/17)
 * Added: [grid] 'date_query_before' and 'date_query_after' parameters. They accept any values that strtotime() accepts. To show only posts within the last 30 days you can just use date_query_after="30 days ago".
 
 #### 1.1.8.1 (10/22/17)
