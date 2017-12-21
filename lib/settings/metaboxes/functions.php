@@ -227,7 +227,7 @@ function _mai_cmb_banner_visibility_config() {
 
 function _mai_cmb_banner_image_config() {
 	return array(
-		'name'         => __( 'Banner Image', 'mai-pro-engine' ),
+		'name'         => __( 'Banner/Featured Image', 'mai-pro-engine' ),
 		'id'           => 'banner',
 		'type'         => 'file',
 		'preview_size' => 'one-third',
@@ -235,7 +235,6 @@ function _mai_cmb_banner_image_config() {
 		'text'         => array(
 			'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
 		),
-		'show_on_cb' => '_mai_cmb_show_banner_fields',
 	);
 }
 
