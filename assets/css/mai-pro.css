@@ -601,7 +601,6 @@ input[type="submit"],
 	margin: 0;
 	border: none;
 	border-radius: 0;
-	white-space: nowrap;
 	-webkit-box-shadow: none;box-shadow: none;
 	-webkit-font-smoothing: antialiased;
 }

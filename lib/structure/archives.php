@@ -450,10 +450,10 @@ function mai_do_archive_image( $location ) {
 		// Add the entry image as a background image
 		add_action( 'genesis_before_entry', 'mai_do_entry_image_background' );
 		// Add the background image link
-		add_action( 'genesis_entry_header', 'mai_do_bg_image_link', 1 );
+		add_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
 		// Remove bg iamge link function so additional loops are not affected
 		add_action( 'mai_after_content_archive', function() {
-			remove_action( 'genesis_entry_header', 'mai_do_bg_image_link', 1 );
+			remove_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
 		});
 	}
 
@@ -493,11 +493,8 @@ function mai_do_entry_image_background() {
 
 		// If we have an image
 		if ( $image_id ) {
-			// Add classes and href link
-			$attributes['class'] .= ' overlay light-content';
-			// Add image background attributes
-		} else {
-			$attributes['class'] .= ' dark-content';
+			// Add classes and href link. TODO: Overlay options, or no overlay if no content?
+			$attributes['class'] .= ' overlay overlay-dark light-content';
 		}
 
 		// Add has-bg-link class for CSS
