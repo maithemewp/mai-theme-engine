@@ -54,21 +54,7 @@ function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
 		return;
 	}
 
-	// Default post types.
-	$post_types = array( 'page', 'post' );
-
-	/**
-	 * Get post types.
-	 * Applies apply_filters( 'genesis_cpt_archives_args', $args ); filter.
-	 */
-	$post_types = array_merge( $post_types, (array) genesis_get_cpt_archive_types_names() );
-
-	// Bail if not saving a public post type
-	if ( ! in_array( $post->post_type, $post_types ) ) {
-		return;
-	}
-
-	// Save our meta field
+	// Save our meta field.
 	update_post_meta( $post_id, 'mai_hide_featured_image', mai_sanitize_one_zero( $_POST[ 'mai_hide_featured_image' ] ) );
 }
 

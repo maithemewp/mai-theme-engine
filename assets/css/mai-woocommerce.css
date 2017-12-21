@@ -141,11 +141,6 @@
 	margin-bottom: 16px;
 }
 
-.single-product .quantity .qty,
-body.woocommerce-cart .quantity .qty {
-	padding: 6px;
-}
-
 .sku_wrapper,
 .posted_in,
 .tagged_as {
