@@ -85,17 +85,21 @@ function mai_login_logo_css() {
 		return;
 	}
 
+	// Hide the default logo and heading.
 	echo '<style  type="text/css">
+		.login h1,
 		.login h1 a {
-			width: 100% !important;
-			max-width: 100% !important;
-			height: auto !important;
 			background: none !important;
-			text-indent: 0 !important;
+			position: absolute !important;
+			clip: rect(0, 0, 0, 0) !important;
+			height: 1px !important;
+			width: 1px !important;
 			padding: 0 !important;
 			margin: 0 !important;
+			border: 0 !important;
+			overflow: hidden !important;
 		}
-		.login h1 img {
+		.login .mai-login-logo img {
 			display: block !important;
 			max-width: 100% !important;
 			height: auto !important;
@@ -107,55 +111,11 @@ function mai_login_logo_css() {
 		}
 	</style>';
 
-	// Add the filter that adds the inline logo
-	add_action( 'login_header', 'mai_do_login_logo_filter' );
+	// Add our own inline logo.
+	add_action( 'login_message', function() use ( $logo_id ) {
+		printf( '<h2 class="mai-login-logo">%s</h2>', wp_get_attachment_image( $logo_id, 'medium' ) );
+	});
 
-}
-
-/**
- * Add login logo filters if we have a custom logo.
- *
- * @return void
- */
-function mai_do_login_logo_filter() {
-	// Replace site title with the logo
-	add_filter( 'bloginfo', 'mai_do_inline_login_logo', 10, 2 );
-	// Hook in after the login form to remove the filter
-	add_action( 'login_footer', 'mai_remove_login_logo_filter' );
-}
-/**
- * Remove the filter that adds login logo as the blog name.
- *
- * @return void
- */
-function mai_remove_login_logo_filter() {
-	remove_filter( 'bloginfo', 'mai_do_inline_login_logo', 10, 2 );
-}
-
-/**
- * Replace site name with an inline logo.
- * This filter only runs if we have a custom logo, so no need to check if ! $logo_id again.
- *
- * @param   string  $output  The site name.
- * @param   string  $show    Which bloginfo data to filter.
- *
- * @return  string|HTML      The inline image HTML
- */
-function mai_do_inline_login_logo( $output, $show ) {
-
-	// Bail if not filtering the name
-	if ( $show != 'name' ) {
-		return $output;
-	}
-
-	// Get the logo
-	$logo_id = get_theme_mod( 'custom_logo' );
-
-	if ( ! $logo_id ) {
-		return $output;
-	}
-
-	return wp_get_attachment_image( $logo_id, 'full' );
 }
 
 // Change login link
