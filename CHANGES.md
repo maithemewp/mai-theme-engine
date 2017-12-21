@@ -3,6 +3,9 @@
 #### 1.1.11 (12/21/17)
 * Changed: [grid] Move 'mai_flex_entry_content' filter before more-link.
 * Fixed: [grid] bg-image link not working correctly when displaying taxonomy terms.
+* Fixed: Login logo not working in WP 4.9.
+* Fixed: Woo qty field is now same height as button it's next to.
+* Fixed: Term banner image field always shows now, since that image is used for [grid] even when banner is disabled.
 
 #### 1.1.10 (12/20/17)
 * Added: [col] 'link' param which accepts a url or a post ID to make the entire col a link.
