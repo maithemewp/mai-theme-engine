@@ -147,10 +147,13 @@ function mai_do_header() {
 			}
 
 			// Default classes.
-			$row['class'] = 'site-header-row row middle-xs between-xs';
+			$row['class'] = 'site-header-row row middle-xs';
 
-			// Justification.
-			$row['class'] .= ( ! $left || $right ) ? ' around-md' : '';
+			// Alignment.
+			$row['class'] .= $mobile ? ' between-xs' : ' around-xs';
+
+			// Justification. If no left or right, and we have mobile. If no mobile we already have around-xs.
+			$row['class'] .= ( ! ( $left || $right ) && $mobile ) ? ' around-md' : '';
 
 			// Output with row open.
 			$output = $before . $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
