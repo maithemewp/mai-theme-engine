@@ -26,6 +26,9 @@ function mai_admin_enqueue_scripts() {
  */
 add_filter( 'category_description', 'mai_limit_term_description' );
 function mai_limit_term_description( $desc ) {
+	if ( ! is_admin() ) {
+		return $desc;
+	}
 	return wp_trim_words( strip_tags( $desc ), 24, '...' );
 }
 
@@ -113,7 +116,19 @@ function mai_login_logo_css() {
 
 	// Add our own inline logo.
 	add_action( 'login_message', function() use ( $logo_id ) {
-		printf( '<h2 class="mai-login-logo">%s</h2>', wp_get_attachment_image( $logo_id, 'medium' ) );
+		// From WP core.
+		if ( is_multisite() ) {
+			$login_header_url   = network_home_url();
+			$login_header_title = get_network()->site_name;
+		} else {
+			$login_header_url   = __( 'https://wordpress.org/' );
+			$login_header_title = __( 'Powered by WordPress' );
+		}
+		printf( '<h2 class="mai-login-logo"><a href="%s" title="%s" tabindex="-1">%s</a></h2>',
+			esc_url( apply_filters( 'login_headerurl', $login_header_url ) ),
+			esc_attr( apply_filters( 'login_headertitle', $login_header_title ) ),
+			wp_get_attachment_image( $logo_id, 'medium' )
+		);
 	});
 
 }
