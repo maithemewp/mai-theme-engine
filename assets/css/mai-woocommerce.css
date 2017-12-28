@@ -152,6 +152,10 @@
 	font-size: 14px;
 }
 
+.woocommerce #reviews #comments ol.commentlist li {
+	list-style-type: none;
+}
+
 /* ### Tabs
 --------------------------------------------- */
 
