@@ -20,9 +20,15 @@ function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
 		if ( isset( $_POST[ 'genesis-settings' ] ) || ! empty( $_POST[ 'genesis-settings' ] ) ) {
 			// New value is the only genesis settings left in the form.
 			$new_value = $_POST[ 'genesis-settings' ];
+			// Fix slashes getting added to scripts. Argh.
+			if ( isset( $new_value['header_scripts'] ) ) {
+				$new_value['header_scripts'] = stripslashes( $new_value['header_scripts'] );
+			}
+			if ( isset( $new_value['footer_scripts'] ) ) {
+				$new_value['footer_scripts'] = stripslashes( $new_value['footer_scripts'] );
+			}
 		}
 	}
-
 	// Make sure we don't lose old settings that don't exist in the $new_value array.
 	$new_value = wp_parse_args( $new_value, $old_value );
 

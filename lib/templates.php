@@ -2,7 +2,7 @@
 
 /**
  * Add page templates.
- * Override by copying files from /mai-pro-engine/templates/{filename}.php
+ * Override all but sections template by copying files from /mai-pro-engine/templates/{filename}.php
  * and putting in /{child-theme-name}/templates/{filename}.php
  *
  * @since   1.0.0

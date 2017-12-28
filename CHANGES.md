@@ -1,5 +1,14 @@
 ### Changelog
 
+#### 1.1.12 (12/28/17)
+* Added: Slider max-width set in CSS so layout isn't totally broken on initial page load before Slick is initialized.
+* Changed: Better docblock for template loader function.
+* Fixed: Slashes being added to header and footer script metabox content when saving via Theme Settings.
+* Fixed: Slider arrows were cut off by browser window on full width layout at certain browser widths.
+* Fixed: Logo didn't remain centered when no header left or right content and no mobile menu assigned.
+* Fixed: Woo reviews styling issue.
+* Fixed: Issue with PHP 5.4 though we don't officially support PHP that low, but it was an easy fix.
+
 #### 1.1.11 (12/21/17)
 * Changed: [grid] Move 'mai_flex_entry_content' filter before more-link.
 * Fixed: [grid] bg-image link not working correctly when displaying taxonomy terms.
