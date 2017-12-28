@@ -1429,6 +1429,19 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	margin-bottom: 0;
 }
 
+.mai-slider[data-slidestoscroll="2"] .mai-slide {
+	max-width: 50%;
+}
+.mai-slider[data-slidestoscroll="3"] .mai-slide {
+	max-width: 33.33333333%;
+}
+.mai-slider[data-slidestoscroll="4"] .mai-slide {
+	max-width: 25%;
+}
+.mai-slider[data-slidestoscroll="6"] .mai-slide {
+	max-width: 16.66666667%;
+}
+
 .mai-slider .slick-list {
 	-ms-flex: 1 1 100%;-webkit-box-flex: 1;flex: 1 1 100%;
 	max-width: 100%;
