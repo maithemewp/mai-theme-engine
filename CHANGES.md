@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 1.1.13 (1/02/18)
+* Changed: Only float avatar in comments and author box.
+* Changed: Safer and simpler responsive breaks for all column shortcodes.
+* Changed: Hyphenate sidebar widget titles and text.
+* Fixed: Horizontal scroll issue on pages with full width sections.
+* Fixed: Site footer nav menu widgets not wrapping menu items on smaller screens.
+
 #### 1.1.12 (12/28/17)
 * Added: Slider max-width set in CSS so layout isn't totally broken on initial page load before Slick is initialized.
 * Changed: Better docblock for template loader function.
