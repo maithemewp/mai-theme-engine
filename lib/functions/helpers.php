@@ -410,22 +410,22 @@ function mai_get_flex_entry_classes_by_columns( $columns ) {
 function mai_get_flex_entry_classes_by_fraction( $fraction ) {
 	switch ( $fraction ) {
 		case 'col':
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md';
+			$classes = 'flex-entry col col-xs-12 col-sm';
 		break;
 		case 'col-auto':
 			$classes = 'flex-entry col col-xs-12 col-sm-auto';
 		break;
 		case 'one-twelfth':
-			$classes = 'flex-entry col col-xs-3 col-sm-2 col-md-1';
+			$classes = 'flex-entry col col-xs-12 col-sm-1';
 		break;
 		case 'one-sixth':
 			$classes = 'flex-entry col col-xs-4 col-sm-2';
 		break;
 		case 'one-fourth':
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-3';
+			$classes = 'flex-entry col col-xs-12 col-sm-3';
 		break;
 		case 'one-third':
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
+			$classes = 'flex-entry col col-xs-12 col-sm-4';
 		break;
 		case 'five-twelfths':
 			$classes = 'flex-entry col col-xs-12 col-sm-5';
