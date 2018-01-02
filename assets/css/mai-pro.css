@@ -1230,7 +1230,6 @@ td {
 --------------------------------------------- */
 
 .avatar {
-	float: left;
 	border-radius: 50%;
 }
 
@@ -1241,6 +1240,7 @@ td {
 }
 
 .author-box .avatar {
+	float: left;
 	width: 100px;
 	margin-right: 24px;
 }
@@ -1897,6 +1897,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 
 .widget {
 	word-wrap: break-word;
+	-webkit-hyphens: auto;-ms-hyphens: auto;hyphens: auto;
 	overflow: hidden; /* fix avatar cut-off when floated left in widget */
 }
 
@@ -3039,6 +3040,11 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 .after-entry .widget,
 .form-allowed-tags {
 	padding: 24px;
+}
+
+.sidebar .flex-entry.image-bg,
+.footer-widget-area .flex-entry.image-bg {
+	padding: 4%;
 }
 
 .entry-content .attachment a,
