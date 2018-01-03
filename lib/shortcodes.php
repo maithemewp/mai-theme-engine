@@ -1483,8 +1483,8 @@ final class Mai_Shortcodes {
 			$args['offset'] = $atts['offset'];
 		}
 
-		// If post parent attribute, set up parent
-		if ( ! empty($atts['parent']) ) {
+		// If post parent attribute, set up parent. Can't check empty() cause may pass 0 or '0';
+		if ( '' !== $atts['parent'] ) {
 			if ( is_singular() && 'current' == $atts['parent'] ) {
 				$args['post_parent'] = get_the_ID();
 			} else {
@@ -1811,8 +1811,8 @@ final class Mai_Shortcodes {
 			$args['offset'] = $atts['offset'];
 		}
 
-		// If post parent attribute, set up parent
-		if ( ! is_admin() && ! empty($atts['parent']) ) {
+		// If post parent attribute, set up parent. Can't check empty() cause may pass 0 or '0';
+		if ( ! is_admin() && ( '' !== $atts['parent'] ) ) {
 			if ( ( is_category() || is_tag() || is_tax() ) && 'current' == $atts['parent'] ) {
 				$args['parent'] = get_queried_object_id();
 			} else {
