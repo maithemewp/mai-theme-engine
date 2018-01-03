@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.1.13.1 (1/03/18)
+* Fixed: [grid] Not showing only top level posts/terms if 'parent' param was '0'.
+
 #### 1.1.13 (1/02/18)
 * Changed: Only float avatar in comments and author box.
 * Changed: Safer and simpler responsive breaks for all column shortcodes.
