@@ -114,7 +114,7 @@ html {
 }
 
 body {
-	background-color: rgba(0, 0, 0, 0.025);
+	background-color: #f9f9f9;
 	color: #323232;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 	font-size: 1rem; /* fallback for .text-* utility classes */
@@ -485,7 +485,7 @@ textarea {
 	background-color: #f8f8f8;
 	color: rgba(0, 0, 0, 0.7);
 	font-weight: 300;
-	padding: 8px 12px;
+	padding: 12px;
 	border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -1091,7 +1091,7 @@ td {
 }
 
 .image-bg .inner-light {
-	background-color: rgba(255, 255, 255, 0.8);
+	background-color: rgba(255, 255, 255, 0.95);
 }
 
 .inner-dark {
@@ -1921,7 +1921,6 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 
 .widget .entry-title {
 	font-size: 1.25rem;
-	font-weight: normal;
 	line-height: 1.2;
 	margin-bottom: 12px;
 }
@@ -1966,14 +1965,19 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 /* ## Simple Social Icons
 --------------------------------------------- */
 
+.header-before .simple-social-icons,
 .site-header .simple-social-icons {
 	line-height: 1;
 }
 
+.header-before .simple-social-icons ul li,
 .site-header .simple-social-icons ul li {
 	margin: 2px 4px !important;
 }
 
+.header-before .simple-social-icons ul li a,
+.header-before .simple-social-icons ul li a:hover,
+.header-before .simple-social-icons ul li a:focus,
 .site-header .simple-social-icons ul li a,
 .site-header .simple-social-icons ul li a:hover,
 .site-header .simple-social-icons ul li a:focus {
@@ -1991,7 +1995,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 .site-header {
 	height: auto; /* resize back after closing fixed header menu */
 	background-color: #fff;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .site-header > .wrap {
@@ -2034,29 +2038,34 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 }
 
 /* ## Sticky Header
- * jQuery handles the position
- * If JS is not enabled, header will remain static
  --------------------------------------------- */
 
- /* jQuery handles the position */
- .sticky-header .site-header {
- 	width: 100%;
- 	z-index: 99;
- }
+.sticky-header .site-header {
+	z-index: 96; /* lower than search-box */
+}
 
+@media only screen and (min-width: 545px) {
 
- @media only screen and (min-width: 545px) {
+	.sticky-header .site-header {
+		position: -webkit-sticky;
+		position: sticky;
+		top: 0;
+	}
 
- 	.sticky-header.mai-standard-menu-activated {
- 		overflow: hidden;
- 	}
+	.admin-bar.sticky-header .site-header {
+		top: 32px;
+	}
 
- 	.sticky-header.mai-standard-menu-activated .site-header {
- 		max-height: 100vh;
- 		overflow-y: auto;
- 	}
+	.sticky-header.mai-standard-menu-activated {
+		overflow: hidden;
+	}
 
- }
+	.sticky-header.mai-standard-menu-activated .site-header {
+		max-height: 100vh;
+		overflow-y: auto;
+	}
+
+}
 
 /* ## Shrink Header
 --------------------------------------------- */
@@ -2065,32 +2074,38 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	-webkit-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
-	-webkit-transform: translateX(0) scale(1);
-	-ms-transform: translateX(0) scale(1);
-	    transform: translateX(0) scale(1);
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	-webkit-transform-origin: center;
+	-ms-transform-origin: center;
+	transform-origin: center;
 }
 
 .shrink-header .site-header.shrink .site-title a {
+	-webkit-transform: scale(.7);
+	-ms-transform: scale(.7);
+	transform: scale(.7);
 	margin-top: 4px;
 	margin-bottom: 4px;
 }
 
 .shrink-header .site-header.has-header-right.shrink .site-title a {
-	-webkit-transform: translateX(-14%) scale(0.7);
-	-ms-transform: translateX(-14%) scale(0.7);
-	    transform: translateX(-14%) scale(0.7);
+	-webkit-transform-origin: center left;
+	-ms-transform-origin: center left;
+	transform-origin: center left;
 }
 
 .shrink-header .site-header.has-header-left.shrink .site-title a {
-	-webkit-transform: translateX(14%) scale(0.7);
-	-ms-transform: translateX(14%) scale(0.7);
-	    transform: translateX(14%) scale(0.7);
+	-webkit-transform-origin: center right;
+	-ms-transform-origin: center right;
+	transform-origin: center right;
 }
 
 .shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
-	-webkit-transform: translateX(0) scale(0.7);
-	-ms-transform: translateX(0) scale(0.7);
-	    transform: translateX(0) scale(0.7);
+	-webkit-transform-origin: center;
+	-ms-transform-origin: center;
+	transform-origin: center;
 }
 
 @media only screen and (max-width: 768px) {
@@ -2111,22 +2126,30 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 		margin-left: 10px;
 		margin-right: 10px;
 	}
+
 	.site-header.has-header-right .site-title a,
 	.shrink-header .site-header.has-header-right .site-title a,
 	.shrink-header .site-header.has-header-right.shrink .site-title a,
 	.site-header.has-header-left.has-header-right .site-title a,
 	.shrink-header .site-header.has-header-left.has-header-right .site-title a,
 	.shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
-		-webkit-transform: translateX(-14%) scale(0.7);
-		-ms-transform: translateX(-14%) scale(0.7);
-		transform: translateX(-14%) scale(0.7);
+		-webkit-transform: scale(.7);
+		-ms-transform: scale(.7);
+		transform: scale(.7);
+		-webkit-transform-origin: center left;
+		-ms-transform-origin: center left;
+		transform-origin: center left;
 	}
+
 	.site-header.has-header-left .site-title a,
 	.shrink-header .site-header.has-header-left .site-title a,
 	.shrink-header .site-header.has-header-left.shrink .site-title a {
-		-webkit-transform: translateX(14%) scale(0.7);
-		-ms-transform: translateX(14%) scale(0.7);
-		transform: translateX(14%) scale(0.7);
+		-webkit-transform: scale(.7);
+		-ms-transform: scale(.7);
+		transform: scale(.7);
+		-webkit-transform-origin: center right;
+		-ms-transform-origin: center right;
+		transform-origin: center right;
 	}
 
 }
@@ -2144,8 +2167,8 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	font-size: 1.953rem;
 	font-weight: bold;
 	line-height: 1.2;
-	margin-top: 32px;
-	margin-bottom: 32px;
+	margin-top: 24px;
+	margin-bottom: 24px;
 	margin-left: 16px;
 	margin-right: 16px;
 }
@@ -2178,8 +2201,8 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 --------------------------------------------- */
 
 .header-before {
-	min-height: 35px; /* if sticky header and search icon is the only menu item */
-	background-color: rgba(0, 0, 0, 0.06);
+	padding-left: 16px;
+	padding-right: 16px;
 	border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 

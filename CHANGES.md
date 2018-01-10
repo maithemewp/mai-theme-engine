@@ -1,5 +1,10 @@
 ### Changelog
 
+* Changed: Convert sticky header from JS to CSS-only.
+* Changed: Move mai_header_before and mai_header_after hooks outside of site-header.
+* Changed: More vertical padding on text inputs.
+* Changed: Allow widget entry titles to inherit font weight.
+
 #### 1.1.13.1 (1/03/18)
 * Fixed: [grid] Not showing only top level posts/terms if 'parent' param was '0'.
 
