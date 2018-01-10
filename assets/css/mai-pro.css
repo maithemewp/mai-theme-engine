@@ -1091,7 +1091,7 @@ td {
 }
 
 .image-bg .inner-light {
-	background-color: rgba(255, 255, 255, 0.95);
+	background-color: rgba(255, 255, 255, 0.9);
 }
 
 .inner-dark {
@@ -2584,10 +2584,6 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 /* ### Menu Toggle
 --------------------------------------------- */
 
-.mai-toggle {
-	display: -ms-flexbox;display: -webkit-box;display: flex;
-}
-
 .mai-toggle,
 .sub-menu-toggle {
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -2602,7 +2598,6 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 .sub-menu-toggle:focus,
 .sub-menu-toggle:hover {
 	background: transparent;
-	color: #323232;
 	padding: 0;
 	margin: 0;
 	border: none;
@@ -2612,83 +2607,92 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 
 .mai-toggle:focus,
 .sub-menu-toggle:focus {
-	outline: dotted 1px #bcb6bc;
+	outline: none;
 }
-
-/* Taken from http://andersnoren.se/themes/rowling/ */
 
 .mai-toggle,
 .mai-toggle:focus,
 .mai-toggle:hover {
-	-ms-flex-negative: 0;flex-shrink: 0;
-	width: 60px;
-	height: 50px;
+	padding: 24px 16px;
+	margin-right: 8px;
+}
+
+.mai-bars,
+.mai-bars::before,
+.mai-bars::after {
+	display: block;
+	height: 2px;
+	background-color: #323232;
+	overflow: visible;
 }
 
 .mai-bars {
 	position: relative;
-	width: 100%;
-	height: 100%;
+	width: 32px;
+	-webkit-transition: background 0s 0.2s;
+	-o-transition: background 0s 0.2s;
+	transition: background 0s 0.2s;
 }
 
-.mai-bar {
+.mai-bars::before,
+.mai-bars::after {
+	content: '';
 	position: absolute;
-	top: 50%;
 	left: 0;
-	margin-left: 15px;
-	width: 30px;
-	height: 2px;
-	background: #323232;
-	transition: opacity 0.2s linear 0.2s, margin 0.2s linear 0.2s, -webkit-transform 0.2s linear 0s;
-	-webkit-transition: opacity 0.2s linear 0.2s, margin 0.2s linear 0.2s, -webkit-transform 0.2s linear 0s;
-	-o-transition: opacity 0.2s linear 0.2s, margin 0.2s linear 0.2s, transform 0.2s linear 0s;
-	transition: opacity 0.2s linear 0.2s, margin 0.2s linear 0.2s, transform 0.2s linear 0s;
-	transition: opacity 0.2s linear 0.2s, margin 0.2s linear 0.2s, transform 0.2s linear 0s, -webkit-transform 0.2s linear 0s;
+	width: 100%;
+	-webkit-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
 }
 
-.mai-toggle.activated .mai-bar {
-	background: #323232;
+.mai-bars::before {
+	top: -9px;
+	-webkit-transition: top 0.2s 0.2s, -webkit-transform 0.2s 0s;
+	transition: top 0.2s 0.2s, -webkit-transform 0.2s 0s;
+	-o-transition: top 0.2s 0.2s, transform 0.2s 0s;
+	transition: top 0.2s 0.2s, transform 0.2s 0s;
+	transition: top 0.2s 0.2s, transform 0.2s 0s, -webkit-transform 0.2s 0s;
 }
 
-.mai-bar:nth-of-type(1) {
-	margin-top: -9px;
-}
-.mai-bar:nth-of-type(2) {
-	margin-top: -1px;
-}
-.mai-bar:nth-of-type(3) {
-	margin-top: 7px;
-}
-
-.mai-toggle.activated .mai-bar {
-	transition: opacity 0.2s linear 0s, margin 0.2s linear 0s, -webkit-transform 0.2s linear 0.2s;
-	-webkit-transition: opacity 0.2s linear 0s, margin 0.2s linear 0s, -webkit-transform 0.2s linear 0.2s;
-	-o-transition: opacity 0.2s linear 0s, margin 0.2s linear 0s, transform 0.2s linear 0.2s;
-	transition: opacity 0.2s linear 0s, margin 0.2s linear 0s, transform 0.2s linear 0.2s;
-	transition: opacity 0.2s linear 0s, margin 0.2s linear 0s, transform 0.2s linear 0.2s, -webkit-transform 0.2s linear 0.2s;
+.mai-bars::after {
+	bottom: -9px;
+	-webkit-transition: bottom 0.2s 0.2s, -webkit-transform 0.2s 0s;
+	transition: bottom 0.2s 0.2s, -webkit-transform 0.2s 0s;
+	-o-transition: bottom 0.2s 0.2s, transform 0.2s 0s;
+	transition: bottom 0.2s 0.2s, transform 0.2s 0s;
+	transition: bottom 0.2s 0.2s, transform 0.2s 0s, -webkit-transform 0.2s 0s;
 }
 
-.mai-toggle.activated .mai-bar:nth-of-type(1),
-.mai-toggle.activated .mai-bar:nth-of-type(3) {
-	margin-top: -1px;
+.mai-toggle.activated .mai-bars {
+	background: none;
 }
 
-.mai-toggle.activated .mai-bar:nth-of-type(1) {
-	-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);transform: rotate(45deg);
+.mai-toggle.activated .mai-bars::before {
+	top: 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+	-webkit-transition: top 0.2s 0s, -webkit-transform 0.2s 0.2s;
+	transition: top 0.2s 0s, -webkit-transform 0.2s 0.2s;
+	-o-transition: top 0.2s 0s, transform 0.2s 0.2s;
+	transition: top 0.2s 0s, transform 0.2s 0.2s;
+	transition: top 0.2s 0s, transform 0.2s 0.2s, -webkit-transform 0.2s 0.2s;
 }
 
-.mai-toggle.activated .mai-bar:nth-of-type(2) {
-	opacity: 0;
+.mai-toggle.activated .mai-bars::after {
+	bottom: 0;
+	-webkit-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+	-webkit-transition: bottom 0.2s 0s, -webkit-transform 0.2s 0.2s;
+	transition: bottom 0.2s 0s, -webkit-transform 0.2s 0.2s;
+	-o-transition: bottom 0.2s 0s, transform 0.2s 0.2s;
+	transition: bottom 0.2s 0s, transform 0.2s 0.2s;
+	transition: bottom 0.2s 0s, transform 0.2s 0.2s, -webkit-transform 0.2s 0.2s;
 }
 
-.mai-toggle.activated .mai-bar:nth-of-type(3) {
-	-webkit-transform: rotate(-45deg);-ms-transform: rotate(-45deg);transform: rotate(-45deg);
-}
-
-/* ### Mobile Menu Container
+/* ### Mobile Menu & Container
 --------------------------------------------- */
-
-.mai-menu {}
 
 .mai-menu-inner {
 	width: 100%;
@@ -2725,6 +2729,12 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 .mai-menu input[type="search"] {
 	background-color: #fff;
 	border: 1px solid #dfdcdf;
+}
+
+.sub-menu-toggle,
+.sub-menu-toggle:focus,
+.sub-menu-toggle:hover {
+	color: #323232;
 }
 
 /* ### Side Menu

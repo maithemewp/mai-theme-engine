@@ -234,11 +234,11 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 ( function ( document, $, undefined ) {
 	'use strict';
 
-	var maiMenu             = {},
-		maiMenuClass        = 'mai-menu',
-		maiButtonClass      = 'mai-toggle',
-		subMenuButtonClass  = 'sub-menu-toggle',
-		menuClass           = 'mobile-menu';
+	var maiMenu            = {},
+		maiMenuClass       = 'mai-menu',
+		maiButtonClass     = 'mai-toggle',
+		subMenuButtonClass = 'sub-menu-toggle',
+		menuClass          = 'mobile-menu';
 
 	var $body        = $( 'body' ),
 		$maiMenu     = $( '.' + maiMenuClass ),
@@ -255,7 +255,8 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 				'aria-pressed' : false,
 				'role' : 'button'
 			} )
-			.append( '<span class="screen-reader-text">' + maiMenuParams.mainMenu + '</span><span class="mai-bars"><span class="mai-bar"></span><span class="mai-bar"></span><span class="mai-bar"></span></span>' ),
+			.append( '<span class="screen-reader-text">' + maiMenuParams.mainMenu + '</span><span class="mai-bars"></span></span>' ),
+			// .append( '<span class="screen-reader-text">' + maiMenuParams.mainMenu + '</span><span class="mai-bars"><span class="mai-bar"></span><span class="mai-bar"></span><span class="mai-bar"></span></span>' ),
 			submenu : $( '<button />', {
 				'class' : subMenuButtonClass,
 				'aria-expanded' : false,
