@@ -2077,9 +2077,6 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	-webkit-transform: scale(1);
 	-ms-transform: scale(1);
 	transform: scale(1);
-	-webkit-transform-origin: center;
-	-ms-transform-origin: center;
-	transform-origin: center;
 }
 
 .shrink-header .site-header.shrink .site-title a {
@@ -2090,19 +2087,19 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	margin-bottom: 4px;
 }
 
-.shrink-header .site-header.has-header-right.shrink .site-title a {
+.shrink-header .site-header.has-header-right:not(.has-header-left) .site-title a {
 	-webkit-transform-origin: center left;
 	-ms-transform-origin: center left;
 	transform-origin: center left;
 }
 
-.shrink-header .site-header.has-header-left.shrink .site-title a {
+.shrink-header .site-header.has-header-left:not(.has-header-right) .site-title a {
 	-webkit-transform-origin: center right;
 	-ms-transform-origin: center right;
 	transform-origin: center right;
 }
 
-.shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
+.shrink-header .site-header.has-header-left.has-header-right .site-title a {
 	-webkit-transform-origin: center;
 	-ms-transform-origin: center;
 	transform-origin: center;
