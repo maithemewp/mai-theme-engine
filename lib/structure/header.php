@@ -96,10 +96,8 @@ add_action( 'genesis_header', 'mai_do_header', 4 );
 function mai_do_header() {
 
 	// These are basically do_action() hooks you can use, with filters (via mai_get_do_action helper) so we can easily remove elements from templates
-	$before = mai_get_do_action( 'mai_header_before' );
 	$left   = mai_get_do_action( 'mai_header_left' );
 	$right  = mai_get_do_action( 'mai_header_right' );
-	$after  = mai_get_do_action( 'mai_header_after' );
 	$mobile = apply_filters( '_mai_mobile_menu', mai_get_mobile_menu() );
 
 	/**
@@ -133,18 +131,9 @@ function mai_do_header() {
 	 *
 	 * @return  string|HTML  The content
 	 */
-	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $before, $left, $right, $after, $mobile ) {
+	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $left, $right, $mobile ) {
 
 		if ( 'open' == $original_output ) {
-
-			// Build header before markup.
-			if ( $before ) {
-
-				$before_atts['class'] = 'header-before text-sm';
-
-				$before = sprintf( '<div %s><div class="wrap">%s</div></div>', genesis_attr( 'header-before', $before_atts ), $before );
-
-			}
 
 			// Default classes.
 			$row['class'] = 'site-header-row row middle-xs';
@@ -156,7 +145,7 @@ function mai_do_header() {
 			$row['class'] .= ( ! ( $left || $right ) && $mobile ) ? ' around-md' : '';
 
 			// Output with row open.
-			$output = $before . $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
+			$output = $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );
 
 		} elseif ( 'close' == $original_output ) {
 
@@ -190,17 +179,8 @@ function mai_do_header() {
 
 			}
 
-			// Build header after markup.
-			if ( $after ) {
-
-				$after_atts['class'] = 'header-after';
-
-				$after = sprintf( '<div %s><div class="wrap">%s</div></div>', genesis_attr( 'header-after', $after_atts ), $after );
-
-			}
-
 			// Output with row close.
-			$output = $left . $right . $output . $after . $mobile . '</div>';
+			$output = $left . $right . $output . $mobile . '</div>';
 
 		}
 
@@ -232,7 +212,6 @@ function mai_do_header() {
 				$attributes['class'] .= ' last-xs';
 			}
 
-
 		} else {
 			$attributes['class'] .= ' center-xs';
 		}
@@ -244,6 +223,40 @@ function mai_do_header() {
 }
 
 /**
+ * Add header before markup if there is content.
+ *
+ * @return  void
+ */
+add_action( 'genesis_header', 'mai_header_before', 4 );
+function mai_header_before() {
+	$before = mai_get_do_action( 'mai_header_before' );
+	if ( ! $before ) {
+		return;
+	}
+	printf( '<div %s><div class="wrap">%s</div></div>',
+		genesis_attr( 'header-before', array( 'class' => 'header-before text-sm' ) ),
+		$before
+	);
+}
+
+/**
+ * Add header after markup if there is content.
+ *
+ * @return  void
+ */
+add_action( 'genesis_header', 'mai_header_after' );
+function mai_header_after() {
+	$after = mai_get_do_action( 'mai_header_after' );
+	if ( ! $after ) {
+		return;
+	}
+	printf( '<div %s><div class="wrap">%s</div></div>',
+		genesis_attr( 'header-after', array( 'class' => 'header-after' ) ),
+		$after
+	);
+}
+
+/**
  * Add the header before content.
  *
  * @return  void
@@ -252,7 +265,7 @@ add_action( 'mai_header_before', 'mai_do_header_before' );
 function mai_do_header_before() {
 
 	// Bail if no content
-	if ( ! is_active_sidebar('header_before') ) {
+	if ( ! is_active_sidebar( 'header_before' ) ) {
 		return;
 	}
 
@@ -271,19 +284,19 @@ add_action( 'mai_header_left', 'mai_do_header_left' );
 function mai_do_header_left() {
 
 	// Bail if no content
-	if ( ! ( is_active_sidebar('header_left') || has_nav_menu('header_left') ) ) {
+	if ( ! ( is_active_sidebar( 'header_left' ) || has_nav_menu( 'header_left' ) ) ) {
 		return;
 	}
 
 	// Header Left widget area
-	if ( is_active_sidebar('header_left') ) {
+	if ( is_active_sidebar( 'header_left' ) ) {
 		_mai_add_widget_header_menu_args();
 		genesis_widget_area( 'header_left' );
 		_mai_remove_widget_header_menu_args();
 	}
 
 	// Header Left menu
-	if ( has_nav_menu('header_left') ) {
+	if ( has_nav_menu( 'header_left' ) ) {
 		echo genesis_get_nav_menu( array( 'theme_location' => 'header_left' ) );
 	}
 }
@@ -297,12 +310,12 @@ add_action( 'mai_header_right', 'mai_do_header_right' );
 function mai_do_header_right() {
 
 	// Bail if no content
-	if ( ! ( is_active_sidebar('header_right') || has_nav_menu('header_right') ) ) {
+	if ( ! ( is_active_sidebar( 'header_right' ) || has_nav_menu( 'header_right' ) ) ) {
 		return;
 	}
 
 	// Header Right widget area
-	if ( is_active_sidebar('header_right') ) {
+	if ( is_active_sidebar( 'header_right' ) ) {
 		_mai_add_widget_header_menu_args();
 		genesis_widget_area( 'header_right' );
 		_mai_remove_widget_header_menu_args();
