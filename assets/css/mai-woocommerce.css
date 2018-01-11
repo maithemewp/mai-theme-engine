@@ -141,6 +141,10 @@
 	margin-bottom: 16px;
 }
 
+.woocommerce div.product form.cart div.quantity {
+	margin-right: 8px;
+}
+
 .sku_wrapper,
 .posted_in,
 .tagged_as {
@@ -271,6 +275,14 @@ body.woocommerce #reviews h3 {
 
 .related.products .product > .woocommerce-LoopProduct-link {
 	margin: -13px -13px 12px;
+}
+
+/* ### Cross Sells & Up Sells
+--------------------------------------------- */
+
+.cross-sells > h2,
+.up-sells > h2 {
+	font-size: 1.563rem;
 }
 
 /* ## Cart
