@@ -808,7 +808,6 @@ td {
 }
 
 .site-inner,
-.mai-aec .wrap,
 .nav-primary .wrap,
 .nav-secondary .wrap,
 .footer-widgets .wrap,
@@ -1936,24 +1935,6 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 
 /* # Plugins
 ---------------------------------------------------------------------------------------------------- */
-
-/* ## Mai - Ads and Extra Content
---------------------------------------------- */
-
-.mai-aec .wrap {
-	padding-top: 16px;
-	padding-bottom: 16px;
-}
-
-.content .mai-aec .wrap {
-	padding-left: 0;
-	padding-right: 0;
-}
-
-/* hide the add (no spacing) when no add is displaying (happens when ad units only display mobile/desktop) */
-.mai-aec .wrap:empty {
-	display: none;
-}
 
 /* ## Jetpack
 --------------------------------------------- */
