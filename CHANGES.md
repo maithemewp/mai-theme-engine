@@ -7,6 +7,7 @@
 * Changed: More vertical padding on text inputs.
 * Changed: Allow widget entry titles to inherit font weight.
 * Changed: Minor tweaks to borders, spacing, etc.
+* Changed: Comment edit link now doesn't alter comment layout.
 * Fixed: Add section wrap if using a title without content.
 * Fixed: Woo cross-sells and up-sells heading font size.
 * Fixed: Woo qty now has a bit more right margin.
