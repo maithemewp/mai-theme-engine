@@ -2034,7 +2034,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	}
 
 	.admin-bar.sticky-header .site-header {
-		top: 32px;
+		top: 46px;
 	}
 
 	.sticky-header.mai-standard-menu-activated {
@@ -2044,6 +2044,14 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	.sticky-header.mai-standard-menu-activated .site-header {
 		max-height: 100vh;
 		overflow-y: auto;
+	}
+
+}
+
+@media only screen and (min-width: 782px) {
+
+	.admin-bar.sticky-header .site-header {
+		top: 32px;
 	}
 
 }
