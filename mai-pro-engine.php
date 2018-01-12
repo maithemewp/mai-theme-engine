@@ -5,7 +5,7 @@
  * Plugin URI:      https://maipro.io/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.2.0-beta.2
+ * Version:         1.2.0-beta.3
  *
  * GitHub URI:      maiprowp/mai-pro-engine
  *
@@ -91,7 +91,7 @@ final class Mai_Pro_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.2' );
+		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.3' );
 
 		// DB version.
 		define( 'MAI_PRO_ENGINE_DB_VERSION', '1161' );
@@ -99,10 +99,10 @@ final class Mai_Pro_Engine {
 		// Plugin Folder Path.
 		define( 'MAI_PRO_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-		// Plugin Lib Path
+		// Plugin Lib Path.
 		define( 'MAI_PRO_ENGINE_LIB_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'lib/' );
 
-		// Plugin Includes Path
+		// Plugin Includes Path.
 		define( 'MAI_PRO_ENGINE_INCLUDES_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'includes/' );
 
 		// Plugin Folder URL.
@@ -111,7 +111,7 @@ final class Mai_Pro_Engine {
 		// Plugin Root File.
 		define( 'MAI_PRO_ENGINE_PLUGIN_FILE', __FILE__ );
 
-		// Plugin Base Name
+		// Plugin Base Name.
 		define( 'MAI_PRO_ENGINE_BASENAME', dirname( plugin_basename( __FILE__ ) ) );
 
 	}

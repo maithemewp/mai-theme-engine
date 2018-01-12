@@ -19,6 +19,11 @@ function hide_editor() {
 	// if ( 'sections.php' === get_page_template_slug( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) ) ) {
 	// 	remove_post_type_support( 'page', 'editor' );
 	// }
+
+	// Bail if not on a sections template.
+	if ( 'sections.php' !== get_page_template_slug( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) ) ) {
+		return;
+	}
 	// Instead we're forced to hide via CSS for now.
 	echo '<style type="text/css">#postdivrich{display:none!important;}</style>';
 }
