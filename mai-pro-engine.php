@@ -5,7 +5,7 @@
  * Plugin URI:      https://maipro.io/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.2.0-beta.6
+ * Version:         1.2.0-beta.7
  *
  * GitHub URI:      maiprowp/mai-pro-engine
  *
@@ -91,7 +91,7 @@ final class Mai_Pro_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.6' );
+		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.7' );
 
 		// DB version.
 		define( 'MAI_PRO_ENGINE_DB_VERSION', '1161' );
@@ -128,7 +128,6 @@ final class Mai_Pro_Engine {
 		// Includes (Vendor).
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
-		// require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'Shortcode_Button/shortcode-button.php';
 		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
 
 		/**
@@ -290,7 +289,7 @@ final class Mai_Pro_Engine {
 				return;
 			}
 
-			// Lib
+			// Lib.
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'admin/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
@@ -298,7 +297,7 @@ final class Mai_Pro_Engine {
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
-			// Setup the updater
+			// Setup the updater.
 			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
 			/**
 			 * Allow branch and updater object manipulation.
@@ -306,6 +305,14 @@ final class Mai_Pro_Engine {
 			 * among other things.
 			 */
 			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
+			// Add icons for Dashboard > Updates screen.
+			$updater->addResultFilter( function( $info, $response = null ) {
+				$info->icons = array(
+					'1x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-128x128.png',
+					'2x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-256x256.png',
+				);
+				return $info;
+			});
 
 		}, 8 );
 
