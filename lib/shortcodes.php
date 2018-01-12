@@ -2027,16 +2027,7 @@ final class Mai_Shortcodes {
 	function get_entry_link( $atts, $object_or_id ) {
 		switch ( $atts['content_type'] ) {
 			case 'post':
-				$link = '';
-				if ( in_array( 'add_to_cart', $atts['show'] ) ) {
-					if ( class_exists( 'WooCommerce' ) ) {
-						$product = wc_get_product( $object_or_id );
-						$link    = $product->add_to_cart_url();
-					}
-				}
-				if ( ! $link ) {
-					$link = get_permalink( $object_or_id );
-				}
+				$link = get_permalink( $object_or_id );
 			break;
 			case 'term':
 				$link = get_term_link( $object_or_id );
@@ -2223,7 +2214,6 @@ final class Mai_Shortcodes {
 	function get_add_to_cart_link( $atts, $url ) {
 		$link = '';
 		if ( class_exists( 'WooCommerce' ) ) {
-			$product = wc_get_product( get_the_ID() );
 			ob_start();
 			woocommerce_template_loop_add_to_cart();
 			$link = ob_get_clean();

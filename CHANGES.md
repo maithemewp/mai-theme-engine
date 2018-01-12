@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.2.0-beta.5 (1/12/18)
+#### 1.2.0-beta.6 (1/12/18)
 * Changed: Convert sticky header from JS to CSS-only.
 * Changed: Move mai_header_before and mai_header_after hooks outside of site-header.
 * Changed: Mobile menu toggle now uses psuedo-elements for less markup.
@@ -9,6 +9,7 @@
 * Changed: More consistent base body background and even section background color.
 * Changed: Minor tweaks to borders, spacing, etc.
 * Changed: Comment edit link now doesn't alter comment layout.
+* Fixed: [grid] links adding product to cart instead of going to product page when clicking title or image.
 * Fixed: Add section wrap if using a title without content.
 * Fixed: Woo cross-sells and up-sells heading font size.
 * Fixed: Woo qty now has a bit more right margin.
