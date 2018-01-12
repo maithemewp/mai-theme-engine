@@ -8,16 +8,19 @@
 add_action( 'admin_head', 'hide_editor' );
 function hide_editor() {
 	global $pagenow;
-
 	if ( 'post.php' !== $pagenow ) {
 		return;
 	}
 	if ( ! isset( $_GET['post'] ) ) {
 		return;
 	}
-	if ( 'sections.php' === get_page_template_slug( absint( $_GET['post'] ) ) ) {
-		remove_post_type_support( 'page', 'editor' );
-	}
+	// Currently this will not work because scripts won't be loaded and [gallery] won't be parsed.
+	// See https://github.com/CMB2/CMB2/issues/1083
+	// if ( 'sections.php' === get_page_template_slug( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) ) ) {
+	// 	remove_post_type_support( 'page', 'editor' );
+	// }
+	// Instead we're forced to hide via CSS for now.
+	echo '<style type="text/css">#postdivrich{display:none!important;}</style>';
 }
 
 /**
@@ -28,7 +31,7 @@ function hide_editor() {
 add_action( 'cmb2_admin_init', 'mai_do_sections_metabox' );
 function mai_do_sections_metabox() {
 
-	// Posts/Pages/CPTs
+	// Pages with Sections template.
 	$sections = new_cmb2_box( array(
 		'id'           => 'mai_sections',
 		'title'        => __( 'Sections', 'mai-pro-engine' ),
@@ -38,6 +41,7 @@ function mai_do_sections_metabox() {
 		'show_on'      => array( 'key' => 'page-template', 'value' => 'sections.php' ),
 	) );
 
+	// Sections.
 	$section = $sections->add_field( array(
 		'id'          => 'mai_sections',
 		'type'        => 'group',
@@ -50,7 +54,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Settings
+	// Settings.
 	$sections->add_group_field( $section, array(
 		'name'       => '<button class="button mai-section-settings-toggle"><span class="dashicons dashicons-admin-generic"></span>' . __( 'Settings', 'mai-pro-engine' ) . '</button>',
 		'id'         => 'settings_title',
@@ -59,7 +63,7 @@ function mai_do_sections_metabox() {
 		'classes'    => 'mai-section-settings-toggle-wrap',
 	) );
 
-	// Background Color
+	// Background Color.
 	$sections->add_group_field( $section, array(
 		'name'    => __( 'Background Color', 'mai-pro-engine' ),
 		'id'      => 'bg',
@@ -67,7 +71,7 @@ function mai_do_sections_metabox() {
 		'default' => '', // Keep this empty, so CSS can control the defaults if left untouched
 	) );
 
-	// Background Image
+	// Background Image.
 	$sections->add_group_field( $section, array(
 		'name'         => __( 'Background Image', 'mai-pro-engine' ),
 		'id'           => 'image',
@@ -79,7 +83,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Overlay
+	// Overlay.
 	$sections->add_group_field( $section, array(
 		'name'              => __( 'Overlay Style', 'mai-pro-engine' ),
 		'id'                => 'overlay',
@@ -93,7 +97,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Inner
+	// Inner.
 	$sections->add_group_field( $section, array(
 		'name'              => __( 'Inner Style', 'mai-pro-engine' ),
 		'id'                => 'inner',
@@ -106,7 +110,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Height
+	// Height.
 	$sections->add_group_field( $section, array(
 		'name'    => __( 'Height', 'mai-pro-engine' ),
 		'id'      => 'height',
@@ -122,7 +126,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Content Width
+	// Content Width.
 	$sections->add_group_field( $section, array(
 		'name'             => __( 'Content Width', 'mai-pro-engine' ),
 		'id'               => 'content_width',
@@ -138,7 +142,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Content Alignment
+	// Content Alignment.
 	$sections->add_group_field( $section, array(
 		'name'             => __( 'Content Alignment', 'mai-pro-engine' ),
 		'id'               => 'align',
@@ -151,7 +155,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Text Size
+	// Text Size.
 	$sections->add_group_field( $section, array(
 		'name'             => __( 'Text Size', 'mai-pro-engine' ),
 		'id'               => 'text_size',
@@ -166,7 +170,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Advanced Settings
+	// Advanced Settings.
 	$sections->add_group_field( $section, array(
 		'name'       => __( 'Advanced Settings', 'mai-pro-engine' ),
 		'id'         => 'advanced_settings_title',
@@ -175,7 +179,7 @@ function mai_do_sections_metabox() {
 		'classes'    => 'mai-section-advanced-settings-title',
 	) );
 
-	// ID
+	// ID.
 	$sections->add_group_field( $section, array(
 		'name'            => 'HTML id',
 		'id'              => 'id',
@@ -183,7 +187,7 @@ function mai_do_sections_metabox() {
 		'sanitization_cb' => 'sanitize_key',
 	) );
 
-	// Class
+	// Class.
 	$sections->add_group_field( $section, array(
 		'name'            => 'HTML additional classes',
 		'id'              => 'class',
@@ -192,7 +196,7 @@ function mai_do_sections_metabox() {
 		'sanitization_cb' => 'mai_sanitize_html_classes',
 	) );
 
-	// Title
+	// Title.
 	$sections->add_group_field( $section, array(
 		'name'       => 'Title',
 		'id'         => 'title',
@@ -204,7 +208,7 @@ function mai_do_sections_metabox() {
 		),
 	) );
 
-	// Content
+	// Content.
 	$sections->add_group_field( $section, array(
 		'name'            => 'Content',
 		'id'              => 'content',

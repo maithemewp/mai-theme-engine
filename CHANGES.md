@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.2.0-beta.1 (1/11/18)
+#### 1.2.0-beta.2 (1/12/18)
 * Changed: Convert sticky header from JS to CSS-only.
 * Changed: Move mai_header_before and mai_header_after hooks outside of site-header.
 * Changed: Mobile menu toggle now uses psuedo-elements for less markup.
@@ -11,6 +11,7 @@
 * Fixed: Add section wrap if using a title without content.
 * Fixed: Woo cross-sells and up-sells heading font size.
 * Fixed: Woo qty now has a bit more right margin.
+* Fixed: Sections template admin now parses [gallery] shortcodes correctly.
 
 #### 1.1.13.1 (1/03/18)
 * Fixed: [grid] Not showing only top level posts/terms if 'parent' param was '0'.
