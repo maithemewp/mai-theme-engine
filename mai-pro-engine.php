@@ -5,7 +5,7 @@
  * Plugin URI:      https://maipro.io/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.2.0-beta.7
+ * Version:         1.2.0-beta.8
  *
  * GitHub URI:      maiprowp/mai-pro-engine
  *
@@ -91,7 +91,7 @@ final class Mai_Pro_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.7' );
+		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.8' );
 
 		// DB version.
 		define( 'MAI_PRO_ENGINE_DB_VERSION', '1161' );
@@ -299,17 +299,19 @@ final class Mai_Pro_Engine {
 
 			// Setup the updater.
 			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
+
 			/**
 			 * Allow branch and updater object manipulation.
 			 * This let's us do beta releases via a branch change,
 			 * among other things.
 			 */
 			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
+
 			// Add icons for Dashboard > Updates screen.
 			$updater->addResultFilter( function( $info, $response = null ) {
 				$info->icons = array(
-					'1x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-128x128.png',
-					'2x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-256x256.png',
+					'1x' => MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png',
+					'2x' => MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/icon-256x256.png',
 				);
 				return $info;
 			});

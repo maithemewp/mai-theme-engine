@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.2.0-beta.6 (1/12/18)
+#### 1.2.0-beta.8 (1/12/18)
 * Added: Plugin icon when updating via Dashboard > Updates.
 * Changed: Convert sticky header from JS to CSS-only.
 * Changed: Move mai_header_before and mai_header_after hooks outside of site-header.
