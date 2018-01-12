@@ -1,11 +1,12 @@
 ### Changelog
 
-#### 1.2.0-beta.2 (1/12/18)
+#### 1.2.0-beta.4 (1/12/18)
 * Changed: Convert sticky header from JS to CSS-only.
 * Changed: Move mai_header_before and mai_header_after hooks outside of site-header.
 * Changed: Mobile menu toggle now uses psuedo-elements for less markup.
 * Changed: More vertical padding on text inputs.
 * Changed: Allow widget entry titles to inherit font weight.
+* Changed: More consistent base body background and even section background color.
 * Changed: Minor tweaks to borders, spacing, etc.
 * Changed: Comment edit link now doesn't alter comment layout.
 * Fixed: Add section wrap if using a title without content.
