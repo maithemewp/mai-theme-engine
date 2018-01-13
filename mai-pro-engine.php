@@ -284,7 +284,7 @@ final class Mai_Pro_Engine {
 			 * @link https://10up.com/blog/2012/wordpress-plug-in-self-deactivation/
 			 */
 			if ( ! current_theme_supports( 'mai-pro-engine' ) ) {
-				add_action( 'admin_init', array( $this, 'deactivate_plugin' ) );
+				add_action( 'admin_init',    array( $this, 'deactivate_plugin' ) );
 				add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 				return;
 			}
@@ -297,26 +297,24 @@ final class Mai_Pro_Engine {
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
-			// Setup the updater.
-			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
-
-			/**
-			 * Allow branch and updater object manipulation.
-			 * This let's us do beta releases via a branch change,
-			 * among other things.
-			 */
-			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
-
-			// Add icons for Dashboard > Updates screen.
-			$updater->addResultFilter( function( $info, $response = null ) {
-				$info->icons = array(
-					'1x' => MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png',
-					'2x' => MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/icon-256x256.png',
-				);
-				return $info;
-			});
-
 		}, 8 );
+
+		// Setup the updater.
+		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
+		/**
+		 * Allow branch and updater object manipulation.
+		 * This let's us do beta releases via a branch change,
+		 * among other things.
+		 */
+		$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
+		// Add icons for Dashboard > Updates screen.
+		$updater->addResultFilter( function( $info, $response = null ) {
+			$info->icons = array(
+				'1x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-128x128.png',
+				'2x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-256x256.png',
+			);
+			return $info;
+		});
 
 	}
 
