@@ -5,7 +5,7 @@
  * Plugin URI:      https://maipro.io/
  * Description:     The Mai Pro Engine plugin
  *
- * Version:         1.2.0-beta.8
+ * Version:         1.2.0-beta.9
  *
  * GitHub URI:      maiprowp/mai-pro-engine
  *
@@ -92,7 +92,7 @@ final class Mai_Pro_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.8' );
+		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.9' );
 
 		// DB version.
 		define( 'MAI_PRO_ENGINE_DB_VERSION', '1161' );
@@ -315,6 +315,11 @@ final class Mai_Pro_Engine {
 	}
 
 	function update() {
+
+		// Bail if not admin.
+		if ( ! is_admin() ) {
+			return;
+		}
 
 		// Setup the updater.
 		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
