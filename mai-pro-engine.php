@@ -329,8 +329,8 @@ final class Mai_Pro_Engine {
 		// Add icons for Dashboard > Updates screen.
 		$updater->addResultFilter( function( $info, $response = null ) {
 			$info->icons = array(
-				'1x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-128x128.png',
-				'2x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-256x256.png',
+				'1x' => MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png',
+				'2x' => MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/icon-256x256.png',
 			);
 			return $info;
 		});
