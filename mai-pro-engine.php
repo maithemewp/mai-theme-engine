@@ -50,6 +50,7 @@ final class Mai_Pro_Engine {
 			// Methods
 			self::$instance->setup_constants();
 			self::$instance->setup();
+			self::$instance->update();
 		}
 		return self::$instance;
 	}
@@ -299,23 +300,6 @@ final class Mai_Pro_Engine {
 
 		}, 8 );
 
-		// Setup the updater.
-		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
-		/**
-		 * Allow branch and updater object manipulation.
-		 * This let's us do beta releases via a branch change,
-		 * among other things.
-		 */
-		$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
-		// Add icons for Dashboard > Updates screen.
-		$updater->addResultFilter( function( $info, $response = null ) {
-			$info->icons = array(
-				'1x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-128x128.png',
-				'2x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-256x256.png',
-			);
-			return $info;
-		});
-
 	}
 
 	function deactivate_plugin() {
@@ -328,6 +312,28 @@ final class Mai_Pro_Engine {
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
 		}
+	}
+
+	function update() {
+
+		// Setup the updater.
+		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
+
+		/**
+		 * Allow branch and updater object manipulation.
+		 * This let's us do beta releases via a branch change,
+		 * among other things.
+		 */
+		$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
+
+		// Add icons for Dashboard > Updates screen.
+		$updater->addResultFilter( function( $info, $response = null ) {
+			$info->icons = array(
+				'1x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-128x128.png',
+				'2x' => MAI_PRO_ENGINE_PLUGIN_URL . '/assets/images/icon-256x256.png',
+			);
+			return $info;
+		});
 	}
 
 }
