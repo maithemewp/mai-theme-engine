@@ -2330,7 +2330,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 
 .genesis-nav-menu .sub-menu .sub-menu {
 	top: 0;
-	margin-left: 197px;
+	margin-left: 199px;
 	border-left: 1px solid rgba(0,0,0,0.1);
 }
 
@@ -2343,7 +2343,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	position: relative;
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex-pack: justify;-webkit-box-pack: justify;justify-content: space-between;
-	width: 199px;
+	width: 200px;
 	font-size: 0.8em;
 	text-align: left;
 	word-wrap: break-word;

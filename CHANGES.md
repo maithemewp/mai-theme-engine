@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.2.0-beta.11 (1/15/18)
+#### 1.2.0-beta.12 (1/15/18)
 * Added: Plugin icon when updating via Dashboard > Updates.
 * Changed: Convert sticky header from JS to CSS-only.
 * Changed: Move mai_header_before and mai_header_after hooks outside of site-header.
@@ -15,6 +15,7 @@
 * Fixed: Woo cross-sells and up-sells heading font size.
 * Fixed: Woo qty now has a bit more right margin.
 * Fixed: Sections template admin now parses [gallery] shortcodes correctly.
+* Fixed: More precise handling of sub-menu widths.
 
 #### 1.1.13.1 (1/03/18)
 * Fixed: [grid] Not showing only top level posts/terms if 'parent' param was '0'.
