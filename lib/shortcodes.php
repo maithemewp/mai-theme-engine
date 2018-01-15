@@ -423,7 +423,7 @@ final class Mai_Shortcodes {
 		}
 
 		// Maybe build opening wrap.
-		if ( ! ( empty( $title ) && empty( $content ) ) ) {
+		if ( ! ( empty( $title ) || empty( $content ) ) ) {
 
 			$wrap_atts['class'] = 'wrap';
 
