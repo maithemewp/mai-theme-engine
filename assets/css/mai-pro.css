@@ -103,17 +103,14 @@ input[type="search"]{
 /* ## Typographical Elements
 --------------------------------------------- */
 
-html,
-body {
-	width: 100%;
-	height: 100%;
-}
-
 html {
 	font-size: 100%;
 }
 
 body {
+	height: 100%;
+	width: 100%;
+	max-width: 100%;
 	background-color: #f7f7f7;
 	color: #323232;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
@@ -908,15 +905,18 @@ td {
 }
 
 .width-full,
+.content-no-sidebars .section,
 .section .wrap.width-full,
 .section.banner-area > .wrap.width-full {
+	clear: both;
+	max-width: 100vw;
 	margin-left: calc(-50vw + 50%);
 	margin-right: calc(-50vw + 50%);
 }
 
-.banner-area > .width-full,
-.content-no-sidebars .width-full {
-	max-width: 100vw;
+.section.banner-area,
+.content-no-sidebars .section {
+	overflow: hidden;
 }
 
 .content-no-sidebars .width-full {
@@ -1047,13 +1047,6 @@ td {
 /* offset the section bottom margin when 2 sections in a row */
 .section + .section {
 	margin-top: -30px;
-}
-
-/* only make sections full window width where appropriate */
-.content-no-sidebars .section {
-	clear: both;
-	margin-left: calc(-50vw + 50%);
-	margin-right: calc(-50vw + 50%);
 }
 
 .section .inner > p:last-child {
