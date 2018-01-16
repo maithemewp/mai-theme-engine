@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.2.0-beta.12 (1/15/18)
+#### 1.2.0-beta.13 (1/15/18)
 * Added: Plugin icon when updating via Dashboard > Updates.
 * Changed: Convert sticky header from JS to CSS-only.
 * Changed: Move mai_header_before and mai_header_after hooks outside of site-header.
@@ -10,6 +10,7 @@
 * Changed: More consistent base body background and even section background color.
 * Changed: Minor tweaks to borders, spacing, etc.
 * Changed: Comment edit link now doesn't alter comment layout.
+* Changed: Fixed overflow breaking out of full width sections in some edge-case scenarios.
 * Fixed: [grid] links adding product to cart instead of going to product page when clicking title or image.
 * Fixed: Add section wrap if using a title without content.
 * Fixed: Woo cross-sells and up-sells heading font size.
