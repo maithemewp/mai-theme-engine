@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.2.0-beta.17
+ * Version:         1.2.0-beta.18
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -47,8 +47,7 @@ final class Mai_Theme_Engine {
 			self::$instance = new Mai_Theme_Engine;
 			// Methods
 			self::$instance->setup_constants();
-			self::$instance->update();
-			self::$instance->setup();
+			self::$instance->hooks();
 		}
 		return self::$instance;
 	}
@@ -90,7 +89,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.17' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.18' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1161' );
@@ -115,33 +114,6 @@ final class Mai_Theme_Engine {
 
 	}
 
-	function update() {
-
-		// Bail if not admin.
-		if ( ! is_admin() ) {
-			return;
-		}
-
-		// Setup the updater.
-		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
-
-		/**
-		 * Allow branch and updater object manipulation.
-		 * This let's us do beta releases via a branch change,
-		 * among other things.
-		 */
-		$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
-
-		// Add icons for Dashboard > Updates screen.
-		$updater->addResultFilter( function( $info, $response = null ) {
-			$info->icons = array(
-				'1x' => MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png',
-				'2x' => MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-256x256.png',
-			);
-			return $info;
-		});
-	}
-
 	/**
 	 * Include required files.
 	 *
@@ -149,12 +121,40 @@ final class Mai_Theme_Engine {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	private function setup() {
+	private function hooks() {
 
-		// Includes (Vendor).
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
+		// Include dependencies early.
+		add_action( 'init', function() {
+
+			// Includes (Vendor).
+			require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
+			require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
+			require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
+
+			// Bail if not admin.
+			if ( ! is_admin() ) {
+				return;
+			}
+
+			// Setup the updater.
+			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
+
+			/**
+			 * Allow branch and updater object manipulation.
+			 * This let's us do beta releases via a branch change,
+			 * among other things.
+			 */
+			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
+
+			// Add icons for Dashboard > Updates screen.
+			$updater->addResultFilter( function( $info, $response = null ) {
+				$info->icons = array(
+					'1x' => MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png',
+					'2x' => MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-256x256.png',
+				);
+				return $info;
+			});
+		});
 
 		/**
 		 * Include files after theme is loaded, to mimic being run in a child theme.
