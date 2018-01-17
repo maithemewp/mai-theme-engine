@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.2.0-beta.14
+ * Version:         1.2.0-beta.15
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -90,7 +90,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.14' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.15' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1161' );
@@ -279,10 +279,11 @@ final class Mai_Theme_Engine {
 			/**
 			 * Deactivate theme and show notice
 			 * if Mai Theme Engine is not supported in the child theme.
+			 * or if Mai Pro Engine is not supported in the child theme (backwards compatibility).
 			 *
 			 * @link https://10up.com/blog/2012/wordpress-plug-in-self-deactivation/
 			 */
-			if ( ! current_theme_supports( 'mai-theme-engine' ) ) {
+			if ( ! current_theme_supports( 'mai-theme-engine' ) || ! current_theme_supports( 'mai-pro-engine' ) ) {
 				add_action( 'admin_init',    array( $this, 'deactivate_plugin' ) );
 				add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 				return;
@@ -306,7 +307,7 @@ final class Mai_Theme_Engine {
 
 	function admin_notices() {
 		printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', __( '<strong>Your theme does not support the Mai Theme Engine plugin</strong>. As a result, this plugin has been deactivated.', 'mai-theme-engine' ) );
-		// Remove "Plugin activated" notice
+		// Remove "Plugin activated" notice.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
 		}
@@ -340,6 +341,9 @@ final class Mai_Theme_Engine {
 	}
 
 }
+
+// This is only here for backwards compatibility with older Mai Pro themes.
+final class Mai_Pro_Engine {}
 
 /**
  * The main function for that returns Mai_Theme_Engine
