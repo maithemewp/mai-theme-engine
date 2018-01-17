@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.2.0-beta.18
+ * Version:         1.2.0-beta.19
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -89,7 +89,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.18' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.19' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1161' );
@@ -123,16 +123,16 @@ final class Mai_Theme_Engine {
 	 */
 	private function hooks() {
 
-		// Include dependencies early.
-		add_action( 'init', function() {
+		// Includes (Vendor).
+		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
+		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
+		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
 
-			// Includes (Vendor).
-			require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
-			require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
-			require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
+		// Run the updater.
+		add_action( 'admin_init', function() {
 
-			// Bail if not admin.
-			if ( ! is_admin() ) {
+			// Bail if current user cannot manage plugins.
+			if ( ! current_user_can( 'install_plugins' ) ) {
 				return;
 			}
 
