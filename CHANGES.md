@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.2.0-beta.16 (1/15/18)
+#### 1.2.0-beta.17 (1/15/18)
 * Added: Plugin icon when updating via Dashboard > Updates.
 * Changed: Plugin name to reflect official Mai Theme brand.
 * Changed: Convert sticky header from JS to CSS-only.
@@ -12,6 +12,7 @@
 * Changed: Minor tweaks to borders, spacing, etc.
 * Changed: Comment edit link now doesn't alter comment layout.
 * Changed: Fixed overflow breaking out of full width sections in some edge-case scenarios.
+* Changed: Move updater method before setup, so it always runs, regardless of whether the child theme supports mai-theme-engine.
 * Fixed: [grid] links adding product to cart instead of going to product page when clicking title or image.
 * Fixed: Add section wrap if using a title without content.
 * Fixed: Woo cross-sells and up-sells heading font size.
