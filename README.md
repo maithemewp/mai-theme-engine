@@ -1,2 +1,2 @@
-# Mai Pro Engine
-The required plugin to make Mai Pro themes work
+# Mai Theme Engine
+The required plugin to power Mai Theme child themes.

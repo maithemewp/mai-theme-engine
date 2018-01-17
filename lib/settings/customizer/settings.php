@@ -19,7 +19,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => __( 'Mai Settings', 'mai-pro-engine' ),
+			'title'    => __( 'Mai Settings', 'mai-theme-engine' ),
 			'priority' => '35',
 		)
 	);
@@ -36,8 +36,8 @@ function mai_register_customizer_settings( $wp_customize ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			'header_customizer_heading',
 			array(
-				'label'       => __( 'Header', 'mai-pro-engine' ),
-				'description' => __( 'These settings are disabled on mobile.', 'mai-pro-engine' ),
+				'label'       => __( 'Header', 'mai-theme-engine' ),
+				'description' => __( 'These settings are disabled on mobile.', 'mai-theme-engine' ),
 				'section'     => $section,
 				'settings'    => false,
 			)
@@ -56,7 +56,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'enable_sticky_header',
 		array(
-			'label'    => __( 'Enable sticky header', 'mai-pro-engine' ),
+			'label'    => __( 'Enable sticky header', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'enable_sticky_header' ),
 			'type'     => 'checkbox',
@@ -75,7 +75,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'enable_shrink_header',
 		array(
-			'label'    => __( 'Enable shrink header', 'mai-pro-engine' ),
+			'label'    => __( 'Enable shrink header', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'enable_shrink_header' ),
 			'type'     => 'checkbox',
@@ -94,19 +94,19 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'footer_widget_count',
 		array(
-			'label'       => __( 'Footer widget areas', 'mai-pro-engine' ),
-			'description' => __( 'Save and reload customizer to view changes.', 'mai-pro-engine' ),
+			'label'       => __( 'Footer widget areas', 'mai-theme-engine' ),
+			'description' => __( 'Save and reload customizer to view changes.', 'mai-theme-engine' ),
 			'section'     => $section,
 			'settings'    => _mai_customizer_get_field_name( $settings_field, 'footer_widget_count' ),
 			'priority'    => 10,
 			'type'        => 'select',
 			'choices'     => array(
-				0 => __( 'None', 'mai-pro-engine' ),
-				1 => __( '1', 'mai-pro-engine' ),
-				2 => __( '2', 'mai-pro-engine' ),
-				3 => __( '3', 'mai-pro-engine' ),
-				4 => __( '4', 'mai-pro-engine' ),
-				6 => __( '6', 'mai-pro-engine' ),
+				0 => __( 'None', 'mai-theme-engine' ),
+				1 => __( '1', 'mai-theme-engine' ),
+				2 => __( '2', 'mai-theme-engine' ),
+				3 => __( '3', 'mai-theme-engine' ),
+				4 => __( '4', 'mai-theme-engine' ),
+				6 => __( '6', 'mai-theme-engine' ),
 			),
 		)
 	);
@@ -123,14 +123,14 @@ function mai_register_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'mobile_menu_style',
 		array(
-			'label'    => __( 'Mobile menu style', 'mai-pro-engine' ),
+			'label'    => __( 'Mobile menu style', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'mobile_menu_style' ),
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				'standard' => __( 'Standard Menu', 'mai-pro-engine' ),
-				'side'     => __( 'Side Menu', 'mai-pro-engine' ),
+				'standard' => __( 'Standard Menu', 'mai-theme-engine' ),
+				'side'     => __( 'Side Menu', 'mai-theme-engine' ),
 			),
 		)
 	);

@@ -125,7 +125,7 @@ function mai_get_default_options() {
 		'layout_post'               => '',
 		'layout_archive'            => 'full-width-content',
 		// Mai Utility.
-		'mai_db_version'            => MAI_PRO_ENGINE_DB_VERSION,
+		'mai_db_version'            => MAI_THEME_ENGINE_DB_VERSION,
 	);
 
 	/**

@@ -1,52 +1,50 @@
 <?php
 
 /**
- * Plugin Name:     Mai Pro Engine
- * Plugin URI:      https://maipro.io/
- * Description:     The Mai Pro Engine plugin
+ * Plugin Name:     Mai Theme Engine
+ * Plugin URI:      https://maitheme.com/
+ * Description:     The Mai Theme Engine plugin
  *
  * Version:         1.2.0-beta.13
  *
- * GitHub URI:      maiprowp/mai-pro-engine
+ * GitHub URI:      maithemewp/mai-theme-engine
  *
- * Author:          MaiPro.io
- * Author URI:      https://maipro.io
+ * Author:          MaiTheme.com
+ * Author URI:      https://maitheme.com
  */
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'Mai_Pro_Engine' ) ) :
-
 /**
- * Main Mai_Pro_Engine Class.
+ * Main Mai_Theme_Engine Class.
  *
  * @since 1.0.0
  */
-final class Mai_Pro_Engine {
+final class Mai_Theme_Engine {
 
 	/**
-	 * @var Mai_Pro_Engine The one true Mai_Pro_Engine
+	 * @var Mai_Theme_Engine The one true Mai_Theme_Engine
 	 * @since 1.0.0
 	 */
 	private static $instance;
 
 	/**
-	 * Main Mai_Pro_Engine Instance.
+	 * Main Mai_Theme_Engine Instance.
 	 *
-	 * Insures that only one instance of Mai_Pro_Engine exists in memory at any one
+	 * Insures that only one instance of Mai_Theme_Engine exists in memory at any one
 	 * time. Also prevents needing to define globals all over the place.
 	 *
 	 * @since   1.0.0
 	 * @static  var array $instance
-	 * @uses    Mai_Pro_Engine::setup_constants() Setup the constants needed.
-	 * @uses    Mai_Pro_Engine::includes() Include the required files.
-	 * @return  object | Mai_Pro_Engine The one true Mai_Pro_Engine
+	 * @uses    Mai_Theme_Engine::setup_constants() Setup the constants needed.
+	 * @uses    Mai_Theme_Engine::includes() Include the required files.
+	 * @return  object | Mai_Theme_Engine The one true Mai_Theme_Engine
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
 			// Setup the setup
-			self::$instance = new Mai_Pro_Engine;
+			self::$instance = new Mai_Theme_Engine;
 			// Methods
 			self::$instance->setup_constants();
 			self::$instance->setup();
@@ -67,7 +65,7 @@ final class Mai_Pro_Engine {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'mai-pro-engine' ), '1.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'mai-theme-engine' ), '1.0' );
 	}
 
 	/**
@@ -79,7 +77,7 @@ final class Mai_Pro_Engine {
 	 */
 	public function __wakeup() {
 		// Unserializing instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'mai-pro-engine' ), '1.0' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'mai-theme-engine' ), '1.0' );
 	}
 
 	/**
@@ -92,28 +90,28 @@ final class Mai_Pro_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_PRO_ENGINE_VERSION', '1.2.0-beta.13' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.13' );
 
 		// DB version.
-		define( 'MAI_PRO_ENGINE_DB_VERSION', '1161' );
+		define( 'MAI_THEME_ENGINE_DB_VERSION', '1161' );
 
 		// Plugin Folder Path.
-		define( 'MAI_PRO_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+		define( 'MAI_THEME_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 		// Plugin Lib Path.
-		define( 'MAI_PRO_ENGINE_LIB_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'lib/' );
+		define( 'MAI_THEME_ENGINE_LIB_DIR', MAI_THEME_ENGINE_PLUGIN_DIR . 'lib/' );
 
 		// Plugin Includes Path.
-		define( 'MAI_PRO_ENGINE_INCLUDES_DIR', MAI_PRO_ENGINE_PLUGIN_DIR . 'includes/' );
+		define( 'MAI_THEME_ENGINE_INCLUDES_DIR', MAI_THEME_ENGINE_PLUGIN_DIR . 'includes/' );
 
 		// Plugin Folder URL.
-		define( 'MAI_PRO_ENGINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+		define( 'MAI_THEME_ENGINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 		// Plugin Root File.
-		define( 'MAI_PRO_ENGINE_PLUGIN_FILE', __FILE__ );
+		define( 'MAI_THEME_ENGINE_PLUGIN_FILE', __FILE__ );
 
 		// Plugin Base Name.
-		define( 'MAI_PRO_ENGINE_BASENAME', dirname( plugin_basename( __FILE__ ) ) );
+		define( 'MAI_THEME_ENGINE_BASENAME', dirname( plugin_basename( __FILE__ ) ) );
 
 	}
 
@@ -127,9 +125,9 @@ final class Mai_Pro_Engine {
 	private function setup() {
 
 		// Includes (Vendor).
-		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
-		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
-		require_once MAI_PRO_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
+		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
+		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
+		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
 
 		/**
 		 * Include files after theme is loaded, to mimic being run in a child theme.
@@ -149,11 +147,11 @@ final class Mai_Pro_Engine {
 			add_theme_support( 'genesis-responsive-viewport' );
 
 			add_theme_support( 'genesis-menus', array(
-				'primary'      => __( 'Primary Menu', 'mai-pro-engine' ),
-				'header_left'  => __( 'Header Left Menu', 'mai-pro-engine' ),
-				'header_right' => __( 'Header Right Menu', 'mai-pro-engine' ),
-				'secondary'    => __( 'Footer Menu', 'mai-pro-engine' ),
-				'mobile'       => __( 'Mobile Menu', 'mai-pro-engine' ),
+				'primary'      => __( 'Primary Menu', 'mai-theme-engine' ),
+				'header_left'  => __( 'Header Left Menu', 'mai-theme-engine' ),
+				'header_right' => __( 'Header Right Menu', 'mai-theme-engine' ),
+				'secondary'    => __( 'Footer Menu', 'mai-theme-engine' ),
+				'mobile'       => __( 'Mobile Menu', 'mai-theme-engine' ),
 			) );
 
 			// Add support for structural wraps
@@ -197,7 +195,7 @@ final class Mai_Pro_Engine {
 			// Load default favicon.
 			add_filter( 'genesis_pre_load_favicon', 'mai_default_favicon' );
 			function mai_default_favicon( $favicon ) {
-				return MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/favicon.png';
+				return MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/favicon.png';
 			}
 
 			/**
@@ -280,23 +278,23 @@ final class Mai_Pro_Engine {
 
 			/**
 			 * Deactivate theme and show notice
-			 * if Mai Pro Engine is not supported in the child theme.
+			 * if Mai Theme Engine is not supported in the child theme.
 			 *
 			 * @link https://10up.com/blog/2012/wordpress-plug-in-self-deactivation/
 			 */
-			if ( ! current_theme_supports( 'mai-pro-engine' ) ) {
+			if ( ! current_theme_supports( 'mai-theme-engine' ) ) {
 				add_action( 'admin_init',    array( $this, 'deactivate_plugin' ) );
 				add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 				return;
 			}
 
 			// Lib.
-			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
-			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'admin/*.php' ) as $file ) { include_once $file; }
-			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
-			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/customizer/*.php' ) as $file ) { include_once $file; }
-			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }
-			foreach ( glob( MAI_PRO_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'admin/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'settings/customizer/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
 		}, 8 );
 
@@ -307,7 +305,7 @@ final class Mai_Pro_Engine {
 	}
 
 	function admin_notices() {
-		printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', __( '<strong>Your theme does not support the Mai Pro Engine plugin</strong>. As a result, this plugin has been deactivated.', 'mai-pro-engine' ) );
+		printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', __( '<strong>Your theme does not support the Mai Theme Engine plugin</strong>. As a result, this plugin has been deactivated.', 'mai-theme-engine' ) );
 		// Remove "Plugin activated" notice
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -322,7 +320,7 @@ final class Mai_Pro_Engine {
 		}
 
 		// Setup the updater.
-		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-pro-engine/', __FILE__, 'mai-pro-engine' );
+		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
 
 		/**
 		 * Allow branch and updater object manipulation.
@@ -334,34 +332,33 @@ final class Mai_Pro_Engine {
 		// Add icons for Dashboard > Updates screen.
 		$updater->addResultFilter( function( $info, $response = null ) {
 			$info->icons = array(
-				'1x' => MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png',
-				'2x' => MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/icon-256x256.png',
+				'1x' => MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png',
+				'2x' => MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-256x256.png',
 			);
 			return $info;
 		});
 	}
 
 }
-endif; // End if class_exists check.
 
 /**
- * The main function for that returns Mai_Pro_Engine
+ * The main function for that returns Mai_Theme_Engine
  *
- * The main function responsible for returning the one true Mai_Pro_Engine
+ * The main function responsible for returning the one true Mai_Theme_Engine
  * Instance to functions everywhere.
  *
  * Use this function like you would a global variable, except without needing
  * to declare the global.
  *
- * Example: <?php $plugin = Mai_Pro_Engine(); ?>
+ * Example: <?php $plugin = Mai_Theme_Engine(); ?>
  *
  * @since 1.0.0
  *
- * @return object|Mai_Pro_Engine The one true Mai_Pro_Engine Instance.
+ * @return object|Mai_Theme_Engine The one true Mai_Theme_Engine Instance.
  */
-function Mai_Pro_Engine() {
-	return Mai_Pro_Engine::instance();
+function Mai_Theme_Engine() {
+	return Mai_Theme_Engine::instance();
 }
 
-// Get Mai_Pro_Engine Running.
-Mai_Pro_Engine();
+// Get Mai_Theme_Engine Running.
+Mai_Theme_Engine();

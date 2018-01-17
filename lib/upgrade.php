@@ -15,7 +15,7 @@ function mai_update_database_version() {
 	$option_db_version = get_option( 'mai_db_version' );
 
 	// Bail if the saved version is the version is greater than or equal to the current version.
-	if ( $option_db_version >= MAI_PRO_ENGINE_DB_VERSION ) {
+	if ( $option_db_version >= MAI_THEME_ENGINE_DB_VERSION ) {
 		return;
 	}
 
@@ -28,7 +28,7 @@ function mai_update_database_version() {
 	}
 
 	// Update the version number option.
-	update_option( 'mai_db_version', MAI_PRO_ENGINE_DB_VERSION );
+	update_option( 'mai_db_version', MAI_THEME_ENGINE_DB_VERSION );
 }
 
 /**

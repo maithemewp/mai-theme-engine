@@ -11,7 +11,7 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 	 */
 	add_filter( 'cmb2_meta_box_url', 'mai_update_cmb2_meta_box_url' );
 	function mai_update_cmb2_meta_box_url( $url ) {
-		return str_replace( '/Users/JiveDig/Plugins/mai-pro-engine/', MAI_PRO_ENGINE_PLUGIN_URL, $url );
+		return str_replace( '/Users/JiveDig/Plugins/mai-theme-engine/', MAI_THEME_ENGINE_PLUGIN_URL, $url );
 	}
 }
 
@@ -184,8 +184,8 @@ function _mai_cmb_banner_disable_post_types_config() {
 		}
 	}
 	return array(
-		'name'              => __( 'Disable Banner Area on<br />(Post Types)', 'mai-pro-engine' ),
-		'desc'              => __( 'Disable the banner area for single post posts.', 'mai-pro-engine' ),
+		'name'              => __( 'Disable Banner Area on<br />(Post Types)', 'mai-theme-engine' ),
+		'desc'              => __( 'Disable the banner area for single post posts.', 'mai-theme-engine' ),
 		'id'                => 'banner_disable_post_types',
 		'type'              => 'multicheck',
 		'select_all_button' => false,
@@ -203,8 +203,8 @@ function _mai_cmb_banner_disable_taxonomies_config() {
 		}
 	}
 	return array(
-		'name'              => __( 'Disable Banner Area on<br />(Taxonomies)', 'mai-pro-engine' ),
-		'desc'              => __( 'Disable the banner area for taxonomy archives.', 'mai-pro-engine' ),
+		'name'              => __( 'Disable Banner Area on<br />(Taxonomies)', 'mai-theme-engine' ),
+		'desc'              => __( 'Disable the banner area for taxonomy archives.', 'mai-theme-engine' ),
 		'id'                => 'banner_disable_taxonomies',
 		'type'              => 'multicheck',
 		'select_all_button' => false,
@@ -215,8 +215,8 @@ function _mai_cmb_banner_disable_taxonomies_config() {
 
 function _mai_cmb_banner_visibility_config() {
 	return array(
-		'name'            => __( 'Banner Visibility', 'mai-pro-engine' ),
-		'desc'            => __( 'Hide the banner area', 'mai-pro-engine' ),
+		'name'            => __( 'Banner Visibility', 'mai-theme-engine' ),
+		'desc'            => __( 'Hide the banner area', 'mai-theme-engine' ),
 		'id'              => 'hide_banner',
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
@@ -227,13 +227,13 @@ function _mai_cmb_banner_visibility_config() {
 
 function _mai_cmb_banner_image_config() {
 	return array(
-		'name'         => __( 'Banner/Featured Image', 'mai-pro-engine' ),
+		'name'         => __( 'Banner/Featured Image', 'mai-theme-engine' ),
 		'id'           => 'banner',
 		'type'         => 'file',
 		'preview_size' => 'one-third',
 		'options'      => array( 'url' => false ),
 		'text'         => array(
-			'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
+			'add_upload_file_text' => __( 'Add Image', 'mai-theme-engine' ),
 		),
 	);
 }
@@ -241,7 +241,7 @@ function _mai_cmb_banner_image_config() {
 function _mai_cmb_content_archive_settings_title_config() {
 	return array(
 		'name' => '',
-		'desc' => __( 'If enabled, these will override the default content archive settings', 'mai-pro-engine' ),
+		'desc' => __( 'If enabled, these will override the default content archive settings', 'mai-theme-engine' ),
 		'type' => 'title',
 		'id'   => 'mai_content_archives_title',
 	);
@@ -250,8 +250,8 @@ function _mai_cmb_content_archive_settings_title_config() {
 function _mai_cmb_content_enable_archive_settings_config() {
 	return array(
 		'before_row'      => '<div class="mai-archive-setting-wrap">',
-		'name'            => __( 'Archive Settings', 'mai-pro-engine' ),
-		'desc'            => __( 'Enable custom archive settings', 'mai-pro-engine' ),
+		'name'            => __( 'Archive Settings', 'mai-theme-engine' ),
+		'desc'            => __( 'Enable custom archive settings', 'mai-theme-engine' ),
 		'id'              => 'enable_content_archive_settings',
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
@@ -262,8 +262,8 @@ function _mai_cmb_content_enable_archive_settings_config() {
 function _mai_cmb_remove_loop_config() {
 	return array(
 		// 'after_row'       => '</div>',
-		'name'            => __( 'Hide Entries', 'mai-pro-engine' ),
-		'desc'            => __( 'Hide entries from this archive', 'mai-pro-engine' ),
+		'name'            => __( 'Hide Entries', 'mai-theme-engine' ),
+		'desc'            => __( 'Hide entries from this archive', 'mai-theme-engine' ),
 		'id'              => 'remove_loop',
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
@@ -274,17 +274,17 @@ function _mai_cmb_remove_loop_config() {
 function _mai_cmb_columns_config() {
 	return array(
 		'before_row' => '<div class="mai-archive-settings-wrap">',
-		'name'       => __( 'Content Columns', 'mai-pro-engine' ),
-		'desc'       => __( 'Display content in multiple columns.', 'mai-pro-engine' ),
+		'name'       => __( 'Content Columns', 'mai-theme-engine' ),
+		'desc'       => __( 'Display content in multiple columns.', 'mai-theme-engine' ),
 		'id'         => 'columns',
 		'type'       => 'select',
 		'default'    => 1,
 		'options'    => array(
 			1 => __( '- None -', 'genesis' ),
-			2 => __( '2 Columns', 'mai-pro-engine' ),
-			3 => __( '3 Columns', 'mai-pro-engine' ),
-			4 => __( '4 Columns', 'mai-pro-engine' ),
-			6 => __( '6 Columns', 'mai-pro-engine' ),
+			2 => __( '2 Columns', 'mai-theme-engine' ),
+			3 => __( '3 Columns', 'mai-theme-engine' ),
+			4 => __( '4 Columns', 'mai-theme-engine' ),
+			6 => __( '6 Columns', 'mai-theme-engine' ),
 		),
 	);
 }
@@ -296,7 +296,7 @@ function _mai_cmb_content_archive_config() {
 		'type'    => 'select',
 		'default' => 'excerpts',
 		'options' => array(
-			'none'     => __( 'No content', 'mai-pro-engine' ),
+			'none'     => __( 'No content', 'mai-theme-engine' ),
 			'full'     => __( 'Entry content', 'genesis' ),
 			'excerpts' => __( 'Entry excerpts', 'genesis' ),
 		),
@@ -306,7 +306,7 @@ function _mai_cmb_content_archive_config() {
 function _mai_cmb_content_archive_thumbnail_config() {
 	return array(
 		'name'            => __( 'Featured Image', 'genesis' ),
-		'desc'            => __( 'Include the Featured Image', 'mai-pro-engine' ),
+		'desc'            => __( 'Include the Featured Image', 'mai-theme-engine' ),
 		'id'              => 'content_archive_thumbnail',
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
@@ -316,17 +316,17 @@ function _mai_cmb_content_archive_thumbnail_config() {
 
 function _mai_cmb_image_location_config() {
 	return array(
-		'name'         => __( 'Image Location:', 'mai-pro-engine' ),
+		'name'         => __( 'Image Location:', 'mai-theme-engine' ),
 		'id'           => 'image_location',
-		'before_field' => __( 'Image Location:', 'mai-pro-engine' ) . ' ',
+		'before_field' => __( 'Image Location:', 'mai-theme-engine' ) . ' ',
 		'type'         => 'select',
 		'default'      => 'before_entry',
 		'options'      => array(
-			'background'     => __( 'Background Image', 'mai-pro-engine' ),
-			'before_entry'   => __( 'Before Entry', 'mai-pro-engine' ),
-			'before_title'   => __( 'Before Title', 'mai-pro-engine' ),
-			'after_title'    => __( 'After Title', 'mai-pro-engine' ),
-			'before_content' => __( 'Before Content', 'mai-pro-engine' ),
+			'background'     => __( 'Background Image', 'mai-theme-engine' ),
+			'before_entry'   => __( 'Before Entry', 'mai-theme-engine' ),
+			'before_title'   => __( 'Before Title', 'mai-theme-engine' ),
+			'after_title'    => __( 'After Title', 'mai-theme-engine' ),
+			'before_content' => __( 'Before Content', 'mai-theme-engine' ),
 		),
 	);
 }
@@ -379,8 +379,8 @@ function _mai_cmb_content_archive_limit_config() {
 
 function _mai_cmb_more_link_config() {
 	return array(
-		'name'            => __( 'More Link', 'mai-pro-engine' ),
-		'desc'            => __( 'Include the Read More link', 'mai-pro-engine' ),
+		'name'            => __( 'More Link', 'mai-theme-engine' ),
+		'desc'            => __( 'Include the Read More link', 'mai-theme-engine' ),
 		'id'              => 'more_link',
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
@@ -390,12 +390,12 @@ function _mai_cmb_more_link_config() {
 
 function _mai_cmb_meta_config() {
 	return array(
-		'name'    => __( 'Entry Meta', 'mai-pro-engine' ),
+		'name'    => __( 'Entry Meta', 'mai-theme-engine' ),
 		'id'      => 'remove_meta',
 		'type'    => 'multicheck',
 		'options' => array(
-			'post_info' => __( 'Remove Post Info', 'mai-pro-engine' ),
-			'post_meta' => __( 'Remove Post Meta', 'mai-pro-engine' ),
+			'post_info' => __( 'Remove Post Info', 'mai-theme-engine' ),
+			'post_meta' => __( 'Remove Post Meta', 'mai-theme-engine' ),
 		),
 		'select_all_button' => false,
 	);
@@ -403,8 +403,8 @@ function _mai_cmb_meta_config() {
 
 function _mai_cmb_posts_per_page_config() {
 	return array(
-		'name'       => __( 'Entries Per Page', 'mai-pro-engine' ),
-		'desc'       => __( 'The max number of posts to show, per page.', 'mai-pro-engine' ),
+		'name'       => __( 'Entries Per Page', 'mai-theme-engine' ),
+		'desc'       => __( 'The max number of posts to show, per page.', 'mai-theme-engine' ),
 		'id'         => 'posts_per_page',
 		'type'       => 'text_small',
 		'default'    => 12,

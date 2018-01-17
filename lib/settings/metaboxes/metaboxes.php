@@ -47,14 +47,14 @@ function cmb2_test_before_form( $cmb_id, $object_id, $object_type, $cmb ) {
 add_action( 'cmb2_admin_init', 'mai_cmb2_add_metaboxes' );
 function mai_cmb2_add_metaboxes() {
 
-	$metabox_title = __( 'Mai Content Archives', 'mai-pro-engine' );
-	$upload_label  = __( 'Banner Image', 'mai-pro-engine' ); // Hidden on posts since show_names is false
-	$button_text   = __( 'Add Banner Image', 'mai-pro-engine' );
+	$metabox_title = __( 'Mai Content Archives', 'mai-theme-engine' );
+	$upload_label  = __( 'Banner Image', 'mai-theme-engine' ); // Hidden on posts since show_names is false
+	$button_text   = __( 'Add Banner Image', 'mai-theme-engine' );
 
 	// Single Posts/Pages/CPTs
 	$post = new_cmb2_box( array(
 		'id'           => 'mai_post_banner',
-		'title'        => __( 'Banner Area', 'mai-pro-engine' ),
+		'title'        => __( 'Banner Area', 'mai-theme-engine' ),
 		'object_types' => get_post_types( array('public' => true ), 'names' ),
 		'context'      => 'side',
 		'priority'     => 'low',
@@ -130,7 +130,7 @@ function mai_cmb2_add_metaboxes() {
 add_action( 'genesis_theme_settings_metaboxes', 'mai_theme_settings_customizer_link' );
 function mai_theme_settings_customizer_link( $pagehook ) {
 	// Add metabox shop notice.
-	add_meta_box( 'mai_theme_settings_customizer_links', __( 'Mai Theme Settings', 'mai-pro-engine' ), 'mai_do_theme_settings_customizer_links', $pagehook, 'main', 'high' );
+	add_meta_box( 'mai_theme_settings_customizer_links', __( 'Mai Theme Settings', 'mai-theme-engine' ), 'mai_do_theme_settings_customizer_links', $pagehook, 'main', 'high' );
 }
 
 /**
@@ -142,14 +142,14 @@ function mai_theme_settings_customizer_link( $pagehook ) {
  */
 function mai_do_theme_settings_customizer_links() {
 	// Mai Settings.
-	printf( '<p><strong>%s</strong></p>', __( 'Edit theme settings in the customizer:', 'mai-pro-engine' ) );
+	printf( '<p><strong>%s</strong></p>', __( 'Edit theme settings in the customizer:', 'mai-theme-engine' ) );
 	echo '<p>';
-		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_settings' ), __( 'Mai Settings', 'mai-pro-engine' ) );
-		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_banner_area' ), __( 'Mai Banner Area', 'mai-pro-engine' ) );
-		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_content_archives' ), __( 'Mai Content Archives', 'mai-pro-engine' ) );
-		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_content_singular' ), __( 'Mai Content Singular', 'mai-pro-engine' ) );
-		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_site_layouts' ), __( 'Mai Site Layouts', 'mai-pro-engine' ) );
-		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'genesis_breadcrumbs' ), __( 'Breadcrumbs', 'mai-pro-engine' ) );
-		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'genesis_comments' ), __( 'Comments & Trackbacks', 'mai-pro-engine' ) );
+		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_settings' ), __( 'Mai Settings', 'mai-theme-engine' ) );
+		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_banner_area' ), __( 'Mai Banner Area', 'mai-theme-engine' ) );
+		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_content_archives' ), __( 'Mai Content Archives', 'mai-theme-engine' ) );
+		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_content_singular' ), __( 'Mai Content Singular', 'mai-theme-engine' ) );
+		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'mai_site_layouts' ), __( 'Mai Site Layouts', 'mai-theme-engine' ) );
+		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'genesis_breadcrumbs' ), __( 'Breadcrumbs', 'mai-theme-engine' ) );
+		printf( '<a class="button" href="%s">%s</a>&nbsp;&nbsp;', mai_get_customizer_section_link( 'genesis_comments' ), __( 'Comments & Trackbacks', 'mai-theme-engine' ) );
 	echo '</p>';
 }

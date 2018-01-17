@@ -1,6 +1,6 @@
 <?php
 /**
- * Mai Pro Engine.
+ * Mai Theme Engine.
  *
  * @author   Mike Hemberger
  *
@@ -37,21 +37,21 @@ add_action( 'init', 'mai_register_layouts' );
 function mai_register_layouts() {
 
 	// Layout image directory
-	$dir = MAI_PRO_ENGINE_PLUGIN_URL . 'assets/images/layouts/';
+	$dir = MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/layouts/';
 
 	// Medium Content
 	genesis_register_layout( 'md-content', array(
-		'label' => __( 'Medium Content', 'mai-pro-engine' ),
+		'label' => __( 'Medium Content', 'mai-theme-engine' ),
 		'img'   => $dir . 'mdc.gif',
 	) );
 	// Small Content
 	genesis_register_layout( 'sm-content', array(
-		'label' => __( 'Small Content', 'mai-pro-engine' ),
+		'label' => __( 'Small Content', 'mai-theme-engine' ),
 		'img'   => $dir . 'smc.gif',
 	) );
 	// Extra Small Content
 	genesis_register_layout( 'xs-content', array(
-		'label' => __( 'Extra Small Content', 'mai-pro-engine' ),
+		'label' => __( 'Extra Small Content', 'mai-theme-engine' ),
 		'img'   => $dir . 'xsc.gif',
 	) );
 }
@@ -66,7 +66,7 @@ function mai_get_layout( $layout ) {
 
 	/**
 	 * Remove layout filter from Genesis Connect for WooCommerce.
-	 * Mai Pro Engine handles this instead.
+	 * Mai Theme Engine handles this instead.
 	 */
 	remove_filter( 'genesis_pre_get_option_site_layout', 'genesiswooc_archive_layout' );
 

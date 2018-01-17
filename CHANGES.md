@@ -1,7 +1,9 @@
 ### Changelog
 
-#### 1.2.0-beta.13 (1/15/18)
+#### 1.2.0-beta.14 (1/15/18)
+
 * Added: Plugin icon when updating via Dashboard > Updates.
+* Changed: Plugin name to reflect official Mai Theme brand.
 * Changed: Convert sticky header from JS to CSS-only.
 * Changed: Move mai_header_before and mai_header_after hooks outside of site-header.
 * Changed: Mobile menu toggle now uses psuedo-elements for less markup.

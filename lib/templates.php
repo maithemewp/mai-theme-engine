@@ -2,7 +2,7 @@
 
 /**
  * Add page templates.
- * Override all but sections template by copying files from /mai-pro-engine/templates/{filename}.php
+ * Override all but sections template by copying files from /mai-theme-engine/templates/{filename}.php
  * and putting in /{child-theme-name}/templates/{filename}.php
  *
  * @since   1.0.0
@@ -13,9 +13,9 @@
  */
 add_filter( 'theme_page_templates', 'mai_plugin_theme_page_templates' );
 function mai_plugin_theme_page_templates( $page_templates ) {
-	$page_templates['landing.php']  = __( 'Landing Page', 'mai-pro-engine' );
-	$page_templates['sections.php'] = __( 'Sections', 'mai-pro-engine' );
-	$page_templates['sitemap.php']  = __( 'Sitemap', 'mai-pro-engine' );
+	$page_templates['landing.php']  = __( 'Landing Page', 'mai-theme-engine' );
+	$page_templates['sections.php'] = __( 'Sections', 'mai-theme-engine' );
+	$page_templates['sitemap.php']  = __( 'Sitemap', 'mai-theme-engine' );
 	return $page_templates;
 }
 
@@ -56,7 +56,7 @@ function mai_plugin_include_theme_page_templates( $template ) {
 		$template = $_template;
 	} else {
 		// Use our plugin template
-		$plugin_path = MAI_PRO_ENGINE_PLUGIN_DIR . 'templates/';
+		$plugin_path = MAI_THEME_ENGINE_PLUGIN_DIR . 'templates/';
 		if ( file_exists( $plugin_path . $template_name ) ) {
 			$template = $plugin_path . $template_name;
 		}

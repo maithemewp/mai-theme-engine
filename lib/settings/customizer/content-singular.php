@@ -20,7 +20,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => __( 'Mai Content Singular', 'mai-pro-engine' ),
+			'title'    => __( 'Mai Content Singular', 'mai-theme-engine' ),
 			'priority' => '38',
 		)
 	);
@@ -37,7 +37,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			'singular_featured_image_heading',
 			array(
-				'label'    => __( 'Featured Image', 'mai-pro-engine' ),
+				'label'    => __( 'Featured Image', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => false,
 			)
@@ -56,7 +56,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'singular_image_page',
 		array(
-			'label'    => __( 'Display the featured image on pages', 'mai-pro-engine' ),
+			'label'    => __( 'Display the featured image on pages', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'singular_image_page' ),
 			'type'     => 'checkbox',
@@ -75,7 +75,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'singular_image_post',
 		array(
-			'label'    => __( 'Display the featured image on posts', 'mai-pro-engine' ),
+			'label'    => __( 'Display the featured image on posts', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'singular_image_post' ),
 			'type'     => 'checkbox',
@@ -88,11 +88,11 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 		$remove_meta_choices = array();
 
 		if ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) ) {
-			$remove_meta_choices['post_info'] = __( 'Remove Post Info', 'mai-pro-engine' );
+			$remove_meta_choices['post_info'] = __( 'Remove Post Info', 'mai-theme-engine' );
 		}
 
 		if ( post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) {
-			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-pro-engine' );
+			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-theme-engine' );
 		}
 
 		$wp_customize->add_setting(
@@ -107,7 +107,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				'remove_meta_post',
 				array(
-					'label'    => __( 'Post Entry Meta', 'mai-pro-engine' ),
+					'label'    => __( 'Post Entry Meta', 'mai-theme-engine' ),
 					'section'  => $section,
 					'settings' => _mai_customizer_get_field_name( $settings_field, 'remove_meta_post' ),
 					'priority' => 10,

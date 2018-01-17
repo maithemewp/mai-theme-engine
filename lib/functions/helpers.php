@@ -470,7 +470,7 @@ function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post' 
 
 	$link = $url = $screen_reader_html = $screen_reader_text = '';
 
-	$text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-pro-engine' );
+	$text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-theme-engine' );
 	$more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text, $object_or_id, $type ) );
 
 	switch ( $type ) {

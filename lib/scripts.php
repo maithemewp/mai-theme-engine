@@ -8,8 +8,8 @@ function mai_enqueue_scripts() {
 	$suffix = mai_get_suffix();
 
 	// Enqueue the main global js file
-	wp_enqueue_script( 'mai-pro-engine', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/mai-pro{$suffix}.js", array('jquery'), MAI_PRO_ENGINE_VERSION, true );
-	wp_localize_script( 'mai-pro-engine', 'maiVars', array(
+	wp_enqueue_script( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-pro{$suffix}.js", array('jquery'), MAI_THEME_ENGINE_VERSION, true );
+	wp_localize_script( 'mai-theme-engine', 'maiVars', array(
 		'mainMenu'    => __( 'Menu', 'genesis' ),
 		'subMenu'     => __( 'Menu', 'genesis' ),
 		'subMenuAria' => __( 'sub-menu toggle', 'genesis' ),
@@ -17,8 +17,8 @@ function mai_enqueue_scripts() {
 	) );
 
 	// Register script for later use
-	wp_register_script( 'mai-slick', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/slick{$suffix}.js", array( 'jquery' ), '1.8.0', true );
-	wp_register_script( 'mai-slick-init', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/slick-init{$suffix}.js", array( 'mai-slick' ), MAI_PRO_ENGINE_VERSION, true );
+	wp_register_script( 'mai-slick', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/slick{$suffix}.js", array( 'jquery' ), '1.8.0', true );
+	wp_register_script( 'mai-slick-init', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/slick-init{$suffix}.js", array( 'mai-slick' ), MAI_THEME_ENGINE_VERSION, true );
 
 }
 
@@ -29,9 +29,9 @@ function mai_enqueue_styles() {
 	// Use minified files if script debug is not being used
 	$suffix = mai_get_suffix();
 
-	wp_enqueue_style( 'mai-pro-engine', MAI_PRO_ENGINE_PLUGIN_URL . "assets/css/mai-pro{$suffix}.css", array(), MAI_PRO_ENGINE_VERSION );
-	wp_enqueue_style( 'flexington', MAI_PRO_ENGINE_PLUGIN_URL . "assets/css/flexington{$suffix}.css", array(), '2.3.5' );
-	wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', array(), MAI_PRO_ENGINE_VERSION );
+	wp_enqueue_style( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/mai-pro{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
+	wp_enqueue_style( 'flexington', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/flexington{$suffix}.css", array(), '2.3.5' );
+	wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', array(), MAI_THEME_ENGINE_VERSION );
 
 }
 
@@ -52,13 +52,13 @@ function mai_woocommerce_styles( $styles ) {
 		$suffix = mai_get_suffix();
 
 		// Use our plugin file
-		$src = MAI_PRO_ENGINE_PLUGIN_URL . "assets/css/{$file_name}{$suffix}.css";
+		$src = MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/{$file_name}{$suffix}.css";
 	}
 
 	$styles['mai-woocommerce'] = array(
 		'src'     => $src,
 		'deps'    => '',
-		'version' => MAI_PRO_ENGINE_VERSION,
+		'version' => MAI_THEME_ENGINE_VERSION,
 		'media'   => 'all',
 	);
 

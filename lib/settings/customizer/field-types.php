@@ -36,7 +36,7 @@ function mai_register_customizer_field_types() {
 			// Use minified files if script debug is not being used.
 			$suffix = mai_get_suffix();
 			// Enqueue.
-			wp_enqueue_script( 'mai-customize-controls', MAI_PRO_ENGINE_PLUGIN_URL . "assets/js/customize-controls{$suffix}.js", array( 'jquery' ) );
+			wp_enqueue_script( 'mai-customize-controls', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/customize-controls{$suffix}.js", array( 'jquery' ) );
 		}
 
 		/**

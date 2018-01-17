@@ -173,7 +173,7 @@ class Mai_Genesis_CPT_Settings_Metabox {
 
 		$this->cmb = cmb2_get_metabox( array(
 			'id'           => $this->metabox_id,
-			'title'        => __( 'Mai Archive Settings', 'mai-pro-engine' ),
+			'title'        => __( 'Mai Archive Settings', 'mai-theme-engine' ),
 			'classes'      => 'mai-metabox mai-content-archive-metabox',
 			'hookup'       => false, 	// We'll handle ourselves. ( add_sanitized_values() )
 			'cmb_styles'   => false, 	// We'll handle ourselves. ( admin_hooks() )

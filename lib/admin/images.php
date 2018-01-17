@@ -27,7 +27,7 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
 	// Build our new field
 	$new_field = sprintf( '<p><label for="mai_hide_featured_image"><input type="checkbox" id="mai_hide_featured_image" name="mai_hide_featured_image" %s>%s</label></p>',
 		checked( (bool) mai_sanitize_one_zero( get_post_meta( $post_id, 'mai_hide_featured_image', true ) ), true, false ),
-		__( 'Hide featured image', 'mai-pro-engine' )
+		__( 'Hide featured image', 'mai-theme-engine' )
 	);
 
 	// Return the new field
@@ -68,10 +68,10 @@ function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
 add_filter( 'image_size_names_choose', 'mai_do_media_chooser_sizes' );
 function mai_do_media_chooser_sizes( $sizes ) {
 	$addsizes = array(
-		'featured'   => __( 'Featured', 'mai-pro-engine' ),
-		'one-half'   => __( 'One Half', 'mai-pro-engine' ),
-		'one-third'  => __( 'One Third', 'mai-pro-engine' ),
-		'one-fourth' => __( 'One Fourth', 'mai-pro-engine' ),
+		'featured'   => __( 'Featured', 'mai-theme-engine' ),
+		'one-half'   => __( 'One Half', 'mai-theme-engine' ),
+		'one-third'  => __( 'One Third', 'mai-theme-engine' ),
+		'one-fourth' => __( 'One Fourth', 'mai-theme-engine' ),
 	);
 	$newsizes = array_merge( $sizes, $addsizes );
 	return $newsizes;

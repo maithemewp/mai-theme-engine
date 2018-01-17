@@ -1,6 +1,6 @@
 <?php
 /**
- * Mai Pro Engine.
+ * Mai Theme Engine.
  *
  * @author   Mike Hemberger
  *
@@ -127,7 +127,7 @@ function mai_wc_get_template( $template, $template_name, $args, $template_path )
 		$template = $_template;
 	} else {
 		// Use our plugin template
-		$plugin_path = MAI_PRO_ENGINE_PLUGIN_DIR . 'templates/woocommerce/';
+		$plugin_path = MAI_THEME_ENGINE_PLUGIN_DIR . 'templates/woocommerce/';
 		if ( file_exists( $plugin_path . $template_name ) ) {
 			$template = $plugin_path . $template_name;
 		}
@@ -155,7 +155,7 @@ function mai_wc_get_template_part( $template, $slug, $name ) {
 		$template = $_template;
 	} else {
 		// Use our plugin template
-		$plugin_path = MAI_PRO_ENGINE_PLUGIN_DIR . 'templates/woocommerce/';
+		$plugin_path = MAI_THEME_ENGINE_PLUGIN_DIR . 'templates/woocommerce/';
 		if ( file_exists( $plugin_path . $template_name ) ) {
 			$template = $plugin_path . $template_name;
 		}
@@ -242,7 +242,7 @@ function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
 	}
 
 	// Add metabox shop notice.
-	add_meta_box( 'mai_woo_shop_notice', __( 'Mai WooCommerce Shop', 'mai-pro-engine' ), 'mai_woo_shop_notice', 'page', 'normal' );
+	add_meta_box( 'mai_woo_shop_notice', __( 'Mai WooCommerce Shop', 'mai-theme-engine' ), 'mai_woo_shop_notice', 'page', 'normal' );
 
 }
 
@@ -253,5 +253,5 @@ function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
  */
 function mai_woo_shop_notice( $post ) {
 	$section_link = mai_get_customizer_post_type_settings_link( 'product' );
-	printf( '<a class="button" href="%s">%s</a>', esc_url( $section_link ), __( 'Edit Mai Product Settings', 'mai-pro-engine' ) );
+	printf( '<a class="button" href="%s">%s</a>', esc_url( $section_link ), __( 'Edit Mai Product Settings', 'mai-theme-engine' ) );
 }

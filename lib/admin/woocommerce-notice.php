@@ -63,7 +63,7 @@ function mai_notice_script() {
  */
 function mai_woocommerce_theme_notice() {
 
-	$notice_html = sprintf( __( 'Please install and activate <a href="https://wordpress.org/plugins/genesis-connect-woocommerce/" target="_blank">Genesis Connect for WooCommerce</a> to <strong>enable WooCommerce support for %s</strong>.', 'mai-pro-engine' ), esc_html( CHILD_THEME_NAME ) );
+	$notice_html = sprintf( __( 'Please install and activate <a href="https://wordpress.org/plugins/genesis-connect-woocommerce/" target="_blank">Genesis Connect for WooCommerce</a> to <strong>enable WooCommerce support for %s</strong>.', 'mai-theme-engine' ), esc_html( CHILD_THEME_NAME ) );
 
 	if ( current_user_can( 'install_plugins' ) ) {
 		$plugin_slug  = 'genesis-connect-woocommerce';
@@ -77,9 +77,9 @@ function mai_woocommerce_theme_notice() {
 				$admin_url
 			),
 			'install-plugin_' . $plugin_slug
-		), __( 'install and activate Genesis Connect for WooCommerce', 'mai-pro-engine' ) );
+		), __( 'install and activate Genesis Connect for WooCommerce', 'mai-theme-engine' ) );
 
-		$notice_html = sprintf( __( 'Please %s to <strong>enable WooCommerce support for %s</strong>.', 'mai-pro-engine' ), $install_link, esc_html( CHILD_THEME_NAME ) );
+		$notice_html = sprintf( __( 'Please %s to <strong>enable WooCommerce support for %s</strong>.', 'mai-theme-engine' ), $install_link, esc_html( CHILD_THEME_NAME ) );
 	}
 
 	echo '<div class="notice notice-info is-dismissible mai-woocommerce-notice"><p>' . $notice_html . '</p></div>';

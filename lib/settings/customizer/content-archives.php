@@ -23,7 +23,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => __( 'Mai Content Archives', 'mai-pro-engine' ),
+			'title'    => __( 'Mai Content Archives', 'mai-theme-engine' ),
 			'priority' => '37',
 		)
 	);
@@ -40,16 +40,16 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'columns',
 		array(
-			'label'    => __( 'Columns', 'mai-pro-engine' ),
+			'label'    => __( 'Columns', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'columns' ),
 			'type'     => 'select',
 			'choices'  => array(
-				1 => __( 'None', 'mai-pro-engine' ),
-				2 => __( '2', 'mai-pro-engine' ),
-				3 => __( '3', 'mai-pro-engine' ),
-				4 => __( '4', 'mai-pro-engine' ),
-				6 => __( '6', 'mai-pro-engine' ),
+				1 => __( 'None', 'mai-theme-engine' ),
+				2 => __( '2', 'mai-theme-engine' ),
+				3 => __( '3', 'mai-theme-engine' ),
+				4 => __( '4', 'mai-theme-engine' ),
+				6 => __( '6', 'mai-theme-engine' ),
 			),
 		)
 	);
@@ -66,12 +66,12 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'content_archive',
 		array(
-			'label'    => __( 'Content', 'mai-pro-engine' ),
+			'label'    => __( 'Content', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'content_archive' ),
 			'type'     => 'select',
 			'choices'  => array(
-				'none'     => __( 'No content', 'mai-pro-engine' ),
+				'none'     => __( 'No content', 'mai-theme-engine' ),
 				'full'     => __( 'Entry content', 'genesis' ),
 				'excerpts' => __( 'Entry excerpts', 'genesis' ),
 			),
@@ -90,8 +90,8 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'content_archive_limit',
 		array(
-			'label'           => __( 'Limit content to how many characters?', 'mai-pro-engine' ),
-			'description'     => __( '(0 for no limit)', 'mai-pro-engine' ),
+			'label'           => __( 'Limit content to how many characters?', 'mai-theme-engine' ),
+			'description'     => __( '(0 for no limit)', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'content_archive_limit' ),
 			'priority'        => 10,
@@ -114,7 +114,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			'archives_featured_image_heading',
 			array(
-				'label'    => __( 'Featured Image', 'mai-pro-engine' ),
+				'label'    => __( 'Featured Image', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => false,
 			)
@@ -133,7 +133,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'content_archive_thumbnail',
 		array(
-			'label'    => __( 'Display the Featured Image', 'mai-pro-engine' ),
+			'label'    => __( 'Display the Featured Image', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'content_archive_thumbnail' ),
 			'type'     => 'checkbox',
@@ -152,16 +152,16 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'image_location',
 		array(
-			'label'    => __( 'Image Location', 'mai-pro-engine' ),
+			'label'    => __( 'Image Location', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'image_location' ),
 			'type'     => 'select',
 			'choices'  => array(
-				'background'     => __( 'Background Image', 'mai-pro-engine' ),
-				'before_entry'   => __( 'Before Entry', 'mai-pro-engine' ),
-				'before_title'   => __( 'Before Title', 'mai-pro-engine' ),
-				'after_title'    => __( 'After Title', 'mai-pro-engine' ),
-				'before_content' => __( 'Before Content', 'mai-pro-engine' ),
+				'background'     => __( 'Background Image', 'mai-theme-engine' ),
+				'before_entry'   => __( 'Before Entry', 'mai-theme-engine' ),
+				'before_title'   => __( 'Before Title', 'mai-theme-engine' ),
+				'after_title'    => __( 'After Title', 'mai-theme-engine' ),
+				'before_content' => __( 'Before Content', 'mai-theme-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return (bool) $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive_thumbnail' ) )->value();
@@ -234,7 +234,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			'archives_more_link_heading',
 			array(
-				'label'    => __( 'Read More Link', 'mai-pro-engine' ),
+				'label'    => __( 'Read More Link', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => false,
 			)
@@ -253,7 +253,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'more_link',
 		array(
-			'label'    => __( 'Display the Read More link', 'mai-pro-engine' ),
+			'label'    => __( 'Display the Read More link', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'more_link' ),
 			'type'     => 'checkbox',
@@ -266,11 +266,11 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 		$remove_meta_choices = array();
 
 		if ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) ) {
-			$remove_meta_choices['post_info'] = __( 'Remove Post Info', 'mai-pro-engine' );
+			$remove_meta_choices['post_info'] = __( 'Remove Post Info', 'mai-theme-engine' );
 		}
 
 		if ( post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) {
-			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-pro-engine' );
+			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-theme-engine' );
 		}
 
 		$wp_customize->add_setting(
@@ -285,7 +285,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				'remove_meta',
 				array(
-					'label'    => __( 'Entry Meta', 'mai-pro-engine' ),
+					'label'    => __( 'Entry Meta', 'mai-theme-engine' ),
 					'section'  => $section,
 					'settings' => _mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
 					'choices'  => $remove_meta_choices,
@@ -307,7 +307,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'posts_per_page',
 		array(
-			'label'    => __( 'Posts Per Page', 'mai-pro-engine' ),
+			'label'    => __( 'Posts Per Page', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => 'posts_per_page',
 			'type'     => 'number',

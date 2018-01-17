@@ -19,7 +19,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => __( 'Mai Banner Area', 'mai-pro-engine' ),
+			'title'    => __( 'Mai Banner Area', 'mai-theme-engine' ),
 			'priority' => '36',
 		)
 	);
@@ -36,7 +36,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'enable_banner_area',
 		array(
-			'label'    => __( 'Enable Banner Area', 'mai-pro-engine' ),
+			'label'    => __( 'Enable Banner Area', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ),
 			'type'     => 'checkbox',
@@ -56,7 +56,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		new WP_Customize_Color_Control( $wp_customize,
 		'banner_background_color',
 		array(
-			'label'           => __( 'Background Color', 'mai-pro-engine' ),
+			'label'           => __( 'Background Color', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_background_color' ),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
@@ -78,8 +78,8 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		new WP_Customize_Media_Control( $wp_customize,
 		'banner_id',
 		array(
-			'label'           => __( 'Banner Image', 'mai-pro-engine' ),
-			'description'     => __( 'Set a default banner image. Can be overridden per post/page.', 'mai-pro-engine' ),
+			'label'           => __( 'Banner Image', 'mai-theme-engine' ),
+			'description'     => __( 'Set a default banner image. Can be overridden per post/page.', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
@@ -101,14 +101,14 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		new Mai_Customize_Control_Multicheck( $wp_customize,
 			'banner_featured_image',
 			array(
-				'label'       => __( 'Featured Image', 'mai-pro-engine' ),
-				'description' => __( 'Use featured image as banner image on:', 'mai-pro-engine' ),
+				'label'       => __( 'Featured Image', 'mai-theme-engine' ),
+				'description' => __( 'Use featured image as banner image on:', 'mai-theme-engine' ),
 				'section'     => $section,
 				'settings'    => _mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
 				'priority'    => 10,
 				'choices'     => array(
-					'page' => __( 'Pages', 'mai-pro-engine' ),
-					'post' => __( 'Posts', 'mai-pro-engine' ),
+					'page' => __( 'Pages', 'mai-theme-engine' ),
+					'post' => __( 'Posts', 'mai-theme-engine' ),
 				),
 				'active_callback' => function() use ( $wp_customize, $settings_field ) {
 					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
@@ -129,16 +129,16 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'banner_overlay',
 		array(
-			'label'    => __( 'Overlay', 'mai-pro-engine' ),
+			'label'    => __( 'Overlay', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_overlay' ),
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				''         => __( 'None', 'mai-pro-engine' ),
-				'light'    => __( 'Light', 'mai-pro-engine' ),
-				'dark'     => __( 'Dark', 'mai-pro-engine' ),
-				'gradient' => __( 'Gradient', 'mai-pro-engine' ),
+				''         => __( 'None', 'mai-theme-engine' ),
+				'light'    => __( 'Light', 'mai-theme-engine' ),
+				'dark'     => __( 'Dark', 'mai-theme-engine' ),
+				'gradient' => __( 'Gradient', 'mai-theme-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
@@ -158,15 +158,15 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'banner_inner',
 		array(
-			'label'    => __( 'Inner styling', 'mai-pro-engine' ),
+			'label'    => __( 'Inner styling', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_inner' ),
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				''      => __( 'None', 'mai-pro-engine' ),
-				'light' => __( 'Light Box', 'mai-pro-engine' ),
-				'dark'  => __( 'Dark Box', 'mai-pro-engine' ),
+				''      => __( 'None', 'mai-theme-engine' ),
+				'light' => __( 'Light Box', 'mai-theme-engine' ),
+				'dark'  => __( 'Dark Box', 'mai-theme-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
@@ -186,17 +186,17 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'banner_height',
 		array(
-			'label'    => __( 'Height', 'mai-pro-engine' ),
+			'label'    => __( 'Height', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_height' ),
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				'xs' => __( 'Extra Small', 'mai-pro-engine' ),
-				'sm' => __( 'Small', 'mai-pro-engine' ),
-				'md' => __( 'Medium', 'mai-pro-engine' ),
-				'lg' => __( 'Large', 'mai-pro-engine' ),
-				'xl' => __( 'Extra Large', 'mai-pro-engine' ),
+				'xs' => __( 'Extra Small', 'mai-theme-engine' ),
+				'sm' => __( 'Small', 'mai-theme-engine' ),
+				'md' => __( 'Medium', 'mai-theme-engine' ),
+				'lg' => __( 'Large', 'mai-theme-engine' ),
+				'xl' => __( 'Extra Large', 'mai-theme-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
@@ -216,19 +216,19 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'banner_content_width',
 		array(
-			'label'    => __( 'Content width', 'mai-pro-engine' ),
+			'label'    => __( 'Content width', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_content_width' ),
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				'auto' => __( 'Auto', 'mai-pro-engine' ),
-				'xs'   => __( 'Extra Small', 'mai-pro-engine' ),
-				'sm'   => __( 'Small', 'mai-pro-engine' ),
-				'md'   => __( 'Medium', 'mai-pro-engine' ),
-				'lg'   => __( 'Large', 'mai-pro-engine' ),
-				'xl'   => __( 'Extra Large', 'mai-pro-engine' ),
-				'full' => __( 'Full Width', 'mai-pro-engine' ),
+				'auto' => __( 'Auto', 'mai-theme-engine' ),
+				'xs'   => __( 'Extra Small', 'mai-theme-engine' ),
+				'sm'   => __( 'Small', 'mai-theme-engine' ),
+				'md'   => __( 'Medium', 'mai-theme-engine' ),
+				'lg'   => __( 'Large', 'mai-theme-engine' ),
+				'xl'   => __( 'Extra Large', 'mai-theme-engine' ),
+				'full' => __( 'Full Width', 'mai-theme-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
@@ -248,16 +248,16 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'banner_align_text',
 			array(
-			'label'    => __( 'Text alignment', 'mai-pro-engine' ),
+			'label'    => __( 'Text alignment', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'banner_align_text' ),
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
 				''       => __( '- None -', 'genesis' ),
-				'left'   => __( 'Left', 'mai-pro-engine' ),
-				'center' => __( 'Center', 'mai-pro-engine' ),
-				'right'  => __( 'Right', 'mai-pro-engine' ),
+				'left'   => __( 'Left', 'mai-theme-engine' ),
+				'center' => __( 'Center', 'mai-theme-engine' ),
+				'right'  => __( 'Right', 'mai-theme-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
@@ -278,14 +278,14 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		new Mai_Customize_Control_Multicheck( $wp_customize,
 			'banner_disable_post_types',
 			array(
-				'label'       => __( 'Disable on (post types)', 'mai-pro-engine' ),
-				'description' => __( 'Disable on the following singular post type.', 'mai-pro-engine' ),
+				'label'       => __( 'Disable on (post types)', 'mai-theme-engine' ),
+				'description' => __( 'Disable on the following singular post type.', 'mai-theme-engine' ),
 				'section'     => $section,
 				'settings'    => _mai_customizer_get_field_name( $settings_field, 'banner_disable_post_types' ),
 				'priority'    => 10,
 				'choices'     => array(
-					'page' => __( 'Pages', 'mai-pro-engine' ),
-					'post' => __( 'Posts', 'mai-pro-engine' ),
+					'page' => __( 'Pages', 'mai-theme-engine' ),
+					'post' => __( 'Posts', 'mai-theme-engine' ),
 				),
 				'active_callback' => function() use ( $wp_customize, $settings_field ) {
 					return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
@@ -321,8 +321,8 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				'banner_disable_taxonomies',
 				array(
-					'label'           => __( 'Disable on (taxonomies)', 'mai-pro-engine' ),
-					'description'     => __( 'Disable on the following taxonomy archives.', 'mai-pro-engine' ),
+					'label'           => __( 'Disable on (taxonomies)', 'mai-theme-engine' ),
+					'description'     => __( 'Disable on the following taxonomy archives.', 'mai-theme-engine' ),
 					'section'         => $section,
 					'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_disable_taxonomies' ),
 					'priority'        => 10,

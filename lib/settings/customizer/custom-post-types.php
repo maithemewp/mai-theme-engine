@@ -236,7 +236,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => sprintf( __( 'Mai %s Settings', 'mai-pro-engine' ), $post_type_object->label ),
+			'title'    => sprintf( __( 'Mai %s Settings', 'mai-theme-engine' ), $post_type_object->label ),
 			'priority' => '39',
 		)
 	);
@@ -253,7 +253,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		new Mai_Customize_Control_Break( $wp_customize,
 			$prefix . 'cpt_banner_break',
 			array(
-				'label'           => __( 'Banner Area', 'mai-pro-engine' ),
+				'label'           => __( 'Banner Area', 'mai-theme-engine' ),
 				'section'         => $section,
 				'settings'        => false,
 				'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
@@ -278,8 +278,8 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new WP_Customize_Media_Control( $wp_customize,
 			$prefix . 'banner_id',
 			array(
-				'label'           => __( 'Default Banner Image', 'mai-pro-engine' ),
-				'description'     => __( 'This will be the default banner image for archives and single entries.', 'mai-pro-engine' ),
+				'label'           => __( 'Default Banner Image', 'mai-theme-engine' ),
+				'description'     => __( 'This will be the default banner image for archives and single entries.', 'mai-theme-engine' ),
 				'section'         => $section,
 				'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 				'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
@@ -302,7 +302,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			$prefix . 'cpt_hide_banner_customizer_heading',
 			array(
-				'label'           => __( 'Hide banner on (archive/single)', 'mai-pro-engine' ),
+				'label'           => __( 'Hide banner on (archive/single)', 'mai-theme-engine' ),
 				'section'         => $section,
 				'settings'        => false,
 				'active_callback' => function() use ( $wp_customize, $genesis_settings ) {
@@ -324,7 +324,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_control(
 		$prefix . 'hide_banner',
 		array(
-			'label'           => __( 'Hide banner on main archive', 'mai-pro-engine' ),
+			'label'           => __( 'Hide banner on main archive', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'hide_banner' ),
 			'type'            => 'checkbox',
@@ -346,7 +346,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_control(
 		$prefix . $banner_disable_key,
 		array(
-			'label'           => __( 'Hide banner on single entries', 'mai-pro-engine' ),
+			'label'           => __( 'Hide banner on single entries', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_key ),
 			'type'            => 'checkbox',
@@ -383,7 +383,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				$prefix . $banner_disable_taxonomies_key,
 				array(
-					'label'           => __( 'Hide banner on (taxonomies)', 'mai-pro-engine' ),
+					'label'           => __( 'Hide banner on (taxonomies)', 'mai-theme-engine' ),
 					'section'         => $section,
 					'settings'        => _mai_customizer_get_field_name( $genesis_settings, $banner_disable_taxonomies_key ),
 					'choices'         => $disable_taxonomies,
@@ -407,7 +407,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		new Mai_Customize_Control_Content( $wp_customize,
 			$prefix . 'banner_featured_image_heading',
 			array(
-				'label'           => __( 'Featured Image on (single entries)', 'mai-pro-engine' ),
+				'label'           => __( 'Featured Image on (single entries)', 'mai-theme-engine' ),
 				'section'         => $section,
 				'settings'        => false,
 				'active_callback' => function() use ( $wp_customize, $genesis_settings, $banner_disable_key ) {
@@ -429,7 +429,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_control(
 		$prefix . $banner_featured_image_key,
 		array(
-			'label'           => __( 'Use featured image as banner image', 'mai-pro-engine' ),
+			'label'           => __( 'Use featured image as banner image', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $genesis_settings, $banner_featured_image_key ),
 			'priority'        => 10,
@@ -452,7 +452,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		new Mai_Customize_Control_Break( $wp_customize,
 			$prefix . 'cpt_archive_layouts_break',
 			array(
-				'label'    => __( 'Layouts', 'mai-pro-engine' ),
+				'label'    => __( 'Layouts', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => false,
 			)
@@ -473,11 +473,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_control(
 			$prefix . 'layout',
 			array(
-				'label'    => __( 'Archives', 'mai-pro-engine' ),
+				'label'    => __( 'Archives', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => _mai_customizer_get_field_name( $settings_field, 'layout' ),
 				'type'     => 'select',
-				'choices'  => array_merge( array( '' => __( '- Archives Default -', 'mai-pro-engine' ) ), genesis_get_layouts_for_customizer() ),
+				'choices'  => array_merge( array( '' => __( '- Archives Default -', 'mai-theme-engine' ) ), genesis_get_layouts_for_customizer() ),
 			)
 		);
 
@@ -497,11 +497,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_control(
 			$prefix . $single_layout_key,
 			array(
-				'label'    => __( 'Single Entries', 'mai-pro-engine' ),
+				'label'    => __( 'Single Entries', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => _mai_customizer_get_field_name( $genesis_settings, $single_layout_key ),
 				'type'     => 'select',
-				'choices'  => array_merge( array( '' => __( '- Site Default -', 'mai-pro-engine' ) ), genesis_get_layouts_for_customizer() ),
+				'choices'  => array_merge( array( '' => __( '- Site Default -', 'mai-theme-engine' ) ), genesis_get_layouts_for_customizer() ),
 			)
 		);
 
@@ -521,7 +521,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new Mai_Customize_Control_Break( $wp_customize,
 				$prefix . 'cpt_singular_entries_break',
 				array(
-					'label'    => __( 'Single Entries', 'mai-pro-engine' ),
+					'label'    => __( 'Single Entries', 'mai-theme-engine' ),
 					'section'  => $section,
 					'settings' => false,
 				)
@@ -545,7 +545,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new Mai_Customize_Control_Content( $wp_customize,
 				$prefix . 'cpt_featured_image_customizer_heading',
 				array(
-					'label'    => __( 'Featured Image', 'mai-pro-engine' ),
+					'label'    => __( 'Featured Image', 'mai-theme-engine' ),
 					'section'  => $section,
 					'settings' => false,
 				)
@@ -564,7 +564,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_control(
 			$prefix . $singular_image_key,
 			array(
-				'label'    => __( 'Display the Featured Image', 'mai-pro-engine' ),
+				'label'    => __( 'Display the Featured Image', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => _mai_customizer_get_field_name( $genesis_settings, $singular_image_key ),
 				'type'     => 'checkbox',
@@ -579,11 +579,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$remove_meta_choices = array();
 
 		if ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) ) {
-			$remove_meta_choices['post_info'] = __( 'Remove Post Info', 'mai-pro-engine' );
+			$remove_meta_choices['post_info'] = __( 'Remove Post Info', 'mai-theme-engine' );
 		}
 
 		if ( post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) {
-			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-pro-engine' );
+			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-theme-engine' );
 		}
 
 		$wp_customize->add_setting(
@@ -598,7 +598,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				$prefix . $remove_meta_single_key,
 				array(
-					'label'    => __( 'Entry Meta', 'mai-pro-engine' ),
+					'label'    => __( 'Entry Meta', 'mai-theme-engine' ),
 					'section'  => $section,
 					'settings' => _mai_customizer_get_field_name( $genesis_settings, $remove_meta_single_key ),
 					'priority' => 10,
@@ -621,7 +621,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		new Mai_Customize_Control_Break( $wp_customize,
 			$prefix . 'cpt_archives_break',
 			array(
-				'label'    => __( 'Archives', 'mai-pro-engine' ),
+				'label'    => __( 'Archives', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => false,
 			)
@@ -640,7 +640,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$wp_customize->add_control(
 		$prefix . 'enable_content_archive_settings',
 		array(
-			'label'    => __( 'Enable custom archive settings', 'mai-pro-engine' ),
+			'label'    => __( 'Enable custom archive settings', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'enable_content_archive_settings' ),
 			'priority' => 10,
@@ -662,17 +662,17 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_control(
 			$prefix . 'columns',
 			array(
-				'label'    => __( 'Columns', 'mai-pro-engine' ),
+				'label'    => __( 'Columns', 'mai-theme-engine' ),
 				'section'  => $section,
 				'settings' => _mai_customizer_get_field_name( $settings_field, 'columns' ),
 				'priority' => 10,
 				'type'     => 'select',
 				'choices'  => array(
-					1 => __( 'None', 'mai-pro-engine' ),
-					2 => __( '2', 'mai-pro-engine' ),
-					3 => __( '3', 'mai-pro-engine' ),
-					4 => __( '4', 'mai-pro-engine' ),
-					6 => __( '6', 'mai-pro-engine' ),
+					1 => __( 'None', 'mai-theme-engine' ),
+					2 => __( '2', 'mai-theme-engine' ),
+					3 => __( '3', 'mai-theme-engine' ),
+					4 => __( '4', 'mai-theme-engine' ),
+					6 => __( '6', 'mai-theme-engine' ),
 				),
 				'active_callback' => function() use ( $wp_customize, $settings_field ) {
 					return (bool) $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'enable_content_archive_settings' ) )->value();
@@ -691,7 +691,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		if ( $supports_editor || $supports_excerpt ) {
 
 			$content_archive_choices = array(
-				'none' => __( 'No content', 'mai-pro-engine' ),
+				'none' => __( 'No content', 'mai-theme-engine' ),
 			);
 
 			if ( $supports_editor ) {
@@ -714,7 +714,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			$wp_customize->add_control(
 				$prefix . 'content_archive',
 				array(
-					'label'           => __( 'Content', 'mai-pro-engine' ),
+					'label'           => __( 'Content', 'mai-theme-engine' ),
 					'section'         => $section,
 					'settings'        => _mai_customizer_get_field_name( $settings_field, 'content_archive' ),
 					'priority'        => 10,
@@ -740,8 +740,8 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 				$wp_customize->add_control(
 					$prefix . 'content_archive_limit',
 					array(
-						'label'           => __( 'Limit content to how many characters?', 'mai-pro-engine' ),
-						'description'     => __( '(0 for no limit)', 'mai-pro-engine' ),
+						'label'           => __( 'Limit content to how many characters?', 'mai-theme-engine' ),
+						'description'     => __( '(0 for no limit)', 'mai-theme-engine' ),
 						'section'         => $section,
 						'settings'        => _mai_customizer_get_field_name( $settings_field, 'content_archive_limit' ),
 						'priority'        => 10,
@@ -773,7 +773,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new Mai_Customize_Control_Content( $wp_customize,
 				$prefix . 'cpt_archives_featured_image_heading',
 				array(
-					'label'           => __( 'Featured Image', 'mai-pro-engine' ),
+					'label'           => __( 'Featured Image', 'mai-theme-engine' ),
 					'section'         => $section,
 					'settings'        => false,
 					'active_callback' => function() use ( $wp_customize, $settings_field ) {
@@ -795,7 +795,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_control(
 			$prefix . 'content_archive_thumbnail',
 			array(
-				'label'           => __( 'Display the Featured Image', 'mai-pro-engine' ),
+				'label'           => __( 'Display the Featured Image', 'mai-theme-engine' ),
 				'section'         => $section,
 				'settings'        => _mai_customizer_get_field_name( $settings_field, 'content_archive_thumbnail' ),
 				'type'            => 'checkbox',
@@ -825,11 +825,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 					'priority' => 10,
 					'type'     => 'select',
 					'choices'  => array(
-						'background'     => __( 'Background Image', 'mai-pro-engine' ),
-						'before_entry'   => __( 'Before Entry', 'mai-pro-engine' ),
-						'before_title'   => __( 'Before Title', 'mai-pro-engine' ),
-						'after_title'    => __( 'After Title', 'mai-pro-engine' ),
-						'before_content' => __( 'Before Content', 'mai-pro-engine' ),
+						'background'     => __( 'Background Image', 'mai-theme-engine' ),
+						'before_entry'   => __( 'Before Entry', 'mai-theme-engine' ),
+						'before_title'   => __( 'Before Title', 'mai-theme-engine' ),
+						'after_title'    => __( 'After Title', 'mai-theme-engine' ),
+						'before_content' => __( 'Before Content', 'mai-theme-engine' ),
 					),
 					'active_callback' => function() use ( $wp_customize, $settings_field ) {
 						return (bool) ( $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'enable_content_archive_settings' ) )->value() && (bool) $wp_customize->get_setting( _mai_customizer_get_field_name( $settings_field, 'content_archive_thumbnail' ) )->value() );
@@ -917,7 +917,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new Mai_Customize_Control_Content( $wp_customize,
 				$prefix . 'cpt_more_link_heading',
 				array(
-					'label'           => __( 'Read More Link', 'mai-pro-engine' ),
+					'label'           => __( 'Read More Link', 'mai-theme-engine' ),
 					'section'         => $section,
 					'settings'        => false,
 					'active_callback' => function() use ( $wp_customize, $settings_field ) {
@@ -939,7 +939,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_control(
 			$prefix . 'more_link',
 			array(
-				'label'           => __( 'Display the Read More link', 'mai-pro-engine' ),
+				'label'           => __( 'Display the Read More link', 'mai-theme-engine' ),
 				'section'         => $section,
 				'settings'        => _mai_customizer_get_field_name( $settings_field, 'more_link' ),
 				'priority'        => 10,
@@ -958,11 +958,11 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$remove_meta_choices = array();
 
 		if ( post_type_supports( $post_type, 'genesis-entry-meta-before-content' ) ) {
-			$remove_meta_choices['post_info'] = __( 'Remove Post Info', 'mai-pro-engine' );
+			$remove_meta_choices['post_info'] = __( 'Remove Post Info', 'mai-theme-engine' );
 		}
 
 		if ( post_type_supports( $post_type, 'genesis-entry-meta-after-content' ) ) {
-			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-pro-engine' );
+			$remove_meta_choices['post_meta'] = __( 'Remove Post Meta', 'mai-theme-engine' );
 		}
 
 		$wp_customize->add_setting(
@@ -977,7 +977,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 			new Mai_Customize_Control_Multicheck( $wp_customize,
 				$prefix . 'remove_meta',
 				array(
-					'label'           => __( 'Entry Meta', 'mai-pro-engine' ),
+					'label'           => __( 'Entry Meta', 'mai-theme-engine' ),
 					'section'         => $section,
 					'settings'        => _mai_customizer_get_field_name( $settings_field, 'remove_meta' ),
 					'priority'        => 10,
@@ -1005,7 +1005,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 		$wp_customize->add_control(
 			$prefix . 'posts_per_page',
 			array(
-				'label'           => __( 'Entries Per Page', 'mai-pro-engine' ),
+				'label'           => __( 'Entries Per Page', 'mai-theme-engine' ),
 				'section'         => $section,
 				'settings'        => _mai_customizer_get_field_name( $settings_field, 'posts_per_page' ),
 				'priority'        => 10,

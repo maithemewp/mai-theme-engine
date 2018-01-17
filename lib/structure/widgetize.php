@@ -1,6 +1,6 @@
 <?php
 /**
- * Mai Pro Engine.
+ * Mai Theme Engine.
  *
  * @author   Mike Hemberger
  *
@@ -17,23 +17,23 @@
  */
 genesis_register_sidebar( array(
 	'id'          => 'header_before',
-	'name'        => __( 'Before Header', 'mai-pro-engine' ),
-	'description' => __( 'This is the widget that appears on before the site header.', 'mai-pro-engine' ),
+	'name'        => __( 'Before Header', 'mai-theme-engine' ),
+	'description' => __( 'This is the widget that appears on before the site header.', 'mai-theme-engine' ),
 ) );
 genesis_register_sidebar( array(
 	'id'          => 'header_left',
-	'name'        => __( 'Header Left', 'mai-pro-engine' ),
-	'description' => __( 'This is the widget that appears on left of the title area.', 'mai-pro-engine' ),
+	'name'        => __( 'Header Left', 'mai-theme-engine' ),
+	'description' => __( 'This is the widget that appears on left of the title area.', 'mai-theme-engine' ),
 ) );
 genesis_register_sidebar( array(
 	'id'          => 'header_right',
-	'name'        => __( 'Header Right', 'mai-pro-engine' ),
-	'description' => __( 'This is the widget that appears on right of the title area.', 'mai-pro-engine' ),
+	'name'        => __( 'Header Right', 'mai-theme-engine' ),
+	'description' => __( 'This is the widget that appears on right of the title area.', 'mai-theme-engine' ),
 ) );
 genesis_register_sidebar( array(
 	'id'          => 'mobile_menu',
-	'name'        => __( 'Mobile Menu', 'mai-pro-engine' ),
-	'description' => __( 'This widget that replaces the default mobile menu.', 'mai-pro-engine' ),
+	'name'        => __( 'Mobile Menu', 'mai-theme-engine' ),
+	'description' => __( 'This widget that replaces the default mobile menu.', 'mai-theme-engine' ),
 ) );
 
 // Activate After Entry widget area and display it on single posts
@@ -47,8 +47,8 @@ add_action( 'after_setup_theme', function(){
 
 	genesis_register_sidebar( array(
 		'id'          => 'site_footer',
-		'name'        => __( 'Site Footer', 'mai-pro-engine' ),
-		'description' => __( 'This is the widget that appears in the site footer area.', 'mai-pro-engine' ),
+		'name'        => __( 'Site Footer', 'mai-theme-engine' ),
+		'description' => __( 'This is the widget that appears in the site footer area.', 'mai-theme-engine' ),
 	) );
 
 });

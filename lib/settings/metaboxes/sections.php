@@ -39,7 +39,7 @@ function mai_do_sections_metabox() {
 	// Pages with Sections template.
 	$sections = new_cmb2_box( array(
 		'id'           => 'mai_sections',
-		'title'        => __( 'Sections', 'mai-pro-engine' ),
+		'title'        => __( 'Sections', 'mai-theme-engine' ),
 		'object_types' => array( 'page' ),
 		'context'      => 'after_editor',
 		'classes'      => 'mai-metabox',
@@ -52,25 +52,25 @@ function mai_do_sections_metabox() {
 		'type'        => 'group',
 		'repeatable'  => true,
 		'options'     => array(
-			'group_title'   => __( 'Section #{#}', 'mai-pro-engine' ),
-			'add_button'    => __( 'Add Section', 'mai-pro-engine' ),
-			'remove_button' => __( 'Remove Section', 'mai-pro-engine' ),
+			'group_title'   => __( 'Section #{#}', 'mai-theme-engine' ),
+			'add_button'    => __( 'Add Section', 'mai-theme-engine' ),
+			'remove_button' => __( 'Remove Section', 'mai-theme-engine' ),
 			'sortable'      => true,
 		),
 	) );
 
 	// Settings.
 	$sections->add_group_field( $section, array(
-		'name'       => '<button class="button mai-section-settings-toggle"><span class="dashicons dashicons-admin-generic"></span>' . __( 'Settings', 'mai-pro-engine' ) . '</button>',
+		'name'       => '<button class="button mai-section-settings-toggle"><span class="dashicons dashicons-admin-generic"></span>' . __( 'Settings', 'mai-theme-engine' ) . '</button>',
 		'id'         => 'settings_title',
-		'before_row' => '<div class="mai-section"><div class="mai-section-wrap"><div class="mai-section-settings"><div class="mai-section-settings-inner"><button class="button mai-section-settings-close">' . __( 'Close', 'mai-pro-engine' ) . '</button>',
+		'before_row' => '<div class="mai-section"><div class="mai-section-wrap"><div class="mai-section-settings"><div class="mai-section-settings-inner"><button class="button mai-section-settings-close">' . __( 'Close', 'mai-theme-engine' ) . '</button>',
 		'type'       => 'title',
 		'classes'    => 'mai-section-settings-toggle-wrap',
 	) );
 
 	// Background Color.
 	$sections->add_group_field( $section, array(
-		'name'    => __( 'Background Color', 'mai-pro-engine' ),
+		'name'    => __( 'Background Color', 'mai-theme-engine' ),
 		'id'      => 'bg',
 		'type'    => 'colorpicker',
 		'default' => '', // Keep this empty, so CSS can control the defaults if left untouched
@@ -78,106 +78,106 @@ function mai_do_sections_metabox() {
 
 	// Background Image.
 	$sections->add_group_field( $section, array(
-		'name'         => __( 'Background Image', 'mai-pro-engine' ),
+		'name'         => __( 'Background Image', 'mai-theme-engine' ),
 		'id'           => 'image',
 		'type'         => 'file',
 		'preview_size' => 'one-third',
 		'options'      => array( 'url' => false ),
 		'text'         => array(
-			'add_upload_file_text' => __( 'Add Image', 'mai-pro-engine' ),
+			'add_upload_file_text' => __( 'Add Image', 'mai-theme-engine' ),
 		),
 	) );
 
 	// Overlay.
 	$sections->add_group_field( $section, array(
-		'name'              => __( 'Overlay Style', 'mai-pro-engine' ),
+		'name'              => __( 'Overlay Style', 'mai-theme-engine' ),
 		'id'                => 'overlay',
 		'type'              => 'select',
 		'select_all_button' => false,
 		'options'           => array(
 			''         => __( '- None -', 'genesis' ),
-			'gradient' => __( 'Gradient', 'mai-pro-engine' ),
-			'light'    => __( 'Light', 'mai-pro-engine' ),
-			'dark'     => __( 'Dark', 'mai-pro-engine' ),
+			'gradient' => __( 'Gradient', 'mai-theme-engine' ),
+			'light'    => __( 'Light', 'mai-theme-engine' ),
+			'dark'     => __( 'Dark', 'mai-theme-engine' ),
 		),
 	) );
 
 	// Inner.
 	$sections->add_group_field( $section, array(
-		'name'              => __( 'Inner Style', 'mai-pro-engine' ),
+		'name'              => __( 'Inner Style', 'mai-theme-engine' ),
 		'id'                => 'inner',
 		'type'              => 'select',
 		'select_all_button' => false,
 		'options'           => array(
 			''      => __( '- None -', 'genesis' ),
-			'light' => __( 'Light Box', 'mai-pro-engine' ),
-			'dark'  => __( 'Dark Box', 'mai-pro-engine' ),
+			'light' => __( 'Light Box', 'mai-theme-engine' ),
+			'dark'  => __( 'Dark Box', 'mai-theme-engine' ),
 		),
 	) );
 
 	// Height.
 	$sections->add_group_field( $section, array(
-		'name'    => __( 'Height', 'mai-pro-engine' ),
+		'name'    => __( 'Height', 'mai-theme-engine' ),
 		'id'      => 'height',
 		'type'    => 'select',
 		'default' => 'md',
 		'options' => array(
-			'auto' => __( 'Auto (Use height of content)', 'mai-pro-engine' ),
-			'xs'   => __( 'Extra Small', 'mai-pro-engine' ),
-			'sm'   => __( 'Small', 'mai-pro-engine' ),
-			'md'   => __( 'Medium (Default)', 'mai-pro-engine' ),
-			'lg'   => __( 'Large', 'mai-pro-engine' ),
-			'xl'   => __( 'Extra Large', 'mai-pro-engine' ),
+			'auto' => __( 'Auto (Use height of content)', 'mai-theme-engine' ),
+			'xs'   => __( 'Extra Small', 'mai-theme-engine' ),
+			'sm'   => __( 'Small', 'mai-theme-engine' ),
+			'md'   => __( 'Medium (Default)', 'mai-theme-engine' ),
+			'lg'   => __( 'Large', 'mai-theme-engine' ),
+			'xl'   => __( 'Extra Large', 'mai-theme-engine' ),
 		),
 	) );
 
 	// Content Width.
 	$sections->add_group_field( $section, array(
-		'name'             => __( 'Content Width', 'mai-pro-engine' ),
+		'name'             => __( 'Content Width', 'mai-theme-engine' ),
 		'id'               => 'content_width',
 		'type'             => 'select',
-		'show_option_none' => __( 'Default (Use Layout Width)', 'mai-pro-engine' ),
+		'show_option_none' => __( 'Default (Use Layout Width)', 'mai-theme-engine' ),
 		'options'          => array(
-			'xs'   => __( 'Extra Small', 'mai-pro-engine' ),
-			'sm'   => __( 'Small', 'mai-pro-engine' ),
-			'md'   => __( 'Medium', 'mai-pro-engine' ),
-			'lg'   => __( 'Large', 'mai-pro-engine' ),
-			'xl'   => __( 'Extra Large', 'mai-pro-engine' ),
-			'full' => __( 'Full Width', 'mai-pro-engine' ),
+			'xs'   => __( 'Extra Small', 'mai-theme-engine' ),
+			'sm'   => __( 'Small', 'mai-theme-engine' ),
+			'md'   => __( 'Medium', 'mai-theme-engine' ),
+			'lg'   => __( 'Large', 'mai-theme-engine' ),
+			'xl'   => __( 'Extra Large', 'mai-theme-engine' ),
+			'full' => __( 'Full Width', 'mai-theme-engine' ),
 		),
 	) );
 
 	// Content Alignment.
 	$sections->add_group_field( $section, array(
-		'name'             => __( 'Content Alignment', 'mai-pro-engine' ),
+		'name'             => __( 'Content Alignment', 'mai-theme-engine' ),
 		'id'               => 'align',
 		'type'             => 'select',
 		'show_option_none' => __( '- None -', 'genesis' ),
 		'options'          => array(
-			'left'   => __( 'Left', 'mai-pro-engine' ),
-			'center' => __( 'Center', 'mai-pro-engine' ),
-			'right'  => __( 'Right', 'mai-pro-engine' ),
+			'left'   => __( 'Left', 'mai-theme-engine' ),
+			'center' => __( 'Center', 'mai-theme-engine' ),
+			'right'  => __( 'Right', 'mai-theme-engine' ),
 		),
 	) );
 
 	// Text Size.
 	$sections->add_group_field( $section, array(
-		'name'             => __( 'Text Size', 'mai-pro-engine' ),
+		'name'             => __( 'Text Size', 'mai-theme-engine' ),
 		'id'               => 'text_size',
 		'type'             => 'select',
 		'show_option_none' => __( '- None -', 'genesis' ),
 		'options' => array(
-			'xs' => __( 'Extra Small', 'mai-pro-engine' ),
-			'sm' => __( 'Small', 'mai-pro-engine' ),
-			'md' => __( 'Medium (Default)', 'mai-pro-engine' ),
-			'lg' => __( 'Large', 'mai-pro-engine' ),
-			'xl' => __( 'Extra Large', 'mai-pro-engine' ),
+			'xs' => __( 'Extra Small', 'mai-theme-engine' ),
+			'sm' => __( 'Small', 'mai-theme-engine' ),
+			'md' => __( 'Medium (Default)', 'mai-theme-engine' ),
+			'lg' => __( 'Large', 'mai-theme-engine' ),
+			'xl' => __( 'Extra Large', 'mai-theme-engine' ),
 		),
 	) );
 
 	// Advanced Settings.
 	$sections->add_group_field( $section, array(
-		'name'       => __( 'Advanced Settings', 'mai-pro-engine' ),
+		'name'       => __( 'Advanced Settings', 'mai-theme-engine' ),
 		'id'         => 'advanced_settings_title',
 		'type'       => 'title',
 		'before_row' => '<div class="mai-section-advanced-settings">',
@@ -208,7 +208,7 @@ function mai_do_sections_metabox() {
 		'type'       => 'text',
 		'before_row' => '</div></div><div class="mai-section-content">',
 		'attributes' => array(
-			'placeholder' => __( 'Enter section title here', 'mai-pro-engine' ),
+			'placeholder' => __( 'Enter section title here', 'mai-theme-engine' ),
 			'class'       => 'widefat',
 		),
 	) );

@@ -1,6 +1,6 @@
 <?php
 /**
- * Mai Pro Engine.
+ * Mai Theme Engine.
  *
  * @author   Mike Hemberger
  *
@@ -149,7 +149,7 @@ function mai_get_mobile_menu() {
 		$menu .= '<div class="mai-menu-outer">';
 
 		if ( mai_is_side_menu_enabled() ) {
-			$menu .= '<button class="button menu-close icon icon-left" role="button">' . __( 'Close', 'mai-pro-engine' ) . '</button>';
+			$menu .= '<button class="button menu-close icon icon-left" role="button">' . __( 'Close', 'mai-theme-engine' ) . '</button>';
 		}
 
 		$menu .= '<div class="mai-menu-inner">';

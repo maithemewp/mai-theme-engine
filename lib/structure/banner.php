@@ -167,7 +167,7 @@ function mai_do_banner_content() {
 	}
 
 	elseif ( is_404() ) {
-		printf( '<div class="entry-title">%s</div>', __( '404', 'mai-pro-engine' ) );
+		printf( '<div class="entry-title">%s</div>', __( '404', 'mai-theme-engine' ) );
 	}
 
 	// Bail if WooCommerce is not active
