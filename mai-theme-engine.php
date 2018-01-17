@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.2.0-beta.15
+ * Version:         1.2.0-beta.116
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -90,7 +90,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.15' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.2.0-beta.116' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1161' );
@@ -283,7 +283,7 @@ final class Mai_Theme_Engine {
 			 *
 			 * @link https://10up.com/blog/2012/wordpress-plug-in-self-deactivation/
 			 */
-			if ( ! current_theme_supports( 'mai-theme-engine' ) || ! current_theme_supports( 'mai-pro-engine' ) ) {
+			if ( ! current_theme_supports( 'mai-theme-engine' ) && ! current_theme_supports( 'mai-pro-engine' ) ) {
 				add_action( 'admin_init',    array( $this, 'deactivate_plugin' ) );
 				add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 				return;
