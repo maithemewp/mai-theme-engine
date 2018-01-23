@@ -227,6 +227,7 @@ final class Mai_Shortcodes {
 			'bg'            => '',
 			'class'         => '',
 			'content_width' => '',
+			'context'       => '',
 			'height'        => 'md',
 			'id'            => '',
 			'image'         => '',
@@ -241,10 +242,11 @@ final class Mai_Shortcodes {
 
 		// Sanitized args.
 		$args = array(
-			'align'         => mai_sanitize_keys( $args['align'] ), // left, center, right
+			'align'         => mai_sanitize_keys( $args['align'] ),   // left, center, right
 			'bg'            => mai_sanitize_hex_color( $args['bg'] ), // 3 or 6 dig hex color with or without hash
 			'class'         => mai_sanitize_html_classes( $args['class'] ),
 			'content_width' => sanitize_key( $args['content_width'] ),
+			'context'       => sanitize_html_class( $args['context'] ),
 			'height'        => sanitize_key( $args['height'] ),
 			'id'            => sanitize_html_class( $args['id'] ),
 			'image'         => absint( $args['image'] ),
@@ -257,13 +259,22 @@ final class Mai_Shortcodes {
 			'wrap_class'    => mai_sanitize_html_classes( $args['wrap_class'] ),
 		);
 
-		$output = '';
+		// Get context.
+		$context = $args['context'];
+		if ( empty( $context ) ) {
+			$context = $args['id'];
+			if ( empty( $context ) ) {
+				$context = 'section';
+			}
+		}
 
-		$output .= $this->get_section_open( $args, $content );
-		$output .= $this->get_processed_content( $content );
-		$output .= $this->get_section_close( $args, $content );
-
-		return $output;
+		return genesis_markup( array(
+			'open'    => $this->get_section_open( $args, $content ),
+			'close'   => $this->get_section_close( $args, $content ),
+			'content' => $this->get_processed_content( $content ),
+			'context' => $context,
+			'echo'    => false,
+		) );
 	}
 
 	/**
