@@ -1,5 +1,6 @@
 ### Changelog
 
+* Added: Pass original atts to flex entry filters.
 * Changed: Convert get_section() method to use genesis_markup(). And pass context from id. This allows all the awesome filters that genesis_markup() creates automatically.
 
 #### 1.2.0 (1/17/18)
