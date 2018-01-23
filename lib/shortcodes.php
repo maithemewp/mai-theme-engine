@@ -1692,7 +1692,7 @@ final class Mai_Shortcodes {
 					}
 
 					// Add filter to the entry header
-					$entry_header = apply_filters( 'mai_flex_entry_header', $entry_header, $atts );
+					$entry_header = apply_filters( 'mai_flex_entry_header', $entry_header, $atts, $original_atts );
 
 					// Add entry header wrap if we have content
 					if ( $entry_header ) {
@@ -1729,7 +1729,7 @@ final class Mai_Shortcodes {
 					}
 
 					// Add filter to the entry content, before more link.
-					$entry_content = apply_filters( 'mai_flex_entry_content', $entry_content, $atts );
+					$entry_content = apply_filters( 'mai_flex_entry_content', $entry_content, $atts, $original_atts );
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
@@ -1752,7 +1752,7 @@ final class Mai_Shortcodes {
 					}
 
 					// Add filter to the entry footer
-					$entry_footer = apply_filters( 'mai_flex_entry_footer', $entry_footer, $atts );
+					$entry_footer = apply_filters( 'mai_flex_entry_footer', $entry_footer, $atts, $original_atts );
 
 					// Entry footer
 					if ( $entry_footer ) {
@@ -1917,7 +1917,7 @@ final class Mai_Shortcodes {
 					}
 
 					// Add filter to the entry header
-					$entry_header = apply_filters( 'mai_flex_entry_header', $entry_header, $atts );
+					$entry_header = apply_filters( 'mai_flex_entry_header', $entry_header, $atts, $original_atts );
 
 					// Add entry header wrap if we have content
 					if ( $entry_header ) {
@@ -1941,7 +1941,7 @@ final class Mai_Shortcodes {
 					}
 
 					// Add filter to the entry content, before more link.
-					$entry_content = apply_filters( 'mai_flex_entry_content', $entry_content, $atts );
+					$entry_content = apply_filters( 'mai_flex_entry_content', $entry_content, $atts, $original_atts );
 
 					// More link
 					if ( $atts['link'] && in_array( 'more_link', $atts['show'] ) ) {
@@ -1954,7 +1954,7 @@ final class Mai_Shortcodes {
 					}
 
 					// Add filter to the entry footer
-					$entry_footer = apply_filters( 'mai_flex_entry_footer', $entry_footer, $atts );
+					$entry_footer = apply_filters( 'mai_flex_entry_footer', $entry_footer, $atts, $original_atts );
 
 					// Entry footer
 					if ( $entry_footer ) {
