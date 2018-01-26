@@ -40,6 +40,7 @@ function mai_do_banner_area() {
 	remove_action( 'genesis_before_loop', 'genesis_do_search_title' );
 
 	$args = array(
+		'context'       => 'banner-area',
 		'class'         => 'banner-area width-full',
 		'wrap'          => true,
 		'bg'            => genesis_get_option( 'banner_background_color' ),
