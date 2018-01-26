@@ -905,6 +905,7 @@ td {
 }
 
 .width-full,
+.site-inner > .section,
 .content-no-sidebars .section,
 .section .wrap.width-full,
 .section.banner-area > .wrap.width-full {
@@ -914,11 +915,12 @@ td {
 	margin-right: calc(-50vw + 50%);
 }
 
-.section.banner-area,
+.site-inner > .section,
 .content-no-sidebars .section {
 	overflow: hidden;
 }
 
+.site-inner > .section,
 .content-no-sidebars .width-full {
 	padding-left: 0;
 	padding-right: 0;
