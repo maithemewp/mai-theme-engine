@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.2.0-beta.1 (1/26/18)
+#### 1.2.1-beta.1 (1/26/18)
 * Added: Pass original atts to flex entry filters.
 * Changed: CSS and JS file names from mai-pro to mai-theme.
 * Changed: Allow full width sections on any section outside of content-sidebar-wrap that is still inside site-inner. This includes banner-area.
