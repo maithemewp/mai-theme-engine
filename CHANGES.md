@@ -6,6 +6,7 @@
 * Changed: Allow full width sections on any section outside of content-sidebar-wrap that is still inside site-inner. This includes banner-area.
 * Changed: Convert get_section() method to use genesis_markup(). And pass context from id. This allows all the awesome filters that genesis_markup() creates automatically.
 * Changed: Update CMB2 to 2.3.0, specifically to ensure php 7.2 compatibility.
+* Fixed: Removed duplicate jquery cleanup scripts.
 
 #### 1.2.0 (1/17/18)
 * Added: Plugin icon when updating via Dashboard > Updates.
