@@ -1,8 +1,8 @@
 ### Changelog
 
 #### 1.2.1 (2/15/18)
-* Added: Pass original atts to flex entry filters.
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.
+* Added: Pass original atts to flex entry filters.
 * Changed: PHP 7.2 compatibility via updating CMB2 to 2.3.0.
 * Changed: CSS and JS file names from mai-pro to mai-theme.
 * Changed: Allow full width sections on any section outside of content-sidebar-wrap that is still inside site-inner. This includes banner-area.

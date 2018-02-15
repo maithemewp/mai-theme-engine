@@ -3,6 +3,8 @@
 /**
  * Set the first version number.
  *
+ * @since 1.2.1
+ *
  * @return void
  */
 add_action( 'admin_init', 'mai_update_first_version' );
