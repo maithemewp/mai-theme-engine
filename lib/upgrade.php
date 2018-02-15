@@ -1,6 +1,24 @@
 <?php
 
 /**
+ * Set the first version number.
+ *
+ * @return void
+ */
+add_action( 'admin_init', 'mai_update_first_version' );
+function mai_update_first_version() {
+
+	// Bail if first version is already set.
+	if ( false !== get_option( 'mai_first_version' ) ) {
+		return;
+	}
+
+	// Update the first version.
+	update_option( 'mai_first_version', MAI_THEME_ENGINE_VERSION );
+
+}
+
+/**
  * Maybe run the version updater.
  * Mostly taken from G core. Some original inspiration from link below.
  *
@@ -29,6 +47,7 @@ function mai_update_database_version() {
 
 	// Update the version number option.
 	update_option( 'mai_db_version', MAI_THEME_ENGINE_DB_VERSION );
+
 }
 
 /**
