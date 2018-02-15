@@ -2325,8 +2325,8 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 }
 
 .genesis-nav-menu .sub-menu .sub-menu {
-	top: 0;
-	margin-left: 199px;
+	top: -1px;
+	margin-left: 197px;
 	border-left: 1px solid rgba(0,0,0,0.1);
 }
 
