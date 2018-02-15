@@ -85,10 +85,6 @@ function mai_js_detection_script() {
 			c = c.replace(/no-js/, 'js');
 			document.body.className = c;
 		})();
-		jQuery(function( $ ) {
-			'use strict';
-			jQuery( 'p:empty' ).remove();
-		});
 		//]]>
 	</script>
 	<?php

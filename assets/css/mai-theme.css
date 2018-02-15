@@ -481,6 +481,7 @@ textarea {
 	width: 100%;
 	background-color: #f8f8f8;
 	color: rgba(0, 0, 0, 0.7);
+	font-family: inherit;
 	font-weight: 300;
 	padding: 12px;
 	border: 1px solid rgba(0, 0, 0, 0.06);
@@ -905,6 +906,7 @@ td {
 }
 
 .width-full,
+.site-inner > .section,
 .content-no-sidebars .section,
 .section .wrap.width-full,
 .section.banner-area > .wrap.width-full {
@@ -914,11 +916,12 @@ td {
 	margin-right: calc(-50vw + 50%);
 }
 
-.section.banner-area,
+.site-inner > .section,
 .content-no-sidebars .section {
 	overflow: hidden;
 }
 
+.site-inner > .section,
 .content-no-sidebars .width-full {
 	padding-left: 0;
 	padding-right: 0;
@@ -2322,8 +2325,8 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 }
 
 .genesis-nav-menu .sub-menu .sub-menu {
-	top: 0;
-	margin-left: 199px;
+	top: -1px;
+	margin-left: 197px;
 	border-left: 1px solid rgba(0,0,0,0.1);
 }
 
