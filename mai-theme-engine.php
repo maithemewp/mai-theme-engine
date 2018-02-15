@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
-
+ * Version:         1.2.0
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
