@@ -1,5 +1,7 @@
 ### Changelog
 
+* Changed: Section inner left and right padding.
+
 #### 1.2.1 (2/15/18)
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.
 * Added: Pass original atts to flex entry filters.
