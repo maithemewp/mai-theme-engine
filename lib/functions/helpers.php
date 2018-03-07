@@ -16,24 +16,28 @@ function mai_is_content_archive() {
 
 	$is_archive = false;
 
-	// Blog
+	// Blog.
 	if ( is_home() ) {
 		$is_archive = true;
 	}
-	// Term archive
+	// Term archive.
 	elseif ( is_category() || is_tag() || is_tax() ) {
 		$is_archive = true;
 	}
-	// CPT archive - this may be called too early to use get_post_type()
+	// CPT archive - this may be called too early to use get_post_type().
 	elseif ( is_post_type_archive() ) {
 		$is_archive = true;
 	}
-	// Author archive
+	// Author archive.
 	elseif ( is_author() ) {
 		$is_archive = true;
 	}
-	// Search results
+	// Search results.
 	elseif ( is_search() ) {
+		$is_archive = true;
+	}
+	// Date archives.
+	elseif( is_date() ) {
 		$is_archive = true;
 	}
 
