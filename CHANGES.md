@@ -1,6 +1,7 @@
 ### Changelog
 
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
+* Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 
 #### 1.2.1 (2/15/18)
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.
