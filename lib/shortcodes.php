@@ -939,8 +939,8 @@ final class Mai_Shortcodes {
 			'align'                => mai_sanitize_keys( $atts['align'] ),
 			'align_cols'           => mai_sanitize_keys( $atts['align_cols'] ),
 			'align_text'           => mai_sanitize_keys( $atts['align_text'] ),
-			'author_after'         => sanitize_key( $atts['author_after'] ),
-			'author_before'        => sanitize_key( $atts['author_before'] ),
+			'author_after'         => esc_html( $atts['author_after'] ),
+			'author_before'        => esc_html( $atts['author_before'] ),
 			'authors'              => $atts['authors'], // Validated later
 			'bottom'               => ! empty( $atts['bottom'] ) ? absint( $atts['bottom'] ) : '',
 			'categories'           => array_filter( explode( ',', sanitize_text_field( $atts['categories'] ) ) ),
@@ -948,8 +948,8 @@ final class Mai_Shortcodes {
 			'content'              => array_filter( explode( ',', sanitize_text_field( $atts['content'] ) ) ),
 			'content_limit'        => absint( $atts['content_limit'] ),
 			'content_type'         => sanitize_text_field( $atts['content_type'] ),
-			'date_after'           => sanitize_text_field( $atts['date_after'] ),
-			'date_before'          => sanitize_text_field( $atts['date_before'] ),
+			'date_after'           => esc_html( $atts['date_after'] ),
+			'date_before'          => esc_html( $atts['date_before'] ),
 			'date_format'          => sanitize_text_field( $atts['date_format'] ),
 			'date_query_after'     => sanitize_text_field( $atts['date_query_after'] ),
 			'date_query_before'    => sanitize_text_field( $atts['date_query_before'] ),
@@ -1630,8 +1630,8 @@ final class Mai_Shortcodes {
 						 * If date formate is set in shortcode, use that format instead of default Genesis.
 						 * Since using G post_date shortcode you can also use 'relative' for '3 days ago'.
 						 */
-						$date_before    = $atts['date_before'] ? ' before="' . $atts['date_before'] . '"' : '';
-						$date_after     = $atts['date_after'] ? ' after="' . $atts['date_after'] . '"' : '';
+						$date_before    = $atts['date_before'] ? ' before="' . str_replace( ' ', '&nbsp;', $atts['date_before'] ) . '"' : '';
+						$date_after     = $atts['date_after'] ? ' after="' . str_replace( ' ', '&nbsp;', $atts['date_after'] ) . '"' : '';
 						$date_format    = $atts['date_format'] ? ' format="' . $atts['date_format'] . '"' : '';
 						$date_shortcode = sprintf( '[post_date%s%s%s]', $date_before, $date_after, $date_format );
 						// Use Genesis output for post date
@@ -1643,8 +1643,8 @@ final class Mai_Shortcodes {
 						/**
 						 * If author has no link this shortcode defaults to genesis_post_author_shortcode() [post_author]
 						 */
-						$author_before = $atts['author_before'] ? ' before="' . $atts['author_before'] . '"' : '';
-						$author_after  = $atts['author_after'] ? ' after="' . $atts['author_after'] . '"' : '';
+						$author_before = $atts['author_before'] ? ' before="' . str_replace( ' ', '&nbsp;', $atts['author_before'] ) . '"' : '';
+						$author_after  = $atts['author_after'] ? ' after="' . str_replace( ' ', '&nbsp;', $atts['author_after'] ) . '"' : '';
 						// Can't have a nested link if we have a background image
 						if ( $has_image_bg ) {
 							$author_shortcode_name = 'post_author';
