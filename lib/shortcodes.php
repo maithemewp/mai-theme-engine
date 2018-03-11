@@ -1699,11 +1699,6 @@ final class Mai_Shortcodes {
 						$html .= sprintf( '<header %s>%s</header>', genesis_attr( 'entry-header', array(), $atts ), $entry_header );
 					}
 
-					// Image
-					if ( 'before_content' == $atts['image_location'] ) {
-						$entry_content .= $image_html;
-					}
-
 					// Excerpt
 					if ( in_array( 'excerpt', $atts['show'] ) ) {
 						// Strip tags and shortcodes cause things go nuts, especially if showing image as background
@@ -1726,6 +1721,11 @@ final class Mai_Shortcodes {
 						ob_start();
 						woocommerce_template_loop_price();
 						$entry_content .= ob_get_clean();
+					}
+
+					// Image
+					if ( 'before_content' == $atts['image_location'] ) {
+						$entry_content = $image_html . $entry_content;
 					}
 
 					// Add filter to the entry content, before more link.
