@@ -227,7 +227,7 @@ final class Mai_Shortcodes {
 			'bg'            => '',
 			'class'         => '',
 			'content_width' => '',
-			'context'       => '',
+			'context'       => 'section',
 			'height'        => 'md',
 			'id'            => '',
 			'image'         => '',
@@ -259,22 +259,239 @@ final class Mai_Shortcodes {
 			'wrap_class'    => mai_sanitize_html_classes( $args['wrap_class'] ),
 		);
 
-		// Get context.
-		$context = $args['context'];
-		if ( empty( $context ) ) {
-			$context = $args['id'];
-			if ( empty( $context ) ) {
-				$context = 'section';
-			}
-		}
+		$section = '';
 
+		// Opening section.
 		return genesis_markup( array(
 			'open'    => $this->get_section_open( $args, $content ),
 			'close'   => $this->get_section_close( $args, $content ),
-			'content' => $this->get_processed_content( $content ),
-			'context' => $context,
+			'content' => $this->get_section_inside( $args, $content ),
+			'context' => $args['context'],
 			'echo'    => false,
 		) );
+
+		// return genesis_markup( array(
+		// 	'open'    => $this->get_section_open( $args, $content ),
+		// 	'close'   => $this->get_section_close( $args, $content ),
+		// 	'content' => $this->get_processed_content( $content ),
+		// 	'context' => $context,
+		// 	'echo'    => false,
+		// ) );
+	}
+
+	function get_section_inside( $args, $content ) {
+		$html = '';
+		// $html .= $this->get_section_open( $args, $content );
+		$html .= $this->get_section_wrap_open( $args, $content );
+		$html .= $this->get_section_inner_open( $args, $content );
+		$html .= $this->get_section_content( $args, $content );
+		$html .= $this->get_section_inner_close( $args, $content );
+		$html .= $this->get_section_wrap_close( $args, $content );
+		// $html .= $this->get_section_close( $args, $content );
+		return $html;
+	}
+
+	/**
+	 * Get opening section wrap.
+	 * To be used in front-page.php and [section] shortcode.
+	 *
+	 * @version  1.0.2
+	 *
+	 * @param    array   $args     Options for the wrapping markup.
+	 * @param    string  $content  The shortcode content.
+	 *
+	 * @return   string|HTML
+	 */
+	function get_section_open( $args, $content ) {
+
+		$section_atts = array();
+
+		// Check if we have valid overlay and inner values
+		$has_overlay = $this->has_overlay( $args );
+		$has_inner   = $this->has_inner( $args, $content );
+
+		// Maybe add section id
+		if ( $args['id'] ) {
+			$section_atts['id'] = $args['id'];
+		}
+
+		// Default section class
+		$section_atts['class'] = 'section';
+
+		// Maybe add additional section classes
+		if ( $args['class'] ) {
+			$section_atts['class'] .= ' ' . $args['class'];
+		}
+
+		// Align text
+		if ( ! empty( $args['align'] ) ) {
+			$section_atts['class'] .= $this->get_align_classes( $args );
+		}
+
+		// Text size.
+		if ( $args['text_size'] ) {
+			$section_atts['class'] .= $this->get_text_size_classes( $args );
+		}
+
+		$dark_bg = false;
+
+		// Content shade
+		if ( ! $has_inner ) {
+			/**
+			 * If bg color and no image
+			 * bg shade is based on bg color.
+			 */
+			if ( $args['bg'] && ! $args['image'] ) {
+				$dark_bg = mai_is_dark_color( $args['bg'] );
+			} elseif ( $args['image'] && ! $has_overlay ) {
+				// For now, anytime we have an image it's considered dark
+				$dark_bg = true;
+			} elseif ( $args['image'] && in_array( $args['overlay'], array( 'dark', 'gradient' ) ) ) {
+				$dark_bg = true;
+			}
+
+			/**
+			 * Add content shade class if we don't have inner.
+			 * Inner will handle these classes if we have it.
+			 */
+			$section_atts['class'] .= $dark_bg ? ' light-content' : '';
+
+		}
+
+		// Maybe add the inline background color
+		if ( $args['bg'] ) {
+
+			// Add the background color
+			$section_atts = mai_add_background_color_attributes( $section_atts, $args['bg'] );
+		}
+
+		// If we have an image ID.
+		if ( $args['image'] ) {
+
+			// If using aspect ratio.
+			$has_aspect_ratio = empty( $content ) ? true : false;
+
+			// Add the aspect ratio attributes
+			$section_atts = mai_add_background_image_attributes( $section_atts, $args['image'], 'banner', $has_aspect_ratio );
+
+			/**
+			 * Add content shade class if we don't have inner.
+			 * Inner will handle these classes if we have it.
+			 */
+			if ( ! ( $has_overlay && $has_inner ) ) {
+				$section_atts['class'] .= $dark_bg ? ' light-content' : '';
+			}
+
+		}
+
+		if ( $has_overlay ) {
+
+			$light_content = false;
+
+			$section_atts['class'] .= $this->get_overlay_classes( $args );
+
+		}
+
+		// Build the opening markup
+		return sprintf( '<%s %s>', $args['wrapper'], genesis_attr( $args['context'], $section_atts, $args ) );
+
+	}
+
+	function get_section_wrap_open( $args, $content ) {
+
+		$html = '';
+
+		// Maybe build opening wrap.
+		if ( ! empty( $args['title'] ) || ! empty( $content ) ) {
+
+			$atts['class'] = 'wrap';
+
+			// Wrap height
+			if ( $args['height'] ) {
+				$atts['class'] .= $this->get_height_classes( $args );
+			}
+
+			// Wrap content width
+			$atts['class'] .= $this->get_content_width_classes( $args );
+
+			if ( $args['wrap_class'] ) {
+				$atts['class'] .= ' ' . $args['wrap_class'];
+			}
+
+			$html = sprintf( '<div %s>', genesis_attr( 'section-wrap', $atts, $args ) );
+
+		}
+
+		return $html;
+	}
+
+	function get_section_inner_open( $args, $content ) {
+
+		$html = '';
+
+		if ( $this->has_inner( $args, $content ) ) {
+
+			$atts['class'] = ' inner';
+
+			$dark_bg = false;
+
+			switch ( $args['inner'] ) {
+				case 'light':
+					$atts['class'] .= ' inner-light';
+				break;
+				case 'dark':
+					$atts['class'] .= ' inner-dark';
+					$dark_bg = true;
+				break;
+			}
+
+			// Add content shade classes
+			$atts['class'] .= $dark_bg ? ' light-content' : '';
+
+			// Build the inner HTML
+			$html = sprintf( '<div %s>', genesis_attr( 'section-inner', $atts, $args ) );
+
+		}
+		return $html;
+	}
+
+	function get_section_content( $args, $content ) {
+		$html = '';
+		$html .= $this->get_section_title( $args, $content );
+		$html .= $this->get_processed_content( $content );
+		return $html;
+	}
+
+	function get_section_title( $args, $content ) {
+		$html = '';
+		if ( $args['title'] ) {
+			$html = sprintf( '<%s class="heading">%s</%s>', $args['title_wrap'], $args['title'], $args['title_wrap'] );
+		}
+		return $html;
+	}
+
+	function get_section_inner_close( $args, $content ) {
+		$html = '';
+		if ( $this->has_inner( $args, $content ) ) {
+			$html = '</div>';
+		}
+		return $html;
+	}
+
+	function get_section_wrap_close( $args, $content ) {
+		$html = '';
+		if ( ! empty( $args['title'] ) || ! empty( $content ) ) {
+			$html = '</div>';
+		}
+		return $html;
+	}
+
+	function get_section_close( $args, $content ) {
+		$html = '';
+		if ( ! empty( $args['title'] ) || ! empty( $content ) ) {
+			$html = sprintf( '</%s>', $args['wrapper'] );
+		}
+		return $html;
 	}
 
 	/**
@@ -288,7 +505,7 @@ final class Mai_Shortcodes {
 	 *
 	 * @return   string|HTML
 	 */
-	function get_section_open( $args, $content ) {
+	function get_section_open_og( $args, $content ) {
 
 		// Start all element variables as empty string
 		$title = $wrap = $inner = '';
@@ -582,7 +799,7 @@ final class Mai_Shortcodes {
 	 *
 	 * @return   string|HTML
 	 */
-	function get_section_close( $args, $content ) {
+	function get_section_close_og( $args, $content ) {
 
 		// Start all element variables as empty string.
 		$title = $wrap = $inner = '';
@@ -607,6 +824,148 @@ final class Mai_Shortcodes {
 			sanitize_key( $args['wrapper'] )
 		);
 
+	}
+
+	function get_align_classes( $args ) {
+		$classes = '';
+		// Left
+		if ( in_array( 'left', $args['align']) ) {
+			$classes .= ' text-xs-left';
+		}
+		// Center
+		if ( in_array( 'center', $args['align'] ) ) {
+			$classes .= ' text-xs-center';
+		}
+		// Right
+		if ( in_array( 'right', $args['align'] ) ) {
+			$classes .= ' text-xs-right';
+		}
+		return $classes ? ' ' . $classes : '';
+	}
+
+	function get_text_size_classes( $args ) {
+		$classes = '';
+		switch ( $args['text_size'] ) {
+			case 'xs':
+			case 'extra-small';
+				$classes .= ' text-xs';
+			break;
+			case 'sm':
+			case 'small';
+				$classes .= ' text-sm';
+			break;
+			case 'md':
+			case 'medium';
+				$classes .= ' text-md';
+			break;
+			case 'lg':
+			case 'large':
+				$classes .= ' text-lg';
+			break;
+			case 'xl':
+			case 'extra-large':
+				$classes .= ' text-xl';
+			break;
+		}
+		return $classes ? ' ' . $classes : '';
+	}
+
+	function get_overlay_classes( $args ) {
+		$classes = 'overlay';
+		// Only add overlay classes if we have a valid overlay type.
+		switch ( $args['overlay'] ) {
+			case 'gradient':
+			$classes .= ' overlay-gradient';
+			break;
+			case 'light':
+			$classes .= ' overlay-light';
+			break;
+			case 'dark':
+			$classes .= ' overlay-dark';
+			break;
+		}
+		return $classes ? ' ' . $classes : '';
+	}
+
+	function get_height_classes( $args ) {
+		$classes = '';
+		switch ( $args['height'] ) {
+			case 'auto';
+				$classes .= ' height-auto';
+			break;
+			case 'xs':
+			case 'extra-small';
+				$classes .= ' height-xs';
+			break;
+			case 'sm':
+			case 'small';
+				$classes .= ' height-sm';
+			break;
+			case 'md':
+			case 'medium':
+				$classes .= ' height-md';
+			break;
+			case 'lg':
+			case 'large':
+				$classes .= ' height-lg';
+			break;
+			case 'xl':
+			case 'extra-large':
+				$classes .= ' height-xl';
+			break;
+		}
+		return $classes ? ' ' . $classes : '';
+	}
+
+	function get_content_width_classes( $args ) {
+		$classes = '';
+		if ( $args['content_width'] ) {
+			switch ( $args['content_width'] ) {
+				case 'auto':
+					$classes .= ' width-auto';
+				break;
+				case 'xs':
+				case 'extra-small':
+					$classes .= ' width-xs';
+				break;
+				case 'sm':
+				case 'small';
+					$classes .= ' width-sm';
+				break;
+				case 'md':
+				case 'medium':
+					$classes .= ' width-md';
+				break;
+				case 'lg':
+				case 'large':
+					$classes .= ' width-lg';
+				break;
+				case 'xl':
+				case 'extra-large':
+					$classes .= ' width-xl';
+				break;
+				case 'full':
+					$classes .= ' width-full';
+				break;
+			}
+		} else {
+			// Add width classes based on layout
+			switch ( genesis_site_layout() ) {
+				case 'xs-content':
+					$atts['class'] .= ' width-xs';
+				break;
+				case 'sm-content':
+					$atts['class'] .= ' width-sm';
+				break;
+				case 'md-content':
+					$atts['class'] .= ' width-md';
+				break;
+				case 'lg-content':
+					$atts['class'] .= ' width-lg';
+				break;
+			}
+		}
+		return $classes ? ' ' . $classes : '';
 	}
 
 	function get_columns( $atts, $content = null ) {
