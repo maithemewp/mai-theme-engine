@@ -1,5 +1,5 @@
 /**
- * Initiate Slick on [display-posts slider=true] posts when document ready
+ * Initiate Slick on [grid slider="true"] posts when document ready.
  *
  * @version 1.0.2
  */
