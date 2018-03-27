@@ -8,7 +8,7 @@ class Mai_Grid extends Mai_Content {
 
 	private $content_type;
 
-	// private $ids; // $ids to store incase exclude_existing is true.
+	// private $existing_ids; // $ids to store incase exclude_existing is true.
 
 	private $facetwp = false;
 
