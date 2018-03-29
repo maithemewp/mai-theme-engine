@@ -1,34 +1,44 @@
 <?php
 
 /**
- * Modify the defaults for [post_date] shortcode
- * This is modified per-shortcode since [grid] shortcode now uses this shortcode
- * when showing meta/date.
+ * Modify the defaults for [post_date] shortcode.
  *
- * @param   $atts  Attributes in Genesis genesis_post_date_shortcode()
+ * @param   array  $out    The output array of shortcode attributes.
+ * @param   array  $pairs  The supported attributes and their defaults.
+ * @param   array  $atts   The user defined shortcode attributes.
  *
  * @return  array  Modified $atts
  */
-add_filter( 'shortcode_atts_post_date', 'mai_post_date_defaults' );
-function mai_post_date_defaults( $atts ) {
-	$atts['after']  = '';
-	$atts['before'] = '';
-	$atts['format'] = 'M j, Y';
-	return $atts;
+add_filter( 'shortcode_atts_post_date', 'mai_post_date_defaults', 10, 3 );
+function mai_post_date_defaults( $out, $pairs, $atts ) {
+	if ( ! isset( $atts['after'] ) ) {
+		$out['after']  = '';
+	}
+	if ( ! isset( $atts['before'] ) ) {
+		$out['before'] = '';
+	}
+	if ( ! isset( $atts['format'] ) ) {
+		$out['format'] = 'M j, Y';
+	}
+	return $out;
 }
 
 /**
- * Modify the defaults for [post_author_link] shortcode
- * This is modified per-shortcode since [display-posts] shortcode now uses this shortcode
- * when include_author is true
+ * Modify the defaults for [post_author_link] and [post_author_posts_link] shortcodes.
  *
- * @param  $atts  Attributes in Genesis genesis_post_author_link_shortcode()
+ * @param   array  $out    The output array of shortcode attributes.
+ * @param   array  $pairs  The supported attributes and their defaults.
+ * @param   array  $atts   The user defined shortcode attributes.
+ *
+ * @return  array  Modified $atts
  */
 add_filter( 'shortcode_atts_post_author_link', 'mai_post_author_link_defaults' );
 add_filter( 'shortcode_atts_post_author_posts_link', 'mai_post_author_link_defaults' );
-function mai_post_author_link_defaults( $atts ) {
-	$atts['before'] = '//&nbsp;&nbsp;by&nbsp;';
-	return $atts;
+function mai_post_author_link_defaults( $out, $pairs, $atts ) {
+	if ( ! isset( $atts['before'] ) ) {
+		$out['before'] = '//&nbsp;&nbsp;by&nbsp;';
+	}
+	return $out;
 }
 
 // Customize the entry meta in the entry header

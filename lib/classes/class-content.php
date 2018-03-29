@@ -1,5 +1,7 @@
 <?php
 
+// TODO: REMOVE THIS IF ALL IS WORKING VIA /functions/content.php helper functions.
+
 abstract class Mai_Content {
 
 	/**
@@ -10,7 +12,7 @@ abstract class Mai_Content {
 	 *
 	 * @return string  HTML ready classes.
 	 */
-	function add_classes( $classes, $existing_classes = '' ) {
+	public static function add_classes( $classes, $existing_classes = '' ) {
 		if ( ! empty( $classes ) ) {
 			$space   = ! empty( $existing_classes ) ? ' ' : '';
 			$classes = is_array( $classes ) ? implode( ' ', $classes ) : $classes;
@@ -19,21 +21,21 @@ abstract class Mai_Content {
 		return $existing_classes;
 	}
 
-	function add_align_classes( $classes, $args ) {
+	public static function add_align_classes( $classes, $args ) {
 		/**
 		 * "align" takes precendence over "align_cols" and "align_text".
 		 * "align" forces the text to align along with the cols.
 		 */
-		if ( isset( $this->args['align'] ) && ! empty( $this->args['align'] ) ) {
-			$classes = $this->add_align_both_classes( $classes, $this->args['align'] );
+		if ( isset( $args['align'] ) && ! empty( $args['align'] ) ) {
+			$classes = self::add_align_only_classes( $classes, $args['align'] );
 		} else {
 			// Align columns.
-			if ( isset( $this->args['align_cols'] ) && ! empty( $this->args['align_cols'] ) ) {
-				$classes = $this->add_align_cols_classes( $classes, $this->args['align_cols'] );
+			if ( isset( $args['align_cols'] ) && ! empty( $args['align_cols'] ) ) {
+				$classes = self::add_align_cols_classes( $classes, $args['align_cols'] );
 			}
 			// Align columns.
-			if ( isset( $this->args['align_text'] ) && ! empty( $this->args['align_text'] ) ) {
-				$classes = $this->add_align_text_classes( $classes, $this->args['align_text'] );
+			if ( isset( $args['align_text'] ) && ! empty( $args['align_text'] ) ) {
+				$classes = self::add_align_text_classes( $classes, $args['align_text'] );
 			}
 		}
 		return $classes;
@@ -47,7 +49,7 @@ abstract class Mai_Content {
 	 *
 	 * @return  $string  HTML ready classes.
 	 */
-	function add_align_both_classes( $classes, $alignment ) {
+	public static function add_align_only_classes( $classes, $alignment ) {
 		// Left.
 		if ( in_array( 'left', $alignment ) ) {
 			$classes .= ' start-xs text-xs-left';
@@ -83,7 +85,7 @@ abstract class Mai_Content {
 	 *
 	 * @return  $string  HTML ready classes.
 	 */
-	function add_align_cols_classes( $classes, $alignment ) {
+	public static function add_align_cols_classes( $classes, $alignment ) {
 		// Left.
 		if ( in_array( 'left', $alignment ) ) {
 			$classes .= ' start-xs';
@@ -119,7 +121,7 @@ abstract class Mai_Content {
 	 *
 	 * @return  $string  HTML ready classes.
 	 */
-	function add_align_text_classes( $classes, $alignment ) {
+	public static function add_align_text_classes( $classes, $alignment ) {
 		// Left.
 		if ( in_array( 'left', $alignment ) ) {
 			$classes .= ' start-xs';
@@ -133,6 +135,67 @@ abstract class Mai_Content {
 			$classes .= ' end-xs';
 		}
 		return $classes;
+	}
+
+	/**
+	 * Add background color HTML attributes to an element.
+	 *
+	 * @param   array   $attributes    The existing HTML attributes.
+	 * @param   string  $image_id      The image ID.
+	 * @param   string  $image_size    The registered image size.
+	 * @param   bool    $aspect_ratio  Whether to add aspect ratio class and attributes.
+	 *
+	 * @return  array   The modified attributes.
+	 */
+	public static function add_bg_image_attributes( $attributes, $image_id, $image_size, $aspect_ratio = true ) {
+
+		// Get all registered image sizes.
+		global $_wp_additional_image_sizes;
+
+		// Get the image.
+		$image = $image_id ? wp_get_attachment_image_src( $image_id, $image_size, true ) : false;
+
+		// If we have an image, add it as inline style.
+		if ( $image ) {
+
+			// Make sure style attribute is set. TODO: IS THIS WHERE BG IMAGE IS GETTING ADDED TWICE?
+			$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
+
+			// Add background image
+			$inline_style         = sprintf( 'background-image: url(%s);', $image[0] );
+			$attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
+
+			// Add image-bg class
+			$attributes['class'] .= ' image-bg';
+
+		} else {
+			// Add image-bg class
+			$attributes['class'] .= ' image-bg-none';
+		}
+
+		if ( $aspect_ratio ) {
+
+			/**
+			 * Add aspect ratio class, for JS to target.
+			 * We do this even without an image to maintain equal height elements.
+			 */
+			$attributes['class'] .= ' aspect-ratio';
+
+			// If image size is in the global (it should be)
+			if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
+				$registered_image = $_wp_additional_image_sizes[ $image_size ];
+				$attributes['data-aspect-width']  = $registered_image['width'];
+				$attributes['data-aspect-height'] = $registered_image['height'];
+			}
+			// Otherwise use the actual image dimensions
+			elseif ( $image ) {
+				$attributes['data-aspect-width']  = $image[1];
+				$attributes['data-aspect-height'] = $image[2];
+			}
+
+		}
+
+		return $attributes;
 	}
 
 	/**
@@ -200,11 +263,35 @@ abstract class Mai_Content {
 		return $class;
 	}
 
+	public static function get_overlay_classes( $overlay ) {
+		$classes = 'overlay';
+		switch ( $overlay ) {
+			case 'gradient':
+				$classes .= ' overlay-gradient';
+			break;
+			case 'light':
+				$classes .= ' overlay-light';
+			break;
+			case 'dark':
+				$classes .= ' overlay-dark';
+			break;
+		}
+		return $classes;
+	}
+
 	/**
 	 * If gutter is a valid Flexington size.
 	 */
-	function is_valid_gutter( $gutter ) {
+	public static function is_valid_gutter( $gutter ) {
 		return in_array( $gutter, array( 5, 10, 20, 30, 40, 50 ) );
+	}
+
+	/**
+	 * If overlay is a valid type.
+	 */
+	public static function is_valid_overlay( $overlay ) {
+		$valid_overlay_values = array( 'gradient', 'light', 'dark' );
+		return in_array( $overlay, $valid_overlay_values );
 	}
 
 }

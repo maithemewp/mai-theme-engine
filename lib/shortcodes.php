@@ -1684,6 +1684,130 @@ final class Mai_Shortcodes {
 		 */
 		if ( ! empty( $atts['align'] ) ) {
 
+			if ( empty( $atts['image_align'] ) ) {
+
+				$classes .= ' column';
+
+				// Left
+				if ( in_array( 'left', $atts['align'] ) ) {
+					$classes .= ' top-xs text-xs-left';
+				}
+
+				// Center
+				if ( in_array( 'center', $atts['align'] ) ) {
+					$classes .= ' middle-xs text-xs-center';
+				}
+
+				// Right
+				if ( in_array( 'right', $atts['align'] ) ) {
+					$classes .= ' bottom-xs text-xs-right';
+				}
+
+				// Top
+				if ( in_array( 'top', $atts['align'] ) ) {
+					$classes .= ' start-xs';
+				}
+
+				// Middle
+				if ( in_array( 'middle', $atts['align'] ) ) {
+					$classes .= ' center-xs';
+				}
+
+				// Bottom
+				if ( in_array( 'bottom', $atts['align'] ) ) {
+					$classes .= ' end-xs';
+				}
+
+			} else {
+
+				// Left
+				if ( in_array( 'left', $atts['align'] ) ) {
+					$classes .= ' start-xs text-xs-left';
+				}
+
+				// Center
+				if ( in_array( 'center', $atts['align'] ) ) {
+					$classes .= ' center-xs text-xs-center';
+				}
+
+				// Right
+				if ( in_array( 'right', $atts['align'] ) ) {
+					$classes .= ' end-xs text-xs-right';
+				}
+
+				// Top
+				if ( in_array( 'top', $atts['align'] ) ) {
+					$classes .= ' top-xs';
+				}
+
+				// Middle
+				if ( in_array( 'middle', $atts['align'] ) ) {
+					$classes .= ' middle-xs';
+				}
+
+				// Bottom
+				if ( in_array( 'bottom', $atts['align'] ) ) {
+					$classes .= ' bottom-xs';
+				}
+
+			}
+
+		} else {
+
+			// Align text
+			if ( ! empty( $atts['align_text'] ) ) {
+
+				// Column. Save as variable first cause php 5.4 broke, and not sure I care to support that but WTH.
+				$vertical_align = array_intersect( array( 'top', 'middle', 'bottom' ), $atts['align_text'] );
+				if ( ! empty( $vertical_align ) ) {
+					// $classes .= ' column';
+				}
+
+				// Left
+				if ( in_array( 'left', $atts['align_text']) ) {
+					$classes .= ' text-xs-left';
+				}
+
+				// Center
+				if ( in_array( 'center', $atts['align_text'] ) ) {
+					$classes .= ' text-xs-center';
+				}
+
+				// Right
+				if ( in_array( 'right', $atts['align_text'] ) ) {
+					$classes .= ' text-xs-right';
+				}
+
+				// Top
+				if ( in_array( 'top', $atts['align_text'] ) ) {
+					$classes .= ' start-xs';
+				}
+
+				// Middle
+				if ( in_array( 'middle', $atts['align_text'] ) ) {
+					$classes .= ' center-xs';
+				}
+
+				// Bottom
+				if ( in_array( 'bottom', $atts['align_text'] ) ) {
+					$classes .= ' end-xs';
+				}
+
+			}
+
+		}
+
+		return $classes;
+	}
+
+	function add_entry_align_classes_og( $classes, $atts, $context = 'grid' ) {
+
+		/**
+		 * "align" takes precendence over "align_cols" and "align_text".
+		 * "align" forces the text to align along with the cols.
+		 */
+		if ( ! empty( $atts['align'] ) ) {
+
 			$classes .= ' column';
 
 			// Left
@@ -2416,9 +2540,10 @@ final class Mai_Shortcodes {
 		$classes = array( 'flex-entry', 'entry' );
 
 		// If background image or image is not aligned.
-		if ( 'bg' === $atts['image_location'] || empty( $atts['image_align'] ) ) {
-			$classes[] = 'column';
-		} else {
+		// if ( 'bg' === $atts['image_location'] || empty( $atts['image_align'] ) ) {
+		// 	$classes[] = 'column';
+		// } else {
+		if ( $atts['image_align'] ) {
 			$classes[] = 'image-' . $atts['image_align'];
 		}
 
