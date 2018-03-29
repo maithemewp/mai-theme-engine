@@ -160,8 +160,6 @@ class Mai_Grid extends Mai_Content {
 
 	function render() {
 
-		$html = '';
-
 		// Get the content type.
 		$this->content_type = $this->get_content_type( $this->args['content'] );
 
@@ -177,24 +175,28 @@ class Mai_Grid extends Mai_Content {
 		);
 
 		// Start the main grid html.
-		$html .= sprintf( '<div %s>', genesis_attr( 'flex-grid', $attributes, $this->args ) );
+		$open = sprintf( '<div %s>', genesis_attr( 'flex-grid', $attributes, $this->args ) );
 
 		switch ( $this->content_type ) {
 			case 'post':
-				$html .= $this->get_posts( $atts, $original_atts );
+				$content = $this->get_posts( $atts, $original_atts );
 			break;
 			case 'term':
-				$html .= $this->get_terms( $atts, $original_atts );
+				$content = $this->get_terms( $atts, $original_atts );
 			break;
 			// TODO: $this->get_users( $atts );
 			default:
-				$html .= '';
+				$content = '';
 			break;
 		}
 
-		$html .= '</div>';
+		$close = '</div>';
 
-		return $html;
+		if ( $content ) {
+			return $open . $content . $close;
+		}
+
+		return '';
 
 	}
 
@@ -255,7 +257,7 @@ class Mai_Grid extends Mai_Content {
 			$attributes['class'] = $this->add_classes( sprintf( ' gutter-%s', $this->args['gutter'] ), $attributes['class'] );
 
 			// Add row align classes.
-			$attributes['class'] = $this->add_row_align_classes( $attributes['class'], $this->args );
+			$attributes['class'] = $this->add_align_classes( $attributes['class'] );
 
 		}
 
@@ -276,37 +278,76 @@ class Mai_Grid extends Mai_Content {
 		return sprintf( '<div %s>', genesis_attr( 'flex-row', $attributes, $this->args ) );
 	}
 
-	function get_row_wrap_close( $atts ) {
+	function get_row_wrap_close() {
 		return '</div>';
 	}
 
-	// TODO: Entry class stuff, and everything else!
+	function get_entry_wrap_open( $atts, $object, $has_image_bg ) {
 
-	/**
-	 * Add align classes to the row.
-	 *
-	 * @param   string  $classes  The existing classes.
-	 * @param   array   $args     The args from the shortcode or helper function.
-	 * @param   string  $context  The shortcode context (grid or columns).
-	 *
-	 * @return  string  The modified classes
-	 */
-	function add_row_align_classes( $classes, $args, $context = 'grid' ) {
-		/**
-		 * "align" takes precendence over "align_cols" and "align_text".
-		 * "align" forces the text to align along with the cols.
-		 */
-		if ( isset( $args['align'] ) && ! empty( $args['align'] ) ) {
-			$classes = $this->add_align_classes( $classes, $args['align'] );
-		} else {
-			// Align columns.
-			if ( $args['align_cols'] && ! empty( $args['align_cols'] ) ) {
-				$classes = $this->add_align_classes( $classes, $args['align_cols'] );
+		$attributes = array();
+
+		// Set the entry classes.
+		$attributes['class'] = $this->get_entry_classes();
+
+// TODO: Pickup here!!!
+// entry align has different stuff, columns and so on. WTH is happening?
+
+		// Add the align classes.
+		$attributes['class'] = $this->add_entry_align_classes( $attributes['class'] );
+
+		$light_content = false;
+
+		if ( $this->is_image_bg( $atts ) ) {
+			// Get the object ID.
+			$object_id = $this->get_object_id( $atts, $object );
+			if ( $object_id ) {
+				// Add background image with aspect ratio attributes.
+				$attributes = mai_add_background_image_attributes( $attributes, $this->get_image_id( $atts, $object_id ), $atts['image_size'] );
+				if ( $has_image_bg ) {
+					$light_content	 = true;
+					// Set dark overlay if we don't have one
+					$atts['overlay'] = ! $atts['overlay'] ? 'dark' : $atts['overlay'];
+				}
+			}
+			if ( $this->has_bg_link( $atts ) ) {
+				// Add has-bg-link class for CSS
+				$attributes['class'] .= ' has-bg-link';
 			}
 		}
-		return $classes;
+
+		if ( $this->has_overlay( $atts ) ) {
+
+			$attributes['class'] .= ' overlay';
+
+			// Only add overlay classes if we have a valid overlay type
+			switch ( $atts['overlay'] ) {
+				case 'gradient':
+					$attributes['class'] .= ' overlay-gradient';
+					// $light_content = true;
+				break;
+				case 'light':
+					$attributes['class'] .= ' overlay-light';
+				break;
+				case 'dark':
+					$attributes['class'] .= ' overlay-dark';
+					$light_content = true;
+				break;
+			}
+		}
+
+		// Shade class
+		$attributes['class'] .= $light_content ? ' light-content' : '';
+
+		/**
+		 * Main entry col wrap.
+		 * If we use genesis_attr( 'entry' ) then it resets the classes.
+		 */
+		return sprintf( '<div %s>', genesis_attr( 'flex-entry', $attributes, $atts ) );
 	}
 
+	function get_entry_wrap_close( $atts ) {
+		return '</div>';
+	}
 
 	function add_slider_data_attributes( $attributes ) {
 		$attributes['data-arrows']         = $this->args['arrows'] ? 'true' : 'false';
@@ -337,5 +378,56 @@ class Mai_Grid extends Mai_Content {
 		}
 		return $slidestoscroll;
 	}
+
+	function get_entry_classes() {
+
+		// We need classes to be an array so we can use them in get_post_class().
+		$classes = array( 'flex-entry', 'entry' );
+
+		// If background image or image is not aligned.
+		if ( 'bg' === $this->args['image_location'] || empty( $this->args['image_align'] ) ) {
+			$classes[] = 'column';
+		} else {
+			$classes[] = 'image-' . $this->args['image_align'];
+		}
+
+		// Add bottom margin classes.
+		if ( ! empty( $this->args['bottom'] ) ) {
+			$bottom = $this::get_bottom_class( $this->args );
+			if ( $bottom ) {
+				$classes[] = $bottom;
+			}
+		}
+
+		// Add any custom classes.
+		if ( $this->args['entry_class'] ) {
+			$classes = array_merge( $classes, explode( ' ', $this->args['entry_class'] ) );
+		}
+
+		// If not a slider.
+		if ( ! $this->args['slider'] ) {
+			// Add Flexington columns.
+			$classes = array_merge( $classes, explode( ' ', $this::get_classes_by_columns( $this->args['columns'] ) ) );
+		} else {
+			// Add slide class.
+			$classes[] = 'mai-slide';
+		}
+
+		// If dealing with a post object.
+		if ( 'post' === $this->args['content_type'] ) {
+
+			/**
+			 * Merge our new classes with the default WP generated classes.
+			 * Also removes potential duplicate flex-entry since we need it even if slider.
+			 */
+			$classes = array_map( 'sanitize_html_class', get_post_class( array_unique( $classes ), get_the_ID() ) );
+
+		}
+
+		// Turn array into a string of space separated classes
+		return implode( ' ', $classes );
+	}
+
+
 
 }
