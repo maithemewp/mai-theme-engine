@@ -125,7 +125,6 @@ final class Mai_Theme_Engine {
 
 		// Includes (Vendor).
 		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
 		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
 
 		// Run the updater.
