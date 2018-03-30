@@ -15,15 +15,11 @@ class Mai_Grid {
 
 	private $facetwp = false;
 
+	// All displayed items incase exclude_existing is true in any instance of grid.
 	public static $existing_post_ids = array();
 	public static $existing_term_ids = array();
 
 	public function __construct( $args ) {
-
-		// All displayed items incase exclude_existing is true in any instance of grid.
-
-		// $this::$existing_post_ids = $existing_post_ids;
-		// d( $this::$existing_post_ids );
 
 		// Save original args in a variable for filtering later.
 		$this->args = $this->original_args = $args;
@@ -180,8 +176,6 @@ class Mai_Grid {
 		switch ( $this->content_type ) {
 			case 'post':
 				$content = $this->get_posts();
-				// $posts   = new Mai_Grid_Posts( $this->args );
-				// $content = $posts->render();
 			break;
 			case 'term':
 				// $content = $this->get_terms( $atts, $original_args );
