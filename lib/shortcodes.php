@@ -952,16 +952,16 @@ final class Mai_Shortcodes {
 			// Add width classes based on layout
 			switch ( genesis_site_layout() ) {
 				case 'xs-content':
-					$atts['class'] .= ' width-xs';
+					$args['class'] .= ' width-xs';
 				break;
 				case 'sm-content':
-					$atts['class'] .= ' width-sm';
+					$args['class'] .= ' width-sm';
 				break;
 				case 'md-content':
-					$atts['class'] .= ' width-md';
+					$args['class'] .= ' width-md';
 				break;
 				case 'lg-content':
-					$atts['class'] .= ' width-lg';
+					$args['class'] .= ' width-lg';
 				break;
 			}
 		}
@@ -2767,9 +2767,9 @@ final class Mai_Shortcodes {
  *
  * @return object|Mai_Shortcodes The one true Mai_Shortcodes Instance.
  */
-function Mai_Shortcodes() {
-	return Mai_Shortcodes::instance();
-}
+// function Mai_Shortcodes() {
+// 	return Mai_Shortcodes::instance();
+// }
 
 // Get Mai_Shortcodes Running.
-Mai_Shortcodes();
+// Mai_Shortcodes();

@@ -5,6 +5,9 @@ add_shortcode( 'grid_new', function( $atts ) {
 	return $grid->render();
 });
 
+/**
+ * Build a grid of content.
+ */
 class Mai_Grid {
 
 	private $args;
@@ -15,11 +18,14 @@ class Mai_Grid {
 
 	private $facetwp = false;
 
+	// Whether facetwp_is_main_query filter has run.
+	public static $facetwp_filter = false;
+
 	// All displayed items incase exclude_existing is true in any instance of grid.
 	public static $existing_post_ids = array();
 	public static $existing_term_ids = array();
 
-	public function __construct( $args ) {
+	public function __construct( $args = array() ) {
 
 		// Save original args in a variable for filtering later.
 		$this->args = $this->original_args = $args;
@@ -164,14 +170,19 @@ class Mai_Grid {
 		// Get the content type.
 		$this->content_type = $this->get_content_type();
 
+	}
+
+	/**
+	 * Return the grid HTML.
+	 *
+	 * @return  string|HTML
+	 */
+	function render() {
+
 		// Bail if we don't have a valid content type.
 		if ( empty( $this->content_type ) ) {
 			return;
 		}
-
-	}
-
-	function render() {
 
 		switch ( $this->content_type ) {
 			case 'post':
@@ -190,22 +201,34 @@ class Mai_Grid {
 			return '';
 		}
 
+		// If this is a facetwp grid, filter the main query.
+		if ( $this->facetwp ) {
+			// If the filter hasn't run yet.
+			if ( ! $this::$facetwp_filter ) {
+				/**
+				 * Set it as the main query.
+				 * @link  https://facetwp.com/documentation/facetwp_is_main_query/
+				 */
+				add_filter( 'facetwp_is_main_query', array( $this, 'facetwp_is_main_query' ), 10, 2 );
+				// Set the filter flag so this filter doesn't run more than once.
+				$this::$facetwp_filter = true;
+			}
+		}
+
 		// Set attributes.
 		$attributes = array(
 			'class' => mai_add_classes( $this->args['class'], 'flex-grid' ),
 			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
 		);
 
-		$html = '';
-
-		// Start the main grid html.
-		$html .= sprintf( '<div %s>', genesis_attr( 'flex-grid', $attributes, $this->args ) );
-		$html .= $content;
-		$html .= '</div>';
-
-		return $html;
+		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-grid', $attributes, $this->args ), $content );
 	}
 
+	/**
+	 * Get the grid posts loop.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_posts() {
 
 		// Set up initial query for posts.
@@ -272,7 +295,7 @@ class Mai_Grid {
 			}
 		}
 
-		// Post ids.
+		// Post IDs.
 		if ( ! empty( $this->args['ids'] ) ) {
 			$query_args['post__in'] = $this->args['ids'];
 		}
@@ -359,6 +382,7 @@ class Mai_Grid {
 				)
 			);
 		}
+
 		// FacetWP support.
 		if ( isset( $this->args['facetwp'] ) && $this->args['facetwp'] ) {
 			$this->facetwp = $query_args['facetwp'] = true;
@@ -418,7 +442,7 @@ class Mai_Grid {
 						// Set url as a variable.
 						$url = $this->get_entry_link( $post );
 
-						// Image.
+						// Build the image html.
 						if ( $do_image && ! $this->is_bg_image() ) {
 							$image_html = $this->get_image_html( $image_id, $url, the_title_attribute( 'echo=0' ) );
 						}
@@ -509,14 +533,14 @@ class Mai_Grid {
 							$entry_content .= wpautop( wp_strip_all_tags( strip_shortcodes( get_the_excerpt() ) ) );
 						}
 
-						// Content
+						// Content.
 						if ( in_array( 'content', $this->args['show'] ) ) {
 							$entry_content .= wp_strip_all_tags( strip_shortcodes( get_the_content() ) );
 						}
 
 						// Limit content. Empty string is sanitized to zero.
 						if ( $this->args['content_limit'] > 0 ) {
-							// Reset the variable while trimming the content
+							// Reset the variable while trimming the content.
 							$entry_content = wpautop( wp_trim_words( $entry_content, $this->args['content_limit'], '&hellip;' ) );
 						}
 
@@ -527,7 +551,7 @@ class Mai_Grid {
 							$entry_content .= ob_get_clean();
 						}
 
-						// Image.
+						// Image. This runs at the end because the image was getting stripped content_limit was too low.
 						if ( 'before_content' === $this->args['image_location'] ) {
 							$entry_content = $image_html . $entry_content;
 						}
@@ -545,25 +569,25 @@ class Mai_Grid {
 							$entry_content .= $this->get_add_to_cart_link();
 						}
 
-						// Add entry content wrap if we have content
+						// Add entry content wrap if we have content.
 						if ( $entry_content ) {
 							$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content', array(), $this->args ), $entry_content );
 						}
 
-						// Meta
+						// Meta.
 						if ( in_array( 'meta', $this->args['show'] ) ) {
 							$entry_footer = mai_get_the_posts_meta( get_the_ID() );
 						}
 
-						// Add filter to the entry footer
+						// Add filter to the entry footer.
 						$entry_footer = apply_filters( 'mai_flex_entry_footer', $entry_footer, $this->args, $this->original_args );
 
-						// Entry footer
+						// Entry footer.
 						if ( $entry_footer ) {
 							$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer', array(), $this->args ), $entry_footer );
 						}
 
-						// Image
+						// Image.
 						if ( ( 'bg' == $this->args['image_location'] ) && $this->args['link'] ) {
 							$html .= mai_get_bg_image_link( $url, get_the_title() );
 						}
@@ -572,13 +596,14 @@ class Mai_Grid {
 
 				endwhile;
 
+				// Clear duplicate IDs.
 				$this::$existing_post_ids = array_unique( $this::$existing_post_ids );
 
 			$html .= $this->get_row_wrap_close();
 
 		}
 
-		// No Posts.
+		// No posts.
 		else {
 			/**
 			 * Filter content to display if no posts match the current query.
@@ -592,6 +617,230 @@ class Mai_Grid {
 		return $html;
 	}
 
+	/**
+	 * Get the grid terms loop.
+	 *
+	 * @return  string|HTML
+	 */
+	function get_terms() {
+
+		// Set up initial query for terms.
+		$query_args = array(
+			'hide_empty' => $this->args['hide_empty'],
+			'number'     => $this->get_number(),
+			'taxonomy'   => $this->args['content'],
+		);
+
+		// Exclude.
+		if ( ! empty( $this->args['exclude'] ) ) {
+			$query_args['exclude_tree'] = $this->args['exclude'];
+		}
+
+		// Terms IDs,
+		if ( ! empty( $this->args['ids'] ) ) {
+			$query_args['include'] = $this->args['ids'];
+		}
+
+		// Order.
+		if ( ! empty( $this->args['order'] ) ) {
+			$query_args['order'] = $this->args['order'];
+		}
+
+		// Orderby.
+		if ( ! empty( $this->args['order_by'] ) ) {
+			$query_args['orderby'] = $this->args['order_by'];
+		}
+
+		// Meta key (for ordering).
+		if ( ! empty( $this->args['meta_key'] ) ) {
+			$query_args['meta_key'] = $this->args['meta_key'];
+		}
+
+		// Meta value (for simple meta queries).
+		if ( ! empty( $this->args['meta_value'] ) ) {
+			$query_args['meta_value'] = $this->args['meta_value'];
+		}
+
+		// Offset. Empty string is sanitized to zero.
+		if ( $this->args['offset'] > 0 ) {
+			$query_args['offset'] = $this->args['offset'];
+		}
+
+		// If post parent attribute, set up parent. Can't check empty() cause may pass 0 or '0';
+		if ( '' !== $this->args['parent'] ) {
+			if ( ( is_category() || is_tag() || is_tax() ) && 'current' === $this->args['parent'] ) {
+				$query_args['parent'] = get_queried_object_id();
+			} else {
+				$query_args['parent'] = intval( $this->args['parent'] );
+			}
+		}
+
+		/**
+		 * Filter the arguments passed to WP_Query.
+		 *
+		 * @param   array  $query_args     Parsed arguments to pass to WP_Query.
+		 * @param   array  $args           The current grid args.
+		 * @param   array  $original_args  The original grid args.
+		 *
+		 * @return  array  The args.
+		 */
+		$query_args = apply_filters( 'mai_grid_args', $query_args, $this->args, $this->original_args );
+
+		// Get our query.
+		$terms = get_terms( $query_args );
+
+		// If terms and not an error.
+		if ( $terms && ! is_wp_error( $terms ) ) {
+
+			// Get it started.
+			$html = '';
+
+			$html .= $this->get_grid_title();
+
+			$html .= $this->get_row_wrap_open();
+
+				// Loop through terms.
+				foreach ( $terms as $term ) {
+
+					// Add this term to the existing term IDs.
+					$this::$existing_term_ids[] = $term->term_id;
+
+					$image_html = $entry_header = $entry_content = $entry_footer = $image_id = '';
+
+					// Get image vars.
+					$do_image = $has_bg_image = false;
+
+					// If showing image, set some helper variables.
+					if ( in_array( 'image', $this->args['show'] ) ) {
+						$image_id = $this->get_image_id( $term->term_id );
+						if ( $image_id ) {
+							$do_image = true;
+							if ( $this->is_bg_image() ) {
+								$has_bg_image = true;
+							}
+						}
+					}
+
+					// Opening wrap.
+					$html .= $this->get_entry_wrap_open( $term, $has_bg_image );
+
+						// Set url as a variable.
+						$url = $this->get_entry_link( $term );
+
+						// Build the image html.
+						if ( $do_image && ! $this->is_bg_image() ) {
+							$image_html = $this->get_image_html( $image_id, $url, esc_attr( $term->name ) );
+						}
+
+						// Image.
+						if ( 'before_entry' === $this->args['image_location'] ) {
+							$html .= $image_html;
+						}
+
+						// Build entry header.
+						if ( $this->is_entry_header_image() || in_array( 'title', $this->args['show'] ) ) {
+
+							// Image.
+							if ( 'before_title' === $this->args['image_location'] ) {
+								$entry_header .= $image_html;
+							}
+
+							// Title.
+							if ( in_array( 'title', $this->args['show'] ) ) {
+								if ( $this->args['link'] ) {
+									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
+								} else {
+									$title = $term->name;
+								}
+								$entry_header .= sprintf( '<%s %s>%s</%s>', $this->args['title_wrap'], genesis_attr( 'entry-title', array(), $this->args ), $title, $this->args['title_wrap'] );
+							}
+
+							// Image.
+							if ( 'after_title' === $this->args['image_location'] ) {
+								$entry_header .= $image_html;
+							}
+
+						}
+
+						// Add filter to the entry header.
+						$entry_header = apply_filters( 'mai_flex_entry_header', $entry_header, $this->args, $this->original_args );
+
+						// Add entry header wrap if we have content.
+						if ( $entry_header ) {
+							$html .= sprintf( '<header %s>%s</header>', genesis_attr( 'entry-header', array(), $this->args ), $entry_header );
+						}
+
+						// Excerpt/Content.
+						if ( in_array( 'excerpt', $this->args['show'] ) || in_array( 'content', $this->args['show'] ) ) {
+							$entry_content .= wpautop( wp_strip_all_tags( strip_shortcodes( term_description( $term->term_id, $term->taxonomy ) ) ) );
+						}
+
+						// Limit content. Empty string is sanitized to zero.
+						if ( $this->args['content_limit'] > 0 ) {
+							// Reset the variable while trimming the content.
+							$entry_content = wpautop( wp_trim_words( $entry_content, $this->args['content_limit'], '&hellip;' ) );
+						}
+
+						// Image. This runs at the end because the image was getting stripped content_limit was too low.
+						if ( 'before_content' === $this->args['image_location'] ) {
+							$entry_content = $image_html . $entry_content;
+						}
+
+						// Add filter to the entry content, before more link.
+						$entry_content = apply_filters( 'mai_flex_entry_content', $entry_content, $this->args, $this->original_args );
+
+						// More link
+						if ( $this->args['link'] && in_array( 'more_link', $this->args['show'] ) ) {
+							$entry_content .= mai_get_read_more_link( $term, $this->args['more_link_text'], 'term' );
+						}
+
+						// Add entry content wrap if we have content
+						if ( $entry_content ) {
+							$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content', array(), $this->args ), $entry_content );
+						}
+
+						// Add filter to the entry footer.
+						$entry_footer = apply_filters( 'mai_flex_entry_footer', $entry_footer, $this->args, $this->original_args );
+
+						// Entry footer.
+						if ( $entry_footer ) {
+							$html .= sprintf( '<footer %s>%s</footer>', genesis_attr( 'entry-footer', array(), $this->args ), $entry_footer );
+						}
+
+						// Image.
+						if ( ( 'bg' == $this->args['image_location'] ) && $this->args['link'] ) {
+							$html .= mai_get_bg_image_link( $url, $term->name );
+						}
+
+					$html .= $this->get_entry_wrap_close();
+
+				}
+
+				// Clear duplicate IDs.
+				$this::$existing_term_ids = array_unique( $this::$existing_term_ids );
+
+			$html .= $this->get_row_wrap_close();
+
+		}
+
+		// No terms.
+		else {
+			/**
+			 * Filter content to display if no posts match the current query.
+			 *
+			 * @param string $no_posts_message Content to display, returned via {@see wpautop()}.
+			 */
+			$html = apply_filters( 'mai_grid_no_results', wpautop( $this->args['no_content_message'] ) );
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Get the grid title.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_grid_title() {
 		// Bail if no title
 		if ( empty( $this->args['grid_title'] ) ) {
@@ -604,6 +853,8 @@ class Mai_Grid {
 
 	/**
 	 * Get the content type.
+	 *
+	 * @return  string|false
 	 */
 	function get_content_type() {
 		// If we already have a value.
@@ -626,6 +877,11 @@ class Mai_Grid {
 		return false;
 	}
 
+	/**
+	 * Get the grid row opening HTML.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_row_wrap_open() {
 
 		// Row attributes.
@@ -675,10 +931,20 @@ class Mai_Grid {
 		return sprintf( '<div %s>', genesis_attr( 'flex-row', $attributes, $this->args ) );
 	}
 
+	/**
+	 * Get the grid row closing HTML.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_row_wrap_close() {
 		return '</div>';
 	}
 
+	/**
+	 * Get the grid entry opening HTML.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_entry_wrap_open( $object, $has_bg_image ) {
 
 		$attributes = array();
@@ -739,10 +1005,22 @@ class Mai_Grid {
 		return sprintf( '<div %s>', genesis_attr( 'flex-entry', $attributes, $this->args ) );
 	}
 
+	/**
+	 * Get the grid entry closing HTML.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_entry_wrap_close() {
 		return '</div>';
 	}
 
+	/**
+	 * Add slider data attributes to the attributes array.
+	 *
+	 * @param   array  $attributes  The existing attributes array.
+	 *
+	 * @return  array  The modified $attributes.
+	 */
 	function add_slider_data_attributes( $attributes ) {
 		$attributes['data-arrows']         = $this->args['arrows'] ? 'true' : 'false';
 		$attributes['data-autoplay']       = $this->args['autoplay'] ? 'true' : 'false';
@@ -764,6 +1042,10 @@ class Mai_Grid {
 	 * First check slidestoscroll, then columns, then fallback to default.
 	 *
 	 * Can't use $this->args cause not set yet. This is for defaults.
+	 *
+	 * @param   array  $args  The initial grid args.
+	 *
+	 * @return  string|int  The amount of slides to scroll. Sanitized later.
 	 */
 	function get_slidestoscroll_default( $args ) {
 		$slidestoscroll = 3;
@@ -798,17 +1080,17 @@ class Mai_Grid {
 			}
 		}
 
-		// Add any custom classes
+		// Add any custom classes.
 		if ( $this->args['entry_class'] ) {
 			$classes = array_merge( $classes, explode( ' ', $this->args['entry_class'] ) );
 		}
 
-		// If not a slider
+		// If not a slider.
 		if ( ! $this->args['slider'] ) {
-			// Add Flexington columns
+			// Add Flexington columns.
 			$classes = array_merge( $classes, explode( ' ', mai_get_flex_entry_classes_by_columns( $this->args['columns'] ) ) );
 		} else {
-			// Add slide class
+			// Add slide class.
 			$classes[] = 'mai-slide';
 		}
 
@@ -819,8 +1101,7 @@ class Mai_Grid {
 			 * Merge our new classes with the default WP generated classes.
 			 * Also removes potential duplicate flex-entry since we need it even if slider.
 			 */
-			// $classes = get_post_class( $classes, get_the_ID() );
-
+			$classes = get_post_class( $classes, get_the_ID() );
 		}
 
 		// Remove duplicates and sanitize.
@@ -847,68 +1128,69 @@ class Mai_Grid {
 		 */
 		if ( ! empty( $this->args['align'] ) ) {
 
+			// If image is bg or not aligned.
 			if ( 'bg' === $this->args['image_location'] || empty( $this->args['image_align'] ) ) {
 
 				$classes .= ' column';
 
-				// Left
+				// Left.
 				if ( in_array( 'left', $this->args['align'] ) ) {
 					$classes .= ' top-xs text-xs-left';
 				}
 
-				// Center
+				// Center.
 				if ( in_array( 'center', $this->args['align'] ) ) {
 					$classes .= ' middle-xs text-xs-center';
 				}
 
-				// Right
+				// Right.
 				if ( in_array( 'right', $this->args['align'] ) ) {
 					$classes .= ' bottom-xs text-xs-right';
 				}
 
-				// Top
+				// Top.
 				if ( in_array( 'top', $this->args['align'] ) ) {
 					$classes .= ' start-xs';
 				}
 
-				// Middle
+				// Middle.
 				if ( in_array( 'middle', $this->args['align'] ) ) {
 					$classes .= ' center-xs';
 				}
 
-				// Bottom
+				// Bottom.
 				if ( in_array( 'bottom', $this->args['align'] ) ) {
 					$classes .= ' end-xs';
 				}
 
 			} else {
 
-				// Left
+				// Left.
 				if ( in_array( 'left', $this->args['align'] ) ) {
 					$classes .= ' start-xs text-xs-left';
 				}
 
-				// Center
+				// Center.
 				if ( in_array( 'center', $this->args['align'] ) ) {
 					$classes .= ' center-xs text-xs-center';
 				}
 
-				// Right
+				// Right.
 				if ( in_array( 'right', $this->args['align'] ) ) {
 					$classes .= ' end-xs text-xs-right';
 				}
 
-				// Top
+				// Top.
 				if ( in_array( 'top', $this->args['align'] ) ) {
 					$classes .= ' top-xs';
 				}
 
-				// Middle
+				// Middle.
 				if ( in_array( 'middle', $this->args['align'] ) ) {
 					$classes .= ' middle-xs';
 				}
 
-				// Bottom
+				// Bottom.
 				if ( in_array( 'bottom', $this->args['align'] ) ) {
 					$classes .= ' bottom-xs';
 				}
@@ -917,7 +1199,7 @@ class Mai_Grid {
 
 		} else {
 
-			// Align text
+			// Align text.
 			if ( ! empty( $this->args['align_text'] ) ) {
 
 				// Column. Save as variable first cause php 5.4 broke, and not sure I care to support that but WTH.
@@ -926,32 +1208,32 @@ class Mai_Grid {
 					$classes .= ' column';
 				}
 
-				// Left
+				// Left.
 				if ( in_array( 'left', $this->args['align_text']) ) {
 					$classes .= ' text-xs-left';
 				}
 
-				// Center
+				// Center.
 				if ( in_array( 'center', $this->args['align_text'] ) ) {
 					$classes .= ' text-xs-center';
 				}
 
-				// Right
+				// Right.
 				if ( in_array( 'right', $this->args['align_text'] ) ) {
 					$classes .= ' text-xs-right';
 				}
 
-				// Top
+				// Top.
 				if ( in_array( 'top', $this->args['align_text'] ) ) {
 					$classes .= ' start-xs';
 				}
 
-				// Middle
+				// Middle.
 				if ( in_array( 'middle', $this->args['align_text'] ) ) {
 					$classes .= ' center-xs';
 				}
 
-				// Bottom
+				// Bottom.
 				if ( in_array( 'bottom', $this->args['align_text'] ) ) {
 					$classes .= ' end-xs';
 				}
@@ -963,6 +1245,13 @@ class Mai_Grid {
 		return trim( $classes );
 	}
 
+	/**
+	 * Get the ID from an object.
+	 *
+	 * @param   object     The object to get the id from.
+	 *
+	 * @return  int|false  The object ID, or false if not a valid content type.
+	 */
 	function get_object_id( $object ) {
 		switch ( $this->content_type ) {
 			case 'post':
@@ -985,7 +1274,7 @@ class Mai_Grid {
 	 *
 	 * @param   object|int  $object_or_id  The object or object ID, either from $post, $term, or $user.
 	 *
-	 * @return  int         The image ID.
+	 * @return  int|string  The image ID or empty string.
 	 */
 	function get_entry_link( $object_or_id ) {
 		switch ( $this->content_type ) {
@@ -1020,7 +1309,7 @@ class Mai_Grid {
 	 * Get a type of content main image ID.
 	 * Needs to be used in the loop, so it can get the correct content type ID.
 	 *
-	 * @param   int   $object_id   The object ID, either $post_id, $term_id, or $user_id.
+	 * @param   int   $object_id   The object ID, either $post_id, $term_id, or $user_id. Can't be object if term, so safer to always use ID.
 	 *
 	 * @return  int  The image ID.
 	 */
@@ -1034,7 +1323,7 @@ class Mai_Grid {
 				$image_id = get_term_meta( $object_id, $key, true );
 			break;
 			case 'user':
-				$image_id = get_user_meta( $object_id, 'banner_id', true );
+				$image_id = get_user_meta( $object_id, 'banner_id', true ); // Not used yet.
 			break;
 			default:
 				$image_id = '';
@@ -1066,6 +1355,11 @@ class Mai_Grid {
 		return false;
 	}
 
+	/**
+	 * If image location is in the header.
+	 *
+	 * @return  bool
+	 */
 	function is_entry_header_image() {
 		switch ( $this->args['image_location'] ) {
 			case 'before_title':
@@ -1078,6 +1372,15 @@ class Mai_Grid {
 		return $return;
 	}
 
+	/**
+	 * Build the image HTML with location/align classes.
+	 *
+	 * @param   int     $image_id   The image ID.
+	 * @param   string  $url        The url to link to, if 'link' param is true.
+	 * @param   string  $att_title  The title to be used as the wrapping element attribute.
+	 *
+	 * @return  string}HTML  The image HTML.
+	 */
 	function get_image_html( $image_id, $url, $att_title ) {
 		$image      = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => 'wp-post-image' ) );
 		$attributes = array();
@@ -1108,14 +1411,14 @@ class Mai_Grid {
 		} else {
 			$image_wrap = 'span';
 		}
-		return sprintf( '<%s %s>%s</%s>', $image_wrap, genesis_attr( 'grid-entry-image-link', $attributes ), $image, $image_wrap );
+		return sprintf( '<%s %s>%s</%s>', $image_wrap, genesis_attr( 'flex-entry-image-link', $attributes, $this->args ), $image, $image_wrap );
 	}
 
 	/**
 	 * Get the number of items to show.
 	 * If all, return the appropriate value depending on content type.
 	 *
-	 * @return  int  The number of items
+	 * @return  int  The number of items.
 	 */
 	function get_number() {
 		if ( 'all' === $this->args['number'] ) {
@@ -1133,6 +1436,24 @@ class Mai_Grid {
 			$number = $this->args['number'];
 		}
 		return intval( $number );
+	}
+
+	/**
+	 * Allow FacetWP to work with custom templates and WP_Query.
+	 * by checking for a new 'facetwp' => true, parameter in the query.
+	 *
+	 * @uses    FacetWP
+	 *
+	 * @param   bool    $is_main_query  boolean  Whether FacetWP should use the current query
+	 * @param   object  $query          The WP_Query object
+	 *
+	 * @return  bool
+	 */
+	function facetwp_is_main_query( $is_main_query, $query ) {
+		if ( $this->facetwp && isset( $query->query_vars['facetwp'] ) ) {
+			$is_main_query = true;
+		}
+		return $is_main_query;
 	}
 
 }
