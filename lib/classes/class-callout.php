@@ -1,13 +1,15 @@
 <?php
 
 /**
- * Build a grid of content.
+ * Build a callout.
  *
  * @access  private
  */
 class Mai_Callout {
 
 	private $args;
+
+	private $content;
 
 	public function __construct( $args = array(), $content = null ) {
 
