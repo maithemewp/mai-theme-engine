@@ -12,7 +12,7 @@ add_filter( 'genesis_author_intro_text_output', 'do_shortcode' );
 // Term Archive Intro Text.
 add_filter( 'genesis_term_intro_text_output', 'do_shortcode' );
 
-
+// TODO: Register all shortcodes here and instantiate classes!
 
 /**
  * Filter the content to remove empty <p></p> tags and extray <br /> added by shortcodes.
