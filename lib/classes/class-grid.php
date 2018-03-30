@@ -1,12 +1,9 @@
 <?php
 
-add_shortcode( 'grid_new', function( $atts ) {
-	$grid = new Mai_Grid( $atts );
-	return $grid->render();
-});
-
 /**
  * Build a grid of content.
+ *
+ * @access  private
  */
 class Mai_Grid {
 
@@ -30,7 +27,7 @@ class Mai_Grid {
 		// Save original args in a variable for filtering later.
 		$this->args = $this->original_args = $args;
 
-		// Pull in shortcode attributes and set defaults.
+		// Parse defaults and args.
 		$this->args = shortcode_atts( array(
 			'align'                => '',  // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
 			'align_cols'           => '',  // "top, left" Comma separted
@@ -99,6 +96,7 @@ class Mai_Grid {
 			'speed'                => '3000',  // (slider only) Autoplay Speed in milliseconds
 		), $this->args, 'grid' );
 
+		// Sanitize args.
 		$this->args = array(
 			'align'                => mai_sanitize_keys( $this->args['align'] ),
 			'align_cols'           => mai_sanitize_keys( $this->args['align_cols'] ),
@@ -886,7 +884,7 @@ class Mai_Grid {
 
 		// Row attributes.
 		$attributes = array(
-			'class' => 'row',
+			'class' => mai_add_classes( $this->args['row_class'], 'row' ),
 		);
 
 		// FacetWP support.
@@ -924,9 +922,6 @@ class Mai_Grid {
 			$attributes['class'] .= ' woocommerce';
 		}
 
-		// Custom row classes.
-		$attributes['class'] = mai_add_classes( $this->args['row_class'], $attributes['class'] );
-
 		// Bring it home.
 		return sprintf( '<div %s>', genesis_attr( 'flex-row', $attributes, $this->args ) );
 	}
@@ -947,10 +942,10 @@ class Mai_Grid {
 	 */
 	function get_entry_wrap_open( $object, $has_bg_image ) {
 
-		$attributes = array();
-
 		// Set the entry classes.
-		$attributes['class'] = mai_add_classes( $this->get_entry_classes() );
+		$attributes = array(
+			'class' => mai_add_classes( $this->get_entry_classes() ),
+		);
 
 		// Add the align classes.
 		$attributes['class'] = mai_add_classes( $this->get_entry_align_classes(), $attributes['class'] );
@@ -966,7 +961,7 @@ class Mai_Grid {
 			if ( $object_id ) {
 
 				// Add background image with aspect ratio attributes.
-				$attributes = mai_add_bg_image_attributes( $attributes, $this->get_image_id( $object_id ), $this->args['image_size'] );
+				$attributes = mai_add_background_image_attributes( $attributes, $this->get_image_id( $object_id ), $this->args['image_size'] );
 
 				if ( $has_bg_image ) {
 
@@ -992,7 +987,7 @@ class Mai_Grid {
 			}
 
 			// Add overlay classes.
-			$attributes['class'] = mai_add_classes( mai_get_overlay_classes( $this->args['overlay'] ), $attributes['class'] );
+			$attributes['class'] = mai_add_overlay_classes( $attributes['class'], $this->args['overlay'] );
 		}
 
 		// Shade class
