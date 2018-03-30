@@ -82,20 +82,6 @@ function mai_is_banner_area_enabled() {
 				$enabled = false;
 			}
 		}
-
-		// elseif ( mai_is_content_archive() ) {
-		// 	$disabled = mai_get_archive_setting( 'hide_banner', false );
-		// 	if ( $disable_post_type ) {
-		// 		$enabled = false;
-		// 	}
-		// }
-		// elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
-		// 	$disabled = genesis_get_cpt_option( 'hide_banner' );
-		// 	if ( $disabled ) {
-		// 		$enabled = false;
-		// 	}
-		// }
-
 		// Post taxonomy archive.
 		elseif ( is_category() || is_tag() ) {
 			// Get 'disabled' taxonomies, typecasted as array because it may return empty string if none
@@ -461,90 +447,6 @@ function mai_get_flex_entry_classes_by_fraction( $fraction ) {
 	return $classes;
 }
 
-/**
- * Helper function to get a read more link for a post or term
- *
- * @param  int|WP_Post|WP_term?  $object  The object to get read more link for.
- * @param  string                $text    The "Read More" text.
- * @param  string                $type    The object type ('post' or 'term').
- *
- * @return HTML string for the link.
- */
-function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post' ) {
-
-	$link = $url = $screen_reader_html = $screen_reader_text = '';
-
-	$text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-theme-engine' );
-	$more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text, $object_or_id, $type ) );
-
-	switch ( $type ) {
-		case 'post':
-			$url                = get_permalink( $object_or_id );
-			$screen_reader_text = get_the_title( $object_or_id );
-		break;
-		case 'term':
-			$term               = is_object( $object_or_id ) ? $object_or_id : get_term( $object_or_id );
-			$url                = get_term_link( $term );
-			$screen_reader_text = $term->name;
-		break;
-	}
-
-	// Build the screen reader text html
-	if ( $screen_reader_text ) {
-		$screen_reader_html = sprintf( '<span class="screen-reader-text">%s</span>', esc_html( $screen_reader_text ) );
-	}
-
-	// If we have a url
-	if ( $url ) {
-		$attributes = array(
-			'class' => 'more-link',
-			'href'  => esc_url( $url ),
-		);
-		$link = sprintf( '<a %s>%s%s</a>', genesis_attr( 'more-link', $attributes ), $screen_reader_html, $more_link_text );
-	}
-
-	// Bail if no link
-	if ( empty( $link ) ) {
-		return;
-	}
-
-	return sprintf( '<p class="more-link-wrap">%s</p>', $link );
-}
-
-/**
- * Get a post's post_meta
- *
- * @param  int|object  $post  (Optional) the post to get the meta for.
- *
- * @return string|HTML The post meta
- */
-function mai_get_the_posts_meta( $post = '' ) {
-
-	if ( ! empty( $post ) ) {
-		$post = get_post( $post );
-	} else {
-		global $post;
-	}
-
-	$post_meta = $shortcodes = '';
-
-	$taxos = get_post_taxonomies($post);
-	if ( $taxos ) {
-
-		// Skip if Post Formats and Yoast prominent keyworks
-		$taxos = array_diff( $taxos, array( 'post_format', 'yst_prominent_words' ) );
-
-		$taxos = apply_filters( 'mai_post_meta_taxos', $taxos );
-
-		foreach ( $taxos as $tax ) {
-			$taxonomy = get_taxonomy($tax);
-			$shortcodes .= '[post_terms taxonomy="' . $tax . '" before="' . $taxonomy->labels->singular_name . ': "]';
-		}
-		$post_meta = sprintf( '<p class="entry-meta">%s</p>', do_shortcode( $shortcodes ) );
-	}
-	return $post_meta;
-}
-
 function mai_is_no_sidebar() {
 	$layout = genesis_site_layout();
 	$no_sidebars = array(
@@ -557,91 +459,6 @@ function mai_is_no_sidebar() {
 		return false;
 	}
 	return true;
-}
-
-/**
- * Add background color HTML attributes to an element.
- *
- * @param   array   $attributes  The existing HTML attributes.
- * @param   string  $color       The hex color code.
- *
- * @return  array   The modified attributes.
- */
-function mai_add_background_color_attributes( $attributes, $color ) {
-
-	// Bail if no color to add
-	if ( ! $color ) {
-		return $attributes;
-	}
-
-	// Make sure style attribute is set
-	$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
-
-	// Add background color
-	$inline_style        = sprintf( 'background-color: %s;', $color );
-	$attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
-
-	return $attributes;
-}
-
-/**
- * Add background color HTML attributes to an element.
- *
- * @param   array   $attributes    The existing HTML attributes.
- * @param   string  $image_id      The image ID.
- * @param   string  $image_size    The registered image size.
- * @param   bool    $aspect_ratio  Whether to add aspect ratio class and attributes.
- *
- * @return  array   The modified attributes.
- */
-function mai_add_background_image_attributes( $attributes, $image_id, $image_size, $aspect_ratio = true ) {
-	// Get all registered image sizes
-	global $_wp_additional_image_sizes;
-
-	// Get the image
-	$image = $image_id ? wp_get_attachment_image_src( $image_id, $image_size, true ) : false;
-
-	// If we have an image, add it as inline style
-	if ( $image ) {
-
-		// Make sure style attribute is set
-		$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
-
-		// Add background image
-		$inline_style         = sprintf( 'background-image: url(%s);', $image[0] );
-		$attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
-
-		// Add image-bg class
-		$attributes['class'] .= ' image-bg';
-
-	} else {
-		// Add image-bg class
-		$attributes['class'] .= ' image-bg-none';
-	}
-
-	if ( $aspect_ratio ) {
-
-		/**
-		 * Add aspect ratio class, for JS to target.
-		 * We do this even without an image to maintain equal height elements.
-		 */
-		$attributes['class'] .= ' aspect-ratio';
-
-		// If image size is in the global (it should be)
-		if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
-			$registered_image = $_wp_additional_image_sizes[ $image_size ];
-			$attributes['data-aspect-width']  = $registered_image['width'];
-			$attributes['data-aspect-height'] = $registered_image['height'];
-		}
-		// Otherwise use the actual image dimensions
-		elseif ( $image ) {
-			$attributes['data-aspect-width']  = $image[1];
-			$attributes['data-aspect-height'] = $image[2];
-		}
-
-	}
-
-	return $attributes;
 }
 
 function mai_is_admin_woo_shop_page() {
@@ -732,15 +549,4 @@ function mai_sections_has_title( $post_id ) {
 	}
 
 	return $has_title;
-}
-
-/**
- * Helper function to get processed (cleaned up) HTML content.
- *
- * @param   string|HTML  $content  The content to process.
- *
- * @return  string|HTML  The processed content.
- */
-function mai_get_processed_content( $content ) {
-	return Mai_Shortcodes()->get_processed_content( $content );
 }

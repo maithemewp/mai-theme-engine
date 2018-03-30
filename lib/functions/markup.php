@@ -1,137 +1,5 @@
 <?php
 
-
-/**
- * Add the archive featured image in the correct location.
- * No need to check if display image is checked, since that happens
- * in the genesis_option filters already.
- *
- * @return  void
- */
-function mai_do_archive_image( $location ) {
-
-	// Bail if no location
-	if ( ! $location ) {
-		return;
-	}
-
-	/**
-	 * Add the images in the correct location
-	 */
-
-	// Before Entry
-	if ( 'before_entry' === $location ) {
-		add_action( 'genesis_entry_header', 'genesis_do_post_image', 2 );
-	}
-	// Before Title
-	elseif ( 'before_title' === $location ) {
-		add_action( 'genesis_entry_header', 'genesis_do_post_image', 8 );
-	}
-	// After Title
-	elseif ( 'after_title' === $location ) {
-		add_action( 'genesis_entry_header', 'genesis_do_post_image', 10 );
-	}
-	// Before Content
-	elseif ( 'before_content' === $location ) {
-		add_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
-	}
-	// Background Image
-	elseif ( 'background' === $location ) {
-		// Add the entry image as a background image
-		add_action( 'genesis_before_entry', 'mai_do_entry_image_background' );
-		// Add the background image link
-		add_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
-		// Remove bg iamge link function so additional loops are not affected
-		add_action( 'mai_after_content_archive', function() {
-			remove_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
-		});
-	}
-
-	// Add the location as a class to the image link
-	add_filter( 'genesis_attr_entry-image-link', function( $attributes ) use ( $location ) {
-		// Replace underscore with hyphen
-		$location = str_replace( '_', '-', $location );
-		// Add the class
-		$attributes['class'] .= sprintf( ' entry-image-%s', $location );
-		return $attributes;
-	});
-
-}
-
-
-/**
- * Add the entry image as a background image.
- * Change the markup to wrap the entire entry in an href link.
- * Remove the title link.
- *
- * @return void.
- */
-function mai_do_entry_image_background() {
-
-	// Get the image ID
-	$image_id = get_post_thumbnail_id();
-
-	// Get image size
-	$image_size = mai_get_archive_setting( 'image_size', true, genesis_get_option( 'image_size' ) );
-
-	// Anonomous attributes function
-	$entry_attributes = function( $attributes ) use ( $image_id, $image_size ) {
-
-		// Make element a link whether we have an image or not
-		$attributes = mai_add_background_image_attributes( $attributes, $image_id, $image_size );
-		$attributes['href'] = get_permalink();
-
-		// If we have an image
-		if ( $image_id ) {
-			// Add classes and href link. TODO: Overlay options, or no overlay if no content?
-			$attributes['class'] .= ' overlay overlay-dark light-content';
-		}
-
-		// Add has-bg-link class for CSS
-		$attributes['class'] .= ' has-bg-link';
-
-		// Center the content even if we don't have an image
-		$attributes['class'] .= ' center-xs middle-xs text-xs-center';
-
-		return $attributes;
-	};
-
-	// Add entry attributes
-	add_filter( 'genesis_attr_entry', $entry_attributes );
-
-	// Remove the filters so any other loops aren't affected
-	add_action( 'genesis_after_entry', function() use ( $entry_attributes ) {
-		remove_filter( 'genesis_attr_entry', $entry_attributes );
-	});
-
-}
-
-/**
- * Output the bg image link HTML. Must be used in the loop (posts/cpts only!).
- *
- * This doesn't have a parameter because it's hooked directly,
- * via add_action( 'genesis_entry_header', 'mai_do_bg_image_link', 1 );
- *
- * @return void.
- */
-function mai_do_bg_image_link() {
-	echo mai_get_bg_image_link();
-}
-
-/**
- * Get the bg image link HTML.
- *
- * @param  string $url (optional) The URL to use for the HTML.
- * @param  string $title (optional) The title to use for the HTML.
- *
- * @return string|HTML
- */
-function mai_get_bg_image_link( $url = '', $title = '' ) {
-	$url   = $url ? esc_url( $url ) : get_permalink();
-	$title = $title ? esc_html( $title ) : get_the_title();
-	return sprintf( '<a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a>', $url, $title );
-}
-
 /**
  * Add classes to an existing string of classes.
  *
@@ -149,6 +17,14 @@ function mai_add_classes( $new, $existing = '' ) {
 	return $existing;
 }
 
+/**
+ * Add align classes.
+ *
+ * @param   string  $classes  The existing HTML classes.
+ * @param   array   $args     The array of alignment args. Either 'align', 'align_cols', and 'align_text'.
+ *
+ * @return  string  HTML ready classes.
+ */
 function mai_add_align_classes( $classes, $args ) {
 	/**
 	 * "align" takes precendence over "align_cols" and "align_text".
@@ -170,12 +46,12 @@ function mai_add_align_classes( $classes, $args ) {
 }
 
 /**
- * Add align classes.
+ * Add align classes if only 'align' param is used.
  *
- * @param   string  $classes  The existing HTML classes.
- * @param   array   $align    The array of alignment values.
+ * @param   string  $classes    The existing HTML classes.
+ * @param   array   $alignment  The array of alignment values.
  *
- * @return  $string  HTML ready classes.
+ * @return  string  HTML ready classes.
  */
 function mai_add_align_only_classes( $classes, $alignment ) {
 	// Left.
@@ -208,10 +84,10 @@ function mai_add_align_only_classes( $classes, $alignment ) {
 /**
  * Add align column classes.
  *
- * @param   string  $classes  The existing HTML classes.
- * @param   array   $align    The array of alignment values.
+ * @param   string  $classes    The existing HTML classes.
+ * @param   array   $alignment  The array of alignment values.
  *
- * @return  $string  HTML ready classes.
+ * @return  string  HTML ready classes.
  */
 function mai_add_align_cols_classes( $classes, $alignment ) {
 	// Left.
@@ -244,10 +120,10 @@ function mai_add_align_cols_classes( $classes, $alignment ) {
 /**
  * Add align text classes.
  *
- * @param   string  $classes  The existing HTML classes.
- * @param   array   $align    The array of alignment values.
+ * @param   string  $classes    The existing HTML classes.
+ * @param   array   $alignment  The array of alignment values.
  *
- * @return  $string  HTML ready classes.
+ * @return  string  HTML ready classes.
  */
 function mai_add_align_text_classes( $classes, $alignment ) {
 	// Left.
@@ -266,6 +142,159 @@ function mai_add_align_text_classes( $classes, $alignment ) {
 }
 
 /**
+ * Add text size classes.
+ *
+ * @param   string  $classes  The existing HTML classes.
+ * @param   array   $size     The size value.
+ *
+ * @return  string  HTML ready classes.
+ */
+function mai_add_text_size_classes( $classes, $size ) {
+	switch ( $size ) {
+		case 'xs':
+		case 'extra-small';
+			$classes .= ' text-xs';
+			break;
+		case 'sm':
+		case 'small';
+			$classes .= ' text-sm';
+			break;
+		case 'md':
+		case 'medium';
+			$classes .= ' text-md';
+			break;
+		case 'lg':
+		case 'large':
+			$classes .= ' text-lg';
+			break;
+		case 'xl':
+		case 'extra-large':
+			$classes .= ' text-xl';
+			break;
+	}
+	return $classes;
+}
+
+/**
+ * Add overlay classes.
+ *
+ * @param   string  $classes  The existing HTML classes.
+ * @param   array   $overlay  The overlay value.
+ *
+ * @return  string  HTML ready classes.
+ */
+function mai_add_overlay_classes( $classes, $overlay ) {
+	$classes .= 'overlay';
+	switch ( $overlay ) {
+		case 'gradient':
+			$classes .= ' overlay-gradient';
+			break;
+		case 'light':
+			$classes .= ' overlay-light';
+			break;
+		case 'dark':
+			$classes .= ' overlay-dark';
+			break;
+	}
+	return $classes ? ' ' . $classes : '';
+}
+
+/**
+ * Add height classes.
+ *
+ * @param   string  $classes  The existing HTML classes.
+ * @param   array   $height   The height value.
+ *
+ * @return  string  HTML ready classes.
+ */
+function mai_add_height_classes( $classes, $height ) {
+	switch ( $height ) {
+		case 'auto';
+			$classes .= ' height-auto';
+			break;
+		case 'xs':
+		case 'extra-small';
+			$classes .= ' height-xs';
+			break;
+		case 'sm':
+		case 'small';
+			$classes .= ' height-sm';
+			break;
+		case 'md':
+		case 'medium':
+			$classes .= ' height-md';
+			break;
+		case 'lg':
+		case 'large':
+			$classes .= ' height-lg';
+			break;
+		case 'xl':
+		case 'extra-large':
+			$classes .= ' height-xl';
+			break;
+	}
+	return $classes;
+}
+
+/**
+ * Add content_width classes.
+ *
+ * @param   string  $classes        The existing HTML classes.
+ * @param   array   $content_width  The content_width value.
+ *
+ * @return  string  HTML ready classes.
+ */
+function mai_add_content_width_classes( $classes, $content_width ) {
+	if ( ! empty( $content_width ) ) {
+		switch ( $content_width ) {
+			case 'auto':
+				$classes .= ' width-auto';
+				break;
+			case 'xs':
+			case 'extra-small':
+				$classes .= ' width-xs';
+				break;
+			case 'sm':
+			case 'small';
+				$classes .= ' width-sm';
+				break;
+			case 'md':
+			case 'medium':
+				$classes .= ' width-md';
+				break;
+			case 'lg':
+			case 'large':
+				$classes .= ' width-lg';
+				break;
+			case 'xl':
+			case 'extra-large':
+				$classes .= ' width-xl';
+				break;
+			case 'full':
+				$classes .= ' width-full';
+				break;
+		}
+	} else {
+		// Add width classes based on layout.
+		switch ( genesis_site_layout() ) {
+			case 'xs-content':
+				$classes .= ' width-xs';
+				break;
+			case 'sm-content':
+				$classes .= ' width-sm';
+				break;
+			case 'md-content':
+				$classes .= ' width-md';
+				break;
+			case 'lg-content':
+				$classes .= ' width-lg';
+				break;
+		}
+	}
+	return $classes;
+}
+
+/**
  * Add background color HTML attributes to an element.
  *
  * @param   array   $attributes    The existing HTML attributes.
@@ -275,7 +304,7 @@ function mai_add_align_text_classes( $classes, $alignment ) {
  *
  * @return  array   The modified attributes.
  */
-function mai_add_bg_image_attributes( $attributes, $image_id, $image_size, $aspect_ratio = true ) {
+function mai_add_background_image_attributes( $attributes, $image_id, $image_size, $aspect_ratio = true ) {
 
 	// Get all registered image sizes.
 	global $_wp_additional_image_sizes;
@@ -327,7 +356,34 @@ function mai_add_bg_image_attributes( $attributes, $image_id, $image_size, $aspe
 }
 
 /**
+ * Add background color HTML attributes to an element.
+ *
+ * @param   array   $attributes  The existing HTML attributes.
+ * @param   string  $color       The hex color code.
+ *
+ * @return  array   The modified attributes.
+ */
+function mai_add_background_color_attributes( $attributes, $color ) {
+
+	// Bail if no color to add
+	if ( ! $color ) {
+		return $attributes;
+	}
+
+	// Make sure style attribute is set
+	$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
+
+	// Add background color
+	$inline_style        = sprintf( 'background-color: %s;', $color );
+	$attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
+
+	return $attributes;
+}
+
+/**
  * Get the classes needed for an entry from number of columns.
+ *
+ * TODO: Convert to mai_add_* ??
  *
  * @param  string  $columns  number of columns to get classes for.
  *
@@ -356,7 +412,7 @@ function mai_get_classes_by_columns( $columns ) {
 	return $classes;
 }
 
-function mai_get_bottom_class( $bottom ) {
+function mai_get_bottom_classes( $bottom ) {
 	if ( ! $bottom ) {
 		return '';
 	}
@@ -391,22 +447,6 @@ function mai_get_bottom_class( $bottom ) {
 	return $class;
 }
 
-function mai_get_overlay_classes( $overlay ) {
-	$classes = 'overlay';
-	switch ( $overlay ) {
-		case 'gradient':
-			$classes .= ' overlay-gradient';
-		break;
-		case 'light':
-			$classes .= ' overlay-light';
-		break;
-		case 'dark':
-			$classes .= ' overlay-dark';
-		break;
-	}
-	return $classes;
-}
-
 /**
  * If gutter is a valid Flexington size.
  */
@@ -418,6 +458,12 @@ function mai_is_valid_gutter( $gutter ) {
  * If overlay is a valid type.
  */
 function mai_is_valid_overlay( $overlay ) {
-	$valid_overlay_values = array( 'gradient', 'light', 'dark' );
-	return in_array( $overlay, $valid_overlay_values );
+	return in_array( $overlay, array( 'gradient', 'light', 'dark' ) );
+}
+
+/**
+ * If inner is a valid type.
+ */
+function mai_is_valid_inner( $inner ) {
+	return ( ! empty( $content ) && in_array( $atts['inner'], array( 'light', 'dark' ) ) );
 }
