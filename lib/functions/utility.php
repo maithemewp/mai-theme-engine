@@ -568,7 +568,7 @@ function mai_sanitize_keys( $keys ) {
 	if ( ! is_array( $keys ) ) {
 		$keys = explode( ',', $keys );
 	}
-	return array_map( 'sanitize_key', array_map( 'trim', array_filter($keys) ) );
+	return array_map( 'sanitize_key', array_map( 'trim', array_filter( $keys ) ) );
 }
 
 /**
