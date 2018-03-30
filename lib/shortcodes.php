@@ -12,6 +12,8 @@ add_filter( 'genesis_author_intro_text_output', 'do_shortcode' );
 // Term Archive Intro Text.
 add_filter( 'genesis_term_intro_text_output', 'do_shortcode' );
 
+
+
 /**
  * Filter the content to remove empty <p></p> tags and extray <br /> added by shortcodes.
  *
