@@ -135,18 +135,18 @@ function mai_get_bg_image_link( $url = '', $title = '' ) {
 /**
  * Add classes to an existing string of classes.
  *
- * @param  string|array  $classes           The classes to add.
- * @param  string        $existing_classes  The existing classes.
+ * @param  string|array  $new       The classes to add.
+ * @param  string        $existing  The existing classes.
  *
  * @return string  HTML ready classes.
  */
-function mai_add_classes( $classes, $existing_classes = '' ) {
-	if ( ! empty( $classes ) ) {
-		$space   = ! empty( $existing_classes ) ? ' ' : '';
-		$classes = is_array( $classes ) ? implode( ' ', $classes ) : $classes;
-		return $existing_classes . $space . $classes;
+function mai_add_classes( $new, $existing = '' ) {
+	if ( ! empty( $new ) ) {
+		$space = ! empty( $existing ) ? ' ' : '';
+		$new   = is_array( $new ) ? implode( ' ', $new ) : $new;
+		return $existing . $space . $new;
 	}
-	return $existing_classes;
+	return $existing;
 }
 
 function mai_add_align_classes( $classes, $args ) {
@@ -155,15 +155,15 @@ function mai_add_align_classes( $classes, $args ) {
 	 * "align" forces the text to align along with the cols.
 	 */
 	if ( isset( $args['align'] ) && ! empty( $args['align'] ) ) {
-		$classes = self::add_align_only_classes( $classes, $args['align'] );
+		$classes = mai_add_align_only_classes( $classes, $args['align'] );
 	} else {
 		// Align columns.
 		if ( isset( $args['align_cols'] ) && ! empty( $args['align_cols'] ) ) {
-			$classes = self::add_align_cols_classes( $classes, $args['align_cols'] );
+			$classes = mai_add_align_cols_classes( $classes, $args['align_cols'] );
 		}
 		// Align columns.
 		if ( isset( $args['align_text'] ) && ! empty( $args['align_text'] ) ) {
-			$classes = self::add_align_text_classes( $classes, $args['align_text'] );
+			$classes = mai_add_align_text_classes( $classes, $args['align_text'] );
 		}
 	}
 	return $classes;

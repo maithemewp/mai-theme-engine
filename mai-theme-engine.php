@@ -319,7 +319,6 @@ final class Mai_Theme_Engine {
 			// Lib.
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'admin/*.php' ) as $file ) { include_once $file; }
-			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'classes/base/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'classes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'settings/customizer/*.php' ) as $file ) { include_once $file; }

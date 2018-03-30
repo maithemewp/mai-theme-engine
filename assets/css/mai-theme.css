@@ -3156,16 +3156,17 @@ p ~ .flex-grid {
 	max-width: 100%;
 }
 
-.flex-entry.column .entry-image-link {
+.flex-entry .entry-image-link {
 	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
 	display: block;
 	font-size: 0;
 	line-height: 1;
 }
 
-.flex-entry.column .entry-image-before-entry:not(.aligncenter):not(.alignleft):not(.alignright) {
+.flex-entry .entry-image-before-entry.alignnone {
 	/* offset the entry padding */
 	width: calc(100% + 48px);
+	max-width: calc(100% + 48px);
 	margin-top: -24px;
 	margin-left: -24px;
 	margin-right: -24px;
@@ -3183,8 +3184,8 @@ p ~ .flex-grid {
 	margin-bottom: 14px;
 }
 
-.flex-entry.column .entry-image,
-.flex-entry.column .wp-post-image {
+.flex-entry .entry-image-link .entry-image,
+.flex-entry .entry-image-link .wp-post-image {
 	width: 100%;
 	max-width: auto;
 }

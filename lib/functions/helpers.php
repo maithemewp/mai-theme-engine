@@ -382,7 +382,7 @@ function mai_do_flex_entry_classes_by_columns( $columns ) {
  * @return string  the classes
  */
 function mai_get_flex_entry_classes_by_columns( $columns ) {
-	switch ( (int)$columns ) {
+	switch ( (int) $columns ) {
 		case 1:
 			$classes = 'flex-entry col col-xs-12';
 		break;

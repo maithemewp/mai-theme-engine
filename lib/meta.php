@@ -32,8 +32,8 @@ function mai_post_date_defaults( $out, $pairs, $atts ) {
  *
  * @return  array  Modified $atts
  */
-add_filter( 'shortcode_atts_post_author_link', 'mai_post_author_link_defaults' );
-add_filter( 'shortcode_atts_post_author_posts_link', 'mai_post_author_link_defaults' );
+add_filter( 'shortcode_atts_post_author_link', 'mai_post_author_link_defaults', 10, 3 );
+add_filter( 'shortcode_atts_post_author_posts_link', 'mai_post_author_link_defaults', 10, 3 );
 function mai_post_author_link_defaults( $out, $pairs, $atts ) {
 	if ( ! isset( $atts['before'] ) ) {
 		$out['before'] = '//&nbsp;&nbsp;by&nbsp;';
