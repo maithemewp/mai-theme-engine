@@ -1760,7 +1760,7 @@ final class Mai_Shortcodes {
 				// Column. Save as variable first cause php 5.4 broke, and not sure I care to support that but WTH.
 				$vertical_align = array_intersect( array( 'top', 'middle', 'bottom' ), $atts['align_text'] );
 				if ( ! empty( $vertical_align ) ) {
-					// $classes .= ' column';
+					$classes .= ' column';
 				}
 
 				// Left

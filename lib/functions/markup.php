@@ -18,6 +18,8 @@ function mai_add_classes( $new, $existing = '' ) {
 }
 
 /**
+ * TODO: REMOVE!?!?!
+ *
  * Add align classes.
  *
  * @param   string  $classes  The existing HTML classes.
@@ -25,13 +27,21 @@ function mai_add_classes( $new, $existing = '' ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_classes( $classes, $args ) {
+function mai_add_align_classes_not_used( $classes, $args, $direction = 'row' ) {
 	/**
 	 * "align" takes precendence over "align_cols" and "align_text".
 	 * "align" forces the text to align along with the cols.
 	 */
 	if ( isset( $args['align'] ) && ! empty( $args['align'] ) ) {
-		$classes = mai_add_align_only_classes( $classes, $args['align'] );
+		// $classes = mai_add_align_only_classes( $classes, $args['align'] );
+		switch ( $direction ) {
+			case 'row':
+				$classes = mai_add_align_classes_row( $classes, $args['align'] );
+				break;
+			case 'column':
+				$classes = mai_add_align_classes_column( $classes, $args['align'] );
+				break;
+		}
 	} else {
 		// Align columns.
 		if ( isset( $args['align_cols'] ) && ! empty( $args['align_cols'] ) ) {
@@ -53,7 +63,7 @@ function mai_add_align_classes( $classes, $args ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_only_classes( $classes, $alignment ) {
+function mai_add_align_classes_row( $classes, $alignment ) {
 	// Left.
 	if ( in_array( 'left', $alignment ) ) {
 		$classes .= ' start-xs text-xs-left';
@@ -81,6 +91,35 @@ function mai_add_align_only_classes( $classes, $alignment ) {
 	return $classes;
 }
 
+function mai_add_align_classes_column( $classes, $alignment ) {
+	// Left.
+	if ( in_array( 'left', $alignment ) ) {
+		$classes .= ' top-xs text-xs-left';
+	}
+	// Center.
+	if ( in_array( 'center', $alignment ) ) {
+		$classes .= ' middle-xs text-xs-center';
+	}
+	// Right.
+	if ( in_array( 'right', $alignment ) ) {
+		$classes .= ' bottom-xs text-xs-right';
+	}
+	// Top.
+	if ( in_array( 'top', $alignment ) ) {
+		$classes .= ' start-xs';
+	}
+	// Middle.
+	if ( in_array( 'middle', $alignment ) ) {
+		$classes .= ' center-xs';
+	}
+	// Bottom.
+	if ( in_array( 'bottom', $alignment ) ) {
+		$classes .= ' end-xs';
+	}
+	return $classes;
+}
+
+
 /**
  * Add align column classes.
  *
@@ -89,7 +128,7 @@ function mai_add_align_only_classes( $classes, $alignment ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_cols_classes( $classes, $alignment ) {
+function mai_add_align_cols_classes_row( $classes, $alignment ) {
 	// Left.
 	if ( in_array( 'left', $alignment ) ) {
 		$classes .= ' start-xs';
@@ -118,6 +157,43 @@ function mai_add_align_cols_classes( $classes, $alignment ) {
 }
 
 /**
+ * Add align column classes if col is flex-direction column.
+ * These are reversed (left is top instead of start) since the direction is column not row.
+ *
+ * @param   string  $classes    The existing HTML classes.
+ * @param   array   $alignment  The array of alignment values.
+ *
+ * @return  string  HTML ready classes.
+ */
+function mai_add_align_cols_classes_column( $classes, $alignment ) {
+	// Left.
+	if ( in_array( 'left', $alignment ) ) {
+		$classes .= ' top-xs';
+	}
+	// Center.
+	if ( in_array( 'center', $alignment ) ) {
+		$classes .= ' middle-xs';
+	}
+	// Right.
+	if ( in_array( 'right', $alignment ) ) {
+		$classes .= ' bottom-xs';
+	}
+	// Top.
+	if ( in_array( 'top', $alignment ) ) {
+		$classes .= ' start-xs';
+	}
+	// Middle.
+	if ( in_array( 'middle', $alignment ) ) {
+		$classes .= ' center-xs';
+	}
+	// Bottom.
+	if ( in_array( 'bottom', $alignment ) ) {
+		$classes .= ' end-xs';
+	}
+	return $classes;
+}
+
+/**
  * Add align text classes.
  *
  * @param   string  $classes    The existing HTML classes.
@@ -136,6 +212,22 @@ function mai_add_align_text_classes( $classes, $alignment ) {
 	}
 	// Right.
 	if ( in_array( 'right', $alignment ) ) {
+		$classes .= ' end-xs';
+	}
+	return $classes;
+}
+
+function mai_add_align_text_classes_column( $classes, $alignment ) {
+	// Top.
+	if ( in_array( 'top', $alignment ) ) {
+		$classes .= ' start-xs';
+	}
+	// Middle.
+	if ( in_array( 'middle', $alignment ) ) {
+		$classes .= ' center-xs';
+	}
+	// Bottom.
+	if ( in_array( 'bottom', $alignment ) ) {
 		$classes .= ' end-xs';
 	}
 	return $classes;

@@ -913,7 +913,7 @@ class Mai_Grid {
 			$attributes['class'] = mai_add_classes( sprintf( 'gutter-%s', $this->args['gutter'] ), $attributes['class'] );
 
 			// Add row align classes.
-			$attributes['class'] = mai_add_align_classes( $attributes['class'], $this->args );
+			$attributes['class'] = mai_add_align_classes_row( $attributes['class'], $this->args );
 
 		}
 
@@ -1125,71 +1125,10 @@ class Mai_Grid {
 
 			// If image is bg or not aligned.
 			if ( 'bg' === $this->args['image_location'] || empty( $this->args['image_align'] ) ) {
-
-				$classes .= ' column';
-
-				// Left.
-				if ( in_array( 'left', $this->args['align'] ) ) {
-					$classes .= ' top-xs text-xs-left';
-				}
-
-				// Center.
-				if ( in_array( 'center', $this->args['align'] ) ) {
-					$classes .= ' middle-xs text-xs-center';
-				}
-
-				// Right.
-				if ( in_array( 'right', $this->args['align'] ) ) {
-					$classes .= ' bottom-xs text-xs-right';
-				}
-
-				// Top.
-				if ( in_array( 'top', $this->args['align'] ) ) {
-					$classes .= ' start-xs';
-				}
-
-				// Middle.
-				if ( in_array( 'middle', $this->args['align'] ) ) {
-					$classes .= ' center-xs';
-				}
-
-				// Bottom.
-				if ( in_array( 'bottom', $this->args['align'] ) ) {
-					$classes .= ' end-xs';
-				}
-
+				$classes = 'column';
+				$classes = mai_add_align_classes_column( $classes, $this->args['align'] );
 			} else {
-
-				// Left.
-				if ( in_array( 'left', $this->args['align'] ) ) {
-					$classes .= ' start-xs text-xs-left';
-				}
-
-				// Center.
-				if ( in_array( 'center', $this->args['align'] ) ) {
-					$classes .= ' center-xs text-xs-center';
-				}
-
-				// Right.
-				if ( in_array( 'right', $this->args['align'] ) ) {
-					$classes .= ' end-xs text-xs-right';
-				}
-
-				// Top.
-				if ( in_array( 'top', $this->args['align'] ) ) {
-					$classes .= ' top-xs';
-				}
-
-				// Middle.
-				if ( in_array( 'middle', $this->args['align'] ) ) {
-					$classes .= ' middle-xs';
-				}
-
-				// Bottom.
-				if ( in_array( 'bottom', $this->args['align'] ) ) {
-					$classes .= ' bottom-xs';
-				}
-
+				$classes = mai_add_align_classes_row( $classes, $this->args['align'] );
 			}
 
 		} else {
@@ -1200,44 +1139,16 @@ class Mai_Grid {
 				// Column. Save as variable first cause php 5.4 broke, and not sure I care to support that but WTH.
 				$vertical_align = array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
 				if ( ! empty( $vertical_align ) ) {
-					$classes .= ' column';
+					$classes = 'column';
+					$classes = mai_add_align_text_classes_column( $classes, $this->args['align_text'] );
 				}
-
-				// Left.
-				if ( in_array( 'left', $this->args['align_text']) ) {
-					$classes .= ' text-xs-left';
-				}
-
-				// Center.
-				if ( in_array( 'center', $this->args['align_text'] ) ) {
-					$classes .= ' text-xs-center';
-				}
-
-				// Right.
-				if ( in_array( 'right', $this->args['align_text'] ) ) {
-					$classes .= ' text-xs-right';
-				}
-
-				// Top.
-				if ( in_array( 'top', $this->args['align_text'] ) ) {
-					$classes .= ' start-xs';
-				}
-
-				// Middle.
-				if ( in_array( 'middle', $this->args['align_text'] ) ) {
-					$classes .= ' center-xs';
-				}
-
-				// Bottom.
-				if ( in_array( 'bottom', $this->args['align_text'] ) ) {
-					$classes .= ' end-xs';
-				}
+				$classes = mai_add_align_text_classes( $classes, $this->args['align_text'] );
 
 			}
 
 		}
 
-		return trim( $classes );
+		return $classes;
 	}
 
 	/**

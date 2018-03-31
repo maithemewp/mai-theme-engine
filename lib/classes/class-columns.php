@@ -61,7 +61,7 @@ class Mai_Columns {
 		$attributes['class'] = mai_add_classes( sprintf( 'gutter-%s', $this->args['gutter'] ), $attributes['class'] );
 
 		// Add row align classes.
-		$attributes['class'] = mai_add_align_classes( $attributes['class'], $this->args );
+		$attributes['class'] = mai_add_align_classes_row( $attributes['class'], $this->args );
 
 		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-row', $attributes, $this->args ), mai_get_processed_content( $this->content ) );
 	}
