@@ -189,6 +189,8 @@ class Mai_Col {
 
 	function get_col_classes() {
 
+		// TODO: Swap this all out for xs="12" sm="6" etc.
+
 		$classes = 'col';
 
 		$i = 0;
