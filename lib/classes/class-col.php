@@ -29,7 +29,11 @@ class Mai_Col {
 			'overlay'    => '', // 'dark', 'light', 'gradient', or none/false to force disable
 			'link'       => '',
 			'style'      => '', // HTML inline style
-			'width'      => 'col', // Comma separated for each breakpoint. Mobile-first. Accepts 'col', 'auto', and 1-12.
+			'xs'         => '12',
+			'sm'         => '',
+			'md'         => '',
+			'lg'         => '',
+			'xl'         => '',
 		), $atts, 'col' );
 
 		// Sanitize args.
@@ -45,7 +49,11 @@ class Mai_Col {
 			'overlay'    => sanitize_key( $this->args['overlay'] ),
 			'link'       => sanitize_text_field( $this->args['link'] ), // URL or post ID
 			'style'      => sanitize_text_field( $this->args['style'] ),
-			'width'      => mai_sanitize_keys( $this->args['width'] ),
+			'xs'         => sanitize_key( $this->args['xs'] ),
+			'sm'         => sanitize_key( $this->args['sm'] ),
+			'md'         => sanitize_key( $this->args['md'] ),
+			'lg'         => sanitize_key( $this->args['lg'] ),
+			'xl'         => sanitize_key( $this->args['xl'] ),
 		);
 
 	}
@@ -78,7 +86,7 @@ class Mai_Col {
 			$attributes['id'] = $this->args['id'];
 		}
 
-		// Classes.
+		// Custom classes.
 		if ( ! empty( $this->args['class'] ) ) {
 			$attributes['class'] .= ' ' . $this->args['class'];
 		}
@@ -166,11 +174,8 @@ class Mai_Col {
 		$attributes['class'] .= $light_content ? ' light-content' : '';
 
 		// Add bottom margin classes.
-		if ( ! empty( $this->args['bottom'] ) ) {
-			$bottom = $this->get_bottom_class( $this->args );
-			if ( $bottom ) {
-				$attributes['class'] .= ' ' . $bottom;
-			}
+		if ( mai_is_valid_bottom( $this->args['bottom'] ) ) {
+			$attributes['class'] = mai_add_class( mai_get_bottom_class( $this->args['bottom'] ), $attributes['class'] );
 		}
 
 		// Maybe add inline styles
@@ -187,39 +192,26 @@ class Mai_Col {
 		return sprintf( '<div %s>%s%s</div>', genesis_attr( 'flex-col', $attributes, $this->args ), do_shortcode( $content ), $bg_link );
 	}
 
-	function get_col_classes() {
-
-		// TODO: Swap this all out for xs="12" sm="6" etc.
-
-		$classes = 'col';
-
-		$i = 0;
-
-		foreach( $this->width as $width ) {
-			$classes = mai_add_classes( $this->add_col_class( $i, $width ), $classes );
-			$i++;
+	function get_classes() {
+		$classes = 'flex-entry col';
+		foreach ( $this->get_breaks() as $break ) {
+			if ( ! empty( $this->args[$break] ) ) {
+				$classes = mai_add_classes( $this->get_class( $break, $this->args[$break] ), $classes );
+			}
 		}
-
-	}
-	function add_col_class( $i, $width ) {
-		return sprintf( '%s%s', $this->get_col_prefix( $i ), $this->get_col_suffix( $width ) );
+		return $classes;
 	}
 
-	function get_col_prefix( $i ) {
-		$prefixes = $this->get_col_prefixes();
-		if ( isset( $prefixes[$i] ) ) {
-			return $prefixes[$i];
-		}
-		return '';
+	function get_breaks() {
+		return array( 'xs', 'sm', 'md', 'lg', 'xl' );
 	}
 
-	// Order is super important. This is here solely to grab them by the index.
-	function get_col_prefixes() {
-		return array( 'col-xs', 'col-sm', 'col-md', 'col-lg', 'col-xl' );
+	function get_class( $break, $size ) {
+		return sprintf( 'col-%s%s', $break, $this->get_suffix( $size ) );
 	}
 
-	function get_col_suffix( $width ) {
-		switch ( (string) $width ) {
+	function get_suffix( $size ) {
+		switch ( (string) $size ) {
 			case 'col':
 				$suffix = '';
 				break;
