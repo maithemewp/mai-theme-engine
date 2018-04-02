@@ -586,9 +586,6 @@ function mai_sanitize_one_zero( $value ) {
  * Sanitizes WYSIWYG fields like WordPress does for post_content fields.
  */
 function mai_sanitize_post_content( $content ) {
-	// $blah = apply_filters( 'content_save_pre', $content );
-	// ddd( $content );
-	// ddd( $blah );
 	return apply_filters( 'content_save_pre', $content );
 }
 
