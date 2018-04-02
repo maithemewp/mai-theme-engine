@@ -27,7 +27,7 @@ function mai_add_classes( $new, $existing = '' ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_classes_not_used( $classes, $args, $direction = 'row' ) {
+function mai_add_align_classes( $classes, $args, $direction = 'row' ) {
 	/**
 	 * "align" takes precendence over "align_cols" and "align_text".
 	 * "align" forces the text to align along with the cols.
@@ -57,6 +57,7 @@ function mai_add_align_classes_not_used( $classes, $args, $direction = 'row' ) {
 
 /**
  * Add align classes if only 'align' param is used.
+ * This is when the element is flex-direction row.
  *
  * @param   string  $classes    The existing HTML classes.
  * @param   array   $alignment  The array of alignment values.
@@ -91,6 +92,15 @@ function mai_add_align_classes_row( $classes, $alignment ) {
 	return $classes;
 }
 
+/**
+ * Add align classes if only 'align' param is used.
+ * This is when the element is flex-direction column.
+ *
+ * @param   string  $classes    The existing HTML classes.
+ * @param   array   $alignment  The array of alignment values.
+ *
+ * @return  string  HTML ready classes.
+ */
 function mai_add_align_classes_column( $classes, $alignment ) {
 	// Left.
 	if ( in_array( 'left', $alignment ) ) {
@@ -276,7 +286,7 @@ function mai_add_text_size_classes( $classes, $size ) {
  * @return  string  HTML ready classes.
  */
 function mai_add_overlay_classes( $classes, $overlay ) {
-	$classes .= 'overlay';
+	$classes .= ' overlay';
 	switch ( $overlay ) {
 		case 'gradient':
 			$classes .= ' overlay-gradient';
@@ -288,7 +298,7 @@ function mai_add_overlay_classes( $classes, $overlay ) {
 			$classes .= ' overlay-dark';
 			break;
 	}
-	return $classes ? ' ' . $classes : '';
+	return $classes;
 }
 
 /**
@@ -504,10 +514,7 @@ function mai_get_classes_by_columns( $columns ) {
 	return $classes;
 }
 
-function mai_get_bottom_classes( $bottom ) {
-	if ( ! $bottom ) {
-		return '';
-	}
+function mai_get_bottom_class( $bottom ) {
 	switch ( (int) $bottom ) {
 		case 0:
 			$class = 'bottom-xs-0';
@@ -543,7 +550,14 @@ function mai_get_bottom_classes( $bottom ) {
  * If gutter is a valid Flexington size.
  */
 function mai_is_valid_gutter( $gutter ) {
-	return in_array( $gutter, array( 5, 10, 20, 30, 40, 50 ) );
+	return in_array( $gutter, array( 5, 10, 20, 30, 40, 50 ), true );
+}
+
+/**
+ * If bottom is a valid Flexington size.
+ */
+function mai_is_valid_bottom( $bottom ) {
+	return in_array( $bottom, array( 0, 5, 20, 30, 40, 50 ), true );
 }
 
 /**
@@ -557,5 +571,5 @@ function mai_is_valid_overlay( $overlay ) {
  * If inner is a valid type.
  */
 function mai_is_valid_inner( $inner ) {
-	return ( ! empty( $content ) && in_array( $atts['inner'], array( 'light', 'dark' ) ) );
+	return in_array( $inner, array( 'light', 'dark' ) );
 }
