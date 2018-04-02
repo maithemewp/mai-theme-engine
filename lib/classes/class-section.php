@@ -185,6 +185,33 @@ class Mai_Section {
 	}
 
 	/**
+	 * Get closing HTML.
+	 *
+	 * @version  1.1.0
+	 *
+	 * @return   string|HTML
+	 */
+	function get_section_close() {
+		return sprintf( '</%s>', $this->args['wrapper'] );
+	}
+
+	/**
+	 * Get closing inside HTML.
+	 *
+	 * @version  1.1.0
+	 *
+	 * @return   string|HTML
+	 */
+	function get_section_inside() {
+		$html = '';
+		$html .= $this->get_section_wrap_open();
+		$html .= $this->get_section_inner_open();
+		$html .= $this->get_section_content();
+		$html .= $this->get_section_inner_close();
+		$html .= $this->get_section_wrap_close();
+	}
+
+	/**
 	 * Get wrap opening HTML.
 	 *
 	 * @version  1.1.0
@@ -316,17 +343,6 @@ class Mai_Section {
 			$html = '</div>';
 		}
 		return $html;
-	}
-
-	/**
-	 * Get closing HTML.
-	 *
-	 * @version  1.1.0
-	 *
-	 * @return   string|HTML
-	 */
-	function get_section_close( $args, $content ) {
-		return sprintf( '</%s>', $this->args['wrapper'] );
 	}
 
 }
