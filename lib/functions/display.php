@@ -17,13 +17,84 @@ function mai_get_processed_content( $content ) {
 	$content = trim( $content );
 	$content = wptexturize( $content );
 	$content = wpautop( $content );
-	$content = $this->content_filter( $content ); // after wpautop, before shortcodes are parsed.
+	$content = mai_content_filter_shortcodes( $content ); // after wpautop, before shortcodes are parsed.
 	$content = shortcode_unautop( $content );
 	$content = do_shortcode( $content );
 	$content = convert_smilies( $content );
 	$content = $wp_embed->autoembed( $content );
 	$content = $wp_embed->run_shortcode( $content );
 	return $content;
+}
+
+/**
+ * Filter the content to remove empty <p></p> tags and extray <br /> added by shortcodes.
+ *
+ * @link https://gist.github.com/bitfade/4555047
+ *
+ * @return  string|HTML  Fixed shortcode content.
+ */
+function mai_content_filter_shortcodes( $content ) {
+
+	$shortcodes = array(
+		'callout',
+		'section',
+		'columns',
+		'col',
+		'col_auto',
+		'col_one_twelfth',
+		'col_one_sixth',
+		'col_one_fourth',
+		'col_one_third',
+		'col_five_twelfths',
+		'col_one_half',
+		'col_seven_twelfths',
+		'col_two_thirds',
+		'col_three_fourths',
+		'col_five_sixths',
+		'col_eleven_twelfths',
+		'col_one_whole',
+		'grid',
+	);
+
+	// Array of custom shortcodes requiring the fix.
+	$shortcodes = join( '|', $shortcodes );
+
+	// Cleanup.
+	$content = strtr( $content, array ( '<p></p>' => '', '<p>[' => '[', ']</p>' => ']', ']<br />' => ']' ) );
+
+	// Opening tag.
+	$content = preg_replace( "/(<p>)?\[($shortcodes)(\s[^\]]+)?\](<\/p>|<br \/>)?/", "[$2$3]", $content );
+
+	// Closing tag.
+	$content = preg_replace( "/(<p>)?\[\/($shortcodes)](<\/p>|<br \/>)?/", "[/$2]", $content );
+
+	// Return fixed shortcodes.
+	return $content;
+
+}
+
+
+/**
+ * Display the featured image.
+ * Must be used in the loop.
+ *
+ * @param   string  $size  The image size to use.
+ *
+ * @return  void
+ */
+function mai_do_featured_image( $size = 'featured' ) {
+	echo '<div class="featured-image">';
+		echo genesis_get_image( array(
+			'format' => 'html',
+			'size'   => $size,
+			'attr'   => array( 'class' => 'wp-post-image' )
+			));
+	echo '</div>';
+
+	$caption = get_post( get_post_thumbnail_id() )->post_excerpt;
+	if ( $caption ) {
+		echo '<span class="image-caption">' . $caption . '</span>';
+	}
 }
 
 /**
