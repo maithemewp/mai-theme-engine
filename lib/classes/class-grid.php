@@ -887,11 +887,6 @@ class Mai_Grid {
 			'class' => mai_add_classes( $this->args['row_class'], 'row' ),
 		);
 
-		// FacetWP support.
-		if ( $this->args['facetwp'] ) {
-			$attributes['class'] = mai_add_classes( 'facetwp-template', $attributes['class'] );
-		}
-
 		// If slider.
 		if ( $this->args['slider'] ) {
 
@@ -913,13 +908,18 @@ class Mai_Grid {
 			$attributes['class'] = mai_add_classes( sprintf( 'gutter-%s', $this->args['gutter'] ), $attributes['class'] );
 
 			// Add row align classes.
-			$attributes['class'] = mai_add_align_classes_row( $attributes['class'], $this->args );
+			$attributes['class'] = mai_add_align_classes( $attributes['class'], $this->args, 'row' );
 
 		}
 
 		// WooCommerce.
 		if ( class_exists( 'WooCommerce' ) && in_array( 'product', $this->args['content'] ) ) {
 			$attributes['class'] .= ' woocommerce';
+		}
+
+		// FacetWP.
+		if ( $this->args['facetwp'] ) {
+			$attributes['class'] = mai_add_classes( 'facetwp-template', $attributes['class'] );
 		}
 
 		// Bring it home.
@@ -1068,7 +1068,7 @@ class Mai_Grid {
 		}
 
 		// Add bottom margin classes.
-		if ( ! empty( $this->args['bottom'] ) ) {
+		if ( mai_is_valid_bottom( $this->args['bottom'] ) ) {
 			$bottom = mai_get_bottom_class( $this->args['bottom'] );
 			if ( $bottom ) {
 				$classes[] = $bottom;
