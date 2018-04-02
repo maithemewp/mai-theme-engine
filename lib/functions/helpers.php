@@ -258,7 +258,9 @@ function mai_get_banner_id() {
  * @return string|HTML
  */
 function mai_get_section( $content, $args = array() ) {
-	return Mai_Shortcodes()->get_section( $args, $content );
+	// return Mai_Shortcodes()->get_section( $args, $content );
+	$section = new Mai_Section( $args, $content );
+	return $section->render();
 }
 
 /**
@@ -270,30 +272,9 @@ function mai_get_section( $content, $args = array() ) {
  * @return  string|HTML
  */
 function mai_get_grid( $args ) {
-	return Mai_Shortcodes()->get_grid( $args, $args );
-}
-
-/**
- * Display the featured image.
- * Must be used in the loop.
- *
- * @param   string  $size  The image size to use.
- *
- * @return  void
- */
-function mai_do_featured_image( $size = 'featured' ) {
-	echo '<div class="featured-image">';
-		echo genesis_get_image( array(
-			'format' => 'html',
-			'size'   => $size,
-			'attr'   => array( 'class' => 'wp-post-image' )
-			));
-	echo '</div>';
-
-	$caption = get_post( get_post_thumbnail_id() )->post_excerpt;
-	if ( $caption ) {
-		echo '<span class="image-caption">' . $caption . '</span>';
-	}
+	// return Mai_Shortcodes()->get_grid( $args, $args );
+	$section = new Mai_Grid( $args );
+	return $section->render();
 }
 
 /**
