@@ -34,7 +34,7 @@ class Mai_Col {
 			'md'         => '',
 			'lg'         => '',
 			'xl'         => '',
-		), $atts, 'col' );
+		), $this->args, 'col' );
 
 		// Sanitize args.
 		$this->args = array(
@@ -70,33 +70,25 @@ class Mai_Col {
 			return;
 		}
 
-		// Trim because testing returned string of nbsp.
-		$this->content = trim( $this->content );
-
+		return $this->get_col();
 	}
 
 	function get_col() {
 
 		$attributes = array(
-			'class' => $this->get_col_classes(),
+			'class' => $this->get_classes(),
+			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
 		);
 
-		// ID.
-		if ( ! empty( $this->args['id'] ) ) {
-			$attributes['id'] = $this->args['id'];
-		}
-
 		// Custom classes.
-		if ( ! empty( $this->args['class'] ) ) {
-			$attributes['class'] .= ' ' . $this->args['class'];
-		}
+		$attributes['class'] = mai_add_classes( $this->args['class'], $attributes['class'] );
 
 		// Align.
 		if ( ! empty( $this->args['align'] ) ) {
 			$attributes['class'] = mai_add_align_classes_column( $attributes['class'], $this->args['align'] );
 		} elseif ( ! empty( $this->args['align_text'] ) ) {
 			// Column. Save as variable first cause php 5.4 broke, and not sure I care to support that but WTH.
-			$vertical_align = array_intersect( array( 'top', 'middle', 'bottom' ), $atts['align_text'] );
+			$vertical_align = array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
 			if ( ! empty( $vertical_align ) ) {
 				$attributes['class'] .= ' column';
 				$attributes['class'] = mai_add_align_text_classes_column( $attributes['class'], $this->args['align_text'] );
@@ -119,10 +111,10 @@ class Mai_Col {
 
 		$light_content = false;
 
-		// Maybe add the inline background color
+		// Maybe add the inline background color.
 		if ( $this->args['bg'] ) {
 
-			// Add the background color
+			// Add the background color.
 			$attributes = mai_add_background_color_attributes( $attributes, $this->args['bg'] );
 
 			if ( mai_is_dark_color( $this->args['bg'] ) ) {
@@ -133,9 +125,9 @@ class Mai_Col {
 		// If we have an image ID
 		if ( $this->args['image'] ) {
 
-			// If we have content
-			if ( $content ) {
-				// Set dark overlay if we don't have one
+			// If we have content.
+			if ( $this->content ) {
+				// Set dark overlay if we don't have one.
 				$this->args['overlay'] = ! $this->args['overlay'] ? 'dark' : $this->args['overlay'];
 				$light_content   = true;
 			}
@@ -147,11 +139,12 @@ class Mai_Col {
 				$image_id = absint( $this->args['image'] );
 			}
 
-			// Add the aspect ratio attributes
+			// Add the aspect ratio attributes.
 			$attributes = mai_add_background_image_attributes( $attributes, $image_id, $this->args['image_size'] );
 		}
 
-		if ( $this->has_overlay( $this->args ) ) {
+		// If we have a valid overlay.
+		if ( mai_is_valid_overlay( $this->args['overlay'] ) ) {
 			$attributes['class'] .= ' overlay';
 			// Only add overlay classes if we have a valid overlay type
 			switch ( $this->args['overlay'] ) {
@@ -170,7 +163,7 @@ class Mai_Col {
 			}
 		}
 
-		// Add content shade class
+		// Add content shade class.
 		$attributes['class'] .= $light_content ? ' light-content' : '';
 
 		// Add bottom margin classes.
@@ -178,18 +171,17 @@ class Mai_Col {
 			$attributes['class'] = mai_add_class( mai_get_bottom_class( $this->args['bottom'] ), $attributes['class'] );
 		}
 
-		// Maybe add inline styles
-		if ( isset( $this->args['style'] ) && $this->args['style'] ) {
-			$attributes['style'] = $this->args['style'];
-		}
+		// Maybe add inline styles.
+		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
+
+		// Trim because testing returned string of nbsp.
+		$this->content = trim( $this->content );
 
 		/**
 		 * Return the content with col wrap.
 		 * With flex-col attr so devs can filter elsewhere.
-		 *
-		 * Only do_shortcode() on content because get_columns() wrap runs mai_get_processed_content() which cleans things up.
 		 */
-		return sprintf( '<div %s>%s%s</div>', genesis_attr( 'flex-col', $attributes, $this->args ), do_shortcode( $content ), $bg_link );
+		return sprintf( '<div %s>%s%s</div>', genesis_attr( 'flex-col', $attributes, $this->args ), mai_get_processed_content( $this->content ), $bg_link );
 	}
 
 	function get_classes() {

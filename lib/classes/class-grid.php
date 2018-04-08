@@ -182,12 +182,14 @@ class Mai_Grid {
 			return;
 		}
 
+		$content = '';
+
 		switch ( $this->content_type ) {
 			case 'post':
 				$content = $this->get_posts();
 			break;
 			case 'term':
-				// $content = $this->get_terms( $atts, $original_args );
+				$content = $this->get_terms();
 			break;
 			// TODO: $this->get_users( $atts );
 			default:
@@ -787,12 +789,12 @@ class Mai_Grid {
 						// Add filter to the entry content, before more link.
 						$entry_content = apply_filters( 'mai_flex_entry_content', $entry_content, $this->args, $this->original_args );
 
-						// More link
+						// More link.
 						if ( $this->args['link'] && in_array( 'more_link', $this->args['show'] ) ) {
 							$entry_content .= mai_get_read_more_link( $term, $this->args['more_link_text'], 'term' );
 						}
 
-						// Add entry content wrap if we have content
+						// Add entry content wrap if we have content.
 						if ( $entry_content ) {
 							$html .= sprintf( '<div %s>%s</div>', genesis_attr( 'entry-content', array(), $this->args ), $entry_content );
 						}

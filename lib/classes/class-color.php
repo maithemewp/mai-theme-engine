@@ -5,6 +5,8 @@
  * Info: http://mexitek.github.io/phpColors/
  * License: http://arlo.mit-license.org/
  * Version: 0.4.0
+ *
+ * @access  private
  */
 
 /**********************************************

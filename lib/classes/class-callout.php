@@ -52,11 +52,6 @@ class Mai_Callout {
 			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
 		);
 
-		// Maybe add inline styles.
-		if ( $this->args['style'] ) {
-			$attributes['style'] = $this->args['style'];
-		}
-
 		$dark_bg = false;
 
 		// Maybe add the inline background color.
@@ -73,6 +68,9 @@ class Mai_Callout {
 
 		// Add content shade class
 		$attributes['class'] .= $dark_bg ? ' light-content' : '';
+
+		// Maybe add inline styles.
+		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
 
 		return sprintf( '<div %s>%s</div>', genesis_attr( 'mai-callout', $attributes, $this->args ), mai_get_processed_content( $this->content ) );
 	}

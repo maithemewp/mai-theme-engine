@@ -45,7 +45,14 @@ function mai_add_align_classes( $classes, $args, $direction = 'row' ) {
 	} else {
 		// Align columns.
 		if ( isset( $args['align_cols'] ) && ! empty( $args['align_cols'] ) ) {
-			$classes = mai_add_align_cols_classes( $classes, $args['align_cols'] );
+			switch ( $direction ) {
+				case 'row':
+					$classes = mai_add_align_classes_row( $classes, $args['align_cols'] );
+					break;
+				case 'column':
+					$classes = mai_add_align_classes_column( $classes, $args['align_cols'] );
+					break;
+			}
 		}
 		// Align columns.
 		if ( isset( $args['align_text'] ) && ! empty( $args['align_text'] ) ) {
@@ -394,6 +401,25 @@ function mai_add_content_width_classes( $classes, $content_width ) {
 		}
 	}
 	return $classes;
+}
+
+/**
+ * May add inline styles to the attributes for an element.
+ *
+ * @param   array   $attributes  The existing HTML attributes.
+ * @param   string  $styles      The HTML ready inline styles intended for style="".
+ *
+ * @return  array   The modified attributes.
+ */
+function mai_add_inline_styles( $attributes, $styles ) {
+	if ( ! empty( $styles ) ) {
+		if ( isset( $attributes['style'] ) && ! empty( $attributes['style'] ) ) {
+			$attributes['style'] .= ' ' . $styles;
+		} else {
+			$attributes['style'] = $styles;
+		}
+	}
+	return $attributes;
 }
 
 /**

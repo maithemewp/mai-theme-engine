@@ -54,16 +54,21 @@ class Mai_Columns {
 
 		// Row attributes.
 		$attributes = array(
-			'class' => mai_add_classes( $this->args['class'], 'columns-shortcode' ),
+			'class' => mai_add_classes( $this->args['class'], 'columns-shortcode row' ),
+			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
 		);
 
 		// Add gutter.
 		$attributes['class'] = mai_add_classes( sprintf( 'gutter-%s', $this->args['gutter'] ), $attributes['class'] );
 
 		// Add row align classes.
-		$attributes['class'] = mai_add_align_classes_row( $attributes['class'], $this->args );
+		$attributes['class'] = mai_add_align_classes( $attributes['class'], $this->args, 'row' );
 
-		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-row', $attributes, $this->args ), mai_get_processed_content( $this->content ) );
+		// Maybe add inline styles.
+		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
+
+		// Only do_shortcode cause mai_get_processed_content() happens inside each col.
+		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-row', $attributes, $this->args ), do_shortcode( $this->content ) );
 	}
 
 }
