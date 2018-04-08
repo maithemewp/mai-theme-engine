@@ -995,6 +995,8 @@ class Mai_Grid {
 		// Shade class
 		$attributes['class'] .= $light_content ? ' light-content' : '';
 
+		// TODO: WHY IS OVERLAY SO MESSED UP!?!?! CSS FOR DISPLAY WHEN IMAGE IS BG
+
 		/**
 		 * Main entry col wrap.
 		 * If we use genesis_attr( 'entry' ) then it resets the classes.
