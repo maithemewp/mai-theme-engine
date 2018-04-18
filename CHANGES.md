@@ -1,5 +1,6 @@
 ### Changelog
 
+* Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 
