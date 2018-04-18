@@ -20,25 +20,25 @@
  */
 ( function( document, $, undefined ) {
 
-	var $body = $( 'body' );
+	var $body      = $( 'body' ),
+		$siteTitle = $( '.site-title a' ),
+		titleWidth = $siteTitle.outerWidth();
+
+	// Set inline width. This seems to help with jitters on first scroll.
+	if ( $(this).width() > 768 ) {
+		$siteTitle.css({ maxWidth: titleWidth });
+	}
+	// Load shrunk header on mobile.
+	else {
+		$siteTitle.css({ maxWidth: titleWidth * .7 });
+	}
 
 	// If doing a shrink header.
 	if ( $body.hasClass( 'shrink-header' ) ) {
 
 		var $siteHeader   = $( '.site-header' ),
-			$siteTitle    = $( '.site-title a' ),
-			titleWidth    = $siteTitle.outerWidth(),
 			shrinkFired   = false,
 			unshrinkFired = false;
-
-		// Load shrunk on mobile.
-		if ( $(this).width() <= 768 ) {
-			$siteTitle.css({ maxWidth: titleWidth * .7 });
-		}
-		// Set inline width. This seems to help with jitters on first scroll.
-		else {
-			$siteTitle.css({ maxWidth: titleWidth });
-		}
 
 		// On resize and/or scroll.
 		$( window ).on( 'resize scroll', function() {
@@ -78,6 +78,24 @@
 		$siteHeader.on( 'mai-unshrink-header', function() {
 			$(this).removeClass( 'shrink' );
 			$siteTitle.css({ maxWidth: titleWidth });
+		});
+
+	}
+	// Not shrinking header.
+	else {
+
+		// When resizing or scrolling, typically from changing device orientation.
+		$( window ).on( 'resize scroll', function() {
+
+			// Show normal size on desktop.
+			if ( $(this).width() > 768 ) {
+				$siteTitle.css({ maxWidth: titleWidth });
+			}
+			// Show shrunk on mobile.
+			else {
+				$siteTitle.css({ maxWidth: titleWidth * .7 });
+			}
+
 		});
 
 	}
