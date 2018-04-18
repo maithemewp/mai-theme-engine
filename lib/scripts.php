@@ -4,11 +4,11 @@
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_scripts' );
 function mai_enqueue_scripts() {
 
-	// Use minified files if script debug is not being used
+	// Use minified files if script debug is not being used.
 	$suffix = mai_get_suffix();
 
 	// Enqueue the main global js file
-	wp_enqueue_script( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-theme{$suffix}.js", array('jquery'), MAI_THEME_ENGINE_VERSION, true );
+	wp_enqueue_script( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-theme{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
 	wp_localize_script( 'mai-theme-engine', 'maiVars', array(
 		'mainMenu'    => __( 'Menu', 'genesis' ),
 		'subMenu'     => __( 'Menu', 'genesis' ),
@@ -26,7 +26,7 @@ function mai_enqueue_scripts() {
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_styles' );
 function mai_enqueue_styles() {
 
-	// Use minified files if script debug is not being used
+	// Use minified files if script debug is not being used.
 	$suffix = mai_get_suffix();
 
 	wp_enqueue_style( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/mai-theme{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
@@ -48,7 +48,7 @@ function mai_woocommerce_styles( $styles ) {
 		$src = get_stylesheet_directory_uri() . '/assets/css/' . $file_name . 'css';
 	} else {
 
-		// Use minified files if script debug is not being used
+		// Use minified files if script debug is not being used.
 		$suffix = mai_get_suffix();
 
 		// Use our plugin file

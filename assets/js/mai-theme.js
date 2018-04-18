@@ -4,7 +4,7 @@
 /**
  * Instantiate FluidVids on YouTube and Vimeo embeds
  */
-( function ( document, $, undefined ) {
+( function( document, $, undefined ) {
 
 	fluidvids.init({
 		selector: ['iframe', 'object'], // runs querySelectorAll()
@@ -18,29 +18,92 @@
  *
  * @version  1.0.0
  */
-( function ( document, $, undefined ) {
+( function( document, $, undefined ) {
 
-	var $body = $('body');
+	var $body      = $( 'body' ),
+		$siteTitle = $( '.site-title a' ),
+		titleWidth = $siteTitle.outerWidth();
 
-	// If doing a shrink header
-	if ( $body.hasClass('shrink-header') ) {
+	// Set inline width. This seems to help with jitters on first scroll.
+	if ( $(this).width() > 768 ) {
+		$siteTitle.css({ maxWidth: titleWidth });
+	}
+	// Load shrunk header on mobile.
+	else {
+		$siteTitle.css({ maxWidth: titleWidth * .7 });
+	}
 
-		// On scroll
-		$( window ).scroll(function () {
-			// Shrink the header on scroll.
-			if ( $( document ).scrollTop() > 1 ) {
-				$( '.site-header' ).addClass( 'shrink' );
+	// If doing a shrink header.
+	if ( $body.hasClass( 'shrink-header' ) ) {
+
+		var $siteHeader   = $( '.site-header' ),
+			shrinkFired   = false,
+			unshrinkFired = false;
+
+		// On resize and/or scroll.
+		$( window ).on( 'resize scroll', function() {
+
+			if ( $(this).width() > 768 ) {
+
+				// Shrink/Unshrink triggers.
+				if ( $(this).scrollTop() > 1 ) {
+					if ( false === shrinkFired ) {
+						$siteHeader.trigger( 'mai-shrink-header' );
+						shrinkFired   = true;
+						unshrinkFired = false;
+					}
+				} else {
+					if ( false === unshrinkFired ) {
+						$siteHeader.trigger( 'mai-unshrink-header' );
+						unshrinkFired = true;
+						shrinkFired   = false;
+					}
+				}
+
 			} else {
-				$( '.site-header' ).removeClass( 'shrink' );
+
+				// Force shrink on mobile.
+				$siteTitle.css({ maxWidth: titleWidth * .7 });
 			}
+
+		});
+
+		// Shrink.
+		$siteHeader.on( 'mai-shrink-header', function() {
+			$(this).addClass( 'shrink' );
+			$siteTitle.css({ maxWidth: titleWidth * .7 });
+		});
+
+		// Unshrink.
+		$siteHeader.on( 'mai-unshrink-header', function() {
+			$(this).removeClass( 'shrink' );
+			$siteTitle.css({ maxWidth: titleWidth });
+		});
+
+	}
+	// Not shrinking header.
+	else {
+
+		// When resizing or scrolling, typically from changing device orientation.
+		$( window ).on( 'resize scroll', function() {
+
+			// Show normal size on desktop.
+			if ( $(this).width() > 768 ) {
+				$siteTitle.css({ maxWidth: titleWidth });
+			}
+			// Show shrunk on mobile.
+			else {
+				$siteTitle.css({ maxWidth: titleWidth * .7 });
+			}
+
 		});
 
 	}
 
-	// On scroll add .scroll class
-	$( window ).scroll(function () {
+	// On scroll add .scroll class.
+	$( window ).scroll( function() {
 		// Shrink the header on scroll.
-		if ( $( document ).scrollTop() > 1 ) {
+		if ( $( window ).scrollTop() > 1 ) {
 			$body.addClass( 'scroll' );
 		} else {
 			$body.removeClass( 'scroll' );
@@ -56,7 +119,7 @@
  *
  * @version  1.0.0
  */
-( function ( document, $, undefined ) {
+( function( document, $, undefined ) {
 
 	// Aspect ratio elements
 	var $aspectElement = $( '.aspect-ratio' );
@@ -74,7 +137,7 @@
 			 * Setup resize after slider initialization
 			 * since additional elements are often created during init
 			 */
-			$slider.on( 'init', function(event, slick, direction){
+			$slider.on( 'init', function( event, slick, direction ) {
 				var $additionalAspectElements = $( '.aspect-ratio' );
 				_setupResize( $additionalAspectElements );
 			});
@@ -99,7 +162,7 @@
 				 * Wait till slider events before initial resize,
 				 * otherwise we were getting element width too early and calculations were wrong.
 				 */
-				$slider.on( 'init reInit breakpoint setPosition', function(event, slick){
+				$slider.on( 'init reInit breakpoint setPosition', function( event, slick ) {
 					_resizeToMatch( $element );
 				});
 
@@ -109,8 +172,8 @@
 
 			}
 
-			// Resize the window resize
-			$( window ).on( 'resize', function(){
+			// Resize the window resize.
+			$( window ).on( 'resize', function() {
 				_resizeToMatch( $element );
 			});
 
@@ -120,7 +183,7 @@
 
 	function _resizeToMatch( $element ) {
 
-		// Get the image size from attributes
+		// Get the image size from attributes.
 		var width  = $element.data( 'aspect-width' ),
 			height = $element.data( 'aspect-height' );
 
@@ -139,7 +202,7 @@
  *
  * @version  1.0.0
  */
-( function ( document, $, undefined ) {
+( function( document, $, undefined ) {
 
 	var $searchItems = $( '.genesis-nav-menu .search' );
 
@@ -231,7 +294,7 @@
 
 var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
-( function ( document, $, undefined ) {
+( function( document, $, undefined ) {
 	'use strict';
 
 	var maiMenu            = {},
@@ -546,7 +609,7 @@ function toggleAria( $this, attribute ) {
  * @author StudioPress
  * @license GPL-2.0+
  */
-( function ( document, $, undefined ) {
+( function( document, $, undefined ) {
 
 	$('.js-superfish').superfish({
 		'delay': 100,
