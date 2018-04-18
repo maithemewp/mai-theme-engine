@@ -2059,81 +2059,11 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	-webkit-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
-	-webkit-transform: scale(1);
-	-ms-transform: scale(1);
-	transform: scale(1);
 }
 
 .shrink-header .site-header.shrink .site-title a {
-	-webkit-transform: scale(.7);
-	-ms-transform: scale(.7);
-	transform: scale(.7);
 	margin-top: 4px;
 	margin-bottom: 4px;
-}
-
-.shrink-header .site-header.has-header-right:not(.has-header-left) .site-title a {
-	-webkit-transform-origin: center left;
-	-ms-transform-origin: center left;
-	transform-origin: center left;
-}
-
-.shrink-header .site-header.has-header-left:not(.has-header-right) .site-title a {
-	-webkit-transform-origin: center right;
-	-ms-transform-origin: center right;
-	transform-origin: center right;
-}
-
-.shrink-header .site-header.has-header-left.has-header-right .site-title a {
-	-webkit-transform-origin: center;
-	-ms-transform-origin: center;
-	transform-origin: center;
-}
-
-@media only screen and (max-width: 768px) {
-
-	/* stay shrunk on mobile */
-	.site-header .site-title a,
-	.site-header.has-header-right .site-title a,
-	.shrink-header .site-header.has-header-right .site-title a,
-	.shrink-header .site-header.has-header-right.shrink .site-title a,
-	.site-header.has-header-left .site-title a,
-	.shrink-header .site-header.has-header-left .site-title a,
-	.shrink-header .site-header.has-header-left.shrink .site-title a,
-	.site-header.has-header-left.has-header-right .site-title a,
-	.shrink-header .site-header.has-header-left.has-header-right .site-title a,
-	.shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
-		margin-top: 8px;
-		margin-bottom: 8px;
-		margin-left: 10px;
-		margin-right: 10px;
-	}
-
-	.site-header.has-header-right .site-title a,
-	.shrink-header .site-header.has-header-right .site-title a,
-	.shrink-header .site-header.has-header-right.shrink .site-title a,
-	.site-header.has-header-left.has-header-right .site-title a,
-	.shrink-header .site-header.has-header-left.has-header-right .site-title a,
-	.shrink-header .site-header.has-header-left.has-header-right.shrink .site-title a {
-		-webkit-transform: scale(.7);
-		-ms-transform: scale(.7);
-		transform: scale(.7);
-		-webkit-transform-origin: center left;
-		-ms-transform-origin: center left;
-		transform-origin: center left;
-	}
-
-	.site-header.has-header-left .site-title a,
-	.shrink-header .site-header.has-header-left .site-title a,
-	.shrink-header .site-header.has-header-left.shrink .site-title a {
-		-webkit-transform: scale(.7);
-		-ms-transform: scale(.7);
-		transform: scale(.7);
-		-webkit-transform-origin: center right;
-		-ms-transform-origin: center right;
-		transform-origin: center right;
-	}
-
 }
 
 /* ## Title Area
