@@ -1,6 +1,7 @@
 ### Changelog
 
 * Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
+* Changed: Removed editor stylesheet. We never used it properly, and Gutenberg is coming.
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: Landing page template logo not centered when 'genesis_header_right hook is used.
