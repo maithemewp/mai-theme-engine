@@ -104,7 +104,7 @@ class Mai_Grid {
 			'author_after'         => sanitize_key( $this->args['author_after'] ),
 			'author_before'        => sanitize_key( $this->args['author_before'] ),
 			'authors'              => $this->args['authors'], // Validated later
-			'bottom'               => ! empty( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
+			'bottom'               => is_numeric( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
 			'categories'           => array_filter( explode( ',', sanitize_text_field( $this->args['categories'] ) ) ),
 			'columns'              => absint( $this->args['columns'] ),
 			'content'              => array_filter( explode( ',', sanitize_text_field( $this->args['content'] ) ) ),
