@@ -262,6 +262,7 @@ hr {
 
 blockquote {
 	position: relative;
+	clear: both;
 	background-color: rgba(0, 0, 0, 0.03);
 	border-left: 32px solid rgba(0, 0, 0, 0.03);
 	color: rgba(0,0,0,0.6);
