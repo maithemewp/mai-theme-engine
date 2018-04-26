@@ -123,38 +123,31 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 				$meta = get_term_meta( $queried_object->term_id, $key, true );
 			}
 
-			// If no meta
+			// If no meta.
 			if ( ! $meta ) {
 
-				// Get hierarchical taxonomy term meta
-				$meta = mai_get_term_meta_value_in_hierarchy( $queried_object, $key, $check_for_archive_setting );
+				// If post or page taxonomy.
+				if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
+					$meta = genesis_get_option( $key );
+				}
 
-				// If no meta
-				if ( ! $meta ) {
+				// Custom taxonomy archive.
+				else {
 
-					// If post or page taxonomy.
-					if ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-						$meta = genesis_get_option( $key );
-					}
-
-					// Custom taxonomy archive.
-					else {
-
-						$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
-						if ( $tax ) {
-							/**
-							 * If the taxonomy is only registered to 1 post type.
-							 * Otherwise, how will we pick which post type archive to fall back to?
-							 * If more than one, we'll just have to use the fallback later.
-							 */
-							if ( 1 === count( (array) $tax->object_type ) ) {
-								$post_type = reset( $tax->object_type );
-								// If we have a post type and it supports genesis-cpt-archive-settings
-								// if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
-								if ( $post_type ) {
-									if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings', $post_type ) ) ) {
-										$meta = genesis_get_cpt_option( $key, $post_type );
-									}
+					$tax = isset( get_queried_object()->taxonomy ) ? get_taxonomy( get_queried_object()->taxonomy ) : false;
+					if ( $tax ) {
+						/**
+						 * If the taxonomy is only registered to 1 post type.
+						 * Otherwise, how will we pick which post type archive to fall back to?
+						 * If more than one, we'll just have to use the fallback later.
+						 */
+						if ( 1 === count( (array) $tax->object_type ) ) {
+							$post_type = reset( $tax->object_type );
+							// If we have a post type and it supports genesis-cpt-archive-settings
+							// if ( $post_type && genesis_has_post_type_archive_support( $post_type ) ) {
+							if ( $post_type ) {
+								if ( ! $check_for_archive_setting || ( $check_for_archive_setting && $enabled = genesis_get_cpt_option( 'enable_content_archive_settings', $post_type ) ) ) {
+									$meta = genesis_get_cpt_option( $key, $post_type );
 								}
 							}
 						}
@@ -193,162 +186,6 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 
 	// Return
 	return null;
-}
-
-/**
- * Get the metadata value for the term. This function walks up the term hierarchy,
- * searching each parent level to find a value for the given meta key. When it finds
- * one, it's returned.
- *
- * To perform an archive settings check, turn on the $check_for_archive_setting flag to
- * true.  This extra check does the following:
- *
- *   1.  Checks each level's  `enable_content_archive_settings` value.
- *   2.  If it's enabled, then that level's meta value is returned, regardless if
- *          it has a value or not.
- *
- * It works a level override, forcing that level to return it's value.
- *
- * @param  WP_Term  $term                       Term object
- * @param  string   $meta_key                   Meta key for the value you want to retrieve
- * @param  bool     $check_for_archive_setting  Flag to check if the `enable_content_archive_settings`
- *                                              is set.  When TRUE, check if this flag is set.
- *
- * @return mixed
- */
-function mai_get_term_meta_value_in_hierarchy(  WP_Term $term, $meta_key, $check_for_archive_setting = false ) {
-	$meta_keys = array( $meta_key );
-	if ( $check_for_archive_setting ) {
-		$meta_keys[] = 'enable_content_archive_settings';
-	}
-	$term_ancestors = mai_get_hierarchichal_term_metadata( $term, $meta_keys );
-	if ( false === $term_ancestors ) {
-		return;
-	}
-	// Loop through the objects until you find one that has a meta value.
-	foreach( (array) $term_ancestors as $term_ancestor ) {
-		// If checking content archive setting.
-		if ( $check_for_archive_setting ) {
-			// If setting is on.
-			if ( $term_ancestor->metadata2 ) {
-				return $term_ancestor->metadata1;
-			}
-		}
-		// Not checking for content archive, and we have a value
-		elseif ( $term_ancestor->metadata1 ) {
-			return $term_ancestor->metadata1;
-		}
-	}
-	// Whoops, didn't find one with a value for that meta key.
-	return;
-}
-
-/**
- * Get the specified metadata value for the term or from
- * one of it's parent terms.
- *
- * @param  WP_Term       $term      Term object
- * @param  string|array  $meta_key  The meta key(s) to retrieve.
- *
- * @return mixed|null
- */
-function mai_get_hierarchichal_term_metadata( WP_Term $term, $meta_key ) {
-	if ( ! is_taxonomy_hierarchical( $term->taxonomy ) ) {
-		return;
-	}
-	if ( ! mai_has_parent_term( $term ) ) {
-		return;
-	}
-	return mai_get_terms_ancestory_tree( $term->term_id, $meta_key );
-}
-
-/**
- * Get an array of term ancestors for the given term id, meaning
- * the SQL query starts at the given term id and then walks up
- * the parent tree as it stores the columns.
- *
- * The result is an array of stdClass objects that have the following:
- *      term_id   => int
- *      parent_id => int
- *      metadata1 => value of that meta key's column
- *      ..
- *      metadataN => value of the meta key #N
- *
- * @param  integer  $term_id
- * @param  array    $meta_keys  Array of meta key(s) to retrieve.
- *
- * @return array|bool
- */
-function mai_get_terms_ancestory_tree( $term_id, array $meta_keys ) {
-	global $wpdb;
-	// Build the SQL Query first.
-	$sql_query = mai_build_terms_ancestory_tree_sql_query( $meta_keys );
-	// Assemble the values, i.e. get them in the right order
-	// to insert into the SQL query.
-	$values = $meta_keys;
-	array_unshift( $values, $term_id );
-	// Prepare the values and then insert into the SQL query.
-	// We are swapping out the %d/%f/%s placeholders with their value.
-	$sql_query = $wpdb->prepare( $sql_query, $values );
-	// Run the query to get records from the database.
-	$records = $wpdb->get_results( $sql_query );
-	// Check if we got records back from the database. If yes,
-	// return the records.
-	if ( $records && is_array( $records ) ) {
-		return $records;
-	}
-	// Oh poo, we something when wrong.
-	return false;
-}
-
-/**
- * Build the SQL Query string.
- *
- * @param array $meta_keys Array of meta key(s) to retrieve.
- *
- * @return string
- */
-function mai_build_terms_ancestory_tree_sql_query( array $meta_keys  ) {
-	global $wpdb;
-	$number_of_meta_keys = count( $meta_keys );
-	$sql_query = "SELECT t.term_id, @parent := t.parent AS parent_id";
-	for( $suffix_number = 1; $suffix_number <= $number_of_meta_keys; $suffix_number++ ) {
-		$sql_query .= sprintf( ', tm%1$d.meta_value AS metadata%1$d', $suffix_number );
-	}
-	$sql_query .= "\n" .
-	"FROM (
-		SELECT *
-		FROM {$wpdb->term_taxonomy} AS tt
-			ORDER BY
-			CASE
-				WHEN tt.term_id > tt.parent THEN tt.term_id
-				ELSE tt.parent
-			END DESC
-	) AS t
-	JOIN (
-		SELECT @parent := %d
-	) AS tmp";
-	for( $suffix_number = 1; $suffix_number <= $number_of_meta_keys; $suffix_number++ ) {
-		$sql_query .= "\n" . sprintf(
-				'LEFT JOIN %1$s AS tm%2$d ON tm%2$d.term_id = @parent AND tm%2$d.meta_key = ',
-				$wpdb->termmeta,
-				$suffix_number
-			);
-		$sql_query .= '%s';
-	}
-	$sql_query .= "\n" . "WHERE t.term_id = @parent;";
-	return $sql_query;
-}
-
-/**
- * Checks if the term has a parent.
- *
- * @param  WP_Term  $term Term object.
- *
- * @return bool
- */
-function mai_has_parent_term( WP_Term $term ) {
-	return ( $term->parent > 0 );
 }
 
 /**
