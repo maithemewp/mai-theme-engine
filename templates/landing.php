@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Mai Theme "Landing" template.
- *
- * @vesion 1.1.0
- */
-
 // Add custom body class to the head
 add_filter( 'body_class', 'mai_landing_page_body_class' );
 function mai_landing_page_body_class( $classes ) {
@@ -19,9 +13,6 @@ add_filter( '_mai_header_left', '__return_false' );
 add_filter( '_mai_header_right', '__return_false' );
 add_filter( '_mai_header_after', '__return_false' );
 add_filter( '_mai_mobile_menu', '__return_false' );
-
-// This action may cause empty header-widget-area markup, so remove it.
-remove_all_actions( 'genesis_header_right' );
 
 // Remove navigation
 remove_action( 'genesis_after_header', 'genesis_do_nav' );
