@@ -1971,7 +1971,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 ---------------------------------------------------------------------------------------------------- */
 
 .site-header {
-	height: auto; /* resize back after closing fixed header menu */
+	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
 	background-color: #fff;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
