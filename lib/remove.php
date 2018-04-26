@@ -22,6 +22,9 @@ function mai_remove_front_page_post_title() {
 // Unregister header right widget area
 unregister_sidebar( 'header-right' );
 
+// This action may cause duplicate or empty header-widget-area markup, so remove it.
+remove_all_actions( 'genesis_header_right' );
+
 // Remove Blog & Archive Template From Genesis
 add_filter( 'theme_page_templates', 'mai_remove_page_templates' );
 function mai_remove_page_templates( $templates ) {
