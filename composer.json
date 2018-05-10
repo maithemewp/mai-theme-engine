@@ -1,0 +1,34 @@
+{
+    "name": "maithemewp/mai-theme-engine",
+    "description": "The required plugin to power Mai Theme child themes",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "MaiTheme.com",
+            "homepage": "https://maitheme.com"
+        }
+    ],
+    "config": {
+        "sort-order": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "composer/installers": "~1.0",
+        "webdevstudios/cmb2": "^2.3.0",
+        "yahnis-elsts/plugin-update-checker": "^4.2.0"
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor/webdevstudios/CMB2/": [
+                "webdevstudios/cmb2"
+            ]
+        }
+    },
+    "autoload": {
+        "files": [
+            "vendor/webdevstudios/CMB2/init.php",
+            "vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php"
+        ]
+    }
+}

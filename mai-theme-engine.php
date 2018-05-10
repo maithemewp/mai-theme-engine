@@ -124,9 +124,10 @@ final class Mai_Theme_Engine {
 	private function hooks() {
 
 		// Includes (Vendor).
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
 		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
+
+		// Include the Composer autoloader.
+		require_once MAI_THEME_ENGINE_PLUGIN_DIR . 'vendor/autoload.php';
 
 		// Run the updater.
 		add_action( 'admin_init', function() {
