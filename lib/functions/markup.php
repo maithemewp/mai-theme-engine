@@ -514,7 +514,13 @@ function mai_add_background_color_attributes( $attributes, $color ) {
 	return $attributes;
 }
 
-
+/**
+ * Get bottom class name from bottom value.
+ *
+ * @param   int     Bottom value.
+ *
+ * @return  string  The HTML class.
+ */
 function mai_get_bottom_class( $bottom ) {
 	switch ( (int) $bottom ) {
 		case 0:
