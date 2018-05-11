@@ -1076,6 +1076,17 @@ class Mai_Grid {
 		// We need classes to be an array so we can use them in get_post_class().
 		$classes = array( 'flex-entry', 'entry' );
 
+		// If not a slider.
+		if ( ! $this->args['slider'] ) {
+			// $classes = array_merge( $classes, explode( ' ', mai_get_flex_entry_classes_by_columns( $this->args['columns'] ) ) );
+			// Add Flexington columns.
+			$classes[] = 'col';
+			$classes   = array_merge( $classes, explode( ' ', mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ) ) ) );
+		} else {
+			// Add slide class.
+			$classes[] = 'mai-slide';
+		}
+
 		// If image is not aligned.
 		if ( $this->args['image_align'] ) {
 			$classes[] = 'image-' . $this->args['image_align'];
@@ -1092,17 +1103,6 @@ class Mai_Grid {
 		// Add any custom classes.
 		if ( $this->args['entry_class'] ) {
 			$classes = array_merge( $classes, explode( ' ', $this->args['entry_class'] ) );
-		}
-
-		// If not a slider.
-		if ( ! $this->args['slider'] ) {
-			// $classes = array_merge( $classes, explode( ' ', mai_get_flex_entry_classes_by_columns( $this->args['columns'] ) ) );
-			// Add Flexington columns.
-			$classes[] = 'col';
-			$classes   = array_merge( $classes, explode( ' ', mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ) ) ) );
-		} else {
-			// Add slide class.
-			$classes[] = 'mai-slide';
 		}
 
 		// If dealing with a post object.
