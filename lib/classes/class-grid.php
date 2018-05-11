@@ -37,7 +37,7 @@ class Mai_Grid {
 			'authors'              => '',  // Comma separated author/user IDs
 			'bottom'               => '',  // Bottom margin. 0, 5, 10, 20, 30, 40, 50, 60.
 			'categories'           => '',  // Comma separated category IDs
-			'columns'              => 3,
+			'columns'              => 3,   // "1", "2", "3", "4" or "6".
 			'content'              => 'post',  // post_type name (comma separated if multiple), or taxonomy name
 			'content_limit'        => '',  // Limit number of words
 			'content_type'         => '',
@@ -85,6 +85,11 @@ class Mai_Grid {
 			'title_wrap'           => 'h3',
 			'class'                => '',
 			'id'                   => '',
+			'xs'                   => '12',
+			'sm'                   => '',
+			'md'                   => '',
+			'lg'                   => '',
+			'xl'                   => '',
 			'slider'               => false,   // (slider only) Make the columns a slider
 			'arrows'               => true,    // (slider only) Whether to display arrows
 			'autoplay'             => false,   // (slider only) Whether to autoplay the slider
@@ -154,6 +159,11 @@ class Mai_Grid {
 			'title_wrap'           => sanitize_key( $this->args['title_wrap'] ),
 			'class'                => mai_sanitize_html_classes( $this->args['class'] ),
 			'id'                   => sanitize_html_class( $this->args['id'] ),
+			'xs'                   => sanitize_key( $this->args['xs'] ),
+			'sm'                   => sanitize_key( $this->args['sm'] ),
+			'md'                   => sanitize_key( $this->args['md'] ),
+			'lg'                   => sanitize_key( $this->args['lg'] ),
+			'xl'                   => sanitize_key( $this->args['xl'] ),
 			'slider'               => filter_var( $this->args['slider'], FILTER_VALIDATE_BOOLEAN ),
 			'arrows'               => filter_var( $this->args['arrows'], FILTER_VALIDATE_BOOLEAN ),
 			'autoplay'             => filter_var( $this->args['autoplay'], FILTER_VALIDATE_BOOLEAN ),
@@ -1086,8 +1096,10 @@ class Mai_Grid {
 
 		// If not a slider.
 		if ( ! $this->args['slider'] ) {
+			// $classes = array_merge( $classes, explode( ' ', mai_get_flex_entry_classes_by_columns( $this->args['columns'] ) ) );
 			// Add Flexington columns.
-			$classes = array_merge( $classes, explode( ' ', mai_get_flex_entry_classes_by_columns( $this->args['columns'] ) ) );
+			$classes[] = 'col';
+			$classes   = array_merge( $classes, explode( ' ', mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ) ) ) );
 		} else {
 			// Add slide class.
 			$classes[] = 'mai-slide';
@@ -1106,7 +1118,7 @@ class Mai_Grid {
 		// Remove duplicates and sanitize.
 		$classes = array_map( 'sanitize_html_class', array_unique( $classes ) );
 
-		// Turn array into a string of space separated classes
+		// Turn array into a string of space separated classes.
 		return implode( ' ', $classes );
 	}
 

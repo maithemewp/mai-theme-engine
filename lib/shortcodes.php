@@ -56,110 +56,71 @@ function mai_get_columns_shortcode( $atts, $content = null ) {
 }
 
 function mai_get_col_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, 'col' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( 'col', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_auto_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, 'auto' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( 'auto', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_one_twelfth_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '1' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '1', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_one_sixth_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '2' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '2', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_one_fourth_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '3' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '3', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_one_third_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '4' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '4', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_five_twelfths_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '5' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '5', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_one_half_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '6' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '6', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_seven_twelfths_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '7' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '7', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_two_thirds_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '8' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '8', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_three_fourths_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '9' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '9', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_five_sixths_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '10' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '10', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_eleven_twelfths_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '11' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '11', $atts, $content );
 	return $col->render();
 }
 
 function mai_get_col_one_whole_shortcode( $atts, $content = null ) {
-	$atts = mai_get_col_shortcode_default_sizes_atts( $atts, '12' );
-	$col  = new Mai_Col( $atts, $content );
+	$col = new Mai_Col( '12', $atts, $content );
 	return $col->render();
-}
-
-/**
- * Return the default break attributes by size.
- *
- * @access  private
- *
- * @return  array  The modified attributes.
- */
-function mai_get_col_shortcode_default_sizes_atts( $atts, $size ) {
-	$atts        = (array) $atts;
-	$breaks      = array( 'xs', 'sm', 'md', 'lg', 'xl' );
-	$default_set = false;
-	foreach ( $breaks as $break ) {
-		if ( ! isset( $atts[ $break ] ) ) {
-			if ( ! $default_set ) {
-				$atts[ $break ] = $size;
-				$default_set    = true;
-			}
-		} else {
-			// Each time a break is used we need to add the default after.
-			$default_set = false;
-		}
-	}
-	return $atts;
 }

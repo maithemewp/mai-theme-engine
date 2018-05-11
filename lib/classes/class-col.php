@@ -7,12 +7,15 @@
  */
 class Mai_Col {
 
+	private $size;
+
 	private $args;
 
 	private $content;
 
-	public function __construct( $args = array(), $content = null ) {
+	public function __construct( $size = '', $args = array(), $content = null ) {
 
+		$this->size    = $size;
 		$this->args    = $args;
 		$this->content = $content;
 
@@ -186,70 +189,7 @@ class Mai_Col {
 
 	function get_classes() {
 		$classes = 'flex-entry col';
-		foreach ( $this->get_breaks() as $break ) {
-			if ( ! empty( $this->args[$break] ) ) {
-				$classes = mai_add_classes( $this->get_class( $break, $this->args[$break] ), $classes );
-			}
-		}
-		return $classes;
-	}
-
-	function get_breaks() {
-		return array( 'xs', 'sm', 'md', 'lg', 'xl' );
-	}
-
-	function get_class( $break, $size ) {
-		return sprintf( 'col-%s%s', $break, $this->get_suffix( $size ) );
-	}
-
-	function get_suffix( $size ) {
-		switch ( (string) $size ) {
-			case 'col':
-				$suffix = '';
-				break;
-			case 'auto':
-				$suffix = '-auto';
-				break;
-			case '12':
-				$suffix = '-12';
-				break;
-			case '11':
-				$suffix = '-11';
-				break;
-			case '10':
-				$suffix = '-10';
-				break;
-			case '9':
-				$suffix = '-9';
-				break;
-			case '8':
-				$suffix = '-8';
-				break;
-			case '7':
-				$suffix = '-7';
-				break;
-			case '6':
-				$suffix = '-6';
-				break;
-			case '5':
-				$suffix = '-5';
-				break;
-			case '4':
-				$suffix = '-4';
-				break;
-			case '3':
-				$suffix = '-3';
-				break;
-			case '2':
-				$suffix = '-2';
-				break;
-			case '1':
-				$suffix = '-1';
-				break;
-			default:
-				$suffix = '';
-		}
-		return $suffix;
+		return mai_add_classes( mai_get_col_classes_by_breaks( $this->args, $this->size ), $classes );
 	}
 
 }

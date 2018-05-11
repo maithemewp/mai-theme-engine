@@ -515,17 +515,6 @@ function mai_add_background_color_attributes( $attributes, $color ) {
 }
 
 /**
- * Helper function to get the column count, with Woo fallback and filter.
- *
- * @return  int  The number of columns
- */
-function mai_get_columns() {
-	// Get the columns with fallback.
-	$columns = mai_get_archive_setting( 'columns', true, genesis_get_option( 'columns' ) );
-	return (int) apply_filters( 'mai_get_columns', $columns );
-}
-
-/**
  * Filter post_class to add flex classes by number of columns.
  *
  * @param   string  $columns  number of columns to get classes for
@@ -540,6 +529,136 @@ function mai_do_flex_entry_classes_by_columns( $columns ) {
 }
 
 /**
+ * Helper function to get the column count, with Woo fallback and filter.
+ *
+ * @return  int  The number of columns
+ */
+function mai_get_columns() {
+	// Get the columns with fallback.
+	$columns = mai_get_archive_setting( 'columns', true, genesis_get_option( 'columns' ) );
+	return (int) apply_filters( 'mai_get_columns', $columns );
+}
+
+function mai_get_col_classes_by_breaks( $breaks, $size ) {
+	$classes = '';
+	$breaks  = mai_col_parse_breaks( $breaks, $size );
+	foreach( $breaks as $break => $cols ) {
+		if ( ! empty( $cols ) ) {
+			$value = $cols;
+		} else {
+			$value = $size;
+		}
+		$class   = mai_get_col_class( $break, $value );
+		$classes = mai_add_classes( $class, $classes );
+	}
+	return $classes;
+}
+
+/**
+ * Parse breakpoints and their col size.
+ * Removes unused/unneeded breaks so breaks can be looped through and only apply what's necessary.
+ *
+ * Possible break values are 'col', 'auto', and 1 thru 12.
+ * The values are the amount of cols in the 12 column grid to fill.
+ * Example: To make 1/3 columns you use '4', cause 4 out of 12 is 1/3.
+ *
+ * $breaks = array(
+ *     'xs' => '12',
+ *     'sm' => '',
+ *     'md' => '',
+ *     'lg' => '',
+ *     'xl' => '',
+ * );
+ *
+ * @return  array  Associative array of breaks and size values.
+ */
+function mai_col_parse_breaks( $breaks, $size ) {
+
+	// Parse breaks.
+	$breaks = shortcode_atts( array(
+		'xs' => '12',
+		'sm' => '',
+		'md' => '',
+		'lg' => '',
+		'xl' => '',
+	), (array) $breaks );
+
+	$default_set = false;
+
+	foreach ( $breaks as $break => $cols ) {
+		if ( empty( $cols ) ) {
+			if ( ! $default_set ) {
+				$breaks[ $break ] = $size;
+				$default_set      = true;
+			} else {
+				unset( $breaks[ $break ] );
+			}
+		} else {
+			// Each time a break is used we need to add the default after.
+			$default_set = false;
+		}
+	}
+	return $breaks;
+}
+
+function mai_get_col_class( $break, $size ) {
+	return sprintf( 'col-%s%s', $break, mai_get_col_suffix( $size ) );
+}
+
+function mai_get_col_suffix( $size ) {
+	switch ( (string) $size ) {
+		case 'col':
+			$suffix = '';
+			break;
+		case 'auto':
+			$suffix = '-auto';
+			break;
+		case '12':
+			$suffix = '-12';
+			break;
+		case '11':
+			$suffix = '-11';
+			break;
+		case '10':
+			$suffix = '-10';
+			break;
+		case '9':
+			$suffix = '-9';
+			break;
+		case '8':
+			$suffix = '-8';
+			break;
+		case '7':
+			$suffix = '-7';
+			break;
+		case '6':
+			$suffix = '-6';
+			break;
+		case '5':
+			$suffix = '-5';
+			break;
+		case '4':
+			$suffix = '-4';
+			break;
+		case '3':
+			$suffix = '-3';
+			break;
+		case '2':
+			$suffix = '-2';
+			break;
+		case '1':
+			$suffix = '-1';
+			break;
+		default:
+			$suffix = '';
+	}
+	return $suffix;
+}
+
+/**
+ *
+ * TODO: Can we replace this with mai_get_col_classes_by_breaks() stuff?
+ *
  * Get the classes needed for an entry from number of columns.
  *
  * @param  string  $columns  number of columns to get classes for.
@@ -570,6 +689,8 @@ function mai_get_flex_entry_classes_by_columns( $columns ) {
 }
 
 /**
+ * TODO: Can we replace this with mai_get_col_classes_by_breaks() stuff?
+ *
  * Get the classes needed for an entry from fraction name.
  *
  * @param  string  $fraction  The fraction name.

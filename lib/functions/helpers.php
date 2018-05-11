@@ -278,6 +278,36 @@ function mai_get_grid( $args ) {
 }
 
 /**
+ * Get the col span out of 12 column grid.
+ * If we want to show posts in 3 columns the size is 4 because 4 out of 12 is 1/3.
+ *
+ * @param   int  The amount of visual columns to display.
+ *
+ * @return  int  The column span out of 12.
+ */
+function mai_get_size_by_columns( $columns ) {
+	switch ( (int) $columns ) {
+		case 1:
+			$size = 12;
+			break;
+		case 2:
+			$size = 6;
+			break;
+		case 3:
+			$size = 4;
+			break;
+		case 4:
+			$size = 3;
+			break;
+		case 6:
+			$size = 2;
+			break;
+		default:
+			$size = 12;
+	}
+}
+
+/**
  * Helper function to check if archive is a flex loop.
  * This doesn't check if viewing an actual archive, but this layout should not be an option if ! is_archive()
  *
