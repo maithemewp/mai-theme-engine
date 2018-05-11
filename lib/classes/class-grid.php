@@ -1081,7 +1081,8 @@ class Mai_Grid {
 			// $classes = array_merge( $classes, explode( ' ', mai_get_flex_entry_classes_by_columns( $this->args['columns'] ) ) );
 			// Add Flexington columns.
 			$classes[] = 'col';
-			$classes   = array_merge( $classes, explode( ' ', mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ) ) ) );
+			// $classes   = array_merge( $classes, explode( ' ', mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ) ) ) );
+			$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ), $return = 'array' ) );
 		} else {
 			// Add slide class.
 			$classes[] = 'mai-slide';

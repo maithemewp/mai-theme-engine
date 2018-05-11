@@ -539,8 +539,15 @@ function mai_get_columns() {
 	return (int) apply_filters( 'mai_get_columns', $columns );
 }
 
-function mai_get_col_classes_by_breaks( $breaks, $size ) {
-	$classes = '';
+/**
+ *
+ * Returns either string of HTML ready classes, or array for used on post_class filters.
+ *
+ * @return  string|array
+ */
+function mai_get_col_classes_by_breaks( $breaks, $size, $return = 'string' ) {
+	$string  = '';
+	$array   = array();
 	$breaks  = mai_col_parse_breaks( $breaks, $size );
 	foreach( $breaks as $break => $cols ) {
 		if ( ! empty( $cols ) ) {
@@ -549,9 +556,17 @@ function mai_get_col_classes_by_breaks( $breaks, $size ) {
 			$value = $size;
 		}
 		$class   = mai_get_col_class( $break, $value );
-		$classes = mai_add_classes( $class, $classes );
+		$string  = mai_add_classes( $class, $array );
+		$array[] = $class;
 	}
-	return $classes;
+	if ( 'string' === $return ) {
+		return $string;
+	}
+	if ( 'array' === $return ) {
+		return $array;
+	}
+	// This shouldn't happen.
+	return null;
 }
 
 /**
@@ -658,6 +673,7 @@ function mai_get_col_suffix( $size ) {
 /**
  *
  * TODO: Can we replace this with mai_get_col_classes_by_breaks() stuff?
+ * THIS IS STILL IN archive.php - Let's get rid of it somehow!
  *
  * Get the classes needed for an entry from number of columns.
  *
@@ -697,7 +713,7 @@ function mai_get_flex_entry_classes_by_columns( $columns ) {
  *
  * @return string  the classes
  */
-function mai_get_flex_entry_classes_by_fraction( $fraction ) {
+function mai_get_flex_entry_classes_by_fraction_og( $fraction ) {
 	switch ( $fraction ) {
 		case 'col':
 			$classes = 'flex-entry col col-xs-12 col-sm';
