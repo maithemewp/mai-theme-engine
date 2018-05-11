@@ -18,8 +18,6 @@ function mai_add_classes( $new, $existing = '' ) {
 }
 
 /**
- * TODO: REMOVE!?!?!
- *
  * Add align classes.
  *
  * @param   string  $classes  The existing HTML classes.
@@ -234,6 +232,14 @@ function mai_add_align_text_classes( $classes, $alignment ) {
 	return $classes;
 }
 
+/**
+ * Add align text classes when flex-direction is column.
+ *
+ * @param   string  $classes    The existing HTML classes.
+ * @param   array   $alignment  The array of alignment values.
+ *
+ * @return  string  HTML ready classes.
+ */
 function mai_add_align_text_classes_column( $classes, $alignment ) {
 	// Top.
 	if ( in_array( 'top', $alignment ) ) {
@@ -508,37 +514,6 @@ function mai_add_background_color_attributes( $attributes, $color ) {
 	return $attributes;
 }
 
-/**
- * Get the classes needed for an entry from number of columns.
- *
- * TODO: Convert to mai_add_* ??
- *
- * @param  string  $columns  number of columns to get classes for.
- *
- * @return string  the classes
- */
-function mai_get_classes_by_columns( $columns ) {
-	switch ( (int) $columns ) {
-		case 1:
-			$classes = 'flex-entry col col-xs-12';
-		break;
-		case 2:
-			$classes = 'flex-entry col col-xs-12 col-sm-6';
-		break;
-		case 3:
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
-		break;
-		case 4:
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-3';
-		break;
-		case 6:
-			$classes = 'flex-entry col col-xs-6 col-sm-4 col-md-2';
-		break;
-		default:
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
-	}
-	return $classes;
-}
 
 function mai_get_bottom_class( $bottom ) {
 	switch ( (int) $bottom ) {
