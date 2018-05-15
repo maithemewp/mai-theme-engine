@@ -25,12 +25,12 @@ function mai_do_banner_area_body_class( $classes ) {
 add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_banner_area' );
 function mai_do_banner_area() {
 
-	// Bail if banner area is not enabled or banner is hidden on this page
+	// Bail if banner area is not enabled or banner is hidden on this page.
 	if ( ! mai_is_banner_area_enabled() ) {
 		return;
 	}
 
-	// Remove archive titles/descriptions, we'll add them back later in the banner area
+	// Remove archive titles/descriptions, we'll add them back later in the banner area.
 	remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 	remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 	remove_action( 'genesis_before_loop', 'genesis_do_author_box_archive', 15 );
@@ -52,20 +52,19 @@ function mai_do_banner_area() {
 		'text_size'     => 'lg',
 	);
 
-	// Get the image ID
+	// Get the image ID.
 	$image_id = mai_get_banner_id();
 
-	// Maybe add image background
+	// Maybe add image background.
 	if ( $image_id ) {
 		$args['image'] = $image_id;
 	}
 
-	// Get the alignment setting
+	// Get the alignment setting.
 	$align_text = genesis_get_option( 'banner_align_text' );
 
-	// Maybe add the align_text class
+	// Maybe add the align_text class.
 	if ( $align_text ) {
-		// Get the form by type
 		switch ( $align_text ) {
 			case 'left':
 				$args['class'] .= ' text-xs-left';
@@ -79,7 +78,7 @@ function mai_do_banner_area() {
 		}
 	}
 
-	// Add a filter so devs can change these defaults
+	// Add a filter so devs can change these defaults.
 	$args = apply_filters( 'mai_banner_args', $args );
 
 	ob_start();
