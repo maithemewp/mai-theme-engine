@@ -3,14 +3,17 @@
 * Added: [section] 'image_size' parameter. Can also be filtered via shortcode_atts_section filter.
 * Added: [grid] 'xs', 'sm', 'md', 'lg', 'xl' parameters to set the span of columns out of 12. '6' would be 1/2, since 6 is 1/2 of 12, as an example.
 * Added: [grid] 'exclude_existing' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
-* Added [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
+* Added: [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
+* Added: WooCommerce star rating default styling.
 * Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
 * Changed: Removed editor stylesheet. We never used it properly, and Gutenberg is coming.
+* Changed: WooCommerce up-sells, cross-sells, and related product columns now have their own filters. Cross-sells now default to 2 columns so they fit better on the cart page.
+* Changed: Remove mai_html_cleanup_script(). Too hacky and unecessary.
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: Mobile menu toggle getting squished when logos are big.
 * Fixed: Landing page template logo not centered when 'genesis_header_right hook is used.
-* Fixed: Blockquote when inserted after an image aligned left or right.
+* Fixed: Blockquote weirdness when inserted after an image aligned left or right.
 * Fixed: Removed taxonomy hierarchy settings checks, too inefficient.
 
 #### 1.2.1 (2/15/18)
