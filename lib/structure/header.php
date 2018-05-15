@@ -5,13 +5,11 @@
  *
  * The custom logo is then added via the Customiser.
  *
- * @since  1.3.0
+ * @since   1.3.0
  *
- * @param   string  $title   All the mark up title.
- * @param   string  $inside  Mark up inside the title.
- * @param   string  $wrap    Mark up on the title.
+ * @param   string  $content  The existing site title content.
  *
- * @return  string|HTML  The title markup
+ * @return  string|HTML  The logo markup
  */
 add_filter( 'genesis_markup_site-title_content', 'mai_custom_logo' );
 function mai_custom_logo( $content ) {
