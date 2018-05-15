@@ -204,5 +204,4 @@ function mai_do_banner_content() {
 		add_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		add_action( 'genesis_entry_header', 'genesis_do_post_title' );
 	});
-
 }
