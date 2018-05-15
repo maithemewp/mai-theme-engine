@@ -515,20 +515,6 @@ function mai_add_background_color_attributes( $attributes, $color ) {
 }
 
 /**
- * Filter post_class to add flex classes by number of columns.
- *
- * @param   string  $columns  number of columns to get classes for
- *
- * @return  void    fires post_class filter which returns array of classes
- */
-function mai_do_flex_entry_classes_by_columns( $columns ) {
-	add_filter( 'post_class', function( $classes ) use ( $columns ) {
-		$classes[] = mai_get_flex_entry_classes_by_columns( $columns );
-		return $classes;
-	});
-}
-
-/**
  * Helper function to get the column count, with Woo fallback and filter.
  *
  * @return  int  The number of columns
