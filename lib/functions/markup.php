@@ -3,6 +3,8 @@
 /**
  * Add classes to an existing string of classes.
  *
+ * @since  1.3.0
+ *
  * @param  string|array  $new       The classes to add.
  * @param  string        $existing  The existing classes.
  *
@@ -19,6 +21,9 @@ function mai_add_classes( $new, $existing = '' ) {
 
 /**
  * Add align classes.
+ *
+ * @since   1.3.0
+ * @access  private
  *
  * @param   string  $classes  The existing HTML classes.
  * @param   array   $args     The array of alignment args. Either 'align', 'align_cols', and 'align_text'.
@@ -64,6 +69,9 @@ function mai_add_align_classes( $classes, $args, $direction = 'row' ) {
  * Add align classes if only 'align' param is used.
  * This is when the element is flex-direction row.
  *
+ * @since   1.3.0
+ * @access  private
+ *
  * @param   string  $classes    The existing HTML classes.
  * @param   array   $alignment  The array of alignment values.
  *
@@ -100,6 +108,9 @@ function mai_add_align_classes_row( $classes, $alignment ) {
 /**
  * Add align classes if only 'align' param is used.
  * This is when the element is flex-direction column.
+ *
+ * @since   1.3.0
+ * @access  private
  *
  * @param   string  $classes    The existing HTML classes.
  * @param   array   $alignment  The array of alignment values.
@@ -138,6 +149,9 @@ function mai_add_align_classes_column( $classes, $alignment ) {
 /**
  * Add align column classes.
  *
+ * @since   1.3.0
+ * @access  private
+ *
  * @param   string  $classes    The existing HTML classes.
  * @param   array   $alignment  The array of alignment values.
  *
@@ -175,6 +189,9 @@ function mai_add_align_cols_classes_row( $classes, $alignment ) {
  * Add align column classes if col is flex-direction column.
  * These are reversed (left is top instead of start) since the direction is column not row.
  *
+ * @since   1.3.0
+ * @access  private
+ *
  * @param   string  $classes    The existing HTML classes.
  * @param   array   $alignment  The array of alignment values.
  *
@@ -211,6 +228,9 @@ function mai_add_align_cols_classes_column( $classes, $alignment ) {
 /**
  * Add align text classes.
  *
+ * @since   1.3.0
+ * @access  private
+ *
  * @param   string  $classes    The existing HTML classes.
  * @param   array   $alignment  The array of alignment values.
  *
@@ -235,6 +255,9 @@ function mai_add_align_text_classes( $classes, $alignment ) {
 /**
  * Add align text classes when flex-direction is column.
  *
+ * @since   1.3.0
+ * @access  private
+ *
  * @param   string  $classes    The existing HTML classes.
  * @param   array   $alignment  The array of alignment values.
  *
@@ -258,6 +281,9 @@ function mai_add_align_text_classes_column( $classes, $alignment ) {
 
 /**
  * Add text size classes.
+ *
+ * @since   1.0.0
+ * @access  private
  *
  * @param   string  $classes  The existing HTML classes.
  * @param   array   $size     The size value.
@@ -293,6 +319,9 @@ function mai_add_text_size_classes( $classes, $size ) {
 /**
  * Add overlay classes.
  *
+ * @since   1.0.0
+ * @access  private
+ *
  * @param   string  $classes  The existing HTML classes.
  * @param   array   $overlay  The overlay value.
  *
@@ -316,6 +345,9 @@ function mai_add_overlay_classes( $classes, $overlay ) {
 
 /**
  * Add height classes.
+ *
+ * @since   1.0.0
+ * @access  private
  *
  * @param   string  $classes  The existing HTML classes.
  * @param   array   $height   The height value.
@@ -353,6 +385,8 @@ function mai_add_height_classes( $classes, $height ) {
 
 /**
  * Add content_width classes.
+ *
+ * @access  private
  *
  * @param   string  $classes        The existing HTML classes.
  * @param   array   $content_width  The content_width value.
@@ -412,6 +446,8 @@ function mai_add_content_width_classes( $classes, $content_width ) {
 /**
  * May add inline styles to the attributes for an element.
  *
+ * @access  private
+ *
  * @param   array   $attributes  The existing HTML attributes.
  * @param   string  $styles      The HTML ready inline styles intended for style="".
  *
@@ -431,6 +467,8 @@ function mai_add_inline_styles( $attributes, $styles ) {
 /**
  * Add background color HTML attributes to an element.
  *
+ * @access  private
+ *
  * @param   array   $attributes    The existing HTML attributes.
  * @param   string  $image_id      The image ID.
  * @param   string  $image_size    The registered image size.
@@ -448,13 +486,10 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 
 	// If we have an image, add it as inline style.
 	if ( $image ) {
-
-		// Make sure style attribute is set. TODO: IS THIS WHERE BG IMAGE IS GETTING ADDED TWICE?
-		$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
-
+		// TODO: IS THIS WHERE BG IMAGE IS GETTING ADDED TWICE?
 		// Add background image
-		$inline_style         = sprintf( 'background-image: url(%s);', $image[0] );
-		$attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
+		$styles     = sprintf( 'background-image: url(%s);', $image[0] );
+		$attributes = mai_add_inline_styles( $attributes, $styles );
 
 		// Add image-bg class
 		$attributes['class'] .= ' image-bg';
@@ -492,25 +527,21 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 /**
  * Add background color HTML attributes to an element.
  *
+ * @access  private
+ *
  * @param   array   $attributes  The existing HTML attributes.
  * @param   string  $color       The hex color code.
  *
  * @return  array   The modified attributes.
  */
 function mai_add_background_color_attributes( $attributes, $color ) {
-
 	// Bail if no color to add
 	if ( ! $color ) {
 		return $attributes;
 	}
-
-	// Make sure style attribute is set
-	$attributes['style'] = isset( $attributes['style'] ) ? $attributes['style'] : '';
-
 	// Add background color
-	$inline_style        = sprintf( 'background-color: %s;', $color );
-	$attributes['style'] .= isset( $attributes['style'] ) ? $attributes['style'] . $inline_style : $inline_style;
-
+	$styles     = sprintf( 'background-color: %s;', $color );
+	$attributes = mai_add_inline_styles( $attributes, $styles );
 	return $attributes;
 }
 
@@ -530,6 +561,7 @@ function mai_get_columns() {
  * Returns either string of HTML ready classes, or array for used on post_class filters.
  *
  * @since   1.3.0
+ * @access  private
  *
  * @param   array   See mai_col_parse_breaks().
  * @param   string  See mai_col_parse_breaks().
@@ -583,6 +615,7 @@ function mai_get_col_classes_by_breaks( $breaks, $size, $return = 'string' ) {
  * $size = 'col', 'auto, or '1' through '12'.
  *
  * @since   1.3.0
+ * @access  private
  *
  * @return  array  Associative array of breaks and size values.
  */
@@ -692,6 +725,8 @@ function mai_get_col_suffix( $size ) {
 
 /**
  * Get bottom class name from bottom value.
+ *
+ * @access  private
  *
  * @param   int     Bottom value.
  *
