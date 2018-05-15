@@ -275,10 +275,10 @@ class Mai_Section {
 				break;
 			}
 
-			// Add content shade classes
+			// Add content shade classes.
 			$attributes['class'] .= $dark_bg ? ' light-content' : '';
 
-			// Build the inner HTML
+			// Build the inner HTML.
 			$html = sprintf( '<div %s>', genesis_attr( 'section-inner', $attributes, $this->args ) );
 
 		}
