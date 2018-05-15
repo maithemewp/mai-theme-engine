@@ -225,7 +225,9 @@ function mai_do_flex_loop() {
 
 	// Create an anonomous function using the column count
 	$flex_classes = function( $classes ) use ( $columns, $img_location, $img_alignment ) {
-		$classes[] = mai_get_flex_entry_classes_by_columns( $columns );
+		$classes[] = 'flex-entry';
+		$classes[] = 'col';
+		$classes   = array_merge( $classes, mai_get_col_classes_by_breaks( array(), mai_get_size_by_columns( $columns ), $return = 'array' ) );
 		// If background image or image is not aligned.
 		if ( 'background' === $img_location || empty( $img_alignment ) ) {
 			$classes[] = 'column';
