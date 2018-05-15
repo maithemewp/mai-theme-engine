@@ -188,11 +188,7 @@ class Mai_Col {
 	}
 
 	function get_classes() {
-		$classes = 'flex-entry col';
-
-// TODO: size is also 'col' and 'auto' so need to get number from this or deal with it somehow!!!!
-
-		$classes = mai_add_classes( mai_get_col_classes_by_breaks( $this->args, $this->size ), $classes );
+		$classes = mai_add_classes( mai_get_col_classes_by_breaks( $this->args, $this->size ), 'flex-entry col' );
 		return $classes;
 	}
 
