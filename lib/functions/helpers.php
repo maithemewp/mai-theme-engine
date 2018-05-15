@@ -305,6 +305,7 @@ function mai_get_size_by_columns( $columns ) {
 		default:
 			$size = 12;
 	}
+	return $size;
 }
 
 /**
