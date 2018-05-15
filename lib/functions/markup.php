@@ -555,8 +555,11 @@ function mai_get_col_classes_by_breaks( $breaks, $size, $return = 'string' ) {
 		} else {
 			$value = $size;
 		}
+		// Build the class name.
 		$class   = mai_get_col_class( $break, $value );
-		$string  = mai_add_classes( $class, $array );
+		// Add to string.
+		$string  = mai_add_classes( $class, $string );
+		// Add to array.
 		$array[] = $class;
 	}
 	if ( 'string' === $return ) {
@@ -584,6 +587,8 @@ function mai_get_col_classes_by_breaks( $breaks, $size, $return = 'string' ) {
  *     'lg' => '',
  *     'xl' => '',
  * );
+ *
+ * $size = 'col', 'auto, or '1' through '12'.
  *
  * @return  array  Associative array of breaks and size values.
  */
