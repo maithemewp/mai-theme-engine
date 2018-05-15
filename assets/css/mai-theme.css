@@ -2522,7 +2522,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 --------------------------------------------- */
 
 .mai-toggle {
-	-webkit-box-flex: 1;-ms-flex: 1 0 auto;flex: 1 0 auto;
+	-ms-flex-negative: 0;flex-shrink: 0;
 }
 
 .mai-toggle,
