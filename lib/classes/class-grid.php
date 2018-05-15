@@ -85,7 +85,7 @@ class Mai_Grid {
 			'title_wrap'           => 'h3',
 			'class'                => '',
 			'id'                   => '',
-			'xs'                   => '12',
+			'xs'                   => '12', // Span out of 12 column grid. '4' is 1/3 since 4x3=12.
 			'sm'                   => '',
 			'md'                   => '',
 			'lg'                   => '',
@@ -1078,11 +1078,9 @@ class Mai_Grid {
 
 		// If not a slider.
 		if ( ! $this->args['slider'] ) {
-			// $classes = array_merge( $classes, explode( ' ', mai_get_flex_entry_classes_by_columns( $this->args['columns'] ) ) );
 			// Add Flexington columns.
 			$classes[] = 'col';
-			// $classes   = array_merge( $classes, explode( ' ', mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ) ) ) );
-			$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ), $return = 'array' ) );
+			$classes   = array_merge( $classes, mai_get_col_classes_by_breaks( $this->args, mai_get_size_by_columns( $this->args['columns'] ), $return = 'array' ) );
 		} else {
 			// Add slide class.
 			$classes[] = 'mai-slide';
