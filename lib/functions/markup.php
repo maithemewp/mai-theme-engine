@@ -526,8 +526,14 @@ function mai_get_columns() {
 }
 
 /**
- *
+ * Get the columns class by array of breakpoints with their col values.
  * Returns either string of HTML ready classes, or array for used on post_class filters.
+ *
+ * @since   1.3.0
+ *
+ * @param   array   See mai_col_parse_breaks().
+ * @param   string  See mai_col_parse_breaks().
+ * @param   string  $return  Whether to return an HTML ready string of classes, or an array of classes.
  *
  * @return  string|array
  */
@@ -576,6 +582,8 @@ function mai_get_col_classes_by_breaks( $breaks, $size, $return = 'string' ) {
  *
  * $size = 'col', 'auto, or '1' through '12'.
  *
+ * @since   1.3.0
+ *
  * @return  array  Associative array of breaks and size values.
  */
 function mai_col_parse_breaks( $breaks, $size ) {
@@ -607,10 +615,31 @@ function mai_col_parse_breaks( $breaks, $size ) {
 	return $breaks;
 }
 
+/**
+ * Get the individual col class by break and size.
+ *
+ * @since   1.3.0
+ * @access  private
+ *
+ * @param   string      $break  The breakpoint size 'xs', 'sm', 'md', 'lg', or 'xl'.
+ * @param   string|int  $size   The span of columns out of 12, or 'col', or 'auto'.
+ *
+ * @return  string  The HTML class.
+ */
 function mai_get_col_class( $break, $size ) {
 	return sprintf( 'col-%s%s', $break, mai_get_col_suffix( $size ) );
 }
 
+/**
+ * Get col suffix by the size value.
+ *
+ * @since   1.3.0
+ * @access  private
+ *
+ * @param   string|int  $size   The span of columns out of 12, or 'col', or 'auto'.
+ *
+ * @return  string  The suffix for the HTML class.
+ */
 function mai_get_col_suffix( $size ) {
 	switch ( (string) $size ) {
 		case 'col':
@@ -659,99 +688,6 @@ function mai_get_col_suffix( $size ) {
 			$suffix = '';
 	}
 	return $suffix;
-}
-
-/**
- *
- * TODO: Can we replace this with mai_get_col_classes_by_breaks() stuff?
- * THIS IS STILL IN archive.php - Let's get rid of it somehow!
- *
- * Get the classes needed for an entry from number of columns.
- *
- * @param  string  $columns  number of columns to get classes for.
- *
- * @return string  the classes
- */
-function mai_get_flex_entry_classes_by_columns( $columns ) {
-	switch ( (int) $columns ) {
-		case 1:
-			$classes = 'flex-entry col col-xs-12';
-		break;
-		case 2:
-			$classes = 'flex-entry col col-xs-12 col-sm-6';
-		break;
-		case 3:
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
-		break;
-		case 4:
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-3';
-		break;
-		case 6:
-			$classes = 'flex-entry col col-xs-6 col-sm-4 col-md-2';
-		break;
-		default:
-			$classes = 'flex-entry col col-xs-12 col-sm-6 col-md-4';
-	}
-	return $classes;
-}
-
-/**
- * TODO: Can we replace this with mai_get_col_classes_by_breaks() stuff?
- *
- * Get the classes needed for an entry from fraction name.
- *
- * @param  string  $fraction  The fraction name.
- *
- * @return string  the classes
- */
-function mai_get_flex_entry_classes_by_fraction_og( $fraction ) {
-	switch ( $fraction ) {
-		case 'col':
-			$classes = 'flex-entry col col-xs-12 col-sm';
-		break;
-		case 'col-auto':
-			$classes = 'flex-entry col col-xs-12 col-sm-auto';
-		break;
-		case 'one-twelfth':
-			$classes = 'flex-entry col col-xs-12 col-sm-1';
-		break;
-		case 'one-sixth':
-			$classes = 'flex-entry col col-xs-4 col-sm-2';
-		break;
-		case 'one-fourth':
-			$classes = 'flex-entry col col-xs-12 col-sm-3';
-		break;
-		case 'one-third':
-			$classes = 'flex-entry col col-xs-12 col-sm-4';
-		break;
-		case 'five-twelfths':
-			$classes = 'flex-entry col col-xs-12 col-sm-5';
-		break;
-		case 'one-half':
-			$classes = 'flex-entry col col-xs-12 col-sm-6';
-		break;
-		case 'seven-twelfths':
-			$classes = 'flex-entry col col-xs-12 col-sm-7';
-		break;
-		case 'two-thirds':
-			$classes = 'flex-entry col col-xs-12 col-sm-8';
-		break;
-		case 'three-fourths':
-			$classes = 'flex-entry col col-xs-12 col-sm-9';
-		break;
-		case 'five-sixths':
-			$classes = 'flex-entry col col-xs-12 col-sm-10';
-		break;
-		case 'eleven-twelfths':
-			$classes = 'flex-entry col col-xs-12 col-sm-11';
-		break;
-		case 'one-whole':
-			$classes = 'flex-entry col col-xs-12';
-		break;
-		default:
-			$classes = 'flex-entry col col-xs-12 col-sm';
-	}
-	return $classes;
 }
 
 /**
