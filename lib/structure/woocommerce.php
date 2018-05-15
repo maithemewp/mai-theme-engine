@@ -255,3 +255,108 @@ function mai_woo_shop_notice( $post ) {
 	$section_link = mai_get_customizer_post_type_settings_link( 'product' );
 	printf( '<a class="button" href="%s">%s</a>', esc_url( $section_link ), __( 'Edit Mai Product Settings', 'mai-theme-engine' ) );
 }
+
+/**
+ * Add columns filter before up-sells.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_before_template_part', 'mai_woo_before_upsells', 10, 4 );
+function mai_woo_before_upsells( $template_name, $template_path, $located, $args ) {
+	// Bail if not upsells template.
+	if ( 'single-product/up-sells.php' !== $template_name ) {
+		return;
+	}
+	add_filter( 'mai_get_columns', 'mai_woo_upsells_columns' );
+	function mai_woo_upsells_columns( $columns ) {
+		return 3;
+	}
+}
+
+/**
+ * Remove columns filter after up-sells.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_after_template_part', 'mai_woo_after_upsells', 10, 4 );
+function mai_woo_after_upsells( $template_name, $template_path, $located, $args ) {
+	// Bail if not upsells template.
+	if ( 'single-product/up-sells.php' !== $template_name ) {
+		return;
+	}
+	remove_filter( 'mai_get_columns', 'mai_woo_upsells_columns' );
+}
+
+/**
+ * Add columns filter before related products.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_before_template_part', 'mai_woo_before_related', 10, 4 );
+function mai_woo_before_related( $template_name, $template_path, $located, $args ) {
+	// Bail if not related products template.
+	if ( 'single-product/related.php' !== $template_name ) {
+		return;
+	}
+	add_filter( 'mai_get_columns', 'mai_woo_related_columns' );
+	function mai_woo_related_columns( $columns ) {
+		return 3;
+	}
+}
+
+/**
+ * Remove columns filter after related products.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_after_template_part', 'mai_woo_after_related', 10, 4 );
+function mai_woo_after_related( $template_name, $template_path, $located, $args ) {
+	// Bail if not related products template.
+	if ( 'single-product/related.php' !== $template_name ) {
+		return;
+	}
+	remove_filter( 'mai_get_columns', 'mai_woo_related_columns' );
+}
+
+/**
+ * Add columns filter before related products.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_before_template_part', 'mai_woo_before_crosssells', 10, 4 );
+function mai_woo_before_crosssells( $template_name, $template_path, $located, $args ) {
+	// Bail if not crosssells template.
+	if ( 'cart/cross-sells.php' !== $template_name ) {
+		return;
+	}
+	add_filter( 'mai_get_columns', 'mai_woo_crosssells_columns' );
+	function mai_woo_crosssells_columns( $columns ) {
+		return 2;
+	}
+}
+
+/**
+ * Remove columns filter after related products.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_after_template_part', 'mai_woo_after_crossell', 10, 4 );
+function mai_woo_after_crossell( $template_name, $template_path, $located, $args ) {
+	// Bail if not crosssells template.
+	if ( 'cart/cross-sells.php' !== $template_name ) {
+		return;
+	}
+	remove_filter( 'mai_get_columns', 'mai_woo_crossell_columns' );
+}
