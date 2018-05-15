@@ -39,23 +39,23 @@ function mai_plugin_include_theme_page_templates( $template ) {
 		return $template;
 	}
 
-	// Get current template
+	// Get current template.
 	$template_name = get_post_meta( get_the_ID(), '_wp_page_template', true );
 
-	// Bail if not a template from our plugin
-	if ( ! in_array( $template_name, array( 'landing.php', 'sitemap.php' ) ) ) {
+	// Bail if not a template from our plugin.
+	if ( ! in_array( basename( $template_name ), array( 'landing.php', 'sitemap.php' ) ) ) {
 		return $template;
 	}
 
-	// Get the child theme template path
+	// Get the child theme template path.
 	$_template = get_stylesheet_directory() . '/templates/' . $template_name;
 
-	// If the template exists in the child theme
+	// If the template exists in the child theme.
 	if ( file_exists( $_template ) ) {
-		// Use child theme template
+		// Use child theme template.
 		$template = $_template;
 	} else {
-		// Use our plugin template
+		// Use our plugin template.
 		$plugin_path = MAI_THEME_ENGINE_PLUGIN_DIR . 'templates/';
 		if ( file_exists( $plugin_path . $template_name ) ) {
 			$template = $plugin_path . $template_name;
