@@ -209,6 +209,7 @@ class Mai_Section {
 		$html .= $this->get_section_content();
 		$html .= $this->get_section_inner_close();
 		$html .= $this->get_section_wrap_close();
+		return $html;
 	}
 
 	/**
