@@ -3143,8 +3143,8 @@ p ~ .flex-grid {
 	margin-bottom: 14px;
 }
 
-.flex-entry .entry-image-link .entry-image,
-.flex-entry .entry-image-link .wp-post-image {
+.flex-entry .entry-image-link.alignnone .entry-image,
+.flex-entry .entry-image-link.alignnone .wp-post-image {
 	width: 100%;
 	max-width: auto;
 }

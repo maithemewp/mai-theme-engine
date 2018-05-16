@@ -9,6 +9,7 @@
 * Changed: Removed editor stylesheet. We never used it properly, and Gutenberg is coming.
 * Changed: WooCommerce up-sells, cross-sells, and related product columns now have their own filters. Cross-sells now default to 2 columns so they fit better on the cart page.
 * Changed: Remove mai_html_cleanup_script(). Too hacky and unecessary.
+* Changed: Only force full width image on flex entries when image is not aligned (left, right, or center).
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: Mobile menu toggle getting squished when logos are big.
