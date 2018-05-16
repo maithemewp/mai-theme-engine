@@ -167,3 +167,48 @@ function mai_do_sections_template() {
 	}
 
 }
+
+/**
+ * Run Page Builder template hooks and filters.
+ * This allows us to still use front-page.php and other template files
+ * while still getting the benefit of the Page Builders layout/styling.
+ *
+ * @since   1.1.8
+ *
+ * @return  void.
+ */
+add_action( 'template_redirect', 'mai_do_page_builder_template' );
+function mai_do_page_builder_template() {
+
+	/**
+	 * Bail if not a single post/page/cpt.
+	 * We don't need page templates here anyway.
+	 */
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	// Bail if Beaver Builder is not active.
+	if ( ! class_exists( 'FLBuilderModel' ) ) {
+		return;
+	}
+
+	if ( ! FLBuilderModel::is_builder_enabled() ) {
+		return;
+	}
+
+	// Add edge-to-edge body clas.
+	add_filter( 'body_class', 'mai_edge_to_edge_body_class' );
+}
+
+/**
+ * Add custom body class.
+ *
+ * @param   array  The existing body classes.
+ *
+ * @return  array  Modified classes.
+ */
+function mai_edge_to_edge_body_class( $classes ) {
+	$classes[] = 'mai-edge-to-edge';
+	return $classes;
+}

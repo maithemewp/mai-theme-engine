@@ -320,6 +320,7 @@ final class Mai_Theme_Engine {
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'admin/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'classes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'integrations/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'settings/customizer/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }

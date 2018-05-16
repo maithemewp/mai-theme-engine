@@ -1246,6 +1246,31 @@ td {
 	border-bottom-style: solid;
 }
 
+/* ## Page Builders - Edge to Edge
+--------------------------------------------- */
+
+.mai-edge-to-edge,
+.mai-edge-to-edge .site-container,
+.mai-edge-to-edge .site-container .site-inner,
+.mai-edge-to-edge .site-container .content-sidebar-wrap,
+.mai-edge-to-edge .site-container .content,
+.mai-edge-to-edge .site-container .content > .entry,
+.mai-edge-to-edge .site-container .content > .entry .entry-content {
+	width: 100%;
+	max-width: 100%;
+	float: none;
+	background: none;
+	padding: 0;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 0;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	-webkit-border-radius: 0;
+	-webkit-box-shadow: none;
+}
+
 /* ## Avatar
 --------------------------------------------- */
 
