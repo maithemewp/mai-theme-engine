@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Add an image inline in the site title element for the main logo
+ * Add an image inline in the site title element for the main logo.
  *
- * The custom logo is then added via the Customiser.
+ * The custom logo is added via the Customiser.
  *
  * @since   1.3.0
  *
  * @param   string  $content  The existing site title content.
  *
- * @return  string|HTML  The logo markup
+ * @return  string|HTML       The logo markup
  */
 add_filter( 'genesis_markup_site-title_content', 'mai_custom_logo' );
 function mai_custom_logo( $content ) {
