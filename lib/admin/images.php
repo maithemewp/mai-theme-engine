@@ -44,16 +44,16 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
  */
 add_action( 'save_post', 'mai_save_hide_featured_image_checkbox', 10, 2 );
 function mai_save_hide_featured_image_checkbox( $post_id, $post ) {
-
 	// Bail if we don't have a value at all
 	if ( ! isset( $_POST[ 'mai_hide_featured_image' ] ) ) {
 		$hide = get_post_meta( $post_id, 'mai_hide_featured_image', true );
-		if ( $hide ) {
+		// If already set to not hide (unchecked).
+		if ( ! $hide ) {
+			// Delete the meta. No sense in an extra row in the db for a value that won't be used.
 			delete_post_meta( $post_id, 'mai_hide_featured_image' );
 		}
 		return;
 	}
-
 	// Save our meta field.
 	update_post_meta( $post_id, 'mai_hide_featured_image', mai_sanitize_one_zero( $_POST[ 'mai_hide_featured_image' ] ) );
 }

@@ -16,6 +16,7 @@
 * Fixed: Blockquote weirdness when inserted after an image aligned left or right.
 * Fixed: Removed taxonomy hierarchy settings checks, too inefficient.
 * Fixed: Landing and Sitemap templates weren't overrideable in theme.
+* Fixed: Retain "Hide featured image" post meta value when removing the existing featured image.
 
 #### 1.2.1 (2/15/18)
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.
