@@ -6,6 +6,7 @@
 * Added: [grid] 'exclude_displayed' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
 * Added: [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
 * Added: WooCommerce star rating default styling.
+* Added: 'mai_sitemap_post_types' filter on Sitemap post types.
 * Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
 * Changed: Removed editor stylesheet. We never used it properly, and Gutenberg is coming.
 * Changed: WooCommerce up-sells, cross-sells, and related product columns now have their own filters. Cross-sells now default to 2 columns so they fit better on the cart page.
@@ -20,6 +21,7 @@
 * Fixed: Removed taxonomy hierarchy settings checks, too inefficient.
 * Fixed: Landing and Sitemap templates weren't overrideable in theme.
 * Fixed: Retain "Hide featured image" post meta value when removing the existing featured image.
+* Fixed: Current menu item css on Header Before nav.
 
 #### 1.2.1 (2/15/18)
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.
