@@ -1271,6 +1271,10 @@ td {
 	border-radius: 50%;
 }
 
+.banner-area .avatar {
+	max-width: 120px;
+}
+
 .comment .avatar {
 	float: left;
 	width: 80px;
