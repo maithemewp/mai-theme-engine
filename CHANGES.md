@@ -16,6 +16,7 @@
 * Changed: Only force full width image on flex entries when image is not aligned (left, right, or center).
 * Changed: Moved list-style-type CSS only to parent ol/ul to be less aggressive and easier to override in style.css.
 * Changed: Bumped normalize CSS to 8.0.0.
+* Changed: Less aggressive removal of WooCommerce Shop page metaboxes.
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: Mobile menu toggle getting squished when logos are big.

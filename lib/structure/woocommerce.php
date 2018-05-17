@@ -187,63 +187,9 @@ function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
 		return;
 	}
 
-	global $wp_meta_boxes;
-
-	// Create an array of meta boxes exceptions, ones that should not be removed (remove if you don't want/need)
-	$exceptions = array(
-		'slugdiv',
-		'submitdiv',
-		'pageparentdiv',
-		'authordiv',
-		'postexcerpt',
-	);
-
-	// Start looping.
-	foreach( $wp_meta_boxes as $page => $page_boxes ) {
-
-		// Skip if none.
-		if ( empty( $page_boxes ) ) {
-			continue;
-		}
-
-		// Loop through each page.
-		foreach( $page_boxes as $context => $box_context ) {
-
-			// Skip if none.
-			if ( empty( $box_context ) ) {
-				continue;
-			}
-
-			// Loop through each context.
-			foreach( $box_context as $box_type ) {
-
-				// Skip if none.
-				if ( empty( $box_type ) ) {
-					continue;
-				}
-
-				// Loop through each type.
-				foreach( $box_type as $id => $box ) {
-
-					// Skip if keeping.
-					if ( in_array( $id, $exceptions ) ) {
-						continue;
-					}
-
-					// Remove.
-					remove_meta_box( $id, $page, $context );
-
-				}
-
-			}
-
-		}
-
-	}
-
-	// Add metabox shop notice.
-	add_meta_box( 'mai_woo_shop_notice', __( 'Mai WooCommerce Shop', 'mai-theme-engine' ), 'mai_woo_shop_notice', 'page', 'normal' );
-
+	remove_meta_box( 'postimagediv', 'page', 'side' );
+	remove_meta_box( 'mai_post_banner', 'page', 'side' );
+	remove_meta_box( 'genesis_inpost_layout_box', 'page', 'normal' );
 }
 
 /**
