@@ -20,6 +20,9 @@ function mai_genesis_sitemap_output( $sitemap ) {
 	unset( $post_types['page'] );
 	unset( $post_types['post'] );
 
+	// Filter for devs to add or remove specific post types.
+	$post_types = apply_filters( 'mai_sitemap_post_types', $post_types );
+
 	// Bail if none.
 	if ( ! $post_types ) {
 		return $sitemap;
