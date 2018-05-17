@@ -1080,6 +1080,7 @@ td {
 }
 
 .section .entry {
+	color: initial;
 	text-shadow: none;
 }
 
