@@ -18,7 +18,7 @@ class Mai_Grid {
 	// Whether facetwp_is_main_query filter has run.
 	public static $facetwp_filter = false;
 
-	// All displayed items incase exclude_existing is true in any instance of grid.
+	// All displayed items incase exclude_displayed is true in any instance of grid.
 	public static $existing_post_ids = array();
 	public static $existing_term_ids = array();
 
@@ -50,7 +50,7 @@ class Mai_Grid {
 			'exclude'              => '',
 			'exclude_categories'   => '',  // Comma separated category IDs
 			'exclude_current'      => false,
-			'exclude_existing'     => false,
+			'exclude_displayed'    => false,
 			'facetwp'              => false,
 			'grid_title'           => '',
 			'grid_title_class'     => '',
@@ -124,7 +124,7 @@ class Mai_Grid {
 			'exclude'              => array_filter( explode( ',', sanitize_text_field( $this->args['exclude'] ) ) ),
 			'exclude_categories'   => array_filter( explode( ',', sanitize_text_field( $this->args['exclude_categories'] ) ) ),
 			'exclude_current'      => filter_var( $this->args['exclude_current'], FILTER_VALIDATE_BOOLEAN ),
-			'exclude_existing'     => filter_var( $this->args['exclude_existing'], FILTER_VALIDATE_BOOLEAN ),
+			'exclude_displayed'    => filter_var( $this->args['exclude_displayed'], FILTER_VALIDATE_BOOLEAN ),
 			'facetwp'              => filter_var( $this->args['facetwp'], FILTER_VALIDATE_BOOLEAN ),
 			'grid_title'           => sanitize_text_field( $this->args['grid_title'] ),
 			'grid_title_class'     => sanitize_text_field( $this->args['grid_title_class'] ),
@@ -282,7 +282,7 @@ class Mai_Grid {
 		}
 
 		// Exclude existing.
-		if ( $this->args['exclude_existing'] && ! empty( $this::$existing_post_ids ) ) {
+		if ( $this->args['exclude_displayed'] && ! empty( $this::$existing_post_ids ) ) {
 			if ( isset( $query_args['post__not_in'] ) ) {
 				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], $this::$existing_post_ids );
 			} else {

@@ -3,7 +3,7 @@
 * Added: Page Builder page template.
 * Added: [section] 'image_size' parameter. Can also be filtered via shortcode_atts_section filter.
 * Added: [grid] 'xs', 'sm', 'md', 'lg', 'xl' parameters to set the span of columns out of 12. '6' would be 1/2, since 6 is 1/2 of 12, as an example.
-* Added: [grid] 'exclude_existing' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
+* Added: [grid] 'exclude_displayed' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
 * Added: [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
 * Added: WooCommerce star rating default styling.
 * Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
