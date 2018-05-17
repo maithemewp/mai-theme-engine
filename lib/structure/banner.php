@@ -3,6 +3,8 @@
 /**
  * Add custom banner area body class.
  *
+ * @since   1.0.0
+ *
  * @param   array  The existing body classes.
  *
  * @return  array  Modified classes.
@@ -19,6 +21,8 @@ function mai_do_banner_area_body_class( $classes ) {
 
 /**
  * Check if we need to display the banner area
+ *
+ * @since   1.0.0
  *
  * @return  void
  */
@@ -95,6 +99,8 @@ function mai_do_banner_area() {
 /**
  * Output default Genesis content in the banner.
  * These won't fire if banner area is not enabled since that hook won't exist.
+ *
+ * @since   1.0.0
  *
  * @return  void
  */
@@ -215,8 +221,19 @@ function mai_do_banner_content() {
 	$title = apply_filters( 'mai_banner_title', $title );
 	$desc  = apply_filters( 'mai_banner_description', $desc );
 
-	do_action( 'mai_banner_content_title', $title );
-	do_action( 'mai_banner_content_description', $desc );
+	/**
+	 * Action hook that fires at end of building banner content.
+	 *
+	 * Allows you to reorganize output of the archive headings.
+	 *
+	 * @since   1.3.0
+	 *
+	 * @param   string  $heading  The banner title.
+	 * @param   string  $desc     The banner description.
+	 *
+	 * @return  void
+	 */
+	do_action( 'mai_banner_title_description', $title, $desc );
 
 	// Add back the entry header/title because custom queries and loops may need it.
 	add_action( 'genesis_before_entry_content', function() {
@@ -226,16 +243,37 @@ function mai_do_banner_content() {
 	});
 }
 
-add_action( 'mai_banner_content_title', 'mai_do_banner_title' );
-function mai_do_banner_title( $title ) {
+/**
+ * Do the banner title.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'mai_banner_title_description', 'mai_do_banner_title', 10, 2 );
+function mai_do_banner_title( $title, $desc ) {
 	echo $title;
 }
 
-add_action( 'mai_banner_content_description', 'mai_do_banner_description' );
-function mai_do_banner_description( $desc ) {
+/**
+ * Do the banner title.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'mai_banner_title_description', 'mai_do_banner_description', 12, 2 );
+function mai_do_banner_description( $title, $desc ) {
 	echo $desc;
 }
 
+/**
+ * Do the banner avatar on author archives when author box is enabled.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
 add_action( 'mai_banner_content', 'mai_do_banner_avatar', 8 );
 function mai_do_banner_avatar() {
 	// Bail if not author archive.
