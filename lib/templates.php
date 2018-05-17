@@ -14,6 +14,7 @@
 add_filter( 'theme_page_templates', 'mai_plugin_theme_page_templates' );
 function mai_plugin_theme_page_templates( $page_templates ) {
 	$page_templates['landing.php']  = __( 'Landing Page', 'mai-theme-engine' );
+	$page_templates['builder.php']  = __( 'Page Builder', 'mai-theme-engine' );
 	$page_templates['sections.php'] = __( 'Sections', 'mai-theme-engine' );
 	$page_templates['sitemap.php']  = __( 'Sitemap', 'mai-theme-engine' );
 	return $page_templates;
@@ -71,7 +72,7 @@ function mai_plugin_include_theme_page_templates( $template ) {
  *
  * @since   1.1.8
  *
- * @return  void.
+ * @return  void
  */
 add_action( 'template_redirect', 'mai_do_sections_template' );
 function mai_do_sections_template() {
@@ -166,4 +167,61 @@ function mai_do_sections_template() {
 
 	}
 
+}
+
+/**
+ * Run Page Builder template hooks and filters.
+ * This allows us to still use front-page.php and other template files
+ * while still getting the benefit of the Page Builder layout/styling.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'template_redirect', 'mai_do_page_builder_template' );
+function mai_do_page_builder_template() {
+
+	/**
+	 * Bail if not a single post/page/cpt.
+	 * We don't need page templates here anyway.
+	 */
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	// Get current template.
+	$template_name = get_post_meta( get_the_ID(), '_wp_page_template', true );
+
+	// Bail if not a Page Builder template.
+	if ( 'builder.php' !== $template_name ) {
+		return;
+	}
+
+	// Add custom body class to the head.
+	add_filter( 'body_class', 'mai_page_builder_body_class' );
+	function mai_page_builder_body_class( $classes ) {
+		$classes[] = 'mai-page-builder';
+		return $classes;
+	}
+
+	// Remove breadcrumbs.
+	remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
+	remove_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 12 );
+
+}
+
+/**
+ * Filter the Beaver Builder global settings to set the default width to match Mai Theme.
+ *
+ * @since   1.3.0
+ *
+ * @return  array  The modified form.
+ */
+add_filter( 'fl_builder_register_settings_form', 'mai_fl_builder_register_settings_form', 10, 2 );
+function mai_fl_builder_register_settings_form( $form, $id ) {
+	if ( 'global' !== $id ) {
+		return $form;
+	}
+	$form['tabs']['general']['sections']['rows']['fields']['row_width']['default'] = '1240';
+	return $form;
 }

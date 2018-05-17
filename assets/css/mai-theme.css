@@ -226,11 +226,6 @@ li {
 	list-style-type: none;
 }
 
-.entry-content li.icon-left,
-.entry-content li.icon-right {
-	list-style-type: none;
-}
-
 li.icon-left .fa {
 	vertical-align: middle;
 	margin-right: 6px;
@@ -1244,6 +1239,29 @@ td {
 .light-content .entry-footer a:focus {
 	color: #fff;
 	border-bottom-style: solid;
+}
+
+/* ## Page Builders
+--------------------------------------------- */
+
+.mai-page-builder,
+.mai-page-builder .site-container,
+.mai-page-builder .site-inner,
+.mai-page-builder .content-sidebar-wrap,
+.mai-page-builder .content,
+.mai-page-builder .content > .entry,
+.mai-page-builder .content > .entry > .entry-content {
+	width: 100%;
+	max-width: 100%;
+	float: none;
+	background: none;
+	padding: 0;
+	margin: 0 auto;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	-webkit-border-radius: 0;
+	-webkit-box-shadow: none;
 }
 
 /* ## Avatar
@@ -3059,13 +3077,19 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	margin-left: 40px;
 }
 
-.entry-content ol > li {
+.entry-content ol {
 	list-style-type: decimal;
+}
+
+.entry-content ul {
+	list-style-type: disc;
+}
+
+.entry-content ol > li {
 	margin-bottom: 8px;
 }
 
 .entry-content ul > li {
-	list-style-type: disc;
 	margin-bottom: 8px;
 }
 
