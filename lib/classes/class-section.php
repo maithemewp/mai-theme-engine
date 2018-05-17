@@ -37,6 +37,7 @@ class Mai_Section {
 			'image_size'    => 'banner',
 			'inner'         => '',
 			'overlay'       => '',
+			'style'         => '', // HTML inline style
 			'text_size'     => '',
 			'title'         => '',
 			'title_wrap'    => 'h2',
@@ -57,6 +58,7 @@ class Mai_Section {
 			'image_size'    => sanitize_key( $this->args['image_size'] ),
 			'inner'         => sanitize_key( $this->args['inner'] ),
 			'overlay'       => sanitize_key( $this->args['overlay'] ),
+			'style'         => sanitize_text_field( $this->args['style'] ),
 			'text_size'     => sanitize_key( $this->args['text_size'] ),
 			'title'         => sanitize_text_field( $this->args['title'] ),
 			'title_wrap'    => sanitize_key( $this->args['title_wrap'] ),
@@ -179,6 +181,9 @@ class Mai_Section {
 			$attributes['class'] = mai_add_overlay_classes( $attributes['class'], $this->args['overlay'] );
 
 		}
+
+		// Maybe add inline styles.
+		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
 
 		// Build the opening markup.
 		return sprintf( '<%s %s>', $this->args['wrapper'], genesis_attr( $this->args['context'], $attributes, $this->args ) );
