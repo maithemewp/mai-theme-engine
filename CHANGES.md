@@ -1,5 +1,6 @@
 ### Changelog
 
+* Added: Page Builder page template.
 * Added: [section] 'image_size' parameter. Can also be filtered via shortcode_atts_section filter.
 * Added: [grid] 'xs', 'sm', 'md', 'lg', 'xl' parameters to set the span of columns out of 12. '6' would be 1/2, since 6 is 1/2 of 12, as an example.
 * Added: [grid] 'exclude_existing' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
@@ -10,6 +11,7 @@
 * Changed: WooCommerce up-sells, cross-sells, and related product columns now have their own filters. Cross-sells now default to 2 columns so they fit better on the cart page.
 * Changed: Remove mai_html_cleanup_script(). Too hacky and unecessary.
 * Changed: Only force full width image on flex entries when image is not aligned (left, right, or center).
+* Changed: Moved list-style-type CSS only to parent ol/ul to be less aggressive and easier to override in style.css.
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: Mobile menu toggle getting squished when logos are big.
