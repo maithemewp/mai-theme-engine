@@ -207,7 +207,6 @@ function mai_do_page_builder_template() {
 	// Remove breadcrumbs.
 	remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
 	remove_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 12 );
-
 }
 
 /**

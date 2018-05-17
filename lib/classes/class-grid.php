@@ -314,10 +314,19 @@ class Mai_Grid {
 		if ( ! empty( $this->args['order'] ) ) {
 			$query_args['order'] = $this->args['order'];
 		}
+		// If only showing 1 hierarchical post type.
+		elseif ( 1 === count( $this->args['content'] ) && is_post_type_hierarchical( $this->args['content'][0] ) ) {
+			$query_args['order'] = 'ASC';
+		}
 
 		// Orderby.
 		if ( ! empty( $this->args['order_by'] ) ) {
 			$query_args['orderby'] = $this->args['order_by'];
+		}
+		// If only showing 1 hierarchical post type.
+		elseif ( 1 === count( $this->args['content'] ) && is_post_type_hierarchical( $this->args['content'][0] ) ) {
+			// Default sorting to menu order.
+			$query_args['orderby'] = 'menu_order';
 		}
 
 		// Meta key (for ordering).
