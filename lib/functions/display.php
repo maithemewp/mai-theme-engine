@@ -73,7 +73,6 @@ function mai_content_filter_shortcodes( $content ) {
 
 }
 
-
 /**
  * Display the featured image.
  * Must be used in the loop.

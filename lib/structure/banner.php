@@ -93,22 +93,23 @@ function mai_do_banner_area() {
 }
 
 /**
- * Output default Genesis content in the banner
- * These won't fire if banner area is not enabled since that hook won't exist
+ * Output default Genesis content in the banner.
+ * These won't fire if banner area is not enabled since that hook won't exist.
  *
  * @return  void
  */
 add_action( 'mai_banner_content', 'mai_do_banner_content' );
 function mai_do_banner_content() {
 
-	// Core G functions, that have their own conditionals
-	genesis_do_taxonomy_title_description();
-	genesis_do_cpt_archive_title_description();
-	genesis_do_date_archive_title();
+	global $wp_query, $post;
 
-	// If front page displays your latest posts
+	$wrap         = 'h1';
+	$before_title = $title = $desc = '';
+
+	// If front page displays your latest posts.
 	if ( is_front_page() && is_home() ) {
-		printf( '<h1 class="archive-title">%s</h1>', __( 'Blog', 'genesis' ) );
+		$title = __( 'Blog', 'genesis' );
+		$desc  = has_excerpt( $front_page_id ) ? get_the_excerpt( $front_page_id ) : '';
 	}
 
 	// Add static front page banner content
@@ -119,89 +120,134 @@ function mai_do_banner_content() {
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
-		genesis_do_post_title();
-		echo has_excerpt( $front_page_id ) ? get_the_excerpt( $front_page_id ) : '';
+		$title = get_the_title();
+		$desc  = has_excerpt( $front_page_id ) ? get_the_excerpt( $front_page_id ) : '';
 	}
 
-	// Do static blog banner content
+	// Do static blog banner content.
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
-		printf( '<div %s>', genesis_attr( 'posts-page-description' ) );
-			printf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), get_the_title( $posts_page_id ) );
-			echo has_excerpt( $posts_page_id ) ? get_the_excerpt( $posts_page_id ) : '';
-		echo '</div>';
+		$title = get_the_title( $posts_page_id );
+		$desc  = has_excerpt( $posts_page_id ) ? get_the_excerpt( $posts_page_id ) : '';
 	}
 
-	// Do singular banner content
+	// Do singular banner content.
 	elseif ( is_singular() && ! is_front_page() && ! is_home() ) {
 
-		global $post;
-		// Remove post title
+		// Remove default post title.
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
-		genesis_do_post_title();
-		echo has_excerpt( get_the_ID() ) ? get_the_excerpt( get_the_ID() ) : '';
+		$title = get_the_title();
+		$desc  = has_excerpt( get_the_ID() ) ? get_the_excerpt( get_the_ID() ) : '';
 	}
 
-	// Do author archive banner content
-	elseif ( is_author() ) {
-		// If author box is enabled, show it
-		if ( get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
-
-			// Return only the name for the author box, not "About {name}"
-			add_filter( 'genesis_author_box_title', function() {
-				return get_the_author();
-			});
-
-			genesis_do_author_box_archive();
+	// Term archives.
+	elseif ( is_category() || is_tag() || is_tax() ) {
+		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+		if ( $term ) {
+			$title = get_term_meta( $term->term_id, 'headline', true );
+			if ( empty( $title ) && genesis_a11y( 'headings' ) ) {
+				$title = $term->name;
+			}
 		}
-		// Otherwise, show the default title and description
+		$desc = get_term_meta( $term->term_id, 'intro_text', true );
+		$desc = apply_filters( 'genesis_term_intro_text_output', $desc ? $desc : '' );
+	}
+
+	// Do author archive banner content.
+	elseif ( is_author() ) {
+
+		// If author box is enabled.
+		if ( get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
+			global $authordata;
+			$authordata    = is_object( $authordata ) ? $authordata : get_userdata( get_query_var( 'author' ) );
+			$gravatar_size = apply_filters( 'genesis_author_box_gravatar_size', 70, 'archive' );
+			$before_title  = get_avatar( get_the_author_meta( 'email' ), $gravatar_size );
+			$title         = get_the_author();
+			$desc          = wpautop( get_the_author_meta( 'description' ) );
+ 		}
+		// Otherwise show the G author archive settings title.
 		else {
-			genesis_do_author_title_description();
+			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+			if ( empty( $title ) && genesis_a11y( 'headings' ) ) {
+				$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
+			}
+			$desc = get_the_author_meta( 'intro_text', (int) get_query_var( 'author' ) );
+			$desc = apply_filters( 'genesis_author_intro_text_output', $desc ? $desc : '' );
 		}
 	}
 
 	elseif ( is_search() ) {
-		genesis_do_search_title();
+		$title = apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'genesis' ) );
 	}
 
 	elseif ( is_404() ) {
-		printf( '<div class="entry-title">%s</div>', __( '404', 'mai-theme-engine' ) );
+		$title = apply_filters( 'genesis_404_entry_title', __( 'Not found, error 404', 'genesis' ) );
 	}
 
-	// Bail if WooCommerce is not active
+	// If WooCommerce is not active.
 	elseif ( class_exists( 'WooCommerce' ) ) {
 
+		// Shop page.
 		if ( is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-
-			// Get our new data
-			$headline   = get_the_title( $shop_page_id );
-			$headline   = $headline ? sprintf( '<h1 %s>%s</h1>', genesis_attr( 'archive-title' ), strip_tags( $headline ) ) : '';
-			$intro_text = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
-			printf( '<div %s>%s</div>', genesis_attr( 'cpt-archive-description' ), $headline . $intro_text );
-
-		} elseif ( is_product() ) {
-
+			$title = get_the_title( $shop_page_id );
+			$title = $title ? strip_tags( $title ) : '';
+			$desc  = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
+		}
+		// Singular product.
+		elseif ( is_product() ) {
 			/**
+			 * We already have the title set from is_singular().
+			 *
 			 * Use an h2 on front page, since the product title will be h1.
-			 * We have to do this up top because is_singular() will output product title
+			 * We have to do this up top because is_singular() will output product title.
 			 */
-			add_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
-			function mai_filter_entry_title_wrap( $wrap ) {
-				return 'h2';
-			}
+			$wrap = 'h2';
 		}
 
 	}
 
-	// Remove the filter so it doesn't affect anything later
-	remove_filter( 'genesis_entry_title_wrap', 'mai_filter_entry_title_wrap' );
+	// Banner content filters.
+	$wrap  = apply_filters( 'mai_banner_title_wrap', $wrap );
+	$title = apply_filters( 'mai_banner_title_text', $title );
+	$title = $title ? sprintf( '<%s %s>%s</%s>', $wrap, genesis_attr( 'banner-title' ), $title, $wrap ) : '';
+	$title = apply_filters( 'mai_banner_title', $title );
+	$desc  = apply_filters( 'mai_banner_description', $desc );
 
-	// Add back the entry header/title incase custom queries & loops need it
+	do_action( 'mai_banner_content_title', $title );
+	do_action( 'mai_banner_content_description', $desc );
+
+	// Add back the entry header/title because custom queries and loops may need it.
 	add_action( 'genesis_before_entry_content', function() {
 		add_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
 		add_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		add_action( 'genesis_entry_header', 'genesis_do_post_title' );
 	});
+}
+
+add_action( 'mai_banner_content_title', 'mai_do_banner_title' );
+function mai_do_banner_title( $title ) {
+	echo $title;
+}
+
+add_action( 'mai_banner_content_description', 'mai_do_banner_description' );
+function mai_do_banner_description( $desc ) {
+	echo $desc;
+}
+
+add_action( 'mai_banner_content', 'mai_do_banner_avatar', 8 );
+function mai_do_banner_avatar() {
+	// Bail if not author archive.
+	if ( ! is_author() ) {
+		return;
+	}
+	// If author box is enabled.
+	if ( ! get_the_author_meta( 'genesis_author_box_archive', get_query_var( 'author' ) ) ) {
+		return;
+	}
+	global $authordata;
+	$authordata    = is_object( $authordata ) ? $authordata : get_userdata( get_query_var( 'author' ) );
+	$gravatar_size = apply_filters( 'genesis_author_box_gravatar_size', 70, 'archive' );
+	echo get_avatar( get_the_author_meta( 'email' ), $gravatar_size );
 }
