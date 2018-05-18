@@ -20,6 +20,7 @@
 * Changed: Moved list-style-type CSS only to parent ol/ul to be less aggressive and easier to override in style.css.
 * Changed: Bumped normalize CSS to 8.0.0.
 * Changed: Less aggressive removal of WooCommerce Shop page metaboxes.
+* Changed: Removed site title/logo toggle from Customizer.
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: [grid] Keep content on top of overlay when hovering on image bg link.

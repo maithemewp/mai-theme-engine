@@ -72,12 +72,30 @@ function mai_remove_genesis_theme_settings_metaboxes( $_genesis_theme_settings_p
 }
 
 /**
- * Remove custom title/logo metabox from customizer
- * Priority had to be late for this to work
+ * Remove custom title/logo metabox from customizer.
+ * Priority had to be late for this to work.
  *
  * @link https://developer.wordpress.org/themes/advanced-topics/customizer-api/
  */
 add_action( 'customize_register', 'mai_remove_genesis_customizer_controls', 99 );
 function mai_remove_genesis_customizer_controls( $wp_customize ) {
-	$wp_customize->remove_control('blog_title');
+	$wp_customize->remove_control( 'blog_title' );
+}
+
+/**
+ * Remove site title/logo toggle from Customize > Genesis > Theme Settings > Header > Site title/logo.
+ * I think Genesis 2.6 moved it here so we needed a new function.
+ *
+ * @since   1.3.0
+ *
+ * @param   array  The Genesis customizer config.
+ *
+ * @return  array  The modified config.
+ */
+add_filter( 'genesis_customizer_theme_settings_config', 'mai_remove_site_title_logo_toggle' );
+function mai_remove_site_title_logo_toggle( $config ) {
+	if ( isset( $config['genesis']['sections']['genesis_header']['controls']['blog_title'] ) ) {
+		unset( $config['genesis']['sections']['genesis_header']['controls']['blog_title'] );
+	}
+	return $config;
 }
