@@ -985,10 +985,13 @@ class Mai_Grid {
 
 				if ( $has_bg_image ) {
 
-					$light_content = true;
-// TODO: THESE AREN'T WORKING YET! SEE HERE: https://maithemeengine.local/overlay-tests/
 					// Set dark overlay if we don't have one.
 					$this->args['overlay'] = empty( $this->args['overlay'] ) ? 'dark' : $this->args['overlay'];
+
+					// If we don't have a light overlay, content is light.
+					if ( 'light' !== $this->args['overlay'] ) {
+						$light_content = true;
+					}
 				}
 			}
 
@@ -1012,8 +1015,6 @@ class Mai_Grid {
 
 		// Shade class
 		$attributes['class'] .= $light_content ? ' light-content' : '';
-
-		// TODO: WHY IS OVERLAY SO MESSED UP!?!?! CSS FOR DISPLAY WHEN IMAGE IS BG. When not column the text is not on top.
 
 		/**
 		 * Main entry col wrap.
