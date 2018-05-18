@@ -3128,6 +3128,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 
 .entry-content ol ol,
 .entry-content ul ul {
+	margin-top: 12px;
 	margin-bottom: 0;
 }
 
