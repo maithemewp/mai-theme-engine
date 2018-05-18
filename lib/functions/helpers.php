@@ -195,27 +195,6 @@ function mai_get_banner_id() {
 			// $image_id = get_term_meta( get_queried_object()->term_id, 'banner_id', true );
 			$image_id = mai_get_archive_setting( 'banner_id', false, false );
 		}
-// d( $image_id );
-		// If no image
-		// if ( ! $image_id ) {
-			// Get hierarchical taxonomy term meta
-			// $image_id = mai_get_term_meta_value_in_hierarchy( get_queried_object(), 'banner_id', false );
-			// If still no image
-			// if ( ! $image_id ) {
-// d( get_queried_object() );
-				// // Posts
-				// if ( 'post' === $post_type && ( $posts_page_id = get_option( 'page_for_posts' ) ) ) {
-				// 	$image_id = get_post_meta( $posts_page_id, 'banner_id', true );
-				// }
-				// // CPTs
-				// elseif ( post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
-				// 	// genesis_has_post_type_archive_support( $post_type ) ) {
-				// 	$image_id = genesis_get_cpt_option( 'banner_id', $post_type );
-				// }
-				// Check the archive settings, so we can fall back to the taxo's post_type setting
-				// $image_id = mai_get_archive_setting( 'banner_id', false );
-			// }
-		// }
 	}
 
 	// CPT archive
@@ -227,11 +206,6 @@ function mai_get_banner_id() {
 	elseif ( is_author() ) {
 		$image_id = get_the_author_meta( 'banner_id', get_query_var( 'author' ) );
 	}
-
-	// WooCommerce shop page
-	// elseif ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-	// 	$image_id = get_post_meta( $shop_page_id, 'banner_id', true );
-	// }
 
 	/**
 	 * If no banner, but we have a default,
@@ -247,34 +221,6 @@ function mai_get_banner_id() {
 	$image_id = apply_filters( 'mai_banner_image_id', $image_id );
 
 	return $image_id;
-}
-
-/**
- * Get a section.
- *
- * @param  array  $content  The section content (required).
- * @param  array  $args     The section args (optional).
- *
- * @return string|HTML
- */
-function mai_get_section( $content, $args = array() ) {
-	// return Mai_Shortcodes()->get_section( $args, $content );
-	$section = new Mai_Section( $args, $content );
-	return $section->render();
-}
-
-/**
- * Helper function to get a grid of content.
- * This is a php version of the [grid] shortcode.
- *
- * @param   array  $args  The [grid] shortcode atts.
- *
- * @return  string|HTML
- */
-function mai_get_grid( $args ) {
-	// return Mai_Shortcodes()->get_grid( $args, $args );
-	$section = new Mai_Grid( $args );
-	return $section->render();
 }
 
 /**
