@@ -174,7 +174,9 @@
 
 			// Resize the window resize.
 			$( window ).on( 'resize', function() {
-				_resizeToMatch( $element );
+				setTimeout( function() {
+					_resizeToMatch( $element );
+				}, 120 );
 			});
 
 		});
