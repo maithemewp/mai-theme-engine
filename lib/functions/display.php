@@ -314,16 +314,42 @@ function mai_get_the_posts_meta( $post = '' ) {
 }
 
 /**
+ * Get a section.
+ *
+ * @param  array  $content  The section content (required).
+ * @param  array  $args     The section args (optional).
+ *
+ * @return string|HTML
+ */
+function mai_get_section( $content, $args = array() ) {
+	$section = new Mai_Section( $args, $content );
+	return $section->render();
+}
+
+/**
+ * Helper function to get a grid of content.
+ * This is a php version of the [grid] shortcode.
+ *
+ * @param   array  $args  The [grid] shortcode atts.
+ *
+ * @return  string|HTML
+ */
+function mai_get_grid( $args ) {
+	$section = new Mai_Grid( $args );
+	return $section->render();
+}
+
+/**
  * Get the sections HTML.
  * Requires $sections to be valid section meta.
  *
+ * @access  private
  * @since   1.3.0
- *
- * @param   $sections  The 'mai_sections' meta data.
+ * @param   array  $sections  The 'mai_sections' meta data.
  *
  * @return  string|HTML  The sections HTML
  */
-function mai_get_sections_html( $sections ) {
+function mai_get_sections( $sections ) {
 
 	$html       = '';
 	$has_banner = mai_is_banner_area_enabled();
