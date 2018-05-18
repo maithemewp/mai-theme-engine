@@ -253,18 +253,7 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 		return;
 	}
 
-	$content = '';
-
-	// Loop through each section
-	foreach ( $sections as $section ) {
-
-		// Add h2 titles to the_content.
-		$content .= ! empty( $section['title'] ) ? sprintf( '<h2>%s</h2>', sanitize_text_field( $section['title'] ) ) : '';
-
-		// Add section content to the_content.
-		$content .= ! empty( $section['content'] ) ? mai_get_processed_content( $section['content'] ) : '';
-
-	}
+	$content = mai_get_sections_html( $sections );
 
 	// Remove this function so it doesn't cause infinite loop error.
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );

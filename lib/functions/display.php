@@ -312,3 +312,66 @@ function mai_get_the_posts_meta( $post = '' ) {
 	}
 	return $post_meta;
 }
+
+/**
+ * Get the sections HTML.
+ * Requires $sections to be valid section meta.
+ *
+ * @since   1.3.0
+ *
+ * @param   $sections  The 'mai_sections' meta data.
+ *
+ * @return  string|HTML  The sections HTML
+ */
+function mai_get_sections_html( $sections ) {
+
+	$html       = '';
+	$has_banner = mai_is_banner_area_enabled();
+	$has_h1     = false;
+
+	$settings = array(
+		'align',
+		'bg',
+		'class',
+		'content_width',
+		'text_size',
+		'height',
+		'id',
+		'inner',
+		'overlay',
+		'title',
+	);
+
+	// Loop through each section.
+	foreach ( $sections as $section ) {
+
+		// Reset args.
+		$args = array();
+
+		// Set the args.
+		foreach ( $settings as $setting ) {
+			$args[ $setting ] = isset( $section[ $setting ] ) ? $section[ $setting ] : '';
+		}
+
+		// Use h1 for title if no banner, no h1 yet, and we have title.
+		if ( ! $has_banner && ! $has_h1 && ! empty( $section['title'] ) ) {
+			$args['title_wrap'] = 'h1';
+			$has_h1             = true;
+		}
+
+		// Set the bg image.
+		$args['image'] = isset( $section['image_id'] ) ? $section['image_id'] : '';
+
+		// Set the content.
+		$content = isset( $section['content'] ) ? $section['content'] : '';
+
+		// Skip if no title and no content and no image.
+		if ( empty( $args['title'] ) && empty( $args['image'] ) && empty( $content ) ) {
+			continue;
+		}
+
+		$html .= mai_get_section( $content, $args );
+	}
+
+	return $html;
+}
