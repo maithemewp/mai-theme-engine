@@ -10,6 +10,7 @@
 * Added: [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
 * Added: WooCommerce star rating default styling.
 * Added: 'mai_sitemap_post_types' filter on Sitemap post types.
+* Added: Top margin to nested lists.
 * Changed: [grid] now defaults to order_by="menu_order" and order="ASC" when display a single hierarchical post type like pages.
 * Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
 * Changed: Removed editor stylesheet. We never used it properly, and Gutenberg is coming.
