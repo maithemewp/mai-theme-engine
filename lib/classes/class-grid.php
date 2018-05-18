@@ -972,7 +972,6 @@ class Mai_Grid {
 		$attributes['class'] = mai_add_classes( $this->get_entry_align_classes(), $attributes['class'] );
 
 		$light_content = false;
-		$valid_overlay = mai_is_valid_overlay( $this->args['overlay'] );
 
 		if ( $this->is_bg_image() ) {
 
@@ -989,7 +988,7 @@ class Mai_Grid {
 					$light_content = true;
 
 					// Set dark overlay if we don't have one.
-					$this->args['overlay'] = ! $valid_overlay ? 'dark' : $this->args['overlay'];
+					$this->args['overlay'] = empty( $this->args['overlay'] ) ? 'dark' : $this->args['overlay'];
 				}
 			}
 
@@ -1000,7 +999,7 @@ class Mai_Grid {
 			}
 		}
 
-		if ( $valid_overlay ) {
+		if ( mai_is_valid_overlay( $this->args['overlay'] ) ) {
 
 			// If we have a dark overlay, content is light.
 			if ( 'dark' === $this->args['overlay'] ) {
@@ -1014,7 +1013,7 @@ class Mai_Grid {
 		// Shade class
 		$attributes['class'] .= $light_content ? ' light-content' : '';
 
-		// TODO: WHY IS OVERLAY SO MESSED UP!?!?! CSS FOR DISPLAY WHEN IMAGE IS BG
+		// TODO: WHY IS OVERLAY SO MESSED UP!?!?! CSS FOR DISPLAY WHEN IMAGE IS BG. When not column the text is not on top.
 
 		/**
 		 * Main entry col wrap.
