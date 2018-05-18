@@ -21,6 +21,7 @@
 * Changed: Less aggressive removal of WooCommerce Shop page metaboxes.
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
+* Fixed: [grid] Keep content on top of overlay when hovering on image bg link.
 * Fixed: Mobile menu toggle getting squished when logos are big.
 * Fixed: Landing page template logo not centered when 'genesis_header_right hook is used.
 * Fixed: Blockquote weirdness when inserted after an image aligned left or right.
