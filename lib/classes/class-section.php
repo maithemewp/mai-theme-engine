@@ -8,16 +8,12 @@
 class Mai_Section {
 
 	private $args;
-
 	private $content;
-
 	private $has_content;
-
 	private $has_wrap;
-
 	private $has_overlay;
-
 	private $has_inner;
+
 
 	public function __construct( $args = array(), $content = null ) {
 
@@ -68,7 +64,6 @@ class Mai_Section {
 
 		// Add section args filter.
 		$this->args = apply_filters( 'mai_section_args', $this->args );
-
 	}
 
 	/**
@@ -97,7 +92,6 @@ class Mai_Section {
 			'context' => $this->args['context'],
 			'echo'    => false,
 		) );
-
 	}
 
 	/**
