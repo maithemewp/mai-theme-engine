@@ -118,55 +118,8 @@ function mai_do_sections_template() {
 			return;
 		}
 
-		$has_banner = mai_is_banner_area_enabled();
-		$has_h1     = false;
-
-		$settings = array(
-			'align',
-			'bg',
-			'class',
-			'content_width',
-			'text_size',
-			'height',
-			'id',
-			'inner',
-			'overlay',
-			'title',
-		);
-
-		// Loop through each section.
-		foreach ( $sections as $section ) {
-
-			// Reset args.
-			$args = array();
-
-			// Set the args.
-			foreach ( $settings as $setting ) {
-				$args[ $setting ] = isset( $section[ $setting ] ) ? $section[ $setting ] : '';
-			}
-
-			// Use h1 for title if no banner, no h1 yet, and we have title.
-			if ( ! $has_banner && ! $has_h1 && ! empty( $section['title'] ) ) {
-				$args['title_wrap'] = 'h1';
-				$has_h1             = true;
-			}
-
-			// Set the bg image.
-			$args['image'] = isset( $section['image_id'] ) ? $section['image_id'] : '';
-
-			// Set the content.
-			$content = isset( $section['content'] ) ? $section['content'] : '';
-
-			// Skip if no title and no content and no image.
-			if ( empty( $args['title'] ) && empty( $args['image'] ) && empty( $content ) ) {
-				continue;
-			}
-
-			echo mai_get_section( $content, $args );
-		}
-
+		echo mai_get_sections( $sections );
 	}
-
 }
 
 /**

@@ -253,7 +253,7 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 		return;
 	}
 
-	$content = mai_get_sections_html( $sections );
+	$content = mai_get_sections( $sections );
 
 	// Remove this function so it doesn't cause infinite loop error.
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
