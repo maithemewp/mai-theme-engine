@@ -55,7 +55,7 @@ class Mai_Section {
 			'height'        => sanitize_key( $this->args['height'] ),
 			'id'            => sanitize_html_class( $this->args['id'] ),
 			'image'         => absint( $this->args['image'] ),
-			'image_size'    => sanitize_key( $this->args['image_size'] ),
+			'image_size'    => sanitize_key( apply_filters( 'mai_section_image_size', 'banner', $this->args['context'] ) ),
 			'inner'         => sanitize_key( $this->args['inner'] ),
 			'overlay'       => sanitize_key( $this->args['overlay'] ),
 			'style'         => sanitize_text_field( $this->args['style'] ),
