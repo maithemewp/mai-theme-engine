@@ -17,7 +17,7 @@ function mai_enqueue_scripts() {
 	) );
 
 	// Maybe enabled responsive videos.
-	$responsive_videos = apply_filters( 'mai_responsive_videos', '__return_true' );
+	$responsive_videos = apply_filters( 'mai_enable_responsive_videos', '__return_true' );
 	if ( $responsive_videos ) {
 		// FitVids.
 		wp_enqueue_script( 'mai-responsive-videos', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/fitvids{$suffix}.js", array( 'jquery' ), '1.2.0', true );
