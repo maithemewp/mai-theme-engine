@@ -51,11 +51,11 @@ class Mai_Section {
 			'bg'            => mai_sanitize_hex_color( $this->args['bg'] ), // 3 or 6 dig hex color with or without hash
 			'class'         => mai_sanitize_html_classes( $this->args['class'] ),
 			'content_width' => sanitize_key( $this->args['content_width'] ),
-			'context'       => sanitize_html_class( $this->args['context'] ),
+			'context'       => sanitize_title_with_dashes( $this->args['context'] ),
 			'height'        => sanitize_key( $this->args['height'] ),
 			'id'            => sanitize_html_class( $this->args['id'] ),
 			'image'         => absint( $this->args['image'] ),
-			'image_size'    => sanitize_key( apply_filters( 'mai_section_image_size', 'banner', $this->args['context'] ) ),
+			'image_size'    => sanitize_key( $this->args['image_size'] ),
 			'inner'         => sanitize_key( $this->args['inner'] ),
 			'overlay'       => sanitize_key( $this->args['overlay'] ),
 			'style'         => sanitize_text_field( $this->args['style'] ),
@@ -65,6 +65,9 @@ class Mai_Section {
 			'wrapper'       => sanitize_key( $this->args['wrapper'] ),
 			'wrap_class'    => mai_sanitize_html_classes( $this->args['wrap_class'] ),
 		);
+
+		// Add section args filter.
+		$this->args = apply_filters( 'mai_section_args', $this->args );
 
 	}
 

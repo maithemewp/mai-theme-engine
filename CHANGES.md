@@ -4,7 +4,7 @@
 * Added: Banner title and description separation so it's much easier to remove or filter only the title or description.
 * Added: [section] 'image_size' parameter. Can also be filtered via shortcode_atts_section filter.
 * Added: [section] 'style' parameter for HTML inline styles.
-* Added: [section] Filter on image size.
+* Added: [section] 'context' parameter and setting to be used with new 'mai_section_args' filter.
 * Added: [grid] 'xs', 'sm', 'md', 'lg', 'xl' parameters to set the span of columns out of 12. '6' would be 1/2, since 6 is 1/2 of 12, as an example.
 * Added: [grid] 'exclude_displayed' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
 * Added: [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
