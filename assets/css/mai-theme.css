@@ -1138,8 +1138,8 @@ td {
 	z-index: 0;
 }
 
-.overlay * {
-	/* position: relative; */
+.overlay > * {
+	position: relative;
 	z-index: 1;
 }
 
@@ -1189,14 +1189,24 @@ td {
 	outline: none;
 }
 
-.bg-link:hover,
-.bg-link:focus {
-	background-color: rgba(0, 0, 0, 0.05);
+.bg-link:not(.overlay):hover,
+.bg-link:not(.overlay):focus {
+	background-color: rgba(0, 0, 0, 0.6);
 }
 
-.image-bg .bg-link:hover,
-.image-bg .bg-link:focus {
-	background-color: rgba(0, 0, 0, 0.4);
+.has-bg-link:hover.overlay-light::after,
+.has-bg-link:focus.overlay-light::after {
+	background-color: rgba(255, 255, 255, 0.8);
+}
+
+.has-bg-link:hover.overlay-dark::after,
+.has-bg-link:focus.overlay-dark::after {
+	background-color: rgba(0, 0, 0, 0.7);
+}
+
+.has-bg-link:hover.overlay-gradient::after,
+.has-bg-link:focus.overlay-gradient::after {
+	background-color: rgba(0, 0, 0, 0.6);
 }
 
 .has-bg-link > *,

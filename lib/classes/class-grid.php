@@ -986,7 +986,7 @@ class Mai_Grid {
 				if ( $has_bg_image ) {
 
 					$light_content = true;
-
+// TODO: THESE AREN'T WORKING YET! SEE HERE: https://maithemeengine.local/overlay-tests/
 					// Set dark overlay if we don't have one.
 					$this->args['overlay'] = empty( $this->args['overlay'] ) ? 'dark' : $this->args['overlay'];
 				}
