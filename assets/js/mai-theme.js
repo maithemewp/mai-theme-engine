@@ -117,35 +117,46 @@
  * Set an elements min-height
  * according to the aspect ratio of its' background image.
  *
- * @version  1.0.0
+ * @version  1.1.0
  */
 ( function( document, $, undefined ) {
 
-	// Aspect ratio elements
-	var $aspectElement = $( '.aspect-ratio' );
+	var el = '.aspect-ratio';
 
-	// If we have any elements
-	if ( $aspectElement.length > 0 ) {
+	_initResize( el );
 
-		// If the element is part of a slider
-		if ( $aspectElement.hasClass( 'mai-slide' ) ) {
+	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
+	$( document ).on( 'facetwp-loaded', function() {
+		_initResize( el );
+	});
 
-			// Get the slider element
-			var $slider = $aspectElement.parents( '.flex-grid' ).find( '.mai-slider' );
+	function _initResize( el ) {
 
-			/**
-			 * Setup resize after slider initialization
-			 * since additional elements are often created during init
-			 */
-			$slider.on( 'init', function( event, slick, direction ) {
-				var $additionalAspectElements = $( '.aspect-ratio' );
-				_setupResize( $additionalAspectElements );
-			});
+		// Aspect ratio elements
+		var $aspectElement = $( '.aspect-ratio' );
 
-		} else {
-			_setupResize( $aspectElement );
+		// If we have any elements
+		if ( $aspectElement.length > 0 ) {
+
+			// If the element is part of a slider
+			if ( $aspectElement.hasClass( 'mai-slide' ) ) {
+
+				// Get the slider element
+				var $slider = $aspectElement.parents( '.flex-grid' ).find( '.mai-slider' );
+
+				/**
+				 * Setup resize after slider initialization
+				 * since additional elements are often created during init
+				 */
+				$slider.on( 'init', function( event, slick, direction ) {
+					var $additionalAspectElements = $( '.aspect-ratio' );
+					_setupResize( $additionalAspectElements );
+				});
+
+			} else {
+				_setupResize( $aspectElement );
+			}
 		}
-
 	}
 
 	function _setupResize( $aspectElement ) {
