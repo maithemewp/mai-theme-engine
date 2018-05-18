@@ -1323,6 +1323,10 @@ td {
 	overflow: hidden;
 }
 
+.site-header .widget_search .search-form {
+	max-width: 240px;
+}
+
 .entry-content .search-form {
 	max-width: 240px;
 	margin-bottom: 40px;

@@ -24,6 +24,7 @@
 * Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: [grid] Keep content on top of overlay when hovering on image bg link.
+* Fixed: [grid] entry content text color when on a dark background.
 * Fixed: Mobile menu toggle getting squished when logos are big.
 * Fixed: Landing page template logo not centered when 'genesis_header_right hook is used.
 * Fixed: Blockquote weirdness when inserted after an image aligned left or right.
@@ -31,7 +32,7 @@
 * Fixed: Landing and Sitemap templates weren't overrideable in theme.
 * Fixed: Retain "Hide featured image" post meta value when removing the existing featured image.
 * Fixed: Current menu item css on Header Before nav.
-* Fixed: [grid] entry content text color when on a dark background.
+* Fixed: Max width on nav search widget to site header.
 
 #### 1.2.1 (2/15/18)
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.
