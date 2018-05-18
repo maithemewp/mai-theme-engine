@@ -1189,8 +1189,8 @@ td {
 	outline: none;
 }
 
-.bg-link:not(.overlay):hover,
-.bg-link:not(.overlay):focus {
+.has-bg-link:not(.overlay):hover,
+.has-bg-link:not(.overlay):focus {
 	background-color: rgba(0, 0, 0, 0.6);
 }
 
