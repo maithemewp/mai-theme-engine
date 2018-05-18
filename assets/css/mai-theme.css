@@ -3664,9 +3664,7 @@ li.comment {
 /* # Media Queries (mobile-first)
 ---------------------------------------------------------------------------------------------------- */
 
-@media only screen and (min-width: 1160px) {}
-
-@media only screen and (min-width: 993px) {}
+@media only screen and (min-width: 545px) {}
 
 @media only screen and (min-width: 769px) {
 
@@ -3752,7 +3750,9 @@ li.comment {
 
 }
 
-@media only screen and (min-width: 545px) {}
+@media only screen and (min-width: 993px) {}
+
+@media only screen and (min-width: 1160px) {}
 
 /* # Media Queries (mobile-second)
 ---------------------------------------------------------------------------------------------------- */
