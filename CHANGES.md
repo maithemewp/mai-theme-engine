@@ -5,8 +5,9 @@
 * Added: [section] 'image_size' parameter. Can also be filtered via shortcode_atts_section filter.
 * Added: [section] 'style' parameter for HTML inline styles.
 * Added: [section] 'context' parameter and setting to be used with new 'mai_section_args' filter.
-* Added: [grid] 'xs', 'sm', 'md', 'lg', 'xl' parameters to set the span of columns out of 12. '6' would be 1/2, since 6 is 1/2 of 12, as an example.
+* Added: [grid] 'adaptiveheight' parameter to allow the grid height to shrink/grow depending on each slide's content. Works best when columns="1".
 * Added: [grid] 'exclude_displayed' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
+* Added: [grid] 'xs', 'sm', 'md', 'lg', 'xl' parameters to set the span of columns out of 12. '6' would be 1/2, since 6 is 1/2 of 12, as an example.
 * Added: [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
 * Added: WooCommerce star rating default styling.
 * Added: 'mai_sitemap_post_types' filter on Sitemap post types.
