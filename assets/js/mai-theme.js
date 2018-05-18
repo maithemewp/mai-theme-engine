@@ -14,7 +14,7 @@
 })( document, jQuery );
 
 /**
- * Handle spacing for sticky-header and shrink-header.
+ * Handle sticky-header, shrink-header, and scroll logic.
  *
  * @version  1.0.0
  */
@@ -197,8 +197,8 @@
 
 
 /**
- * Convert menu items with .search class to a search icon with a fade in search box
- * Show/hide search box on click, and allow closing by clicking outside of search box
+ * Convert menu items with .search class to a search icon with a fade in search box.
+ * Show/hide search box on click, and allow closing by clicking outside of search box.
  *
  * @version  1.0.0
  */
@@ -221,10 +221,10 @@
 		toggleAria( $searchButton, 'aria-pressed' );
 		toggleAria( $searchButton, 'aria-expanded' );
 
-		// Add the search box after the link
+		// Add the search box after the link.
 		$this.append( maiVars.search_box );
 
-		// On click of the search button
+		// On click of the search button.
 		$this.on( 'click', 'button', function(e){
 
 			e.preventDefault();
@@ -232,7 +232,7 @@
 			toggleAria( $(this), 'aria-pressed' );
 			toggleAria( $(this), 'aria-expanded' );
 
-			// Close if the button has open class, otherwise open
+			// Close if the button has open class, otherwise open.
 			if ( $this.hasClass( 'activated' ) ) {
 
 				_searchClose( $this );
@@ -245,8 +245,8 @@
 				$( 'body' ).mouseup(function(e){
 					/**
 					 * Bail if:
-					 * If click is on our search box container
-					 * If click is on a child of our search box container
+					 * If click is on our search box container.
+					 * If click is on a child of our search box container.
 					 */
 					if ( $(this).hasClass( 'search-box' ) || ( $this.has(e.target).length ) ) {
 						return;
@@ -254,16 +254,16 @@
 					_searchClose( $this );
 				});
 
-				// Close search if esc key pressed
+				// Close search if esc key pressed.
 				$(document).keydown(function(e) {
-					// Use switch to easily add new keystrokes
+					// Use switch to easily add new keystrokes.
 					switch(e.which) {
-						case 27: // esc
-						// Close search box with esc key
+						case 27: // esc.
+						// Close search box with esc key.
 						_searchClose( $this );
 						break;
 
-						default: return; // exit this handler for other keys
+						default: return; // exit this handler for other keys.
 					}
 				});
 
@@ -272,12 +272,12 @@
 
 	});
 
-	// Helper function to open search form and add class to search button
+	// Helper function to open search form and add class to search button.
 	function _searchOpen( $this ) {
 		$this.addClass( 'activated' ).find( '.search-box' ).fadeIn( 'fast' ).find( 'input[type="search"]' ).focus();
 	}
 
-	// Helper function to close search form and remove class to search button
+	// Helper function to close search form and remove class to search button.
 	function _searchClose( $this ) {
 		$this.removeClass( 'activated' ).find( '.search-box' ).fadeOut( 'fast' );
 	}
@@ -286,8 +286,8 @@
 
 
 /**
- * This script adds the accessibility-ready responsive menu
- * Based off https://github.com/copyblogger/responsive-menus
+ * This script adds the accessibility-ready responsive menu.
+ * Based off https://github.com/copyblogger/responsive-menus.
  *
  * @version  1.0.0
  */
@@ -319,7 +319,6 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 				'role' : 'button'
 			} )
 			.append( '<span class="screen-reader-text">' + maiMenuParams.mainMenu + '</span><span class="mai-bars"></span></span>' ),
-			// .append( '<span class="screen-reader-text">' + maiMenuParams.mainMenu + '</span><span class="mai-bars"><span class="mai-bar"></span><span class="mai-bar"></span><span class="mai-bar"></span></span>' ),
 			submenu : $( '<button />', {
 				'class' : subMenuButtonClass,
 				'aria-expanded' : false,
@@ -329,13 +328,13 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 			.append( '<span class="screen-reader-text">' + maiMenuParams.subMenu + '</span>' ),
 		};
 
-		// Add the main nav and sub-menu toggle button
+		// Add the main nav and sub-menu toggle button.
 		_addMenuButtons( toggleButtons );
 
-		// Add the responsive menu class to the menus
+		// Add the responsive menu class to the menus.
 		_addResponsiveMenuClass();
 
-		// Action triggers
+		// Action triggers.
 		$( '.' + maiButtonClass ).on( 'click.maiMenu-mainbutton', _maiMenuToggle );
 		$( '.' + subMenuButtonClass ).on( 'click.maiMenu-subbutton', _submenuToggle );
 		$( window ).on( 'resize.maiMenu', _doResize ).triggerHandler( 'resize.maiMenu' );
@@ -343,15 +342,15 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	};
 
 	/**
-	 * Add toggle buttons
+	 * Add toggle buttons.
 	 * @param {toggleButtons} Object of menu buttons to use for toggles.
 	 */
 	function _addMenuButtons( toggleButtons ) {
 
-		$( '.site-header-row' ).append( toggleButtons.menu ); // add the main nav button
+		$( '.site-header-row' ).append( toggleButtons.menu ); // add the main nav button.
 
 		if ( $mobileMenus.length > 0 ) {
-			$( '.' + maiMenuClass ).find( '.sub-menu' ).before( toggleButtons.submenu ); // add the submenu nav buttons
+			$( '.' + maiMenuClass ).find( '.sub-menu' ).before( toggleButtons.submenu ); // add the submenu nav buttons.
 		}
 
 	}
@@ -390,34 +389,34 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 		$body.toggleClass( 'mai-menu-activated' );
 
 		if ( $body.hasClass( 'side-menu' ) ) {
-			// Side menu activated class
+			// Side menu activated class.
 			$body.toggleClass( 'mai-side-menu-activated' );
 		} else {
-			// Standard menu activated class
+			// Standard menu activated class.
 			$body.toggleClass( 'mai-standard-menu-activated' );
-			// Standard menu, toggle it down/up
+			// Standard menu, toggle it down/up.
 			$maiMenu.slideToggle( 'fast' );
 		}
 
-		// Allow additional keyboard nav
+		// Allow additional keyboard nav.
 		if ( $body.hasClass( 'mai-menu-activated' ) ) {
 
 			$(document).keydown(function(e) {
-				// Use switch to easily add new keystrokes
+				// Use switch to easily add new keystrokes.
 				switch(e.which) {
-					case 27: // esc
-					// Close popup with esc key
+					case 27: // esc.
+					// Close popup with esc key.
 					_closeAll();
 					break;
 
-					default: return; // exit this handler for other keys
+					default: return; // exit this handler for other keys.
 				}
-				e.preventDefault(); // prevent the default action (scroll / move caret)
+				e.preventDefault(); // prevent the default action (scroll / move caret).
 			});
 
 		}
 
-		// On click of close button, close all
+		// On click of close button, close all.
 		$(document).on( 'click', '.menu-close', function(e){
 			_closeAll();
 		});
@@ -477,7 +476,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	}
 
 	/**
-	 * Maybe close all the things
+	 * Maybe close all the things.
 	 */
 	function _maybeClose() {
 
@@ -490,7 +489,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	}
 
 	/**
-	 * Close all the things
+	 * Close all the things.
 	 */
 	function _closeAll() {
 
@@ -511,15 +510,15 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 			.attr( 'style', '' )
 			.attr( 'aria-pressed', false );
 
-		// Hide any open sub-menus
+		// Hide any open sub-menus.
 		$( '.' + menuClass + ' .sub-menu' ).hide();
 
 	}
 
 	/**
 	 * Generic function to get the display value of an element.
-	 * @param  {id} $id ID to check
-	 * @return {string} CSS value of display property
+	 * @param  {id} $id ID to check.
+	 * @return {string} CSS value of display property.
 	 */
 	function _getDisplayValue( $id ) {
 		var element = document.getElementById( $id ),
@@ -528,7 +527,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	}
 
 	/**
-	 * Helper function to return a group array of all the mobile menus
+	 * Helper function to return a group array of all the mobile menus.
 	 * @return {array} Array of all menu items as class selectors.
 	 */
 	function _getAllMenusArray() {
@@ -553,10 +552,10 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 	}
 
-	// Make it happen
+	// Make it happen.
 	$(document).ready(function () {
 
-		// Initiate if there is menu content
+		// Initiate if there is menu content.
 		if ( $maiMenu.length > 0 ) {
 			maiMenu.init();
 		}
@@ -567,9 +566,9 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 /**
  * Toggle aria attributes.
- * @param  {button} $this   passed through
- * @param  {aria-xx}        attribute aria attribute to toggle
- * @return {bool}           from _ariaReturn
+ * @param  {button} $this   passed through.
+ * @param  {aria-xx}        attribute aria attribute to toggle.
+ * @return {bool}           from _ariaReturn.
  */
 function toggleAria( $this, attribute ) {
 	$this.attr( attribute, function( index, value ) {
@@ -579,7 +578,7 @@ function toggleAria( $this, attribute ) {
 
 
 /**
- * Scroll to a div id
+ * Scroll to a div id.
  *
  * Link
  * <a class="scroll-to" href="#element-id">Text</a>
