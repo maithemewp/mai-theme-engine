@@ -13,7 +13,8 @@ jQuery(document).ready(function($) {
 
 	$.each( $sliders, function() {
 
-		var arrows         = Boolean( $(this).data('arrows') ),
+		var adaptiveHeight = Boolean( $(this).data('adaptiveheight') ),
+			arrows         = Boolean( $(this).data('arrows') ),
 			autoPlay       = Boolean( $(this).data('autoplay') ),
 			centerMode     = Boolean( $(this).data('centermode') ),
 			dots           = Boolean( $(this).data('dots') ),
@@ -76,7 +77,7 @@ jQuery(document).ready(function($) {
 		}
 
 		$(this).slick({
-			adaptiveHeight: false, // true breaks things on image-bg aspect-ratio resize.
+			adaptiveHeight: adaptiveHeight,
 			arrows: arrows,
 			autoplay: autoPlay,
 			dots: dots,

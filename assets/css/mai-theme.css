@@ -1529,6 +1529,7 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex: 0 1 auto;-webkit-box-flex: 0;flex: 0 1 auto;
 	max-width: auto;
+	height: 100%;
 }
 
 .mai-slider.slick-initialized .slick-slide {

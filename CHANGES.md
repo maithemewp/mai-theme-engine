@@ -11,7 +11,7 @@
 * Added: WooCommerce star rating default styling.
 * Added: 'mai_sitemap_post_types' filter on Sitemap post types.
 * Added: Top margin to nested lists.
-* Changed: [grid] now defaults to order_by="menu_order" and order="ASC" when display a single hierarchical post type like pages.
+* Changed: [grid] Now defaults to order_by="menu_order" and order="ASC" when display a single hierarchical post type like pages.
 * Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
 * Changed: Removed editor stylesheet. We never used it properly, and Gutenberg is coming.
 * Changed: WooCommerce up-sells, cross-sells, and related product columns now have their own filters. Cross-sells now default to 2 columns so they fit better on the cart page.
@@ -21,10 +21,11 @@
 * Changed: Bumped normalize CSS to 8.0.0.
 * Changed: Less aggressive removal of WooCommerce Shop page metaboxes.
 * Changed: Removed site title/logo toggle from Customizer.
-* Fixed: [grid] stripping image if image_location="before_entry" and content_limit was too low.
+* Fixed: [grid] Stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: [grid] Keep content on top of overlay when hovering on image bg link.
-* Fixed: [grid] entry content text color when on a dark background.
+* Fixed: [grid] Entry content text color when on a dark background.
+* Fixed: [grid] Only show bg image when show contains image in its values.
 * Fixed: Mobile menu toggle getting squished when logos are big.
 * Fixed: Landing page template logo not centered when 'genesis_header_right hook is used.
 * Fixed: Blockquote weirdness when inserted after an image aligned left or right.

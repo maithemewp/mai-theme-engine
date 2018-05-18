@@ -91,6 +91,7 @@ class Mai_Grid {
 			'lg'                   => '',
 			'xl'                   => '',
 			'slider'               => false,   // (slider only) Make the columns a slider
+			'adaptiveheight'       => false,   // (slider only) Resize to the height of the content in each slide
 			'arrows'               => true,    // (slider only) Whether to display arrows
 			'autoplay'             => false,   // (slider only) Whether to autoplay the slider
 			'center_mode'          => false,   // (slider only) Mobile 'peek'
@@ -165,6 +166,7 @@ class Mai_Grid {
 			'lg'                   => sanitize_key( $this->args['lg'] ),
 			'xl'                   => sanitize_key( $this->args['xl'] ),
 			'slider'               => filter_var( $this->args['slider'], FILTER_VALIDATE_BOOLEAN ),
+			'adaptiveheight'       => filter_var( $this->args['adaptiveheight'], FILTER_VALIDATE_BOOLEAN ),
 			'arrows'               => filter_var( $this->args['arrows'], FILTER_VALIDATE_BOOLEAN ),
 			'autoplay'             => filter_var( $this->args['autoplay'], FILTER_VALIDATE_BOOLEAN ),
 			'center_mode'          => filter_var( $this->args['center_mode'], FILTER_VALIDATE_BOOLEAN ),
@@ -980,8 +982,11 @@ class Mai_Grid {
 
 			if ( $object_id ) {
 
-				// Add background image with aspect ratio attributes.
-				$attributes = mai_add_background_image_attributes( $attributes, $this->get_image_id( $object_id ), $this->args['image_size'] );
+				// Don't pass image ID if we're not showing it.
+				$image_id = $has_bg_image ? $this->get_image_id( $object_id ) : false;
+
+				// Add background image and/or aspect ratio attributes.
+				$attributes = mai_add_background_image_attributes( $attributes, $image_id, $this->args['image_size'] );
 
 				if ( $has_bg_image ) {
 
@@ -1040,6 +1045,7 @@ class Mai_Grid {
 	 * @return  array  The modified $attributes.
 	 */
 	function add_slider_data_attributes( $attributes ) {
+		$attributes['data-adaptiveheight'] = $this->args['adaptiveheight'] ? 'true' : 'false';
 		$attributes['data-arrows']         = $this->args['arrows'] ? 'true' : 'false';
 		$attributes['data-autoplay']       = $this->args['autoplay'] ? 'true' : 'false';
 		$attributes['data-center']         = in_array( 'center', $this->args['align'] ) ? 'true' : 'false';
