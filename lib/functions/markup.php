@@ -486,7 +486,7 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 
 	// If we have an image, add it as inline style.
 	if ( $image ) {
-		// TODO: IS THIS WHERE BG IMAGE IS GETTING ADDED TWICE?
+
 		// Add background image
 		$styles     = sprintf( 'background-image: url(%s);', $image[0] );
 		$attributes = mai_add_inline_styles( $attributes, $styles );
