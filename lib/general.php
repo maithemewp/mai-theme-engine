@@ -122,6 +122,7 @@ function mai_do_boxed_elements() {
 				return $attributes;
 			});
 
+			// TODO: Move this setting/check into [grid] and add a parameter?
 			if ( 'entry' === $atts[ $element ] ) {
 				add_filter( 'genesis_attr_flex-entry', function( $attributes ) {
 					$attributes['class'] .= ' boxed';
