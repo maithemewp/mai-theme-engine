@@ -1502,16 +1502,16 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	margin-bottom: 0;
 }
 
-.mai-slider[data-slidestoscroll="2"] .mai-slide {
+.mai-slider[data-slidestoscroll="2"]:not(.slick-initialized) .mai-slide {
 	max-width: 50%;
 }
-.mai-slider[data-slidestoscroll="3"] .mai-slide {
+.mai-slider[data-slidestoscroll="3"]:not(.slick-initialized) .mai-slide {
 	max-width: 33.33333333%;
 }
-.mai-slider[data-slidestoscroll="4"] .mai-slide {
+.mai-slider[data-slidestoscroll="4"]:not(.slick-initialized) .mai-slide {
 	max-width: 25%;
 }
-.mai-slider[data-slidestoscroll="6"] .mai-slide {
+.mai-slider[data-slidestoscroll="6"]:not(.slick-initialized) .mai-slide {
 	max-width: 16.66666667%;
 }
 
