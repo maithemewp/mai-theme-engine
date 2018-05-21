@@ -574,7 +574,9 @@ input[type="submit"],
 .woocommerce button.button,
 .woocommerce input.button,
 .woocommerce .button.alt.single_add_to_cart_button,
-.woocommerce .button.alt.checkout-button {
+.woocommerce .button.alt.checkout-button,
+.woocommerce #payment #place_order,
+.woocommerce-page #payment #place_order {
 	display: -webkit-inline-box;display: -ms-inline-flexbox;display: inline-flex;
 	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
 	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
@@ -624,6 +626,10 @@ input:focus[type="submit"],
 .woocommerce .button.alt.single_add_to_cart_button:focus,
 .woocommerce .button.alt.checkout-button:hover,
 .woocommerce .button.alt.checkout-button:focus,
+.woocommerce #payment #place_order:hover,
+.woocommerce #payment #place_order:focus,
+.woocommerce-page #payment #place_order:hover,
+.woocommerce-page #payment #place_order:focus,
 .woocommerce #respond input#submit.alt.disabled,
 .woocommerce #respond input#submit.alt.disabled:hover,
 .woocommerce #respond input#submit.alt:disabled,
@@ -661,7 +667,11 @@ input[type="button"],
 input[type="reset"],
 input[type="submit"],
 .button,
-.entry-content .button {
+.entry-content .button,
+.woocommerce #respond input#submit,
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button {
 	font-size: 1rem;
 	padding: 14px 20px;
 }
