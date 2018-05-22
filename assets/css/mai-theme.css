@@ -1045,10 +1045,12 @@ td {
 .entry.boxed,
 .after-entry .widget.boxed,
 .author-box.boxed,
+.adjacent-entry-pagination a.boxed,
 .comment-respond.boxed,
 .entry-comments.boxed,
 .comment-respond-wrap.boxed,
 .entry-pings.boxed,
+.sidebar.boxed,
 .sidebar .widget.boxed,
 .after-entry .widget.boxed {
 	background-color: #fff;
@@ -1059,11 +1061,14 @@ td {
 .entry:not(.boxed),
 .after-entry .widget:not(.boxed),
 .author-box:not(.boxed),
+.adjacent-entry-pagination a:not(.boxed),
 .comment-respond:not(.boxed),
 .entry-comments:not(.boxed),
 .entry-pings:not(.boxed),
+.sidebar:not(.boxed),
 .sidebar .widget:not(.boxed),
 .after-entry .widget:not(.boxed) {
+	border: none;
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
@@ -3122,6 +3127,11 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 .adjacent-entry-pagination a {
 	/* background-color: #fff; */
 	/* border: 1px solid rgba(0, 0, 0, 0.06); */
+}
+
+.entry a {
+	/* fixed bug when grid entry with bg image has no image */
+	color: inherit;
 }
 
 .entry.image-bg {

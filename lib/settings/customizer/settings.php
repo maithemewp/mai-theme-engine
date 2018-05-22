@@ -108,6 +108,7 @@ function mai_register_customizer_settings( $wp_customize ) {
 					'sidebar_alt_widgets' => __( 'Secondary Sidebar Widget', 'mai-theme-engine' ),
 					'author_box'          => __( 'After Entry Author Box', 'mai-theme-engine' ),
 					'after_entry_widgets' => __( 'After Entry Widgets', 'mai-theme-engine' ),
+					'adjacent_entry_nav'  => __( 'Previous/Next Entry Navigation', 'mai-theme-engine' ),
 					'comments'            => __( 'Comments', 'mai-theme-engine' ),
 					'comment_respond'     => __( 'Comment Submission Form', 'mai-theme-engine' ),
 					'pings'               => __( 'Pings and Trackbacks', 'mai-theme-engine' ),
