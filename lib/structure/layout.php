@@ -254,17 +254,17 @@ function mai_do_layout() {
 	}
 
 	// Add flexington row classes to the content sidebar wrap
-	add_filter( 'genesis_attr_content-sidebar-wrap', function( $attributes ) use ( $layout, $sidebars ) {
-		$gutter = '';
-		$align  = ' around-xs';
-		// Remove alignment and add gutter
-		if ( in_array( $layout, $sidebars ) ) {
-			$gutter = ' gutter-30';
-			$align  = '';
-		}
-		$attributes['class'] .= ' row' . $gutter . $align;
-		return $attributes;
-	});
+	// add_filter( 'genesis_attr_content-sidebar-wrap', function( $attributes ) use ( $layout, $sidebars ) {
+	// 	$gutter = '';
+	// 	$align  = ' around-xs';
+	// 	// Remove alignment and add gutter
+	// 	if ( in_array( $layout, $sidebars ) ) {
+	// 		$gutter = ' gutter-30';
+	// 		$align  = '';
+	// 	}
+	// 	$attributes['class'] .= ' row' . $gutter . $align;
+	// 	return $attributes;
+	// });
 
 	/**
 	 * Add flexington column classes to the content
@@ -277,42 +277,42 @@ function mai_do_layout() {
 		if ( in_array( $layout, $no_sidebars ) ) {
 			$classes .= ' content-no-sidebars';
 		}
-		$classes .= ' col col-xs-12 col-md';
-		if ( in_array( $layout, $double_sidebars ) ) {
-			// Break to full width earlier when there are 2 sidebars
-			$classes .= ' col col-xs-12 col-lg-6';
-		}
-		if ( in_array( $layout, $double_secondary_first_content_last ) ) {
-			$classes .= ' last-lg';
-		}
+		// $classes .= ' col col-xs-12 col-md';
+		// if ( in_array( $layout, $double_sidebars ) ) {
+		// 	// Break to full width earlier when there are 2 sidebars
+		// 	$classes .= ' col col-xs-12 col-lg-6';
+		// }
+		// if ( in_array( $layout, $double_secondary_first_content_last ) ) {
+		// 	$classes .= ' last-lg';
+		// }
 		$attributes['class'] .= $classes;
 		return $attributes;
 	});
 
 	// Add flexington column classes to the primary sidebar
-	add_filter( 'genesis_attr_sidebar-primary', function( $attributes ) use ( $layout, $double_sidebars, $single_primary_first ) {
-		$classes = ' col col-xs-12 col-md-4';
-		if ( in_array( $layout, $double_sidebars ) ) {
-		// Break to full width earlier when there are 2 sidebars
-			$classes = ' col col-xs-12 col-lg-4';
-		}
-		if ( in_array( $layout, $single_primary_first ) ) {
-			$classes .= ' first-md';
-		}
-		$attributes['class'] .= $classes;
-		return $attributes;
-	});
+	// add_filter( 'genesis_attr_sidebar-primary', function( $attributes ) use ( $layout, $double_sidebars, $single_primary_first ) {
+	// 	$classes = ' col col-xs-12 col-md-4';
+	// 	if ( in_array( $layout, $double_sidebars ) ) {
+	// 	// Break to full width earlier when there are 2 sidebars
+	// 		$classes = ' col col-xs-12 col-lg-4';
+	// 	}
+	// 	if ( in_array( $layout, $single_primary_first ) ) {
+	// 		$classes .= ' first-md';
+	// 	}
+	// 	$attributes['class'] .= $classes;
+	// 	return $attributes;
+	// });
 
 	// Add flexington column classes to the secondary sidebar.
-	add_filter( 'genesis_attr_sidebar-secondary', function( $attributes ) use ( $layout, $secondary_first ) {
-		// This will only show if there are 2 sidebars, no need for the conditional above
-		$classes = ' col col-xs-12 col-lg-2';
-		if ( in_array( $layout, $secondary_first ) ) {
-			$classes .= ' first-lg';
-		}
-		$attributes['class'] .= $classes;
-		return $attributes;
-	});
+	// add_filter( 'genesis_attr_sidebar-secondary', function( $attributes ) use ( $layout, $secondary_first ) {
+	// 	// This will only show if there are 2 sidebars, no need for the conditional above
+	// 	$classes = ' col col-xs-12 col-lg-2';
+	// 	if ( in_array( $layout, $secondary_first ) ) {
+	// 		$classes .= ' first-lg';
+	// 	}
+	// 	$attributes['class'] .= $classes;
+	// 	return $attributes;
+	// });
 
 }
 

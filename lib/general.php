@@ -109,6 +109,8 @@ function mai_do_boxed_elements() {
 			$name = $boxed[ $element ];
 
 			add_filter( "genesis_attr_{$boxed[ $element ]}", function( $attributes ) use ( $name ) {
+				// d( is_main_query() );
+				// d( in_the_loop() );
 				// If boxing entries, make sure it's only the main entries.
 				if ( ( 'entry' !== $name ) && ! is_main_query() ) {
 					return $attributes;
@@ -287,16 +289,18 @@ function mai_get_boxed_element( $key ) {
 
 function mai_get_boxed_elements_array() {
 	return array(
-		'entry'               => 'entry',
-		'sidebar'             => 'sidebar-primary',
-		'sidebar_widgets'     => '',
-		'sidebar_alt'         => 'sidebar-secondary',
-		'sidebar_alt_widgets' => '',
-		'after_entry_widgets' => '',
-		'author_box'          => 'author-box',
-		'adjacent_entry_nav'  => 'adjacent-entry-pagination',
-		'comments'            => 'entry-comments',
-		'comment_respond'     => '',
-		'pings'               => '',
+		'content_sidebar_wrap' => 'content-sidebar-wrap',
+		'content'              => 'content',
+		'entry'                => 'entry',
+		'sidebar'              => 'sidebar-primary',
+		'sidebar_widgets'      => '',
+		'sidebar_alt'          => 'sidebar-secondary',
+		'sidebar_alt_widgets'  => '',
+		'after_entry_widgets'  => '',
+		'author_box'           => 'author-box',
+		'adjacent_entry_nav'   => 'adjacent-entry-pagination',
+		'comments'             => 'entry-comments',
+		'comment_respond'      => '',
+		'pings'                => '',
 	);
 }
