@@ -722,7 +722,6 @@ input[type="submit"].small,
 	color: #515151;
 }
 
-
 button.white,
 input[type="button"].white,
 input[type="reset"].white,
@@ -860,8 +859,20 @@ td {
 	word-break: break-word; /* Non standard for WebKit */
 }
 
-.content {
+.content-sidebar-wrap {
 	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.banner-area + .content-sidebar-wrap {
+	margin-top: 0;
+}
+
+.mai-sections .content-sidebar-wrap {
+	margin-bottom: 0;
+}
+
+.content {
 	margin-bottom: 30px;
 }
 
@@ -911,7 +922,6 @@ td {
 
 .content,
 .breadcrumb {
-	width: 100%;
 	max-width: 100%;
 }
 
@@ -1038,6 +1048,73 @@ td {
 
 /* # Common Classes
 ---------------------------------------------------------------------------------------------------- */
+
+/* ## Boxed
+--------------------------------------------- */
+
+.content-sidebar-wrap.boxed,
+.content.boxed,
+.entry.boxed,
+.after-entry .widget.boxed,
+.author-box.boxed,
+.adjacent-entry-pagination a.boxed,
+.comment-respond.boxed,
+.entry-comments.boxed,
+.comment-respond-wrap.boxed,
+.entry-pings.boxed,
+.sidebar.boxed,
+.sidebar .widget.boxed,
+.after-entry .widget.boxed {
+	background-color: #fff;
+	padding: 24px;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.content-sidebar-wrap:not(.boxed),
+.content:not(.boxed),
+.entry:not(.boxed),
+.after-entry .widget:not(.boxed),
+.author-box:not(.boxed),
+.adjacent-entry-pagination a:not(.boxed),
+.comment-respond:not(.boxed),
+.entry-comments:not(.boxed),
+.entry-pings:not(.boxed),
+.sidebar:not(.boxed),
+.sidebar .widget:not(.boxed),
+.after-entry .widget:not(.boxed) {
+	border: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.content .author-box:not(.boxed),
+.after-entry .widget:not(.boxed),
+.comment-respond:not(.boxed),
+.entry-comments:not(.boxed),
+.entry-pings:not(.boxed) {
+	margin-top: 60px;
+	margin-bottom: 60px;
+}
+
+.flex-entry.boxed .entry-image-before-entry.alignnone {
+	width: calc(100% + 48px);
+	max-width: calc(100% + 48px);
+}
+
+.flex-entry.boxed .entry-image-before-entry.alignnone {
+	margin-top: -24px;
+	margin-left: -24px;
+	margin-right: -24px;
+}
+
+.entry-comments.boxed {
+	padding: 4% 0 4% 4%;
+}
+
+.comment-respond-wrap.boxed,
+.entry-pings.boxed {
+	padding: 4% 4% 2%;
+}
 
 /* ## Callout
 --------------------------------------------- */
@@ -1468,14 +1545,8 @@ img.alignright,
 	color: rgba(0, 0, 0, 0.75);
 }
 
-body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
-	/* offset .content top margin */
-	margin-top: -30px;
-}
-
 .content .archive-description {
 	clear: both; /* mostly for Woo taxonomy results count and ordering */
-	margin-top: 16px;
 	margin-bottom: 30px;
 }
 
@@ -1735,7 +1806,6 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	font-size: 0;
 	line-height: 1;
 	text-align: center;
-	vertical-align: middle;
 	padding: 0;
 	border: none;
 	border-radius: 50%;
@@ -3067,17 +3137,9 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 /* ## Entries
 --------------------------------------------- */
 
-.entry,
-.after-entry .widget,
-.author-box,
-.comment-respond,
-.entry-comments,
-.entry-pings,
-.sidebar .widget,
-.after-entry .widget,
-.adjacent-entry-pagination a {
-	background-color: #fff;
-	border: 1px solid rgba(0, 0, 0, 0.06);
+.entry a {
+	/* fixed bug when grid entry with bg image has no image */
+	color: inherit;
 }
 
 .entry.image-bg {
@@ -3094,11 +3156,8 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	margin-bottom: -1px;
 }
 
-.content .entry,
 .flex-entry.image-bg,
-.author-box,
-.sidebar .widget,
-.after-entry .widget,
+.flex-entry.image-bg-none,
 .form-allowed-tags {
 	padding: 24px;
 }
@@ -3193,15 +3252,6 @@ p ~ .flex-grid {
 	display: block;
 	font-size: 0;
 	line-height: 1;
-}
-
-.flex-entry .entry-image-before-entry.alignnone {
-	/* offset the entry padding */
-	width: calc(100% + 48px);
-	max-width: calc(100% + 48px);
-	margin-top: -24px;
-	margin-left: -24px;
-	margin-right: -24px;
 }
 
 .flex-entry.column .entry-image-before-entry + .entry-header,
@@ -3434,15 +3484,6 @@ p.entry-meta {
 
 /* ## Comments
 --------------------------------------------- */
-
-.entry-comments {
-	padding: 4% 0 4% 4%;
-}
-
-.comment-respond,
-.entry-pings {
-	padding: 4% 4% 2%;
-}
 
 .comment-content {
 	clear: both;
@@ -3707,7 +3748,7 @@ li.comment {
 	}
 
 	.sidebar {
-		margin-top: 30px;
+		/* margin-top: 30px; */
 		margin-bottom: 30px;
 	}
 
@@ -3765,7 +3806,37 @@ li.comment {
 
 }
 
-@media only screen and (min-width: 993px) {}
+@media only screen and (min-width: 993px) {
+
+	.content-sidebar-wrap {
+		display: -ms-grid;
+		display: grid;
+		grid-gap: 40px;
+	}
+
+	.content-sidebar .content-sidebar-wrap {
+		-ms-grid-columns: 1fr 324px;
+		grid-template-columns: 1fr 324px;
+	}
+
+	.sidebar-content .content-sidebar-wrap {
+		-ms-grid-columns: 324px 1fr;
+		grid-template-columns: 324px 1fr;
+	}
+
+	.sidebar-content .sidebar {
+		-webkit-box-ordinal-group: 2;
+		-ms-flex-order: 1;
+		order: 1;
+	}
+
+	.sidebar-content .content {
+		-webkit-box-ordinal-group: 3;
+		-ms-flex-order: 2;
+		order: 2;
+	}
+
+}
 
 @media only screen and (min-width: 1160px) {}
 

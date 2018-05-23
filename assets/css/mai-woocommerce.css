@@ -66,7 +66,7 @@
 	margin-bottom: 30px;
 }
 
-.flex-entry.entry > .woocommerce-LoopProduct-link {
+.flex-entry.entry.boxed > .woocommerce-LoopProduct-link {
 	font-size: 0;
 	margin: -25px -25px 12px;
 }
@@ -282,11 +282,11 @@ body.woocommerce #reviews h3 {
 	width: 100%;
 }
 
-.related.products .product {
+.related.products .product.boxed {
 	padding: 12px;
 }
 
-.related.products .product > .woocommerce-LoopProduct-link {
+.related.products .product.boxed > .woocommerce-LoopProduct-link {
 	margin: -13px -13px 12px;
 }
 
@@ -294,7 +294,8 @@ body.woocommerce #reviews h3 {
 --------------------------------------------- */
 
 .cross-sells > h2,
-.up-sells > h2 {
+.up-sells > h2,
+.related.products > h2 {
 	font-size: 1.563rem;
 }
 

@@ -82,6 +82,43 @@ function mai_register_customizer_settings( $wp_customize ) {
 		)
 	);
 
+	// Boxed Content.
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $settings_field, 'boxed_elements' ),
+		array(
+			'default'           => _mai_customizer_multicheck_sanitize_key( mai_get_default_option( 'boxed_elements' ) ),
+			'type'              => 'option',
+			'sanitize_callback' => '_mai_customizer_multicheck_sanitize_key',
+		)
+	);
+	$wp_customize->add_control(
+		new Mai_Customize_Control_Multicheck( $wp_customize,
+			'boxed_elements',
+			array(
+				'label'       => __( 'Boxed Content', 'mai-theme-engine' ),
+				'description' => __( 'Display the following elements with a boxed look:', 'mai-theme-engine' ),
+				'section'     => $section,
+				'settings'    => _mai_customizer_get_field_name( $settings_field, 'boxed_elements' ),
+				'priority'    => 10,
+				'choices'     => array(
+					'content_sidebar_wrap' => __( 'Content Sidebar Wrap', 'mai-theme-engine' ),
+					'content'              => __( 'Main Content', 'mai-theme-engine' ),
+					'entry'                => __( 'Posts/Entries', 'mai-theme-engine' ),
+					'sidebar'              => __( 'Primary Sidebar', 'mai-theme-engine' ),
+					'sidebar_alt'          => __( 'Secondary Sidebar', 'mai-theme-engine' ),
+					'sidebar_widgets'      => __( 'Primary Sidebar Widgets', 'mai-theme-engine' ),
+					'sidebar_alt_widgets'  => __( 'Secondary Sidebar Widget', 'mai-theme-engine' ),
+					'author_box'           => __( 'After Entry Author Box', 'mai-theme-engine' ),
+					'after_entry_widgets'  => __( 'After Entry Widgets', 'mai-theme-engine' ),
+					'adjacent_entry_nav'   => __( 'Previous/Next Entry Navigation', 'mai-theme-engine' ),
+					'comments'             => __( 'Comments', 'mai-theme-engine' ),
+					'comment_respond'      => __( 'Comment Submission Form', 'mai-theme-engine' ),
+					'pings'                => __( 'Pings and Trackbacks', 'mai-theme-engine' ),
+				),
+			)
+		)
+	);
+
 	// Footer widgets.
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'footer_widget_count' ),
