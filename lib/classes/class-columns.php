@@ -21,6 +21,7 @@ class Mai_Columns {
 			'align'      => '',
 			'align_cols' => '',
 			'align_text' => '',
+			'bottom'     => '',
 			'class'      => '',   // HTML classes (space separated)
 			'gutter'     => '30', // Space between columns (5, 10, 20, 30, 40, 50) only
 			'id'         => '',   // Add HTML id
@@ -32,6 +33,7 @@ class Mai_Columns {
 			'align'      => mai_sanitize_keys( $this->args['align'] ),
 			'align_cols' => mai_sanitize_keys( $this->args['align_cols'] ),
 			'align_text' => mai_sanitize_keys( $this->args['align_text'] ),
+			'bottom'     => is_numeric( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
 			'class'      => mai_sanitize_html_classes( $this->args['class'] ),
 			'gutter'     => absint( $this->args['gutter'] ),
 			'id'         => sanitize_html_class( $this->args['id'] ),
@@ -63,6 +65,11 @@ class Mai_Columns {
 
 		// Add row align classes.
 		$attributes['class'] = mai_add_align_classes( $attributes['class'], $this->args, 'row' );
+
+		// Add bottom margin classes.
+		if ( mai_is_valid_bottom( $this->args['bottom'] ) ) {
+			$attributes['class'] = mai_add_classes( mai_get_bottom_class( $this->args['bottom'] ), $attributes['class'] );
+		}
 
 		// Maybe add inline styles.
 		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );

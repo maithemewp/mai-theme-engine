@@ -44,7 +44,7 @@ class Mai_Col {
 			'align'      => mai_sanitize_keys( $this->args['align'] ),
 			'align_text' => mai_sanitize_keys( $this->args['align_text'] ),
 			'bg'         => mai_sanitize_hex_color( $this->args['bg'] ),
-			'bottom'     => ! empty( $this->args['bottom'] ) ? absint( $this->args['bottom'] ): '',
+			'bottom'     => is_numeric( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
 			'class'      => mai_sanitize_html_classes( $this->args['class'] ),
 			'id'         => sanitize_html_class( $this->args['id'] ),
 			'image'      => sanitize_key( $this->args['image'] ),
