@@ -225,6 +225,7 @@ body.woocommerce div.product .woocommerce-tabs ul.tabs li.active a {
 }
 
 body.woocommerce div.product .woocommerce-tabs .panel {
+	background-color: #fff;
 	padding: 20px;
 	margin-top: -1px;
 	margin-bottom: 50px;
