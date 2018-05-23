@@ -128,7 +128,6 @@ function mai_remove_content_archive_loop() {
 	remove_action( 'genesis_loop',           'genesis_do_loop' );
 	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 	remove_action( 'genesis_after_loop',     'genesis_posts_nav' );
-
 }
 
 /**
@@ -167,7 +166,6 @@ function mai_remove_woo_content_archive_loop() {
 		}
 		return false;
 	}, 10, 3 );
-
 }
 
 /**

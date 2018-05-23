@@ -10,6 +10,7 @@
 * Added: [grid] 'exclude_displayed' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
 * Added: [grid] 'xs', 'sm', 'md', 'lg', 'xl' parameters to set the span of columns out of 12. '6' would be 1/2, since 6 is 1/2 of 12, as an example.
 * Added: [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
+* Added: [columns] 'bottom' param to easily add bottom margin.
 * Added: WooCommerce star rating default styling.
 * Added: 'mai_sitemap_post_types' filter on Sitemap post types.
 * Added: Top margin to nested lists.
