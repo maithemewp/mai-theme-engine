@@ -722,7 +722,6 @@ input[type="submit"].small,
 	color: #515151;
 }
 
-
 button.white,
 input[type="button"].white,
 input[type="reset"].white,
@@ -923,7 +922,6 @@ td {
 
 .content,
 .breadcrumb {
-	/* width: 100%; */
 	max-width: 100%;
 }
 
@@ -1090,7 +1088,6 @@ td {
 }
 
 .content .author-box:not(.boxed),
-/* .entry:not(.boxed), */
 .after-entry .widget:not(.boxed),
 .comment-respond:not(.boxed),
 .entry-comments:not(.boxed),
@@ -1548,11 +1545,6 @@ img.alignright,
 	color: rgba(0, 0, 0, 0.75);
 }
 
-body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
-	/* offset .content top margin */
-	/* margin-top: -30px; */
-}
-
 .content .archive-description {
 	clear: both; /* mostly for Woo taxonomy results count and ordering */
 	margin-top: 16px;
@@ -1815,7 +1807,6 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	font-size: 0;
 	line-height: 1;
 	text-align: center;
-	vertical-align: middle;
 	padding: 0;
 	border: none;
 	border-radius: 50%;
@@ -3147,19 +3138,6 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 /* ## Entries
 --------------------------------------------- */
 
-.entry,
-.after-entry .widget,
-.author-box,
-.comment-respond,
-.entry-comments,
-.entry-pings,
-.sidebar .widget,
-.after-entry .widget,
-.adjacent-entry-pagination a {
-	/* background-color: #fff; */
-	/* border: 1px solid rgba(0, 0, 0, 0.06); */
-}
-
 .entry a {
 	/* fixed bug when grid entry with bg image has no image */
 	color: inherit;
@@ -3179,12 +3157,8 @@ body:not(.mai-sections) .breadcrumb ~ .content-sidebar-wrap {
 	margin-bottom: -1px;
 }
 
-/* .content .entry, */
 .flex-entry.image-bg,
 .flex-entry.image-bg-none,
-/* .author-box, */
-/* .sidebar .widget, */
-/* .after-entry .widget, */
 .form-allowed-tags {
 	padding: 24px;
 }
@@ -3838,7 +3812,7 @@ li.comment {
 	.content-sidebar-wrap {
 		display: -ms-grid;
 		display: grid;
-		grid-gap: 36px;
+		grid-gap: 40px;
 	}
 
 	.content-sidebar .content-sidebar-wrap {
