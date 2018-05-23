@@ -1547,7 +1547,6 @@ img.alignright,
 
 .content .archive-description {
 	clear: both; /* mostly for Woo taxonomy results count and ordering */
-	margin-top: 16px;
 	margin-bottom: 30px;
 }
 
