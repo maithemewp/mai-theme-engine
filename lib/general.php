@@ -90,7 +90,42 @@ function mai_js_detection_script() {
 	<?php
 }
 
+/**
+ * Maybe add has-boxed-children class if content/entry or sidebar/widgets have boxed setting enabled.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   $attributes  The existing attributes.
+ *
+ * @return  $attributes  The modifed attributes.
+ */
+add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_boxed_content_sidebar_wrap' );
+function mai_boxed_content_sidebar_wrap( $attributes ) {
+	$elements = genesis_get_option( 'boxed_elements' );
+	if ( in_array( 'content_sidebar_wrap', (array) $elements ) ) {
+		return $attributes;
+	}
+	if (
+		( in_array( 'content', $elements ) || in_array( 'entry', $elements ) )
+		&& ( in_array( 'sidebar', $elements ) || in_array( 'sidebar_widgets', $elements ) )
+		) {
+		// Add class to show all children have boxes. Intentially not checking for secondary sidebar.
+		$attributes['class'] .= ' has-boxed-children';
+	}
+	return $attributes;
+}
 
+/**
+ * Maybe run the genesis_attr() filters on boxed elements from settings.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @return  void
+ */
 add_action( 'genesis_before', 'mai_do_boxed_elements' );
 function mai_do_boxed_elements() {
 
@@ -100,7 +135,20 @@ function mai_do_boxed_elements() {
 		return;
 	}
 
-	$boxed = mai_get_boxed_elements_array();
+	$boxed = array(
+		'content_sidebar_wrap' => 'content-sidebar-wrap',
+		'content'              => 'content',
+		'sidebar'              => 'sidebar-primary',
+		'sidebar_widgets'      => '',
+		'sidebar_alt'          => 'sidebar-secondary',
+		'sidebar_alt_widgets'  => '',
+		'after_entry_widgets'  => '',
+		'author_box'           => 'author-box',
+		'adjacent_entry_nav'   => 'adjacent-entry-pagination',
+		'comments'             => 'entry-comments',
+		'comment_respond'      => '',
+		'pings'                => '',
+	);
 
 	foreach ( (array) $elements as $element ) {
 
@@ -109,12 +157,6 @@ function mai_do_boxed_elements() {
 			$name = $boxed[ $element ];
 
 			add_filter( "genesis_attr_{$boxed[ $element ]}", function( $attributes ) use ( $name ) {
-				// d( is_main_query() );
-				// d( in_the_loop() );
-				// If boxing entries, make sure it's only the main entries.
-				if ( ( 'entry' !== $name ) && ! is_main_query() ) {
-					return $attributes;
-				}
 				$attributes['class'] .= ' boxed';
 				return $attributes;
 			});
@@ -130,9 +172,32 @@ function mai_do_boxed_elements() {
 		}
 
 	}
+}
 
-	// $open = apply_filters( "genesis_markup_{$args['context']}_open", $open, $args );
-
+/**
+ * Maybe add the boxed class to entries.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   array   $classes  An array of post class names.
+ * @param   string  $class    An array of additional class names added to the post.
+ * @param   int     $post_id  The post ID.
+ *
+ * @return  array   The modified array of post class names.
+ */
+add_filter( 'post_class', 'mai_boxed_entry', 10, 3 );
+function mai_boxed_entry( $classes, $class, $post_id ) {
+	global $wp_query;
+	// Keeps out of secondary loops.
+	if ( ! $wp_query->is_main_query() ) {
+		return $classes;
+	}
+	if ( in_array( 'entry', (array) genesis_get_option( 'boxed_elements' ) ) ) {
+		$classes[] = 'boxed';
+	}
+	return $classes;
 }
 
 /**
@@ -141,13 +206,17 @@ function mai_do_boxed_elements() {
  * The dynamic portion of the hook name, `$adjacent`, refers to the type
  * of adjacency, 'next' or 'previous'.
  *
- * @since 1.3.0
+ * @since  1.3.0
  *
- * @param  string   $output    The adjacent post link.
- * @param  string   $format    Link anchor format.
- * @param  string   $link      Link permalink format.
- * @param  WP_Post  $post      The adjacent post.
- * @param  string   $adjacent  Whether the post is previous or next.
+ * @access  private
+ *
+ * @param   string   $output    The adjacent post link.
+ * @param   string   $format    Link anchor format.
+ * @param   string   $link      Link permalink format.
+ * @param   WP_Post  $post      The adjacent post.
+ * @param   string   $adjacent  Whether the post is previous or next.
+ *
+ * @return  string   The modified output.
  */
 add_filter( 'previous_post_link', 'mai_boxed_adjacent_entry_nav', 10, 5 );
 add_filter( 'next_post_link', 'mai_boxed_adjacent_entry_nav', 10, 5 );
@@ -160,41 +229,19 @@ function mai_boxed_adjacent_entry_nav( $output, $format, $link, $post, $adjacent
 	return $output;
 }
 
-
-// add_filter( 'genesis_register_widget_area_defaults', 'mai_boxed_widgets', 10, 2 );
-function mai_boxed_widgets( $defaults, $args ) {
-
-	$elements = genesis_get_option( 'boxed_elements' );
-	// d( $elements );
-
-	// Primary Sidebar Widgets.
-	if ( in_array( 'sidebar_widgets', (array) $elements ) && 'sidebar' === $args['id'] ) {
-		$defaults['before_widget'] = str_replace( 'class="widget ', 'class="widget boxed ', $defaults['before_widget'] );
-	}
-	// Secondary Sidebar Widgets.
-	elseif ( in_array( 'sidebar_alt_widgets', (array) $elements ) && 'sidebar-alt' === $args['id'] ) {
-		$defaults['before_widget'] = str_replace( 'class="widget ', 'class="widget boxed ', $defaults['before_widget'] );
-	}
-	// After Entry Widgets.
-	elseif ( in_array( 'after_entry_widgets', (array) $elements ) && 'after-entry' === $args['id'] ) {
-		$defaults['before_widget'] = str_replace( 'class="widget ', 'class="widget boxed ', $defaults['before_widget'] );
-	}
-
-	return $defaults;
-}
-
-
 /**
- * Filters the parameters passed to a widget's display callback.
+ * Maybe add boxed classes to widgets.
  *
  * Note: The filter is evaluated on both the front end and back end,
  * including for the Inactive Widgets sidebar on the Widgets screen.
  *
- * @since 2.5.0
+ * @since   1.3.0
  *
- * @see register_sidebar()
+ * @access  private
  *
- * @param array $params {
+ * @see    register_sidebar()
+ *
+ * @param  array  $params {
  *     @type array $args  {
  *         An array of widget display arguments.
  *
@@ -215,10 +262,14 @@ function mai_boxed_widgets( $defaults, $args ) {
  *         @type int $number Number increment used for multiples of the same widget.
  *     }
  * }
+ *
+ * @return  array  The modified params.
  */
-// $params = apply_filters( 'dynamic_sidebar_params', $params );
-add_filter( 'dynamic_sidebar_params', 'mai_dotheotherthing' );
-function mai_dotheotherthing( $params ) {
+add_filter( 'dynamic_sidebar_params', 'mai_boxed_widgets' );
+function mai_boxed_widgets( $params ) {
+	if ( is_admin() ) {
+		return;
+	}
 	if ( ! $params ) {
 		return;
 	}
@@ -234,28 +285,15 @@ function mai_dotheotherthing( $params ) {
 	return $params;
 }
 
-// add_filter( 'genesis_markup_widget-wrap_open', 'mai_dothethinghere', 10, 2 );
-// function mai_dothethinghere( $open, $args ) {
-// d( $args );
-// 	$elements = genesis_get_option( 'boxed_elements' );
-// 	if ( in_array( 'adjacent_entry_nav', (array) $elements ) ) {
-// 		$open = str_replace( 'class="widget ', 'class="widget boxed ', $open );
-// 	}
-// 	return $open;
-// }
-
-// add_filter( 'genesis_attr_widget-wrap', function( $attributes ) {
-// 	$attributes['class'] .= ' boxed';
-// 	// d( $attributes );
-// 	// $elements = genesis_get_option( 'boxed_elements' );
-
-// 	// if ( ! in_array( 'comment_respond', (array) $elements ) ) {
-// 	// 	return;
-// 	// }
-
-// 	return $attributes;
-// });
-
+/**
+ * Maybe add boxed wrap and classes to comment form.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @return  void
+ */
 add_action( 'comment_form_before', 'mai_boxed_comment_form', 99 );
 function mai_boxed_comment_form() {
 
@@ -270,37 +308,4 @@ function mai_boxed_comment_form() {
 	add_action( 'comment_form_after', function() {
 		echo '</div>';
 	}, 0 );
-}
-
-// add_filter( 'genesis_comment_form_args', function( $args, $user_identity, $post_id, $commenter, $req, $aria_req ) {
-// 	d( $args );
-// 	return $args;
-// }, 99, 6 );
-
-// add_filter( 'comment_form_defaults', function( $defaults ) {
-// 	$defaults['class_form'] .= ' boxed';
-// 	return $defaults;
-// });
-
-function mai_get_boxed_element( $key ) {
-	$element = mai_get_boxed_elements_array();
-	return isset( $element[ $key ] ) ? $element[ $key ] : false;
-}
-
-function mai_get_boxed_elements_array() {
-	return array(
-		'content_sidebar_wrap' => 'content-sidebar-wrap',
-		'content'              => 'content',
-		'entry'                => 'entry',
-		'sidebar'              => 'sidebar-primary',
-		'sidebar_widgets'      => '',
-		'sidebar_alt'          => 'sidebar-secondary',
-		'sidebar_alt_widgets'  => '',
-		'after_entry_widgets'  => '',
-		'author_box'           => 'author-box',
-		'adjacent_entry_nav'   => 'adjacent-entry-pagination',
-		'comments'             => 'entry-comments',
-		'comment_respond'      => '',
-		'pings'                => '',
-	);
 }
