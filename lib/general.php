@@ -268,7 +268,7 @@ function mai_boxed_adjacent_entry_nav( $output, $format, $link, $post, $adjacent
 add_filter( 'dynamic_sidebar_params', 'mai_boxed_widgets' );
 function mai_boxed_widgets( $params ) {
 	if ( is_admin() ) {
-		return;
+		return $params;
 	}
 	if ( ! $params ) {
 		return;
