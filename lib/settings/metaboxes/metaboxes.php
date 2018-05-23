@@ -51,18 +51,31 @@ function mai_cmb2_add_metaboxes() {
 	$upload_label  = __( 'Banner Image', 'mai-theme-engine' ); // Hidden on posts since show_names is false
 	$button_text   = __( 'Add Banner Image', 'mai-theme-engine' );
 
-	// Single Posts/Pages/CPTs
-	$post = new_cmb2_box( array(
+	// Single Entries.
+	$post_banner = new_cmb2_box( array(
 		'id'           => 'mai_post_banner',
-		'title'        => __( 'Banner Area', 'mai-theme-engine' ),
+		'title'        => __( 'Banner Image', 'mai-theme-engine' ),
 		'object_types' => get_post_types( array('public' => true ), 'names' ),
 		'context'      => 'side',
 		'priority'     => 'low',
 		'classes'      => 'mai-metabox',
 		'show_on_cb'   => '_mai_cmb_show_banner_fields',
 	) );
-	$post->add_field( _mai_cmb_banner_visibility_config() );
-	$post->add_field( _mai_cmb_banner_image_config() );
+	$post_banner->add_field( _mai_cmb_banner_image_config() );
+
+	// Single Entries.
+	$post_settings = new_cmb2_box( array(
+		'id'           => 'mai_post_settings',
+		'title'        => __( 'Visibility Settings', 'mai-theme-engine' ),
+		'object_types' => get_post_types( array('public' => true ), 'names' ),
+		'context'      => 'side',
+		'priority'     => 'low',
+		'classes'      => 'mai-metabox',
+	) );
+	$post_settings->add_field( _mai_cmb_banner_visibility_config() );
+	$post_settings->add_field( _mai_cmb_breadcrumb_visibility_config() );
+	$post_settings->add_field( _mai_cmb_featured_image_visibility_config() );
+	$post_settings->add_field( _mai_cmb_title_visibility_config() );
 
 	// Taxonomy Terms
 	$term = new_cmb2_box( array(
