@@ -929,10 +929,6 @@ td {
 	max-width: 100%;
 }
 
-.no-sidebars .content {
-	width: 100%; /* this breaks things if sidebar, since CSS Grid layout in 1.3.0 */
-}
-
 .content,
 .xs-content .content,
 .xs-content .breadcrumb,
@@ -1074,8 +1070,12 @@ td {
 .sidebar .widget.boxed,
 .after-entry .widget.boxed {
 	background-color: #fff;
-	padding: 24px;
+	padding: 36px 24px;
 	border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.entry.flex-entry.boxed {
+	padding: 24px;
 }
 
 .content-sidebar-wrap:not(.boxed),
@@ -1097,7 +1097,7 @@ td {
 
 .content .author-box:not(.boxed),
 .after-entry .widget:not(.boxed),
-.comment-respond:not(.boxed),
+.comment-respond-wrap:not(.boxed) .comment-respond:not(.boxed),
 .entry-comments:not(.boxed),
 .entry-pings:not(.boxed) {
 	margin-top: 60px;
@@ -3271,6 +3271,12 @@ p ~ .flex-grid {
 .flex-entry .entry-title + .entry-image-after-title,
 .flex-entry .entry-header + .entry-content {
 	display: block;
+}
+
+.flex-entry.column.boxed .entry-image-before-entry + .entry-header,
+.flex-entry.column.boxed .entry-image-before-title + .entry-title,
+.flex-entry .entry-title + .entry-image-after-title,
+.flex-entry .entry-header + .entry-content {
 	margin-top: 14px;
 }
 

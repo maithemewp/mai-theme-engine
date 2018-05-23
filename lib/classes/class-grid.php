@@ -35,7 +35,8 @@ class Mai_Grid {
 			'author_after'         => '',
 			'author_before'        => '',
 			'authors'              => '',  // Comma separated author/user IDs
-			'bottom'               => '',  // Bottom margin. 0, 5, 10, 20, 30, 40, 50, 60.
+			'bottom'               => '',  // Bottom margin. 0, 5, 10, 20, 30, 40, 50, 60
+			'boxed'                => true, // Display in boxed look
 			'categories'           => '',  // Comma separated category IDs
 			'columns'              => 3,   // "1", "2", "3", "4" or "6".
 			'content'              => 'post',  // post_type name (comma separated if multiple), or taxonomy name
@@ -111,6 +112,7 @@ class Mai_Grid {
 			'author_before'        => sanitize_key( $this->args['author_before'] ),
 			'authors'              => $this->args['authors'], // Validated later
 			'bottom'               => is_numeric( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
+			'boxed'                => filter_var( $this->args['boxed'], FILTER_VALIDATE_BOOLEAN ),
 			'categories'           => array_filter( explode( ',', sanitize_text_field( $this->args['categories'] ) ) ),
 			'columns'              => absint( $this->args['columns'] ),
 			'content'              => array_filter( explode( ',', sanitize_text_field( $this->args['content'] ) ) ),
@@ -1127,6 +1129,11 @@ class Mai_Grid {
 			 * Also removes potential duplicate flex-entry since we need it even if slider.
 			 */
 			$classes = get_post_class( $classes, get_the_ID() );
+		}
+
+		// Remove boxed class if boxed param is false.
+		if ( ! $this->args['boxed'] ) {
+			$classes = array_diff( $classes, array( 'boxed' ) );
 		}
 
 		// Remove duplicates and sanitize.
