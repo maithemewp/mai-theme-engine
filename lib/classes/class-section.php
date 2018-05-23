@@ -9,6 +9,7 @@ class Mai_Section {
 
 	private $args;
 	private $content;
+	private $full_width_image;
 	private $has_content;
 	private $has_wrap;
 	private $has_overlay;
@@ -80,10 +81,11 @@ class Mai_Section {
 		}
 
 		// Set some vars.
-		$this->has_content = ! empty( $this->content );
-		$this->has_wrap    = ! empty( $this->args['title'] ) || $this->has_content;
-		$this->has_overlay = mai_is_valid_overlay( $this->args['overlay'] );
-		$this->has_inner   = mai_is_valid_inner( $this->args['inner'] ) && ! empty( $this->content );
+		$this->has_content      = ! empty( $this->content );
+		$this->full_width_image = false !== strpos( $this->args['class'], 'full-width-image' );
+		$this->has_wrap         = ( ! empty( $this->args['title'] ) || $this->has_content ) && ! $this->full_width_image;
+		$this->has_overlay      = mai_is_valid_overlay( $this->args['overlay'] );
+		$this->has_inner        = mai_is_valid_inner( $this->args['inner'] ) && ! empty( $this->content );
 
 		return genesis_markup( array(
 			'open'    => $this->get_section_open(),
@@ -299,7 +301,11 @@ class Mai_Section {
 	function get_section_content() {
 		$html = '';
 		$html .= $this->get_section_title();
-		$html .= mai_get_processed_content( $this->content );
+		if ( $this->full_width_image ) {
+			$html .= wp_kses_post( wp_make_content_images_responsive( trim( $this->content ) ) );
+		} else {
+			$html .= mai_get_processed_content( $this->content );
+		}
 		return $html;
 	}
 

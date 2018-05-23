@@ -1179,6 +1179,13 @@ td {
 	text-shadow: none;
 }
 
+.section.full-width-image .inner,
+.section.full-width-image img {
+	display: block;
+	width: 100%;
+	margin: 0;
+}
+
 /* ## Image Background
 --------------------------------------------- */
 

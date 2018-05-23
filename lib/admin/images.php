@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Add checkbox to save auto-display featured image meta
+ * Add checkbox to save auto-display featured image meta.
  *
  * @return void
  */
 add_filter( 'admin_post_thumbnail_html', 'mai_hide_featured_image_checkbox', 10, 3 );
 function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
 
-	// Don't show the field if no image
+	// Don't show the field if no image.
 	if ( ! $thumbnail_id ) {
 		return $content;
 	}
@@ -24,13 +24,13 @@ function mai_hide_featured_image_checkbox( $content, $post_id, $thumbnail_id ) {
 		return $content;
 	}
 
-	// Build our new field
+	// Build our new field.
 	$new_field = sprintf( '<p><label for="mai_hide_featured_image"><input type="checkbox" id="mai_hide_featured_image" name="mai_hide_featured_image" %s>%s</label></p>',
 		checked( (bool) mai_sanitize_one_zero( get_post_meta( $post_id, 'mai_hide_featured_image', true ) ), true, false ),
 		__( 'Hide featured image', 'mai-theme-engine' )
 	);
 
-	// Return the new field
+	// Return the new field.
 	return $new_field . $content;
 }
 
@@ -72,6 +72,7 @@ function mai_do_media_chooser_sizes( $sizes ) {
 		'one-half'   => __( 'One Half', 'mai-theme-engine' ),
 		'one-third'  => __( 'One Third', 'mai-theme-engine' ),
 		'one-fourth' => __( 'One Fourth', 'mai-theme-engine' ),
+		'banner'     => __( 'Banner', 'mai-theme-engine' ),
 	);
 	$newsizes = array_merge( $sizes, $addsizes );
 	return $newsizes;
