@@ -77,8 +77,7 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	// Echo the content
-	echo apply_filters( 'the_content', get_post( $posts_page )->post_content );
+	printf( '<div class="archive-description posts-page-description">%s</div>', apply_filters( 'the_content', get_post( $posts_page )->post_content ) );
 }
 
 
@@ -207,6 +206,8 @@ function mai_content_archive_posts_per_page( $query ) {
  * Flex loop opening html and column filters.
  * Add and remove the post/product class filters to create columns.
  *
+ * @access  private
+ *
  * @return  void
  */
 add_action( 'mai_before_flex_loop', 'mai_do_flex_loop' );
@@ -229,7 +230,19 @@ function mai_do_flex_loop() {
 		// d( $classes );
 		$classes[] = 'flex-entry';
 		$classes[] = 'col';
-		$classes   = array_merge( $classes, mai_get_col_classes_by_breaks( array(), mai_get_size_by_columns( $columns ), $return = 'array' ) );
+
+		// Breaks.
+		$breaks = array();
+
+		if ( $columns > 2 ) {
+			$breaks['sm'] = 6;
+		}
+		if ( $columns > 3 ) {
+			$breaks['md'] = 6;
+		}
+
+		$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $breaks, mai_get_size_by_columns( $columns ), $return = 'array' ) );
+
 		// If background image or image is not aligned.
 		if ( 'background' === $img_location || empty( $img_alignment ) ) {
 			$classes[] = 'column';
@@ -257,6 +270,8 @@ function mai_do_flex_loop() {
 
 /**
  * Add the WooCommerce shortcode column count to the flex loop setting.
+ *
+ * @access  private
  *
  * @return  void
  */

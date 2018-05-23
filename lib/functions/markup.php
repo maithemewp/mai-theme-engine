@@ -563,8 +563,8 @@ function mai_get_columns() {
  * @since   1.3.0
  * @access  private
  *
- * @param   array   See mai_col_parse_breaks().
- * @param   string  See mai_col_parse_breaks().
+ * @param   array   $breaks  See mai_col_parse_breaks().
+ * @param   string  $size    See mai_col_parse_breaks().
  * @param   string  $return  Whether to return an HTML ready string of classes, or an array of classes.
  *
  * @return  string|array
