@@ -1,5 +1,35 @@
 <?php
 
+/**
+ * Run the hide breadcrumbs hook/function.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'mai_hide_breadcrumbs', 'mai_hide_breadcrumbs' );
+function mai_hide_breadcrumbs() {
+	// Remove breadcrumbs.
+	remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
+	remove_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 12 );
+}
+
+/**
+ * Hide the page title.
+ * Integrates with Genesis Title Toggle.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'mai_hide_title',         'mai_hide_title' );
+add_action( 'be_title_toggle_remove', 'mai_hide_title' );
+function mai_hide_title() {
+	// Remove titles.
+	remove_action( 'mai_banner_title_description', 'mai_do_banner_title', 10, 2 );
+	remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+}
+
 // Remove the page title from the front page
 add_action( 'genesis_before_content_sidebar_wrap', 'mai_remove_front_page_post_title' );
 function mai_remove_front_page_post_title() {

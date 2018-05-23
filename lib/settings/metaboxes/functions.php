@@ -134,6 +134,32 @@ function _mai_cmb_show_banner_fields() {
 	return $show;
 }
 
+function _mai_cmb_show_if_displaying_breadcrumbs() {
+	if ( 'landing.php' === basename( get_page_template() ) ) {
+		return false;
+	}
+	return true;
+}
+
+function _mai_cmb_show_if_auto_displaying_featured_image() {
+	global $typenow;
+	// Check if auto-displaying the featured image.
+	$key     = sprintf( 'singular_image_%s', $typenow );
+	$display = genesis_get_option( $key );
+	// Bail if not displaying.
+	if ( ! $display ) {
+		return false;
+	}
+	return true;
+}
+
+function _mai_cmb_show_if_genesis_title_toggle_not_active() {
+	if ( class_exists( 'BE_Title_Toggle' ) ) {
+		return false;
+	}
+	return true;
+}
+
 /**
  * Post metabox callback function to check if the
  * archive metabox should show for a post.
@@ -213,18 +239,6 @@ function _mai_cmb_banner_disable_taxonomies_config() {
 	);
 }
 
-function _mai_cmb_banner_visibility_config() {
-	return array(
-		'name'            => __( 'Banner Visibility', 'mai-theme-engine' ),
-		'desc'            => __( 'Hide the banner area', 'mai-theme-engine' ),
-		'id'              => 'hide_banner',
-		'type'            => 'checkbox',
-		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
-		'escape_cb'       => '_mai_cmb_escape_one_zero',
-		'show_on_cb'      => '_mai_cmb_show_banner_fields',
-	);
-}
-
 function _mai_cmb_banner_image_config() {
 	return array(
 		'name'         => __( 'Banner/Featured Image', 'mai-theme-engine' ),
@@ -235,6 +249,51 @@ function _mai_cmb_banner_image_config() {
 		'text'         => array(
 			'add_upload_file_text' => __( 'Add Image', 'mai-theme-engine' ),
 		),
+	);
+}
+
+function _mai_cmb_banner_visibility_config() {
+	return array(
+		// 'name'            => __( 'Banner Visibility', 'mai-theme-engine' ),
+		'desc'            => __( 'Hide the banner area', 'mai-theme-engine' ),
+		'id'              => 'hide_banner',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_show_banner_fields',
+	);
+}
+
+function _mai_cmb_breadcrumb_visibility_config() {
+	return array(
+		'desc'            => __( 'Hide the breadcrumbs', 'mai-theme-engine' ),
+		'id'              => 'mai_hide_breadcrumbs',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_show_if_displaying_breadcrumbs',
+	);
+}
+
+function _mai_cmb_featured_image_visibility_config() {
+	return array(
+		'desc'            => __( 'Hide the featured image', 'mai-theme-engine' ),
+		'id'              => 'mai_hide_featured_image',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_show_if_auto_displaying_featured_image',
+	);
+}
+
+function _mai_cmb_title_visibility_config() {
+	return array(
+		'desc'            => __( 'Hide the title', 'mai-theme-engine' ),
+		'id'              => 'be_title_toggle_hide',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_show_if_genesis_title_toggle_not_active',
 	);
 }
 

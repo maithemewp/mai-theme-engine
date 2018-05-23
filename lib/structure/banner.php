@@ -289,15 +289,3 @@ function mai_do_banner_avatar() {
 	$gravatar_size = apply_filters( 'genesis_author_box_gravatar_size', 70, 'archive' );
 	echo get_avatar( get_the_author_meta( 'email' ), $gravatar_size );
 }
-
-/**
- * Integrate with Genesis Title Toggle plugin.
- *
- * @since   1.3.0
- *
- * @return  void
- */
-add_action( 'be_title_toggle_remove', 'mai_be_title_toggle_remove' );
-function mai_be_title_toggle_remove() {
-	remove_action( 'mai_banner_title_description', 'mai_do_banner_title', 10, 2 );
-}
