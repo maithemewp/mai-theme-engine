@@ -4,7 +4,7 @@
  *
  * @author   Mike Hemberger
  *
- * @version  1.0.0
+ * @version  1.1.0
  */
 
 
@@ -161,6 +161,8 @@ function mai_get_layout( $layout ) {
 /**
  * Maybe add no-sidebars body class to the head.
  *
+ * @access  private
+ *
  * @param   array  $classes  The body classes.
  *
  * @return  array  The modified body classes.
@@ -199,14 +201,16 @@ function mai_sidebars_body_class( $classes ) {
 /**
  * Use Flexington for the main content and sidebar layout.
  *
- * @return  void.
+ * @access  private
+ *
+ * @return  void
  */
-add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_layout' );
+add_action( 'genesis_before', 'mai_do_layout' );
 function mai_do_layout() {
 
 	$layout = genesis_site_layout();
 
-	// No sidebars
+	// No sidebars.
 	$no_sidebars = array(
 		'full-width-content',
 		'md-content',
@@ -214,106 +218,41 @@ function mai_do_layout() {
 		'xs-content',
 	);
 
-	// Single sidebar
-	$single_primary_first = array(
+	$one_sidebar = array(
 		'sidebar-content',
-	);
-	$single_content_first = array(
 		'content-sidebar',
 	);
-	$single_sidebars = array_merge( $single_primary_first, $single_content_first );
-
-	// Double sidebars
-	$double_secondary_first = array(
+	$two_sidebars = array(
 		'sidebar-content-sidebar',
-	);
-	$double_secondary_last = array(
 		'content-sidebar-sidebar',
-	);
-	$double_secondary_first_content_last = array(
 		'sidebar-sidebar-content',
 	);
-	$double_sidebars = array_merge( $double_secondary_first, array_merge( $double_secondary_last, $double_secondary_first_content_last ) );
 
-	$secondary_first = array_merge( $double_secondary_first, $double_secondary_first_content_last );
-	$sidebars        = array_merge( $single_sidebars, $double_sidebars );
-
-	// Remove primary sidebar
+	// Remove primary sidebar.
 	if ( in_array( $layout, $no_sidebars ) ) {
 		remove_action( 'genesis_after_content', 'genesis_get_sidebar' );
 	}
 
-	// Reposition secondary sidebar, we'll add it back later where we need it
+	// Reposition secondary sidebar, we'll add it back later where we need it.
 	remove_action( 'genesis_after_content_sidebar_wrap', 'genesis_get_sidebar_alt' );
 
-	// Add back the secondary sidebary where flexington needs it
-	if ( in_array( $layout, $double_sidebars ) ) {
+	// Add back the secondary sidebary where it really belongs.
+	if ( in_array( $layout, $two_sidebars ) ) {
 		add_action( 'genesis_after_content', function() {
 			get_sidebar( 'alt' );
 		}, 11 );
 	}
 
-	// Add flexington row classes to the content sidebar wrap
-	// add_filter( 'genesis_attr_content-sidebar-wrap', function( $attributes ) use ( $layout, $sidebars ) {
-	// 	$gutter = '';
-	// 	$align  = ' around-xs';
-	// 	// Remove alignment and add gutter
-	// 	if ( in_array( $layout, $sidebars ) ) {
-	// 		$gutter = ' gutter-30';
-	// 		$align  = '';
-	// 	}
-	// 	$attributes['class'] .= ' row' . $gutter . $align;
-	// 	return $attributes;
-	// });
-
-	/**
-	 * Add flexington column classes to the content
-	 * The breakpoint classes here need to match with the sidebar classes and total 12
-	 * to avoid flash of full-width containers on page load
-	 */
-	add_filter( 'genesis_attr_content', function( $attributes ) use ( $layout, $no_sidebars, $double_sidebars, $double_secondary_first_content_last ) {
+	// Add content-no-sidebars class to the content.
+	add_filter( 'genesis_attr_content', function( $attributes ) use ( $layout, $no_sidebars ) {
 		$classes = '';
 		// Add .content-no-sidebar class if don't have any sidebars
 		if ( in_array( $layout, $no_sidebars ) ) {
 			$classes .= ' content-no-sidebars';
 		}
-		// $classes .= ' col col-xs-12 col-md';
-		// if ( in_array( $layout, $double_sidebars ) ) {
-		// 	// Break to full width earlier when there are 2 sidebars
-		// 	$classes .= ' col col-xs-12 col-lg-6';
-		// }
-		// if ( in_array( $layout, $double_secondary_first_content_last ) ) {
-		// 	$classes .= ' last-lg';
-		// }
 		$attributes['class'] .= $classes;
 		return $attributes;
 	});
-
-	// Add flexington column classes to the primary sidebar
-	// add_filter( 'genesis_attr_sidebar-primary', function( $attributes ) use ( $layout, $double_sidebars, $single_primary_first ) {
-	// 	$classes = ' col col-xs-12 col-md-4';
-	// 	if ( in_array( $layout, $double_sidebars ) ) {
-	// 	// Break to full width earlier when there are 2 sidebars
-	// 		$classes = ' col col-xs-12 col-lg-4';
-	// 	}
-	// 	if ( in_array( $layout, $single_primary_first ) ) {
-	// 		$classes .= ' first-md';
-	// 	}
-	// 	$attributes['class'] .= $classes;
-	// 	return $attributes;
-	// });
-
-	// Add flexington column classes to the secondary sidebar.
-	// add_filter( 'genesis_attr_sidebar-secondary', function( $attributes ) use ( $layout, $secondary_first ) {
-	// 	// This will only show if there are 2 sidebars, no need for the conditional above
-	// 	$classes = ' col col-xs-12 col-lg-2';
-	// 	if ( in_array( $layout, $secondary_first ) ) {
-	// 		$classes .= ' first-lg';
-	// 	}
-	// 	$attributes['class'] .= $classes;
-	// 	return $attributes;
-	// });
-
 }
 
 /**
