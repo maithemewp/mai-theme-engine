@@ -5,6 +5,7 @@
 * Added: Banner title and description separation so it's much easier to remove or filter only the title or description.
 * Added: Support for Genesis Title Toggle plugin.
 * Added: [section] 'image_size' parameter. Can also be filtered via shortcode_atts_section filter.
+* Added: [section] Full width inline image support by inserting an image into the editor and adding "full-width-image" class to the section settings.
 * Added: [section] 'style' parameter for HTML inline styles.
 * Added: [section] 'context' parameter and setting to be used with new 'mai_section_args' filter.
 * Added: [grid] 'boxed' parameter to have control over a boxed vs seamless look.
