@@ -1,6 +1,7 @@
 ### Changelog
 
 * Added: Page Builder page template.
+* Added: Boxed Content setting to declare which elements should have a boxed vs seamless look.
 * Added: Banner title and description separation so it's much easier to remove or filter only the title or description.
 * Added: Support for Genesis Title Toggle plugin.
 * Added: [section] 'image_size' parameter. Can also be filtered via shortcode_atts_section filter.
