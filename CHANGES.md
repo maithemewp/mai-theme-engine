@@ -43,6 +43,7 @@
 * Fixed: Retain "Hide featured image" post meta value when removing the existing featured image.
 * Fixed: Current menu item css on Header Before nav.
 * Fixed: Max width on nav search widget to site header.
+* Fixed: Checkboxes no longer on their own line in the comment form.
 
 #### 1.2.1 (2/15/18)
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.

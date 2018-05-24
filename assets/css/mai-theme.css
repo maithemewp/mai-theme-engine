@@ -3547,6 +3547,10 @@ p.entry-meta {
 	margin-right: 12px;
 }
 
+.comment-respond input[type=checkbox] + label {
+	display: inline-block;
+}
+
 .comment-list li,
 .ping-list li {
 	list-style-type: none;
