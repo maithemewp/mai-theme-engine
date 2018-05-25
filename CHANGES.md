@@ -29,12 +29,14 @@
 * Changed: Less aggressive removal of WooCommerce Shop page metaboxes.
 * Changed: Removed site title/logo toggle from Customizer.
 * Changed: Replaced Fluidvids with FitVids and added 'mai_enable_responsive_videos' filter so it's much easier to disable.
+* Changed: Bump CMB2 to v2.4.1.
 * Fixed: [grid] Stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: [grid] Keep content on top of overlay when hovering on image bg link.
 * Fixed: [grid] Entry content text color when on a dark background.
 * Fixed: [grid] Only show bg image when show contains image in its values.
 * Fixed: [grid] Squishing entries when showing a slider that doesn't have as many entries as the columns setting.
+* Fixed: Adding new sections sets the proper defaults for each section.
 * Fixed: Sections template now properly passes page content to the first section so it's not lost when changing an existing page to Sections template.
 * Fixed: Sections template now displays a warning about deleting section data when changing to another page template.
 * Fixed: Sections template now deletes section meta when changing from Sections template to another page template.
