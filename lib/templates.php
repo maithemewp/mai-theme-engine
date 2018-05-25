@@ -85,11 +85,8 @@ function mai_do_sections_template() {
 		return;
 	}
 
-	// Get current template.
-	$template_name = get_post_meta( get_the_ID(), '_wp_page_template', true );
-
 	// Bail if not a Sections template.
-	if ( 'sections.php' !== $template_name ) {
+	if ( 'sections.php' !== get_page_template_slug( get_the_ID() ) ) {
 		return;
 	}
 
@@ -142,11 +139,8 @@ function mai_do_page_builder_template() {
 		return;
 	}
 
-	// Get current template.
-	$template_name = get_post_meta( get_the_ID(), '_wp_page_template', true );
-
 	// Bail if not a Page Builder template.
-	if ( 'builder.php' !== $template_name ) {
+	if ( 'builder.php' !== get_page_template_slug( get_the_ID() ) ) {
 		return;
 	}
 
