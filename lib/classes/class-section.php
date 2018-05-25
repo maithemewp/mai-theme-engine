@@ -24,17 +24,18 @@ class Mai_Section {
 		// Shortcode section atts.
 		$this->args = shortcode_atts( array(
 			'align'         => '',
+			'align_content' => 'center',
 			'bg'            => '',
 			'class'         => '',
 			'content_width' => '',
 			'context'       => 'section',
 			'height'        => 'md',
 			'id'            => '',
-			'image'         => '', // 'image=246' with an image ID from the media library to use a full width background image.
+			'image'         => '',
 			'image_size'    => 'banner',
 			'inner'         => '',
 			'overlay'       => '',
-			'style'         => '', // HTML inline style
+			'style'         => '',
 			'text_size'     => '',
 			'title'         => '',
 			'title_wrap'    => 'h2',
@@ -44,18 +45,19 @@ class Mai_Section {
 
 		// Sanitized args.
 		$this->args = array(
-			'align'         => mai_sanitize_keys( $this->args['align'] ),   // left, center, right
+			'align'         => mai_sanitize_keys( $this->args['align'] ), // array with left, center, right, mostly for text-align (array for back compat)
+			'align_content' => sanitize_key( $this->args['align_content'] ), // left, lefttop, leftbottom, center, centertop, centerbottom, right, righttop, rightbottom
 			'bg'            => mai_sanitize_hex_color( $this->args['bg'] ), // 3 or 6 dig hex color with or without hash
 			'class'         => mai_sanitize_html_classes( $this->args['class'] ),
 			'content_width' => sanitize_key( $this->args['content_width'] ),
 			'context'       => sanitize_title_with_dashes( $this->args['context'] ),
 			'height'        => sanitize_key( $this->args['height'] ),
 			'id'            => sanitize_html_class( $this->args['id'] ),
-			'image'         => absint( $this->args['image'] ),
+			'image'         => absint( $this->args['image'] ), // 'image=246' with an image ID from the media library to use a full width background image.
 			'image_size'    => sanitize_key( $this->args['image_size'] ),
 			'inner'         => sanitize_key( $this->args['inner'] ),
 			'overlay'       => sanitize_key( $this->args['overlay'] ),
-			'style'         => sanitize_text_field( $this->args['style'] ),
+			'style'         => sanitize_text_field( $this->args['style'] ), // HTML inline style
 			'text_size'     => sanitize_key( $this->args['text_size'] ),
 			'title'         => sanitize_text_field( $this->args['title'] ),
 			'title_wrap'    => sanitize_key( $this->args['title_wrap'] ),
@@ -99,9 +101,9 @@ class Mai_Section {
 	/**
 	 * Get opening HTML.
 	 *
-	 * @version  1.1.0
+	 * @since   1.1.0
 	 *
-	 * @return   string|HTML
+	 * @return  string|HTML
 	 */
 	function get_section_open() {
 
@@ -110,16 +112,6 @@ class Mai_Section {
 			'class' => mai_add_classes( $this->args['class'], 'section' ),
 			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
 		);
-
-		// Align text.
-		if ( ! empty( $this->args['align'] ) ) {
-			$attributes['class'] = mai_add_align_text_classes( $attributes['class'], $this->args['align'] );
-		}
-
-		// Text size.
-		if ( $this->args['text_size'] ) {
-			$attributes['class'] = mai_add_text_size_classes( $attributes['class'], $this->args['text_size'] );
-		}
 
 		$dark_bg = false;
 
@@ -191,9 +183,9 @@ class Mai_Section {
 	/**
 	 * Get closing HTML.
 	 *
-	 * @version  1.1.0
+	 * @since   1.1.0
 	 *
-	 * @return   string|HTML
+	 * @return  string|HTML
 	 */
 	function get_section_close() {
 		return sprintf( '</%s>', $this->args['wrapper'] );
@@ -202,16 +194,18 @@ class Mai_Section {
 	/**
 	 * Get closing inside HTML.
 	 *
-	 * @version  1.1.0
+	 * @since   1.1.0
 	 *
-	 * @return   string|HTML
+	 * @return  string|HTML
 	 */
 	function get_section_inside() {
 		$html = '';
 		$html .= $this->get_section_wrap_open();
+		$html .= $this->get_section_content_open();
 		$html .= $this->get_section_inner_open();
 		$html .= $this->get_section_content();
 		$html .= $this->get_section_inner_close();
+		$html .= $this->get_section_content_close();
 		$html .= $this->get_section_wrap_close();
 		return $html;
 	}
@@ -219,9 +213,9 @@ class Mai_Section {
 	/**
 	 * Get wrap opening HTML.
 	 *
-	 * @version  1.1.0
+	 * @since   1.1.0
 	 *
-	 * @return   string|HTML
+	 * @return  string|HTML
 	 */
 	function get_section_wrap_open() {
 
@@ -236,11 +230,62 @@ class Mai_Section {
 
 			// Height.
 			if ( $this->args['height'] ) {
-				$attributes['class'] = mai_add_height_classes( $attributes['class'], $this->args['height'] );
+				$attributes['class'] = mai_add_content_height_classes( $attributes['class'], $this->args['height'] );
 			}
 
-			// Content width.
-			$attributes['class'] = mai_add_content_width_classes( $attributes['class'], $this->args['content_width'] );
+			// If full width content.
+			if ( 'full' === $this->args['content_width'] ) {
+				$attributes['class'] .= ' has-width-full';
+			}
+
+			// Align Content.
+			switch ( $this->args['align_content'] ) {
+				case 'left':
+					$attributes['class'] .= ' start-xs';
+				break;
+				case 'lefttop':
+					$attributes['class'] .= ' top start-xs';
+				break;
+				case 'leftbottom':
+					$attributes['class'] .= ' bottom start-xs';
+				break;
+				case 'center':
+					$attributes['class'] .= ' center-xs';
+				break;
+				case 'centertop':
+					$attributes['class'] .= ' top center-xs';
+				break;
+				case 'centerbottom':
+					$attributes['class'] .= ' bottom center-xs';
+				break;
+				case 'right':
+					$attributes['class'] .= ' end-xs';
+				break;
+				case 'righttop':
+					$attributes['class'] .= ' top end-xs';
+				break;
+				case 'rightbottom':
+					$attributes['class'] .= ' bottom end-xs';
+				break;
+				default:
+					$attributes['class'] .= ' center-xs';
+			}
+
+			// Align text.
+			if ( $this->args['align'] ) {
+				if ( in_array( 'left', $this->args['align'] ) ) {
+					$attributes['class'] .= ' text-xs-left';
+				} elseif ( in_array( 'center', $this->args['align'] ) ) {
+					$attributes['class'] .= ' text-xs-center';
+				} elseif ( in_array( 'right', $this->args['align'] ) ) {
+					$attributes['class'] .= ' text-xs-right';
+				}
+			}
+
+			// Text size.
+			if ( $this->args['text_size'] ) {
+				$attributes['class'] = mai_add_text_size_classes( $attributes['class'], $this->args['text_size'] );
+			}
 
 			// Custom classes.
 			$attributes['class'] = mai_add_classes( $this->args['wrap_class'], $attributes['class'] );
@@ -252,11 +297,38 @@ class Mai_Section {
 	}
 
 	/**
+	 * Get section-content opening HTML.
+	 *
+	 * @since   1.3.0
+	 *
+	 * @return  string|HTML
+	 */
+	function get_section_content_open() {
+
+		$html = '';
+
+		// Maybe build section content wrap.
+		if ( $this->has_wrap ) {
+
+			$attributes = array(
+				'class' => 'section-content',
+			);
+
+			// Content width.
+			$attributes['class'] = mai_add_content_width_classes( $attributes['class'], $this->args['content_width'] );
+
+			$html = sprintf( '<div %s>', genesis_attr( 'section-content', $attributes, $this->args ) );
+		}
+
+		return $html;
+	}
+
+	/**
 	 * Get inner opening HTML.
 	 *
-	 * @version  1.1.0
+	 * @since   1.1.0
 	 *
-	 * @return   string|HTML
+	 * @return  string|HTML
 	 */
 	function get_section_inner_open() {
 
@@ -292,11 +364,26 @@ class Mai_Section {
 	}
 
 	/**
+	 * Get title.
+	 *
+	 * @since   1.1.0
+	 *
+	 * @return  string|HTML
+	 */
+	function get_section_title() {
+		$html = '';
+		if ( $this->args['title'] ) {
+			$html = sprintf( '<%s class="heading">%s</%s>', $this->args['title_wrap'], $this->args['title'], $this->args['title_wrap'] );
+		}
+		return $html;
+	}
+
+	/**
 	 * Get content.
 	 *
-	 * @version  1.1.0
+	 * @since   1.1.0
 	 *
-	 * @return   string|HTML
+	 * @return  string|HTML
 	 */
 	function get_section_content() {
 		$html = '';
@@ -310,26 +397,11 @@ class Mai_Section {
 	}
 
 	/**
-	 * Get title.
-	 *
-	 * @version  1.1.0
-	 *
-	 * @return   string|HTML
-	 */
-	function get_section_title() {
-		$html = '';
-		if ( $this->args['title'] ) {
-			$html = sprintf( '<%s class="heading">%s</%s>', $this->args['title_wrap'], $this->args['title'], $this->args['title_wrap'] );
-		}
-		return $html;
-	}
-
-	/**
 	 * Get inner closing HTML.
 	 *
-	 * @version  1.1.0
+	 * @since   1.1.0
 	 *
-	 * @return   string|HTML
+	 * @return  string|HTML
 	 */
 	function get_section_inner_close() {
 		$html = '';
@@ -340,11 +412,26 @@ class Mai_Section {
 	}
 
 	/**
+	 * Get section-content closing HTML.
+	 *
+	 * @since   1.3.0
+	 *
+	 * @return  string|HTML
+	 */
+	function get_section_content_close() {
+		$html = '';
+		if ( $this->has_wrap ) {
+			$html = '</div>';
+		}
+		return $html;
+	}
+
+	/**
 	 * Get wrap closing HTML.
 	 *
-	 * @version  1.1.0
+	 * @since   1.1.0
 	 *
-	 * @return   string|HTML
+	 * @return  string|HTML
 	 */
 	function get_section_wrap_close() {
 		$html = '';

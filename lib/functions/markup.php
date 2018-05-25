@@ -228,6 +228,7 @@ function mai_add_align_cols_classes_column( $classes, $alignment ) {
 /**
  * Add align text classes.
  *
+ *
  * @since   1.3.0
  * @access  private
  *
@@ -354,7 +355,7 @@ function mai_add_overlay_classes( $classes, $overlay ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_height_classes( $classes, $height ) {
+function mai_add_content_height_classes( $classes, $height ) {
 	switch ( $height ) {
 		case 'auto';
 			$classes .= ' height-auto';

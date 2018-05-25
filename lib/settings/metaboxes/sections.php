@@ -159,6 +159,25 @@ function mai_do_sections_metabox() {
 		// Content Alignment.
 		$sections->add_group_field( $section, array(
 			'name'             => __( 'Content Alignment', 'mai-theme-engine' ),
+			'id'               => 'align_content',
+			'type'             => 'select',
+			'show_option_none' => __( '- None -', 'genesis' ),
+			'options'          => array(
+				'left'         => __( 'Left', 'mai-theme-engine' ),
+				'lefttop'      => __( 'Left Top', 'mai-theme-engine' ),
+				'leftbottom'   => __( 'Left Bottom', 'mai-theme-engine' ),
+				'center'       => __( 'Center', 'mai-theme-engine' ),
+				'centertop'    => __( 'Center Top', 'mai-theme-engine' ),
+				'centerbottom' => __( 'Center Bottom', 'mai-theme-engine' ),
+				'right'        => __( 'Right', 'mai-theme-engine' ),
+				'righttop'     => __( 'Right Top', 'mai-theme-engine' ),
+				'rightbottom'  => __( 'Right Bottom', 'mai-theme-engine' ),
+			),
+		) );
+
+		// Text Alignment.
+		$sections->add_group_field( $section, array(
+			'name'             => __( 'Text Alignment', 'mai-theme-engine' ),
 			'id'               => 'align',
 			'type'             => 'select',
 			'show_option_none' => __( '- None -', 'genesis' ),

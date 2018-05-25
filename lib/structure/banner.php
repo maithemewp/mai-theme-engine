@@ -52,6 +52,8 @@ function mai_do_banner_area() {
 		'inner'         => genesis_get_option( 'banner_inner' ),
 		'content_width' => genesis_get_option( 'banner_content_width' ),
 		'height'        => genesis_get_option( 'banner_height' ),
+		'align'         => genesis_get_option( 'banner_align_text' ),
+		'align_content' => genesis_get_option( 'banner_align_content' ),
 		'styles'        => '',
 		'text_size'     => 'lg',
 	);
@@ -64,23 +66,50 @@ function mai_do_banner_area() {
 		$args['image'] = $image_id;
 	}
 
-	// Get the alignment setting.
-	$align_text = genesis_get_option( 'banner_align_text' );
+	// Get the text alignment setting.
+	// $align_text = genesis_get_option( 'banner_align_text' );
 
 	// Maybe add the align_text class.
-	if ( $align_text ) {
-		switch ( $align_text ) {
-			case 'left':
-				$args['class'] .= ' text-xs-left';
-			break;
-			case 'center':
-				$args['class'] .= ' text-xs-center';
-			break;
-			case 'right':
-				$args['class'] .= ' text-xs-right';
-			break;
-		}
-	}
+	// if ( $align_text ) {
+	// 	switch ( $align_text ) {
+			// case 'left':
+			// 	$args['class'] .= ' text-xs-left';
+			// break;
+			// case 'center':
+			// 	$args['class'] .= ' text-xs-center';
+			// break;
+			// case 'right':
+			// 	$args['class'] .= ' text-xs-right';
+			// break;
+			// case 'left':
+			// 	$args['class'] .= ' text-xs-left';
+			// break;
+			// case 'lefttop':
+			// 	$args['class'] .= ' text-xs-left text-top';
+			// break;
+			// case 'leftbottom':
+			// 	$args['class'] .= ' text-xs-left text-bottom';
+			// break;
+			// case 'center':
+			// 	$args['class'] .= ' text-xs-center';
+			// break;
+			// case 'centertop':
+			// 	$args['class'] .= ' text-xs-center text-top';
+			// break;
+			// case 'centerbottom':
+			// 	$args['class'] .= ' text-xs-center text-bottom';
+			// break;
+			// case 'right':
+			// 	$args['class'] .= ' text-xs-right';
+			// break;
+			// case 'righttop':
+			// 	$args['class'] .= ' text-xs-right text-top';
+			// break;
+			// case 'rightbottom':
+			// 	$args['class'] .= ' text-xs-right text-bottom';
+			// break;
+	// 	}
+	// }
 
 	// Add a filter so devs can change these defaults.
 	$args = apply_filters( 'mai_banner_args', $args );
