@@ -3,17 +3,23 @@
 /**
  * Remove the admin page editor on Sections template pages.
  *
+ * @access  private
+ *
  * @return  void.
  */
-add_action( 'admin_head', 'hide_editor' );
-function hide_editor() {
+add_action( 'admin_head', 'mai_sections_hide_editor' );
+function mai_sections_hide_editor() {
+
 	global $pagenow;
+
 	if ( 'post.php' !== $pagenow ) {
 		return;
 	}
+
 	if ( ! isset( $_GET['post'] ) ) {
 		return;
 	}
+
 	// Currently this will not work because scripts won't be loaded and [gallery] won't be parsed.
 	// See https://github.com/CMB2/CMB2/issues/1083
 	// if ( 'sections.php' === get_page_template_slug( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) ) ) {
@@ -24,6 +30,7 @@ function hide_editor() {
 	if ( 'sections.php' !== get_page_template_slug( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) ) ) {
 		return;
 	}
+
 	// Instead we're forced to hide via CSS for now.
 	echo '<style type="text/css">#postdivrich{display:none!important;}</style>';
 }
@@ -31,7 +38,9 @@ function hide_editor() {
 /**
  * Add the CMB2 Sections repeater group.
  *
- * @return  void.
+ * @access  private
+ *
+ * @return  void
  */
 add_action( 'cmb2_admin_init', 'mai_do_sections_metabox' );
 function mai_do_sections_metabox() {
@@ -229,7 +238,6 @@ function mai_do_sections_metabox() {
 		'after_row'       => '</div></div></div>',
 		'sanitization_cb' => 'mai_sanitize_post_content',
 	) );
-
 }
 
 /**
@@ -245,15 +253,28 @@ function mai_do_sections_metabox() {
 add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
 function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 
-	// Get the sections
+	// Get the sections.
 	$sections = get_post_meta( $post_id, 'mai_sections', true );
 
-	// Bail if no sections
+	// Bail if no sections.
 	if ( ! $sections ) {
 		return;
 	}
 
-	$content = mai_get_sections( $sections );
+	// Get the page template.
+	$template = get_post_meta( $post_id, '_wp_page_template', true );
+
+	// Bail if switching away from Sections template.
+	if ( 'sections.php' !== $template ) {
+		return;
+	}
+
+	// Setup basic HTML.
+	$content = '';
+	foreach ( $sections as $section ) {
+		$content .= ! empty( $section['title'] ) ? sprintf( '<h2>%s</h2>', $section['title'] ) . "\r\n" : '';
+		$content .= $section['content'] . "\r\n";
+	}
 
 	// Remove this function so it doesn't cause infinite loop error.
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
@@ -266,4 +287,84 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 
 	// Add this function back.
 	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+}
+
+/**
+ * When change from another template to the Sections template, update the first section with the post content.
+ * When changing from the Sections template to another template, delete the section meta.
+ *
+ * @since   1.3.0
+ *
+ * @param   null|bool  $check       Whether to allow updating metadata for the given type.
+ * @param   int        $object_id   Object ID.
+ * @param   string     $meta_key    Meta key.
+ * @param   mixed      $meta_value  Meta value. Must be serializable if non-scalar.
+ * @param   mixed      $prev_value  Optional. If specified, only update existing
+ *                                  metadata entries with the specified value.
+ *                                  Otherwise, update all entries.
+ *
+ * @return  mixed
+ */
+add_filter( 'update_post_metadata', 'mai_update_to_or_from_sections_template', 10, 5 );
+function mai_update_to_or_from_sections_template( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
+
+	// Bail if no value change or not updating page template.
+	if ( $meta_value === $prev_value || '_wp_page_template' !== $meta_key ) {
+		return $check;
+	}
+
+	/**
+	 * We must get the actual existing template value
+	 * because $prev_value is not passed for _wp_page_template.
+	 */
+	$previous_value = get_post_meta( $object_id, '_wp_page_template', true );
+
+	// Bail if the existing template is the same as the updated one.
+	if ( $previous_value === $meta_value ) {
+		return $check;
+	}
+
+	// If changing TO Sections template.
+	if ( 'sections.php' === $meta_value ) {
+
+		// Update the first section content with the post content.
+		$sections = array( array( 'content' => get_post_field( 'post_content', $object_id ) ) );
+		update_post_meta( $object_id, 'mai_sections', $sections );
+
+	}
+	// If changing FROM Sections template.
+	elseif ( 'sections.php' === $previous_value ) {
+
+		// Delete the section meta.
+		delete_post_meta( $object_id, 'mai_sections' );
+
+	}
+
+	return $check;
+}
+
+/**
+ * Inline script to display a warning when toggling to another page template than Sections.
+ * This is only loaded on existing Sections template admin pages.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @return  void
+ */
+add_action( 'cmb2_after_post_form_mai_sections', 'mai_change_from_sections_template_warning', 10, 2 );
+function mai_change_from_sections_template_warning( $object_id, $cmb ) {
+
+	$alert = __( 'Warning! Changing to another page template will lose delete Sections template settings and data. Your content will be moved to the regular editor, but there is no going back!', 'mai-theme-engine' );
+
+	printf( "<script>
+		jQuery(window).load( function() {
+			$( '#pageparentdiv' ).on( 'change', 'select#page_template', function() {
+				if ( 'sections.php' !== $(this).val() ) {
+					alert( '%s' );
+				}
+			});
+		});
+	</script>", $alert );
 }
