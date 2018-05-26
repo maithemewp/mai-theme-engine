@@ -1022,107 +1022,107 @@ td {
 }
 
 .height-xs {
-	padding-top: calc(100% / (64/1) );
-	padding-bottom: calc(100% / (64/1) );
+	padding-top: calc( 1rem + 1vw );
+	padding-bottom: calc( 1rem + 1vw );
 }
 .height-xs.top {
 	padding-top: 24px;
-	padding-bottom: calc( 100% / (32/1) - 24px );
+	padding-bottom: calc( ( 1rem + 1vw ) * 2 - 24px );
 }
 .height-xs.bottom {
-	padding-top: calc( 100% / (32/1) - 24px );
+	padding-top: calc( ( 1rem + 1vw ) * 2 - 24px );
 	padding-bottom: 24px;
 }
 .height-xs.has-width-full.top {
 	padding-top: 0;
-	padding-bottom: calc( 100% / (32/1));
+	padding-bottom: calc( ( 1rem + 1vw ) * 2 );
 }
 .height-xs.has-width-full.bottom {
-	padding-top: calc( 100% / (32/1));
+	padding-top: calc( ( 1rem + 1vw ) * 2 );
 	padding-bottom: 0;
 }
 
 .height-sm {
-	padding-top: calc( 100% / (28/1) );
-	padding-bottom: calc( 100% / (28/1) );
+	padding-top: calc( 1rem + 1.953vw );
+	padding-bottom: calc( 1rem + 1.953vw );
 }
 .height-sm.top {
 	padding-top: 24px;
-	padding-bottom: calc( 100% / (14/1) - 24px );
+	padding-bottom: calc( ( 1rem + 1.953vw ) * 2 - 24px );
 }
 .height-sm.bottom {
-	padding-top: calc( 100% / (14/1) - 24px );
+	padding-top: calc( ( 1rem + 1.953vw ) * 2 - 24px );
 	padding-bottom: 24px;
 }
 .height-sm.has-width-full.top {
 	padding-top: 0;
-	padding-bottom: calc( 100% / (14/1));
+	padding-bottom: calc( ( 1rem + 1.953vw ) * 2 );
 }
 .height-sm.has-width-full.bottom {
-	padding-top: calc( 100% / (14/1));
+	padding-top: calc( ( 1rem + 1.953vw ) * 2 );
 	padding-bottom: 0;
 }
 
 .height-md {
-	padding-top: calc( 100% / (18/1) );
-	padding-bottom: calc( 100% / (18/1) );
+	padding-top: calc( 1rem + 3.815vw );
+	padding-bottom: calc( 1rem + 3.815vw );
 }
 .height-md.top {
 	padding-top: 24px;
-	padding-bottom: calc( 100% / (9/1) - 24px );
+	padding-bottom: calc( ( 1rem + 3.815vw ) * 2 - 24px );
 }
 .height-md.bottom {
-	padding-top: calc( 100% / (9/1) - 24px );
+	padding-top: calc( ( 1rem + 3.815vw ) * 2 - 24px );
 	padding-bottom: 24px;
 }
 .height-md.has-width-full.top {
 	padding-top: 0;
-	padding-bottom: calc( 100% / (9/1));
+	padding-bottom: calc( ( 1rem + 3.815vw ) * 2 );
 }
 .height-md.has-width-full.bottom {
-	padding-top: calc( 100% / (9/1));
+	padding-top: calc( ( 1rem + 3.815vw ) * 2 );
 	padding-bottom: 0;
 }
 
 .height-lg {
-	padding-top: calc( 100% / (10/1) );
-	padding-bottom: calc( 100% / (10/1) );
+	padding-top: calc( 1rem + 7.451vw );
+	padding-bottom: calc( 1rem + 7.451vw );
 }
 .height-lg.top {
 	padding-top: 24px;
-	padding-bottom: calc( 100% / (5/1) - 24px );
+	padding-bottom: calc( ( 1rem + 7.451vw ) * 2 - 24px );
 }
 .height-lg.bottom {
-	padding-top: calc( 100% / (5/1) - 24px );
+	padding-top: calc( ( 1rem + 7.451vw ) * 2 - 24px );
 	padding-bottom: 24px;
 }
 .height-lg.has-width-full.top {
 	padding-top: 0;
-	padding-bottom: calc( 100% / (5/1));
+	padding-bottom: calc( ( 1rem + 7.451vw ) * 2 );
 }
 .height-lg.has-width-full.bottom {
-	padding-top: calc( 100% / (5/1));
+	padding-top: calc( ( 1rem + 7.451vw ) * 2 );
 	padding-bottom: 0;
 }
 
 .height-xl {
-	padding-top: calc( 100% / (6/1) );
-	padding-bottom: calc( 100% / (6/1) )
+	padding-top: calc( 1rem + 14.552vw );
+	padding-bottom: calc( 1rem + 14.552vw );
 }
 .height-xl.top {
 	padding-top: 24px;
-	padding-bottom: calc( 100% / (3/1) - 24px );
+	padding-bottom: calc( ( 1rem + 14.552vw ) * 2 - 24px );
 }
 .height-xl.bottom {
-	padding-top: calc( 100% / (3/1) - 24px );
+	padding-top: calc( ( 1rem + 14.552vw ) * 2 - 24px );
 	padding-bottom: 24px;
 }
 .height-xl.has-width-full.top {
 	padding-top: 0;
-	padding-bottom: calc( 100% / (3/1));
+	padding-bottom: calc( ( 1rem + 14.552vw ) * 2 );
 }
 .height-xl.has-width-full.bottom {
-	padding-top: calc( 100% / (3/1));
+	padding-top: calc( ( 1rem + 14.552vw ) * 2 );
 	padding-bottom: 0;
 }
 
@@ -1979,8 +1979,13 @@ img.alignright,
 	-ms-flex-order: 2;-webkit-box-ordinal-group: 3;order: 2;
 }
 
-.slick-slide.testimonial .entry-content {
-	-ms-flex-pack: end;-webkit-box-pack: end;justify-content: flex-end;
+.slick-slide.column.testimonial .entry-content {
+	display: block;
+	-webkit-box-flex: 0;
+	-ms-flex-positive: 0;
+	flex-grow: 0;
+	-ms-flex-negative: 1;
+	flex-shrink: 1;
 }
 
 @media only screen and (min-width: 545px) {
