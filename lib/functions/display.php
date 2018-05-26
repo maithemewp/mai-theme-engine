@@ -357,6 +357,7 @@ function mai_get_sections( $sections ) {
 
 	$settings = array(
 		'align',
+		'align_content',
 		'bg',
 		'class',
 		'content_width',

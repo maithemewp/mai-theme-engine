@@ -107,6 +107,7 @@ function mai_get_default_options() {
 		'banner_height'             => 'md',
 		'banner_content_width'      => 'auto',
 		'banner_align_text'         => 'center',
+		'banner_align_content'      => 'center',
 		'banner_featured_image'     => 0,
 		'banner_disable_post_types' => array(),
 		'banner_disable_taxonomies' => array(),

@@ -169,7 +169,7 @@
 			}
 
 			// Resize the window resize.
-			$( window ).on( 'resize', function() {
+			$( window ).on( 'resize orientationchange', function() {
 				setTimeout( function() {
 					_resizeToMatch( $element );
 				}, 120 );
