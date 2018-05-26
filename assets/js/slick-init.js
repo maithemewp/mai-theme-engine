@@ -13,6 +13,8 @@ jQuery(document).ready(function($) {
 
 	$.each( $sliders, function() {
 
+		var $this = $(this);
+
 		var adaptiveHeight = Boolean( $(this).data('adaptiveheight') ),
 			arrows         = Boolean( $(this).data('arrows') ),
 			autoPlay       = Boolean( $(this).data('autoplay') ),
@@ -76,18 +78,18 @@ jQuery(document).ready(function($) {
 			mobileToScroll = tabletToScroll;
 		}
 
-		$(this).slick({
+		$this.slick({
 			adaptiveHeight: adaptiveHeight,
 			arrows: arrows,
 			autoplay: autoPlay,
+			autoplaySpeed: speed,
+			cssEase: fade ? 'linear' : 'ease', // Use linear if fade is true, otherwise default is ease.
 			dots: dots,
 			fade: fade,           // Things seem to blow up if columns is > 1.
 			focusOnChange: false, // This is Slick default as of 1.8.0, but i want to make sure, cause if true it makes things really jumpy.
 			infinite: infinite,
-			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,
-			autoplaySpeed: speed,
-			cssEase: fade ? 'linear' : 'ease', // Use linear if fade is true, otherwise default is ease.
+			slidesToShow: slidesToShow,
 			responsive: [{
 				breakpoint: 1200,
 				settings: {
@@ -112,10 +114,10 @@ jQuery(document).ready(function($) {
 			}],
 		});
 
-		var $slickTrack = $(this).find('.slick-track');
+		var $slickTrack = $this.find( '.slick-track' );
 
-		var center = Boolean( $(this).data('center') ),
-			middle = Boolean( $(this).data('middle') );
+		var center = Boolean( $this.data('center') ),
+			middle = Boolean( $this.data('middle') );
 
 		if ( center ) {
 			$slickTrack.addClass('center-xs');
@@ -124,7 +126,6 @@ jQuery(document).ready(function($) {
 		if ( middle ) {
 			$slickTrack.addClass('middle-xs');
 		}
-
 	});
 
 	function _isEven(value) {
