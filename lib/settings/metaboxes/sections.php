@@ -254,6 +254,7 @@ function mai_do_sections_metabox() {
 		'name'            => 'Content',
 		'id'              => 'content',
 		'type'            => 'wysiwyg',
+		'default'         => '',
 		'after_row'       => '</div></div></div>',
 		'sanitization_cb' => 'mai_sanitize_post_content',
 	) );
