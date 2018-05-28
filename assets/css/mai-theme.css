@@ -1677,11 +1677,6 @@ img.alignright,
 /* ## Slick
 --------------------------------------------- */
 
-.height-auto > .flex-grid > .mai-slider {
-	/* offset .flex-grid bottom-margin */
-	margin-top: -30px;
-}
-
 .height-auto > .flex-grid > .mai-slider .mai-slide {
 	/* offset .entry bottom-margin */
 	margin-bottom: 0;
