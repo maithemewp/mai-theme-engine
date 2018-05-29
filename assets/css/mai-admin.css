@@ -93,6 +93,12 @@
 	margin: 0;
 }
 
+#mai_post_settings.cmb2-postbox .mai-metabox .cmb-row.cmb2-id-hide-banner .cmb-th:first-of-type,
+#mai_post_settings.cmb2-postbox .mai-metabox .cmb-row.cmb2-id-hide-banner .cmb-th:first-of-type > label {
+	display: none;
+	visibility: hidden;
+}
+
 #mai_sections_repeat .cmb-field-list {
 	margin: 0;
 }
