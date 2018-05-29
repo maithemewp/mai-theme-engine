@@ -30,7 +30,7 @@
 * Changed: Less aggressive removal of WooCommerce Shop page metaboxes.
 * Changed: Removed site title/logo toggle from Customizer.
 * Changed: Replaced Fluidvids with FitVids and added 'mai_enable_responsive_videos' filter so it's much easier to disable.
-* Changed: Bump CMB2 to v2.4.1.
+* Changed: Bump CMB2 to v2.4.2.
 * Fixed: [grid] Stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: [grid] Keep content on top of overlay when hovering on image bg link.
