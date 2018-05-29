@@ -23,6 +23,9 @@ add_theme_support( 'wc-product-gallery-slider' );
 // Remove genesis entry meta support.
 add_action( 'init', 'mai_woocommerce_int', 99 );
 function mai_woocommerce_int() {
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
 	remove_post_type_support( 'product', 'genesis-entry-meta-before-content' );
 	remove_post_type_support( 'product', 'genesis-entry-meta-after-content' );
 }
@@ -190,6 +193,21 @@ function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
 	remove_meta_box( 'postimagediv', 'page', 'side' );
 	remove_meta_box( 'mai_post_banner', 'page', 'side' );
 	remove_meta_box( 'genesis_inpost_layout_box', 'page', 'normal' );
+}
+
+/**
+ * Remove columns setting from customizer.
+ * This is handled in Mai Theme customizer settings.
+ *
+ * @link https://developer.wordpress.org/themes/advanced-topics/customizer-api/
+ */
+add_action( 'customize_register', 'mai_remove_woocommerce_customizer_controls', 99 );
+function mai_remove_woocommerce_customizer_controls( $wp_customize ) {
+	// Bail if Woo isn't active.
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+	$wp_customize->remove_control( 'woocommerce_catalog_columns' );
 }
 
 /**
