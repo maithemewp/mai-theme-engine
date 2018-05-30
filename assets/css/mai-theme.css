@@ -2249,6 +2249,14 @@ img.alignright,
 	-ms-flex-wrap: nowrap;flex-wrap: nowrap;
 }
 
+@media only screen and (min-width: 769px) {
+
+	.site-header.has-header-left.has-header-right .site-title {
+		text-align: center;
+	}
+
+}
+
 @media only screen and (max-width: 992px) {
 
 	.has-header-left.has-header-right .site-title a {
