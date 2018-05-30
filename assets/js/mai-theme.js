@@ -5,17 +5,21 @@
  */
 ( function( document, $, undefined ) {
 
-	var $body      = $( 'body' ),
-		$siteTitle = $( '.site-title a' ),
-		titleWidth = $siteTitle.outerWidth();
+	var $body       = $( 'body' ),
+		$customLogo = $( '.site-title .custom-logo-link' ),
+		$siteTitle  = $( '.site-title a:not(.custom-logo-link)' ),
+		fontSize    = parseInt( $siteTitle.css( 'font-size' ) ),
+		titleWidth  = $siteTitle.outerWidth();
 
 	// Set inline width. This seems to help with jitters on first scroll.
 	if ( $(this).width() > 768 ) {
-		$siteTitle.css({ maxWidth: titleWidth });
+		$customLogo.css({ maxWidth: titleWidth });
+		$siteTitle.css({ fontSize: fontSize });
 	}
 	// Load shrunk header on mobile.
 	else {
-		$siteTitle.css({ maxWidth: titleWidth * .7 });
+		$customLogo.css({ maxWidth: titleWidth * .7 });
+		$siteTitle.css({ fontSize: fontSize * .8 });
 	}
 
 	// If doing a shrink header.
@@ -48,7 +52,8 @@
 			} else {
 
 				// Force shrink on mobile.
-				$siteTitle.css({ maxWidth: titleWidth * .7 });
+				$customLogo.css({ maxWidth: titleWidth * .7 });
+				$siteTitle.css({ fontSize: fontSize * .8 });
 			}
 
 		});
@@ -56,13 +61,15 @@
 		// Shrink.
 		$siteHeader.on( 'mai-shrink-header', function() {
 			$(this).addClass( 'shrink' );
-			$siteTitle.css({ maxWidth: titleWidth * .7 });
+			$customLogo.css({ maxWidth: titleWidth * .7 });
+			$siteTitle.css({ fontSize: fontSize * .8 });
 		});
 
 		// Unshrink.
 		$siteHeader.on( 'mai-unshrink-header', function() {
 			$(this).removeClass( 'shrink' );
-			$siteTitle.css({ maxWidth: titleWidth });
+			$customLogo.css({ maxWidth: titleWidth });
+			$siteTitle.css({ fontSize: fontSize });
 		});
 
 	}
