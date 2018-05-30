@@ -81,11 +81,13 @@
 
 			// Show normal size on desktop.
 			if ( $(this).width() > 768 ) {
-				$siteTitle.css({ maxWidth: titleWidth });
+				$customLogo.css({ maxWidth: titleWidth });
+				$siteTitle.css({ fontSize: fontSize });
 			}
 			// Show shrunk on mobile.
 			else {
-				$siteTitle.css({ maxWidth: titleWidth * .7 });
+				$customLogo.css({ maxWidth: titleWidth * .7 });
+				$siteTitle.css({ fontSize: fontSize * .8 });
 			}
 
 		});
