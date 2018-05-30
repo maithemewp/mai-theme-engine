@@ -16,9 +16,8 @@
 		$customLogo.css({ maxWidth: logoWidth });
 		$titleText.css({ fontSize: fontSize });
 	}
-	// Load shrunk header on mobile.
+	// Force shrink text on mobile.
 	else {
-		// $customLogo.css({ maxWidth: logoWidth * .7 });
 		$titleText.css({ fontSize: fontSize * .8 });
 	}
 
@@ -51,8 +50,7 @@
 
 			} else {
 
-				// Force shrink on mobile.
-				// $customLogo.css({ maxWidth: '180px' });
+				// Force shrink text on mobile.
 				$titleText.css({ fontSize: fontSize * .8 });
 			}
 
@@ -84,9 +82,8 @@
 				$customLogo.css({ maxWidth: logoWidth });
 				$titleText.css({ fontSize: fontSize });
 			}
-			// Force shrink on mobile.
+			// Force shrink text on mobile.
 			else {
-				// $customLogo.css({ maxWidth: '180px' });
 				$titleText.css({ fontSize: fontSize * .8 });
 			}
 
