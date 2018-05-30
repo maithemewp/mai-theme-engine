@@ -145,6 +145,11 @@ final class Mai_Theme_Engine {
 			 */
 			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
 
+			// Allow tokens to be used to bypass GitHub rate limit.
+			if ( defined( 'MAI_UPDATER_TOKEN' ) ) {
+				$updater->setAuthentication( MAI_UPDATER_TOKEN );
+			}
+
 			// Add icons for Dashboard > Updates screen.
 			$updater->addResultFilter( function( $info, $response = null ) {
 				$info->icons = array(
