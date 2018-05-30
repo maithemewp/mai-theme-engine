@@ -1,5 +1,6 @@
 ### Changelog
 
+#### 1.3.0 (TBD)
 * Added: Page Builder page template.
 * Added: Boxed Content setting to declare which elements should have a boxed vs seamless look.
 * Added: Banner title and description separation so it's much easier to remove or filter only the title or description.
