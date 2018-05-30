@@ -7,19 +7,19 @@
 
 	var $body       = $( 'body' ),
 		$customLogo = $( '.site-title .custom-logo-link' ),
-		$siteTitle  = $( '.site-title a:not(.custom-logo-link)' ),
-		fontSize    = parseInt( $siteTitle.css( 'font-size' ) ),
-		titleWidth  = $siteTitle.outerWidth();
+		$titleText  = $( '.site-title a:not(.custom-logo-link)' ),
+		fontSize    = parseInt( $titleText.css( 'font-size' ) ),
+		logoWidth   = $customLogo.outerWidth();
 
 	// Set inline width. This seems to help with jitters on first scroll.
 	if ( $(this).width() > 768 ) {
-		$customLogo.css({ maxWidth: titleWidth });
-		$siteTitle.css({ fontSize: fontSize });
+		$customLogo.css({ maxWidth: logoWidth });
+		$titleText.css({ fontSize: fontSize });
 	}
 	// Load shrunk header on mobile.
 	else {
-		$customLogo.css({ maxWidth: titleWidth * .7 });
-		$siteTitle.css({ fontSize: fontSize * .8 });
+		$customLogo.css({ maxWidth: logoWidth * .7 });
+		$titleText.css({ fontSize: fontSize * .8 });
 	}
 
 	// If doing a shrink header.
@@ -52,8 +52,8 @@
 			} else {
 
 				// Force shrink on mobile.
-				$customLogo.css({ maxWidth: titleWidth * .7 });
-				$siteTitle.css({ fontSize: fontSize * .8 });
+				$customLogo.css({ maxWidth: logoWidth * .7 });
+				$titleText.css({ fontSize: fontSize * .8 });
 			}
 
 		});
@@ -61,15 +61,15 @@
 		// Shrink.
 		$siteHeader.on( 'mai-shrink-header', function() {
 			$(this).addClass( 'shrink' );
-			$customLogo.css({ maxWidth: titleWidth * .7 });
-			$siteTitle.css({ fontSize: fontSize * .8 });
+			$customLogo.css({ maxWidth: logoWidth * .7 });
+			$titleText.css({ fontSize: fontSize * .8 });
 		});
 
 		// Unshrink.
 		$siteHeader.on( 'mai-unshrink-header', function() {
 			$(this).removeClass( 'shrink' );
-			$customLogo.css({ maxWidth: titleWidth });
-			$siteTitle.css({ fontSize: fontSize });
+			$customLogo.css({ maxWidth: logoWidth });
+			$titleText.css({ fontSize: fontSize });
 		});
 
 	}
@@ -81,13 +81,13 @@
 
 			// Show normal size on desktop.
 			if ( $(this).width() > 768 ) {
-				$customLogo.css({ maxWidth: titleWidth });
-				$siteTitle.css({ fontSize: fontSize });
+				$customLogo.css({ maxWidth: logoWidth });
+				$titleText.css({ fontSize: fontSize });
 			}
 			// Show shrunk on mobile.
 			else {
-				$customLogo.css({ maxWidth: titleWidth * .7 });
-				$siteTitle.css({ fontSize: fontSize * .8 });
+				$customLogo.css({ maxWidth: logoWidth * .7 });
+				$titleText.css({ fontSize: fontSize * .8 });
 			}
 
 		});
