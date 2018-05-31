@@ -2637,7 +2637,8 @@ img.alignright,
 /* ## Header Navigation
 --------------------------------------------- */
 
-.nav-header {
+.has-header-right:not(.has-header-left) .nav-header,
+.has-header-left:not(.has-header-right) .nav-header {
 	-ms-flex-wrap: wrap;flex-wrap: wrap;
 }
 
@@ -2690,6 +2691,14 @@ img.alignright,
 .nav-header .sub-menu .current-menu-item > a:focus {
 	background-color: #f4f4f4;
 	color: #323232;
+}
+
+.header-right .menu {
+	-webkit-box-pack: end;-ms-flex-pack: end;justify-content: flex-end;
+}
+
+.header-left .menu {
+	-webkit-box-pack: start;-ms-flex-pack: start;justify-content: flex-start;
 }
 
 /* ## Primary Navigation
