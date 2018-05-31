@@ -186,7 +186,8 @@ function mai_boxed_entry( $classes, $class, $post_id ) {
 	if ( ! $wp_query->is_main_query() ) {
 		return $classes;
 	}
-	if ( in_array( 'entry', (array) genesis_get_option( 'boxed_elements' ) ) ) {
+	$elements = (array) genesis_get_option( 'boxed_elements' );
+	if ( ( is_singular() && in_array( 'entry_singular', $elements ) ) || ( mai_is_content_archive() && in_array( 'entry_archive', $elements ) ) ) {
 		$classes[] = 'boxed';
 	}
 	return $classes;

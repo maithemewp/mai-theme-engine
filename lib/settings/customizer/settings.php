@@ -103,7 +103,8 @@ function mai_register_customizer_settings( $wp_customize ) {
 				'choices'     => array(
 					'content_sidebar_wrap' => __( 'Content Sidebar Wrap', 'mai-theme-engine' ),
 					'content'              => __( 'Main Content', 'mai-theme-engine' ),
-					'entry'                => __( 'Posts/Entries', 'mai-theme-engine' ),
+					'entry_singular'       => __( 'Single Posts/Entries', 'mai-theme-engine' ),
+					'entry_archive'        => __( 'Archive Posts/Entries', 'mai-theme-engine' ),
 					'sidebar'              => __( 'Primary Sidebar', 'mai-theme-engine' ),
 					'sidebar_alt'          => __( 'Secondary Sidebar', 'mai-theme-engine' ),
 					'sidebar_widgets'      => __( 'Primary Sidebar Widgets', 'mai-theme-engine' ),

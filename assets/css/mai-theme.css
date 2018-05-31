@@ -3750,6 +3750,10 @@ li.comment {
 	margin-left: 24px;
 }
 
+.sidebar ul.product_list_widget {
+	margin-left: 0;
+}
+
 .sidebar .widget ul > li {
 	margin-bottom: 6px;
 }
