@@ -150,11 +150,15 @@ function mai_do_archive_image( $location ) {
 		$location = str_replace( '_', '-', $location );
 		// Add the class
 		$attributes['class'] .= sprintf( ' entry-image-%s', $location );
+		// Maybe add alignnone class.
+		$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
+		if ( ! $img_alignment ) {
+			$attributes['class'] .= ' alignnone';
+		}
 		return $attributes;
 	});
 
 }
-
 
 /**
  * Add the entry image as a background image.

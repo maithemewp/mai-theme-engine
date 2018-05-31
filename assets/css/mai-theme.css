@@ -1185,9 +1185,6 @@ td {
 .flex-entry.boxed .entry-image-before-entry.alignnone {
 	width: calc(100% + 48px);
 	max-width: calc(100% + 48px);
-}
-
-.flex-entry.boxed .entry-image-before-entry.alignnone {
 	margin-top: -24px;
 	margin-left: -24px;
 	margin-right: -24px;
@@ -3303,7 +3300,7 @@ img.alignright,
 
 .entry-content ol,
 .entry-content ul {
-	margin-left: 40px;
+	margin-left: 32px;
 }
 
 .entry-content ol {
