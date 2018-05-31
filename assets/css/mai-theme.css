@@ -931,6 +931,15 @@ td {
 .md-content .breadcrumb,
 .no-sidebars .breadcrumb {
 	-ms-flex-negative: 1;flex-shrink: 1;
+}
+
+.xs-content .content,
+.xs-content .breadcrumb,
+.sm-content .content,
+.sm-content .breadcrumb,
+.md-content .content,
+.md-content .breadcrumb,
+.no-sidebars .breadcrumb {
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -3256,11 +3265,6 @@ img.alignright,
 /* ## Entries
 --------------------------------------------- */
 
-.entry a {
-	/* fixed bug when grid entry with bg image has no image */
-	color: inherit;
-}
-
 .entry.image-bg {
 	border: none;
 }
@@ -3361,6 +3365,11 @@ img.alignright,
 
 p ~ .flex-grid {
 	margin-top: 30px;
+}
+
+.flex-entry a {
+	/* fixed bug when grid entry with bg image has no image */
+	color: inherit;
 }
 
 .flex-entry.column .entry-header,
@@ -3734,6 +3743,11 @@ li.comment {
 .sidebar .widget ul > li:last-of-type,
 .sidebar .widget-area .widget:last-of-type {
 	margin-bottom: 0;
+}
+
+.sidebar .widget ol,
+.sidebar .widget ul {
+	margin-left: 24px;
 }
 
 .sidebar .widget ul > li {
