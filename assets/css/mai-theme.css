@@ -110,7 +110,7 @@ body {
 	height: 100%;
 	width: 100%;
 	max-width: 100%;
-	background-color: #f7f7f7;
+	background-color: #fcfcfc;
 	color: #323232;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 	font-size: 1rem; /* fallback for .text-* utility classes */
@@ -1199,13 +1199,44 @@ td {
 	margin-right: -24px;
 }
 
-.entry-comments.boxed {
-	padding: 4% 0 4% 4%;
+.comment-list .comment.boxed,
+.comment-list .comment .comment:not(.boxed) {
+	border: 1px solid rgba(235, 233, 235, 0.75);
+	margin-top: 24px;
 }
 
-.comment-respond-wrap.boxed,
-.entry-pings.boxed {
-	padding: 4% 4% 2%;
+.comment-list .comment.boxed {
+	background-color: rgba(235, 233, 235, 0.1);
+	padding: 24px;
+}
+
+.entry-comments:not(.boxed) > .comment-list > .comment.boxed {
+	background-color: #fff;
+}
+
+.entry-comments.boxed .comment.boxed,
+.entry-comments .comment.boxed .comment.boxed {
+	margin-right: -24px;
+}
+
+.entry-comments.boxed .comment.boxed,
+.entry-comments .comment.boxed .comment.boxed {
+	border-right: none;
+}
+
+.comment-list .comment .comment:not(.boxed) {
+	border-top: none;
+	border-right: none;
+	border-bottom: none;
+	padding-left: 24px;
+}
+
+@media only screen and (min-width: 769px) {
+
+	.comment-list > .comment:not(.boxed) > .children {
+		margin-left: 90px;
+	}
+
 }
 
 /* ## Callout
@@ -1495,13 +1526,17 @@ td {
 
 .comment .avatar {
 	float: left;
-	width: 80px;
-	margin: 0 16px 0;
+	max-width: 80px;
+	margin: 0 16px 0 0;
+}
+
+.comment .comment .avatar {
+	max-width: 60px;
 }
 
 .author-box .avatar {
 	float: left;
-	width: 100px;
+	max-width: 100px;
 	margin-right: 24px;
 }
 
@@ -3646,6 +3681,10 @@ p.entry-meta {
 	margin-top: -26px;
 }
 
+.comment-reply {
+	text-align: right;
+}
+
 .comment-reply-link {
 	display: inline-block;
 	font-size: 0.8em;
@@ -3670,26 +3709,29 @@ p.entry-meta {
 
 .comment-list li {
 	margin-top: 24px;
-	padding: 24px;
 }
 
-.comment-list li li,
-.comment-list li .comment-respond {
-	margin-right: -24px;
+.comment-list li li {
+	margin-top: 48px;
 }
 
-li.comment {
-	background-color: rgba(235, 233, 235, 0.25);
-	border: 1px solid rgba(235, 233, 235, 0.75);
-	border-right: none;
+.comment-list > .comment > .children {
+	margin-bottom: 64px;
 }
 
 .comment-header {
 	margin-bottom: 16px;
+	overflow: hidden;
 }
 
 .comment-author span[itemprop="name"] {
+	display: inline-block;
 	font-weight: bold;
+	margin-top: 16px;
+}
+
+.children .comment-author span[itemprop="name"] {
+	margin-top: 8px;
 }
 
 .comment-author .says {
@@ -3722,6 +3764,19 @@ li.comment {
 }
 
 @media only screen and (min-width: 769px) {
+
+	.comment-header {
+		margin-bottom: 0;
+	}
+
+	.comment-content {
+		margin-left: 96px;
+	}
+
+	.children .comment-content {
+		margin-top: 12px;
+		margin-left: 76px;
+	}
 
 	.comment-respond input[type="email"],
 	.comment-respond input[type="text"],

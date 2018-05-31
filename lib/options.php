@@ -90,10 +90,10 @@ function mai_get_default_options() {
 		'image_size'                => 'one-third',
 		'image_alignment'           => '',
 		'posts_nav'                 => 'numeric',
-		// Mai General.
+		// Mai Settings.
 		'enable_sticky_header'      => 0,
 		'enable_shrink_header'      => 0,
-		'boxed_elements'            => array( 'entry_singular', 'entry_archive', 'sidebar_widgets', 'sidebar_alt_widgets', 'author_box', 'after_entry_widgets', 'adjacent_entry_nav', 'comment_respond', 'comments', 'pings' ),
+		'boxed_elements'            => array( 'entry_singular', 'entry_archive', 'sidebar_widgets', 'sidebar_alt_widgets', 'author_box', 'after_entry_widgets', 'adjacent_entry_nav', 'comment_wrap', 'comment', 'comment_respond', 'pings' ),
 		'singular_image_page'       => 1,
 		'singular_image_post'       => 1,
 		'footer_widget_count'       => 2,

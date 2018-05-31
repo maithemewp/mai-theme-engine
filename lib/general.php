@@ -145,7 +145,7 @@ function mai_do_boxed_elements() {
 		'after_entry_widgets'  => '',
 		'author_box'           => 'author-box',
 		'adjacent_entry_nav'   => 'adjacent-entry-pagination',
-		'comments'             => 'entry-comments',
+		'comment_wrap'         => 'entry-comments',
 		'comment_respond'      => '',
 		'pings'                => '',
 	);
@@ -188,6 +188,28 @@ function mai_boxed_entry( $classes, $class, $post_id ) {
 	}
 	$elements = (array) genesis_get_option( 'boxed_elements' );
 	if ( ( is_singular() && in_array( 'entry_singular', $elements ) ) || ( mai_is_content_archive() && in_array( 'entry_archive', $elements ) ) ) {
+		$classes[] = 'boxed';
+	}
+	return $classes;
+}
+
+/**
+ * Maybe add the boxed class to comments.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   array   $classes     An array of comment class names.
+ * @param   string  $class       An array of additional class names added to the comment.
+ * @param   int     $comment_id  The comment ID.
+ *
+ * @return  array   The modified array of post class names.
+ */
+add_filter( 'comment_class', 'mai_boxed_comment', 10, 3 );
+function mai_boxed_comment( $classes, $class, $comment_id ) {
+	$elements = (array) genesis_get_option( 'boxed_elements' );
+	if ( in_array( 'comment', $elements ) ) {
 		$classes[] = 'boxed';
 	}
 	return $classes;
