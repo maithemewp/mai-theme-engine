@@ -221,10 +221,6 @@ ul {
 	padding: 0;
 }
 
-li {
-	list-style-type: none;
-}
-
 li.icon-left .fa {
 	vertical-align: middle;
 	margin-right: 6px;
