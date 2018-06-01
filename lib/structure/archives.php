@@ -157,7 +157,8 @@ function mai_remove_woo_content_archive_loop() {
 	remove_action( 'woocommerce_no_products_found', 'wc_no_products_found' );
 
 	// Remove the flex loop wrap and entry class filters.
-	remove_action( 'mai_before_flex_loop', 'mai_do_flex_loop' );
+	remove_action( 'mai_before_flex_loop', 'mai_do_flex_loop_open' );
+	remove_action( 'mai_before_flex_loop', 'mai_do_flex_loop_close' );
 
 	// Disable the content-product template.
 	add_filter( 'wc_get_template_part', function( $template, $slug, $name ) {
@@ -208,62 +209,67 @@ function mai_content_archive_posts_per_page( $query ) {
  *
  * @return  void
  */
-add_action( 'mai_before_flex_loop', 'mai_do_flex_loop' );
-function mai_do_flex_loop() {
+add_action( 'mai_before_flex_loop', 'mai_do_flex_loop_open' );
+function mai_do_flex_loop_open() {
 
-	// Flex row wrap
-	$attributes['class'] = 'row gutter-30';
+	// Flex row wrap.
+	$attributes = array(
+		'class' => 'row gutter-30',
+	);
 	printf( '<div %s>', genesis_attr( 'flex-row', $attributes ) );
 
-	// Get the archive column count
+	// Add flex entry classes
+	add_filter( 'post_class', 'mai_flex_loop_post_class' );
+	add_filter( 'product_cat_class', 'mai_flex_loop_post_class' );
+}
+
+/**
+ * Flex loop closing HTML a remove columns filters.
+ *
+ * This makes sure the columns classes aren't applied to
+ * additional loops.
+ *
+ * @access  private
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'mai_after_flex_loop', 'mai_do_flex_loop_close' );
+function mai_do_flex_loop_close() {
+	remove_filter( 'post_class', 'mai_flex_loop_post_class' );
+	remove_filter( 'product_cat_class', 'mai_flex_loop_post_class' );
+	echo '</div>';
+}
+
+function mai_flex_loop_post_class( $classes ) {
+
+	$classes[] = 'flex-entry';
+	$classes[] = 'col';
+
+	$breaks  = array();
 	$columns = mai_get_columns();
 
-	// $align         = mai_get_archive_setting( 'content_archive_align' );
+	if ( $columns > 2 ) {
+		$breaks['sm'] = 6;
+	}
+	if ( $columns > 3 ) {
+		$breaks['md'] = 6;
+	}
+
+	$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $breaks, mai_get_size_by_columns( $columns ), $return = 'array' ) );
+
 	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
 
-	// Create an anonomous function using the column count
-	$flex_classes = function( $classes ) use ( $columns, $img_location, $img_alignment ) {
+	// If background image or image is not aligned.
+	if ( 'background' === $img_location || empty( $img_alignment ) ) {
+		$classes[] = 'column';
+	} else {
+		$classes[] = 'image-' . $img_alignment;
+	}
 
-		$classes[] = 'flex-entry';
-		$classes[] = 'col';
-
-		// Breaks.
-		$breaks = array();
-
-		if ( $columns > 2 ) {
-			$breaks['sm'] = 6;
-		}
-		if ( $columns > 3 ) {
-			$breaks['md'] = 6;
-		}
-
-		$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $breaks, mai_get_size_by_columns( $columns ), $return = 'array' ) );
-
-		// If background image or image is not aligned.
-		if ( 'background' === $img_location || empty( $img_alignment ) ) {
-			$classes[] = 'column';
-		} else {
-			$classes[] = 'image-' . $img_alignment;
-		}
-
-		return $classes;
-	};
-
-	// Add flex entry classes
-	add_filter( 'post_class', $flex_classes );
-	add_filter( 'product_cat_class', $flex_classes );
-
-	/**
-	 * After the loops, remove the entry classes filters and close the flex loop.
-	 * This makes sure the columns classes aren't applied to
-	 * additional loops.
-	 */
-	add_action( 'mai_after_flex_loop', function() use ( $flex_classes ) {
-		remove_filter( 'post_class', $flex_classes );
-		remove_filter( 'product_cat_class', $flex_classes );
-		echo '</div>';
-	});
+	return $classes;
 }
 
 /**
