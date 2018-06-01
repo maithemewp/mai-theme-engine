@@ -931,15 +931,6 @@ td {
 .md-content .breadcrumb,
 .no-sidebars .breadcrumb {
 	-ms-flex-negative: 1;flex-shrink: 1;
-}
-
-.xs-content .content,
-.xs-content .breadcrumb,
-.sm-content .content,
-.sm-content .breadcrumb,
-.md-content .content,
-.md-content .breadcrumb,
-.no-sidebars .breadcrumb {
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -4024,13 +4015,13 @@ p.entry-meta {
 
 @media only screen and (min-width: 993px) {
 
-	.content-sidebar-wrap {
+	.has-sidebar .content-sidebar-wrap {
 		display: -ms-grid;
 		display: grid;
 		grid-gap: 40px;
 	}
 
-	.content-sidebar-wrap.has-boxed-children  {
+	.has-sidebar .content-sidebar-wrap.has-boxed-children  {
 		grid-gap: 30px;
 	}
 
