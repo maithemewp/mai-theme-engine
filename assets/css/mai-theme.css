@@ -1534,12 +1534,6 @@ td {
 	max-width: 60px;
 }
 
-.author-box .avatar {
-	float: left;
-	max-width: 100px;
-	margin-right: 24px;
-}
-
 /* ## Search Form
 --------------------------------------------- */
 
@@ -1688,6 +1682,7 @@ img.alignright,
 }
 
 .author-box {
+	text-align: center;
 	overflow: hidden; /* fix avatar out of container with short bio */
 }
 
@@ -1702,6 +1697,25 @@ img.alignright,
 .archive-description p:last-child,
 .author-box p:last-child {
 	margin-bottom: 0;
+}
+
+.author-box .avatar {
+	display: inline-block;
+	max-width: 100px;
+	margin: 0 auto 16px;
+}
+
+@media only screen and (min-width: 545px) {
+
+	.author-box {
+		text-align: left;
+	}
+
+	.author-box .avatar {
+		float: left;
+		margin-right: 24px;
+	}
+
 }
 
 /* # Scripts
