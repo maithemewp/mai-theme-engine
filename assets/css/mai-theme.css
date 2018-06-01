@@ -1182,6 +1182,10 @@ td {
 	margin-bottom: 60px;
 }
 
+.flex-entry:not(.boxed) .entry-image-before-entry.alignnone {
+	width: 100%;
+}
+
 .flex-entry.boxed .entry-image-before-entry.alignnone {
 	width: calc(100% + 48px);
 	max-width: calc(100% + 48px);
