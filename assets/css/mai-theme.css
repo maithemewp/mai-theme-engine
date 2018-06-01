@@ -3682,6 +3682,7 @@ p.entry-meta {
 }
 
 .entry-comments .comment-meta {
+	display: inline-block; /* for edit button when logged in */
 	font-size: 0.8em;
 	margin-bottom: 0;
 }
@@ -3691,8 +3692,7 @@ p.entry-meta {
 }
 
 .entry-comments .comment-edit-link {
-	margin-left: 100px;
-	margin-top: -26px;
+	font-size: 0.8em;
 }
 
 .comment-reply {
@@ -3746,10 +3746,6 @@ p.entry-meta {
 
 .children .comment-author span[itemprop="name"] {
 	margin-top: 8px;
-}
-
-.comment-author .says {
-	display: none;
 }
 
 .comment-meta a {
