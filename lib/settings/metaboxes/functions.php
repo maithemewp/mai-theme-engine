@@ -114,7 +114,7 @@ function _mai_cmb_show_banner_fields( $field ) {
 }
 
 function _mai_cmb_show_if_displaying_breadcrumbs() {
-	if ( 'landing.php' === basename( get_page_template() ) ) {
+	if ( 'landing.php' === get_post_meta( get_the_ID(), '_wp_page_template', true ) ) {
 		return false;
 	}
 	return true;

@@ -114,7 +114,7 @@ function mai_woo_remove_featured_image() {
 
 	// Remove image if not displaying.
 	if ( ! $display ) {
-		// Remove product images from single template
+		// Remove product images from single template.
 		remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
 	}
 }
@@ -122,7 +122,7 @@ function mai_woo_remove_featured_image() {
 /**
  * Remove the entry meta on single posts.
  *
- * @return  void.
+ * @return  void
  */
 add_action( 'genesis_before_loop', 'mai_remove_singular_meta' );
 function mai_remove_singular_meta() {
@@ -143,20 +143,24 @@ function mai_remove_singular_meta() {
 	}
 
 	if ( in_array( 'post_info', $meta_to_remove ) ) {
-		// Remove the entry meta in the entry header
+		// Remove the entry meta in the entry header.
 		remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
 	}
 
 	if ( in_array( 'post_meta', $meta_to_remove ) ) {
-		// Remove the entry footer markup
+		// Remove the entry footer markup.
 		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
 		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
-		// Remove the entry meta in the entry footer
+		// Remove the entry meta in the entry footer.
 		remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
 	}
 }
 
-// Add slow scroll class to comments link
+/**
+ * Add slow scroll class to comments link.
+ *
+ * @return  string|HTML  The modified output.
+ */
 add_filter( 'genesis_post_comments_shortcode', 'mai_slow_scroll_comments_link', 10, 2 );
 function mai_slow_scroll_comments_link( $output, $atts ) {
 	if ( ! is_singular() ) {

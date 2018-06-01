@@ -77,7 +77,7 @@ function mai_cmb2_add_metaboxes() {
 	$post_settings->add_field( _mai_cmb_featured_image_visibility_config() );
 	$post_settings->add_field( _mai_cmb_title_visibility_config() );
 
-	// Taxonomy Terms
+	// Taxonomy Terms.
 	$term = new_cmb2_box( array(
 		'id'               => 'mai_term_settings',
 		'title'            => $metabox_title,
@@ -105,7 +105,7 @@ function mai_cmb2_add_metaboxes() {
 	$term->add_field( _mai_cmb_posts_per_page_config() );
 	$term->add_field( _mai_cmb_posts_nav_config() );
 
-	// User Profiles
+	// User Profiles.
 	$user = new_cmb2_box( array(
 		'id'           => 'mai_user_settings',
 		'title'        => $metabox_title,
