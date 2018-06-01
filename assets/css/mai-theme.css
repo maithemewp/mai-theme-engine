@@ -898,7 +898,7 @@ td {
 	margin-bottom: 30px;
 }
 
-.entry:not(.boxed):not(.image-bg):not(.image-bg-none) {
+.entry.col:not(.boxed):not(.image-bg):not(.image-bg-none) {
 	margin-bottom: 60px;
 }
 
