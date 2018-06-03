@@ -875,6 +875,12 @@ td {
 	margin-bottom: 0;
 }
 
+.mai-sections .content.boxed {
+	padding-top: 0;
+	padding-bottom: 0;
+	border: none;
+}
+
 .mai-sections .content > .entry {
 	background-color: transparent;
 	padding-top: 0;
@@ -3775,7 +3781,7 @@ p.entry-meta {
 	margin-top: 48px;
 }
 
-.comment-list > .comment > .children {
+.comment-list > .comment:not(.boxed) > .children {
 	margin-bottom: 64px;
 }
 
