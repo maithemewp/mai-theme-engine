@@ -961,7 +961,7 @@ td {
 	padding-right: 0;
 }
 
-.mai-sections.boxed-site-container .content-no-sidebars > .entry > .entry-content
+.mai-sections.boxed-site-container .content.content-no-sidebars,
 .site-inner,
 .breadcrumb,
 .wrap,
@@ -1016,7 +1016,9 @@ td {
 	margin-right: 0;
 }
 
-/* .mai-sections.boxed-site-container */
+.mai-sections.boxed-site-container .breadcrumb {
+	padding-left: 24px;
+}
 
 /* ## Content Heights
 --------------------------------------------- */
@@ -1258,7 +1260,6 @@ body.boxed-site-container {
 
 }
 
-/* @media only screen and (min-width: 993px) { */
 @media only screen and (min-width: 1249px) {
 
 	.site-container.boxed {
@@ -1275,7 +1276,8 @@ body.boxed-site-container {
 	body.boxed-site-container .nav-secondary .wrap,
 	body.boxed-site-container .footer-widgets .wrap,
 	body.boxed-site-container .site-footer .wrap,
-	body.boxed-site-container .section > .wrap {
+	body.boxed-site-container .section > .wrap,
+	body.boxed-site-container.mai-sections .breadcrumb {
 		padding-left: 48px;
 		padding-right: 48px;
 	}
@@ -1709,15 +1711,14 @@ img.alignright,
 .breadcrumb {
 	font-size: 0.8em;
 	margin: 12px auto;
-	padding-left: 24px;
-	padding-right: 24px;
 }
 
 .breadcrumb a {
 	color: rgba(0, 0, 0, 0.4);
 }
 
-.breadcrumb a:hover {
+.breadcrumb a:hover,
+.breadcrumb a:focus {
 	color: rgba(0, 0, 0, 0.75);
 }
 
@@ -4072,11 +4073,15 @@ p.entry-meta {
 	.has-sidebar .content-sidebar-wrap {
 		display: -ms-grid;
 		display: grid;
-		grid-gap: 40px;
 	}
 
+	.has-sidebars .content-sidebar-wrap,
 	.has-sidebar .content-sidebar-wrap.has-boxed-children  {
 		grid-gap: 30px;
+	}
+
+	.has-sidebar:not(.has-sidebars) .content-sidebar-wrap {
+		grid-gap: 40px;
 	}
 
 	.content-sidebar .content-sidebar-wrap {
@@ -4090,13 +4095,13 @@ p.entry-meta {
 	}
 
 	.content-sidebar-sidebar .content-sidebar-wrap {
-		-ms-grid-columns: 1fr 324px 256px;
-		grid-template-columns: 1fr 324px 256px;
+		-ms-grid-columns: 1fr 324px 192px;
+		grid-template-columns: 1fr 324px 192px;
 	}
 
 	.sidebar-content-sidebar .content-sidebar-wrap {
-		-ms-grid-columns: 256px 1fr 324px;
-		grid-template-columns: 256px 1fr 324px;
+		-ms-grid-columns: 192px 1fr 324px;
+		grid-template-columns: 192px 1fr 324px;
 	}
 
 	.sidebar-content .sidebar {
