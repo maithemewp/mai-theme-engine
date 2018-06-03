@@ -941,23 +941,30 @@ td {
 	-ms-flex-preferred-size: auto;flex-basis: auto;
 }
 
-.section-content.width-full,
-.section.banner-area > .wrap.width-full {
+.site-container:not(.boxed) .section-content.width-full,
+.site-container:not(.boxed) .section.banner-area > .wrap.width-full {
 	-ms-flex-preferred-size: 100vw;flex-basis: 100vw;
 }
 
-.width-full,
-.site-inner > .section,
-.content-no-sidebars .section,
-.section-content.width-full,
-.section.banner-area > .wrap.width-full {
+.site-container:not(.boxed) .width-full,
+.site-container:not(.boxed) .site-inner > .section,
+.site-container:not(.boxed) .content-no-sidebars .section,
+.site-container:not(.boxed) .section-content.width-full,
+.site-container:not(.boxed) .section.banner-area > .wrap.width-full {
 	clear: both;
 	max-width: 100vw;
 	margin-left: calc(-50vw + 50%);
 	margin-right: calc(-50vw + 50%);
 }
 
-.site-inner > .section,
+.site-container.boxed .width-full {
+	width: 100%;
+	/* max-width: 1248px; */
+	/* margin-left: -24px; */
+	/* margin-right: -24px; */
+}
+
+.site-container:not(.boxed) .site-inner > .section,
 .content-no-sidebars .width-full {
 	padding-left: 0;
 	padding-right: 0;
@@ -1003,6 +1010,20 @@ td {
 .section-content.width-xs {
 	-ms-flex-preferred-size: 400px;flex-basis: 400px;
 	max-width: 400px;
+}
+
+.mai-sections.boxed-site-container .site-inner,
+.mai-sections.boxed-site-container .content > .entry,
+.mai-sections.boxed-site-container .content .section > .wrap.has-width-full {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.mai-sections.boxed-site-container .site-inner,
+.mai-sections.boxed-site-container .content > .entry,
+.mai-sections.boxed-site-container .content .section > .wrap {
+	margin-left: 0;
+	margin-right: 0;
 }
 
 /* ## Content Heights
@@ -1134,6 +1155,17 @@ td {
 /* ## Boxed
 --------------------------------------------- */
 
+body.boxed-site-container {
+	background-color: #f4f4f4;
+}
+
+.site-container.boxed {
+	background-color: #fff;
+	max-width: 1248px;
+	-webkit-box-shadow: 0 4px 24px rgba(0,0,0,.03);
+	box-shadow: 0 4px 24px rgba(0,0,0,.03)
+}
+
 .content-sidebar-wrap.boxed,
 .content.boxed,
 .entry.boxed,
@@ -1234,6 +1266,31 @@ td {
 
 }
 
+/* @media only screen and (min-width: 993px) { */
+@media only screen and (min-width: 1249px) {
+
+	.site-container.boxed {
+		margin: 24px auto 32px;
+	}
+
+	body.boxed-site-container .site-header > .wrap {
+		padding-left: 32px;
+		padding-right: 32px;
+	}
+
+	body.boxed-site-container .site-inner,
+	body.boxed-site-container .nav-primary .wrap,
+	body.boxed-site-container .nav-secondary .wrap,
+	body.boxed-site-container .footer-widgets .wrap,
+	body.boxed-site-container .site-footer .wrap,
+	body.boxed-site-container .section > .wrap {
+		padding-left: 48px;
+		padding-right: 48px;
+	}
+
+}
+
+
 /* ## Callout
 --------------------------------------------- */
 
@@ -1259,8 +1316,8 @@ td {
 	background-color: #f7f7f7;
 }
 
-.site-inner > .section,
-.content-no-sidebars .section {
+.site-container:not(.boxed) .site-inner > .section,
+.site-container:not(.boxed) .content-no-sidebars .section {
 	overflow: hidden;
 }
 
