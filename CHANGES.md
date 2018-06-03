@@ -2,7 +2,7 @@
 
 #### 1.3.0 (TBD)
 * Added: Page Builder page template.
-* Added: Boxed Content setting to declare which elements should have a boxed vs seamless look.
+* Added: Boxed Content setting to declare which elements should have a boxed vs seamless look, including the main site container.
 * Added: Banner title and description separation so it's much easier to remove or filter only the title or description.
 * Added: Visibility Settings metabox on single posts to hide banner, featured image, breadcrumbs, and title.
 * Added: Support for Genesis Title Toggle plugin.
@@ -20,6 +20,7 @@
 * Added: WooCommerce star rating default styling.
 * Added: 'mai_sitemap_post_types' filter on Sitemap post types.
 * Added: Top margin to nested lists.
+* Changed: Reorganized Customizer settings panels/sections.
 * Changed: [grid] Now defaults to order_by="menu_order" and order="ASC" when display a single hierarchical post type like pages.
 * Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
 * Changed: Removed editor stylesheet. We never used it properly, and Gutenberg is coming.
