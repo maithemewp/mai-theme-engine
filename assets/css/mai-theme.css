@@ -924,12 +924,8 @@ td {
 
 .content,
 .xs-content .content,
-.xs-content .breadcrumb,
 .sm-content .content,
-.sm-content .breadcrumb,
-.md-content .content,
-.md-content .breadcrumb,
-.no-sidebars .breadcrumb {
+.md-content .content {
 	-ms-flex-negative: 1;flex-shrink: 1;
 	margin-left: auto;
 	margin-right: auto;
@@ -959,9 +955,6 @@ td {
 
 .site-container.boxed .width-full {
 	width: 100%;
-	/* max-width: 1248px; */
-	/* margin-left: -24px; */
-	/* margin-right: -24px; */
 }
 
 .site-container:not(.boxed) .site-inner > .section,
@@ -989,7 +982,6 @@ td {
 }
 
 .md-content .content,
-.md-content .breadcrumb,
 .width-md,
 .section-content.width-md {
 	-ms-flex-preferred-size: 800px;flex-basis: 800px;
@@ -997,7 +989,6 @@ td {
 }
 
 .sm-content .content,
-.sm-content .breadcrumb,
 .width-sm,
 .section-content.width-sm {
 	-ms-flex-preferred-size: 650px;flex-basis: 650px;
@@ -1005,7 +996,6 @@ td {
 }
 
 .xs-content .content,
-.xs-content .breadcrumb,
 .width-xs,
 .section-content.width-xs {
 	-ms-flex-preferred-size: 400px;flex-basis: 400px;
@@ -1718,6 +1708,10 @@ img.alignright,
 	font-size: 0.8em;
 	margin-top: 12px;
 	margin-bottom: 12px;
+}
+
+.mai-sections .breadcrumb {
+	padding-left: 24px;
 }
 
 .breadcrumb a {
