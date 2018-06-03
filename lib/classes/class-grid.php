@@ -1131,9 +1131,11 @@ class Mai_Grid {
 			$classes = get_post_class( $classes, get_the_ID() );
 		}
 
-		// Remove boxed class if boxed param is false.
+		// Remove boxed class if boxed param is false. It may be added regardless because of post_class filter.
 		if ( ! $this->args['boxed'] ) {
 			$classes = array_diff( $classes, array( 'boxed' ) );
+		} else {
+			$classes[] = ' boxed';
 		}
 
 		// Remove duplicates and sanitize.

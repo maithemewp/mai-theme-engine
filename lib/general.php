@@ -167,11 +167,22 @@ function mai_do_boxed_elements() {
 	}
 }
 
+/**
+ * Maybe add the has-boxed-site-container class body.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   array   $classes  An array of body class names.
+ *
+ * @return  array   The modified array of body class names.
+ */
 add_filter( 'body_class', 'mai_boxed_body' );
 function mai_boxed_body( $classes ) {
 	$elements = (array) genesis_get_option( 'boxed_elements' );
 	if ( in_array( 'site_container', $elements ) ) {
-		$classes[] = 'boxed-site-container';
+		$classes[] = 'has-boxed-site-container';
 	}
 	return $classes;
 }

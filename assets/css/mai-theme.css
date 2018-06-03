@@ -967,7 +967,7 @@ td {
 	padding-right: 0;
 }
 
-.mai-sections.boxed-site-container .content.content-no-sidebars,
+.mai-sections.has-boxed-site-container .content.content-no-sidebars,
 .site-inner,
 .breadcrumb,
 .wrap,
@@ -1008,21 +1008,21 @@ td {
 	max-width: 400px;
 }
 
-.mai-sections.boxed-site-container .site-inner,
-.mai-sections.boxed-site-container .content > .entry,
-.mai-sections.boxed-site-container .content .section > .wrap.has-width-full {
+.mai-sections.has-boxed-site-container .site-inner,
+.mai-sections.has-boxed-site-container .content > .entry,
+.mai-sections.has-boxed-site-container .content .section > .wrap.has-width-full {
 	padding-left: 0;
 	padding-right: 0;
 }
 
-.mai-sections.boxed-site-container .site-inner,
-.mai-sections.boxed-site-container .content > .entry,
-.mai-sections.boxed-site-container .content .section > .wrap {
+.mai-sections.has-boxed-site-container .site-inner,
+.mai-sections.has-boxed-site-container .content > .entry,
+.mai-sections.has-boxed-site-container .content .section > .wrap {
 	margin-left: 0;
 	margin-right: 0;
 }
 
-.mai-sections.boxed-site-container .breadcrumb {
+.mai-sections.has-boxed-site-container .breadcrumb {
 	padding-left: 24px;
 }
 
@@ -1155,7 +1155,7 @@ td {
 /* ## Boxed
 --------------------------------------------- */
 
-body.boxed-site-container {
+body.has-boxed-site-container {
 	background-color: #f4f4f4;
 }
 
@@ -1218,12 +1218,13 @@ body.boxed-site-container {
 	width: 100%;
 }
 
+/* offset boxed padding and border */
 .flex-entry.boxed .entry-image-before-entry.alignnone {
-	width: calc(100% + 48px);
-	max-width: calc(100% + 48px);
-	margin-top: -24px;
-	margin-left: -24px;
-	margin-right: -24px;
+	width: calc(100% + 50px);
+	max-width: calc(100% + 50px);
+	margin-top: -25px;
+	margin-left: -25px;
+	margin-right: -25px;
 }
 
 .comment-list .comment.boxed,
@@ -1272,18 +1273,18 @@ body.boxed-site-container {
 		margin: 24px auto 32px;
 	}
 
-	body.boxed-site-container .site-header > .wrap {
+	body.has-boxed-site-container .site-header > .wrap {
 		padding-left: 32px;
 		padding-right: 32px;
 	}
 
-	body.boxed-site-container .site-inner,
-	body.boxed-site-container .nav-primary .wrap,
-	body.boxed-site-container .nav-secondary .wrap,
-	body.boxed-site-container .footer-widgets .wrap,
-	body.boxed-site-container .site-footer .wrap,
-	body.boxed-site-container .section > .wrap,
-	body.boxed-site-container.mai-sections .breadcrumb {
+	body.has-boxed-site-container .site-inner,
+	body.has-boxed-site-container .nav-primary .wrap,
+	body.has-boxed-site-container .nav-secondary .wrap,
+	body.has-boxed-site-container .footer-widgets .wrap,
+	body.has-boxed-site-container .site-footer .wrap,
+	body.has-boxed-site-container .section > .wrap,
+	body.has-boxed-site-container.mai-sections .breadcrumb {
 		padding-left: 48px;
 		padding-right: 48px;
 	}
