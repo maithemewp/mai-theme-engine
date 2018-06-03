@@ -133,7 +133,7 @@ function mai_register_customizer_site_layout_settings( $wp_customize ) {
 				'settings'    => _mai_customizer_get_field_name( $settings_field, 'boxed_elements' ),
 				'priority'    => 10,
 				'choices'     => array(
-					'site_container'       => __( 'Site Container', 'mai-theme-engine' ),
+					'site_container'       => __( 'Site Container (fixed width)', 'mai-theme-engine' ),
 					'content_sidebar_wrap' => __( 'Content Sidebar Wrap', 'mai-theme-engine' ),
 					'content'              => __( 'Main Content', 'mai-theme-engine' ),
 					'entry_singular'       => __( 'Single Posts/Entries', 'mai-theme-engine' ),
