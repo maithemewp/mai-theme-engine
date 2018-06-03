@@ -26,6 +26,8 @@
  * 'posts_per_page'
  * 'posts_nav'
  *
+ * @access  private
+ *
  * @return  void
  */
 add_action( 'init', 'mai_cpt_settings_init', 999 );
@@ -204,6 +206,8 @@ function mai_cpt_settings_init() {
 /**
  * Register the customizer settings sections and fields.
  *
+ * @access  private
+ *
  * @param   object  $wp_customize  The customizeer object.
  * @param   string  $post_type     The registered post the name.
  * @param   array   $settings      The settings to enabled/disable. Key is setting name and value is bool.
@@ -219,6 +223,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 
 	// Vars.
 	$section                       = sprintf( 'mai_%s_cpt_settings', $post_type );
+	$panel                         = 'mai_content_types';
 	$settings_field                = GENESIS_CPT_ARCHIVE_SETTINGS_FIELD_PREFIX . $post_type;
 	$genesis_settings              = 'genesis-settings';
 	$post_type_object              = get_post_type_object( $post_type );
@@ -232,12 +237,13 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 	$remove_meta_single_key        = sprintf( 'remove_meta_%s', $post_type );
 	$single_layout_key             = sprintf( 'layout_%s', $post_type );
 
-	// Mai {post type name} Settings.
+	// {post type name} Settings.
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => sprintf( __( 'Mai %s Settings', 'mai-theme-engine' ), $post_type_object->label ),
+			'title'    => sprintf( __( '%s Settings', 'mai-theme-engine' ), $post_type_object->label ),
 			'priority' => '39',
+			'panel'    => $panel,
 		)
 	);
 
