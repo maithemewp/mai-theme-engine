@@ -136,6 +136,7 @@ function mai_do_boxed_elements() {
 	}
 
 	$boxed = array(
+		'site_container'       => 'site-container',
 		'content_sidebar_wrap' => 'content-sidebar-wrap',
 		'content'              => 'content',
 		'sidebar'              => 'sidebar-primary',
@@ -164,6 +165,15 @@ function mai_do_boxed_elements() {
 		}
 
 	}
+}
+
+add_filter( 'body_class', 'mai_boxed_body' );
+function mai_boxed_body( $classes ) {
+	$elements = (array) genesis_get_option( 'boxed_elements' );
+	if ( in_array( 'site_container', $elements ) ) {
+		$classes[] = 'boxed-site-container';
+	}
+	return $classes;
 }
 
 /**

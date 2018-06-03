@@ -3,7 +3,9 @@
 /**
  * Register new Customizer elements.
  *
- * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
+ * @access  private
+ *
+ * @param   WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
  */
 add_action( 'customize_register', 'mai_register_customizer_content_singular_settings', 20 );
 function mai_register_customizer_content_singular_settings( $wp_customize ) {
@@ -13,6 +15,7 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	 * ************ */
 
 	$section        = 'mai_content_singular';
+	$panel          = 'mai_content_types';
 	$settings_field = 'genesis-settings';
 	$post_type      = 'post';
 
@@ -20,8 +23,9 @@ function mai_register_customizer_content_singular_settings( $wp_customize ) {
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => __( 'Mai Content Singular', 'mai-theme-engine' ),
+			'title'    => __( 'Single Entries Default', 'mai-theme-engine' ),
 			'priority' => '38',
+			'panel'    => $panel,
 		)
 	);
 

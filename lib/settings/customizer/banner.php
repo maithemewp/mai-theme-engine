@@ -3,7 +3,9 @@
 /**
  * Register new Customizer elements.
  *
- * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
+ * @access  private
+ *
+ * @param   WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
  */
 add_action( 'customize_register', 'mai_register_banner_customizer_settings', 20 );
 function mai_register_banner_customizer_settings( $wp_customize ) {

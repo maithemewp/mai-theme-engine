@@ -3,14 +3,13 @@
 /**
  * Custom CSS for the customizer.
  *
- * @return  void.
+ * @access  private
+ *
+ * @return  void
  */
 add_action( 'customize_controls_print_styles', 'mai_customizer_styles', 999 );
 function mai_customizer_styles() {
 	echo '<style type="text/css">
-		.customize-section-description-container + .customize-control-break {
-			// margin-top: -8px;
-		}
 		.customize-control-heading + .customize-control-checkbox,
 		.customize-control-heading + .customize-control-checkbox + .customize-control-checkbox {
 			margin-top: -12px !important;
@@ -38,6 +37,8 @@ function mai_customizer_styles() {
 /**
  * Helper function to check if the banner area is enabled globally.
  *
+ * @access  private
+ *
  * @param   object  $wp_customize    The customizer object.
  * @param   string  $settings_field  The genesis setting to check. This should always be 'genesis-settings'.
  *
@@ -50,6 +51,8 @@ function _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settin
 /**
  * Get field name attribute value.
  *
+ * @access  private
+ *
  * @param   string  $name Option name.
  *
  * @return  string  Option name as key of settings field.
@@ -59,7 +62,9 @@ function _mai_customizer_get_field_name( $settings_field, $name ) {
 }
 
 /**
- * Get the image sizes array for Kirki.
+ * Get the image sizes array for option values.
+ *
+ * @access  private
  *
  * @return  array.
  */
@@ -75,6 +80,8 @@ function _mai_customizer_get_image_sizes_config() {
 
 /**
  * Helper function to sanitize all values in an array with 'sanitize_key' function.
+ *
+ * @access  private
  *
  * @param   array  $values  The values to sanitize.
  *
