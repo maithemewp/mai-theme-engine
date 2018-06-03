@@ -23,10 +23,11 @@ function mai_do_banner_area_body_class( $classes ) {
  * Check if we need to display the banner area
  *
  * @since   1.0.0
+ * @since   1.3.0  Changed from `genesis_before_content_sidebar_wrap' to `genesis_after_header `hook.
  *
  * @return  void
  */
-add_action( 'genesis_before_content_sidebar_wrap', 'mai_do_banner_area' );
+add_action( 'genesis_after_header', 'mai_do_banner_area', 20 );
 function mai_do_banner_area() {
 
 	// Bail if banner area is not enabled or banner is hidden on this page.
@@ -65,51 +66,6 @@ function mai_do_banner_area() {
 	if ( $image_id ) {
 		$args['image'] = $image_id;
 	}
-
-	// Get the text alignment setting.
-	// $align_text = genesis_get_option( 'banner_align_text' );
-
-	// Maybe add the align_text class.
-	// if ( $align_text ) {
-	// 	switch ( $align_text ) {
-			// case 'left':
-			// 	$args['class'] .= ' text-xs-left';
-			// break;
-			// case 'center':
-			// 	$args['class'] .= ' text-xs-center';
-			// break;
-			// case 'right':
-			// 	$args['class'] .= ' text-xs-right';
-			// break;
-			// case 'left':
-			// 	$args['class'] .= ' text-xs-left';
-			// break;
-			// case 'lefttop':
-			// 	$args['class'] .= ' text-xs-left text-top';
-			// break;
-			// case 'leftbottom':
-			// 	$args['class'] .= ' text-xs-left text-bottom';
-			// break;
-			// case 'center':
-			// 	$args['class'] .= ' text-xs-center';
-			// break;
-			// case 'centertop':
-			// 	$args['class'] .= ' text-xs-center text-top';
-			// break;
-			// case 'centerbottom':
-			// 	$args['class'] .= ' text-xs-center text-bottom';
-			// break;
-			// case 'right':
-			// 	$args['class'] .= ' text-xs-right';
-			// break;
-			// case 'righttop':
-			// 	$args['class'] .= ' text-xs-right text-top';
-			// break;
-			// case 'rightbottom':
-			// 	$args['class'] .= ' text-xs-right text-bottom';
-			// break;
-	// 	}
-	// }
 
 	// Add a filter so devs can change these defaults.
 	$args = apply_filters( 'mai_banner_args', $args );
