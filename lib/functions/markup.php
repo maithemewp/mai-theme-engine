@@ -769,7 +769,7 @@ function mai_get_bottom_class( $bottom ) {
  * If gutter is a valid Flexington size.
  */
 function mai_is_valid_gutter( $gutter ) {
-	return in_array( $gutter, array( 5, 10, 20, 30, 40, 50 ), true );
+	return in_array( $gutter, array( 0, 5, 10, 20, 30, 40, 50 ), true );
 }
 
 /**
