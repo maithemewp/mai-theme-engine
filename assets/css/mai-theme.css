@@ -881,6 +881,11 @@ td {
 	border: none;
 }
 
+.mai-sections.has-boxed-site-container .content.boxed {
+	padding-left: 0;
+	padding-right: 0;
+}
+
 .mai-sections .content > .entry {
 	background-color: transparent;
 	padding-top: 0;
@@ -968,6 +973,7 @@ td {
 }
 
 .mai-sections.has-boxed-site-container .content.content-no-sidebars,
+.site-container.boxed .width-full,
 .site-inner,
 .breadcrumb,
 .wrap,
@@ -1317,7 +1323,11 @@ body.has-boxed-site-container {
 	background-color: #f7f7f7;
 }
 
-/* .site-container:not(.boxed) .site-inner > .section, */
+.site-container.boxed .section {
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .site-container:not(.boxed) .content-no-sidebars .section {
 	overflow: hidden;
 }
