@@ -56,7 +56,7 @@ class Mai_Grid {
 			'grid_title'           => '',
 			'grid_title_class'     => '',
 			'grid_title_wrap'      => 'h2',
-			'gutter'               => '30',
+			'gutter'               => 30,
 			'hide_empty'           => true,
 			'ids'                  => '',
 			'ignore_sticky_posts'  => true,  // normal WP_Query is false
@@ -68,7 +68,7 @@ class Mai_Grid {
 			'meta_value'           => '',
 			'more_link_text'       => __( 'Read More', 'mai-theme-engine' ),
 			'no_content_message'   => '',
-			'number'               => '12',
+			'number'               => 12,
 			'offset'               => '0',
 			'order'                => '',
 			'order_by'             => '',
@@ -86,7 +86,7 @@ class Mai_Grid {
 			'title_wrap'           => 'h3',
 			'class'                => '',
 			'id'                   => '',
-			'xs'                   => '12', // Span out of 12 column grid. '4' is 1/3 since 4x3=12.
+			'xs'                   => 12, // Span out of 12 column grid. '4' is 1/3 since 4x3=12.
 			'sm'                   => '',
 			'md'                   => '',
 			'lg'                   => '',
