@@ -1356,8 +1356,11 @@ body.has-boxed-site-container {
 }
 
 .section .entry {
-	color: initial;
 	text-shadow: none;
+}
+
+.section .entry:not(.light-content) {
+	color: initial;
 }
 
 .section.full-width-image .inner,
