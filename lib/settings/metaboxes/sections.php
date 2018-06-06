@@ -514,7 +514,7 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 		require_once(ABSPATH . 'wp-admin/includes/image.php');
 	}
 
-	// Set valid args/keys.
+	// Whitelist args/keys.
 	$args = array(
 		'bg'            => '',
 		'image_id'      => '',
