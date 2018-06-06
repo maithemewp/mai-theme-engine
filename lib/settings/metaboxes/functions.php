@@ -33,7 +33,7 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 	wp_enqueue_script( 'mai-cmb2' );
 }
 
-function _mai_cmb_show_banner_fields( $field ) {
+function _mai_cmb_banner_show_on_cb( $field ) {
 
 	$show = true;
 
@@ -113,14 +113,19 @@ function _mai_cmb_show_banner_fields( $field ) {
 	return $show;
 }
 
-function _mai_cmb_show_if_displaying_breadcrumbs() {
+function _mai_cmb_hide_breacrumbs_show_on_cb() {
+	// Hide on landing page template.
 	if ( 'landing.php' === get_post_meta( get_the_ID(), '_wp_page_template', true ) ) {
+		return false;
+	}
+	// Hide on static front page. This is handled in Genesis Theme Settings.
+	if ( get_the_ID() === (int) get_option( 'page_on_front' ) ) {
 		return false;
 	}
 	return true;
 }
 
-function _mai_cmb_show_if_auto_displaying_featured_image() {
+function _mai_cmb_hide_featured_image_show_on_cb() {
 	global $typenow;
 	// Check if auto-displaying the featured image.
 	$key     = sprintf( 'singular_image_%s', $typenow );
@@ -228,7 +233,7 @@ function _mai_cmb_banner_image_config() {
 		'text'         => array(
 			'add_upload_file_text' => __( 'Add Image', 'mai-theme-engine' ),
 		),
-		'show_on_cb'   => '_mai_cmb_show_banner_fields',
+		'show_on_cb'   => '_mai_cmb_banner_show_on_cb',
 	);
 }
 
@@ -240,7 +245,7 @@ function _mai_cmb_banner_visibility_config() {
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
 		'escape_cb'       => '_mai_cmb_escape_one_zero',
-		'show_on_cb'      => '_mai_cmb_show_banner_fields',
+		'show_on_cb'      => '_mai_cmb_banner_show_on_cb',
 	);
 }
 
@@ -251,7 +256,7 @@ function _mai_cmb_breadcrumb_visibility_config() {
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
 		'escape_cb'       => '_mai_cmb_escape_one_zero',
-		'show_on_cb'      => '_mai_cmb_show_if_displaying_breadcrumbs',
+		'show_on_cb'      => '_mai_cmb_hide_breacrumbs_show_on_cb',
 	);
 }
 
@@ -262,7 +267,7 @@ function _mai_cmb_featured_image_visibility_config() {
 		'type'            => 'checkbox',
 		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
 		'escape_cb'       => '_mai_cmb_escape_one_zero',
-		'show_on_cb'      => '_mai_cmb_show_if_auto_displaying_featured_image',
+		'show_on_cb'      => '_mai_cmb_hide_featured_image_show_on_cb',
 	);
 }
 
