@@ -283,7 +283,7 @@ function mai_do_sections_metabox() {
 	// Export.
 	$sections->add_field( array(
 		'name'       => __( 'Export (JSON)', 'mai-theme-engine' ),
-		'desc'       => __( 'Copy and paste this code into the "Import" field on another Sections template.', 'mai-theme-engine' ),
+		'desc'       => __( 'Copy and paste this code into the "Import" field of another Sections template.', 'mai-theme-engine' ),
 		'default_cb' => '_mai_cmb_get_sections_json',
 		'id'         => 'mai_sections_json_export',
 		'type'       => 'textarea_small',
