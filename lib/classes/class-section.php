@@ -65,7 +65,11 @@ class Mai_Section {
 			'wrap_class'    => mai_sanitize_html_classes( $this->args['wrap_class'] ),
 		);
 
-		// Add section args filter.
+		/**
+		 * Add section args filter.
+		 *
+		 * @since  1.3.0
+		 */
 		$this->args = apply_filters( 'mai_section_args', $this->args );
 	}
 
