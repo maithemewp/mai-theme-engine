@@ -267,7 +267,7 @@ function mai_do_sections_metabox() {
 		'id'         => 'mai_sections_json_import',
 		'type'       => 'textarea_small',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
-		'before_row' => '<div id="mai-sections-import-export"><ul style="text-align:right;"><li style="display:inline-block;"><a href="#mai-sections-import-export-1">Import</a>&nbsp;|&nbsp;</li><li style="display:inline-block;"><a href="#mai-sections-import-export-2">Export</a></li></ul><div id="mai-sections-import-export-1">',
+		'before_row' => '<div id="mai-sections-import-export"><ul style="text-align:right;"><li style="display:inline-block;"><a class="mai-import-export-toggle" href="#mai-sections-import-export-1">Import</a>&nbsp;|&nbsp;</li><li style="display:inline-block;"><a class="mai-import-export-toggle" href="#mai-sections-import-export-2">Export</a></li></ul><div id="mai-sections-import-export-1" class="mai-sections-import-export-content" style="display:none;">',
 	) );
 
 	// Import images.
@@ -288,7 +288,7 @@ function mai_do_sections_metabox() {
 		'id'         => 'mai_sections_json_export',
 		'type'       => 'textarea_small',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
-		'before_row' => '<div id="mai-sections-import-export-2">',
+		'before_row' => '<div id="mai-sections-import-export-2" class="mai-sections-import-export-content" style="display:none;">',
 		'after_row'  => '</div></div>',
 		'attributes' => array(
 			'readonly' => 'readonly',

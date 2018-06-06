@@ -1,11 +1,13 @@
 ( function ( document, $, undefined ) {
 	'use strict';
 
-	// Instantiate tabs for import/export.
-	$( '#mai-sections-import-export' ).tabs({
-		collapsible: true,
-		active: false
-	 });
+	// Toggle import/export fields.
+	$( '#mai-sections-import-export' ).on( 'click', '.mai-import-export-toggle', function(e) {
+		e.preventDefault();
+		var el = $(this).attr( 'href' );
+		$( '.mai-sections-import-export-content' ).not( el ).hide();
+		$( el ).show();
+	});
 
 	var $archiveMetabox  = $( '.mai-content-archive-metabox' ),
 		$removeLoop      = $( '#remove_loop' ),
