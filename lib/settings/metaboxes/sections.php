@@ -259,7 +259,7 @@ function mai_do_sections_metabox() {
 		'sanitization_cb' => 'mai_sanitize_post_content',
 	) );
 
-	// Import.
+	// Import JSON.
 	$sections->add_field( array(
 		'name'       => __( 'Import (JSON)', 'mai-theme-engine' ),
 		'desc'       => __( 'Paste JSON code and update the page/post to import.', 'mai-theme-engine' ),
@@ -270,6 +270,7 @@ function mai_do_sections_metabox() {
 		'before_row' => '<div id="mai-sections-import-export"><ul style="text-align:right;"><li style="display:inline-block;"><a href="#mai-sections-import-export-1">Import</a>&nbsp;|&nbsp;</li><li style="display:inline-block;"><a href="#mai-sections-import-export-2">Export</a></li></ul><div id="mai-sections-import-export-1">',
 	) );
 
+	// Import images.
 	$sections->add_field( array(
 		'name'       => __( '&nbsp;', 'mai-theme-engine' ),
 		'desc'       => __( '(Experimental) Import Section background images. Images must be on a publicly accessible URL.', 'mai-theme-engine' ),
@@ -534,7 +535,7 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 	foreach ( $section_data as $index => $section ) {
 
 		// Get the home URL before it's parsed out of the data.
-		$home_url = esc_url( $section['home_url'] );
+		$home_url = isset( $section['home_url'] ) ? esc_url( $section['home_url'] ) : false;
 
 		// Parse attributes.
 		$section = shortcode_atts( $args, $section );
@@ -546,7 +547,7 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 			if ( 'content' === $key ) {
 				$section[ $key ] = wp_kses_post( $value );
 				// Search/Replace URLs.
-				$section[ $key ] = str_replace( $home_url, untrailingslashit( home_url() ), $value );
+				$section[ $key ] = $home_url ? str_replace( $home_url, untrailingslashit( home_url() ), $value ) : $value;
 			} else {
 				$section[ $key ] = sanitize_text_field( $value );
 			}
