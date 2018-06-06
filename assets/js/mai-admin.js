@@ -1,7 +1,7 @@
 ( function ( document, $, undefined ) {
 	'use strict';
 
-	// Initiate tabs for import/export.
+	// Instantiate tabs for import/export.
 	$( '#mai-sections-import-export' ).tabs({
 		collapsible: true,
 		active: false
