@@ -61,8 +61,8 @@ function mai_register_layouts() {
  *
  * @return  array  The layouts.
  */
-add_filter( 'genesis_site_layout', 'mai_get_layout' );
-function mai_get_layout( $layout ) {
+add_filter( 'genesis_site_layout', 'mai_genesis_site_layout' );
+function mai_genesis_site_layout( $layout ) {
 
 	/**
 	 * Remove layout filter from Genesis Connect for WooCommerce.
@@ -70,92 +70,7 @@ function mai_get_layout( $layout ) {
 	 */
 	remove_filter( 'genesis_pre_get_option_site_layout', 'genesiswooc_archive_layout' );
 
-	// Setup cache.
-	static $layout_cache = '';
-
-	// If cache is populated, return value.
-	if ( '' !== $layout_cache ) {
-		return esc_attr( $layout_cache );
-	}
-
-	$site_layout = '';
-
-	global $wp_query;
-
-	// If home page.
-	if ( is_home() ) {
-		$site_layout = genesis_get_custom_field( '_genesis_layout', get_option( 'page_for_posts' ) );
-		if ( ! $site_layout ) {
-			$site_layout = genesis_get_option( 'layout_archive' );
-		}
-	}
-
-	// If viewing a singular page, post, or CPT.
-	elseif ( is_singular() ) {
-		$site_layout = genesis_get_custom_field( '_genesis_layout', get_the_ID() );
-		if ( ! $site_layout ) {
-			$site_layout = genesis_get_option( sprintf( 'layout_%s', get_post_type() ) );
-		}
-	}
-
-	// If viewing a post taxonomy archive.
-	elseif ( is_category() || is_tag() || is_tax( get_object_taxonomies( 'post', 'names' ) ) ) {
-		$term        = $wp_query->get_queried_object();
-		$site_layout = $term ? get_term_meta( $term->term_id, 'layout', true) : '';
-		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
-	}
-
-	// If viewing a custom taxonomy archive.
-	elseif ( is_tax() ) {
-		$term        = $wp_query->get_queried_object();
-		$site_layout = $term ? get_term_meta( $term->term_id, 'layout', true) : '';
-		if ( ! $site_layout ) {
-			$tax = get_taxonomy( $wp_query->get_queried_object()->taxonomy );
-			if ( $tax ) {
-				/**
-				 * If we have a tax, get the first one.
-				 * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
-				 */
-				$post_type = reset( $tax->object_type );
-				// If we have a post type and it supports genesis-cpt-archive-settings
-				if ( post_type_exists( $post_type ) && genesis_has_post_type_archive_support( $post_type ) ) {
-					// $site_layout = genesis_get_option( sprintf( 'layout_archive_%s', $post_type ) );
-					$site_layout = genesis_get_cpt_option( 'layout', $post_type );
-				}
-			}
-		}
-		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
-	}
-
-	// If viewing a supported post type.
-	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-	elseif ( is_post_type_archive() ) {
-		// $site_layout = genesis_get_option( sprintf( 'layout_archive_%s', get_post_type() ) );
-		$site_layout = genesis_get_cpt_option( 'layout', get_post_type() );
-		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
-	}
-
-	// If viewing an author archive.
-	elseif ( is_author() ) {
-		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
-		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
-	}
-
-	// Pull the theme option.
-	if ( ! $site_layout ) {
-		$site_layout = genesis_get_option( 'site_layout' );
-	}
-
-	// Use default layout as a fallback, if necessary.
-	if ( ! genesis_get_layout( $site_layout ) ) {
-		$site_layout = genesis_get_default_layout();
-	}
-	// Push layout into cache.
-	$layout_cache = $site_layout;
-
-	// Return site layout.
-	return esc_attr( $site_layout );
-
+	return mai_get_layout();
 }
 
 /**
