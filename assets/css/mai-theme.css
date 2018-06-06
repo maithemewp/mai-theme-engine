@@ -2067,11 +2067,13 @@ img.alignright,
 	content: "\f105";
 }
 
-.slick-prev {
+.slick-prev,
+.full-width-content .width-full .slick-prev {
 	left: 3%;
 }
 
-.slick-next {
+.slick-next,
+.full-width-content .width-full .slick-next {
 	right: 3%;
 }
 
