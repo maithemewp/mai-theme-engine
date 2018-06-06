@@ -298,6 +298,55 @@ function mai_do_sections_metabox() {
 }
 
 /**
+ * Fires after all fields have been saved.
+ *
+ * @since   1.3.0
+ *
+ * @param   int     $object_id  The ID of the current object
+ * @param   string  $updated    Array of field ids that were updated.
+ *                             Will only include field ids that had values change.
+ * @param   array   $cmb        This CMB2 object
+ *
+ * @return  void
+ */
+add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
+function mai_import_section_data( $object_id, $updated, $cmb ) {
+
+	// Check required $_POST variables and security nonce
+	if ( ! isset( $_POST[ $cmb->nonce() ] ) || ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() ) ) {
+		return;
+	}
+
+	// If not importing section data.
+	if ( empty( $_POST ) || ! isset( $_POST['mai_sections_json_import'] ) || empty( $_POST['mai_sections_json_import'] ) ) {
+		return;
+	}
+
+	$submission   = trim( $_POST['mai_sections_json_import'] );
+	$section_data = json_decode( stripslashes( $submission ), true );
+
+	if ( ! $section_data ) {
+		return;
+	}
+
+	// Whether to import images.
+	$import_images = filter_var( $_POST['mai_sections_json_import_images'], FILTER_VALIDATE_BOOLEAN );
+
+	// Remove this function so it doesn't cause infinite loop error.
+	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
+	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+
+mai_write_to_file( 'here' );
+
+	// Update.
+	mai_update_sections( $section_data, $object_id, $import_images );
+
+	// Add this function back.
+	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
+	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+}
+
+/**
  * Save section meta content to the_content for search indexing and SEO content analysis.
  *
  * @since   1.3.0
@@ -336,6 +385,7 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 	}
 
 	// Remove this function so it doesn't cause infinite loop error.
+	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
 
 	// Update the post content in the DB.
@@ -345,7 +395,30 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 	) );
 
 	// Add this function back.
+	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
 	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
+}
+
+
+
+function mai_write_to_file( $value ) {
+	/**
+	 * This function for testing & debuggin only.
+	 * Do not leave this function working on your site.
+	 */
+	$file   = dirname(__FILE__) . '/__data.txt';
+	$handle = fopen( $file, 'a' );
+	ob_start();
+	if ( is_array( $value ) || is_object( $value ) ) {
+		print_r( $value );
+	} elseif ( is_bool( $value ) ) {
+		var_dump( $value );
+	} else {
+		echo $value;
+	}
+	echo "\r\n\r\n";
+	fwrite( $handle, ob_get_clean() );
+	fclose( $handle );
 }
 
 /**
@@ -429,44 +502,6 @@ function mai_change_from_sections_template_warning( $object_id, $cmb ) {
 }
 
 /**
- * Fires after all fields have been saved.
- *
- * @since   1.3.0
- *
- * @param   int     $object_id  The ID of the current object
- * @param   string  $updated    Array of field ids that were updated.
- *                             Will only include field ids that had values change.
- * @param   array   $cmb        This CMB2 object
- *
- * @return  void
- */
-add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data_og', 10, 3 );
-function mai_import_section_data_og( $object_id, $updated, $cmb ) {
-
-	// Check required $_POST variables and security nonce
-	if ( ! isset( $_POST[ $cmb->nonce() ] ) || ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() ) ) {
-		return;
-	}
-
-	// If not importing section data.
-	if ( empty( $_POST ) || ! isset( $_POST['mai_sections_json_import'] ) || empty( $_POST['mai_sections_json_import'] ) ) {
-		return;
-	}
-
-	$submission   = trim( $_POST['mai_sections_json_import'] );
-	$section_data = json_decode( stripslashes( $submission ), true );
-
-	if ( ! $section_data ) {
-		return;
-	}
-
-	// Whether to import images.
-	$import_images = filter_var( $_POST['mai_sections_json_import_images'], FILTER_VALIDATE_BOOLEAN );
-
-	mai_update_sections( $section_data, $object_id, $import_images );
-}
-
-/**
  * Callback function to get the sections default data for the export field.
  *
  * @access  private
@@ -536,12 +571,12 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 	);
 
 	// Separate our data.
-	$home_url         = isset( $section_data['home_url']  ) ? esc_url( $section_data['home_url'] ):                      false;
-	$sections         = isset( $section_data['sections']  ) ? $section_data['sections']:                                 false;
-	$layout           = isset( $section_data['layout']  ) ? sanitize_key( $section_data['layout'] ):                     false;
-	$hide_banner      = isset( $section_data['hide_banner']  ) ? sanitize_key( $section_data['hide_banner'] ):           false;
-	$hide_breadcrumbs = isset( $section_data['hide_breadcrumbs']  ) ? sanitize_key( $section_data['hide_breadcrumbs'] ): false;
-	$hide_featured    = isset( $section_data['hide_featured']  ) ? sanitize_key( $section_data['hide_featured'] ) :      false;
+	$home_url         = isset( $section_data['home_url'] ) ? esc_url( $section_data['home_url'] ) : false;
+	$sections         = isset( $section_data['sections'] ) ? $section_data['sections'] : false;
+	$layout           = isset( $section_data['layout'] ) ? sanitize_key( $section_data['layout'] ) : false;
+	$hide_banner      = isset( $section_data['hide_banner'] ) ? sanitize_key( $section_data['hide_banner'] ) : false;
+	$hide_breadcrumbs = isset( $section_data['hide_breadcrumbs'] ) ? sanitize_key( $section_data['hide_breadcrumbs'] ) : false;
+	$hide_featured    = isset( $section_data['hide_featured'] ) ? sanitize_key( $section_data['hide_featured'] ) : false;
 
 	// Bail if no sections, that's the whole point right?
 	if ( ! $sections ) {
@@ -586,8 +621,11 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 				// If we have an image to upload.
 				if ( $section['image'] ) {
 
+					// Get image data, for filename.
+					$path_parts = pathinfo( $section['image'] );
+
 					// Create attachment.
-					$attachment_id = $section['image'] ? media_sideload_image( $section['image'], $post_id, $desc = '', 'id' ) : false;
+					$attachment_id = media_sideload_image( $section['image'], $post_id, $path_parts['filename'], 'id' );
 
 					// If valid attachment.
 					if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
