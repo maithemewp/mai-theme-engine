@@ -1725,6 +1725,10 @@ img.alignright,
 	margin-bottom: 30px;
 }
 
+input[name="post_password"] {
+	max-width: 240px;
+}
+
 /* ## Genesis
 --------------------------------------------- */
 

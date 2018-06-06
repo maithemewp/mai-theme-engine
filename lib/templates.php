@@ -90,6 +90,11 @@ function mai_do_sections_template() {
 		return;
 	}
 
+	// Bail if password protected.
+	if ( post_password_required( get_the_ID() ) ) {
+		return;
+	}
+
 	// Add custom body class to the head.
 	add_filter( 'body_class', 'mai_sections_page_body_class' );
 	function mai_sections_page_body_class( $classes ) {
