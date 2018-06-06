@@ -47,7 +47,7 @@
 * Fixed: Sections template now properly passes page content to the first section so it's not lost when changing an existing page to Sections template.
 * Fixed: Sections template now displays a warning about deleting section data when changing to another page template.
 * Fixed: Sections template now deletes section meta when changing from Sections template to another page template.
-* Fixed: Sections template now respected password protected pages.
+* Fixed: Sections template now respects password protection.
 * Fixed: Mobile menu toggle getting squished when logos are big.
 * Fixed: Landing page template logo not centered when 'genesis_header_right hook is used.
 * Fixed: Blockquote weirdness when inserted after an image aligned left or right.
