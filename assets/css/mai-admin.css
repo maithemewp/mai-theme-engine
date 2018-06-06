@@ -229,3 +229,14 @@
 .mai-section-settings .cmb2-media-status .img-status img {
 	width: 100%;
 }
+
+#mai-sections-import-export textarea#mai_sections_json_import,
+#mai-sections-import-export textarea#mai_sections_json_export {
+	width: 100%;
+}
+
+#mai-sections-import-export label[for="mai_sections_json_import_images"] {
+	display: inline-block;
+	max-width: calc( 100% - 26px );
+}
+

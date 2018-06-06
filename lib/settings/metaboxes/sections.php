@@ -261,237 +261,63 @@ function mai_do_sections_metabox() {
 
 	// Import.
 	$sections->add_field( array(
-		'name'       => 'Sections Import (JSON)',
-		'desc'       => 'field description (optional)',
+		'name'       => __( 'Import (JSON)', 'mai-theme-engine' ),
+		'desc'       => __( 'Paste JSON code and update the page/post to import.', 'mai-theme-engine' ),
 		'default'    => '',
 		'id'         => 'mai_sections_json_import',
-		'type'       => 'textarea',
+		'type'       => 'textarea_small',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
-		// 'attributes' => array(
-			// 'readonly' => 'readonly',
-			// 'disabled' => 'disabled',
-		// ),
+		'before_row' => '<div id="mai-sections-import-export"><ul style="text-align:right;"><li style="display:inline-block;"><a href="#mai-sections-import-export-1">Import</a>&nbsp;|&nbsp;</li><li style="display:inline-block;"><a href="#mai-sections-import-export-2">Export</a></li></ul><div id="mai-sections-import-export-1">',
+	) );
+
+	$sections->add_field( array(
+		'name'       => __( '&nbsp;', 'mai-theme-engine' ),
+		'desc'       => __( '(Experimental) Import Section background images. Images must be on a publicly accessible URL.', 'mai-theme-engine' ),
+		'id'         => 'mai_sections_json_import_images',
+		'type'       => 'checkbox',
+		'save_field' => false, // Otherwise CMB2 will end up removing the value.
+		'after_row'  => '</div>',
 	) );
 
 	// Export.
 	$sections->add_field( array(
-		'name'       => 'Sections Export (JSON)',
-		'desc'       => 'field description (optional)',
-		'default_cb' => '_mai_get_sections_json',
+		'name'       => __( 'Export (JSON)', 'mai-theme-engine' ),
+		'desc'       => __( 'Copy and paste this code into the "Import" field on another Sections template.', 'mai-theme-engine' ),
+		'default_cb' => '_mai_cmb_get_sections_json',
 		'id'         => 'mai_sections_json_export',
-		'type'       => 'textarea',
+		'type'       => 'textarea_small',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
+		'before_row' => '<div id="mai-sections-import-export-2">',
+		'after_row'  => '</div></div>',
 		'attributes' => array(
 			'readonly' => 'readonly',
-			// 'disabled' => 'disabled',
 		),
 	) );
 
 }
 
-function _mai_get_sections_json( $args, $field ) {
-	$sections = get_post_meta( $field->object_id, 'mai_sections', true );
+/**
+ * Callback function to get the sections default data for the export field.
+ *
+ * @access  private
+ *
+ * @since   1.3.0
+ *
+ * @return  string  The sections JSON.
+ */
+function _mai_cmb_get_sections_json( $args, $field ) {
+	$home_url = untrailingslashit( home_url() );
+	$sections = (array) get_post_meta( $field->object_id, 'mai_sections', true );
+	foreach( $sections as $index => $values ) {
+		$sections[ $index ]['home_url'] = $home_url;
+	}
 	return json_encode( $sections );
 }
 
 /**
- * Fires before fields have been processed/saved.
- *
- * The dynamic portion of the hook name, $object_type, refers to the
- * metabox/form's object type
- *    Usually `post` (this applies to all post-types).
- *    Could also be `comment`, `user` or `options-page`.
- *
- * The dynamic portion of the hook name, $this->cmb_id, is the meta_box id.
- *
- * @param array $cmb       This CMB2 object
- * @param int   $object_id The ID of the current object
- */
-// do_action( "cmb2_{$object_type}_process_fields_{$this->cmb_id}", $this, $this->object_id() );
-// add_action( 'cmb2_post_process_fields_mai_sections', 'mai_import_section_data', 10, 2 );
-function mai_import_section_data( $cmb, $object_id ) {
-
-	// Check required $_POST variables and security nonce
-	if ( ! isset( $_POST[ $cmb->nonce() ] ) || ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() ) ) {
-		return;
-	}
-
-	// If not importing section data.
-	if ( empty( $_POST ) || ! isset( $_POST['mai_sections_json_import'] ) || empty( $_POST['mai_sections_json_import'] ) ) {
-		return;
-	}
-
-	$submission   = trim( $_POST['mai_sections_json_import'] );
-	$section_data = json_decode( stripslashes( $submission ), true );
-
-	if ( ! $section_data ) {
-		return;
-	}
-
-	$cmb->data_to_save['mai_sections'] = array();
-
-	mai_update_sections( $object_id, $section_data );
-}
-
-function mai_update_sections( $post_id, $section_data ) {
-	if ( empty( $section_data ) || ! is_array( $section_data ) ) {
-		return;
-	}
-	$args = array(
-		'bg'            => '',
-		'image_id'      => '',
-		'image'         => false,
-		'overlay'       => '',
-		'inner'         => '',
-		'height'        => '',
-		'content_width' => '',
-		'align_content' => '',
-		'align'         => '',
-		'text_size'     => '',
-		'id'            => '',
-		'class'         => '',
-		'context'       => '',
-		'title'         => '',
-		'content'       => '',
-	);
-	foreach ( $section_data as $section ) {
-		$section = shortcode_atts( $args, $section );
-		foreach ( $section as $index => $value ) {
-			if ( 'content' === $index ) {
-				$value = wp_kses_post( $value );
-			} else {
-				$value = sanitize_text_field( $value );
-			}
-
-			if ( 'image' === $index && ! empty( $value ) && filter_var( $value, FILTER_VALIDATE_URL ) ) {
-
-				// TODO: Check if same image?
-				// IF IMAGE ALREADY EXISTS SOMEHOW?
-
-				$attachment_id       = mai_insert_attachment_from_url( $value );
-				$section['image']    = wp_get_attachment_url( $attachment_id );
-				$section['image_id'] = $attachment_id;
-			}
-		}
-	}
-	update_post_meta( $post_id, 'mai_sections', $section_data );
-}
-
-/**
- * Insert an attachment from an URL address.
- *
- * @link   https://gist.github.com/m1r0/f22d5237ee93bcccb0d9
- *
- * @param   string  $url
- * @param   int     $post_id
- * @param   array   $meta_data
- *
- * @return  int     Attachment ID
- */
-function mai_insert_attachment_from_url( $url, $post_id = null ) {
-
-	if ( ! class_exists( 'WP_Http' ) ) {
-		include_once( ABSPATH . WPINC . '/class-http.php' );
-	}
-
-	$http = new WP_Http();
-	$response = $http->request( $url );
-	if( $response['response']['code'] != 200 ) {
-		return false;
-	}
-
-	$upload = wp_upload_bits( basename($url), null, $response['body'] );
-	if( !empty( $upload['error'] ) ) {
-		return false;
-	}
-
-	$file_path = $upload['file'];
-	$file_name = basename( $file_path );
-	$file_type = wp_check_filetype( $file_name, null );
-	$attachment_title = sanitize_file_name( pathinfo( $file_name, PATHINFO_FILENAME ) );
-	$wp_upload_dir = wp_upload_dir();
-
-	$post_info = array(
-		'guid'				=> $wp_upload_dir['url'] . '/' . $file_name,
-		'post_mime_type'	=> $file_type['type'],
-		'post_title'		=> $attachment_title,
-		'post_content'		=> '',
-		'post_status'		=> 'inherit',
-	);
-
-	// Create the attachment
-	$attach_id = wp_insert_attachment( $post_info, $file_path, $post_id );
-
-	// Include image.php
-	require_once( ABSPATH . 'wp-admin/includes/image.php' );
-
-	// Define attachment metadata
-	$attach_data = wp_generate_attachment_metadata( $attach_id, $file_path );
-
-	// Assign metadata to attachment
-	wp_update_attachment_metadata( $attach_id,  $attach_data );
-
-	return $attach_id;
-}
-
-/**
- * Fires after all fields have been saved.
- *
- * @param  int     $object_id  The ID of the current object
- * @param  string  $updated    Array of field ids that were updated.
- *                             Will only include field ids that had values change.
- * @param  array   $cmb        This CMB2 object
- */
-// do_action( "cmb2_save_{$object_type}_fields_{$this->cmb_id}", $object_id, $this->updated, $this );
-add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data_og', 10, 3 );
-function mai_import_section_data_og( $object_id, $updated, $cmb ) {
-
-	// Check required $_POST variables and security nonce
-	if ( ! isset( $_POST[ $cmb->nonce() ] ) || ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() ) ) {
-		return;
-	}
-
-	// If not importing section data.
-	if ( empty( $_POST ) || ! isset( $_POST['mai_sections_json_import'] ) || empty( $_POST['mai_sections_json_import'] ) ) {
-		return;
-	}
-
-	$submission   = trim( $_POST['mai_sections_json_import'] );
-	$section_data = json_decode( stripslashes( $submission ), true );
-
-	if ( ! $section_data ) {
-		return;
-	}
-
-	mai_update_sections( $object_id, $section_data );
-}
-
-// add_action( 'cmb2_after_init', 'yourprefix_handle_frontend_new_post_form_submission' );
-function yourprefix_handle_frontend_new_post_form_submission() {
-
-	// If no form submission, bail.
-	if ( empty( $_POST ) || ! isset( $_POST['submit-cmb'], $_POST['object_id'] ) ) {
-		return false;
-	}
-	// Get CMB2 metabox object
-	$cmb = yourprefix_frontend_cmb2_get();
-	$post_data = array();
-	// Get our shortcode attributes and set them as our initial post_data args
-	if ( isset( $_POST['atts'] ) ) {
-		foreach ( (array) $_POST['atts'] as $key => $value ) {
-			$post_data[ $key ] = sanitize_text_field( $value );
-		}
-		unset( $_POST['atts'] );
-	}
-	// Check security nonce
-	if ( ! isset( $_POST[ $cmb->nonce() ] ) || ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() ) ) {
-		return $cmb->prop( 'submission_error', new WP_Error( 'security_fail', __( 'Security check failed.' ) ) );
-	}
-
-}
-
-/**
  * Save section meta content to the_content for search indexing and SEO content analysis.
+ *
+ * @since   1.3.0
  *
  * @param   int     $post_id  The ID of the current object
  * @param   string  $updated  Array of field ids that were updated.
@@ -507,7 +333,7 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 	$sections = get_post_meta( $post_id, 'mai_sections', true );
 
 	// Bail if no sections.
-	if ( ! $sections ) {
+	if ( ! $sections || ! is_array( $sections ) ) {
 		return;
 	}
 
@@ -617,4 +443,163 @@ function mai_change_from_sections_template_warning( $object_id, $cmb ) {
 			});
 		});
 	</script>", $alert );
+}
+
+/**
+ * Fires after all fields have been saved.
+ *
+ * @since   1.3.0
+ *
+ * @param   int     $object_id  The ID of the current object
+ * @param   string  $updated    Array of field ids that were updated.
+ *                             Will only include field ids that had values change.
+ * @param   array   $cmb        This CMB2 object
+ *
+ * @return  void
+ */
+add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data_og', 10, 3 );
+function mai_import_section_data_og( $object_id, $updated, $cmb ) {
+
+	// Check required $_POST variables and security nonce
+	if ( ! isset( $_POST[ $cmb->nonce() ] ) || ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() ) ) {
+		return;
+	}
+
+	// If not importing section data.
+	if ( empty( $_POST ) || ! isset( $_POST['mai_sections_json_import'] ) || empty( $_POST['mai_sections_json_import'] ) ) {
+		return;
+	}
+
+	$submission   = trim( $_POST['mai_sections_json_import'] );
+	$section_data = json_decode( stripslashes( $submission ), true );
+
+	if ( ! $section_data ) {
+		return;
+	}
+
+	// Whether to import images.
+	$import_images = filter_var( $_POST['mai_sections_json_import_images'], FILTER_VALIDATE_BOOLEAN );
+
+	mai_update_sections( $section_data, $object_id, $import_images );
+}
+
+
+/**
+ * Update sections data from array of import data.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   array  $section_data   Array of sections and parameter keys/values.
+ * @param   int    $post_id        The post ID to attach the image to.
+ * @param   bool   $import_images  Whether to attempt to import background images.
+ *
+ * @return  void
+ */
+function mai_update_sections( $section_data, $post_id, $import_images = false ) {
+
+	if ( empty( $section_data ) || ! is_array( $section_data ) ) {
+		return;
+	}
+
+	if ( $import_images && ! function_exists( 'media_sideload_image' ) ) {
+		require_once(ABSPATH . 'wp-admin/includes/media.php');
+		require_once(ABSPATH . 'wp-admin/includes/file.php');
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+	}
+
+	// Set valid args/keys.
+	$args = array(
+		'bg'            => '',
+		'image_id'      => '',
+		'image'         => false,
+		'overlay'       => '',
+		'inner'         => '',
+		'height'        => '',
+		'content_width' => '',
+		'align_content' => '',
+		'align'         => '',
+		'text_size'     => '',
+		'id'            => '',
+		'class'         => '',
+		'context'       => '',
+		'title'         => '',
+		'content'       => '',
+	);
+
+	$imported_images = array();
+
+	// Loop through each section.
+	foreach ( $section_data as $index => $section ) {
+
+		// Get the home URL before it's parsed out of the data.
+		$home_url = esc_url( $section['home_url'] );
+
+		// Parse attributes.
+		$section = shortcode_atts( $args, $section );
+
+		// Loop through and sanitize each section parameter individually.
+		foreach ( $section as $key => $value ) {
+
+			// Sanitize.
+			if ( 'content' === $key ) {
+				$section[ $key ] = wp_kses_post( $value );
+				// Search/Replace URLs.
+				$section[ $key ] = str_replace( $home_url, untrailingslashit( home_url() ), $value );
+			} else {
+				$section[ $key ] = sanitize_text_field( $value );
+			}
+
+		}
+
+		// If importing images, do it now.
+		if ( $import_images ) {
+
+			// If already uploaded.
+			if ( isset( $imported_images[ $section['image_id'] ] ) && $imported_images[ $section['image_id'] ] ) {
+
+				// Swap our imported image ID and URL.
+				$section['image_id'] = isset( $imported_images[ $section['image_id'] ]['id'] ) ? $imported_images[ $section['image_id'] ]['id'] : '';
+				$section['image']    = isset( $imported_images[ $section['image_id'] ]['url'] ) ? $imported_images[ $section['image_id'] ]['url'] : '';
+			}
+			// We need to upload now.
+			else {
+
+				// Create attachment.
+				$attachment_id = media_sideload_image( $section['image'], $post_id, $desc = '', 'id' );
+
+				// If valid attachment.
+				if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
+
+					$attachment_url = wp_get_attachment_url( $attachment_id );
+
+					// Build array of imported image data.
+					$imported_images[ $section['image_id'] ] = array(
+						'id'  => $attachment_id,
+						'url' => $attachment_url,
+					);
+
+					// Swap our imported image ID and URL.
+					$section['image_id'] = $attachment_id;
+					$section['image']    = $attachment_url;
+
+				} else {
+
+					// We tried, but didn't work so flag it so we don't try again for this image.
+					$imported_images[ $section['image_id'] ] = false;
+
+					$section['image_id'] = '';
+					$section['image']    = '';
+				}
+
+			}
+		}
+
+		// Rebuild the updated $section_data.
+		$section_data[ $index ] = $section;
+	}
+
+	// Update with our new section data.
+	update_post_meta( $post_id, 'mai_sections', $section_data );
 }
