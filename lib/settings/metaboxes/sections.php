@@ -476,15 +476,17 @@ function mai_import_section_data_og( $object_id, $updated, $cmb ) {
  * @return  string  The sections JSON.
  */
 function _mai_cmb_get_sections_json( $args, $field ) {
-	global $post;
-	$site_layout = genesis_get_custom_field( '_genesis_layout', $post->ID );
+	$site_layout = genesis_get_custom_field( '_genesis_layout', $field->object_id );
 	if ( ! $site_layout ) {
-		$site_layout = genesis_get_option( sprintf( 'layout_%s', get_post_type( $post->ID ) ) );
+		$site_layout = genesis_get_option( sprintf( 'layout_%s', get_post_type( $field->object_id ) ) );
 	}
 	$data = array(
-		'home_url' => untrailingslashit( home_url() ),
-		'layout'   => $site_layout,
-		'sections' => (array) get_post_meta( $field->object_id, 'mai_sections', true ),
+		'home_url'         => untrailingslashit( home_url() ),
+		'layout'           => $site_layout,
+		'sections'         => (array) get_post_meta( $field->object_id, 'mai_sections', true ),
+		'hide_banner'      => get_post_meta( $field->object_id, 'hide_banner', true ),
+		'hide_breadcrumbs' => get_post_meta( $field->object_id, 'mai_hide_breadcrumbs', true ),
+		'hide_featured'    => get_post_meta( $field->object_id, 'mai_hide_featured_image', true ),
 	);
 	return json_encode( $data );
 }
@@ -534,9 +536,12 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 	);
 
 	// Separate our data.
-	$home_url = isset( $section_data['home_url']  ) ? esc_url( $section_data['home_url'] ) : false;
-	$layout   = isset( $section_data['layout']  ) ? sanitize_key( $section_data['layout'] ) : false;
-	$sections = isset( $section_data['sections']  ) ? $section_data['sections'] : false;
+	$home_url         = isset( $section_data['home_url']  ) ? esc_url( $section_data['home_url'] ):                      false;
+	$sections         = isset( $section_data['sections']  ) ? $section_data['sections']:                                 false;
+	$layout           = isset( $section_data['layout']  ) ? sanitize_key( $section_data['layout'] ):                     false;
+	$hide_banner      = isset( $section_data['hide_banner']  ) ? sanitize_key( $section_data['hide_banner'] ):           false;
+	$hide_breadcrumbs = isset( $section_data['hide_breadcrumbs']  ) ? sanitize_key( $section_data['hide_breadcrumbs'] ): false;
+	$hide_featured    = isset( $section_data['hide_featured']  ) ? sanitize_key( $section_data['hide_featured'] ) :      false;
 
 	// Bail if no sections, that's the whole point right?
 	if ( ! $sections ) {
@@ -569,38 +574,46 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 		if ( $import_images ) {
 
 			// If already uploaded.
-			if ( isset( $imported_images[ $section['image_id'] ] ) && $imported_images[ $section['image_id'] ] ) {
+			if ( isset( $imported_images[ $section['image_id'] ] ) ) {
 
 				// Swap our imported image ID and URL.
 				$section['image_id'] = isset( $imported_images[ $section['image_id'] ]['id'] ) ? $imported_images[ $section['image_id'] ]['id'] : '';
 				$section['image']    = isset( $imported_images[ $section['image_id'] ]['url'] ) ? $imported_images[ $section['image_id'] ]['url'] : '';
 			}
-			// We need to upload now.
+			// Not uploaded.
 			else {
 
-				// Create attachment.
-				$attachment_id = media_sideload_image( $section['image'], $post_id, $desc = '', 'id' );
+				// If we have an image to upload.
+				if ( $section['image'] ) {
 
-				// If valid attachment.
-				if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
+					// Create attachment.
+					$attachment_id = $section['image'] ? media_sideload_image( $section['image'], $post_id, $desc = '', 'id' ) : false;
 
-					$attachment_url = wp_get_attachment_url( $attachment_id );
+					// If valid attachment.
+					if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
 
-					// Build array of imported image data.
-					$imported_images[ $section['image_id'] ] = array(
-						'id'  => $attachment_id,
-						'url' => $attachment_url,
-					);
+						$attachment_url = wp_get_attachment_url( $attachment_id );
 
-					// Swap our imported image ID and URL.
-					$section['image_id'] = $attachment_id;
-					$section['image']    = $attachment_url;
+						// Build array of imported image data.
+						$imported_images[ $section['image_id'] ] = array(
+							'id'  => $attachment_id,
+							'url' => $attachment_url,
+						);
+
+						// Swap our imported image ID and URL.
+						$section['image_id'] = $attachment_id;
+						$section['image']    = $attachment_url;
+
+					} else {
+
+						// Empty so we don't load random values.
+						$section['image_id'] = '';
+						$section['image']    = '';
+					}
 
 				} else {
 
-					// We tried, but didn't work so flag it so we don't try again for this image.
-					$imported_images[ $section['image_id'] ] = false;
-
+					// Empty so we don't load random values.
 					$section['image_id'] = '';
 					$section['image']    = '';
 				}
@@ -620,5 +633,16 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 	if ( isset( $layouts[ $layout ] ) ) {
 		// Update the layout.
 		update_post_meta( $post_id, '_genesis_layout', $layout );
+	}
+
+	// Update visibility settings.
+	if ( $hide_banner ) {
+		update_post_meta( $post_id, 'hide_banner', $hide_banner );
+	}
+	if ( $hide_breadcrumbs ) {
+		update_post_meta( $post_id, 'mai_hide_breadcrumbs', $hide_banner );
+	}
+	if ( $hide_featured ) {
+		update_post_meta( $post_id, 'mai_hide_featured_image', $hide_banner );
 	}
 }
