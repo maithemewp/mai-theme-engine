@@ -298,24 +298,6 @@ function mai_do_sections_metabox() {
 }
 
 /**
- * Callback function to get the sections default data for the export field.
- *
- * @access  private
- *
- * @since   1.3.0
- *
- * @return  string  The sections JSON.
- */
-function _mai_cmb_get_sections_json( $args, $field ) {
-	$home_url = untrailingslashit( home_url() );
-	$sections = (array) get_post_meta( $field->object_id, 'mai_sections', true );
-	foreach( $sections as $index => $values ) {
-		$sections[ $index ]['home_url'] = $home_url;
-	}
-	return json_encode( $sections );
-}
-
-/**
  * Save section meta content to the_content for search indexing and SEO content analysis.
  *
  * @since   1.3.0
@@ -484,6 +466,28 @@ function mai_import_section_data_og( $object_id, $updated, $cmb ) {
 	mai_update_sections( $section_data, $object_id, $import_images );
 }
 
+/**
+ * Callback function to get the sections default data for the export field.
+ *
+ * @access  private
+ *
+ * @since   1.3.0
+ *
+ * @return  string  The sections JSON.
+ */
+function _mai_cmb_get_sections_json( $args, $field ) {
+	global $post;
+	$site_layout = genesis_get_custom_field( '_genesis_layout', $post->ID );
+	if ( ! $site_layout ) {
+		$site_layout = genesis_get_option( sprintf( 'layout_%s', get_post_type( $post->ID ) ) );
+	}
+	$data = array(
+		'home_url' => untrailingslashit( home_url() ),
+		'layout'   => $site_layout,
+		'sections' => (array) get_post_meta( $field->object_id, 'mai_sections', true ),
+	);
+	return json_encode( $data );
+}
 
 /**
  * Update sections data from array of import data.
@@ -529,13 +533,20 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 		'content'       => '',
 	);
 
+	// Separate our data.
+	$home_url = isset( $section_data['home_url']  ) ? esc_url( $section_data['home_url'] ) : false;
+	$layout   = isset( $section_data['layout']  ) ? sanitize_key( $section_data['layout'] ) : false;
+	$sections = isset( $section_data['sections']  ) ? $section_data['sections'] : false;
+
+	// Bail if no sections, that's the whole point right?
+	if ( ! $sections ) {
+		return;
+	}
+
 	$imported_images = array();
 
 	// Loop through each section.
-	foreach ( $section_data as $index => $section ) {
-
-		// Get the home URL before it's parsed out of the data.
-		$home_url = isset( $section['home_url'] ) ? esc_url( $section['home_url'] ) : false;
+	foreach ( $sections as $index => $section ) {
 
 		// Parse attributes.
 		$section = shortcode_atts( $args, $section );
@@ -597,10 +608,17 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 			}
 		}
 
-		// Rebuild the updated $section_data.
-		$section_data[ $index ] = $section;
+		// Rebuild the updated $sections.
+		$sections[ $index ] = $section;
 	}
 
 	// Update with our new section data.
-	update_post_meta( $post_id, 'mai_sections', $section_data );
+	update_post_meta( $post_id, 'mai_sections', $sections );
+
+	// If our layout exists.
+	$layouts = genesis_get_layouts();
+	if ( isset( $layouts[ $layout ] ) ) {
+		// Update the layout.
+		update_post_meta( $post_id, '_genesis_layout', $layout );
+	}
 }
