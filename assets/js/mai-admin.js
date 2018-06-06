@@ -1,6 +1,12 @@
 ( function ( document, $, undefined ) {
 	'use strict';
 
+	// Instantiate tabs for import/export.
+	$( '#mai-sections-import-export' ).tabs({
+		collapsible: true,
+		active: false
+	 });
+
 	var $archiveMetabox  = $( '.mai-content-archive-metabox' ),
 		$removeLoop      = $( '#remove_loop' ),
 		$settingsEnabled = $( '#enable_content_archive_settings' ),
