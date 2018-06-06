@@ -3386,8 +3386,9 @@ img.alignright,
 	border: none;
 }
 
+.archive .content > .entry,
 .blog .content > .entry,
-.archive .content > .entry {
+.search .content > .entry {
 	overflow: hidden;
 }
 
