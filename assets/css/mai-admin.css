@@ -230,13 +230,13 @@
 	width: 100%;
 }
 
-#mai-sections-import-export textarea#mai_sections_json_import,
-#mai-sections-import-export textarea#mai_sections_json_export {
-	width: 100%;
+#mai_sections_importexport textarea#mai_sections_json_import,
+#mai_sections_importexport textarea#mai_sections_json_export {
+	width: 99%;
 }
 
-#mai-sections-import-export label[for="mai_sections_json_import_images"] {
+#mai_sections_importexport label[for="mai_sections_json_import_images"] {
 	display: inline-block;
 	max-width: calc( 100% - 26px );
+	margin-bottom: 4px;
 }
-

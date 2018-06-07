@@ -259,37 +259,58 @@ function mai_do_sections_metabox() {
 		'sanitization_cb' => 'mai_sanitize_post_content',
 	) );
 
+}
+
+/**
+ * Add the CMB2 Sections repeater group.
+ *
+ * @access  private
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'cmb2_admin_init', 'mai_do_sections_import_export_metabox' );
+function mai_do_sections_import_export_metabox() {
+
+	// Pages with Sections template.
+	$importexport = new_cmb2_box( array(
+		'id'           => 'mai_sections_importexport',
+		'title'        => __( 'Sections Import/Export', 'mai-theme-engine' ),
+		'object_types' => array( 'page' ),
+		'context'      => 'normal', //  'normal', 'advanced', or 'side'
+		'priority'     => 'low',
+		'classes'      => 'mai-metabox',
+		'show_on'      => array( 'key' => 'page-template', 'value' => 'sections.php' ),
+	) );
+
 	// Import JSON.
-	$sections->add_field( array(
+	$importexport->add_field( array(
 		'name'       => __( 'Import (JSON)', 'mai-theme-engine' ),
 		'desc'       => __( 'Paste JSON code and update the page/post to import.', 'mai-theme-engine' ),
 		'default'    => '',
 		'id'         => 'mai_sections_json_import',
 		'type'       => 'textarea_small',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
-		'before_row' => '<div id="mai-sections-import-export"><ul style="text-align:right;"><li style="display:inline-block;"><a class="mai-import-export-toggle" href="#mai-sections-import-export-1">Import</a>&nbsp;|&nbsp;</li><li style="display:inline-block;"><a class="mai-import-export-toggle" href="#mai-sections-import-export-2">Export</a></li></ul><div id="mai-sections-import-export-1" class="mai-sections-import-export-content" style="display:none;">',
 	) );
 
 	// Import images.
-	$sections->add_field( array(
+	$importexport->add_field( array(
 		'name'       => __( '&nbsp;', 'mai-theme-engine' ),
 		'desc'       => __( '(Experimental) Import Section background images. Images must be on a publicly accessible URL.', 'mai-theme-engine' ),
 		'id'         => 'mai_sections_json_import_images',
 		'type'       => 'checkbox',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
-		'after_row'  => '</div>',
 	) );
 
 	// Export.
-	$sections->add_field( array(
+	$importexport->add_field( array(
 		'name'       => __( 'Export (JSON)', 'mai-theme-engine' ),
 		'desc'       => __( 'Copy and paste this code into the "Import" field of another Sections template.', 'mai-theme-engine' ),
 		'default_cb' => '_mai_cmb_get_sections_json',
 		'id'         => 'mai_sections_json_export',
 		'type'       => 'textarea_small',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
-		'before_row' => '<div id="mai-sections-import-export-2" class="mai-sections-import-export-content" style="display:none;">',
-		'after_row'  => '</div></div>',
 		'attributes' => array(
 			'readonly' => 'readonly',
 		),
@@ -302,10 +323,10 @@ function mai_do_sections_metabox() {
  *
  * @since   1.3.0
  *
- * @param   int     $object_id  The ID of the current object
+ * @param   int     $object_id  The ID of the current object.
  * @param   string  $updated    Array of field ids that were updated.
- *                             Will only include field ids that had values change.
- * @param   array   $cmb        This CMB2 object
+ *                              Will only include field ids that had values change.
+ * @param   array   $cmb        This CMB2 object.
  *
  * @return  void
  */
@@ -332,16 +353,14 @@ function mai_import_section_data( $object_id, $updated, $cmb ) {
 	// Whether to import images.
 	$import_images = filter_var( $_POST['mai_sections_json_import_images'], FILTER_VALIDATE_BOOLEAN );
 
-	// Remove this function so it doesn't cause infinite loop error.
+	// Remove these functions so it doesn't cause infinite loop error.
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
 
-mai_write_to_file( 'here' );
-
 	// Update.
-	mai_update_sections( $section_data, $object_id, $import_images );
+	mai_update_sections_template( $section_data, $object_id, $import_images );
 
-	// Add this function back.
+	// Add these functions back.
 	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
 	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
 }
@@ -351,12 +370,12 @@ mai_write_to_file( 'here' );
  *
  * @since   1.3.0
  *
- * @param   int     $post_id  The ID of the current object
+ * @param   int     $post_id  The ID of the current object.
  * @param   string  $updated  Array of field ids that were updated.
  *                            Will only include field ids that had values change.
- * @param   array   $cmb      This CMB2 object
+ * @param   array   $cmb      This CMB2 object.
  *
- * @return  void.
+ * @return  void
  */
 add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
 function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
@@ -384,7 +403,7 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 		$content .= $section['content'] . "\r\n";
 	}
 
-	// Remove this function so it doesn't cause infinite loop error.
+	// Remove these functions so it doesn't cause infinite loop error.
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
 
@@ -394,31 +413,9 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 		'post_content' => $content,
 	) );
 
-	// Add this function back.
+	// Add these functions back.
 	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
 	add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
-}
-
-
-
-function mai_write_to_file( $value ) {
-	/**
-	 * This function for testing & debuggin only.
-	 * Do not leave this function working on your site.
-	 */
-	$file   = dirname(__FILE__) . '/__data.txt';
-	$handle = fopen( $file, 'a' );
-	ob_start();
-	if ( is_array( $value ) || is_object( $value ) ) {
-		print_r( $value );
-	} elseif ( is_bool( $value ) ) {
-		var_dump( $value );
-	} else {
-		echo $value;
-	}
-	echo "\r\n\r\n";
-	fwrite( $handle, ob_get_clean() );
-	fclose( $handle );
 }
 
 /**
@@ -502,28 +499,172 @@ function mai_change_from_sections_template_warning( $object_id, $cmb ) {
 }
 
 /**
- * Callback function to get the sections default data for the export field.
- *
- * @access  private
+ * Update sections data from array of import data.
  *
  * @since   1.3.0
  *
- * @return  string  The sections JSON.
+ * @access  private
+ *
+ * @param   array  $section_data   Array of sections and parameter keys/values.
+ * @param   int    $post_id        The post ID to attach the image to.
+ * @param   bool   $import_images  Whether to attempt to import background images.
+ *
+ * @return  void
  */
-function _mai_cmb_get_sections_json( $args, $field ) {
-	$site_layout = genesis_get_custom_field( '_genesis_layout', $field->object_id );
-	if ( ! $site_layout ) {
-		$site_layout = genesis_get_option( sprintf( 'layout_%s', get_post_type( $field->object_id ) ) );
+function mai_update_sections_template( $section_data, $post_id, $import_images = false ) {
+
+	if ( empty( $section_data ) || ! is_array( $section_data ) ) {
+		return;
 	}
-	$data = array(
-		'home_url'         => untrailingslashit( home_url() ),
-		'layout'           => $site_layout,
-		'sections'         => (array) get_post_meta( $field->object_id, 'mai_sections', true ),
-		'hide_banner'      => get_post_meta( $field->object_id, 'hide_banner', true ),
-		'hide_breadcrumbs' => get_post_meta( $field->object_id, 'mai_hide_breadcrumbs', true ),
-		'hide_featured'    => get_post_meta( $field->object_id, 'mai_hide_featured_image', true ),
-	);
-	return json_encode( $data );
+
+	// Separate our data.
+	$sections         = isset( $section_data['sections'] ) ? $section_data['sections'] : false;
+	$home_url         = isset( $section_data['home_url'] ) ? esc_url( $section_data['home_url'] ) : null;
+	$excerpt          = isset( $section_data['excerpt'] ) ? wp_kses_post( $section_data['excerpt'] ) : null;
+	$layout           = isset( $section_data['layout'] ) ? sanitize_key( $section_data['layout'] ) : null;
+	$banner_id        = isset( $section_data['banner_id'] ) ? $section_data['banner_id'] : null;
+	$hide_banner      = isset( $section_data['hide_banner'] ) ? sanitize_key( $section_data['hide_banner'] ) : null;
+	$hide_breadcrumbs = isset( $section_data['hide_breadcrumbs'] ) ? sanitize_key( $section_data['hide_breadcrumbs'] ) : null;
+	$hide_featured    = isset( $section_data['hide_featured'] ) ? sanitize_key( $section_data['hide_featured'] ) : null;
+	$images           = isset( $section_data['images'] ) ? $section_data['images'] : null;
+
+	// If we have images, and are importing them.
+	if ( $images && $import_images ) {
+
+		// This is only for frontend, but just incase.
+		if ( ! function_exists( 'media_sideload_image' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/media.php' );
+			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+			require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		}
+
+		$imported_images = array();
+
+		foreach ( $images as $id => $url ) {
+
+			// Get image data, for filename.
+			$path_parts = pathinfo( $url );
+
+			// Create attachment.
+			$attachment_id = media_sideload_image( $url, $post_id, $path_parts['filename'], 'id' );
+
+			// If valid attachment.
+			if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
+
+				/**
+				 * Build array of imported image data.
+				 * Keyed by old image ID, and value is array of new id and new url.
+				 *
+				 * $imported_images = array(
+				 *     123 => array(
+				 *         'id'  => '1001,
+				 *         'url' => 'https://example.com/wp-content/uploads/my-image.jpg',
+				 *     ),
+				 *     345 => array(
+				 *         'id'  => '1001,
+				 *         'url' => 'https://example.com/wp-content/uploads/my-image.jpg',
+				 *     ),
+				 * );
+				 */
+				$imported_images[ $section['image_id'] ] = array(
+					'id'  => $attachment_id,
+					'url' => wp_get_attachment_url( $attachment_id ),
+				);
+			}
+		}
+	}
+
+	// If we have section data.
+	if ( $sections ) {
+
+		// Whitelist section args/keys.
+		$args = array(
+			'bg'            => '',
+			'image_id'      => '',
+			'image'         => false,
+			'overlay'       => '',
+			'inner'         => '',
+			'height'        => '',
+			'content_width' => '',
+			'align_content' => '',
+			'align'         => '',
+			'text_size'     => '',
+			'id'            => '',
+			'class'         => '',
+			'context'       => '',
+			'title'         => '',
+			'content'       => '',
+		);
+
+		// Loop through each section.
+		foreach ( $sections as $index => $section ) {
+
+			// Parse attributes.
+			$section = shortcode_atts( $args, $section );
+
+			// Loop through and sanitize each section parameter individually.
+			foreach ( $section as $key => $value ) {
+
+				// Sanitize.
+				if ( 'content' === $key ) {
+
+					// Sanitize content.
+					$section[ $key ] = wp_kses_post( $value );
+
+					// Search/Replace URLs.
+					$section[ $key ] = $home_url ? str_replace( $home_url, untrailingslashit( home_url() ), $value ) : $value;
+
+					// If importing images and have some imported images.
+					if ( $import_images && $imported_images ) {
+
+						// Loop through em.
+						foreach ( $imported_images as $old_id => $imported_image ) {
+							// Replace old image IDs (hopefully from shortcodes) with new imported IDs.
+							$section[ $key ] = str_replace( $old_id, $imported_image['id'], $section[ $key ] );
+						}
+					}
+
+				} else {
+
+					// Sanitize everything else.
+					$section[ $key ] = sanitize_text_field( $value );
+				}
+
+			}
+
+			// Rebuild the updated $sections.
+			$sections[ $index ] = $section;
+		}
+
+	}
+
+	// Update with our new section data.
+	update_post_meta( $post_id, 'mai_sections', $sections );
+
+	// If our layout exists.
+	$layouts = genesis_get_layouts();
+	if ( isset( $layouts[ $layout ] ) ) {
+		// Update the layout.
+		update_post_meta( $post_id, '_genesis_layout', $layout );
+	}
+
+	// Maybe update banner image.
+	if ( ( null !== $banner_id ) && $import_images && $imported_images ) {
+		if ( isset( $imported_images[ $banner_id ], $imported_images[ $banner_id ]['id'] ) ) {
+			update_post_meta( $post_id, 'banner_id', (int) $imported_images[ $banner_id ]['id'] );
+		}
+	}
+
+	// Update visibility settings.
+	if ( null !== $hide_banner ) {
+		update_post_meta( $post_id, 'hide_banner', $hide_banner );
+	}
+	if ( null !== $hide_breadcrumbs ) {
+		update_post_meta( $post_id, 'mai_hide_breadcrumbs', $hide_banner );
+	}
+	if ( null !== $hide_featured ) {
+		update_post_meta( $post_id, 'mai_hide_featured_image', $hide_banner );
+	}
 }
 
 /**
@@ -539,7 +680,7 @@ function _mai_cmb_get_sections_json( $args, $field ) {
  *
  * @return  void
  */
-function mai_update_sections( $section_data, $post_id, $import_images = false ) {
+function mai_update_sections_template_og( $section_data, $post_id, $import_images = false ) {
 
 	if ( empty( $section_data ) || ! is_array( $section_data ) ) {
 		return;
@@ -551,96 +692,105 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 		require_once(ABSPATH . 'wp-admin/includes/image.php');
 	}
 
-	// Whitelist args/keys.
-	$args = array(
-		'bg'            => '',
-		'image_id'      => '',
-		'image'         => false,
-		'overlay'       => '',
-		'inner'         => '',
-		'height'        => '',
-		'content_width' => '',
-		'align_content' => '',
-		'align'         => '',
-		'text_size'     => '',
-		'id'            => '',
-		'class'         => '',
-		'context'       => '',
-		'title'         => '',
-		'content'       => '',
-	);
-
 	// Separate our data.
 	$home_url         = isset( $section_data['home_url'] ) ? esc_url( $section_data['home_url'] ) : false;
+	$excerpt          = isset( $section_data['excerpt'] ) ? wp_kses_post( $section_data['excerpt'] ) : false;
 	$sections         = isset( $section_data['sections'] ) ? $section_data['sections'] : false;
 	$layout           = isset( $section_data['layout'] ) ? sanitize_key( $section_data['layout'] ) : false;
 	$hide_banner      = isset( $section_data['hide_banner'] ) ? sanitize_key( $section_data['hide_banner'] ) : false;
 	$hide_breadcrumbs = isset( $section_data['hide_breadcrumbs'] ) ? sanitize_key( $section_data['hide_breadcrumbs'] ) : false;
 	$hide_featured    = isset( $section_data['hide_featured'] ) ? sanitize_key( $section_data['hide_featured'] ) : false;
 
-	// Bail if no sections, that's the whole point right?
-	if ( ! $sections ) {
-		return;
-	}
-
 	$imported_images = array();
 
-	// Loop through each section.
-	foreach ( $sections as $index => $section ) {
+	if ( $sections ) {
 
-		// Parse attributes.
-		$section = shortcode_atts( $args, $section );
+		// Whitelist section args/keys.
+		$args = array(
+			'bg'            => '',
+			'image_id'      => '',
+			'image'         => false,
+			'overlay'       => '',
+			'inner'         => '',
+			'height'        => '',
+			'content_width' => '',
+			'align_content' => '',
+			'align'         => '',
+			'text_size'     => '',
+			'id'            => '',
+			'class'         => '',
+			'context'       => '',
+			'title'         => '',
+			'content'       => '',
+		);
 
-		// Loop through and sanitize each section parameter individually.
-		foreach ( $section as $key => $value ) {
+		// Loop through each section.
+		foreach ( $sections as $index => $section ) {
 
-			// Sanitize.
-			if ( 'content' === $key ) {
-				$section[ $key ] = wp_kses_post( $value );
-				// Search/Replace URLs.
-				$section[ $key ] = $home_url ? str_replace( $home_url, untrailingslashit( home_url() ), $value ) : $value;
-			} else {
-				$section[ $key ] = sanitize_text_field( $value );
+			$content = '';
+
+			// Parse attributes.
+			$section = shortcode_atts( $args, $section );
+
+			// Loop through and sanitize each section parameter individually.
+			foreach ( $section as $key => $value ) {
+
+				// Sanitize.
+				if ( 'content' === $key ) {
+					$section[ $key ] = wp_kses_post( $value );
+					// Search/Replace URLs.
+					$section[ $key ] = $home_url ? str_replace( $home_url, untrailingslashit( home_url() ), $value ) : $value;
+					// Set content so we can search it for image IDs.
+					$content = $section[ $key ];
+				} else {
+					$section[ $key ] = sanitize_text_field( $value );
+				}
+
 			}
 
-		}
+			// If importing images, do it now.
+			if ( $import_images ) {
 
-		// If importing images, do it now.
-		if ( $import_images ) {
+				// If bg image already uploaded.
+				if ( isset( $imported_images[ $section['image_id'] ] ) ) {
 
-			// If already uploaded.
-			if ( isset( $imported_images[ $section['image_id'] ] ) ) {
+					// Swap our imported image ID and URL.
+					$section['image_id'] = isset( $imported_images[ $section['image_id'] ]['id'] ) ? $imported_images[ $section['image_id'] ]['id'] : '';
+					$section['image']    = isset( $imported_images[ $section['image_id'] ]['url'] ) ? $imported_images[ $section['image_id'] ]['url'] : '';
+				}
+				// Not uploaded.
+				else {
 
-				// Swap our imported image ID and URL.
-				$section['image_id'] = isset( $imported_images[ $section['image_id'] ]['id'] ) ? $imported_images[ $section['image_id'] ]['id'] : '';
-				$section['image']    = isset( $imported_images[ $section['image_id'] ]['url'] ) ? $imported_images[ $section['image_id'] ]['url'] : '';
-			}
-			// Not uploaded.
-			else {
+					// If we have an image to upload.
+					if ( $section['image'] ) {
 
-				// If we have an image to upload.
-				if ( $section['image'] ) {
+						// Get image data, for filename.
+						$path_parts = pathinfo( $section['image'] );
 
-					// Get image data, for filename.
-					$path_parts = pathinfo( $section['image'] );
+						// Create attachment.
+						$attachment_id = media_sideload_image( $section['image'], $post_id, $path_parts['filename'], 'id' );
 
-					// Create attachment.
-					$attachment_id = media_sideload_image( $section['image'], $post_id, $path_parts['filename'], 'id' );
+						// If valid attachment.
+						if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
 
-					// If valid attachment.
-					if ( $attachment_id && ! is_wp_error( $attachment_id ) ) {
+							$attachment_url = wp_get_attachment_url( $attachment_id );
 
-						$attachment_url = wp_get_attachment_url( $attachment_id );
+							// Build array of imported image data.
+							$imported_images[ $section['image_id'] ] = array(
+								'id'  => $attachment_id,
+								'url' => $attachment_url,
+							);
 
-						// Build array of imported image data.
-						$imported_images[ $section['image_id'] ] = array(
-							'id'  => $attachment_id,
-							'url' => $attachment_url,
-						);
+							// Swap our imported image ID and URL.
+							$section['image_id'] = $attachment_id;
+							$section['image']    = $attachment_url;
 
-						// Swap our imported image ID and URL.
-						$section['image_id'] = $attachment_id;
-						$section['image']    = $attachment_url;
+						} else {
+
+							// Empty so we don't load random values.
+							$section['image_id'] = '';
+							$section['image']    = '';
+						}
 
 					} else {
 
@@ -649,18 +799,17 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 						$section['image']    = '';
 					}
 
-				} else {
-
-					// Empty so we don't load random values.
-					$section['image_id'] = '';
-					$section['image']    = '';
 				}
 
+				if ( ! empty( $content ) ) {
+
+				}
 			}
+
+			// Rebuild the updated $sections.
+			$sections[ $index ] = $section;
 		}
 
-		// Rebuild the updated $sections.
-		$sections[ $index ] = $section;
 	}
 
 	// Update with our new section data.
@@ -683,4 +832,151 @@ function mai_update_sections( $section_data, $post_id, $import_images = false ) 
 	if ( $hide_featured ) {
 		update_post_meta( $post_id, 'mai_hide_featured_image', $hide_banner );
 	}
+}
+
+/**
+ * Get all image IDs from content.
+ *
+ * @access  private
+ *
+ * @link    https://stackoverflow.com/questions/32523265/extract-shortcode-parameters-in-content-wordpress
+ *
+ * @since   1.3.0
+ *
+ * @param   string  The content to get shortcodes from.
+ *
+ * @return  array   The image IDs.
+ */
+function mai_get_shortcode_image_ids( $content ) {
+
+	$image_ids = array();
+
+	$shortcodes = array(
+		'col',
+		'col_auto',
+		'col_one_twelfth',
+		'col_one_sixth',
+		'col_one_fourth',
+		'col_one_third',
+		'col_five_twelfths',
+		'col_one_half',
+		'col_seven_twelfths',
+		'col_two_thirds',
+		'col_three_fourths',
+		'col_five_sixths',
+		'col_eleven_twelfths',
+		'col_one_whole',
+	);
+
+	$pattern = get_shortcode_regex( $shortcodes );
+
+	// Bail if no shortcodes.
+	if ( ! preg_match_all( '/' . $pattern . '/s', $content, $matches ) ) {
+		return false;
+	}
+
+	// Bail if no attributes.
+	if ( empty( $matches[0] ) ) {
+		return false;
+	}
+
+	// Loop through our attribute matches.
+	foreach ( $matches[0] as $key => $value ) {
+
+		/**
+		 * Replace space with '&' for parse_str() function.
+		 * $matches[3] returns the shortcode attributes as strings.
+		 */
+		$get = str_replace( ' ', '&', $matches[3][ $key ] );
+
+		// Parse as if a query string.
+		parse_str( $get, $output );
+
+		// If we have and image value.
+		if ( $output && isset( $output['image'] ) && ! empty( $output['image'] ) ) {
+
+			// Remove extra quotes. Shorcodes can do image=123, image='123', or image="123".
+			$image_id = $output['image'];
+			$image_id = str_replace( '"', '', $image_id );
+			$image_id = str_replace( "'", '', $image_id );
+
+			// Add our image to the array.
+			$image_ids[] = (int) $image_id;
+		}
+	}
+
+	// If we have image IDs, return them.
+	if ( ! empty( $image_ids ) ) {
+		return $image_ids;
+	}
+
+	// None.
+	return false;
+}
+
+/**
+ * Callback function to get the sections default data for the export field.
+ * This is from the CMB 'default_cb'
+ *
+ * @access  private
+ *
+ * @since   1.3.0
+ *
+ * @return  string  The sections JSON.
+ */
+function _mai_cmb_get_sections_json( $args, $field ) {
+	$site_layout = genesis_get_custom_field( '_genesis_layout', $field->object_id );
+	$site_layout = $site_layout ? $site_layout : genesis_get_option( sprintf( 'layout_%s', get_post_type( $field->object_id ) ) );
+	$data = array(
+		'home_url'         => untrailingslashit( home_url() ),
+		'layout'           => $site_layout,
+		'banner_id'        => get_post_meta( 'banner_id', $field->object_id, true ),
+		'hide_banner'      => get_post_meta( $field->object_id, 'hide_banner', true ),
+		'hide_breadcrumbs' => get_post_meta( $field->object_id, 'mai_hide_breadcrumbs', true ),
+		'hide_featured'    => get_post_meta( $field->object_id, 'mai_hide_featured_image', true ),
+		'excerpt'          => get_post_field( 'post_excerpt', $field->object_id ),
+		'images'           => mai_get_sections_template_images( $field->object_id ),
+		'sections'         => (array) get_post_meta( $field->object_id, 'mai_sections', true ),
+	);
+	return json_encode( $data );
+}
+
+/**
+ * Get an array of section images.
+ *
+ * @access  private
+ *
+ * @since   1.3.0
+ *
+ * @param   int  The post ID to get section images from.
+ *
+ * @return  array  Associative array of images. image ID => URL.
+ */
+function mai_get_sections_template_images( $post_id ) {
+	$images    = array();
+	$sections  = get_post_meta( $post_id, 'mai_sections', true );
+	$banner_id = get_post_meta( $post_id, 'banner_id', true );
+	if ( $sections ) {
+		foreach ( $sections as $section ) {
+			if ( isset( $section['image'] ) && ! empty( $section['image'] ) ) {
+				if ( isset( $section['image_id'] ) && ! empty( $section['image_id'] ) ) {
+					$image_id            = (int) $section['image_id'];
+					$images[ $image_id ] = wp_get_attachment_url( $image_id );
+				}
+			}
+			if ( isset( $section['content'] ) && ! empty( $section['content'] ) ) {
+				$image_ids = mai_get_shortcode_image_ids( $section['content'] );
+				if ( $image_ids ) {
+					foreach ( $image_ids as $image_id ) {
+						$images[ $image_id ] = wp_get_attachment_url( $image_id );
+					}
+				}
+			}
+		}
+	}
+	if ( $banner_id ) {
+		$banner_id            = (int) $banner_id;
+		$images[ $banner_id ] = wp_get_attachment_url( $banner_id );
+	}
+	return $images;
 }
