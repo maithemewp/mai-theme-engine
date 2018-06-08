@@ -17,7 +17,7 @@ class Mai_Col {
 
 		$this->size    = $size;
 		$this->args    = $args;
-		$this->content = $content;
+		$this->content = trim( $content );
 
 		// Parse defaults and args.
 		$this->args = shortcode_atts( array(
