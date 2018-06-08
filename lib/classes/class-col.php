@@ -125,7 +125,7 @@ class Mai_Col {
 			}
 		}
 
-		// If we have an image ID
+		// If we have an image ID.
 		if ( $this->args['image'] ) {
 
 			// If we have content.
@@ -149,7 +149,7 @@ class Mai_Col {
 		// If we have a valid overlay.
 		if ( mai_is_valid_overlay( $this->args['overlay'] ) ) {
 			$attributes['class'] .= ' overlay';
-			// Only add overlay classes if we have a valid overlay type
+			// Only add overlay classes if we have a valid overlay type.
 			switch ( $this->args['overlay'] ) {
 				case 'gradient':
 					$attributes['class'] .= ' overlay-gradient';
