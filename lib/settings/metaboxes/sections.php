@@ -541,7 +541,7 @@ function mai_update_sections_template( $section_data, $post_id, $import_images =
 	$imported_images  = array();
 
 	// If we have images, and are importing them.
-	if ( $images && $import_images ) {
+	if ( $images && is_array( $images ) && $import_images ) {
 
 		// This is only for frontend, but just incase.
 		if ( ! function_exists( 'media_sideload_image' ) ) {
@@ -550,7 +550,7 @@ function mai_update_sections_template( $section_data, $post_id, $import_images =
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 		}
 
-
+		// Loop through our images.
 		foreach ( $images as $old_id => $old_url ) {
 
 			// Get image data, for filename.
@@ -583,6 +583,17 @@ function mai_update_sections_template( $section_data, $post_id, $import_images =
 				);
 			}
 		}
+	}
+
+	/**
+	 * Maybe update the excerpt.
+	 * This needs to happen before updating meta or it wipes out our values.
+	 */
+	if ( $excerpt ) {
+		$updated = wp_update_post( array(
+			'ID'           => $post_id,
+			'post_excerpt' => $excerpt,
+		) );
 	}
 
 	// If we have section data.
@@ -695,14 +706,6 @@ function mai_update_sections_template( $section_data, $post_id, $import_images =
 	}
 	if ( null !== $hide_featured ) {
 		update_post_meta( $post_id, 'mai_hide_featured_image', $hide_banner );
-	}
-
-	// Maybe update the excerpt.
-	if ( $excerpt ) {
-		$updated = wp_update_post( array(
-			'ID'           => $post_id,
-			'post_excerpt' => $excerpt,
-		) );
 	}
 
 }
