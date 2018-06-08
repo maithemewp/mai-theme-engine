@@ -2,10 +2,12 @@
 	'use strict';
 
 	// Toggle import/export fields.
-	$( '#mai-sections-import-export' ).on( 'click', '.mai-import-export-toggle', function(e) {
+	$( '#mai-sections-importexport-toggles' ).on( 'click', '.mai-importexport-toggle', function(e) {
 		e.preventDefault();
-		var el = $(this).attr( 'href' );
-		$( '.mai-sections-import-export-content' ).not( el ).hide();
+		var $this = $(this),
+			el    = $this.attr( 'href' );
+		$( '.mai-importexport-toggle' ).toggleClass( 'active' );
+		$( '.mai-sections-importexport-content' ).not( el ).hide();
 		$( el ).show();
 	});
 

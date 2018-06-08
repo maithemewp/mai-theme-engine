@@ -292,6 +292,7 @@ function mai_do_sections_import_export_metabox() {
 		'id'         => 'mai_sections_json_import',
 		'type'       => 'textarea_small',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
+		'before_row' => '<ul id="mai-sections-importexport-toggles"><li style="display:inline-block;"><a class="mai-importexport-toggle active" href="#mai-sections-importexport-1">' . __( 'Import', 'mai-theme-engine' ) . '</li><li style="display:inline-block;"><a class="mai-importexport-toggle" href="#mai-sections-importexport-2">' . __( 'Export', 'mai-theme-engine' ) . '</a></li></ul><div id="mai-sections-importexport-1" class="mai-sections-importexport-content">',
 	) );
 
 	// Import images.
@@ -301,6 +302,7 @@ function mai_do_sections_import_export_metabox() {
 		'id'         => 'mai_sections_json_import_images',
 		'type'       => 'checkbox',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
+		'after_row'  => '</div>',
 	) );
 
 	// Export.
@@ -311,6 +313,8 @@ function mai_do_sections_import_export_metabox() {
 		'id'         => 'mai_sections_json_export',
 		'type'       => 'textarea_small',
 		'save_field' => false, // Otherwise CMB2 will end up removing the value.
+		'before_row' => '<div id="mai-sections-importexport-2" class="mai-sections-importexport-content" style="display:none;">',
+		'after_row'  => '</div>',
 		'attributes' => array(
 			'readonly' => 'readonly',
 		),

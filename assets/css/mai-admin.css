@@ -230,6 +230,35 @@
 	width: 100%;
 }
 
+#mai-sections-importexport-toggles {
+	display: inline-block;
+	margin: 16px 0;
+	padding: 0 36px 0 0;
+	border-bottom: 1px solid #ccc;
+}
+
+#mai-sections-importexport-toggles li {
+	margin-bottom: 0;
+}
+
+#mai-sections-importexport-toggles .mai-importexport-toggle {
+	display: inline-block;
+	padding: 8px 14px;
+	margin: 0 0 -1px 0;
+	border: 1px solid transparent;
+	border-radius: 3px 3px 0 0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	outline: none;
+}
+
+#mai-sections-importexport-toggles .mai-importexport-toggle.active {
+	color: #555;
+	text-decoration: none;
+	border-color: #ccc;
+	border-bottom-color: #fff;
+}
+
 #mai_sections_importexport textarea#mai_sections_json_import,
 #mai_sections_importexport textarea#mai_sections_json_export {
 	width: 99%;
