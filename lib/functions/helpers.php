@@ -23,8 +23,8 @@ function mai_get_layout() {
 
 	global $wp_query;
 
-	// If home page.
-	if ( is_home() ) {
+	// If blog page or date archive.
+	if ( is_home() || is_date() ) {
 		$site_layout = genesis_get_custom_field( '_genesis_layout', get_option( 'page_for_posts' ) );
 		if ( ! $site_layout ) {
 			$site_layout = genesis_get_option( 'layout_archive' );
