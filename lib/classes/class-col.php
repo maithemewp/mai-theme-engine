@@ -171,7 +171,7 @@ class Mai_Col {
 
 		// Add bottom margin classes.
 		if ( mai_is_valid_bottom( $this->args['bottom'] ) ) {
-			$attributes['class'] = mai_add_class( mai_get_bottom_class( $this->args['bottom'] ), $attributes['class'] );
+			$attributes['class'] = mai_add_classes( mai_get_bottom_class( $this->args['bottom'] ), $attributes['class'] );
 		}
 
 		// Maybe add inline styles.
