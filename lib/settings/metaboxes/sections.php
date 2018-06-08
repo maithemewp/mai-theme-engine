@@ -320,6 +320,7 @@ function mai_do_sections_import_export_metabox() {
 
 /**
  * Fires after all fields have been saved.
+ * Runs via save_post in CMB2.
  *
  * @since   1.3.0
  *
@@ -333,7 +334,7 @@ function mai_do_sections_import_export_metabox() {
 add_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
 function mai_import_section_data( $object_id, $updated, $cmb ) {
 
-	// Check required $_POST variables and security nonce
+	// Check required $_POST variables and security nonce.
 	if ( ! isset( $_POST[ $cmb->nonce() ] ) || ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() ) ) {
 		return;
 	}
@@ -367,6 +368,7 @@ function mai_import_section_data( $object_id, $updated, $cmb ) {
 
 /**
  * Save section meta content to the_content for search indexing and SEO content analysis.
+ * Runs via save_post in CMB2.
  *
  * @since   1.3.0
  *
@@ -379,6 +381,11 @@ function mai_import_section_data( $object_id, $updated, $cmb ) {
  */
 add_action( 'cmb2_save_post_fields_mai_sections', 'mai_save_sections_to_the_content', 10, 3 );
 function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
+
+	// Check required $_POST variables and security nonce.
+	if ( ! isset( $_POST[ $cmb->nonce() ] ) || ! wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() ) ) {
+		return;
+	}
 
 	// Get the sections.
 	$sections = get_post_meta( $post_id, 'mai_sections', true );
@@ -685,6 +692,15 @@ function mai_update_sections_template( $section_data, $post_id, $import_images =
 	if ( null !== $hide_featured ) {
 		update_post_meta( $post_id, 'mai_hide_featured_image', $hide_banner );
 	}
+
+	// Maybe update the excerpt.
+	if ( $excerpt ) {
+		$updated = wp_update_post( array(
+			'ID'           => $post_id,
+			'post_excerpt' => $excerpt,
+		) );
+	}
+
 }
 
 /**
