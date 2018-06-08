@@ -58,6 +58,7 @@
 * Fixed: Max width on nav search widget to site header.
 * Fixed: Checkboxes no longer on their own line in the comment form.
 * Fixed: Yoast metabox no longer hidden on WooCommerce shop page.
+* Fixed: Date archives now correctly follow content archive settings.
 
 #### 1.2.1 (2/15/18)
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.
