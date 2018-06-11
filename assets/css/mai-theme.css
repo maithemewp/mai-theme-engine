@@ -825,11 +825,6 @@ td {
 }
 
 .site-inner,
-.wrap {
-	width: 100%;
-}
-
-.site-inner,
 .nav-primary .wrap,
 .nav-secondary .wrap,
 .footer-widgets .wrap,
@@ -928,6 +923,13 @@ td {
 /* ## Content Widths
 --------------------------------------------- */
 
+.site-inner,
+.wrap,
+.section-content,
+.site-container.boxed .width-full {
+	width: 100%;
+}
+
 .content,
 .breadcrumb {
 	max-width: 100%;
@@ -961,10 +963,6 @@ td {
 	max-width: 100vw;
 	margin-left: calc(-50vw + 50%);
 	margin-right: calc(-50vw + 50%);
-}
-
-.site-container.boxed .width-full {
-	width: 100%;
 }
 
 .content-no-sidebars .width-full {
