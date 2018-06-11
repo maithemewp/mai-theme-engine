@@ -1792,7 +1792,7 @@ input[name="post_password"] {
 /* ## Slick
 --------------------------------------------- */
 
-.height-auto > .flex-grid > .mai-slider .mai-slide {
+.height-auto .flex-grid > .mai-slider .mai-slide {
 	/* offset .entry bottom-margin */
 	margin-bottom: 0;
 }
