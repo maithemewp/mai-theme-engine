@@ -1184,8 +1184,28 @@ body.has-boxed-site-container {
 .sidebar .widget.boxed,
 .after-entry .widget.boxed {
 	background-color: #fff;
-	padding: 36px 24px;
+	padding: 24px;
 	border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+@media only screen and (min-width: 769px) {
+
+	.content-sidebar-wrap.boxed,
+	.content.boxed,
+	.entry.boxed,
+	.after-entry .widget.boxed,
+	.author-box.boxed,
+	.adjacent-entry-pagination a.boxed,
+	.comment-respond.boxed,
+	.entry-comments.boxed,
+	.comment-respond-wrap.boxed,
+	.entry-pings.boxed,
+	.sidebar.boxed,
+	.sidebar .widget.boxed,
+	.after-entry .widget.boxed {
+		padding: 36px;
+	}
+
 }
 
 .entry.flex-entry.boxed {
@@ -4101,13 +4121,18 @@ p.entry-meta {
 	}
 
 	.has-sidebars .content-sidebar-wrap,
-	.has-sidebar .content-sidebar-wrap.has-boxed-children  {
-		grid-column-gap: 30px;
+	.has-sidebar .content-sidebar-wrap.has-boxed-children {
+		grid-column-gap: 36px;
 		grid-row-gap: 0;
 	}
 
 	.has-sidebar:not(.has-sidebars) .content-sidebar-wrap {
-		grid-column-gap: 40px;
+		grid-column-gap: 44px;
+		grid-row-gap: 0;
+	}
+
+	.has-sidebar:not(.has-sidebars) .content-sidebar-wrap:not(.has-boxed-children) {
+		grid-column-gap: 64px;
 		grid-row-gap: 0;
 	}
 
