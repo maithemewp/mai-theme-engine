@@ -101,8 +101,9 @@ function mai_login_logo_css() {
 		}
 		.login .mai-login-logo img {
 			display: block !important;
-			max-width: 100% !important;
 			height: auto !important;
+			width: auto !important;
+			max-width: 100% !important;
 			margin: 0 auto !important;
 		}
 		.login #login_error,
