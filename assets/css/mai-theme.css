@@ -1377,7 +1377,7 @@ body.has-boxed-site-container {
 	text-shadow: none;
 }
 
-.section .entry:not(.light-content) {
+.section:not(.light-content) .entry {
 	color: initial;
 }
 
