@@ -36,6 +36,7 @@
 * Changed: Bump CMB2 to v2.4.2.
 * Changed: Header nav menus now wrap menu items appropriately on mid-sized browser windows.
 * Changed: Breadcrumbs no longer follow page layout.
+* Changed: Center content in after entry author box on mobile.
 * Fixed: [grid] Stripping image if image_location="before_entry" and content_limit was too low.
 * Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
 * Fixed: [grid] Keep content on top of overlay when hovering on image bg link.
