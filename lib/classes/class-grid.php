@@ -1264,7 +1264,7 @@ class Mai_Grid {
 				$image_id = get_post_thumbnail_id( $object_id );
 			break;
 			case 'term':
-				$key      = ( class_exists( 'WooCommerce' ) && ( 'product_cat' == $this->args['taxonomy'] ) ) ? 'thumbnail_id' : 'banner_id';
+				$key      = ( class_exists( 'WooCommerce' ) && in_array( 'product_cat', $this->args['content'] ) ) ? 'thumbnail_id' : 'banner_id';
 				$image_id = get_term_meta( $object_id, $key, true );
 			break;
 			case 'user':
