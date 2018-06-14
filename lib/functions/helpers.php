@@ -58,9 +58,8 @@ function mai_get_layout() {
 				 * Changed to reset() when hit an error on a term archive that object_type array didn't start with [0]
 				 */
 				$post_type = reset( $tax->object_type );
-				// If we have a post type and it supports genesis-cpt-archive-settings
-				if ( post_type_exists( $post_type ) && genesis_has_post_type_archive_support( $post_type ) ) {
-					// $site_layout = genesis_get_option( sprintf( 'layout_archive_%s', $post_type ) );
+				// If we have a post type and it supports mai-cpt-settings.
+				if ( post_type_exists( $post_type ) && post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
 					$site_layout = genesis_get_cpt_option( 'layout', $post_type );
 				}
 			}
@@ -69,8 +68,7 @@ function mai_get_layout() {
 	}
 
 	// If viewing a supported post type.
-	// elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-	elseif ( is_post_type_archive() ) {
+	elseif ( is_post_type_archive() && post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
 		// $site_layout = genesis_get_option( sprintf( 'layout_archive_%s', get_post_type() ) );
 		$site_layout = genesis_get_cpt_option( 'layout', get_post_type() );
 		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
