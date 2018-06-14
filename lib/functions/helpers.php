@@ -68,7 +68,7 @@ function mai_get_layout() {
 	}
 
 	// If viewing a supported post type.
-	elseif ( is_post_type_archive() && post_type_supports( $post_type, 'mai-cpt-settings' ) ) {
+	elseif ( is_post_type_archive() && post_type_supports( get_post_type(), 'mai-cpt-settings' ) ) {
 		// $site_layout = genesis_get_option( sprintf( 'layout_archive_%s', get_post_type() ) );
 		$site_layout = genesis_get_cpt_option( 'layout', get_post_type() );
 		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );

@@ -97,13 +97,13 @@ function mai_do_banner_content() {
 	$wrap         = 'h1';
 	$before_title = $title = $desc = '';
 
-	// If front page displays your latest posts.
+	// Front page displays your latest posts.
 	if ( is_front_page() && is_home() ) {
 		$title = __( 'Blog', 'genesis' );
 		$desc  = has_excerpt( $front_page_id ) ? get_the_excerpt( $front_page_id ) : '';
 	}
 
-	// Add static front page banner content
+	// Static front page.
 	elseif ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
 
 		// Remove post title
@@ -115,13 +115,13 @@ function mai_do_banner_content() {
 		$desc  = has_excerpt( $front_page_id ) ? get_the_excerpt( $front_page_id ) : '';
 	}
 
-	// Do static blog banner content.
+	// Static blog.
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
 		$title = get_the_title( $posts_page_id );
 		$desc  = has_excerpt( $posts_page_id ) ? get_the_excerpt( $posts_page_id ) : '';
 	}
 
-	// Do singular banner content.
+	// Singular.
 	elseif ( is_singular() && ! is_front_page() && ! is_home() ) {
 
 		// Remove default post title.
@@ -130,7 +130,33 @@ function mai_do_banner_content() {
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
 		$title = get_the_title();
-		$desc  = has_excerpt( get_the_ID() ) ? get_the_excerpt( get_the_ID() ) : '';
+
+		// Woo single product.
+		if ( class_exists( 'WooCommerce' ) && is_product() ) {
+			// Use an h2 for the banner title, since the product title will be h1.
+			$wrap = 'h2';
+		} else {
+			// Only show excerpt on non Woo product single entries. Woo products use excerpt as short description in content.
+			$desc = has_excerpt( get_the_ID() ) ? get_the_excerpt( get_the_ID() ) : '';
+		}
+	}
+
+	// CPT archives.
+	elseif ( is_post_type_archive() ) {
+		// Woo shop page.
+		if ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
+				$title = get_the_title( $shop_page_id );
+				$desc  = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
+		} else {
+			if ( genesis_has_post_type_archive_support( get_post_type() ) ) {
+				$title = genesis_get_cpt_option( 'headline' );
+				$desc  = genesis_get_cpt_option( 'intro_text' );
+				$desc  = apply_filters( 'genesis_cpt_archive_intro_text_output', $desc ? $desc : '' );
+			}
+			if ( empty( $title ) && genesis_a11y( 'headings' ) ) {
+				$title = post_type_archive_title( '', false );
+			}
+		}
 	}
 
 	// Term archives.
@@ -146,7 +172,7 @@ function mai_do_banner_content() {
 		$desc = apply_filters( 'genesis_term_intro_text_output', $desc ? $desc : '' );
 	}
 
-	// Do author archive banner content.
+	// Author archives.
 	elseif ( is_author() ) {
 
 		// If author box is enabled.
@@ -169,34 +195,25 @@ function mai_do_banner_content() {
 		}
 	}
 
+	// Date archives.
+	elseif ( is_date() ) {
+		if ( is_day() ) {
+			$title = __( 'Archives for ', 'genesis' ) . get_the_date();
+		} elseif ( is_month() ) {
+			$title = __( 'Archives for ', 'genesis' ) . single_month_title( ' ', false );
+		} elseif ( is_year() ) {
+			$title = __( 'Archives for ', 'genesis' ) . get_query_var( 'year' );
+		}
+	}
+
+	// Search results.
 	elseif ( is_search() ) {
 		$title = apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'genesis' ) );
 	}
 
+	// 404.
 	elseif ( is_404() ) {
 		$title = apply_filters( 'genesis_404_entry_title', __( 'Not found, error 404', 'genesis' ) );
-	}
-
-	// If WooCommerce is not active.
-	elseif ( class_exists( 'WooCommerce' ) ) {
-
-		// Shop page.
-		if ( is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-			$title = get_the_title( $shop_page_id );
-			$title = $title ? strip_tags( $title ) : '';
-			$desc  = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
-		}
-		// Singular product.
-		elseif ( is_product() ) {
-			/**
-			 * We already have the title set from is_singular().
-			 *
-			 * Use an h2 on front page, since the product title will be h1.
-			 * We have to do this up top because is_singular() will output product title.
-			 */
-			$wrap = 'h2';
-		}
-
 	}
 
 	// Banner content filters.
