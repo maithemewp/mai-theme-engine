@@ -207,7 +207,7 @@ function mai_is_banner_area_enabled() {
 			if ( is_singular() ) {
 				$hidden = get_post_meta( get_the_ID(), 'hide_banner', true );
 			}
-			// If content archive (the only other place we'd have this setting)
+			// If content archive (the only other place we'd have this setting).
 			elseif ( mai_is_content_archive() ) {
 				// Get the setting directly, without fallbacks.
 				$hidden = mai_get_the_archive_setting( 'hide_banner' );
