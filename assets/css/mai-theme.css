@@ -1188,26 +1188,6 @@ body.has-boxed-site-container {
 	border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-@media only screen and (min-width: 769px) {
-
-	.content-sidebar-wrap.boxed,
-	.content.boxed,
-	.entry.boxed,
-	.after-entry .widget.boxed,
-	.author-box.boxed,
-	.adjacent-entry-pagination a.boxed,
-	.comment-respond.boxed,
-	.entry-comments.boxed,
-	.comment-respond-wrap.boxed,
-	.entry-pings.boxed,
-	.sidebar.boxed,
-	.sidebar .widget.boxed,
-	.after-entry .widget.boxed {
-		padding: 36px;
-	}
-
-}
-
 .entry.flex-entry.boxed {
 	padding: 24px;
 }
@@ -1284,6 +1264,27 @@ body.has-boxed-site-container {
 }
 
 @media only screen and (min-width: 769px) {
+
+	.content-sidebar-wrap.boxed,
+	.content.boxed,
+	.entry.boxed,
+	.after-entry .widget.boxed,
+	.author-box.boxed,
+	.adjacent-entry-pagination a.boxed,
+	.comment-respond.boxed,
+	.entry-comments.boxed,
+	.comment-respond-wrap.boxed,
+	.entry-pings.boxed,
+	.sidebar.boxed,
+	.sidebar .widget.boxed,
+	.after-entry .widget.boxed {
+		padding: 36px;
+	}
+
+	.entry-comments .comment.boxed .comment.boxed,
+	.entry-comments.boxed .comment.boxed {
+		margin-right: -24px;
+	}
 
 	.comment-list > .comment:not(.boxed) > .children {
 		margin-left: 90px;
