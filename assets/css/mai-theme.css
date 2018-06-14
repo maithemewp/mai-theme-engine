@@ -1281,8 +1281,7 @@ body.has-boxed-site-container {
 		padding: 36px;
 	}
 
-	.entry-comments .comment.boxed .comment.boxed,
-	.entry-comments.boxed .comment.boxed {
+	.entry-comments.boxed .comment-list > .comment.boxed {
 		margin-right: -36px;
 	}
 
