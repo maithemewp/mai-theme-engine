@@ -44,6 +44,7 @@
 * Fixed: [grid] Only show bg image when show contains image in its values.
 * Fixed: [grid] Squishing entries when showing a slider that doesn't have as many entries as the columns setting.
 * Fixed: [grid] Slider arrows when using slider in a full width section.
+* Fixed: [grid] Get correct product category image when displaying WooCommerce product categories in grid.
 * Fixed: Adding new sections sets the proper defaults for each section.
 * Fixed: Sections template now properly passes page content to the first section so it's not lost when changing an existing page to Sections template.
 * Fixed: Sections template now displays a warning about deleting section data when changing to another page template.
