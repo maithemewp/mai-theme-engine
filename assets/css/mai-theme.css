@@ -4126,12 +4126,12 @@ p.entry-meta {
 		grid-row-gap: 0;
 	}
 
-	.has-sidebar:not(.has-sidebars) .content-sidebar-wrap {
+	.has-sidebar:not(.has-sidebars) .content-sidebar-wrap.has-boxed-child {
 		grid-column-gap: 44px;
 		grid-row-gap: 0;
 	}
 
-	.has-sidebar:not(.has-sidebars) .content-sidebar-wrap:not(.has-boxed-children) {
+	.has-sidebar:not(.has-sidebars) .content-sidebar-wrap.no-boxed-children {
 		grid-column-gap: 64px;
 		grid-row-gap: 0;
 	}

@@ -103,17 +103,41 @@ function mai_js_detection_script() {
  */
 add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_boxed_content_sidebar_wrap' );
 function mai_boxed_content_sidebar_wrap( $attributes ) {
+
 	$elements = genesis_get_option( 'boxed_elements' );
+
+	// Bail if no boxed elements.
+	if ( ! $elements ) {
+		return $attributes;
+	}
+
+	// Bail if boxing the content sidebar wrap.
 	if ( in_array( 'content_sidebar_wrap', (array) $elements ) ) {
 		return $attributes;
 	}
-	if (
-		( in_array( 'content', $elements ) || in_array( 'entry', $elements ) )
-		&& ( in_array( 'sidebar', $elements ) || in_array( 'sidebar_widgets', $elements ) )
-		) {
-		// Add class to show all children have boxes. Intentially not checking for secondary sidebar.
+
+	// Check for boxed content and sidebar elements. Intentially not checking for secondary sidebar.
+	$content_wrap = (bool) in_array( 'content', $elements );
+	$entry        = (bool) array_intersect( $elements, array( 'entry_singular', 'entry_archive' ) );
+	$content      = (bool) $content_wrap || $entry;
+	$sidebar      = (bool) array_intersect( $elements, array( 'sidebar', 'sidebar_widgets' ) );
+
+	// If seamless.
+	if ( ! ( $content || $sidebar ) ) {
+		// Add class to show all children are seamless.
+		$attributes['class'] .= ' no-boxed-children';
+	}
+	// If only content or sidebar has a boxed child.
+	elseif ( ( $content && ! $sidebar ) || ( ! $content && $sidebar ) ) {
+		// Add class to show all children have boxes.
+		$attributes['class'] .= ' has-boxed-child';
+	}
+	// If content and sidebar have boxed children.
+	elseif ( $content && $sidebar ) {
+		// Add class to show all children have boxes.
 		$attributes['class'] .= ' has-boxed-children';
 	}
+
 	return $attributes;
 }
 
