@@ -1283,7 +1283,7 @@ body.has-boxed-site-container {
 
 	.entry-comments .comment.boxed .comment.boxed,
 	.entry-comments.boxed .comment.boxed {
-		margin-right: -24px;
+		margin-right: -36px;
 	}
 
 	.comment-list > .comment:not(.boxed) > .children {
