@@ -3435,36 +3435,36 @@ input[name="post_password"] {
 	border: none;
 }
 
-.entry-content ol,
 .entry-content p,
-.entry-content ul,
+.content ol,
+.content ul,
 .quote-caption {
 	margin-bottom: 24px;
 }
 
-.entry-content ol,
-.entry-content ul {
+.content ol,
+.content ul {
 	margin-left: 32px;
 }
 
-.entry-content ol {
+.content ol {
 	list-style-type: decimal;
 }
 
-.entry-content ul {
+.content ul {
 	list-style-type: disc;
 }
 
-.entry-content ol > li {
+.content ol > li {
 	margin-bottom: 8px;
 }
 
-.entry-content ul > li {
+.content ul > li {
 	margin-bottom: 8px;
 }
 
-.entry-content ol ol,
-.entry-content ul ul {
+.content ol ol,
+.content ul ul {
 	margin-top: 12px;
 	margin-bottom: 0;
 }
@@ -3605,10 +3605,6 @@ p.entry-meta {
 .entry-header .entry-meta a:hover,
 .entry-header .entry-meta a:focus {
 	color: #323232;
-}
-
-.entry-header .entry-meta {
-	margin-bottom: calc(.75vw + 1em);
 }
 
 .entry-footer {
