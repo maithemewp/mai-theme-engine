@@ -266,7 +266,7 @@ function mai_flex_loop_post_class( $classes ) {
 	if ( 'background' === $img_location || empty( $img_alignment ) ) {
 		$classes[] = 'column';
 	} else {
-		$classes[] = 'image-' . $img_alignment;
+		$classes[] = 'has-image-' . str_replace( 'align', '', $img_alignment );
 	}
 
 	return $classes;

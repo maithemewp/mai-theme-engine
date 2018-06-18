@@ -1105,7 +1105,7 @@ class Mai_Grid {
 
 		// If image is not aligned.
 		if ( $this->args['image_align'] ) {
-			$classes[] = 'image-' . $this->args['image_align'];
+			$classes[] = 'has-image-' . $this->args['image_align'];
 		}
 
 		// Add bottom margin classes.
@@ -1135,7 +1135,7 @@ class Mai_Grid {
 		if ( ! $this->args['boxed'] ) {
 			$classes = array_diff( $classes, array( 'boxed' ) );
 		} else {
-			$classes[] = ' boxed';
+			$classes[] = 'boxed';
 		}
 
 		// Remove duplicates and sanitize.

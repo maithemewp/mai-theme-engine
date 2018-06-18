@@ -3932,6 +3932,10 @@ p.entry-meta {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.footer-widgets .entry.boxed {
+	color: initial;
+}
+
 .footer-widgets .wrap {
 	padding-top: 60px;
 	padding-bottom: 30px;
