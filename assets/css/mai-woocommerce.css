@@ -59,9 +59,13 @@
 	width: 100%;
 }
 
-.woocommerce div.product.flex-entry,
+.woocommerce div.product.flex-entry:not(.image-left):not(.image-right),
 .products-wrap .products > div.product {
 	text-align: center;
+}
+
+.woocommerce div.product.flex-entry,
+.products-wrap .products > div.product {
 	margin-bottom: 30px;
 }
 
