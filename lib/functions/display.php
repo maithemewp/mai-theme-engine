@@ -318,19 +318,6 @@ function mai_get_the_posts_meta( $post = '' ) {
 }
 
 /**
- * Get a section.
- *
- * @param  array  $content  The section content (required).
- * @param  array  $args     The section args (optional).
- *
- * @return string|HTML
- */
-function mai_get_section( $content, $args = array() ) {
-	$section = new Mai_Section( $args, $content );
-	return $section->render();
-}
-
-/**
  * Helper function to get a grid of content.
  * This is a php version of the [grid] shortcode.
  *
@@ -340,6 +327,19 @@ function mai_get_section( $content, $args = array() ) {
  */
 function mai_get_grid( $args ) {
 	$section = new Mai_Grid( $args );
+	return $section->render();
+}
+
+/**
+ * Get a section.
+ *
+ * @param  array  $content  The section content (required).
+ * @param  array  $args     The section args (optional).
+ *
+ * @return string|HTML
+ */
+function mai_get_section( $content, $args = array() ) {
+	$section = new Mai_Section( $args, $content );
 	return $section->render();
 }
 
@@ -384,21 +384,37 @@ function mai_get_sections( $sections ) {
 			$args[ $setting ] = isset( $section[ $setting ] ) ? $section[ $setting ] : '';
 		}
 
-		// Use h1 for title if no banner, no h1 yet, and we have title.
-		if ( ! $has_banner && ! $has_h1 && ! empty( $section['title'] ) ) {
-			$args['title_wrap'] = 'h1';
-			$has_h1             = true;
-		}
-
 		// Set the bg image.
 		$args['image'] = isset( $section['image_id'] ) ? $section['image_id'] : '';
 
 		// Set the content.
-		$content = isset( $section['content'] ) ? $section['content'] : '';
+		$content = isset( $section['content'] ) ? trim( $section['content'] ) : '';
 
 		// Skip if no title and no content and no image.
 		if ( empty( $args['title'] ) && empty( $args['image'] ) && empty( $content ) ) {
 			continue;
+		}
+
+		// If no banner area.
+		if ( ! $has_banner ) {
+
+			/**
+			 * Check content first, so there is more manual control over h1.
+			 * If no h1 yet, and we have content, check it for an h1.
+			 */
+			if ( ! $has_h1 && ! empty( $content ) ) {
+				if ( false  !== strpos ( $content, '<h1' ) ) {
+					$has_h1 = true;
+				}
+			}
+
+			/**
+			 * If no h1 yet, and we have a section title, make it an h1.
+			 */
+			if ( ! $has_h1 && ! empty( $section['title'] ) ) {
+				$args['title_wrap'] = 'h1';
+				$has_h1             = true;
+			}
 		}
 
 		$html .= mai_get_section( $content, $args );

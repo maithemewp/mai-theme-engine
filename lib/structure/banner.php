@@ -213,8 +213,7 @@ function mai_do_banner_content() {
 
 	// 404.
 	elseif ( is_404() ) {
-		$wrap  = 'h2';
-		$title = apply_filters( 'genesis_404_entry_title', __( '404', 'genesis' ) );
+		$title = __( '404', 'genesis' );
 	}
 
 	// Banner content filters.
