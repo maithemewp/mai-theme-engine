@@ -213,7 +213,7 @@ function mai_do_banner_content() {
 
 	// 404.
 	elseif ( is_404() ) {
-		$title = __( '404', 'genesis' );
+		$title = __( '404', 'mai-theme-engine' );
 	}
 
 	// Banner content filters.
