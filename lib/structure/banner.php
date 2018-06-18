@@ -213,7 +213,13 @@ function mai_do_banner_content() {
 
 	// 404.
 	elseif ( is_404() ) {
-		$title = __( '404', 'mai-theme-engine' );
+
+		// Remove default title.
+		add_filter( 'genesis_markup_entry-title_open', '__return_empty_string' );
+		add_filter( 'genesis_markup_entry-title_content', '__return_empty_string' );
+		add_filter( 'genesis_markup_entry-title_close', '__return_empty_string' );
+
+		$title = apply_filters( 'genesis_404_entry_title', __( 'Not found, error 404', 'genesis' ) );
 	}
 
 	// Banner content filters.
