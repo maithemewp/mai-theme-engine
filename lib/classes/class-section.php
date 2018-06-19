@@ -277,13 +277,7 @@ class Mai_Section {
 
 			// Align text.
 			if ( $this->args['align'] ) {
-				if ( in_array( 'left', $this->args['align'] ) ) {
-					$attributes['class'] .= ' text-xs-left';
-				} elseif ( in_array( 'center', $this->args['align'] ) ) {
-					$attributes['class'] .= ' text-xs-center';
-				} elseif ( in_array( 'right', $this->args['align'] ) ) {
-					$attributes['class'] .= ' text-xs-right';
-				}
+				$attributes['class'] = mai_add_align_text_classes( $attributes['class'], $this->args['align'] );
 			}
 
 			// Text size.
