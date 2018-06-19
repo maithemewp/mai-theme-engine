@@ -500,8 +500,8 @@ textarea:focus {
 
 input[type="checkbox"],
 input[type="radio"] {
-	width: 20px;
-	margin: 0 0 3px 3px;
+	width: auto;
+	margin: 0 12px 6px 0;
 	vertical-align: middle;
 	-webkit-box-sizing: border-box;box-sizing: border-box;
 }
@@ -3801,6 +3801,10 @@ p.entry-meta {
 
 .comment-respond input[type=checkbox] + label {
 	display: inline-block;
+}
+
+ol.comment-list {
+	margin-left: 0;
 }
 
 .comment-list li,
