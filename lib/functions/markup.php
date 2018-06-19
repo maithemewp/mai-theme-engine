@@ -20,54 +20,73 @@ function mai_add_classes( $new, $existing = '' ) {
 }
 
 /**
- * Add align classes.
+ * Add row align classes.
+ * This is used by grid and col.
+ * We can't do text_align here because columns can't pass params to col.
  *
  * @since   1.3.0
  * @access  private
  *
- * @param   string  $classes  The existing HTML classes.
- * @param   array   $args     The array of alignment args. Either 'align', 'align_cols', and 'align_text'.
+ * @param   string  $classes    The existing HTML classes.
+ * @param   array   $alignment  The array of alignment values.
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_classes( $classes, $args, $direction = 'row' ) {
-	/**
-	 * "align" takes precendence over "align_cols" and "align_text".
-	 * "align" forces the text to align along with the cols.
-	 */
+function mai_add_row_align_classes( $classes, $args ) {
+	// "align" takes precendence over "align_cols"
 	if ( isset( $args['align'] ) && ! empty( $args['align'] ) ) {
-		// $classes = mai_add_align_only_classes( $classes, $args['align'] );
-		switch ( $direction ) {
-			case 'row':
-				$classes = mai_add_align_classes_row( $classes, $args['align'] );
-				break;
-			case 'column':
-				$classes = mai_add_align_classes_column( $classes, $args['align'] );
-				break;
+		$classes = mai_add_alignment_classes( $classes, $args['align'], 'row' );
+		$classes = mai_add_align_text_classes( $classes, $args['align'] );
+	}
+	else {
+		// Align columns.
+		if ( isset( $args['align_cols'] ) && ! empty( $args['align_cols'] ) ) {
+			$classes = mai_add_alignment_classes( $classes, $args['align_cols'], 'row' );
 		}
+	}
+	return $classes;
+}
+
+/**
+ * Add entry align classes by flex-direction.
+ *
+ * @since   1.3.0
+ * @access  private
+ *
+ * @param   string  $classes    The existing HTML classes.
+ * @param   array   $alignment  The array of alignment values.
+ *
+ * @return  string  HTML ready classes.
+ */
+function mai_add_entry_align_classes( $classes, $args, $direction = 'row' ) {
+	// If direction is column, and we don't have column class yet, add it.
+	if ( 'column' === $direction && false === strpos ( $classes, 'column' ) ) {
+		$classes = mai_add_classes( 'column', $classes );
+	}
+	// "align" takes precendence over "align_cols" and "align_text".
+	if ( isset( $args['align'] ) && ! empty( $args['align'] ) ) {
+		$classes = mai_add_alignment_classes( $classes, $args['align'], $direction );
+		$classes = mai_add_align_text_classes( $classes, $args['align'] );
 	} else {
 		// Align columns.
 		if ( isset( $args['align_cols'] ) && ! empty( $args['align_cols'] ) ) {
-			switch ( $direction ) {
-				case 'row':
-					$classes = mai_add_align_classes_row( $classes, $args['align_cols'] );
-					break;
-				case 'column':
-					$classes = mai_add_align_classes_column( $classes, $args['align_cols'] );
-					break;
+			$classes = mai_add_alignment_classes( $classes, $args['align_cols'], $direction );
+		}
+		// Align text.
+		if ( isset( $args['align_text'] ) && ! empty( $args['align_text'] ) ) {
+			// If text has vertical align values.
+			if ( array_intersect( array( 'top', 'middle', 'bottom' ), $args['align_text'] ) ) {
+				$classes = mai_add_align_text_vertical_classes( $classes, $args['align_text'], $direction );
+			} else {
+				$classes = mai_add_align_text_classes( $classes, $args['align_text'] );
 			}
 		}
-		// Align columns.
-		if ( isset( $args['align_text'] ) && ! empty( $args['align_text'] ) ) {
-			$classes = mai_add_align_text_classes( $classes, $args['align_text'] );
-		}
 	}
 	return $classes;
 }
 
 /**
- * Add align classes if only 'align' param is used.
- * This is when the element is flex-direction row.
+ * Add alignment classes by flex-direction.
  *
  * @since   1.3.0
  * @access  private
@@ -77,37 +96,20 @@ function mai_add_align_classes( $classes, $args, $direction = 'row' ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_classes_row( $classes, $alignment ) {
-	// Left.
-	if ( in_array( 'left', $alignment ) ) {
-		$classes .= ' start-xs text-xs-left';
-	}
-	// Center.
-	if ( in_array( 'center', $alignment ) ) {
-		$classes .= ' center-xs text-xs-center';
-	}
-	// Right.
-	if ( in_array( 'right', $alignment ) ) {
-		$classes .= ' end-xs text-xs-right';
-	}
-	// Top.
-	if ( in_array( 'top', $alignment ) ) {
-		$classes .= ' top-xs';
-	}
-	// Middle.
-	if ( in_array( 'middle', $alignment ) ) {
-		$classes .= ' middle-xs';
-	}
-	// Bottom.
-	if ( in_array( 'bottom', $alignment ) ) {
-		$classes .= ' bottom-xs';
+function mai_add_alignment_classes( $classes, $alignment, $direction = 'row' ) {
+	switch ( $direction ) {
+		case 'row':
+			$classes = mai_add_alignment_classes_row( $classes, $alignment );
+			break;
+		case 'column':
+			$classes = mai_add_alignment_classes_column( $classes, $alignment );
+			break;
 	}
 	return $classes;
 }
 
 /**
- * Add align classes if only 'align' param is used.
- * This is when the element is flex-direction column.
+ * Add text align classes by flex-direction.
  *
  * @since   1.3.0
  * @access  private
@@ -117,37 +119,21 @@ function mai_add_align_classes_row( $classes, $alignment ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_classes_column( $classes, $alignment ) {
-	// Left.
-	if ( in_array( 'left', $alignment ) ) {
-		$classes .= ' top-xs text-xs-left';
+function mai_add_align_text_vertical_classes( $classes, $alignment, $direction = 'row' ) {
+	switch ( $direction ) {
+		case 'row':
+			$classes = mai_add_align_text_classes_row( $classes, $alignment );
+			break;
+		case 'column':
+			$classes = mai_add_align_text_classes_column( $classes, $alignment );
+			break;
 	}
-	// Center.
-	if ( in_array( 'center', $alignment ) ) {
-		$classes .= ' middle-xs text-xs-center';
-	}
-	// Right.
-	if ( in_array( 'right', $alignment ) ) {
-		$classes .= ' bottom-xs text-xs-right';
-	}
-	// Top.
-	if ( in_array( 'top', $alignment ) ) {
-		$classes .= ' start-xs';
-	}
-	// Middle.
-	if ( in_array( 'middle', $alignment ) ) {
-		$classes .= ' center-xs';
-	}
-	// Bottom.
-	if ( in_array( 'bottom', $alignment ) ) {
-		$classes .= ' end-xs';
-	}
+	$classes = mai_add_align_text_classes( $classes, $alignment );
 	return $classes;
 }
 
-
 /**
- * Add align column classes.
+ * Add alignment classes if col is flex-direction row.
  *
  * @since   1.3.0
  * @access  private
@@ -157,7 +143,7 @@ function mai_add_align_classes_column( $classes, $alignment ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_cols_classes_row( $classes, $alignment ) {
+function mai_add_alignment_classes_row( $classes, $alignment ) {
 	// Left.
 	if ( in_array( 'left', $alignment ) ) {
 		$classes .= ' start-xs';
@@ -186,7 +172,7 @@ function mai_add_align_cols_classes_row( $classes, $alignment ) {
 }
 
 /**
- * Add align column classes if col is flex-direction column.
+ * Add alignment classes if col is flex-direction column.
  * These are reversed (left is top instead of start) since the direction is column not row.
  *
  * @since   1.3.0
@@ -197,7 +183,7 @@ function mai_add_align_cols_classes_row( $classes, $alignment ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_cols_classes_column( $classes, $alignment ) {
+function mai_add_alignment_classes_column( $classes, $alignment ) {
 	// Left.
 	if ( in_array( 'left', $alignment ) ) {
 		$classes .= ' top-xs';
@@ -228,6 +214,7 @@ function mai_add_align_cols_classes_column( $classes, $alignment ) {
 /**
  * Add align text classes.
  *
+ * Add align text classes when flex-direction is row.
  *
  * @since   1.3.0
  * @access  private
@@ -237,24 +224,25 @@ function mai_add_align_cols_classes_column( $classes, $alignment ) {
  *
  * @return  string  HTML ready classes.
  */
-function mai_add_align_text_classes( $classes, $alignment ) {
-	// Left.
-	if ( in_array( 'left', $alignment ) ) {
-		$classes .= ' start-xs';
+function mai_add_align_text_classes_row( $classes, $alignment ) {
+	// Top.
+	if ( in_array( 'top', $alignment ) ) {
+		$classes .= ' top-xs';
 	}
-	// Center.
-	if ( in_array( 'center', $alignment ) ) {
-		$classes .= ' center-xs';
+	// Middle.
+	if ( in_array( 'middle', $alignment ) ) {
+		$classes .= ' middle-xs';
 	}
-	// Right.
-	if ( in_array( 'right', $alignment ) ) {
-		$classes .= ' end-xs';
+	// Bottom.
+	if ( in_array( 'bottom', $alignment ) ) {
+		$classes .= ' bottom-xs';
 	}
 	return $classes;
 }
 
 /**
  * Add align text classes when flex-direction is column.
+ * These are reversed (left is top instead of start) since the direction is column not row.
  *
  * @since   1.3.0
  * @access  private
@@ -276,6 +264,33 @@ function mai_add_align_text_classes_column( $classes, $alignment ) {
 	// Bottom.
 	if ( in_array( 'bottom', $alignment ) ) {
 		$classes .= ' end-xs';
+	}
+	return $classes;
+}
+
+/**
+ * Add text align classes.
+ *
+ * @since   1.3.0
+ * @access  private
+ *
+ * @param   string  $classes  The existing HTML classes.
+ * @param   array   $size     The size value.
+ *
+ * @return  string  HTML ready classes.
+ */
+function mai_add_align_text_classes( $classes, $alignment ) {
+	// Left.
+	if ( in_array( 'left', $alignment ) ) {
+		$classes .= ' text-xs-left';
+	}
+	// Center.
+	if ( in_array( 'center', $alignment ) ) {
+		$classes .= ' text-xs-center';
+	}
+	// Right.
+	if ( in_array( 'right', $alignment ) ) {
+		$classes .= ' text-xs-right';
 	}
 	return $classes;
 }

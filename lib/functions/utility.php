@@ -324,7 +324,7 @@ function mai_sanitize_hex_color( $color, $hash = true ) {
 
 	// Bail if no color
 	if ( empty( $color ) ) {
-		return;
+		return '';
 	}
 
 	// Remove any trailing '#' symbols from the color value
@@ -348,7 +348,7 @@ function mai_sanitize_hex_color( $color, $hash = true ) {
 	 * We don't want to end up returning a hash-only string.
 	 */
 	if ( empty( $hex ) ) {
-		return;
+		return '';
 	}
 
 	return ( ! $hash ) ? $hex : '#' . $hex;

@@ -929,11 +929,11 @@ class Mai_Grid {
 		// Not on slider.
 		else {
 
-			// Add gutter.
+			// Add gutter class.
 			$attributes['class'] = mai_add_classes( sprintf( 'gutter-%s', $this->args['gutter'] ), $attributes['class'] );
 
 			// Add row align classes.
-			$attributes['class'] = mai_add_align_classes( $attributes['class'], $this->args, 'row' );
+			$attributes['class'] = mai_add_row_align_classes( $attributes['class'], $this->args );
 
 		}
 
@@ -973,7 +973,7 @@ class Mai_Grid {
 		);
 
 		// Add the align classes.
-		$attributes['class'] = mai_add_classes( $this->get_entry_align_classes(), $attributes['class'] );
+		$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
 
 		$light_content = false;
 
@@ -1146,48 +1146,16 @@ class Mai_Grid {
 	}
 
 	/**
-	 * Get the flex entry align classes.
-	 * We can't use get_align_classes() method since this may add 'column'
-	 * which reverses the left/top center/middle right/bottom directional classes.
+	 * Get the flex direction.
+	 * Used by the align functions.
 	 *
-	 * @return  string  The HTML ready classes.
+	 * @return  string  'columns' or 'row'.
 	 */
-	function get_entry_align_classes() {
-
-		$classes = '';
-
-		/**
-		 * "align" takes precendence over "align_cols" and "align_text".
-		 * "align" forces the text to align along with the cols.
-		 */
-		if ( ! empty( $this->args['align'] ) ) {
-
-			// If image is bg or not aligned.
-			if ( 'bg' === $this->args['image_location'] || empty( $this->args['image_align'] ) ) {
-				$classes = 'column';
-				$classes = mai_add_align_classes_column( $classes, $this->args['align'] );
-			} else {
-				$classes = mai_add_align_classes_row( $classes, $this->args['align'] );
-			}
-
-		} else {
-
-			// Align text.
-			if ( ! empty( $this->args['align_text'] ) ) {
-
-				// Column. Save as variable first cause php 5.4 broke, and not sure I care to support that but WTH.
-				$vertical_align = array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
-				if ( ! empty( $vertical_align ) ) {
-					$classes = 'column';
-					$classes = mai_add_align_text_classes_column( $classes, $this->args['align_text'] );
-				}
-				$classes = mai_add_align_text_classes( $classes, $this->args['align_text'] );
-
-			}
-
+	function get_direction() {
+		if ( 'bg' === $this->args['image_location'] || empty( $this->args['image_align'] ) ) {
+			return 'column';
 		}
-
-		return $classes;
+		return 'row';
 	}
 
 	/**

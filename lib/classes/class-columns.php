@@ -64,7 +64,7 @@ class Mai_Columns {
 		$attributes['class'] = mai_add_classes( sprintf( 'gutter-%s', $this->args['gutter'] ), $attributes['class'] );
 
 		// Add row align classes.
-		$attributes['class'] = mai_add_align_classes( $attributes['class'], $this->args, 'row' );
+		$attributes['class'] = mai_add_row_align_classes( $attributes['class'], $this->args );
 
 		// Add bottom margin classes.
 		if ( mai_is_valid_bottom( $this->args['bottom'] ) ) {

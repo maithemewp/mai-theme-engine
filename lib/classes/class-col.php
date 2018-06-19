@@ -22,7 +22,7 @@ class Mai_Col {
 		// Parse defaults and args.
 		$this->args = shortcode_atts( array(
 			'align'      => '', // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
-			'align_text' => '', // "center" Comma separted
+			'align_text' => '', // "center, middle" Comma separted
 			'bg'         => '', // 3 or 6 dig hex color with or without hash
 			'bottom'     => '',
 			'class'      => '',
@@ -58,7 +58,6 @@ class Mai_Col {
 			'lg'         => sanitize_key( $this->args['lg'] ),
 			'xl'         => sanitize_key( $this->args['xl'] ),
 		);
-
 	}
 
 	/**
@@ -76,6 +75,11 @@ class Mai_Col {
 		return $this->get_col();
 	}
 
+	/**
+	 * Get the col with markup and content.
+	 *
+	 * @return  string|HTML
+	 */
 	function get_col() {
 
 		$attributes = array(
@@ -86,18 +90,8 @@ class Mai_Col {
 		// Custom classes.
 		$attributes['class'] = mai_add_classes( $this->args['class'], $attributes['class'] );
 
-		// Align.
-		if ( ! empty( $this->args['align'] ) ) {
-			$attributes['class'] = mai_add_align_classes_column( $attributes['class'], $this->args['align'] );
-		} elseif ( ! empty( $this->args['align_text'] ) ) {
-			// Column. Save as variable first cause php 5.4 broke, and not sure I care to support that but WTH.
-			$vertical_align = array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
-			if ( ! empty( $vertical_align ) ) {
-				$attributes['class'] .= ' column';
-				$attributes['class'] = mai_add_align_text_classes_column( $attributes['class'], $this->args['align_text'] );
-			}
-			$attributes['class'] = mai_add_align_text_classes( $attributes['class'], $this->args['align_text'] );
-		}
+		// Add the align classes.
+		$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
 
 		// URL.
 		$bg_link = $bg_link_title = '';
@@ -108,8 +102,8 @@ class Mai_Col {
 			} else {
 				$bg_link_url   = esc_url( $this->args['link'] );
 			}
-			$bg_link              = mai_get_bg_image_link( $bg_link_url, $bg_link_title );
-			$attributes['class'] .= ' has-bg-link';
+			$bg_link             = mai_get_bg_image_link( $bg_link_url, $bg_link_title );
+			$attributes['class'] = mai_add_classes( 'has-bg-link', $attributes['class'] );
 		}
 
 		$light_content = false;
@@ -132,7 +126,7 @@ class Mai_Col {
 			if ( $this->content ) {
 				// Set dark overlay if we don't have one.
 				$this->args['overlay'] = ! $this->args['overlay'] ? 'dark' : $this->args['overlay'];
-				$light_content   = true;
+				$light_content         = true;
 			}
 
 			// If showing featured image and link is a post ID.
@@ -148,25 +142,17 @@ class Mai_Col {
 
 		// If we have a valid overlay.
 		if ( mai_is_valid_overlay( $this->args['overlay'] ) ) {
-			$attributes['class'] .= ' overlay';
-			// Only add overlay classes if we have a valid overlay type.
-			switch ( $this->args['overlay'] ) {
-				case 'gradient':
-					$attributes['class'] .= ' overlay-gradient';
-					$light_content = false;
-				break;
-				case 'light':
-					$attributes['class'] .= ' overlay-light';
-					$light_content = false;
-				break;
-				case 'dark':
-					$attributes['class'] .= ' overlay-dark';
-					$light_content = true;
-				break;
+
+			// If we have a dark overlay, content is light.
+			if ( 'dark' === $this->args['overlay'] ) {
+				$light_content = true;
 			}
+
+			// Add overlay classes.
+			$attributes['class'] = mai_add_overlay_classes( $attributes['class'], $this->args['overlay'] );
 		}
 
-		// Add content shade class.
+		// Shade class
 		$attributes['class'] .= $light_content ? ' light-content' : '';
 
 		// Add bottom margin classes.
@@ -187,9 +173,27 @@ class Mai_Col {
 		return sprintf( '<div %s>%s%s</div>', genesis_attr( 'flex-col', $attributes, $this->args ), mai_get_processed_content( $this->content ), $bg_link );
 	}
 
+	/**
+	 * Get the col classes.
+	 *
+	 * @return  string  HTML ready classes.
+	 */
 	function get_classes() {
 		$classes = mai_add_classes( mai_get_col_classes_by_breaks( $this->args, $this->size ), 'flex-entry col' );
 		return $classes;
+	}
+
+	/**
+	 * Get the flex direction.
+	 * Used by the align functions.
+	 *
+	 * @return  string  'columns' or 'row'.
+	 */
+	function get_direction() {
+		if ( $this->args['image'] ) {
+			return 'column';
+		}
+		return 'row';
 	}
 
 }
