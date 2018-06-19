@@ -1188,6 +1188,10 @@ body.has-boxed-site-container {
 	border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
+.entry.boxed {
+	color: initial;
+}
+
 .entry.flex-entry.boxed {
 	padding: 24px;
 }
@@ -1375,10 +1379,6 @@ body.has-boxed-site-container {
 
 .section .entry {
 	text-shadow: none;
-}
-
-.section:not(.light-content) .entry {
-	color: initial;
 }
 
 .section.full-width-image .inner,
@@ -3934,10 +3934,6 @@ ol.comment-list {
 	background-color: #323232;
 	color: rgba(255, 255, 255, 0.6);
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.footer-widgets .entry.boxed {
-	color: initial;
 }
 
 .footer-widgets .wrap {
