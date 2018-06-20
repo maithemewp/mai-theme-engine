@@ -897,7 +897,7 @@ td {
 	margin-bottom: 30px;
 }
 
-.entry.col:not(.boxed):not(.image-bg) {
+.content .entry.col:not(.boxed):not(.image-bg) {
 	margin-bottom: 60px;
 }
 
@@ -3915,7 +3915,7 @@ ol.comment-list {
 .footer-widgets > .wrap {
 	display: -ms-grid;
 	display: grid;
-	grid-gap: 48px;
+	grid-column-gap: 48px;
 	padding-top: 64px;
 	padding-bottom: 36px;
 }
