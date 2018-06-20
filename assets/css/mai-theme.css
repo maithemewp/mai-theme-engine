@@ -929,11 +929,11 @@ td {
 	max-width: 100%;
 }
 
-.content,
-.xs-content .content,
-.sm-content .content,
-.md-content .content {
+.content {
 	-ms-flex-negative: 1;flex-shrink: 1;
+}
+
+.no-sidebars .content {
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -1847,7 +1847,6 @@ input[name="post_password"] {
 .mai-slider .slick-track {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex: 0 1 auto;-webkit-box-flex: 0;flex: 0 1 auto;
-	max-width: auto;
 	height: 100%;
 }
 
@@ -1966,8 +1965,8 @@ input[name="post_password"] {
 	display: block;
 	top: 0;
 	left: 0;
-	margin-left: auto;
-	margin-right: auto;
+	/* margin-left: auto; */
+	/* margin-right: auto; */
 }
 
 .slick-track::before,
