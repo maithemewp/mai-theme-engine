@@ -1,5 +1,68 @@
 ### Changelog
 
+#### 1.3.0 (TBD)
+* Added: Sections import/export feature.
+* Added: Page Builder page template.
+* Added: Boxed Content setting to declare which elements should have a boxed vs seamless look, including the main site container.
+* Added: Banner title and description separation so it's much easier to remove or filter only the title or description.
+* Added: Visibility Settings metabox on single posts to hide banner, featured image, breadcrumbs, and title.
+* Added: Support for Genesis Title Toggle plugin.
+* Added: Section/Banner "Content Alignment" setting ('align_content' param) to show banner title and description top, center, bottom vertically as well as left, center, right horizontally.
+* Added: [section] 'image_size' parameter. Can also be filtered via shortcode_atts_section filter.
+* Added: [section] Full width inline image support by inserting an image into the editor and adding "full-width-image" class to the section settings.
+* Added: [section] 'style' parameter for HTML inline styles.
+* Added: [section] 'context' parameter and setting to be used with new 'mai_section_args' filter.
+* Added: [grid] 'boxed' parameter to have control over a boxed vs seamless look.
+* Added: [grid] 'adaptiveheight' parameter to allow the grid height to shrink/grow depending on each slide's content. Works best when columns="1".
+* Added: [grid] 'exclude_displayed' parameter to only show posts that haven't already been shown in other instances of [grid] on page/post.
+* Added: [grid] 'xs', 'sm', 'md', 'lg', 'xl' parameters to set the span of columns out of 12. '6' would be 1/2, since 6 is 1/2 of 12, as an example.
+* Added: [col] (and all col_* shortcodes) 'xs', 'sm', 'md', 'lg', 'xl' parameters.
+* Added: [columns] 'bottom' param to easily add bottom margin.
+* Added: WooCommerce star rating default styling.
+* Added: 'mai_sitemap_post_types' filter on Sitemap post types.
+* Added: Top margin to nested lists.
+* Changed: Reorganized Customizer settings panels/sections.
+* Changed: CSS Grid now used for content/sidebars and footer widgets columns.
+* Changed: [grid] Now defaults to order_by="menu_order" and order="ASC" when display a single hierarchical post type like pages.
+* Changed: More solid and efficient header shrink. Now done with small JS instead of CSS scale().
+* Changed: Removed editor stylesheet. We never used it properly, and Gutenberg is coming.
+* Changed: WooCommerce up-sells, cross-sells, and related product columns now have their own filters. Cross-sells now default to 2 columns so they fit better on the cart page.
+* Changed: Remove mai_html_cleanup_script(). Too hacky and unecessary.
+* Changed: Only force full width image on flex entries when image is not aligned (left, right, or center).
+* Changed: Moved list-style-type CSS only to parent ol/ul to be less aggressive and easier to override in style.css.
+* Changed: Bumped normalize CSS to 8.0.0.
+* Changed: Less aggressive removal of WooCommerce Shop page metaboxes.
+* Changed: Removed site title/logo toggle from Customizer.
+* Changed: Replaced Fluidvids with FitVids and added 'mai_enable_responsive_videos' filter so it's much easier to disable.
+* Changed: Bump CMB2 to v2.4.2.
+* Changed: Header nav menus now wrap menu items appropriately on mid-sized browser windows.
+* Changed: Breadcrumbs no longer follow page layout.
+* Changed: Center content in after entry author box on mobile.
+* Fixed: [grid] Stripping image if image_location="before_entry" and content_limit was too low.
+* Fixed: [grid] More control over spaces when using date_before, date_after, author_before, author_after params.
+* Fixed: [grid] Keep content on top of overlay when hovering on image bg link.
+* Fixed: [grid] Entry content text color when on a dark background.
+* Fixed: [grid] Only show bg image when show contains image in its values.
+* Fixed: [grid] Squishing entries when showing a slider that doesn't have as many entries as the columns setting.
+* Fixed: [grid] Slider arrows when using slider in a full width section.
+* Fixed: [grid] Get correct product category image when displaying WooCommerce product categories in grid.
+* Fixed: Adding new sections sets the proper defaults for each section.
+* Fixed: Sections template now properly passes page content to the first section so it's not lost when changing an existing page to Sections template.
+* Fixed: Sections template now displays a warning about deleting section data when changing to another page template.
+* Fixed: Sections template now deletes section meta when changing from Sections template to another page template.
+* Fixed: Sections template now respects password protection.
+* Fixed: Mobile menu toggle getting squished when logos are big.
+* Fixed: Landing page template logo not centered when 'genesis_header_right hook is used.
+* Fixed: Blockquote weirdness when inserted after an image aligned left or right.
+* Fixed: Removed taxonomy hierarchy settings checks, too inefficient.
+* Fixed: Landing and Sitemap templates weren't overrideable in theme.
+* Fixed: Retain "Hide featured image" post meta value when removing the existing featured image.
+* Fixed: Current menu item css on Header Before nav.
+* Fixed: Max width on nav search widget to site header.
+* Fixed: Checkboxes no longer on their own line in the comment form.
+* Fixed: Yoast metabox no longer hidden on WooCommerce shop page.
+* Fixed: Date archives now correctly follow content archive settings.
+
 #### 1.2.1 (2/15/18)
 * Added: Mai Theme now stores the first installed version number, so we can do safer upgrades/migrations later.
 * Added: Pass original atts to flex entry filters.

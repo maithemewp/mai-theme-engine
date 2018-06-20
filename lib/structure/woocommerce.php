@@ -23,6 +23,9 @@ add_theme_support( 'wc-product-gallery-slider' );
 // Remove genesis entry meta support.
 add_action( 'init', 'mai_woocommerce_int', 99 );
 function mai_woocommerce_int() {
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
 	remove_post_type_support( 'product', 'genesis-entry-meta-before-content' );
 	remove_post_type_support( 'product', 'genesis-entry-meta-after-content' );
 }
@@ -187,63 +190,24 @@ function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
 		return;
 	}
 
-	global $wp_meta_boxes;
+	remove_meta_box( 'postimagediv', 'page', 'side' );
+	remove_meta_box( 'mai_post_banner', 'page', 'side' );
+	remove_meta_box( 'genesis_inpost_layout_box', 'page', 'normal' );
+}
 
-	// Create an array of meta boxes exceptions, ones that should not be removed (remove if you don't want/need)
-	$exceptions = array(
-		'slugdiv',
-		'submitdiv',
-		'pageparentdiv',
-		'authordiv',
-		'postexcerpt',
-	);
-
-	// Start looping.
-	foreach( $wp_meta_boxes as $page => $page_boxes ) {
-
-		// Skip if none.
-		if ( empty( $page_boxes ) ) {
-			continue;
-		}
-
-		// Loop through each page.
-		foreach( $page_boxes as $context => $box_context ) {
-
-			// Skip if none.
-			if ( empty( $box_context ) ) {
-				continue;
-			}
-
-			// Loop through each context.
-			foreach( $box_context as $box_type ) {
-
-				// Skip if none.
-				if ( empty( $box_type ) ) {
-					continue;
-				}
-
-				// Loop through each type.
-				foreach( $box_type as $id => $box ) {
-
-					// Skip if keeping.
-					if ( in_array( $id, $exceptions ) ) {
-						continue;
-					}
-
-					// Remove.
-					remove_meta_box( $id, $page, $context );
-
-				}
-
-			}
-
-		}
-
+/**
+ * Remove columns setting from customizer.
+ * This is handled in Mai Theme customizer settings.
+ *
+ * @link https://developer.wordpress.org/themes/advanced-topics/customizer-api/
+ */
+add_action( 'customize_register', 'mai_remove_woocommerce_customizer_controls', 99 );
+function mai_remove_woocommerce_customizer_controls( $wp_customize ) {
+	// Bail if Woo isn't active.
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
 	}
-
-	// Add metabox shop notice.
-	add_meta_box( 'mai_woo_shop_notice', __( 'Mai WooCommerce Shop', 'mai-theme-engine' ), 'mai_woo_shop_notice', 'page', 'normal' );
-
+	$wp_customize->remove_control( 'woocommerce_catalog_columns' );
 }
 
 /**
@@ -254,4 +218,109 @@ function mai_remove_woo_shop_meta_boxes( $post_type, $post ){
 function mai_woo_shop_notice( $post ) {
 	$section_link = mai_get_customizer_post_type_settings_link( 'product' );
 	printf( '<a class="button" href="%s">%s</a>', esc_url( $section_link ), __( 'Edit Mai Product Settings', 'mai-theme-engine' ) );
+}
+
+/**
+ * Add columns filter before up-sells.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_before_template_part', 'mai_woo_before_upsells', 10, 4 );
+function mai_woo_before_upsells( $template_name, $template_path, $located, $args ) {
+	// Bail if not upsells template.
+	if ( 'single-product/up-sells.php' !== $template_name ) {
+		return;
+	}
+	add_filter( 'mai_get_columns', 'mai_woo_upsells_columns' );
+	function mai_woo_upsells_columns( $columns ) {
+		return 3;
+	}
+}
+
+/**
+ * Remove columns filter after up-sells.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_after_template_part', 'mai_woo_after_upsells', 10, 4 );
+function mai_woo_after_upsells( $template_name, $template_path, $located, $args ) {
+	// Bail if not upsells template.
+	if ( 'single-product/up-sells.php' !== $template_name ) {
+		return;
+	}
+	remove_filter( 'mai_get_columns', 'mai_woo_upsells_columns' );
+}
+
+/**
+ * Add columns filter before related products.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_before_template_part', 'mai_woo_before_related', 10, 4 );
+function mai_woo_before_related( $template_name, $template_path, $located, $args ) {
+	// Bail if not related products template.
+	if ( 'single-product/related.php' !== $template_name ) {
+		return;
+	}
+	add_filter( 'mai_get_columns', 'mai_woo_related_columns' );
+	function mai_woo_related_columns( $columns ) {
+		return 3;
+	}
+}
+
+/**
+ * Remove columns filter after related products.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_after_template_part', 'mai_woo_after_related', 10, 4 );
+function mai_woo_after_related( $template_name, $template_path, $located, $args ) {
+	// Bail if not related products template.
+	if ( 'single-product/related.php' !== $template_name ) {
+		return;
+	}
+	remove_filter( 'mai_get_columns', 'mai_woo_related_columns' );
+}
+
+/**
+ * Add columns filter before related products.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_before_template_part', 'mai_woo_before_crosssells', 10, 4 );
+function mai_woo_before_crosssells( $template_name, $template_path, $located, $args ) {
+	// Bail if not crosssells template.
+	if ( 'cart/cross-sells.php' !== $template_name ) {
+		return;
+	}
+	add_filter( 'mai_get_columns', 'mai_woo_crosssells_columns' );
+	function mai_woo_crosssells_columns( $columns ) {
+		return 2;
+	}
+}
+
+/**
+ * Remove columns filter after related products.
+ *
+ * @since   1.3.0
+ * @access  private
+ * @return  void
+ */
+add_action( 'woocommerce_after_template_part', 'mai_woo_after_crossell', 10, 4 );
+function mai_woo_after_crossell( $template_name, $template_path, $located, $args ) {
+	// Bail if not crosssells template.
+	if ( 'cart/cross-sells.php' !== $template_name ) {
+		return;
+	}
+	remove_filter( 'mai_get_columns', 'mai_woo_crossell_columns' );
 }

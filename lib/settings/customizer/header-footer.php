@@ -3,23 +3,25 @@
 /**
  * Register new Customizer elements.
  *
- * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
+ * @access  private
+ *
+ * @param   WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
  */
-add_action( 'customize_register', 'mai_register_customizer_settings', 20 );
-function mai_register_customizer_settings( $wp_customize ) {
+add_action( 'customize_register', 'mai_register_customizer_header_footer_settings', 20 );
+function mai_register_customizer_header_footer_settings( $wp_customize ) {
 
 	/* ************ *
 	 * Mai Settings *
 	 * ************ */
 
-	$section        = 'mai_settings';
+	$section        = 'mai_header_footer';
 	$settings_field = 'genesis-settings';
 
 	// Section.
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => __( 'Mai Settings', 'mai-theme-engine' ),
+			'title'    => __( 'Mai Header & Footer', 'mai-theme-engine' ),
 			'priority' => '35',
 		)
 	);

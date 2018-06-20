@@ -1,5 +1,5 @@
 /**
- * Initiate Slick on [display-posts slider=true] posts when document ready
+ * Initiate Slick on [grid slider="true"] posts when document ready.
  *
  * @version 1.0.2
  */
@@ -13,11 +13,14 @@ jQuery(document).ready(function($) {
 
 	$.each( $sliders, function() {
 
-		var arrows         = Boolean( $(this).data('arrows') ),
+		var $this = $(this);
+
+		var adaptiveHeight = Boolean( $(this).data('adaptiveheight') ),
+			arrows         = Boolean( $(this).data('arrows') ),
 			autoPlay       = Boolean( $(this).data('autoplay') ),
 			centerMode     = Boolean( $(this).data('centermode') ),
 			dots           = Boolean( $(this).data('dots') ),
-			fade           = Boolean( $(this).data('fade') ),
+			fade           = Boolean( $(this).data('fade') ), // Only works with 1 slide at a time https://github.com/kenwheeler/slick/issues/830.
 			infinite       = Boolean( $(this).data('infinite') ),
 			slidesToScroll = parseInt( $(this).data('slidestoscroll') ),
 			slidesToShow   = parseInt( $(this).data('slidestoshow') );
@@ -75,18 +78,18 @@ jQuery(document).ready(function($) {
 			mobileToScroll = tabletToScroll;
 		}
 
-		$(this).slick({
-			adaptiveHeight: false, // true breaks things on image-bg aspect-ratio resize.
+		$this.slick({
+			adaptiveHeight: adaptiveHeight,
 			arrows: arrows,
 			autoplay: autoPlay,
+			autoplaySpeed: speed,
+			cssEase: fade ? 'linear' : 'ease', // Use linear if fade is true, otherwise default is ease.
 			dots: dots,
 			fade: fade,           // Things seem to blow up if columns is > 1.
 			focusOnChange: false, // This is Slick default as of 1.8.0, but i want to make sure, cause if true it makes things really jumpy.
 			infinite: infinite,
-			slidesToShow: slidesToShow,
 			slidesToScroll: slidesToScroll,
-			autoplaySpeed: speed,
-			cssEase: fade ? 'linear' : 'ease', // Use linear if fade is true, otherwise default is ease.
+			slidesToShow: slidesToShow,
 			responsive: [{
 				breakpoint: 1200,
 				settings: {
@@ -111,10 +114,10 @@ jQuery(document).ready(function($) {
 			}],
 		});
 
-		var $slickTrack = $(this).find('.slick-track');
+		var $slickTrack = $this.find( '.slick-track' );
 
-		var center = Boolean( $(this).data('center') ),
-			middle = Boolean( $(this).data('middle') );
+		var center = Boolean( $this.data('center') ),
+			middle = Boolean( $this.data('middle') );
 
 		if ( center ) {
 			$slickTrack.addClass('center-xs');
@@ -123,7 +126,6 @@ jQuery(document).ready(function($) {
 		if ( middle ) {
 			$slickTrack.addClass('middle-xs');
 		}
-
 	});
 
 	function _isEven(value) {

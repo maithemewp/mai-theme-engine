@@ -3,7 +3,9 @@
 /**
  * Register custom customizer controls/fields.
  *
- * @return  void.
+ * @access  private
+ *
+ * @return  void
  */
 add_action( 'customize_register', 'mai_register_customizer_field_types', 8 );
 function mai_register_customizer_field_types() {
@@ -12,7 +14,8 @@ function mai_register_customizer_field_types() {
 	 * Multiple checkbox customize control class.
 	 *
 	 * @since  1.0.0
-	 * @access public
+	 *
+	 * @access private
 	 */
 	class Mai_Customize_Control_Multicheck extends WP_Customize_Control {
 

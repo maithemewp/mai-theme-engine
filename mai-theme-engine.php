@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.2.1
+ * Version:         1.3.0
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -89,7 +89,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.2.1' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.3.0' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1161' );
@@ -124,8 +124,7 @@ final class Mai_Theme_Engine {
 	private function hooks() {
 
 		// Includes (Vendor).
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php';
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'PHPColors/Color.php';
+		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php'; // v2.4.2
 		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php';
 
 		// Run the updater.
@@ -145,6 +144,11 @@ final class Mai_Theme_Engine {
 			 * among other things.
 			 */
 			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
+
+			// Allow tokens to be used to bypass GitHub rate limit.
+			if ( defined( 'MAI_UPDATER_TOKEN' ) ) {
+				$updater->setAuthentication( MAI_UPDATER_TOKEN );
+			}
 
 			// Add icons for Dashboard > Updates screen.
 			$updater->addResultFilter( function( $info, $response = null ) {
@@ -319,6 +323,7 @@ final class Mai_Theme_Engine {
 			// Lib.
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . '*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'admin/*.php' ) as $file ) { include_once $file; }
+			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'classes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'functions/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'settings/customizer/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }

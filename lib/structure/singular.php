@@ -1,6 +1,62 @@
 <?php
 
 /**
+ * Add an action hook if hide breadcrumbs settings is checked.
+ * This allows custom themes with breadcrumbs in a different location to remove them via this hook.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'genesis_before', 'mai_do_remove_breadcrumbs' );
+function mai_do_remove_breadcrumbs() {
+
+	// Bail if not a single entry.
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	global $post;
+
+	$hide = get_post_meta( $post->ID, 'mai_hide_breadcrumbs', true );
+
+	// Bail if breadcrumbs is not checked.
+	if ( ! (bool) $hide ) {
+		return;
+	}
+
+	do_action( 'mai_hide_breadcrumbs', $post );
+}
+
+/**
+ * Add an action hook if hide breadcrumbs settings is checked.
+ * This allows custom themes with breadcrumbs in a different location to remove them via this hook.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'genesis_before', 'mai_do_remove_title' );
+function mai_do_remove_title() {
+
+	// Bail if not a single entry.
+	if ( ! is_singular() ) {
+		return;
+	}
+
+	global $post;
+
+	$hide = get_post_meta( $post->ID, 'be_title_toggle_hide', true );
+
+	// Bail if title is not checked.
+	if ( ! (bool) $hide ) {
+		return;
+	}
+
+	do_action( 'mai_hide_title', $post );
+}
+
+/**
  * Add featured image to single posts.
  *
  * @see     mai_woo_remove_featured_image() for Woo version.
@@ -58,7 +114,7 @@ function mai_woo_remove_featured_image() {
 
 	// Remove image if not displaying.
 	if ( ! $display ) {
-		// Remove product images from single template
+		// Remove product images from single template.
 		remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
 	}
 }
@@ -66,7 +122,7 @@ function mai_woo_remove_featured_image() {
 /**
  * Remove the entry meta on single posts.
  *
- * @return  void.
+ * @return  void
  */
 add_action( 'genesis_before_loop', 'mai_remove_singular_meta' );
 function mai_remove_singular_meta() {
@@ -87,20 +143,24 @@ function mai_remove_singular_meta() {
 	}
 
 	if ( in_array( 'post_info', $meta_to_remove ) ) {
-		// Remove the entry meta in the entry header
+		// Remove the entry meta in the entry header.
 		remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
 	}
 
 	if ( in_array( 'post_meta', $meta_to_remove ) ) {
-		// Remove the entry footer markup
+		// Remove the entry footer markup.
 		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_open', 5 );
 		remove_action( 'genesis_entry_footer', 'genesis_entry_footer_markup_close', 15 );
-		// Remove the entry meta in the entry footer
+		// Remove the entry meta in the entry footer.
 		remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
 	}
 }
 
-// Add slow scroll class to comments link
+/**
+ * Add slow scroll class to comments link.
+ *
+ * @return  string|HTML  The modified output.
+ */
 add_filter( 'genesis_post_comments_shortcode', 'mai_slow_scroll_comments_link', 10, 2 );
 function mai_slow_scroll_comments_link( $output, $atts ) {
 	if ( ! is_singular() ) {
@@ -109,44 +169,4 @@ function mai_slow_scroll_comments_link( $output, $atts ) {
 	$output = str_replace( 'a href', 'a class="scroll-to" href', $output );
 	$output = str_replace( trailingslashit( get_permalink() ), '', $output );
 	return $output;
-}
-
-/**
- * Add Flexington classes for comments.
- */
-
-add_filter( 'genesis_attr_comment', 'mai_markup_comment' );
-function mai_markup_comment( $attributes ) {
-	$attributes['class'] .= ' row';
-	return $attributes;
-}
-
-add_filter( 'genesis_attr_comment-header', 'mai_markup_comment_header' );
-function mai_markup_comment_header( $attributes ) {
-	$attributes['class'] .= ' row col col-xs-12';
-	return $attributes;
-}
-
-add_filter( 'genesis_attr_comment-author', 'mai_markup_comment_author' );
-function mai_markup_comment_author( $attributes ) {
- 	$attributes['class'] .= ' col col-xs-12 row gutter-10 middle-xs bottom-xs-30';
- 	return $attributes;
-}
-
-add_filter( 'genesis_attr_comment-meta', 'mai_markup_comment_meta' );
-function mai_markup_comment_meta( $attributes ) {
-	$attributes['class'] .= ' column col col-xs-12 text-xs-right first-xs';
-	return $attributes;
-}
-
-add_filter( 'genesis_attr_comment-content', 'mai_markup_comment_content' );
-function mai_markup_comment_content( $attributes ) {
-	$attributes['class'] .= ' col col-xs-12';
-	return $attributes;
-}
-
-add_filter( 'genesis_attr_comment-reply', 'mai_markup_comment_reply' );
-function mai_markup_comment_reply( $attributes ) {
-	$attributes['class'] .= ' col col-xs-12 text-xs-right';
-	return $attributes;
 }

@@ -1,21 +1,18 @@
 <?php
 
 /**
- * Enqueue an admin script, for custom editor styles and other stuff
+ * Enqueue an admin script, for custom editor styles and other stuff.
  *
  * @return void
  */
 add_action( 'admin_enqueue_scripts', 'mai_admin_enqueue_scripts' );
 function mai_admin_enqueue_scripts() {
 
-	// Use minified files if script debug is not being used
+	// Use minified files if script debug is not being used.
 	$suffix = mai_get_suffix();
 
-	// Add an editor stylesheet
-	add_editor_style( "/assets/css/mai-editor{$suffix}.css" );
-
-	wp_register_style( 'mai-admin', MAI_THEME_ENGINE_PLUGIN_URL . "/assets/css/mai-admin{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
-	wp_register_script( 'mai-admin', MAI_THEME_ENGINE_PLUGIN_URL . "/assets/js/mai-admin{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
+	wp_register_style( 'mai-admin', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/mai-admin{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
+	wp_register_script( 'mai-admin', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-admin{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
 }
 
 /**
@@ -33,9 +30,9 @@ function mai_limit_term_description( $desc ) {
 }
 
 /**
- * Adds a new select bar to the WP editor
- * Insert 'styleselect' into the $buttons array
- * _2 places the new button on the second line
+ * Adds a new select bar to the WP editor.
+ * Insert 'styleselect' into the $buttons array.
+ * _2 places the new button on the second line.
  *
  * @return  array
  */
@@ -54,21 +51,21 @@ function mai_add_styleselect_dropdown( $buttons ) {
  */
 add_filter( 'tiny_mce_before_init', 'mai_add_style_format_options_to_editor' );
 function mai_add_style_format_options_to_editor( $init_array ) {
-	// Define the style_formats array
+	// Define the style_formats array.
 	$style_formats = array(
-		// Each array child is a format with it's own settings
+		// Each array child is a format with it's own settings.
 		array(
 			'title'    => 'Button',
 			'selector' => 'a',
 			'classes'  => 'button',
 		),
 	);
-	// Insert the array, JSON ENCODED, into 'style_formats'
+	// Insert the array, JSON ENCODED, into 'style_formats'.
 	$init_array['style_formats'] = json_encode( $style_formats );
 	return $init_array;
 }
 
-// Show the editor on the page set for is_home()
+// Show the editor on the page set for is_home().
 add_action( 'edit_form_after_title', 'mai_posts_page_edit_form' );
 function mai_posts_page_edit_form() {
 	global $post, $post_type, $post_ID;
@@ -83,7 +80,7 @@ function mai_login_logo_css() {
 
 	$logo_id = get_theme_mod( 'custom_logo' );
 
-	// Bail if we don't have a custom logo
+	// Bail if we don't have a custom logo.
 	if ( ! $logo_id ) {
 		return;
 	}
@@ -104,8 +101,9 @@ function mai_login_logo_css() {
 		}
 		.login .mai-login-logo img {
 			display: block !important;
-			max-width: 100% !important;
 			height: auto !important;
+			width: auto !important;
+			max-width: 100% !important;
 			margin: 0 auto !important;
 		}
 		.login #login_error,
@@ -133,7 +131,7 @@ function mai_login_logo_css() {
 
 }
 
-// Change login link
+// Change login link.
 add_filter( 'login_headerurl', 'mai_login_link' );
 function mai_login_link() {
 	return get_site_url();

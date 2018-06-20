@@ -78,7 +78,7 @@ function mai_js_detection_body_class($classes) {
 add_action( 'genesis_before', 'mai_js_detection_script', 1 );
 function mai_js_detection_script() {
 	?>
-	<script type="text/javascript">
+	<script>
 		//<![CDATA[
 		(function(){
 			var c = document.body.className;
@@ -91,17 +91,281 @@ function mai_js_detection_script() {
 }
 
 /**
- * Remove empty <p></p> tags from content.
- * We have a bunch of cleanup in the shortcodes,
- * but this seems much easier, though a bit of a hack.
+ * Maybe add has-boxed-children class if content/entry or sidebar/widgets have boxed setting enabled.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   $attributes  The existing attributes.
+ *
+ * @return  $attributes  The modifed attributes.
  */
-add_action( 'genesis_before', 'mai_html_cleanup_script', 1 );
-function mai_html_cleanup_script() {
-	?>
-	<script type="text/javascript">
-		//<![CDATA[
-		jQuery(function( $ ) { 'use strict'; jQuery( 'p:empty' ).remove(); });
-		//]]>
-	</script>
-	<?php
+add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_boxed_content_sidebar_wrap' );
+function mai_boxed_content_sidebar_wrap( $attributes ) {
+
+	$elements = genesis_get_option( 'boxed_elements' );
+
+	// Bail if no boxed elements.
+	if ( ! $elements ) {
+		return $attributes;
+	}
+
+	// Bail if boxing the content sidebar wrap.
+	if ( in_array( 'content_sidebar_wrap', (array) $elements ) ) {
+		return $attributes;
+	}
+
+	// Check for boxed content and sidebar elements. Intentially not checking for secondary sidebar.
+	$content_wrap = (bool) in_array( 'content', $elements );
+	$entry        = (bool) array_intersect( $elements, array( 'entry_singular', 'entry_archive' ) );
+	$content      = (bool) $content_wrap || $entry;
+	$sidebar      = (bool) array_intersect( $elements, array( 'sidebar', 'sidebar_widgets' ) );
+
+	// If seamless.
+	if ( ! ( $content || $sidebar ) ) {
+		// Add class to show all children are seamless.
+		$attributes['class'] .= ' no-boxed-children';
+	}
+	// If only content or sidebar has a boxed child.
+	elseif ( ( $content && ! $sidebar ) || ( ! $content && $sidebar ) ) {
+		// Add class to show all children have boxes.
+		$attributes['class'] .= ' has-boxed-child';
+	}
+	// If content and sidebar have boxed children.
+	elseif ( $content && $sidebar ) {
+		// Add class to show all children have boxes.
+		$attributes['class'] .= ' has-boxed-children';
+	}
+
+	return $attributes;
+}
+
+/**
+ * Maybe run the genesis_attr() filters on boxed elements from settings.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @return  void
+ */
+add_action( 'genesis_before', 'mai_do_boxed_elements' );
+function mai_do_boxed_elements() {
+
+	$elements = genesis_get_option( 'boxed_elements' );
+
+	if ( ! $elements ) {
+		return;
+	}
+
+	$boxed = array(
+		'site_container'       => 'site-container',
+		'content_sidebar_wrap' => 'content-sidebar-wrap',
+		'content'              => 'content',
+		'sidebar'              => 'sidebar-primary',
+		'sidebar_widgets'      => '',
+		'sidebar_alt'          => 'sidebar-secondary',
+		'sidebar_alt_widgets'  => '',
+		'after_entry_widgets'  => '',
+		'author_box'           => 'author-box',
+		'adjacent_entry_nav'   => 'adjacent-entry-pagination',
+		'comment_wrap'         => 'entry-comments',
+		'comment_respond'      => '',
+		'pings'                => '',
+	);
+
+	foreach ( (array) $elements as $element ) {
+
+		if ( isset( $boxed[ $element ] ) ) {
+
+			$name = $boxed[ $element ];
+
+			add_filter( "genesis_attr_{$boxed[ $element ]}", function( $attributes ) use ( $name ) {
+				$attributes['class'] .= ' boxed';
+				return $attributes;
+			});
+
+		}
+
+	}
+}
+
+/**
+ * Maybe add the has-boxed-site-container class body.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   array   $classes  An array of body class names.
+ *
+ * @return  array   The modified array of body class names.
+ */
+add_filter( 'body_class', 'mai_boxed_body' );
+function mai_boxed_body( $classes ) {
+	$elements = (array) genesis_get_option( 'boxed_elements' );
+	if ( in_array( 'site_container', $elements ) ) {
+		$classes[] = 'has-boxed-site-container';
+	}
+	return $classes;
+}
+
+/**
+ * Maybe add the boxed class to entries.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   array   $classes  An array of post class names.
+ * @param   string  $class    An array of additional class names added to the post.
+ * @param   int     $post_id  The post ID.
+ *
+ * @return  array   The modified array of post class names.
+ */
+add_filter( 'post_class', 'mai_boxed_entry', 10, 3 );
+function mai_boxed_entry( $classes, $class, $post_id ) {
+	global $wp_query;
+	// Keeps out of secondary loops.
+	if ( ! $wp_query->is_main_query() ) {
+		return $classes;
+	}
+	$elements = (array) genesis_get_option( 'boxed_elements' );
+	if ( ( is_singular() && in_array( 'entry_singular', $elements ) ) || ( mai_is_content_archive() && in_array( 'entry_archive', $elements ) ) ) {
+		$classes[] = 'boxed';
+	}
+	return $classes;
+}
+
+/**
+ * Maybe add the boxed class to comments.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   array   $classes     An array of comment class names.
+ * @param   string  $class       An array of additional class names added to the comment.
+ * @param   int     $comment_id  The comment ID.
+ *
+ * @return  array   The modified array of post class names.
+ */
+add_filter( 'comment_class', 'mai_boxed_comment', 10, 3 );
+function mai_boxed_comment( $classes, $class, $comment_id ) {
+	$elements = (array) genesis_get_option( 'boxed_elements' );
+	if ( in_array( 'comment', $elements ) ) {
+		$classes[] = 'boxed';
+	}
+	return $classes;
+}
+
+/**
+ * Adds boxed class to the adjacent post link.
+ *
+ * The dynamic portion of the hook name, `$adjacent`, refers to the type
+ * of adjacency, 'next' or 'previous'.
+ *
+ * @since  1.3.0
+ *
+ * @access  private
+ *
+ * @param   string   $output    The adjacent post link.
+ * @param   string   $format    Link anchor format.
+ * @param   string   $link      Link permalink format.
+ * @param   WP_Post  $post      The adjacent post.
+ * @param   string   $adjacent  Whether the post is previous or next.
+ *
+ * @return  string   The modified output.
+ */
+add_filter( 'previous_post_link', 'mai_boxed_adjacent_entry_nav', 10, 5 );
+add_filter( 'next_post_link', 'mai_boxed_adjacent_entry_nav', 10, 5 );
+function mai_boxed_adjacent_entry_nav( $output, $format, $link, $post, $adjacent ) {
+	$elements = genesis_get_option( 'boxed_elements' );
+	if ( ! in_array( 'adjacent_entry_nav', (array) $elements ) ) {
+		return $output;
+	}
+	$output = str_replace( '<a href', '<a class="boxed" href', $output );
+	return $output;
+}
+
+/**
+ * Maybe add boxed classes to widgets.
+ *
+ * Note: The filter is evaluated on both the front end and back end,
+ * including for the Inactive Widgets sidebar on the Widgets screen.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @see    register_sidebar()
+ *
+ * @param  array  $params {
+ *     @type array $args  {
+ *         An array of widget display arguments.
+ *
+ *         @type string $name          Name of the sidebar the widget is assigned to.
+ *         @type string $id            ID of the sidebar the widget is assigned to.
+ *         @type string $description   The sidebar description.
+ *         @type string $class         CSS class applied to the sidebar container.
+ *         @type string $before_widget HTML markup to prepend to each widget in the sidebar.
+ *         @type string $after_widget  HTML markup to append to each widget in the sidebar.
+ *         @type string $before_title  HTML markup to prepend to the widget title when displayed.
+ *         @type string $after_title   HTML markup to append to the widget title when displayed.
+ *         @type string $widget_id     ID of the widget.
+ *         @type string $widget_name   Name of the widget.
+ *     }
+ *     @type array $widget_args {
+ *         An array of multi-widget arguments.
+ *
+ *         @type int $number Number increment used for multiples of the same widget.
+ *     }
+ * }
+ *
+ * @return  array  The modified params.
+ */
+add_filter( 'dynamic_sidebar_params', 'mai_boxed_widgets' );
+function mai_boxed_widgets( $params ) {
+	if ( is_admin() ) {
+		return $params;
+	}
+	if ( ! $params ) {
+		return;
+	}
+	$sidebars = array(
+		'sidebar'     => 'sidebar_widgets',
+		'sidebar-alt' => 'sidebar_alt_widgets',
+		'after-entry' => 'after_entry_widgets',
+	);
+	if ( ! ( isset( $sidebars[ $params[0]['id'] ] ) && in_array( $sidebars[ $params[0]['id'] ], (array) genesis_get_option( 'boxed_elements' ) ) ) ) {
+		return $params;
+	}
+	$params[0]['before_widget'] = str_replace( 'class="widget ', 'class="widget boxed ', $params[0]['before_widget'] );
+	return $params;
+}
+
+/**
+ * Maybe add boxed wrap and classes to comment form.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @return  void
+ */
+add_action( 'comment_form_before', 'mai_boxed_comment_form', 99 );
+function mai_boxed_comment_form() {
+
+	$elements = genesis_get_option( 'boxed_elements' );
+
+	if ( ! in_array( 'comment_respond', (array) $elements ) ) {
+		return;
+	}
+
+	echo '<div class="comment-respond-wrap boxed">';
+
+	add_action( 'comment_form_after', function() {
+		echo '</div>';
+	}, 0 );
 }

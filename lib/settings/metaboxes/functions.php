@@ -33,49 +33,7 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 	wp_enqueue_script( 'mai-cmb2' );
 }
 
-function _mai_cmb_show_banner_visibility_field_nooooo_mooorrreeeee() {
-
-	// Bail if not enabled at all
-	if ( ! mai_is_banner_area_enabled_globally() ) {
-		return false;
-	}
-
-	$show = true;
-
-	global $pagenow, $typenow;
-
-	// Get 'disabled' content, typecasted as array because it may return empty string if none
-	$disable_post_types = (array) genesis_get_option( 'banner_disable_post_types' );
-
-	// Posts
-	if ( ( 'post.php' || 'post-new.php' ) == $pagenow ) {
-
-		if ( in_array( $typenow, $disable_post_types ) ) {
-			$show = false;
-		}
-
-	}
-	// Terms
-	elseif ( 'term.php' == $pagenow ) {
-
-		// Get taxonomy
-		$taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
-
-		if ( array_intersect( get_taxonomy( $taxonomy )->object_type, $disable_post_types ) ) {
-			$show = false;
-		}
-
-	}
-
-	return $show;
-}
-
-function _mai_cmb_show_banner_fields() {
-
-	// Don't show field if banner area is globally disabled.
-	if ( ! mai_is_banner_area_enabled_globally() ) {
-		return false;
-	}
+function _mai_cmb_banner_show_on_cb( $field ) {
 
 	$show = true;
 
@@ -83,17 +41,23 @@ function _mai_cmb_show_banner_fields() {
 
 	// Posts.
 	if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
+
+		// Don't show field if banner area is globally disabled.
+		if ( ! mai_is_banner_area_enabled_globally() ) {
+			return false;
+		}
+
 		// Post/Page.
 		if ( in_array( $typenow, array( 'post', 'page' ) ) ) {
 			if ( in_array( $typenow, (array) genesis_get_option( 'banner_disable_post_types' ) ) ) {
-				$show = false;
+				return false;
 			}
 		}
 		// CPT.
 		else {
 			$disable_post_type_key = sprintf( 'banner_disable_%s', $typenow );
 			if ( (bool) genesis_get_option( $disable_post_type_key ) ) {
-				$show = false;
+				return false;
 			}
 		}
 	}
@@ -103,12 +67,27 @@ function _mai_cmb_show_banner_fields() {
 		// Get taxonomy.
 		$taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
 
-		// Don't show field on Woo product categories/tags, they have their own image field.
-		if ( class_exists('WooCommerce') && in_array( $taxonomy, array( 'product_cat', 'product_tag' ) ) ) {
-			$show = false;
+		// If Woo default taxo.
+		if ( class_exists( 'WooCommerce' ) && in_array( $taxonomy, array( 'product_cat', 'product_tag' ) ) ) {
+			// Hide the banner image field, Woo has their own image field.
+			if ( 'banner' === $field->args['id'] ) {
+				return false;
+			} else {
+				// Don't show field if banner area is globally disabled.
+				if ( ! mai_is_banner_area_enabled_globally() ) {
+					return false;
+				}
+				return true;
+			}
 		}
 		// Not a Woo default taxo.
 		else {
+
+			// Don't show field if banner area is globally disabled.
+			if ( ! mai_is_banner_area_enabled_globally() ) {
+				return false;
+			}
+
 			$taxo_object = get_taxonomy( $taxonomy );
 			// If taxo is registered to only one object. (taxo's registered to multiple objects are skipped for now).
 			if ( $taxonomy && ( 1 === count( (array) $taxo_object->object_type ) ) ) {
@@ -124,7 +103,7 @@ function _mai_cmb_show_banner_fields() {
 
 				// If disabling.
 				if ( in_array( $taxonomy, $disable_taxonomies ) ) {
-					$show = false;
+					return false;
 				}
 			}
 		}
@@ -132,6 +111,37 @@ function _mai_cmb_show_banner_fields() {
 	}
 
 	return $show;
+}
+
+function _mai_cmb_hide_breacrumbs_show_on_cb() {
+	// Hide on landing page template.
+	if ( 'landing.php' === get_post_meta( get_the_ID(), '_wp_page_template', true ) ) {
+		return false;
+	}
+	// Hide on static front page. This is handled in Genesis Theme Settings.
+	if ( get_the_ID() === (int) get_option( 'page_on_front' ) ) {
+		return false;
+	}
+	return true;
+}
+
+function _mai_cmb_hide_featured_image_show_on_cb() {
+	global $typenow;
+	// Check if auto-displaying the featured image.
+	$key     = sprintf( 'singular_image_%s', $typenow );
+	$display = genesis_get_option( $key );
+	// Bail if not displaying.
+	if ( ! $display ) {
+		return false;
+	}
+	return true;
+}
+
+function _mai_cmb_show_if_genesis_title_toggle_not_active() {
+	if ( class_exists( 'BE_Title_Toggle' ) ) {
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -213,18 +223,6 @@ function _mai_cmb_banner_disable_taxonomies_config() {
 	);
 }
 
-function _mai_cmb_banner_visibility_config() {
-	return array(
-		'name'            => __( 'Banner Visibility', 'mai-theme-engine' ),
-		'desc'            => __( 'Hide the banner area', 'mai-theme-engine' ),
-		'id'              => 'hide_banner',
-		'type'            => 'checkbox',
-		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
-		'escape_cb'       => '_mai_cmb_escape_one_zero',
-		'show_on_cb'      => '_mai_cmb_show_banner_fields',
-	);
-}
-
 function _mai_cmb_banner_image_config() {
 	return array(
 		'name'         => __( 'Banner/Featured Image', 'mai-theme-engine' ),
@@ -235,6 +233,52 @@ function _mai_cmb_banner_image_config() {
 		'text'         => array(
 			'add_upload_file_text' => __( 'Add Image', 'mai-theme-engine' ),
 		),
+		'show_on_cb'   => '_mai_cmb_banner_show_on_cb',
+	);
+}
+
+function _mai_cmb_banner_visibility_config() {
+	return array(
+		'name'            => __( 'Banner Visibility', 'mai-theme-engine' ),
+		'desc'            => __( 'Hide the banner area', 'mai-theme-engine' ),
+		'id'              => 'hide_banner',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_banner_show_on_cb',
+	);
+}
+
+function _mai_cmb_breadcrumb_visibility_config() {
+	return array(
+		'desc'            => __( 'Hide the breadcrumbs', 'mai-theme-engine' ),
+		'id'              => 'mai_hide_breadcrumbs',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_hide_breacrumbs_show_on_cb',
+	);
+}
+
+function _mai_cmb_featured_image_visibility_config() {
+	return array(
+		'desc'            => __( 'Hide the featured image', 'mai-theme-engine' ),
+		'id'              => 'mai_hide_featured_image',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_hide_featured_image_show_on_cb',
+	);
+}
+
+function _mai_cmb_title_visibility_config() {
+	return array(
+		'desc'            => __( 'Hide the title', 'mai-theme-engine' ),
+		'id'              => 'be_title_toggle_hide',
+		'type'            => 'checkbox',
+		'sanitization_cb' => '_mai_cmb_sanitize_one_zero',
+		'escape_cb'       => '_mai_cmb_escape_one_zero',
+		'show_on_cb'      => '_mai_cmb_show_if_genesis_title_toggle_not_active',
 	);
 }
 

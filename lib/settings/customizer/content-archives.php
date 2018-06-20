@@ -3,7 +3,9 @@
 /**
  * Register new Customizer elements.
  *
- * @param WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
+ * @access  private
+ *
+ * @param   WP_Customize_Manager $wp_customize WP_Customize_Manager instance.
  */
 add_action( 'customize_register', 'mai_register_customizer_content_archives_settings', 20 );
 function mai_register_customizer_content_archives_settings( $wp_customize ) {
@@ -16,6 +18,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->remove_section( 'genesis_archives' );
 
 	$section        = 'mai_content_archives';
+	$panel          = 'mai_content_types';
 	$settings_field = 'genesis-settings';
 	$post_type      = 'post';
 
@@ -23,8 +26,9 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_section(
 		$section,
 		array(
-			'title'    => __( 'Mai Content Archives', 'mai-theme-engine' ),
+			'title'    => __( 'Archives Default', 'mai-theme-engine' ),
 			'priority' => '37',
+			'panel'    => $panel,
 		)
 	);
 

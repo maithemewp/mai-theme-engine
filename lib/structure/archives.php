@@ -77,8 +77,7 @@ function mai_do_blog_description() {
 		return;
 	}
 
-	// Echo the content
-	echo apply_filters( 'the_content', get_post( $posts_page )->post_content );
+	printf( '<div class="archive-description posts-page-description">%s</div>', apply_filters( 'the_content', get_post( $posts_page )->post_content ) );
 }
 
 
@@ -129,7 +128,6 @@ function mai_remove_content_archive_loop() {
 	remove_action( 'genesis_loop',           'genesis_do_loop' );
 	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 	remove_action( 'genesis_after_loop',     'genesis_posts_nav' );
-
 }
 
 /**
@@ -159,7 +157,8 @@ function mai_remove_woo_content_archive_loop() {
 	remove_action( 'woocommerce_no_products_found', 'wc_no_products_found' );
 
 	// Remove the flex loop wrap and entry class filters.
-	remove_action( 'mai_before_flex_loop', 'mai_do_flex_loop' );
+	remove_action( 'mai_before_flex_loop', 'mai_do_flex_loop_open' );
+	remove_action( 'mai_before_flex_loop', 'mai_do_flex_loop_close' );
 
 	// Disable the content-product template.
 	add_filter( 'wc_get_template_part', function( $template, $slug, $name ) {
@@ -168,7 +167,6 @@ function mai_remove_woo_content_archive_loop() {
 		}
 		return false;
 	}, 10, 3 );
-
 }
 
 /**
@@ -207,52 +205,77 @@ function mai_content_archive_posts_per_page( $query ) {
  * Flex loop opening html and column filters.
  * Add and remove the post/product class filters to create columns.
  *
+ * @access  private
+ *
  * @return  void
  */
-add_action( 'mai_before_flex_loop', 'mai_do_flex_loop' );
-function mai_do_flex_loop() {
+add_action( 'mai_before_flex_loop', 'mai_do_flex_loop_open' );
+function mai_do_flex_loop_open() {
 
-	// Flex row wrap
-	$attributes['class'] = 'row gutter-30';
+	// Flex row wrap.
+	$attributes = array(
+		'class' => 'row gutter-30',
+	);
 	printf( '<div %s>', genesis_attr( 'flex-row', $attributes ) );
 
-	// Get the archive column count
+	// Add flex entry classes
+	add_filter( 'post_class', 'mai_flex_loop_post_class' );
+	add_filter( 'product_cat_class', 'mai_flex_loop_post_class' );
+}
+
+/**
+ * Flex loop closing HTML a remove columns filters.
+ *
+ * This makes sure the columns classes aren't applied to
+ * additional loops.
+ *
+ * @access  private
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'mai_after_flex_loop', 'mai_do_flex_loop_close' );
+function mai_do_flex_loop_close() {
+	remove_filter( 'post_class', 'mai_flex_loop_post_class' );
+	remove_filter( 'product_cat_class', 'mai_flex_loop_post_class' );
+	echo '</div>';
+}
+
+function mai_flex_loop_post_class( $classes ) {
+
+	$classes[] = 'flex-entry';
+	$classes[] = 'col';
+
+	$breaks  = array();
 	$columns = mai_get_columns();
 
-	// $align         = mai_get_archive_setting( 'content_archive_align' );
+	if ( $columns > 2 ) {
+		$breaks['sm'] = 6;
+	}
+	if ( $columns > 3 ) {
+		$breaks['md'] = 6;
+	}
+
+	$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $breaks, mai_get_size_by_columns( $columns ), $return = 'array' ) );
+
 	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
 
-	// Create an anonomous function using the column count
-	$flex_classes = function( $classes ) use ( $columns, $img_location, $img_alignment ) {
-		$classes[] = mai_get_flex_entry_classes_by_columns( $columns );
-		// If background image or image is not aligned.
-		if ( 'background' === $img_location || empty( $img_alignment ) ) {
-			$classes[] = 'column';
-		} else {
-			$classes[] = 'image-' . $img_alignment;
-		}
-		return $classes;
-	};
+	// If background image or image is not aligned.
+	if ( 'background' === $img_location || empty( $img_alignment ) ) {
+		$classes[] = 'column';
+	} else {
+		$classes[] = 'has-image-' . str_replace( 'align', '', $img_alignment );
+	}
 
-	// Add flex entry classes
-	add_filter( 'post_class', $flex_classes );
-	add_filter( 'product_cat_class', $flex_classes );
-
-	/**
-	 * After the loops, remove the entry classes filters and close the flex loop.
-	 * This makes sure the columns classes aren't applied to
-	 * additional loops.
-	 */
-	add_action( 'mai_after_flex_loop', function() use ( $flex_classes ) {
-		remove_filter( 'post_class', $flex_classes );
-		remove_filter( 'product_cat_class', $flex_classes );
-		echo '</div>';
-	});
+	return $classes;
 }
 
 /**
  * Add the WooCommerce shortcode column count to the flex loop setting.
+ *
+ * @access  private
  *
  * @return  void
  */
@@ -409,137 +432,6 @@ function mai_do_content_archive_archive_options() {
 	add_filter( 'genesis_pre_get_option_posts_nav', function( $option ) use ( $posts_nav ) {
 		return $posts_nav;
 	});
-}
-
-/**
- * Add the archive featured image in the correct location.
- * No need to check if display image is checked, since that happens
- * in the genesis_option filters already.
- *
- * @return  void
- */
-function mai_do_archive_image( $location ) {
-
-	// Bail if no location
-	if ( ! $location ) {
-		return;
-	}
-
-	/**
-	 * Add the images in the correct location
-	 */
-
-	// Before Entry
-	if ( 'before_entry' === $location ) {
-		add_action( 'genesis_entry_header', 'genesis_do_post_image', 2 );
-	}
-	// Before Title
-	elseif ( 'before_title' === $location ) {
-		add_action( 'genesis_entry_header', 'genesis_do_post_image', 8 );
-	}
-	// After Title
-	elseif ( 'after_title' === $location ) {
-		add_action( 'genesis_entry_header', 'genesis_do_post_image', 10 );
-	}
-	// Before Content
-	elseif ( 'before_content' === $location ) {
-		add_action( 'genesis_entry_content', 'genesis_do_post_image', 8 );
-	}
-	// Background Image
-	elseif ( 'background' === $location ) {
-		// Add the entry image as a background image
-		add_action( 'genesis_before_entry', 'mai_do_entry_image_background' );
-		// Add the background image link
-		add_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
-		// Remove bg iamge link function so additional loops are not affected
-		add_action( 'mai_after_content_archive', function() {
-			remove_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
-		});
-	}
-
-	// Add the location as a class to the image link
-	add_filter( 'genesis_attr_entry-image-link', function( $attributes ) use ( $location ) {
-		// Replace underscore with hyphen
-		$location = str_replace( '_', '-', $location );
-		// Add the class
-		$attributes['class'] .= sprintf( ' entry-image-%s', $location );
-		return $attributes;
-	});
-
-}
-
-
-/**
- * Add the entry image as a background image.
- * Change the markup to wrap the entire entry in an href link.
- * Remove the title link.
- *
- * @return void.
- */
-function mai_do_entry_image_background() {
-
-	// Get the image ID
-	$image_id = get_post_thumbnail_id();
-
-	// Get image size
-	$image_size = mai_get_archive_setting( 'image_size', true, genesis_get_option( 'image_size' ) );
-
-	// Anonomous attributes function
-	$entry_attributes = function( $attributes ) use ( $image_id, $image_size ) {
-
-		// Make element a link whether we have an image or not
-		$attributes = mai_add_background_image_attributes( $attributes, $image_id, $image_size );
-		$attributes['href'] = get_permalink();
-
-		// If we have an image
-		if ( $image_id ) {
-			// Add classes and href link. TODO: Overlay options, or no overlay if no content?
-			$attributes['class'] .= ' overlay overlay-dark light-content';
-		}
-
-		// Add has-bg-link class for CSS
-		$attributes['class'] .= ' has-bg-link';
-
-		// Center the content even if we don't have an image
-		$attributes['class'] .= ' center-xs middle-xs text-xs-center';
-
-		return $attributes;
-	};
-
-	// Add entry attributes
-	add_filter( 'genesis_attr_entry', $entry_attributes );
-
-	// Remove the filters so any other loops aren't affected
-	add_action( 'genesis_after_entry', function() use ( $entry_attributes ) {
-		remove_filter( 'genesis_attr_entry', $entry_attributes );
-	});
-
-}
-
-/**
- * Output the bg image link HTML. Must be used in the loop (posts/cpts only!).
- *
- * This doesn't have a parameter because it's hooked directly,
- * via add_action( 'genesis_entry_header', 'mai_do_bg_image_link', 1 );
- *
- * @return void.
- */
-function mai_do_bg_image_link() {
-	echo mai_get_bg_image_link();
-}
-
-/**
- * Get the bg image link HTML.
- *
- * @param  string $url (optional) The URL to use for the HTML.
- * @param  string $title (optional) The title to use for the HTML.
- *
- * @return string|HTML
- */
-function mai_get_bg_image_link( $url = '', $title = '' ) {
-	$url   = $url ? esc_url( $url ) : get_permalink();
-	$title = $title ? esc_html( $title ) : get_the_title();
-	return sprintf( '<a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a>', $url, $title );
 }
 
 /**

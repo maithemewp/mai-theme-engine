@@ -1,6 +1,16 @@
 ( function ( document, $, undefined ) {
 	'use strict';
 
+	// Toggle import/export fields.
+	$( '#mai-sections-importexport-toggles' ).on( 'click', '.mai-importexport-toggle', function(e) {
+		e.preventDefault();
+		var $this = $(this),
+			el    = $this.attr( 'href' );
+		$( '.mai-importexport-toggle' ).toggleClass( 'active' );
+		$( '.mai-sections-importexport-content' ).not( el ).hide();
+		$( el ).show();
+	});
+
 	var $archiveMetabox  = $( '.mai-content-archive-metabox' ),
 		$removeLoop      = $( '#remove_loop' ),
 		$settingsEnabled = $( '#enable_content_archive_settings' ),

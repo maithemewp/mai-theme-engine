@@ -1,36 +1,23 @@
 <?php
 
 /**
- * Add an image inline in the site title element for the main logo
+ * Add an image inline in the site title element for the main logo.
  *
- * The custom logo is then added via the Customiser
+ * The custom logo is added via the Customiser.
  *
-* @param   string  $title   All the mark up title.
-* @param   string  $inside  Mark up inside the title.
-* @param   string  $wrap    Mark up on the title.
-*
-* @return  string|HTML  The title markup
+ * @since   1.3.0
+ *
+ * @param   string  $content  The existing site title content.
+ *
+ * @return  string|HTML       The logo markup
  */
-add_filter( 'genesis_seo_title','mai_custom_logo', 10, 3 );
-function mai_custom_logo( $title, $inside, $wrap ) {
-
-	// If no custom logo, return the original title.
+add_filter( 'genesis_markup_site-title_content', 'mai_custom_logo' );
+function mai_custom_logo( $content ) {
+	// If no custom logo, return the original content.
 	if ( ! ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) ) {
-		return $title;
+		return $content;
 	}
-
-	// Build the title with logo.
-	return genesis_markup( array(
-		'open'    => sprintf( "<{$wrap} %s>", genesis_attr( 'site-title' ) ),
-		'close'   => "</{$wrap}>",
-		'content' => get_custom_logo(),
-		'context' => 'site-title',
-		'echo'    => false,
-		'params'  => array(
-			'wrap' => $wrap,
-		),
-	) );
-
+	return get_custom_logo();
 }
 
 /**

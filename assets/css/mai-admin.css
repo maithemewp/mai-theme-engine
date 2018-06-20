@@ -21,9 +21,9 @@
 	float: none !important;
 }
 
-.cmb2-postbox .mai-metabox .cmb-row:not(.cmb-repeatable-grouping):not(.mai-section-advanced-settings-title) {
+.cmb2-postbox .mai-metabox .cmb-row:not(.cmb-repeatable-grouping):not(.mai-section-advanced-settings-title):not(.cmb-type-checkbox) {
 	padding: 10px 0 0 !important;
-	margin-bottom: 16px !important;
+	margin-bottom: 8px !important;
 }
 
 .mai-metabox .cmb2-metabox-description {
@@ -32,6 +32,11 @@
 	font-size: 13px !important;
 	font-style: italic !important;
 	padding-top: .5em !important;
+}
+
+.cmb2-postbox .mai-metabox .cmb-row.cmb-type-checkbox {
+	padding: 0 !important;
+	margin-bottom: 8px !important;
 }
 
 .mai-metabox .cmb-type-checkbox .cmb2-metabox-description {
@@ -86,6 +91,12 @@
 #mai_post_banner.cmb2-postbox .mai-metabox .cmb-row .cmb2-upload-button,
 #mai_post_banner.cmb2-postbox .mai-metabox .cmb-row .cmb2-media-item p {
 	margin: 0;
+}
+
+#mai_post_settings.cmb2-postbox .mai-metabox .cmb-row.cmb2-id-hide-banner .cmb-th:first-of-type,
+#mai_post_settings.cmb2-postbox .mai-metabox .cmb-row.cmb2-id-hide-banner .cmb-th:first-of-type > label {
+	display: none;
+	visibility: hidden;
 }
 
 #mai_sections_repeat .cmb-field-list {
@@ -217,4 +228,44 @@
 
 .mai-section-settings .cmb2-media-status .img-status img {
 	width: 100%;
+}
+
+#mai-sections-importexport-toggles {
+	display: inline-block;
+	margin: 16px 0;
+	padding: 0 36px 0 0;
+	border-bottom: 1px solid #ccc;
+}
+
+#mai-sections-importexport-toggles li {
+	margin-bottom: 0;
+}
+
+#mai-sections-importexport-toggles .mai-importexport-toggle {
+	display: inline-block;
+	padding: 8px 14px;
+	margin: 0 0 -1px 0;
+	border: 1px solid transparent;
+	border-radius: 3px 3px 0 0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	outline: none;
+}
+
+#mai-sections-importexport-toggles .mai-importexport-toggle.active {
+	color: #555;
+	text-decoration: none;
+	border-color: #ccc;
+	border-bottom-color: #fff;
+}
+
+#mai_sections_importexport textarea#mai_sections_json_import,
+#mai_sections_importexport textarea#mai_sections_json_export {
+	width: 99%;
+}
+
+#mai_sections_importexport label[for="mai_sections_json_import_images"] {
+	display: inline-block;
+	max-width: calc( 100% - 26px );
+	margin-bottom: 4px;
 }
