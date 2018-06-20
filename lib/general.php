@@ -111,11 +111,6 @@ function mai_boxed_content_sidebar_wrap( $attributes ) {
 		return $attributes;
 	}
 
-	// Bail if boxing the content sidebar wrap.
-	if ( in_array( 'content_sidebar_wrap', (array) $elements ) ) {
-		return $attributes;
-	}
-
 	// Check for boxed content and sidebar elements. Intentially not checking for secondary sidebar.
 	$content_wrap = (bool) in_array( 'content', $elements );
 	$entry        = (bool) array_intersect( $elements, array( 'entry_singular', 'entry_archive' ) );
