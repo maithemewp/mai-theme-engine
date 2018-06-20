@@ -2321,10 +2321,6 @@ input[name="post_password"] {
 	margin-bottom: 12px;
 }
 
-.widget_calendar table {
-	width: 100%;
-}
-
 .widget_calendar td,
 .widget_calendar th {
 	text-align: center;
@@ -3916,9 +3912,12 @@ ol.comment-list {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.footer-widgets .wrap {
+.footer-widgets > .wrap {
+	display: -ms-grid;
+	display: grid;
+	grid-gap: 48px;
 	padding-top: 64px;
-    padding-bottom: 36px;
+	padding-bottom: 36px;
 }
 
 .footer-widgets .widget {
@@ -4007,7 +4006,15 @@ ol.comment-list {
 /* # Media Queries (mobile-first)
 ---------------------------------------------------------------------------------------------------- */
 
-@media only screen and (min-width: 545px) {}
+@media only screen and (min-width: 545px) {
+
+	.footer-widgets.footer-widgets-has-2 > .wrap,
+	.footer-widgets.footer-widgets-has-4 > .wrap,
+	.footer-widgets.footer-widgets-has-6 > .wrap {
+		grid-template-columns: repeat( 2, 1fr );
+	}
+
+}
 
 @media only screen and (min-width: 769px) {
 
@@ -4089,6 +4096,15 @@ ol.comment-list {
 		margin-left: 0;
 	}
 
+	.footer-widgets.footer-widgets-has-3 > .wrap,
+	.footer-widgets.footer-widgets-has-6 > .wrap {
+		grid-template-columns: repeat( 3, 1fr );
+	}
+
+	.footer-widgets.footer-widgets-has-4 > .wrap {
+		grid-template-columns: repeat( 4, 1fr );
+	}
+
 }
 
 @media only screen and (min-width: 993px) {
@@ -4162,6 +4178,10 @@ ol.comment-list {
 		-webkit-box-ordinal-group: 2;
 		-ms-flex-order: 1;
 		order: 1;
+	}
+
+	.footer-widgets.footer-widgets-has-6 > .wrap {
+		grid-template-columns: repeat( 6, 1fr );
 	}
 
 }

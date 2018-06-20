@@ -171,52 +171,13 @@ function mai_do_layout() {
 }
 
 /**
- * Filter the footer-widgets context of the genesis_structural_wrap to add a div before the closing wrap div.
+ * Add footer widgets has columns class.
  *
- * @param   string  $output             The markup to be returned.
- * @param   string  $original_output    Set to either 'open' or 'close'.
+ * @param   array  The footer-widgets attributes.
  *
- * @return  string  The footer markup
+ * @return  array  The modified attributes.
  */
-add_filter( 'genesis_structural_wrap-footer-widgets', 'mai_footer_widgets_flex_row', 10, 2 );
-function mai_footer_widgets_flex_row( $output, $original_output ) {
-	if ( 'open' == $original_output ) {
-		$output = $output . '<div class="row gutter-30">';
-	}
-	elseif ( 'close' == $original_output ) {
-		$output = '</div>' . $output;
-	}
-	return $output;
-}
-
-/**
- * Filter the footer-widget markup to add flexington column classes.
- *
- * @param   array  $attributes  The array of attributes to be added to the footer widget wrap.
- *
- * @return  array  The attributes.
- */
-add_filter( 'genesis_attr_footer-widget-area', 'mai_footer_widgets_flex_classes' );
-function mai_footer_widgets_flex_classes( $attributes ) {
-	switch ( mai_get_footer_widgets_count() ) {
-		case '1':
-			$classes = ' col col-xs-12 center-xs';
-		break;
-		case '2':
-			$classes = ' col col-xs-12 col-sm-6';
-		break;
-		case '3':
-			$classes = ' col col-xs-12 col-sm-6 col-md-4';
-		break;
-		case '4':
-			$classes = ' col col-xs-12 col-sm-6 col-md-3';
-		break;
-		case '6':
-			$classes = ' col col-xs-6 col-sm-4 col-md-2';
-		break;
-		default:
-			$classes = ' col col-xs';
-	}
-	$attributes['class'] .= $classes;
+add_filter( 'genesis_attr_footer-widgets', function( $attributes ) {
+	$attributes['class'] = mai_add_classes( sprintf( 'footer-widgets-has-%s', mai_get_footer_widgets_count() ), $attributes['class'] );
 	return $attributes;
-}
+});
