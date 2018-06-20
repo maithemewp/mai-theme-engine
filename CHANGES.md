@@ -1,5 +1,7 @@
 ### Changelog
 
+* Fixed: Content-sidebar gap when using boxed content sidebar wrap.
+
 #### 1.3.1 (6/2/18)
 * Fixed: Better vertical alignment when using align_text param on [grid] or [col].
 
