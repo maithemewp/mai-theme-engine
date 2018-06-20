@@ -274,7 +274,6 @@ blockquote::before {
 	line-height: 1;
 }
 
-
 /* ## Headings
 --------------------------------------------- */
 
@@ -311,7 +310,6 @@ h5,
 h6,
 .site-title a,
 .entry-title a,
-.entry-content .entry-title a,
 .sidebar .widgettitle a,
 .sidebar .widget-title a {
 	color: #323232;
@@ -321,8 +319,6 @@ a:hover,
 a:focus,
 .entry-title a:hover,
 .entry-title a:focus,
-.entry-content .entry-title a:hover,
-.entry-content .entry-title a:focus,
 .sidebar .widgettitle a:hover,
 .sidebar .widgettitle a:focus,
 .sidebar .widget-title a:hover,
@@ -332,8 +328,6 @@ a:focus,
 
 .entry-title a:hover,
 .entry-title a:focus,
-.entry-content .entry-title a:hover,
-.entry-content .entry-title a:focus,
 .sidebar .widgettitle a:hover,
 .sidebar .widgettitle a:focus,
 .sidebar .widget-title a:hover,
@@ -364,7 +358,6 @@ a:focus,
 }
 
 .entry-title a,
-.entry-content .entry-title a,
 .sidebar .widgettitle a,
 .sidebar .widget-title a {
 	border: none;
@@ -861,7 +854,7 @@ td {
 }
 
 .content {
-	margin-bottom: 30px;
+	margin-bottom: 48px;
 }
 
 /* remove margin on Sections page template content */
@@ -904,7 +897,7 @@ td {
 	margin-bottom: 30px;
 }
 
-.entry.col:not(.boxed):not(.image-bg):not(.image-bg-none) {
+.entry.col:not(.boxed):not(.image-bg) {
 	margin-bottom: 60px;
 }
 
@@ -932,6 +925,7 @@ td {
 
 .content,
 .breadcrumb {
+	/* can't do width 100% cause grid content-sidebar breaks */
 	max-width: 100%;
 }
 
@@ -1188,10 +1182,11 @@ body.has-boxed-site-container {
 	border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.entry.boxed {
+.entry.boxed:not(.image-bg) {
 	color: initial;
 }
 
+/* grid entries. main entry has 36px on desktop. */
 .entry.flex-entry.boxed {
 	padding: 24px;
 }
@@ -1318,7 +1313,6 @@ body.has-boxed-site-container {
 	}
 
 }
-
 
 /* ## Callout
 --------------------------------------------- */
@@ -1550,11 +1544,22 @@ body.has-boxed-site-container {
 .light-content h5,
 .light-content h6,
 .light-content a,
-.light-content.entry .entry-title a,
 .light-content .entry-meta,
-.light-content .entry-header .entry-meta a,
-.light-content .entry-footer .entry-meta a {
+.light-content .entry-meta a
+{
 	color: #fff;
+}
+
+.flex-entry.boxed:not(.image-bg),
+.flex-entry.boxed:not(.image-bg) h1,
+.flex-entry.boxed:not(.image-bg) h2,
+.flex-entry.boxed:not(.image-bg) h3,
+.flex-entry.boxed:not(.image-bg) h4,
+.flex-entry.boxed:not(.image-bg) h5,
+.flex-entry.boxed:not(.image-bg) h6,
+.flex-entry.boxed:not(.image-bg) a
+{
+	color: initial;
 }
 
 .light-content .entry-header .entry-meta a,
@@ -1570,7 +1575,6 @@ body.has-boxed-site-container {
 .light-content .entry-content a:not(.button):not(.more-link):focus,
 .light-content .entry-footer a:hover,
 .light-content .entry-footer a:focus {
-	color: #fff;
 	border-bottom-style: solid;
 }
 
@@ -3357,23 +3361,11 @@ input[name="post_password"] {
 	margin-bottom: 0;
 }
 
-.banner-area a:not(.button) {
-	color: #fff;
-	border-bottom: 1px dotted #fff;
-}
-
-.banner-area a:not(.button):hover {
-	color: #fff;
-	border-bottom-style: solid;
-}
-
 .banner-area .archive-description {
 	margin-bottom: 12px;
 }
 
-.banner-area .archive-title,
-.banner-area .entry-title,
-.banner-area .author-box-title {
+.banner-area .banner-title {
 	font-weight: bold;
 }
 
@@ -3420,7 +3412,6 @@ input[name="post_password"] {
 }
 
 .flex-entry.image-bg,
-.flex-entry.image-bg-none,
 .form-allowed-tags {
 	padding: 24px;
 }
@@ -3507,11 +3498,6 @@ p ~ .flex-grid {
 	margin-top: 30px;
 }
 
-.flex-entry a {
-	/* fixed bug when grid entry with bg image has no image */
-	color: inherit;
-}
-
 .flex-entry.column .entry-header,
 .flex-entry.column .entry-content,
 .flex-entry.column .entry-footer {
@@ -3558,8 +3544,7 @@ p ~ .flex-grid {
 	max-width: 100%;
 }
 
-.flex-entry.image-bg .entry-content,
-.flex-entry.image-bg-none .entry-content {
+.flex-entry.image-bg .entry-content {
 	/* allow content to be centered vertically when image-bg */
 	-webkit-box-flex: 0;-ms-flex: 0 0 auto;flex: 0 0 auto;
 }
@@ -3937,8 +3922,8 @@ ol.comment-list {
 }
 
 .footer-widgets .wrap {
-	padding-top: 60px;
-	padding-bottom: 30px;
+	padding-top: 64px;
+    padding-bottom: 36px;
 }
 
 .footer-widgets .widget {
@@ -4033,8 +4018,7 @@ ol.comment-list {
 
 	h1,
 	h1.entry-title,
-	.banner-area .entry-title,
-	.banner-area .archive-title {
+	.banner-area .banner-title {
 		font-size: 2.441rem;
 	}
 
@@ -4055,7 +4039,6 @@ ol.comment-list {
 	}
 
 	.sidebar {
-		/* margin-top: 30px; */
 		margin-bottom: 30px;
 	}
 

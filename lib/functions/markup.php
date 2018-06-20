@@ -497,21 +497,21 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 	// Get all registered image sizes.
 	global $_wp_additional_image_sizes;
 
+	// Add image-bg class.
+	$attributes['class'] .= ' image-bg';
+
 	// Get the image.
 	$image = $image_id ? wp_get_attachment_image_src( $image_id, $image_size, true ) : false;
 
 	// If we have an image, add it as inline style.
 	if ( $image ) {
 
-		// Add background image
+		// Add background image.
 		$styles     = sprintf( 'background-image: url(%s);', $image[0] );
 		$attributes = mai_add_inline_styles( $attributes, $styles );
 
-		// Add image-bg class
-		$attributes['class'] .= ' image-bg';
-
 	} else {
-		// Add image-bg class
+		// Add image-bg-none class.
 		$attributes['class'] .= ' image-bg-none';
 	}
 
@@ -523,13 +523,13 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 		 */
 		$attributes['class'] .= ' aspect-ratio';
 
-		// If image size is in the global (it should be)
+		// If image size is in the global (it should be).
 		if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
 			$registered_image = $_wp_additional_image_sizes[ $image_size ];
 			$attributes['data-aspect-width']  = $registered_image['width'];
 			$attributes['data-aspect-height'] = $registered_image['height'];
 		}
-		// Otherwise use the actual image dimensions
+		// Otherwise use the actual image dimensions.
 		elseif ( $image ) {
 			$attributes['data-aspect-width']  = $image[1];
 			$attributes['data-aspect-height'] = $image[2];
