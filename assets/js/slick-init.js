@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
 			autoPlay       = Boolean( $(this).data('autoplay') ),
 			centerMode     = Boolean( $(this).data('centermode') ),
 			dots           = Boolean( $(this).data('dots') ),
-			fade           = Boolean( $(this).data('fade') ),
+			fade           = Boolean( $(this).data('fade') ), // Only works with 1 slide at a time https://github.com/kenwheeler/slick/issues/830.
 			infinite       = Boolean( $(this).data('infinite') ),
 			slidesToScroll = parseInt( $(this).data('slidestoscroll') ),
 			slidesToShow   = parseInt( $(this).data('slidestoshow') );
