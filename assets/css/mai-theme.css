@@ -1545,8 +1545,7 @@ body.has-boxed-site-container {
 .light-content h6,
 .light-content a,
 .light-content .entry-meta,
-.light-content .entry-meta a
-{
+.light-content .entry-meta a {
 	color: #fff;
 }
 
@@ -1557,8 +1556,7 @@ body.has-boxed-site-container {
 .flex-entry.boxed:not(.image-bg) h4,
 .flex-entry.boxed:not(.image-bg) h5,
 .flex-entry.boxed:not(.image-bg) h6,
-.flex-entry.boxed:not(.image-bg) a
-{
+.flex-entry.boxed:not(.image-bg) a {
 	color: initial;
 }
 
@@ -1965,8 +1963,6 @@ input[name="post_password"] {
 	display: block;
 	top: 0;
 	left: 0;
-	/* margin-left: auto; */
-	/* margin-right: auto; */
 }
 
 .slick-track::before,
