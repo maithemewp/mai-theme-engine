@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.3.0 (TBD)
+#### 1.3.0 (6/2/18)
 * Added: Sections import/export feature.
 * Added: Page Builder page template.
 * Added: Boxed Content setting to declare which elements should have a boxed vs seamless look, including the main site container.
