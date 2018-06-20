@@ -496,7 +496,7 @@ function mai_update_to_or_from_sections_template( $check, $object_id, $meta_key,
 add_action( 'cmb2_after_post_form_mai_sections', 'mai_change_from_sections_template_warning', 20, 2 );
 function mai_change_from_sections_template_warning( $object_id, $cmb ) {
 
-	$alert = __( 'Warning! Changing to another page template will lose delete Sections template settings and data. Your content will be moved to the regular editor, but there is no going back!', 'mai-theme-engine' );
+	$alert = __( 'Warning! Changing to another page template will delete Sections template settings and data. Your content will be moved to the regular editor, but there is no going back!', 'mai-theme-engine' );
 
 	printf( "<script>
 		jQuery(window).load( function() {
