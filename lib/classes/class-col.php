@@ -190,10 +190,20 @@ class Mai_Col {
 	 * @return  string  'columns' or 'row'.
 	 */
 	function get_direction() {
-		if ( $this->args['image'] ) {
+		if ( $this->is_vertically_aligned() ) {
 			return 'column';
 		}
 		return 'row';
+	}
+
+	/**
+	 * Check if column is vertically aligned.
+	 * True if we have a bg image, or text is vertically aligned.
+	 *
+	 * @return  bool
+	 */
+	function is_vertically_aligned() {
+		return $this->args['image'] || array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
 	}
 
 }

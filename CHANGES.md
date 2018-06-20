@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.3.1 (6/2/18)
+* Fixed: Better vertical alignment when using align_text param on [grid] or [col].
+
 #### 1.3.0 (6/2/18)
 * Added: Sections import/export feature.
 * Added: Page Builder page template.

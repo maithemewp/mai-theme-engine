@@ -3527,7 +3527,8 @@ p ~ .flex-grid {
 	max-width: auto;
 }
 
-.flex-entry.column .entry-content {
+/* stretch grid entries that aren't vertically aligned via text_align */
+.flex-entry.column:not(.start-xs):not(.center-xs):not(.end-xs) .entry-content {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex-direction: column;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;
 	-ms-flex: 1 0 auto;-webkit-box-flex: 1;flex: 1 0 auto;

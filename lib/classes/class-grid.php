@@ -1152,10 +1152,20 @@ class Mai_Grid {
 	 * @return  string  'columns' or 'row'.
 	 */
 	function get_direction() {
-		if ( 'bg' === $this->args['image_location'] || empty( $this->args['image_align'] ) ) {
+		if ( $this->is_vertically_aligned() ) {
 			return 'column';
 		}
 		return 'row';
+	}
+
+	/**
+	 * Check if column is vertically aligned.
+	 * True if we have a bg image, or no aligned image, or text is vertically aligned.
+	 *
+	 * @return  bool
+	 */
+	function is_vertically_aligned() {
+		return 'bg' === $this->args['image_location'] || empty( $this->args['image_align'] ) || array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
 	}
 
 	/**
