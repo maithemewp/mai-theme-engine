@@ -75,7 +75,7 @@ function mai_js_detection_body_class($classes) {
  * @link https://github.com/GaryJones/genesis-js-no-js/
  * @link https://www.paulirish.com/2009/avoiding-the-fouc-v3/
  */
-add_action( 'genesis_before', 'mai_js_detection_script', 1 );
+add_action( 'genesis_before', 'mai_js_detection_script' );
 function mai_js_detection_script() {
 	?>
 	<script>
@@ -108,11 +108,6 @@ function mai_boxed_content_sidebar_wrap( $attributes ) {
 
 	// Bail if no boxed elements.
 	if ( ! $elements ) {
-		return $attributes;
-	}
-
-	// Bail if boxing the content sidebar wrap.
-	if ( in_array( 'content_sidebar_wrap', (array) $elements ) ) {
 		return $attributes;
 	}
 

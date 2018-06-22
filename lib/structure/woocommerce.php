@@ -30,19 +30,19 @@ function mai_woocommerce_int() {
 	remove_post_type_support( 'product', 'genesis-entry-meta-after-content' );
 }
 
-// Remove taxonomy archive description since Mai has this functionality already
+// Remove taxonomy archive description since Mai has this functionality already.
 remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
 
-// Replace Woocommerce Default pagination with Genesis Framework Pagination
+// Replace Woocommerce Default pagination with Genesis Framework Pagination.
 remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
 
-// Maybe remove woocommerce page title
+// Maybe remove Woo shop page title when banner is enabled.
 add_filter( 'woocommerce_show_page_title', 'mai_woocommerce_show_page_title' );
 function mai_woocommerce_show_page_title( $return ) {
-	if ( mai_is_banner_area_enabled() && ( is_shop() || is_product() ) ) {
+	if ( mai_is_banner_area_enabled() && is_shop() ) {
 		return false;
 	}
-	return false;
+	return $return;
 }
 
 // Disable customizer settings for WooCommerce Shop/Products.

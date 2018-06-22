@@ -1,62 +1,6 @@
 <?php
 
 /**
- * Add an action hook if hide breadcrumbs settings is checked.
- * This allows custom themes with breadcrumbs in a different location to remove them via this hook.
- *
- * @since   1.3.0
- *
- * @return  void
- */
-add_action( 'genesis_before', 'mai_do_remove_breadcrumbs' );
-function mai_do_remove_breadcrumbs() {
-
-	// Bail if not a single entry.
-	if ( ! is_singular() ) {
-		return;
-	}
-
-	global $post;
-
-	$hide = get_post_meta( $post->ID, 'mai_hide_breadcrumbs', true );
-
-	// Bail if breadcrumbs is not checked.
-	if ( ! (bool) $hide ) {
-		return;
-	}
-
-	do_action( 'mai_hide_breadcrumbs', $post );
-}
-
-/**
- * Add an action hook if hide breadcrumbs settings is checked.
- * This allows custom themes with breadcrumbs in a different location to remove them via this hook.
- *
- * @since   1.3.0
- *
- * @return  void
- */
-add_action( 'genesis_before', 'mai_do_remove_title' );
-function mai_do_remove_title() {
-
-	// Bail if not a single entry.
-	if ( ! is_singular() ) {
-		return;
-	}
-
-	global $post;
-
-	$hide = get_post_meta( $post->ID, 'be_title_toggle_hide', true );
-
-	// Bail if title is not checked.
-	if ( ! (bool) $hide ) {
-		return;
-	}
-
-	do_action( 'mai_hide_title', $post );
-}
-
-/**
  * Add featured image to single posts.
  *
  * @see     mai_woo_remove_featured_image() for Woo version.

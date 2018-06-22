@@ -102,13 +102,14 @@ function mai_sidebars_body_class( $classes ) {
 		'content-sidebar-sidebar',
 		'sidebar-sidebar-content',
 	);
+
 	// Add .no-sidebar body class if don't have any sidebars
 	if ( in_array( $layout, $no_sidebars ) ) {
 		$classes[] = 'no-sidebars';
 	} elseif ( in_array( $layout, $has_sidebar ) ) {
-		$classes[] = 'has-sidebar';
+		$classes[] = 'has-sidebar has-one-sidebar';
 	} elseif ( in_array( $layout, $has_sidebars ) ) {
-		$classes[] = 'has-sidebar has-sidebars';
+		$classes[] = 'has-sidebar has-two-sidebars';
 	}
 	return $classes;
 }
@@ -168,6 +169,25 @@ function mai_do_layout() {
 		$attributes['class'] .= $classes;
 		return $attributes;
 	});
+}
+
+/**
+ * Filter the footer-widgets context of the genesis_structural_wrap to add a div before the closing wrap div.
+ *
+ * @param   string  $output             The markup to be returned.
+ * @param   string  $original_output    Set to either 'open' or 'close'.
+ *
+ * @return  string  The footer markup
+ */
+add_filter( 'genesis_structural_wrap-footer-widgets', 'mai_footer_widgets_flex_row', 10, 2 );
+function mai_footer_widgets_flex_row( $output, $original_output ) {
+	if ( 'open' == $original_output ) {
+		$output = $output . '<div class="footer-widgets-wrap">';
+	}
+	elseif ( 'close' == $original_output ) {
+		$output = '</div>' . $output;
+	}
+	return $output;
 }
 
 /**

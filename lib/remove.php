@@ -1,6 +1,107 @@
 <?php
 
 /**
+ * Add an action hook if hide breadcrumbs settings is checked.
+ * This allows custom themes with breadcrumbs in a different location to remove them via this hook.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'genesis_before', 'mai_do_remove_breadcrumbs' );
+function mai_do_remove_breadcrumbs() {
+
+	// Bail if blog or single post.
+	if ( ! ( is_front_page() || is_home() || is_singular() ) ) {
+		return;
+	}
+
+	/**
+	 * Start with an object variable,
+	 * cause we may add this setting to archives, terms, etc.
+	 */
+	$object = false;
+
+	// Static blog.
+	if ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
+		$object = get_post( $posts_page_id );
+	}
+
+	// Singular.
+	elseif ( is_singular() && ! is_home() ) {
+		global $post;
+		$object = $post;
+	}
+
+	// Bail if no object.
+	if ( ! $object ) {
+		return;
+	}
+
+	$hide = get_post_meta( $object->ID, 'mai_hide_breadcrumbs', true );
+
+	// Bail if breadcrumbs is not checked.
+	if ( ! (bool) $hide ) {
+		return;
+	}
+
+	do_action( 'mai_hide_breadcrumbs', $object );
+}
+
+/**
+ * Add an action hook if hide breadcrumbs settings is checked.
+ * This allows custom themes with breadcrumbs in a different location to remove them via this hook.
+ *
+ * @since   1.3.0
+ *
+ * @return  void
+ */
+add_action( 'genesis_before', 'mai_do_remove_title' );
+function mai_do_remove_title() {
+
+	// Bail if not front page, blog, or single post.
+	if ( ! ( is_front_page() || is_home() || is_singular() ) ) {
+		return;
+	}
+
+	/**
+	 * Start with an object variable,
+	 * cause we may add this setting to archives, terms, etc.
+	 */
+	$object = false;
+
+	// Static front page.
+	if ( is_front_page() && $front_page_id = get_option( 'page_on_front' ) ) {
+		$object = get_post( $front_page_id );
+	}
+
+	// Static blog.
+	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
+		$object = get_post( $posts_page_id );
+	}
+
+	// Singular.
+	elseif ( is_singular() && ! is_home() ) {
+		global $post;
+		$object = $post;
+	}
+
+	// Bail if no object.
+	if ( ! $object ) {
+		return;
+	}
+
+	$hide = get_post_meta( $object->ID, 'be_title_toggle_hide', true );
+
+	// Bail if title is not checked.
+	if ( ! (bool) $hide ) {
+		return;
+	}
+
+	do_action( 'mai_hide_title', $object );
+}
+
+/**
  * Run the hide breadcrumbs hook/function.
  *
  * @since   1.3.0
@@ -9,7 +110,6 @@
  */
 add_action( 'mai_hide_breadcrumbs', 'mai_hide_breadcrumbs' );
 function mai_hide_breadcrumbs() {
-	// Remove breadcrumbs.
 	remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
 	remove_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 12 );
 }
@@ -25,10 +125,22 @@ function mai_hide_breadcrumbs() {
 add_action( 'mai_hide_title',         'mai_hide_title' );
 add_action( 'be_title_toggle_remove', 'mai_hide_title' );
 function mai_hide_title() {
-	// Remove titles.
+	// Remove banner title.
 	remove_action( 'mai_banner_title_description', 'mai_do_banner_title', 10, 2 );
-	remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+	// Remove single post title.
+	if ( is_singular() ) {
+		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+	}
+	// Remove blog title.
+	if ( is_home() ) {
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_headline', 10, 3 );
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_open', 5, 3 );
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_close', 15, 3 );
+	}
 }
+
+
+
 
 // Remove the page title from the front page
 add_action( 'genesis_before_content_sidebar_wrap', 'mai_remove_front_page_post_title' );

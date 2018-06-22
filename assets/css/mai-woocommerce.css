@@ -39,6 +39,7 @@
 	float: none;
 	margin-left: auto;
 	margin-right: auto;
+	margin-bottom: 8px;
 }
 
 .woocommerce p.stars a,
@@ -171,6 +172,12 @@
 .product_meta {
 	color: #555;
 	font-size: 14px;
+}
+
+.woocommerce #reviews .comment-reply-title {
+	display: inline-block;
+	font-size: 1.563rem;
+	margin-bottom: 12px;
 }
 
 .woocommerce #reviews #comments ol.commentlist li {
@@ -482,4 +489,14 @@ body.woocommerce-checkout form.checkout_coupon .form-row {
 		width: 100%;
 	}
 
+}
+
+/* ## Widgets
+--------------------------------------------- */
+
+.woocommerce ul.cart_list li .star-rating,
+.woocommerce ul.product_list_widget li .star-rating {
+	display: block;
+	margin-top: 4px;
+	margin-bottom: 6px;
 }
