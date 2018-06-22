@@ -2180,41 +2180,12 @@ input[name="post_password"] {
 	display: block;
 	width: 100%;
 	position: absolute;
+	left: 0;
 	bottom: -25px;
 	text-align: center;
 	list-style: none;
 	padding: 0;
 	margin: 0;
-}
-
-.mai-slider[data-gutter="5"] .slick-dots {
-	margin-left: -2.5px;
-	margin-right: -2.5px;
-}
-
-.mai-slider[data-gutter="10"] .slick-dots {
-	margin-left: -5px;
-	margin-right: -5px;
-}
-
-.mai-slider[data-gutter="20"] .slick-dots {
-	margin-left: -10px;
-	margin-right: -10px;
-}
-
-.mai-slider[data-gutter="30"] .slick-dots {
-	margin-left: -15px;
-	margin-right: -15px;
-}
-
-.mai-slider[data-gutter="40"] .slick-dots {
-	margin-left: -20px;
-	margin-right: -20px;
-}
-
-.mai-slider[data-gutter="50"] .slick-dots {
-	margin-left: -25px;
-	margin-right: -25px;
 }
 
 .slick-dots li {
