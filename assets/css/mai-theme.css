@@ -4116,12 +4116,14 @@ ol.comment-list {
 		-webkit-box-flex: 0;
 		-ms-flex: 1 0 324px;
 		flex: 1 0 324px;
+		max-width: 324px;
 	}
 
 	.has-one-sidebar .sidebar-secondary {
 		-webkit-box-flex: 1;
 		-ms-flex: 1 0 192px;
 		flex: 1 0 192px;
+		max-width: 192px;
 	}
 
 	.content-sidebar .sidebar-primary {
@@ -4251,18 +4253,21 @@ ol.comment-list {
 		-webkit-box-flex: 1;
 		-ms-flex: 1 0 360px;
 		flex: 1 0 360px;
+		max-width: 360px;
 	}
 
 	.has-two-sidebars .sidebar-primary {
 		-webkit-box-flex: 1;
 		-ms-flex: 1 0 324px;
 		flex: 1 0 324px;
+		max-width: 324px;
 	}
 
 	.has-two-sidebars .sidebar-secondary {
 		-webkit-box-flex: 1;
 		-ms-flex: 1 0 192px;
 		flex: 1 0 192px;
+		max-width: 192px;
 	}
 
 	.sidebar-content-sidebar .sidebar-primary,
