@@ -102,13 +102,14 @@ function mai_sidebars_body_class( $classes ) {
 		'content-sidebar-sidebar',
 		'sidebar-sidebar-content',
 	);
+
 	// Add .no-sidebar body class if don't have any sidebars
 	if ( in_array( $layout, $no_sidebars ) ) {
 		$classes[] = 'no-sidebars';
 	} elseif ( in_array( $layout, $has_sidebar ) ) {
-		$classes[] = 'has-sidebar';
+		$classes[] = 'has-sidebar has-one-sidebar';
 	} elseif ( in_array( $layout, $has_sidebars ) ) {
-		$classes[] = 'has-sidebar has-sidebars';
+		$classes[] = 'has-sidebar has-two-sidebars';
 	}
 	return $classes;
 }
