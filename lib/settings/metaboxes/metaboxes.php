@@ -21,6 +21,7 @@ function cmb2_test_before_form( $cmb_id, $object_id, $object_type, $cmb ) {
 	$mai_cmb = array(
 		'mai_sections',
 		'mai_post_banner',
+		'mai_post_settings',
 		'mai_term_settings',
 		'mai_user_settings',
 	);
