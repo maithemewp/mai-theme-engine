@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.3.2.1 (6/22/18)
+* Fixed: Earlier mobile first sidebar breakpoint.
+
 #### 1.3.2 (6/22/18)
 * Fixed: Revert content/sidebar and footer widgets to flexbox because IE is horrible but we still want it to work.
 * Fixed: Content-sidebar gap when using boxed content sidebar wrap.
