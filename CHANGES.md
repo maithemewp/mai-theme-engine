@@ -1,14 +1,16 @@
 ### Changelog
 
+#### 1.3.2 (6/22/18)
+* Fixed: Revert content/sidebar and footer widgets to flexbox because IE is horrible but we still want it to work.
 * Fixed: Content-sidebar gap when using boxed content sidebar wrap.
 * Fixed: More consistent font-size and text-transform on mobile menu.
 * Fixed: Hide title setting wasn't working on Blog page.
 * Fixed: Page title wasn't showing on Shop page when banner was disabled.
 
-#### 1.3.1 (6/2/18)
+#### 1.3.1 (6/20/18)
 * Fixed: Better vertical alignment when using align_text param on [grid] or [col].
 
-#### 1.3.0 (6/2/18)
+#### 1.3.0 (6/20/18)
 * Added: Sections import/export feature.
 * Added: Page Builder page template.
 * Added: Boxed Content setting to declare which elements should have a boxed vs seamless look, including the main site container.
