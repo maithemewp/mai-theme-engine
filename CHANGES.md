@@ -2,6 +2,7 @@
 
 * Fixed: Content-sidebar gap when using boxed content sidebar wrap.
 * Fixed: More consistent font-size and text-transform on mobile menu.
+* Fixed: Hide title setting wasn't working on Blog page.
 * Fixed: Page title wasn't showing on Shop page when banner was disabled.
 
 #### 1.3.1 (6/2/18)
