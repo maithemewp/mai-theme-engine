@@ -172,6 +172,25 @@ function mai_do_layout() {
 }
 
 /**
+ * Filter the footer-widgets context of the genesis_structural_wrap to add a div before the closing wrap div.
+ *
+ * @param   string  $output             The markup to be returned.
+ * @param   string  $original_output    Set to either 'open' or 'close'.
+ *
+ * @return  string  The footer markup
+ */
+add_filter( 'genesis_structural_wrap-footer-widgets', 'mai_footer_widgets_flex_row', 10, 2 );
+function mai_footer_widgets_flex_row( $output, $original_output ) {
+	if ( 'open' == $original_output ) {
+		$output = $output . '<div class="footer-widgets-wrap">';
+	}
+	elseif ( 'close' == $original_output ) {
+		$output = '</div>' . $output;
+	}
+	return $output;
+}
+
+/**
  * Add footer widgets has columns class.
  *
  * @param   array  The footer-widgets attributes.
