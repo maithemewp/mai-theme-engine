@@ -207,7 +207,7 @@ function mai_do_banner_content() {
 
 	// Search results.
 	elseif ( is_search() ) {
-		$title = apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'genesis' ) );
+		$title = sprintf( '%s %s', apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'genesis' ), get_search_query() ) );
 	}
 
 	// 404.
