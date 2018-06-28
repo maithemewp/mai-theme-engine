@@ -1,6 +1,7 @@
 ### Changelog
 
 * Fixed: Wrap long linked urls/text so it doesn't break out of its container.
+* Fixed: Undefined variable in banner when front page shows latest posts.
 
 #### 1.3.2.1 (6/22/18)
 * Fixed: Earlier mobile first sidebar breakpoint.
