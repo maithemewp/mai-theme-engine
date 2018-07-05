@@ -229,7 +229,7 @@ function mai_do_bg_image_link() {
 function mai_get_bg_image_link( $url = '', $title = '' ) {
 	$url   = $url ? esc_url( $url ) : get_permalink();
 	$title = $title ? esc_html( $title ) : get_the_title();
-	return sprintf( '<a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a>', $url, $title );
+	return sprintf( '<div class="bg-link-wrap"><a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a></div>', $url, $title );
 }
 
 /**

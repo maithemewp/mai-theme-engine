@@ -1507,8 +1507,7 @@ body.has-boxed-site-container {
 	z-index: 2;
 }
 
-.bg-link {
-	display: block;
+.bg-link-wrap {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -1517,6 +1516,12 @@ body.has-boxed-site-container {
 	width: 100%;
 	height: 100%;
 	z-index: 4;
+}
+
+.bg-link {
+	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 .bg-link,
