@@ -42,6 +42,7 @@ class Mai_Grid {
 			'content'              => 'post',  // post_type name (comma separated if multiple), or taxonomy name
 			'content_limit'        => '',  // Limit number of words
 			'content_type'         => '',
+			'context'              => 'flex-grid',
 			'date_after'           => '',
 			'date_before'          => '',
 			'date_format'          => '',
@@ -118,6 +119,7 @@ class Mai_Grid {
 			'content'              => array_filter( explode( ',', sanitize_text_field( $this->args['content'] ) ) ),
 			'content_limit'        => absint( $this->args['content_limit'] ),
 			'content_type'         => sanitize_text_field( $this->args['content_type'] ),
+			'context'              => sanitize_key( $this->args['content_type'] ),
 			'date_after'           => sanitize_text_field( $this->args['date_after'] ),
 			'date_before'          => sanitize_text_field( $this->args['date_before'] ),
 			'date_format'          => sanitize_text_field( $this->args['date_format'] ),
@@ -179,6 +181,18 @@ class Mai_Grid {
 			'speed'                => absint( $this->args['speed'] ),
 		);
 
+		/**
+		 * Grid args filter.
+		 *
+		 * @since   1.3.3
+		 *
+		 * @param   array  $args           The current grid args.
+		 * @param   array  $original_args  The original grid args.
+		 *
+		 * @return  array  The args.
+		 */
+		$this->args = apply_filters( 'mai_grid_args', $this->args, $this->original_args );
+
 		// Get the content type.
 		$this->content_type = $this->get_content_type();
 
@@ -221,6 +235,7 @@ class Mai_Grid {
 			if ( ! $this::$facetwp_filter ) {
 				/**
 				 * Set it as the main query.
+				 *
 				 * @link  https://facetwp.com/documentation/facetwp_is_main_query/
 				 */
 				add_filter( 'facetwp_is_main_query', array( $this, 'facetwp_is_main_query' ), 10, 2 );
@@ -235,7 +250,7 @@ class Mai_Grid {
 			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
 		);
 
-		return sprintf( '<div %s>%s</div>', genesis_attr( 'flex-grid', $attributes, $this->args ), $content );
+		return sprintf( '<div %s>%s</div>', genesis_attr( $this->args['context'], $attributes, $this->args ), $content );
 	}
 
 	/**
@@ -414,13 +429,15 @@ class Mai_Grid {
 		/**
 		 * Filter the arguments passed to WP_Query.
 		 *
+		 * @since   1.3.3
+		 *
 		 * @param   array  $query_args     Parsed arguments to pass to WP_Query.
 		 * @param   array  $args           The current grid args.
 		 * @param   array  $original_args  The original grid args.
 		 *
 		 * @return  array  The args.
 		 */
-		$query_args = apply_filters( 'mai_grid_args', $query_args, $this->args, $this->original_args );
+		$query_args = apply_filters( 'mai_grid_query_args', $query_args, $this->args, $this->original_args );
 
 		// Get our query.
 		$query = new WP_Query( $query_args );
@@ -701,13 +718,15 @@ class Mai_Grid {
 		/**
 		 * Filter the arguments passed to WP_Query.
 		 *
+		 * @since   1.3.3
+		 *
 		 * @param   array  $query_args     Parsed arguments to pass to WP_Query.
 		 * @param   array  $args           The current grid args.
 		 * @param   array  $original_args  The original grid args.
 		 *
 		 * @return  array  The args.
 		 */
-		$query_args = apply_filters( 'mai_grid_args', $query_args, $this->args, $this->original_args );
+		$query_args = apply_filters( 'mai_grid_query_args', $query_args, $this->args, $this->original_args );
 
 		// Get our query.
 		$terms = get_terms( $query_args );
