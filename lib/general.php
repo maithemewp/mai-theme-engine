@@ -60,7 +60,7 @@ function mai_singular_body_class( $classes ) {
  * @return  array  $classes  The modified classes.
  */
 add_filter( 'body_class', 'mai_js_detection_body_class' );
-function mai_js_detection_body_class($classes) {
+function mai_js_detection_body_class( $classes ) {
 	$classes[] = 'no-js';
 	return $classes;
 }

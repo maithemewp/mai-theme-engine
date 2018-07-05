@@ -1,5 +1,7 @@
 ### Changelog
 
+* Added: mai_grid_args filter.
+* Added: mai_grid_query_args filter.
 * Fixed: Wrap long linked urls/text so it doesn't break out of its container.
 * Fixed: Undefined variable in banner when front page shows latest posts.
 * Fixed: Missing search query in banner title.
