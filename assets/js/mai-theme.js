@@ -454,7 +454,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	function _changeSkipLink() {
 
 		var $skipLinksUL    = $( '.genesis-skip-link' ),
-			$mobileSkipLink = $( '.genesis-skip-link a[href="#mobile-nav"]' ),
+			$mobileSkipLink = $( '.genesis-skip-link a[href="#mai-toggle"]' ),
 			$menuSkipLinks  = $( '.genesis-skip-link a[href*="#genesis-nav"]' );
 
 		var buttonDisplay = _getDisplayValue( maiButtonClass );

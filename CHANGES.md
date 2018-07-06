@@ -8,6 +8,7 @@
 * Fixed: Added div wrap to bg-link so wpautop doesn’t break it.
 * Fixed: Better compatibility with JS aspect ratio calculations when caching plugins create critical CSS stylesheets.
 * Fixed: Empty banner image metabox when banner disabled.
+* Fixed: Nav menu skip links now work correctly.
 
 #### 1.3.2.1 (6/22/18)
 * Fixed: Earlier mobile first sidebar breakpoint.
