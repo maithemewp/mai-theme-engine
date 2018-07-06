@@ -60,7 +60,7 @@ function mai_cmb2_add_metaboxes() {
 		'context'      => 'side',
 		'priority'     => 'low',
 		'classes'      => 'mai-metabox',
-		'show_on_cb'   => '_mai_cmb_show_banner_fields',
+		'show_on_cb'   => '_mai_cmb_banner_show_on_cb',
 	) );
 	$post_banner->add_field( _mai_cmb_banner_image_config() );
 
