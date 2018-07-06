@@ -676,6 +676,15 @@ class Mai_Grid {
 			$query_args['exclude_tree'] = $this->args['exclude'];
 		}
 
+		// Exclude existing.
+		if ( $this->args['exclude_displayed'] && ! empty( $this::$existing_term_ids ) ) {
+			if ( isset( $query_args['exclude_tree'] ) ) {
+				$query_args['exclude_tree'] = array_push( $query_args['exclude_tree'], $this::$existing_term_ids );
+			} else {
+				$query_args['exclude_tree'] = $this::$existing_term_ids;
+			}
+		}
+
 		// Terms IDs,
 		if ( ! empty( $this->args['ids'] ) ) {
 			$query_args['include'] = $this->args['ids'];
