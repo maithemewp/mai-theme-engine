@@ -114,7 +114,10 @@
 
 	var el = '.aspect-ratio';
 
-	_initResize( el );
+	// Resize after page load. WP Rocket critical CSS needs this to wait, among other things.
+	$( window ).on( 'load', function() {
+		_initResize( el );
+	});
 
 	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
 	$( document ).on( 'facetwp-loaded', function() {
