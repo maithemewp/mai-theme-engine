@@ -119,7 +119,7 @@ class Mai_Grid {
 			'content'              => array_filter( explode( ',', sanitize_text_field( $this->args['content'] ) ) ),
 			'content_limit'        => absint( $this->args['content_limit'] ),
 			'content_type'         => sanitize_text_field( $this->args['content_type'] ),
-			'context'              => sanitize_key( $this->args['content_type'] ),
+			'context'              => sanitize_key( $this->args['context'] ),
 			'date_after'           => sanitize_text_field( $this->args['date_after'] ),
 			'date_before'          => sanitize_text_field( $this->args['date_before'] ),
 			'date_format'          => sanitize_text_field( $this->args['date_format'] ),
