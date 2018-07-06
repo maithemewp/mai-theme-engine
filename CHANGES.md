@@ -6,6 +6,7 @@
 * Fixed: Undefined variable in banner when front page shows latest posts.
 * Fixed: Missing search query in banner title.
 * Fixed: Added div wrap to bg-link so wpautop doesn’t break it.
+* Fixed: Better compatibility with JS aspect ratio calculations when caching plugins create critical CSS stylesheets.
 
 #### 1.3.2.1 (6/22/18)
 * Fixed: Earlier mobile first sidebar breakpoint.
