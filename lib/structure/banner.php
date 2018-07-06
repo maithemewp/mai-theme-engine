@@ -100,7 +100,6 @@ function mai_do_banner_content() {
 	// Front page displays your latest posts.
 	if ( is_front_page() && is_home() ) {
 		$title = __( 'Blog', 'genesis' );
-		$desc  = has_excerpt( $front_page_id ) ? get_the_excerpt( $front_page_id ) : '';
 	}
 
 	// Static front page.
@@ -208,7 +207,7 @@ function mai_do_banner_content() {
 
 	// Search results.
 	elseif ( is_search() ) {
-		$title = apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'genesis' ) );
+		$title = sprintf( '%s %s', apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'genesis' ), get_search_query() ) );
 	}
 
 	// 404.

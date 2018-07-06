@@ -8,7 +8,7 @@
  */
 
 
-// Add 'nav-header' class to header_left and header_right menus, for easier CSS styling
+// Add 'nav-header' class to header_left and header_right menus, for easier CSS styling.
 add_filter( 'wp_nav_menu_args', 'mai_nav_header_class' );
 function mai_nav_header_class( $args ) {
 	if ( in_array( $args['theme_location'], array( 'header_left', 'header_right' ) ) ) {
@@ -17,16 +17,64 @@ function mai_nav_header_class( $args ) {
 	return $args;
 }
 
-// Add skip link needs to secondary nav
-add_filter( 'genesis_skip_links_output', 'mai_add_nav_secondary_skip_link' );
-function mai_add_nav_secondary_skip_link( $links ) {
+// Add skip link needs to secondary nav.
+add_filter( 'genesis_skip_links_output', 'mai_add_nav_skip_links' );
+function mai_add_nav_skip_links( $links ) {
 	$new_links = $links;
+	// Leave only primary nav.
 	array_splice( $new_links, 1 );
+	$header_nav = array();
+	if ( has_nav_menu( 'header_left' ) ) {
+		$header_nav['genesis-nav-header-left'] = __( 'Skip to left header navigation', 'mai-theme-engine' );
+	}
+	if ( has_nav_menu( 'header_right' ) ) {
+		$header_nav['genesis-nav-header-right'] = __( 'Skip to right header navigation', 'mai-theme-engine' );
+	}
+	$new_links = array_merge( $header_nav, $new_links );
 	if ( has_nav_menu( 'secondary' ) ) {
 		$new_links['genesis-nav-secondary'] = __( 'Skip to secondary navigation', 'genesis' );
 	}
 	$links = array( 'mai-toggle' => __( 'Menu', 'genesis' ) ) + array_merge( $new_links, $links );
 	return $links;
+}
+
+/**
+ * Add ID to header left navigation.
+ *
+ * @param   array  $attributes
+ *
+ * @return  array  The modified attributes.
+ */
+add_filter( 'genesis_attr_nav-header_left', 'mai_add_nav_header_left_id' );
+function mai_add_nav_header_left_id( $attributes ) {
+	$attributes['id'] = 'genesis-nav-header-left';
+	return $attributes;
+}
+
+/**
+ * Add ID to header right navigation.
+ *
+ * @param   array  $attributes
+ *
+ * @return  array  The modified attributes.
+ */
+add_filter( 'genesis_attr_nav-header_right', 'mai_add_nav_header_right_id' );
+function mai_add_nav_header_right_id( $attributes ) {
+	$attributes['id'] = 'genesis-nav-header-right';
+	return $attributes;
+}
+
+/**
+ * Add ID to secondary navigation.
+ *
+ * @param   array  $attributes
+ *
+ * @return  array  The modified attributes.
+ */
+add_filter( 'genesis_attr_nav-secondary', 'mai_add_nav_secondary_id' );
+function mai_add_nav_secondary_id( $attributes ) {
+	$attributes['id'] = 'genesis-nav-secondary';
+	return $attributes;
 }
 
 // Limit Secondary and Utility nav menus to top level items only.
@@ -53,8 +101,6 @@ remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 add_action( 'genesis_after_loop', 'genesis_posts_nav' );
 
 // Add previous/next post links to single posts
-// add_action( 'genesis_entry_footer', 'genesis_prev_next_post_nav' );
-
 add_post_type_support( 'post', 'genesis-adjacent-entry-nav' );
 
 /**

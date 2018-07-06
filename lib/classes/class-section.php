@@ -18,7 +18,8 @@ class Mai_Section {
 
 	public function __construct( $args = array(), $content = null ) {
 
-		$this->args    = $args;
+		// Save original args in a variable for filtering later.
+		$this->args    = $this->original_args = $args;
 		$this->content = $content;
 
 		// Shortcode section atts.
@@ -66,11 +67,16 @@ class Mai_Section {
 		);
 
 		/**
-		 * Add section args filter.
+		 * Section args filter.
 		 *
-		 * @since  1.3.0
+		 * @since   1.3.0
+		 *
+		 * @param   array  $args           The current grid args.
+		 * @param   array  $original_args  The original grid args.
+		 *
+		 * @return  array  The args.
 		 */
-		$this->args = apply_filters( 'mai_section_args', $this->args );
+		$this->args = apply_filters( 'mai_section_args', $this->args, $this->original_args );
 	}
 
 	/**

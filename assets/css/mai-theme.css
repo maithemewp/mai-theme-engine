@@ -837,7 +837,7 @@ td {
 }
 
 /* we don't want to add hyphens in links */
-.site-inner a:not(input[type="submit"]):not(button):not(.button) {
+.site-inner a:not(.button):not(button) {
 	-ms-word-break: break-all;
 	word-break: break-all;
 	word-break: break-word; /* Non standard for WebKit */
@@ -1507,9 +1507,8 @@ body.has-boxed-site-container {
 	z-index: 2;
 }
 
-.bg-link {
-	display: block;
-	position: absolute;
+.bg-link-wrap {
+	position: absolute !important;
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -1517,6 +1516,12 @@ body.has-boxed-site-container {
 	width: 100%;
 	height: 100%;
 	z-index: 4;
+}
+
+.bg-link {
+	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 .bg-link,

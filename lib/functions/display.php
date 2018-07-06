@@ -14,15 +14,15 @@
  */
 function mai_get_processed_content( $content ) {
 	global $wp_embed;
-	$content = trim( $content );
-	$content = wptexturize( $content );
-	$content = wpautop( $content );
-	$content = mai_content_filter_shortcodes( $content ); // after wpautop, before shortcodes are parsed.
-	$content = shortcode_unautop( $content );
-	$content = do_shortcode( $content );
-	$content = convert_smilies( $content );
-	$content = $wp_embed->autoembed( $content );
-	$content = $wp_embed->run_shortcode( $content );
+	$content = $wp_embed->autoembed( $content );              // WP runs priority 8.
+	$content = $wp_embed->run_shortcode( $content );          // WP runs priority 8.
+	$content = wptexturize( $content );                       // WP runs priority 10.
+	$content = wpautop( $content );                           // WP runs priority 10.
+	$content = mai_content_filter_shortcodes( $content );     // after wpautop, before shortcodes are parsed.
+	$content = shortcode_unautop( $content );                 // WP runs priority 10.
+	$content = wp_make_content_images_responsive( $content ); // WP runs priority 10.
+	$content = do_shortcode( $content );                      // WP runs priority 11.
+	$content = convert_smilies( $content );                   // WP runs priority 20.
 	return $content;
 }
 
@@ -230,7 +230,7 @@ function mai_do_bg_image_link() {
 function mai_get_bg_image_link( $url = '', $title = '' ) {
 	$url   = $url ? esc_url( $url ) : get_permalink();
 	$title = $title ? esc_html( $title ) : get_the_title();
-	return sprintf( '<a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a>', $url, $title );
+	return sprintf( '<div class="bg-link-wrap"><a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a></div>', $url, $title );
 }
 
 /**
