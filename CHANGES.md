@@ -1,5 +1,6 @@
 ### Changelog
 
+#### 1.3.3 (7/6/18)
 * Added: mai_grid_args filter.
 * Added: mai_grid_query_args filter.
 * Fixed: Wrap long linked urls/text so it doesn't break out of its container.
