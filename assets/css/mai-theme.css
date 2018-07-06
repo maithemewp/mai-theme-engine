@@ -1508,7 +1508,7 @@ body.has-boxed-site-container {
 }
 
 .bg-link-wrap {
-	position: absolute;
+	position: absolute !important;
 	top: 0;
 	right: 0;
 	bottom: 0;
