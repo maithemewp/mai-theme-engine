@@ -17,9 +17,6 @@ function mai_post_date_defaults( $out, $pairs, $atts ) {
 	if ( ! isset( $atts['before'] ) ) {
 		$out['before'] = '';
 	}
-	if ( ! isset( $atts['format'] ) ) {
-		$out['format'] = 'M j, Y';
-	}
 	return $out;
 }
 
