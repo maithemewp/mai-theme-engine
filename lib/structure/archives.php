@@ -279,6 +279,7 @@ function mai_flex_loop_post_class( $classes ) {
  *
  * @return  void
  */
+add_action( 'woocommerce_shortcode_before_products_loop',              'mai_woo_shortcode_before_loop' );
 add_action( 'woocommerce_shortcode_before_recent_products_loop',       'mai_woo_shortcode_before_loop' );
 add_action( 'woocommerce_shortcode_before_sale_products_loop',         'mai_woo_shortcode_before_loop' );
 add_action( 'woocommerce_shortcode_before_best_selling_products_loop', 'mai_woo_shortcode_before_loop' );
@@ -305,6 +306,11 @@ function mai_woo_shortcode_before_loop( $atts ) {
 	add_filter( 'product_cat_class', $entry_classes );
 
 	// Remove the filters setting the columns
+	add_action( 'woocommerce_shortcode_before_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
+		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
+		remove_filter( 'post_class',        $entry_classes );
+		remove_filter( 'product_cat_class', $entry_classes );
+	});
 	add_action( 'woocommerce_shortcode_after_recent_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
 		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
 		remove_filter( 'post_class',        $entry_classes );
