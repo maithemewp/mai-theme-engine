@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.3.4
+* Added: Add support for WooCommerce [products] shortcode.
+* Fixed: Broken genesis_search_title_text filter in banner.
+
 #### 1.3.3 (7/6/18)
 * Added: mai_grid_args filter.
 * Added: mai_grid_query_args filter.
