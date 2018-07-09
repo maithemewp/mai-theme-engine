@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.3.4
+#### 1.3.4 (7.9/18)
 * Added: Add support for WooCommerce [products] shortcode.
 * Fixed: Broken genesis_search_title_text filter in banner.
 
