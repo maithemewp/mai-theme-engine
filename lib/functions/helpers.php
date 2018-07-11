@@ -23,9 +23,11 @@ function mai_get_layout() {
 
 	global $wp_query;
 
-	// If blog page or date archive.
-	if ( is_home() || is_date() ) {
-		$site_layout = genesis_get_custom_field( '_genesis_layout', get_option( 'page_for_posts' ) );
+	// If blog.
+	if ( is_home() ) {
+		if ( $page_for_posts = get_option( 'page_for_posts' ) ) {
+			$site_layout = genesis_get_custom_field( '_genesis_layout', $page_for_posts );
+		}
 		if ( ! $site_layout ) {
 			$site_layout = genesis_get_option( 'layout_archive' );
 		}
@@ -78,6 +80,11 @@ function mai_get_layout() {
 	elseif ( is_author() ) {
 		$site_layout = get_the_author_meta( 'layout', (int) get_query_var( 'author' ) );
 		$site_layout = $site_layout ? $site_layout : genesis_get_option( 'layout_archive' );
+	}
+
+	// If viewing date archive or search results.
+	elseif( is_date() || is_search() ) {
+		$site_layout = genesis_get_option( 'layout_archive' );
 	}
 
 	// Pull the theme option.
