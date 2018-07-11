@@ -80,10 +80,10 @@ function mai_js_detection_script() {
 	?>
 	<script>
 		//<![CDATA[
-		(function(){
-			var c = document.body.className;
-			c = c.replace(/no-js/, 'js');
-			document.body.className = c;
+		( function() {
+			var c = document.body.classList;
+			c.remove( 'no-js' );
+			c.add( 'js' );
 		})();
 		//]]>
 	</script>
