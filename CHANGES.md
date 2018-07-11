@@ -1,6 +1,10 @@
 ### Changelog
 
-#### 1.3.4 (7.9/18)
+#### 1.3.5 (7/11/18)
+* Fixed: Search results layout not following content archive default layout.
+* Fixed: no-js/js body class toggle JS not working properly.
+
+#### 1.3.4 (7/9/18)
 * Added: Add support for WooCommerce [products] shortcode.
 * Fixed: Broken genesis_search_title_text filter in banner.
 
