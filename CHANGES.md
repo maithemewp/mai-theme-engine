@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.3.6 (7/12/18)
+* Fixed: Aspect ratio strangeness with background images.
+
 #### 1.3.5 (7/11/18)
 * Fixed: Search results layout not following content archive default layout.
 * Fixed: no-js/js body class toggle JS not working properly.
