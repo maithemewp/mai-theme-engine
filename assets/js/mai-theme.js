@@ -110,82 +110,58 @@
  *
  * @version  1.1.0
  */
-( function( document, $, undefined ) {
+( function( window, document, $, undefined ) {
 
 	var el = '.aspect-ratio';
 
-	// Resize after page load. WP Rocket critical CSS needs this to wait, among other things.
-	$( window ).on( 'load', function() {
-		_initResize( el );
+	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
+	$( window ).ready( function() {
+		_setupResize( el );
 	});
 
 	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
 	$( document ).on( 'facetwp-loaded', function() {
-		_initResize( el );
+		_setupResize( el );
 	});
 
-	function _initResize( el ) {
+	function _setupResize( el ) {
 
-		// Aspect ratio elements
-		var $aspectElement = $( '.aspect-ratio' );
+		// Aspect ratio elements.
+		var $aspectElements = $( el );
 
-		// If we have any elements
-		if ( $aspectElement.length > 0 ) {
+		// If we have any elements.
+		if ( $aspectElements.length ) {
 
-			// If the element is part of a slider
-			if ( $aspectElement.hasClass( 'mai-slide' ) ) {
+			$.each( $aspectElements, function() {
 
-				// Get the slider element
-				var $slider = $aspectElement.parents( '.flex-grid' ).find( '.mai-slider' );
+				var $element = $(this);
 
-				/**
-				 * Setup resize after slider initialization
-				 * since additional elements are often created during init
-				 */
-				$slider.on( 'init', function( event, slick, direction ) {
-					var $additionalAspectElements = $( '.aspect-ratio' );
-					_setupResize( $additionalAspectElements );
+				if ( $element.hasClass( 'mai-slide' ) ) {
+
+					var $slider = $element.parents( '.flex-grid' ).find( '.mai-slider' );
+
+					/**
+					 * Wait till slider events before initial resize,
+					 * otherwise we were getting element width too early and calculations were wrong.
+					 */
+					$slider.on( 'init reInit breakpoint setPosition', function( event, slick ) {
+						_resizeToMatch( $element );
+					});
+
+				} else {
+
+					_resizeToMatch( $element );
+				}
+
+				// Resize the window resize.
+				$( window ).on( 'resize orientationchange', function() {
+					setTimeout( function() {
+						_resizeToMatch( $element );
+					}, 120 );
 				});
 
-			} else {
-				_setupResize( $aspectElement );
-			}
-		}
-	}
-
-	function _setupResize( $aspectElement ) {
-
-		$.each( $aspectElement, function(){
-
-			var $element = $(this);
-
-			if ( $element.hasClass( 'mai-slide' ) ) {
-
-				var $slider = $element.parents( '.flex-grid' ).find( '.mai-slider' );
-
-				/**
-				 * Wait till slider events before initial resize,
-				 * otherwise we were getting element width too early and calculations were wrong.
-				 */
-				$slider.on( 'init reInit breakpoint setPosition', function( event, slick ) {
-					_resizeToMatch( $element );
-				});
-
-			} else {
-
-				_resizeToMatch( $element );
-
-			}
-
-			// Resize the window resize.
-			$( window ).on( 'resize orientationchange', function() {
-				setTimeout( function() {
-					_resizeToMatch( $element );
-				}, 120 );
 			});
-
-		});
-
+		}
 	}
 
 	function _resizeToMatch( $element ) {
@@ -200,7 +176,7 @@
 
 	}
 
-})( document, jQuery );
+})( window, document, jQuery );
 
 
 /**
