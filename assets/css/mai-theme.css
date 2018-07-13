@@ -1625,10 +1625,6 @@ body.has-boxed-site-container {
 	overflow: hidden;
 }
 
-.site-header .widget_search .search-form {
-	max-width: 240px;
-}
-
 .entry-content .search-form {
 	max-width: 240px;
 	margin-bottom: 40px;
@@ -2325,11 +2321,6 @@ input[name="post_password"] {
 .site-header .simple-social-icons ul li a:hover,
 .site-header .simple-social-icons ul li a:focus {
 	padding: 6px !important;
-}
-
-/* this ony affects icons in header left/right, not header before */
-.site-header > .wrap .simple-social-icons {
-	margin: 0 10px !important;
 }
 
 /* # Site Header
@@ -4063,6 +4054,15 @@ ol.comment-list {
 	.first {
 		clear: both;
 		margin-left: 0;
+	}
+
+	.site-header .widget_search .search-form {
+		max-width: 240px;
+	}
+
+	/* this ony affects icons in header left/right, not header before */
+	.site-header > .wrap .simple-social-icons {
+		margin: 0 10px !important;
 	}
 
 	h1,

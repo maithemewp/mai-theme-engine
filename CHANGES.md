@@ -1,5 +1,9 @@
 ### Changelog
 
+
+#### 1.3.7 (7/13/18)
+* Fixed: Site header search bar CSS moved to larger screens only.
+
 #### 1.3.6 (7/12/18)
 * Fixed: Aspect ratio strangeness with background images.
 
