@@ -29,42 +29,6 @@ function mai_limit_term_description( $desc ) {
 	return wp_trim_words( strip_tags( $desc ), 24, '...' );
 }
 
-/**
- * Adds a new select bar to the WP editor.
- * Insert 'styleselect' into the $buttons array.
- * _2 places the new button on the second line.
- *
- * @return  array
- */
-add_filter( 'mce_buttons_2', 'mai_add_styleselect_dropdown' );
-function mai_add_styleselect_dropdown( $buttons ) {
-	array_unshift( $buttons, 'styleselect' );
-	return $buttons;
-}
-
-/**
- * Add a button option to the editor.
- *
- * @param   array  $init_array
- *
- * @return  array
- */
-add_filter( 'tiny_mce_before_init', 'mai_add_style_format_options_to_editor' );
-function mai_add_style_format_options_to_editor( $init_array ) {
-	// Define the style_formats array.
-	$style_formats = array(
-		// Each array child is a format with it's own settings.
-		array(
-			'title'    => 'Button',
-			'selector' => 'a',
-			'classes'  => 'button',
-		),
-	);
-	// Insert the array, JSON ENCODED, into 'style_formats'.
-	$init_array['style_formats'] = json_encode( $style_formats );
-	return $init_array;
-}
-
 // Show the editor on the page set for is_home().
 add_action( 'edit_form_after_title', 'mai_posts_page_edit_form' );
 function mai_posts_page_edit_form() {
@@ -74,7 +38,7 @@ function mai_posts_page_edit_form() {
 	}
 }
 
-// Change login logo
+// Change login logo.
 add_action( 'login_head',  'mai_login_logo_css' );
 function mai_login_logo_css() {
 
