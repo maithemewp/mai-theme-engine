@@ -897,7 +897,7 @@ td {
 	margin-bottom: 30px;
 }
 
-.content .entry.col:not(.boxed):not(.image-bg) {
+.content .entry.col:not(.flex-entry):not(.boxed):not(.image-bg) {
 	margin-bottom: 60px;
 }
 

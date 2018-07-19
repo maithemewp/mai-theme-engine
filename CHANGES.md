@@ -1,5 +1,8 @@
 ### Changelog
 
+Fixed: [grid] Better FacetWP handling when there are no results after filtering.
+Fixed: Don't show empty archive-description wrap if there is no editor content on page-for-posts.
+Fixed: Overly aggressive bottom margin on entries.
 
 #### 1.3.7 (7/13/18)
 * Fixed: Site header search bar CSS moved to larger screens only.
