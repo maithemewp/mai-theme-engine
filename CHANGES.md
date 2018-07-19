@@ -1,6 +1,7 @@
 ### Changelog
 
 Fixed: [grid] Better FacetWP handling when there are no results after filtering.
+Fixed: Banner/Featured image field should show even when banner is disabled, since this image is used for [grid] as well.
 Fixed: Don't show empty archive-description wrap if there is no editor content on page-for-posts.
 Fixed: Overly aggressive bottom margin on entries.
 
