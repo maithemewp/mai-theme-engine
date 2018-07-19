@@ -8,7 +8,7 @@
 add_action( 'genesis_before_while', 'mai_add_before_content_archive_hook', 100 );
 function mai_add_before_content_archive_hook() {
 
-	// Bail if not a flex loop
+	// Bail if not a flex loop.
 	if ( ! mai_is_content_archive() ) {
 		return;
 	}
@@ -24,7 +24,7 @@ function mai_add_before_content_archive_hook() {
 add_action( 'genesis_before_while', 'mai_add_before_flex_loop_hook', 100 );
 function mai_add_before_flex_loop_hook() {
 
-	// Bail if not a flex loop
+	// Bail if not a flex loop.
 	if ( ! mai_is_flex_loop() ) {
 		return;
 	}
@@ -40,7 +40,7 @@ function mai_add_before_flex_loop_hook() {
 add_action( 'genesis_after_endwhile', 'mai_add_after_flex_loop_hook' );
 function mai_add_after_flex_loop_hook() {
 
-	// Bail if not a flex loop
+	// Bail if not a flex loop.
 	if ( ! mai_is_flex_loop() ) {
 		return;
 	}
@@ -56,7 +56,7 @@ function mai_add_after_flex_loop_hook() {
 add_action( 'genesis_after_endwhile', 'mai_add_after_content_archive_hook' );
 function mai_add_after_content_archive_hook() {
 
-	// Bail if not a flex loop
+	// Bail if not a flex loop.
 	if ( ! mai_is_content_archive() ) {
 		return;
 	}
@@ -72,12 +72,19 @@ function mai_add_after_content_archive_hook() {
 add_action( 'mai_before_content_archive', 'mai_do_blog_description', 20 );
 function mai_do_blog_description() {
 
-	// Bail if not the blog page
+	// Bail if not the blog page.
 	if ( ! ( is_home() && $posts_page = get_option( 'page_for_posts' ) ) ) {
 		return;
 	}
 
-	printf( '<div class="archive-description posts-page-description">%s</div>', apply_filters( 'the_content', get_post( $posts_page )->post_content ) );
+	$content = apply_filters( 'the_content', get_post( $posts_page )->post_content );
+
+	// Bail if no content.
+	if ( empty( $content ) ) {
+		return;
+	}
+
+	printf( '<div class="archive-description posts-page-description">%s</div>', $content );
 }
 
 
@@ -100,7 +107,7 @@ function mai_do_term_description() {
 	if ( 0 === absint( get_query_var( 'paged' ) ) ) {
 		$description = term_description();
 		if ( $description ) {
-			echo '<div class="archive-description term-description">' . do_shortcode($description) . '</div>';
+			echo '<div class="archive-description term-description">' . do_shortcode( $description ) . '</div>';
 		}
 	}
 }
@@ -113,18 +120,18 @@ function mai_do_term_description() {
 add_action( 'genesis_before_loop', 'mai_remove_content_archive_loop' );
 function mai_remove_content_archive_loop() {
 
-	// Bail if not a content archive
+	// Bail if not a content archive.
 	if ( ! mai_is_content_archive() ) {
 		return;
 	}
 
-	// Bail if not removing the loop
+	// Bail if not removing the loop.
 	$remove_loop = mai_get_the_archive_setting( 'remove_loop' );
 	if ( ! (bool) $remove_loop ) {
 		return;
 	}
 
-	// Remove the loop
+	// Remove the loop.
 	remove_action( 'genesis_loop',           'genesis_do_loop' );
 	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 	remove_action( 'genesis_after_loop',     'genesis_posts_nav' );
