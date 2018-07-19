@@ -229,8 +229,15 @@ class Mai_Grid {
 			return '';
 		}
 
+		// Set attributes.
+		$attributes = array(
+			'class' => mai_add_classes( $this->args['class'], 'flex-grid' ),
+			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
+		);
+
 		// If this is a facetwp grid, filter the main query.
 		if ( $this->facetwp ) {
+
 			// If the filter hasn't run yet.
 			if ( ! $this::$facetwp_filter ) {
 				/**
@@ -244,11 +251,6 @@ class Mai_Grid {
 			}
 		}
 
-		// Set attributes.
-		$attributes = array(
-			'class' => mai_add_classes( $this->args['class'], 'flex-grid' ),
-			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
-		);
 
 		return sprintf( '<div %s>%s</div>', genesis_attr( $this->args['context'], $attributes, $this->args ), $content );
 	}
@@ -645,12 +647,18 @@ class Mai_Grid {
 
 		// No posts.
 		else {
+			$no_results = $no_results_open = $no_results_close = '';
+			if ( $this->facetwp ) {
+				$no_results_open  = '<div class="facetwp-template">';
+				$no_results_close = '</div>';
+			}
+			$no_results = $no_results_open . wpautop( $this->args['no_content_message'] ) . $no_results_close;
 			/**
 			 * Filter content to display if no posts match the current query.
 			 *
 			 * @param string $no_posts_message Content to display, returned via {@see wpautop()}.
 			 */
-			$html = apply_filters( 'mai_grid_no_results', wpautop( $this->args['no_content_message'] ) );
+			$html = apply_filters( 'mai_grid_no_results', $no_results );
 		}
 
 		wp_reset_postdata();
@@ -876,12 +884,18 @@ class Mai_Grid {
 
 		// No terms.
 		else {
+			$no_results = $no_results_open = $no_results_close = '';
+			if ( $this->facetwp ) {
+				$no_results_open  = '<div class="facetwp-template">';
+				$no_results_close = '</div>';
+			}
+			$no_results = $no_results_open . wpautop( $this->args['no_content_message'] ) . $no_results_close;
 			/**
-			 * Filter content to display if no posts match the current query.
+			 * Filter content to display if no terms match the current query.
 			 *
 			 * @param string $no_posts_message Content to display, returned via {@see wpautop()}.
 			 */
-			$html = apply_filters( 'mai_grid_no_results', wpautop( $this->args['no_content_message'] ) );
+			$html = apply_filters( 'mai_grid_no_results', $no_results );
 		}
 
 		return $html;
@@ -965,14 +979,14 @@ class Mai_Grid {
 
 		}
 
-		// WooCommerce.
-		if ( class_exists( 'WooCommerce' ) && in_array( 'product', $this->args['content'] ) ) {
-			$attributes['class'] .= ' woocommerce';
-		}
-
 		// FacetWP.
 		if ( $this->args['facetwp'] ) {
 			$attributes['class'] = mai_add_classes( 'facetwp-template', $attributes['class'] );
+		}
+
+		// WooCommerce.
+		if ( class_exists( 'WooCommerce' ) && in_array( 'product', $this->args['content'] ) ) {
+			$attributes['class'] .= ' woocommerce';
 		}
 
 		// Bring it home.
