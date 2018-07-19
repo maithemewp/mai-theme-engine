@@ -35,15 +35,15 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 
 function _mai_cmb_banner_show_on_cb( $field ) {
 
-	$show = true;
-
 	global $pagenow, $typenow;
+
+	$banner_enabled = mai_is_banner_area_enabled_globally();
 
 	// Posts.
 	if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
 
 		// Don't show field if banner area is globally disabled.
-		if ( ! mai_is_banner_area_enabled_globally() ) {
+		if ( ! $banner_enabled ) {
 			return false;
 		}
 
@@ -74,7 +74,7 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 				return false;
 			} else {
 				// Don't show field if banner area is globally disabled.
-				if ( ! mai_is_banner_area_enabled_globally() ) {
+				if ( ! $banner_enabled ) {
 					return false;
 				}
 				return true;
@@ -83,8 +83,13 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 		// Not a Woo default taxo.
 		else {
 
-			// Don't show field if banner area is globally disabled.
-			if ( ! mai_is_banner_area_enabled_globally() ) {
+			// Banner image field should always be visible on terms, since they are used by [grid].
+			if ( 'banner' === $field->args['id'] ) {
+				return true;
+			}
+
+			// Don't show ohter fields if banner area is globally disabled.
+			if ( ! $banner_enabled ) {
 				return false;
 			}
 
@@ -110,7 +115,7 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 
 	}
 
-	return $show;
+	return true;
 }
 
 function _mai_cmb_hide_breacrumbs_show_on_cb() {
