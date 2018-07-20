@@ -29,18 +29,18 @@ class Mai_Grid {
 
 		// Parse defaults and args.
 		$this->args = shortcode_atts( array(
-			'align'                => '',  // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
-			'align_cols'           => '',  // "top, left" Comma separted
-			'align_text'           => '',  // "center" Comma separted
+			'align'                => '',   // "top, left" Comma separted. overrides align_cols and align_text.
+			'align_cols'           => '',   // "top, left" Comma separted
+			'align_text'           => '',   // "center" Comma separted. for most times one setting makes sense
 			'author_after'         => '',
 			'author_before'        => '',
-			'authors'              => '',  // Comma separated author/user IDs
-			'bottom'               => '',  // Bottom margin. 0, 5, 10, 20, 30, 40, 50, 60
+			'authors'              => '',   // Comma separated author/user IDs
+			'bottom'               => '',   // Bottom margin. none, xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'boxed'                => true, // Display in boxed look
-			'categories'           => '',  // Comma separated category IDs
-			'columns'              => 3,   // "1", "2", "3", "4" or "6".
+			'categories'           => '',   // Comma separated category IDs
+			'columns'              => 3,    // "1", "2", "3", "4" or "6".
 			'content'              => 'post',  // post_type name (comma separated if multiple), or taxonomy name
-			'content_limit'        => '',  // Limit number of words
+			'content_limit'        => '',   // Limit number of words
 			'content_type'         => '',
 			'context'              => 'flex-grid',
 			'date_after'           => '',
@@ -57,7 +57,7 @@ class Mai_Grid {
 			'grid_title'           => '',
 			'grid_title_class'     => '',
 			'grid_title_wrap'      => 'h2',
-			'gutter'               => 30,
+			'gutter'               => 'md',  // xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'hide_empty'           => true,
 			'ids'                  => '',
 			'ignore_sticky_posts'  => true,  // normal WP_Query is false
@@ -85,6 +85,7 @@ class Mai_Grid {
 			'taxonomy'             => '',
 			'terms'                => '',  // Comma-separated or 'current'
 			'title_wrap'           => 'h3',
+			'top'                  => '',  // Top margin. none, xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'class'                => '',
 			'id'                   => '',
 			'xs'                   => 12, // Span out of 12 column grid. '4' is 1/3 since 4x3=12.
@@ -112,7 +113,7 @@ class Mai_Grid {
 			'author_after'         => sanitize_key( $this->args['author_after'] ),
 			'author_before'        => sanitize_key( $this->args['author_before'] ),
 			'authors'              => $this->args['authors'], // Validated later
-			'bottom'               => is_numeric( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
+			'bottom'               => sanitize_key( $this->args['bottom'] ),
 			'boxed'                => filter_var( $this->args['boxed'], FILTER_VALIDATE_BOOLEAN ),
 			'categories'           => array_filter( explode( ',', sanitize_text_field( $this->args['categories'] ) ) ),
 			'columns'              => absint( $this->args['columns'] ),
@@ -134,7 +135,7 @@ class Mai_Grid {
 			'grid_title'           => sanitize_text_field( $this->args['grid_title'] ),
 			'grid_title_class'     => sanitize_text_field( $this->args['grid_title_class'] ),
 			'grid_title_wrap'      => sanitize_key( $this->args['grid_title_wrap'] ),
-			'gutter'               => mai_is_valid_gutter( absint( $this->args['gutter'] ) ) ? absint( $this->args['gutter'] ) : 30,
+			'gutter'               => mai_is_valid_gutter( sanitize_key( $this->args['gutter'] ) ) ? sanitize_key( $this->args['gutter'] ) : 'md',
 			'hide_empty'           => filter_var( $this->args['hide_empty'], FILTER_VALIDATE_BOOLEAN ),
 			'ids'                  => array_filter( array_map( 'absint', explode( ',', sanitize_text_field( $this->args['ids'] ) ) ) ),
 			'ignore_sticky_posts'  => filter_var( $this->args['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN ),
@@ -162,6 +163,7 @@ class Mai_Grid {
 			'taxonomy'             => sanitize_key( $this->args['taxonomy'] ),
 			'terms'                => $this->args['terms'], // Validated later, after check for 'current'
 			'title_wrap'           => sanitize_key( $this->args['title_wrap'] ),
+			'top'                  => sanitize_key( $this->args['top'] ),
 			'class'                => mai_sanitize_html_classes( $this->args['class'] ),
 			'id'                   => sanitize_html_class( $this->args['id'] ),
 			'xs'                   => sanitize_key( $this->args['xs'] ),
@@ -1101,7 +1103,7 @@ class Mai_Grid {
 		$attributes['data-slidestoscroll'] = $this->args['slidestoscroll'];
 		$attributes['data-slidestoshow']   = $this->args['columns'];
 		$attributes['data-speed']          = $this->args['speed'];
-		$attributes['data-gutter']         = $this->args['gutter'];
+		$attributes['data-gutter']         = mai_get_gutter_size( $this->args['gutter'] );
 		return $attributes;
 	}
 
@@ -1148,6 +1150,14 @@ class Mai_Grid {
 		// If image is not aligned.
 		if ( $this->args['image_align'] ) {
 			$classes[] = 'has-image-' . $this->args['image_align'];
+		}
+
+		// Add top margin classes.
+		if ( mai_is_valid_top( $this->args['top'] ) ) {
+			$top = mai_get_top_class( $this->args['top'] );
+			if ( $top ) {
+				$classes[] = $top;
+			}
 		}
 
 		// Add bottom margin classes.
