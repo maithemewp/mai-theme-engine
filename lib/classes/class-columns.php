@@ -36,7 +36,7 @@ class Mai_Columns {
 			'align_text' => mai_sanitize_keys( $this->args['align_text'] ),
 			'bottom'     => sanitize_key( $this->args['bottom'] ),
 			'class'      => mai_sanitize_html_classes( $this->args['class'] ),
-			'gutter'     => absint( $this->args['gutter'] ),
+			'gutter'     => sanitize_key( $this->args['gutter'] ),
 			'id'         => sanitize_html_class( $this->args['id'] ),
 			'style'      => sanitize_text_field( $this->args['style'] ),
 			'top'        => sanitize_key( $this->args['top'] ),

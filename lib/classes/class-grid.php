@@ -968,7 +968,6 @@ class Mai_Grid {
 
 			// Slider HTML data attributes.
 			$attributes = $this->add_slider_data_attributes( $attributes );
-
 		}
 		// Not on slider.
 		else {
@@ -978,7 +977,6 @@ class Mai_Grid {
 
 			// Add row align classes.
 			$attributes['class'] = mai_add_row_align_classes( $attributes['class'], $this->args );
-
 		}
 
 		// FacetWP.
