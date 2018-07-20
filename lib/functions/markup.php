@@ -488,6 +488,69 @@ function mai_get_columns() {
 }
 
 /**
+ * Get the classes needed for an entry from number of columns.
+ *
+ * @since   1.3.8
+ * @access  private
+ *
+ * @param   string  $columns  number of columns to get classes for.
+ *
+ * @return  string  the classes
+ */
+function mai_get_col_classes_by_columns( $columns ) {
+	switch ( (int)$columns ) {
+		case 1:
+			$classes = 'col-xs-12';
+		break;
+		case 2:
+			$classes = 'col-xs-12 col-sm-6';
+		break;
+		case 3:
+			$classes = 'col-xs-12 col-sm-6 col-md-4';
+		break;
+		case 4:
+			$classes = 'col-xs-12 col-sm-6 col-md-3';
+		break;
+		case 6:
+			$classes = 'col-xs-6 col-sm-4 col-md-2';
+		break;
+		default:
+			$classes = 'col-xs-12 col-sm-6 col-md-4';
+	}
+	return $classes;
+}
+
+/**
+ * Get the classes needed for an entry from number of columns.
+ *
+ * @param  string  $columns  number of columns to get classes for.
+ *
+ * @return string  the classes
+ */
+function mai_get_flex_entry_classes_by_columns( $columns ) {
+	switch ( (int)$columns ) {
+		case 1:
+			$classes = 'col-xs-12';
+		break;
+		case 2:
+			$classes = 'col-xs-12 col-sm-6';
+		break;
+		case 3:
+			$classes = 'col-xs-12 col-sm-6 col-md-4';
+		break;
+		case 4:
+			$classes = 'col-xs-12 col-sm-6 col-md-3';
+		break;
+		case 6:
+			$classes = 'col-xs-6 col-sm-4 col-md-2';
+		break;
+		default:
+			$classes = 'col-xs-12 col-sm-6 col-md-4';
+	}
+	return $classes;
+}
+
+/**
  * Get the columns class by array of breakpoints with their col values.
  * Returns either string of HTML ready classes, or array for used on post_class filters.
  *
@@ -655,6 +718,116 @@ function mai_get_col_suffix( $size ) {
 }
 
 /**
+ * Get gutter class name from gutter value.
+ *
+ * @access  private
+ *
+ * @param   int     Gutter value.
+ *
+ * @return  string  The HTML class.
+ */
+function mai_get_gutter_class( $gutter ) {
+	switch ( (string) $gutter ) {
+		case '0':
+		case 'none':
+			$class = 'gutter-none';
+		break;
+		case '5':
+		case 'xxxs':
+			$class = 'gutter-xxxs';
+		break;
+		case '10':
+		case 'xxs':
+			$class = 'gutter-xxs';
+		break;
+		case 'xs':
+			$class = 'gutter-xs';
+		break;
+		case '20':
+		case 'sm':
+			$class = 'gutter-sm';
+		break;
+		case '30':
+		case 'md':
+			$class = 'gutter-md';
+		break;
+		case '40':
+		case 'lg':
+			$class = 'gutter-lg';
+		break;
+		case '50':
+		case 'xl':
+			$class = 'gutter-xl';
+		break;
+		case '50':
+		case 'xl':
+			$class = 'gutter-xl';
+		break;
+		case '60':
+		case 'xxl':
+			$class = 'gutter-xxl';
+		break;
+			$class = '';
+	}
+	return $class;
+}
+
+/**
+ * Get top class name from top value.
+ *
+ * @access  private
+ *
+ * @param   int     Top value.
+ *
+ * @return  string  The HTML class.
+ */
+function mai_get_top_class( $top ) {
+	switch ( (string) $top ) {
+		case '0':
+		case 'none':
+			$class = 'top-none';
+		break;
+		case '5':
+		case 'xxxs':
+			$class = 'top-xxxs';
+		break;
+		case '10':
+		case 'xxs':
+			$class = 'top-xxs';
+		break;
+		case 'xs':
+			$class = 'top-xs';
+		break;
+		case '20':
+		case 'sm':
+			$class = 'top-sm';
+		break;
+		case '30':
+		case 'md':
+			$class = 'top-md';
+		break;
+		case '40':
+		case 'lg':
+			$class = 'top-lg';
+		break;
+		case '50':
+		case 'xl':
+			$class = 'top-xl';
+		break;
+		case '50':
+		case 'xl':
+			$class = 'top-xl';
+		break;
+		case '60':
+		case 'xxl':
+			$class = 'top-xxl';
+		break;
+			$class = '';
+	}
+	return $class;
+}
+
+/**
  * Get bottom class name from bottom value.
  *
  * @access  private
@@ -664,32 +837,46 @@ function mai_get_col_suffix( $size ) {
  * @return  string  The HTML class.
  */
 function mai_get_bottom_class( $bottom ) {
-	switch ( (int) $bottom ) {
-		case 0:
-			$class = 'bottom-xs-0';
+	switch ( (string) $bottom ) {
+		case '0':
+		case 'none':
+			$class = 'bottom-none';
 		break;
-		case 5:
-			$class = 'bottom-xs-5';
+		case '5':
+		case 'xxxs':
+			$class = 'bottom-xxxs';
 		break;
-		case 10:
-			$class = 'bottom-xs-10';
+		case '10':
+		case 'xxs':
+			$class = 'bottom-xxs';
 		break;
-		case 20:
-			$class = 'bottom-xs-20';
+		case 'xs':
+			$class = 'bottom-xs';
 		break;
-		case 30:
-			$class = 'bottom-xs-30';
+		case '20':
+		case 'sm':
+			$class = 'bottom-sm';
 		break;
-		case 40:
-			$class = 'bottom-xs-40';
+		case '30':
+		case 'md':
+			$class = 'bottom-md';
 		break;
-		case 50:
-			$class = 'bottom-xs-50';
+		case '40':
+		case 'lg':
+			$class = 'bottom-lg';
 		break;
-		case 60:
-			$class = 'bottom-xs-60';
+		case '50':
+		case 'xl':
+			$class = 'bottom-xl';
 		break;
-		default:
+		case '50':
+		case 'xl':
+			$class = 'bottom-xl';
+		break;
+		case '60':
+		case 'xxl':
+			$class = 'bottom-xxl';
+		break;
 			$class = '';
 	}
 	return $class;
@@ -699,14 +886,22 @@ function mai_get_bottom_class( $bottom ) {
  * If gutter is a valid Flexington size.
  */
 function mai_is_valid_gutter( $gutter ) {
-	return in_array( $gutter, array( 0, 5, 10, 20, 30, 40, 50 ), true );
+	return in_array( (string) $gutter, array( 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '0', '5', '10', '20', '30', '40', '50', '60' ), true );
 }
+
+/**
+ * If top is a valid Flexington size.
+ */
+function mai_is_valid_top( $top ) {
+	return in_array( (string) $top, array( 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '0', '5', '10', '20', '30', '40', '50', '60' ), true );
+}
+
 
 /**
  * If bottom is a valid Flexington size.
  */
 function mai_is_valid_bottom( $bottom ) {
-	return in_array( $bottom, array( 0, 5, 20, 30, 40, 50 ), true );
+	return in_array( (string) $bottom, array( 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '0', '5', '10', '20', '30', '40', '50' ), true );
 }
 
 /**
