@@ -358,6 +358,62 @@ function mai_get_size_by_columns( $columns ) {
 }
 
 /**
+ * Get gutter size name from gutter value.
+ *
+ * @since   1.3.8
+ * @access  private
+ *
+ * @param   mixed   Gutter value.
+ *
+ * @return  string  The gutter size.
+ */
+function mai_get_gutter_size( $gutter ) {
+	switch ( (string) $gutter ) {
+		case '0':
+		case 'none':
+			$size = '0';
+		break;
+		case '5':
+		case 'xxxs':
+			$size = 'xxxs';
+		break;
+		case '10':
+		case 'xxs':
+			$size = 'xxs';
+		break;
+		case 'xs':
+			$size = 'xs';
+		break;
+		case '20':
+		case 'sm':
+			$size = 'sm';
+		break;
+		case '30':
+		case 'md':
+			$size = 'md';
+		break;
+		case '40':
+		case 'lg':
+			$size = 'lg';
+		break;
+		case '50':
+		case 'xl':
+			$size = 'xl';
+		break;
+		case '50':
+		case 'xl':
+			$size = 'xl';
+		break;
+		case '60':
+		case 'xxl':
+			$size = 'xxl';
+		break;
+			$size = '0';
+	}
+	return $size;
+}
+
+/**
  * Helper function to check if archive is a flex loop.
  * This doesn't check if viewing an actual archive, but this layout should not be an option if ! is_archive()
  *

@@ -744,62 +744,6 @@ function mai_get_gutter_class( $gutter ) {
 }
 
 /**
- * Get gutter size name from gutter value.
- *
- * @since   1.3.8
- * @access  private
- *
- * @param   mixed   Gutter value.
- *
- * @return  string  The gutter size.
- */
-function mai_get_gutter_size( $gutter ) {
-	switch ( (string) $gutter ) {
-		case '0':
-		case 'none':
-			$size = '0';
-		break;
-		case '5':
-		case 'xxxs':
-			$size = 'xxxs';
-		break;
-		case '10':
-		case 'xxs':
-			$size = 'xxs';
-		break;
-		case 'xs':
-			$size = 'xs';
-		break;
-		case '20':
-		case 'sm':
-			$size = 'sm';
-		break;
-		case '30':
-		case 'md':
-			$size = 'md';
-		break;
-		case '40':
-		case 'lg':
-			$size = 'lg';
-		break;
-		case '50':
-		case 'xl':
-			$size = 'xl';
-		break;
-		case '50':
-		case 'xl':
-			$size = 'xl';
-		break;
-		case '60':
-		case 'xxl':
-			$size = 'xxl';
-		break;
-			$size = '0';
-	}
-	return $size;
-}
-
-/**
  * Get top class name from top value.
  *
  * @access  private
@@ -812,42 +756,42 @@ function mai_get_top_class( $top ) {
 	switch ( (string) $top ) {
 		case '0':
 		case 'none':
-			$class = 'top-none';
+			$class = 'top-xs-none';
 		break;
 		case '5':
 		case 'xxxs':
-			$class = 'top-xxxs';
+			$class = 'top-xs-xxxs';
 		break;
 		case '10':
 		case 'xxs':
-			$class = 'top-xxs';
+			$class = 'top-xs-xxs';
 		break;
 		case 'xs':
-			$class = 'top-xs';
+			$class = 'top-xs-xs';
 		break;
 		case '20':
 		case 'sm':
-			$class = 'top-sm';
+			$class = 'top-xs-sm';
 		break;
 		case '30':
 		case 'md':
-			$class = 'top-md';
+			$class = 'top-xs-md';
 		break;
 		case '40':
 		case 'lg':
-			$class = 'top-lg';
+			$class = 'top-xs-lg';
 		break;
 		case '50':
 		case 'xl':
-			$class = 'top-xl';
+			$class = 'top-xs-xl';
 		break;
 		case '50':
 		case 'xl':
-			$class = 'top-xl';
+			$class = 'top-xs-xl';
 		break;
 		case '60':
 		case 'xxl':
-			$class = 'top-xxl';
+			$class = 'top-xs-xxl';
 		break;
 			$class = '';
 	}
@@ -867,42 +811,42 @@ function mai_get_bottom_class( $bottom ) {
 	switch ( (string) $bottom ) {
 		case '0':
 		case 'none':
-			$class = 'bottom-none';
+			$class = 'bottom-xs-none';
 		break;
 		case '5':
 		case 'xxxs':
-			$class = 'bottom-xxxs';
+			$class = 'bottom-xs-xxxs';
 		break;
 		case '10':
 		case 'xxs':
-			$class = 'bottom-xxs';
+			$class = 'bottom-xs-xxs';
 		break;
 		case 'xs':
-			$class = 'bottom-xs';
+			$class = 'bottom-xs-xs';
 		break;
 		case '20':
 		case 'sm':
-			$class = 'bottom-sm';
+			$class = 'bottom-xs-sm';
 		break;
 		case '30':
 		case 'md':
-			$class = 'bottom-md';
+			$class = 'bottom-xs-md';
 		break;
 		case '40':
 		case 'lg':
-			$class = 'bottom-lg';
+			$class = 'bottom-xs-lg';
 		break;
 		case '50':
 		case 'xl':
-			$class = 'bottom-xl';
+			$class = 'bottom-xs-xl';
 		break;
 		case '50':
 		case 'xl':
-			$class = 'bottom-xl';
+			$class = 'bottom-xs-xl';
 		break;
 		case '60':
 		case 'xxl':
-			$class = 'bottom-xxl';
+			$class = 'bottom-xs-xxl';
 		break;
 			$class = '';
 	}
