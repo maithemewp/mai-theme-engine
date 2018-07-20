@@ -498,37 +498,7 @@ function mai_get_columns() {
  * @return  string  the classes
  */
 function mai_get_col_classes_by_columns( $columns ) {
-	switch ( (int)$columns ) {
-		case 1:
-			$classes = 'col-xs-12';
-		break;
-		case 2:
-			$classes = 'col-xs-12 col-sm-6';
-		break;
-		case 3:
-			$classes = 'col-xs-12 col-sm-6 col-md-4';
-		break;
-		case 4:
-			$classes = 'col-xs-12 col-sm-6 col-md-3';
-		break;
-		case 6:
-			$classes = 'col-xs-6 col-sm-4 col-md-2';
-		break;
-		default:
-			$classes = 'col-xs-12 col-sm-6 col-md-4';
-	}
-	return $classes;
-}
-
-/**
- * Get the classes needed for an entry from number of columns.
- *
- * @param  string  $columns  number of columns to get classes for.
- *
- * @return string  the classes
- */
-function mai_get_flex_entry_classes_by_columns( $columns ) {
-	switch ( (int)$columns ) {
+	switch ( (int) $columns ) {
 		case 1:
 			$classes = 'col-xs-12';
 		break;
