@@ -21,11 +21,12 @@ class Mai_Columns {
 			'align'      => '',
 			'align_cols' => '',
 			'align_text' => '',
-			'bottom'     => '',
+			'bottom'     => '',   // Bottom margin. none, xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'class'      => '',   // HTML classes (space separated)
-			'gutter'     => '30', // Space between columns (5, 10, 20, 30, 40, 50) only
+			'gutter'     => 'md', // Space between columns (xxxs, xxs, xs, sm, md, lg, xl, xxl) only
 			'id'         => '',   // Add HTML id
 			'style'      => '',   // Inline styles
+			'top'        => '',   // Top margin. none, xxxs, xxs, xs, sm, md, lg, xl, xxl
 		), $this->args, 'columns' );
 
 		// Sanitize args.
@@ -33,11 +34,12 @@ class Mai_Columns {
 			'align'      => mai_sanitize_keys( $this->args['align'] ),
 			'align_cols' => mai_sanitize_keys( $this->args['align_cols'] ),
 			'align_text' => mai_sanitize_keys( $this->args['align_text'] ),
-			'bottom'     => is_numeric( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
+			'bottom'     => sanitize_key( $this->args['bottom'] ),
 			'class'      => mai_sanitize_html_classes( $this->args['class'] ),
 			'gutter'     => absint( $this->args['gutter'] ),
 			'id'         => sanitize_html_class( $this->args['id'] ),
 			'style'      => sanitize_text_field( $this->args['style'] ),
+			'top'        => sanitize_key( $this->args['top'] ),
 		);
 
 	}
@@ -65,6 +67,11 @@ class Mai_Columns {
 
 		// Add row align classes.
 		$attributes['class'] = mai_add_row_align_classes( $attributes['class'], $this->args );
+
+		// Add top margin classes.
+		if ( mai_is_valid_top( $this->args['top'] ) ) {
+			$attributes['class'] = mai_add_classes( mai_get_top_class( $this->args['top'] ), $attributes['class'] );
+		}
 
 		// Add bottom margin classes.
 		if ( mai_is_valid_bottom( $this->args['bottom'] ) ) {

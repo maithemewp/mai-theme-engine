@@ -1,5 +1,6 @@
 ### Changelog
 
+Added: [grid][columns][col] 'top' param to add top margin. Accepts 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', or 'xxl'.
 Added: HTML5 gallery and caption support.
 Added: Top/bottom/gutter classes by size. Example: top-md bottom-lg gutter-sm.
 Changed: Deprecated bottom/gutter number values (10, 20, 30, etc) in favor of sizes (xs, sm, md, etc).
