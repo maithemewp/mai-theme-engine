@@ -1739,6 +1739,15 @@ img.alignright,
 	margin-bottom: 32px;
 }
 
+.gallery-item .gallery-icon {
+	line-height: 0;
+}
+
+.gallery-caption {
+	margin: 8px 0 0;
+	line-height: initial;
+}
+
 input[name="post_password"] {
 	max-width: 240px;
 }
