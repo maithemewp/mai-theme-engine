@@ -221,7 +221,7 @@ function mai_do_flex_loop_open() {
 
 	// Flex row wrap.
 	$attributes = array(
-		'class' => 'row gutter-30',
+		'class' => 'row gutter-md',
 	);
 	printf( '<div %s>', genesis_attr( 'flex-row', $attributes ) );
 
