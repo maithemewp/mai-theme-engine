@@ -1035,96 +1035,76 @@
 
 /* Top Bottom Extra Small */
 
-.top-0,
-.top-none,
 .top-xs-0,
 .top-xs-none {
 	margin-top: 0;
 }
 
-.top-xxxs,
 .top-xs-xxxs {
 	margin-top: 4px;
 }
 
-.top-xxs,
 .top-xs-xxs {
 	margin-top: 8px;
 }
 
-.top-xs,
 .top-xs-xs {
 	margin-top: 16px;
 }
 
-.top-sm,
 .top-xs-sm {
 	margin-top: 24px;
 }
 
-.top-md,
 .top-xs-md {
 	margin-top: 32px;
 }
 
-.top-lg,
 .top-xs-lg {
 	margin-top: 40px;
 }
 
-.top-xl,
 .top-xs-xl {
 	margin-top: 48px;
 }
 
-.top-xxl,
 .top-xs-xxl {
 	margin-top: 56px;
 }
 
-.bottom-0,
-.bottom-none,
 .bottom-xs-0,
 .bottom-xs-none {
 	margin-bottom: 0;
 }
 
-.bottom-xxxs,
 .bottom-xs-xxxs {
 	margin-bottom: 4px;
 }
 
-.bottom-xxs,
 .bottom-xs-xxs {
 	margin-bottom: 8px;
 }
 
-.bottom-xs,
 .bottom-xs-xs {
 	margin-bottom: 16px;
 }
 
-.bottom-sm,
 .bottom-xs-sm {
 	margin-bottom: 24px;
 }
 
-.bottom-md,
 .bottom-xs-md {
 	margin-bottom: 32px;
 }
 
-.bottom-lg,
 .bottom-xs-lg {
 	margin-bottom: 40px;
 }
 
-.bottom-xl,
 .bottom-xs-xl {
 	margin-bottom: 48px;
 }
 
-.bottom-xxl,
 .bottom-xs-xxl {
 	margin-bottom: 56px;
 }
