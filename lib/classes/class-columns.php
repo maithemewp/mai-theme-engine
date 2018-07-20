@@ -61,7 +61,7 @@ class Mai_Columns {
 		);
 
 		// Add gutter.
-		$attributes['class'] = mai_add_classes( sprintf( 'gutter-%s', $this->args['gutter'] ), $attributes['class'] );
+		$attributes['class'] = mai_add_classes( mai_get_gutter_class( $this->args['gutter'] ), $attributes['class'] );
 
 		// Add row align classes.
 		$attributes['class'] = mai_add_row_align_classes( $attributes['class'], $this->args );
