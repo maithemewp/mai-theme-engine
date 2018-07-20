@@ -165,16 +165,19 @@ final class Mai_Theme_Engine {
 		 */
 		add_action( 'genesis_setup', function() {
 
-			// Do not load old stuff
+			// Do not load old stuff.
 			add_filter( 'genesis_load_deprecated', '__return_false' );
 
-			// Add HTML5 markup structure
+			// Add HTML5 markup structure.
 			add_theme_support( 'html5' );
 
-			// Add title tag support
+			// Add HTML5 gallery and caption support.
+			add_theme_support( 'html5', array( 'gallery', 'caption' ) );
+
+			// Add title tag support.
 			add_theme_support( 'title-tag' );
 
-			// Add viewport meta tag for mobile browsers
+			// Add viewport meta tag for mobile browsers.
 			add_theme_support( 'genesis-responsive-viewport' );
 
 			add_theme_support( 'genesis-menus', array(
@@ -185,7 +188,7 @@ final class Mai_Theme_Engine {
 				'mobile'       => __( 'Mobile Menu', 'mai-theme-engine' ),
 			) );
 
-			// Add support for structural wraps
+			// Add support for structural wraps.
 			add_theme_support( 'genesis-structural-wraps', array(
 				'archive-description',
 				'breadcrumb',
@@ -196,7 +199,7 @@ final class Mai_Theme_Engine {
 				'footer',
 			) );
 
-			// Add Accessibility support
+			// Add Accessibility support.
 			add_theme_support( 'genesis-accessibility', array(
 				'404-page',
 				'drop-down-menu',
@@ -205,7 +208,7 @@ final class Mai_Theme_Engine {
 				'skip-links',
 			) );
 
-			// Add custom logo support
+			// Add custom logo support.
 			add_theme_support( 'custom-logo', array(
 				'height'        => 120, // Optional size
 				'width'         => 240, // Optional size
@@ -213,7 +216,7 @@ final class Mai_Theme_Engine {
 				'flex-width'    => true,
 			) );
 
-			// Add excerpt support for pages
+			// Add excerpt support for pages.
 			add_post_type_support( 'page', 'excerpt' );
 
 			/**
