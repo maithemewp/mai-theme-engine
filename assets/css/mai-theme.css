@@ -1554,7 +1554,7 @@ body.has-boxed-site-container {
 .flex-entry.boxed:not(.image-bg) h4,
 .flex-entry.boxed:not(.image-bg) h5,
 .flex-entry.boxed:not(.image-bg) h6,
-.flex-entry.boxed:not(.image-bg) a {
+.flex-entry.boxed:not(.image-bg) a:not(button):not(.button):not(input[type="submit"]) {
 	color: initial;
 }
 
@@ -3549,7 +3549,7 @@ p ~ .flex-grid {
 p.entry-meta {
 	color: #555;
 	font-size: 0.8em;
-	margin-bottom: 16px;
+	margin-bottom: 24px;
 }
 
 .entry-header .entry-meta > * {
