@@ -180,6 +180,7 @@ final class Mai_Theme_Engine {
 			// Add viewport meta tag for mobile browsers.
 			add_theme_support( 'genesis-responsive-viewport' );
 
+			// Add support for Genesis menus.
 			add_theme_support( 'genesis-menus', array(
 				'primary'      => __( 'Primary Menu', 'mai-theme-engine' ),
 				'header_left'  => __( 'Header Left Menu', 'mai-theme-engine' ),
@@ -188,7 +189,7 @@ final class Mai_Theme_Engine {
 				'mobile'       => __( 'Mobile Menu', 'mai-theme-engine' ),
 			) );
 
-			// Add support for structural wraps.
+			// Add support for Genesis structural wraps.
 			add_theme_support( 'genesis-structural-wraps', array(
 				'archive-description',
 				'breadcrumb',
@@ -199,7 +200,7 @@ final class Mai_Theme_Engine {
 				'footer',
 			) );
 
-			// Add Accessibility support.
+			// Add Genesis accessibility support.
 			add_theme_support( 'genesis-accessibility', array(
 				'404-page',
 				'drop-down-menu',
