@@ -2408,39 +2408,42 @@ input[name="post_password"] {
 	animation-timing-function: ease-in-out;
 }
 
-.has-reveal-header .site-header.sticky-header,
-.has-reveal-header .site-header.unstick-header {
+.has-reveal-header .site-header.reveal-header,
+.has-reveal-header .site-header.conceal-header {
 	position: -webkit-sticky;
 	position: sticky;
 	top: 0;
 	z-index: 96; /* lower than search-box */
 }
 
-.has-reveal-header .site-header.unstick-header {
+.has-reveal-header .site-header.conceal-header {
 	-webkit-transform: translateY(-100%);
 	-ms-transform: translateY(-100%);
 	transform: translateY(-100%);
 }
 
-.has-reveal-header .site-header.unstick-header {
+.has-reveal-header .site-header.conceal-header {
 	-webkit-animation-name: fadeOutUp;
 	animation-name: fadeOutUp;
 }
 
-.has-reveal-header .site-header.sticky-header {
+.has-reveal-header .site-header.reveal-header {
 	-webkit-animation-name: fadeInDown;
 	animation-name: fadeInDown;
 }
 
-.has-reveal-header.admin-bar .site-header.sticky-header {
-	top: 46px;
+@media only screen and (min-width: 545px) {
+
+	.has-reveal-header.admin-bar .site-header.reveal-header {
+		top: 46px;
+	}
+
 }
 
-/* Admin bar scrolls at this size. */
-@media screen and (max-width: 600px) {
+@media only screen and (min-width: 782px) {
 
-	.has-reveal-header.admin-bar .site-header.sticky-header {
-		top: 0;
+	.has-reveal-header.admin-bar .site-header.reveal-header {
+		top: 32px;
 	}
 
 }
