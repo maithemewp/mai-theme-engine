@@ -21,6 +21,18 @@ function mai_custom_logo( $content ) {
 }
 
 /**
+ * Fix Google Schema error, "The property logo is not recognised by Google for an object of type WPHeader".
+ *
+ * @param   string  $html  The logo HTML.
+ *
+ * @return  string  The modified HTML.
+ */
+add_filter( 'get_custom_logo', function( $html ) {
+	$html = str_replace( 'itemprop="logo"', 'itemprop="image"', $html );
+	return $html;
+});
+
+/**
  * Use h1 on site title when banner area isn't enabled,
  * and using sections template without h1 in content and without any section titles.
  *
