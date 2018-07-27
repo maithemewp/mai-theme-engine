@@ -1,5 +1,54 @@
 /**
- * Handle sticky-header, shrink-header, and scroll logic.
+ * Handle reveal-header.
+ *
+ * @version  1.0.0
+ */
+( function( document, $, undefined ) {
+
+	var $body = $( 'body' );
+
+	// Bail if not doing reveal header.
+	if ( ! $body.hasClass( 'has-reveal-header' ) ) {
+		return;
+	}
+
+	var $header       = $( '.site-header' ),
+		$window       = $(window),
+		lastScrollTop = $window.scrollTop();
+
+	$window.on( 'scroll', function() {
+
+		// Bail if the mobile menu is open.
+		if ( $body.hasClass( 'mai-menu-activated' ) ) {
+			return;
+		}
+
+		// Current scroll position.
+		var scrollTop = $window.scrollTop();
+
+		// Scrolling up.
+		if ( scrollTop < lastScrollTop ) {
+			$header.removeClass( 'conceal-header' ).addClass( 'reveal-header' );
+		}
+		// Scrolling down, only if is already a reveal header. This is so it won't animate on first scroll from top of page.
+		else if ( $header.hasClass( 'reveal-header' ) && scrollTop > lastScrollTop ) {
+			$header.removeClass( 'reveal-header' ).addClass( 'conceal-header' );
+		}
+
+		// Remove the class if they scrolled all the way to the top.
+		if ( 0 === scrollTop ) {
+			$header.removeClass( 'reveal-header conceal-header' );
+		}
+
+		// Current scroll saved as the last scroll position.
+		lastScrollTop = scrollTop;
+	});
+
+})( document, jQuery );
+
+
+/**
+ * Handle shrink-header, and scroll logic.
  *
  * @version  1.0.0
  */
@@ -108,72 +157,23 @@
  * Set an elements min-height
  * according to the aspect ratio of its' background image.
  *
- * @version  1.1.0
+ * @version  2.0.0
  */
 ( function( window, document, $, undefined ) {
 
-	var el = '.aspect-ratio';
-
 	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
-	$( window ).ready( function() {
-		_setupResize( el );
-	});
+	window.addEventListener( 'load', aspectRatio );
+	window.addEventListener( 'resize', aspectRatio );
 
 	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
 	$( document ).on( 'facetwp-loaded', function() {
-		_setupResize( el );
+		aspectRatio();
 	});
 
-	function _setupResize( el ) {
-
-		// Aspect ratio elements.
-		var $aspectElements = $( el );
-
-		// If we have any elements.
-		if ( $aspectElements.length ) {
-
-			$.each( $aspectElements, function() {
-
-				var $element = $(this);
-
-				if ( $element.hasClass( 'mai-slide' ) ) {
-
-					var $slider = $element.parents( '.flex-grid' ).find( '.mai-slider' );
-
-					/**
-					 * Wait till slider events before initial resize,
-					 * otherwise we were getting element width too early and calculations were wrong.
-					 */
-					$slider.on( 'init reInit breakpoint setPosition', function( event, slick ) {
-						_resizeToMatch( $element );
-					});
-
-				} else {
-
-					_resizeToMatch( $element );
-				}
-
-				// Resize the window resize.
-				$( window ).on( 'resize orientationchange', function() {
-					setTimeout( function() {
-						_resizeToMatch( $element );
-					}, 120 );
-				});
-
-			});
-		}
-	}
-
-	function _resizeToMatch( $element ) {
-
-		// Get the image size from attributes.
-		var width  = $element.data( 'aspect-width' ),
-			height = $element.data( 'aspect-height' );
-
-		if ( width && height ) {
-			$element.css( 'min-height', Math.round( $element.outerWidth() * height / width ) + 'px' );
-		}
-
+	function aspectRatio() {
+		return document.querySelectorAll( '.aspect-ratio' ).forEach( function( el ) {
+			return el.style.minHeight = el.offsetWidth / ( el.getAttribute( 'data-aspect-width' ) / el.getAttribute('data-aspect-height') ) + 'px';
+		});
 	}
 
 })( window, document, jQuery );
@@ -189,7 +189,7 @@
 
 	var $searchItems = $( '.genesis-nav-menu .search' );
 
-	if ( $searchItems.length == 0 ) {
+	if ( 0 === $searchItems.length ) {
 		return;
 	}
 
@@ -293,7 +293,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	// Initialize.
 	maiMenu.init = function() {
 
-		var toggleButtons     = {
+		var toggleButtons = {
 			menu : $( '<button />', {
 				'id' : maiButtonClass,
 				'class' : maiButtonClass,

@@ -10,6 +10,7 @@ Fixed: [grid] Better FacetWP handling when there are no results after filtering.
 Fixed: Banner/Featured image field should show even when banner is disabled, since this image is used for [grid] as well.
 Fixed: Don't show empty archive-description wrap if there is no editor content on page-for-posts.
 Fixed: Overly aggressive bottom margin on entries.
+Fixed: Fix WP's Google Schema error, "The property logo is not recognised by Google for an object of type WPHeader".
 
 #### 1.3.7 (7/13/18)
 * Fixed: Site header search bar CSS moved to larger screens only.
