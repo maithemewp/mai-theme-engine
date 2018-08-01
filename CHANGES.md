@@ -7,6 +7,7 @@ Changed: Deprecated bottom/gutter number values (10, 20, 30, etc) in favor of si
 Changed: Converted most padding/margin to values divisible by 4's or 8's.
 Changed: Aspect ratio calculations now use vanilla JS. Props @tomhodgins from cssplus.
 Changed: Bump Flexington version to 2.4.0. New top helper classes.
+Changed: Removed CSS initial since IE doesn't support it. Specified a color value.
 Fixed: [grid] Better FacetWP handling when there are no results after filtering.
 Fixed: Banner/Featured image field should show even when banner is disabled, since this image is used for [grid] as well.
 Fixed: Don't show empty archive-description wrap if there is no editor content on page-for-posts.
