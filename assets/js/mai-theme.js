@@ -12,19 +12,39 @@
 		return;
 	}
 
-	var $header       = $( '.site-header' ),
-		$window       = $(window),
-		lastScrollTop = $window.scrollTop();
+	var $window         = $(window),
+		$header         = $( '.site-header' ),
+		lastScrollTop   = $window.scrollTop(),
+		shouldNotScroll = false;
 
+	// Temporarily disable the scroll function when clicking on anything in the header.
+	$header.on( 'click', function() {
+		shouldNotScroll = true;
+		setTimeout( function() {
+			shouldNotScroll = false;
+		}, 300 );
+	});
+
+	// Run function when scrolling.
 	$window.on( 'scroll', function() {
 
-		// Bail if the mobile menu is open.
+		// Bail if not monitoring scroll.
+		if ( shouldNotScroll ) {
+			return;
+		}
+
+		// Bail if the mobile menu is open. Typically when scrolling with mobile menu open.
 		if ( $body.hasClass( 'mai-menu-activated' ) ) {
 			return;
 		}
 
 		// Current scroll position.
 		var scrollTop = $window.scrollTop();
+
+		// Bail if initial page load. We always want the mobile menu to show regardless of where we are when we reload the page.
+		if ( scrollTop == lastScrollTop ) {
+			return;
+		}
 
 		// Scrolling up.
 		if ( scrollTop < lastScrollTop ) {
@@ -42,6 +62,7 @@
 
 		// Current scroll saved as the last scroll position.
 		lastScrollTop = scrollTop;
+
 	});
 
 })( document, jQuery );
@@ -381,9 +402,10 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 			$maiMenu.slideToggle( 'fast' );
 		}
 
-		// Allow additional keyboard nav.
+		// If opening the menu.
 		if ( $body.hasClass( 'mai-menu-activated' ) ) {
 
+			// Allow additional keyboard nav.
 			$(document).keydown(function(e) {
 				// Use switch to easily add new keystrokes.
 				switch(e.which) {
@@ -455,7 +477,6 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 			}
 
 		});
-
 	}
 
 	/**
@@ -468,7 +489,6 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 		}
 
 		_closeAll();
-
 	}
 
 	/**
@@ -478,7 +498,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 		$body.removeClass( 'mai-menu-activated' )
 		if ( $body.hasClass('side-menu') ) {
-			$body.removeClass( 'side-menu-activated' )
+			$body.removeClass( 'side-menu-activated' );
 		} else {
 			$maiMenu.slideUp( 'fast' );
 		}
@@ -495,7 +515,6 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 		// Hide any open sub-menus.
 		$( '.' + menuClass + ' .sub-menu' ).hide();
-
 	}
 
 	/**
