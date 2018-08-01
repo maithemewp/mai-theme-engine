@@ -28,8 +28,7 @@ function mai_custom_logo( $content ) {
  * @return  string  The modified HTML.
  */
 add_filter( 'get_custom_logo', function( $html ) {
-	$html = str_replace( 'itemprop="logo"', 'itemprop="image"', $html );
-	return $html;
+	return str_replace( 'itemprop="logo"', 'itemprop="image"', $html );
 });
 
 /**
