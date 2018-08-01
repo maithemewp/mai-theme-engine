@@ -1176,7 +1176,7 @@ body.has-boxed-site-container {
 }
 
 .entry.boxed:not(.image-bg) {
-	color: initial;
+	color: #323232;
 }
 
 /* grid entries. main entry has 36px on desktop. */
@@ -1547,15 +1547,15 @@ body.has-boxed-site-container {
 	color: #fff;
 }
 
-.flex-entry.boxed:not(.image-bg),
-.flex-entry.boxed:not(.image-bg) h1,
-.flex-entry.boxed:not(.image-bg) h2,
-.flex-entry.boxed:not(.image-bg) h3,
-.flex-entry.boxed:not(.image-bg) h4,
-.flex-entry.boxed:not(.image-bg) h5,
-.flex-entry.boxed:not(.image-bg) h6,
-.flex-entry.boxed:not(.image-bg) a:not(button):not(.button):not(input[type="submit"]) {
-	color: initial;
+.light-content .flex-entry.boxed:not(.image-bg),
+.light-content .flex-entry.boxed:not(.image-bg) h1,
+.light-content .flex-entry.boxed:not(.image-bg) h2,
+.light-content .flex-entry.boxed:not(.image-bg) h3,
+.light-content .flex-entry.boxed:not(.image-bg) h4,
+.light-content .flex-entry.boxed:not(.image-bg) h5,
+.light-content .flex-entry.boxed:not(.image-bg) h6,
+.light-content .flex-entry.boxed:not(.image-bg) a:not(.button):not(.more-link) {
+	color: #323232;
 }
 
 .light-content .entry-header .entry-meta a,
