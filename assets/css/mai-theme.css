@@ -2378,8 +2378,8 @@ input[name="post_password"] {
 .site-header > .wrap {
 	margin-top: 4px;
 	margin-bottom: 4px;
-	padding-left: 12px;
-	padding-right: 12px;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 /* forces logo and mobile toggle on same line */
@@ -2432,7 +2432,7 @@ input[name="post_password"] {
 	animation-name: fadeInDown;
 }
 
-@media only screen and (min-width: 545px) {
+@media only screen and (min-width: 600px) {
 
 	.has-reveal-header.admin-bar .site-header.reveal-header {
 		top: 46px;
@@ -2513,17 +2513,12 @@ input[name="post_password"] {
 		top: 0;
 	}
 
+}
+
+@media only screen and (min-width: 600px) {
+
 	.admin-bar.has-sticky-header .site-header {
 		top: 46px;
-	}
-
-	.has-sticky-header.mai-standard-menu-activated {
-		overflow: hidden;
-	}
-
-	.has-sticky-header.mai-standard-menu-activated .site-header {
-		max-height: 100vh;
-		overflow-y: auto;
 	}
 
 }
@@ -3082,7 +3077,6 @@ input[name="post_password"] {
 .mai-toggle:focus,
 .mai-toggle:hover {
 	padding: 24px 16px;
-	margin-right: 8px;
 }
 
 .mai-bars,
@@ -3209,12 +3203,25 @@ input[name="post_password"] {
 	color: #323232;
 }
 
+/* ### Standard Menu
+--------------------------------------------- */
+
+.mai-standard-menu-activated {
+	overflow: hidden;
+}
+
+.mai-standard-menu-activated .site-header {
+	max-height: 100vh;
+	overflow-y: auto;
+}
+
 .mai-standard-menu-activated .site-header::after {
 	content: '';
 	position: fixed;
 	width: 100%;
 	height: 100%;
 	background: rgba(0,0,0,0.5);
+	z-index: 9;
 	-webkit-animation-duration: 300ms;
 	animation-duration: 300ms;
 	-webkit-animation-fill-mode: both;
@@ -3233,19 +3240,6 @@ input[name="post_password"] {
 @keyframes fadeIn {
 	from { opacity: 0; }
 	to { opacity: 1; }
-}
-
-/* ### Standard Menu
---------------------------------------------- */
-
-.mai-standard-menu-activated {
-	overflow: hidden;
-}
-
-.mai-standard-menu-activated.scroll .site-header {
-	max-height: 100vh;
-	overflow-x: hidden;
-	overflow-y: auto;
 }
 
 /* ### Side Menu

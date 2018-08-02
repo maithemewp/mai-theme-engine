@@ -1,217 +1,259 @@
 /**
- * Handle all header related code.
- *
- * @version  1.0.0
- */
-// ( function( document, $, undefined ) {
-
-// 	var $body       = $( 'body' );
-// 		$window     = $(window),
-// 		$header     = $( '.site-header' ),
-// 		$customLogo = $( '.site-title .custom-logo-link' ),
-// 		$titleText  = $( '.site-title a:not(.custom-logo-link)' );
-
-// 	var fontSize  = parseInt( $titleText.css( 'font-size' ) ),
-// 		logoWidth = $customLogo.outerWidth();
-
-// })( document, jQuery );
-
-
-/**
- * Handle reveal-header.
+ * Header shrink helper functions.
+ * Everything here rebuilt for v1.4.0.
  *
  * @version  1.0.0
  */
 ( function( document, $, undefined ) {
 
-	var $body = $( 'body' );
+	var $body       = $( 'body' );
+		$window     = $(window),
+		$header     = $( '.site-header' ),
+		$customLogo = $header.find( '.custom-logo-link' ),
+		$titleText  = $header.find( '.site-title a' ).not( '.custom-logo-link' );
 
-	// Bail if not doing reveal header.
-	if ( ! $body.hasClass( 'has-reveal-header' ) ) {
-		return;
-	}
+	var hasStickyShrink = $body.hasClass( 'has-sticky-shrink-header' ),
+		hasReveal       = $body.hasClass( 'has-reveal-header' ),
+		hasRevealShrink = $body.hasClass( 'has-reveal-shrink-header' ),
+		fontSize        = parseInt( $titleText.css( 'font-size' ) ),
+		logoWidth       = $customLogo.outerWidth();
 
-	var $window         = $(window),
-		$header         = $( '.site-header' ),
-		lastScrollTop   = $window.scrollTop(),
-		shouldNotScroll = false;
+	// Add scroll class.
+	$window.on( 'resize scroll', function() {
 
-	// Temporarily disable the scroll function when clicking on anything in the header.
-	$header.on( 'click', function() {
-		shouldNotScroll = true;
-		setTimeout( function() {
-			shouldNotScroll = false;
-		}, 300 );
-	});
+		var scrollClassAdded = false;
 
-	// Run function when scrolling.
-	$window.on( 'scroll', function() {
-
-		// Bail if not monitoring scroll.
-		if ( shouldNotScroll ) {
-			return;
-		}
-
-		// Bail if the mobile menu is open. Typically when scrolling with mobile menu open.
-		if ( $body.hasClass( 'mai-menu-activated' ) ) {
-			return;
-		}
-
-		// Current scroll position.
-		var scrollTop = $window.scrollTop();
-
-		// Bail if initial page load. We always want the mobile menu to show regardless of where we are when we reload the page.
-		if ( scrollTop == lastScrollTop ) {
-			return;
-		}
-
-		// Scrolling up.
-		if ( scrollTop < lastScrollTop ) {
-			if ( $body.hasClass( 'has-reveal-shrink-header' ) ) {
-				shrinkHeader();
-				$header.addClass( 'shrink' );
-			}
-			$header.removeClass( 'conceal-header' ).addClass( 'reveal-header' );
-		}
-		// Scrolling down, only if is already a reveal header. This is so it won't animate on first scroll from top of page.
-		else if ( $header.hasClass( 'reveal-header' ) && scrollTop > lastScrollTop ) {
-			if ( $body.hasClass( 'has-reveal-shrink-header' ) ) {
-				unshrinkHeader();
-				$header.removeClass( 'shrink' );
-			}
-			$header.removeClass( 'reveal-header' ).addClass( 'conceal-header' );
-		}
-
-		// Remove the class if they scrolled all the way to the top.
-		if ( 0 === scrollTop ) {
-			$header.removeClass( 'shrink reveal-header conceal-header' );
-		}
-
-		// Current scroll saved as the last scroll position.
-		lastScrollTop = scrollTop;
-
-	});
-
-})( document, jQuery );
-
-
-/**
- * Handle sticky-shrink header, and scroll logic.
- *
- * @version  1.0.0
- */
-( function( document, $, undefined ) {
-
-	var $body       = $( 'body' ),
-		$customLogo = $( '.site-title .custom-logo-link' ),
-		$titleText  = $( '.site-title a:not(.custom-logo-link)' ),
-		fontSize    = parseInt( $titleText.css( 'font-size' ) ),
-		logoWidth   = $customLogo.outerWidth();
-
-	// Set inline width. This seems to help with jitters on first scroll.
-	if ( $(this).width() > 768 ) {
-		// $customLogo.css({ maxWidth: logoWidth });
-		// $titleText.css({ fontSize: fontSize });
-	}
-	// Force shrink text on mobile.
-	else {
-		// $titleText.css({ fontSize: fontSize * .8 });
-	}
-
-	// If doing a shrink header.
-	if ( $body.hasClass( 'has-sticky-shrink-header' ) ) {
-
-		var $siteHeader   = $( '.site-header' ),
-			shrinkFired   = false,
-			unshrinkFired = false;
-
-		// On resize and/or scroll.
-		$( window ).on( 'resize scroll', function() {
-
-			if ( $(this).width() > 768 ) {
-
-				// Shrink/Unshrink triggers.
-				if ( $(this).scrollTop() > 1 ) {
-					if ( false === shrinkFired ) {
-						$siteHeader.trigger( 'mai-shrink-header' );
-						shrinkFired   = true;
-						unshrinkFired = false;
-					}
-				} else {
-					if ( false === unshrinkFired ) {
-						$siteHeader.trigger( 'mai-unshrink-header' );
-						unshrinkFired = true;
-						shrinkFired   = false;
-					}
-				}
-
-			} else {
-
-				// Force shrink text on mobile.
-				$titleText.css({ fontSize: fontSize * .8 });
-			}
-
-		});
-
-		// Shrink.
-		$siteHeader.on( 'mai-shrink-header', function() {
-			shrinkHeader();
-			$(this).addClass( 'shrink' );
-			// $customLogo.css({ maxWidth: logoWidth * .7 });
-			// $titleText.css({ fontSize: fontSize * .8 });
-		});
-
-		// Unshrink.
-		$siteHeader.on( 'mai-unshrink-header', function() {
-			unshrinkHeader();
-			$(this).removeClass( 'shrink' );
-			// $customLogo.css({ maxWidth: logoWidth });
-			// $titleText.css({ fontSize: fontSize });
-		});
-
-	}
-	// Not shrinking header.
-	else {
-
-		// When resizing or scrolling, typically from changing device orientation.
-		$( window ).on( 'resize scroll', function() {
-
-			// Show normal size on desktop.
-			if ( $(this).width() > 768 ) {
-				// $customLogo.css({ maxWidth: logoWidth });
-				// $titleText.css({ fontSize: fontSize });
-			}
-			// Force shrink text on mobile.
-			else {
-				// $titleText.css({ fontSize: fontSize * .8 });
-			}
-
-		});
-
-	}
-
-	// On scroll add .scroll class.
-	$( window ).scroll( function() {
 		// Shrink the header on scroll.
-		if ( $( window ).scrollTop() > 1 ) {
+		if ( $window.scrollTop() > 1 ) {
+
+			// Bail if scroll class added.
+			if ( scrollClassAdded ) {
+				return;
+			}
+
 			$body.addClass( 'scroll' );
+
+			scrollClassAdded = true;
+
 		} else {
+
 			$body.removeClass( 'scroll' );
 		}
 	});
 
-})( document, jQuery );
+	/**
+	 * Set initial inline width.
+	 * This seems to help with jitters on first scroll.
+	 */
+	reSize();
 
+	/**
+	 * Resize logo/title when resizing the browser window.
+	 */
+	$window.on( 'resize', function() {
+		reSize();
+	});
+
+	// If doing a sticky shrink header.
+	if ( hasStickyShrink ) {
+
+		var	shrinkFired      = false,
+			unshrinkFired    = false,
+			titleShrinkFired = false;
+
+		// On resize and/or scroll.
+		$( window ).on( 'resize scroll', function() {
+
+			// Larger browser windows.
+			if ( $window.width() > 768 ) {
+
+				// Shrink/Unshrink triggers.
+				if ( $window.scrollTop() > 1 ) {
+					if ( false !== shrinkFired ) {
+						return;
+					}
+					// console.log( 'shrink' );
+					shrinkHeader();
+					shrinkFired   = true;
+					unshrinkFired = false;
+				} else {
+					if ( false !== unshrinkFired ) {
+						return;
+					}
+					// console.log( 'unshrink' );
+					unshrinkHeader();
+					unshrinkFired = true;
+					shrinkFired   = false;
+				}
+
+				// Unset this incase browser resized small to large.
+				titleShrinkFired = false;
+
+			}
+			// Smaller browser windows.
+			else {
+
+				if ( ! titleShrinkFired ) {
+
+					// Force shrink text on wall windows.
+					shrinkTitle();
+					shrinkLogo();
+				}
+
+				titleShrinkFired = true;
+			}
+
+		});
+
+	}
+	// If doing reveal header.
+	else if ( hasReveal ) {
+
+		var lastScrollTop   = $window.scrollTop(),
+			shouldNotScroll = false;
+
+		/**
+		 * Temporarily disable the scroll function
+		 * when clicking on anything in the header.
+		 */
+		$header.on( 'click', function() {
+			shouldNotScroll = true;
+			setTimeout( function() {
+				shouldNotScroll = false;
+			}, 300 );
+		});
+
+		/**
+		 * Run function when scrolling.
+		 */
+		$window.on( 'resize scroll', function() {
+
+			// Bail if not monitoring scroll.
+			if ( shouldNotScroll ) {
+				return;
+			}
+
+			// Bail if the mobile menu is open. Typically when scrolling with mobile menu open.
+			if ( $body.hasClass( 'mai-menu-activated' ) ) {
+				return;
+			}
+
+			// Current scroll position and window width.
+			var scrollTop   = $window.scrollTop(),
+				windowWidth = $window.width();
+
+			// Bail if initial page load. We always want the menu to show regardless of where we are when we reload the page.
+			// TODO: NOT WORKING.
+			if ( scrollTop == lastScrollTop ) {
+				return;
+			}
+
+			// Scrolling down, only if is already a reveal header. This is so it won't animate on first scroll from top of page.
+			if ( $header.hasClass( 'reveal-header' ) && scrollTop > lastScrollTop ) {
+				$header.removeClass( 'reveal-header' ).addClass( 'conceal-header' );
+			}
+			// Scrolling up, and not visible.
+			else if ( ( scrollTop < lastScrollTop ) && ! $header.isInViewport() ) {
+				if ( hasRevealShrink ) {
+					shrinkHeader();
+				}
+				$header.removeClass( 'conceal-header' ).addClass( 'reveal-header' );
+			}
+
+			// Remove the class if they scrolled all the way to the top.
+			if ( 0 === scrollTop ) {
+				// If revealing and not on smaller windows.
+				if ( hasRevealShrink && ( windowWidth > 768 ) ) {
+					unshrinkHeader();
+				}
+				$header.removeClass( 'shrink reveal-header conceal-header' );
+			}
+
+			// Current scroll saved as the last scroll position.
+			lastScrollTop = scrollTop;
+
+		});
+
+	}
+
+	/**
+	 * Check if an element is in the viewport.
+	 */
+	$.fn.isInViewport = function() {
+		var elementTop     = $(this).offset().top,
+			elementBottom  = elementTop + $(this).outerHeight(),
+			viewportTop    = $window.scrollTop(),
+			viewportBottom = viewportTop + $window.height();
+		return elementBottom > viewportTop && elementTop < viewportBottom;
+	};
+
+	/**
+	 * Resize logo and title.
+	 */
+	function reSize() {
+		// Bigger windows.
+		if ( $window.width() > 768 ) {
+			// Show normal size.
+			unshrinkLogo();
+			unshrinkTitle();
+		}
+		// Smaller windows.
+		else {
+			// Show smaller size.
+			shrinkLogo();
+			shrinkTitle();
+		}
+	}
+
+	/* ****** *
+	 * Shrink *
+	 * ****** */
 
 	function shrinkHeader() {
-		var $header = $( '.site-header' );
-		$header.addClass( 'shrinkkkkkk' );
+		$header.addClass( 'shrink' );
+		shrinkLogo();
+		shrinkTitle();
 	}
 
-	function unshrinkHeader() {
-		var $header = $( '.site-header' );
-		$header.removeClass( 'shrinkkkkkk' );
+	function shrinkLogo() {
+		if ( ! $customLogo.length ) {
+			return;
+		}
+		$customLogo.css({ maxWidth: logoWidth * .7 });
 	}
+
+	function shrinkTitle() {
+		if ( ! $titleText.length ) {
+			return;
+		}
+		$titleText.css({ fontSize: fontSize * .8 });
+	}
+
+	/* ******** *
+	 * Unshrink *
+	 * ******** */
+
+	function unshrinkHeader() {
+		$header.removeClass( 'shrink' );
+		unshrinkLogo();
+		unshrinkTitle();
+	}
+
+	function unshrinkLogo() {
+		if ( ! $customLogo.length ) {
+			return;
+		}
+		$customLogo.css({ maxWidth: logoWidth });
+	}
+
+	function unshrinkTitle() {
+		if ( ! $titleText.length ) {
+			return;
+		}
+		$titleText.css({ fontSize: fontSize });
+	}
+
+})( document, jQuery );
 
 
 /**
