@@ -1,4 +1,23 @@
 /**
+ * Handle all header related code.
+ *
+ * @version  1.0.0
+ */
+// ( function( document, $, undefined ) {
+
+// 	var $body       = $( 'body' );
+// 		$window     = $(window),
+// 		$header     = $( '.site-header' ),
+// 		$customLogo = $( '.site-title .custom-logo-link' ),
+// 		$titleText  = $( '.site-title a:not(.custom-logo-link)' );
+
+// 	var fontSize  = parseInt( $titleText.css( 'font-size' ) ),
+// 		logoWidth = $customLogo.outerWidth();
+
+// })( document, jQuery );
+
+
+/**
  * Handle reveal-header.
  *
  * @version  1.0.0
@@ -48,16 +67,24 @@
 
 		// Scrolling up.
 		if ( scrollTop < lastScrollTop ) {
+			if ( $body.hasClass( 'has-reveal-shrink-header' ) ) {
+				shrinkHeader();
+				$header.addClass( 'shrink' );
+			}
 			$header.removeClass( 'conceal-header' ).addClass( 'reveal-header' );
 		}
 		// Scrolling down, only if is already a reveal header. This is so it won't animate on first scroll from top of page.
 		else if ( $header.hasClass( 'reveal-header' ) && scrollTop > lastScrollTop ) {
+			if ( $body.hasClass( 'has-reveal-shrink-header' ) ) {
+				unshrinkHeader();
+				$header.removeClass( 'shrink' );
+			}
 			$header.removeClass( 'reveal-header' ).addClass( 'conceal-header' );
 		}
 
 		// Remove the class if they scrolled all the way to the top.
 		if ( 0 === scrollTop ) {
-			$header.removeClass( 'reveal-header conceal-header' );
+			$header.removeClass( 'shrink reveal-header conceal-header' );
 		}
 
 		// Current scroll saved as the last scroll position.
@@ -69,7 +96,7 @@
 
 
 /**
- * Handle shrink-header, and scroll logic.
+ * Handle sticky-shrink header, and scroll logic.
  *
  * @version  1.0.0
  */
@@ -83,16 +110,16 @@
 
 	// Set inline width. This seems to help with jitters on first scroll.
 	if ( $(this).width() > 768 ) {
-		$customLogo.css({ maxWidth: logoWidth });
-		$titleText.css({ fontSize: fontSize });
+		// $customLogo.css({ maxWidth: logoWidth });
+		// $titleText.css({ fontSize: fontSize });
 	}
 	// Force shrink text on mobile.
 	else {
-		$titleText.css({ fontSize: fontSize * .8 });
+		// $titleText.css({ fontSize: fontSize * .8 });
 	}
 
 	// If doing a shrink header.
-	if ( $body.hasClass( 'shrink-header' ) ) {
+	if ( $body.hasClass( 'has-sticky-shrink-header' ) ) {
 
 		var $siteHeader   = $( '.site-header' ),
 			shrinkFired   = false,
@@ -128,16 +155,18 @@
 
 		// Shrink.
 		$siteHeader.on( 'mai-shrink-header', function() {
+			shrinkHeader();
 			$(this).addClass( 'shrink' );
-			$customLogo.css({ maxWidth: logoWidth * .7 });
-			$titleText.css({ fontSize: fontSize * .8 });
+			// $customLogo.css({ maxWidth: logoWidth * .7 });
+			// $titleText.css({ fontSize: fontSize * .8 });
 		});
 
 		// Unshrink.
 		$siteHeader.on( 'mai-unshrink-header', function() {
+			unshrinkHeader();
 			$(this).removeClass( 'shrink' );
-			$customLogo.css({ maxWidth: logoWidth });
-			$titleText.css({ fontSize: fontSize });
+			// $customLogo.css({ maxWidth: logoWidth });
+			// $titleText.css({ fontSize: fontSize });
 		});
 
 	}
@@ -149,12 +178,12 @@
 
 			// Show normal size on desktop.
 			if ( $(this).width() > 768 ) {
-				$customLogo.css({ maxWidth: logoWidth });
-				$titleText.css({ fontSize: fontSize });
+				// $customLogo.css({ maxWidth: logoWidth });
+				// $titleText.css({ fontSize: fontSize });
 			}
 			// Force shrink text on mobile.
 			else {
-				$titleText.css({ fontSize: fontSize * .8 });
+				// $titleText.css({ fontSize: fontSize * .8 });
 			}
 
 		});
@@ -172,6 +201,17 @@
 	});
 
 })( document, jQuery );
+
+
+	function shrinkHeader() {
+		var $header = $( '.site-header' );
+		$header.addClass( 'shrinkkkkkk' );
+	}
+
+	function unshrinkHeader() {
+		var $header = $( '.site-header' );
+		$header.removeClass( 'shrinkkkkkk' );
+	}
 
 
 /**
@@ -392,7 +432,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 		$this.toggleClass( 'activated' );
 		$body.toggleClass( 'mai-menu-activated' );
 
-		if ( $body.hasClass( 'side-menu' ) ) {
+		if ( $body.hasClass( 'has-side-menu' ) ) {
 			// Side menu activated class.
 			$body.toggleClass( 'mai-side-menu-activated' );
 		} else {
@@ -497,7 +537,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	function _closeAll() {
 
 		$body.removeClass( 'mai-menu-activated' )
-		if ( $body.hasClass('side-menu') ) {
+		if ( $body.hasClass('has-side-menu') ) {
 			$body.removeClass( 'side-menu-activated' );
 		} else {
 			$maiMenu.slideUp( 'fast' );
