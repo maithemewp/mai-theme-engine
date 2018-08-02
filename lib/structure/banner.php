@@ -36,6 +36,7 @@ function mai_do_banner_area() {
 	}
 
 	// Remove archive titles/descriptions, we'll add them back later in the banner area.
+	remove_action( 'woocommerce_archive_description', 'mai_do_woo_taxonomy_title_description', 15 );
 	remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 	remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 	remove_action( 'genesis_before_loop', 'genesis_do_author_box_archive', 15 );

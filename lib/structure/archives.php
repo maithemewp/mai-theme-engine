@@ -97,8 +97,8 @@ function mai_remove_woo_taxonomy_title( $return ) {
 
 add_action( 'woocommerce_archive_description', 'mai_do_woo_taxonomy_title_description', 15 );
 function mai_do_woo_taxonomy_title_description() {
-	// If displaying the Woo page title, remove it.
-	if ( apply_filters( 'woocommerce_show_page_title', true ) ) {
+	// Remove headline/title if banner is enabled, cause it's in there.
+	if ( mai_is_banner_area_enabled() ) {
 		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_headline', 10, 3 );
 	}
 	genesis_do_taxonomy_title_description();
