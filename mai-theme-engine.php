@@ -92,7 +92,7 @@ final class Mai_Theme_Engine {
 		define( 'MAI_THEME_ENGINE_VERSION', '1.3.7' );
 
 		// DB version.
-		define( 'MAI_THEME_ENGINE_DB_VERSION', '1161' );
+		define( 'MAI_THEME_ENGINE_DB_VERSION', '1400' );
 
 		// Plugin Folder Path.
 		define( 'MAI_THEME_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
