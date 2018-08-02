@@ -45,9 +45,9 @@ function mai_register_customizer_header_footer_settings( $wp_customize ) {
 			'choices'  => array(
 				'standard'      => __( 'Standard Header' ),
 				'sticky'        => __( 'Sticky Header' ),
+				'sticky_shrink' => __( 'Sticky/Shrink Header' ),
 				'reveal'        => __( 'Reveal Header' ),
-				'sticky_shrink' => __( 'Sticky-Shrink Header' ),
-				'reveal_shrink' => __( 'Reveal-Shrink Header' ),
+				'reveal_shrink' => __( 'Reveal/Shrink Header' ),
 			),
 		)
 	);
