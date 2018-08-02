@@ -157,7 +157,7 @@ function mai_post_gallery( $output, $atts, $instance ) {
 	// Build our new entry/item classes.
 	$classes = 'gallery-item col';
 	$classes = mai_add_classes( mai_get_col_classes_by_columns( $atts['columns'] ), $classes );
-	$classes = mai_add_classes( 'bottom-sm', $classes );
+	$classes = mai_add_classes( 'bottom-xs-sm', $classes );
 	$output  = str_replace( 'gallery-item', $classes, $output );
 
 	// Add filter back incase there is another gallery.
