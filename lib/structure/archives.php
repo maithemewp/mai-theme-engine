@@ -87,6 +87,22 @@ function mai_do_blog_description() {
 	printf( '<div class="archive-description posts-page-description">%s</div>', $content );
 }
 
+add_filter( 'woocommerce_show_page_title', 'mai_remove_woo_taxonomy_title' );
+function mai_remove_woo_taxonomy_title( $return ) {
+	if ( ! is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+		return $return;
+	}
+	return false;
+}
+
+add_action( 'woocommerce_archive_description', 'mai_do_woo_taxonomy_title_description', 15 );
+function mai_do_woo_taxonomy_title_description() {
+	// If displaying the Woo page title, remove it.
+	if ( apply_filters( 'woocommerce_show_page_title', true ) ) {
+		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_headline', 10, 3 );
+	}
+	genesis_do_taxonomy_title_description();
+}
 
 /**
  * Add term description before custom taxonomy loop.
@@ -98,18 +114,43 @@ function mai_do_blog_description() {
 add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
 function mai_do_term_description() {
 
-	// Bail if not a taxonomy archive
+	// Bail if not a taxonomy archive.
 	if ( ! ( is_category() || is_tag() || is_tax() ) ) {
 		return;
 	}
 
-	// If the first page
-	if ( 0 === absint( get_query_var( 'paged' ) ) ) {
-		$description = term_description();
-		if ( $description ) {
-			echo '<div class="archive-description term-description">' . do_shortcode( $description ) . '</div>';
-		}
+	// Bail if WooCommerce product category/tag.
+	if ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+		return;
 	}
+
+	// If the first page.
+	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+		return;
+	}
+
+	$description = term_description();
+	if ( ! $description ) {
+		return;
+	}
+
+	echo '<div class="archive-description term-description">' . do_shortcode( $description ) . '</div>';
+}
+
+add_action( 'woocommerce_archive_description', 'mai_woo_do_term_description', 20 );
+function mai_woo_do_term_description() {
+
+	// If the first page.
+	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+		return;
+	}
+
+	$description = term_description();
+	if ( ! $description ) {
+		return;
+	}
+
+	echo '<div class="archive-description term-description">' . do_shortcode( $description ) . '</div>';
 }
 
 /**
@@ -509,5 +550,6 @@ function mai_do_more_link() {
 	if ( ! $more_link ) {
 		return;
 	}
+
 	echo mai_get_read_more_link( get_the_ID() );
 }
