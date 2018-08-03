@@ -131,6 +131,10 @@ function _mai_cmb_hide_breacrumbs_show_on_cb() {
 }
 
 function _mai_cmb_hide_featured_image_show_on_cb() {
+	// Bail if post type doesn't support featured image.
+	if ( ! post_type_supports( get_post_type(), 'thumbnail' ) ) {
+		return false;
+	}
 	global $typenow;
 	// Check if auto-displaying the featured image.
 	$key     = sprintf( 'singular_image_%s', $typenow );
