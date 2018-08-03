@@ -8,8 +8,10 @@ Changed: Converted most padding/margin to values divisible by 4's or 8's.
 Changed: Aspect ratio calculations now use vanilla JS. Props @tomhodgins from cssplus.
 Changed: Bump Flexington version to 2.4.0. New top helper classes.
 Changed: Removed CSS initial since IE doesn't support it. Specified a color value.
+Changed: WooCommerce product category/tag archives display Archive Intro Text when banner is disabled.
 Fixed: [grid] Better FacetWP handling when there are no results after filtering.
 Fixed: Banner/Featured image field should show even when banner is disabled, since this image is used for [grid] as well.
+Fixed: "Hide featured image" setting won't show if post type doesn't support featured images.
 Fixed: Don't show empty archive-description wrap if there is no editor content on page-for-posts.
 Fixed: Overly aggressive bottom margin on entries.
 Fixed: Fix WP's Google Schema error, "The property logo is not recognised by Google for an object of type WPHeader".
