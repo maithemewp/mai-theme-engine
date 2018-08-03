@@ -87,14 +87,24 @@ function mai_do_blog_description() {
 	printf( '<div class="archive-description posts-page-description">%s</div>', $content );
 }
 
+/**
+ * Hide the title on Woo product cat/tag archives.
+ *
+ * @return  bool
+ */
 add_filter( 'woocommerce_show_page_title', 'mai_remove_woo_taxonomy_title' );
 function mai_remove_woo_taxonomy_title( $return ) {
-	if ( ! is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+	if ( ! is_tax( array( 'product_cat', 'product_tag' ) ) ) {
 		return $return;
 	}
 	return false;
 }
 
+/**
+ * Display Genesis taxonomy title/description on WooCommerce archives.
+ *
+ * @return  void
+ */
 add_action( 'woocommerce_archive_description', 'mai_do_woo_taxonomy_title_description', 15 );
 function mai_do_woo_taxonomy_title_description() {
 	// Remove headline/title if banner is enabled, cause it's in there.
@@ -137,8 +147,13 @@ function mai_do_term_description() {
 	echo '<div class="archive-description term-description">' . do_shortcode( $description ) . '</div>';
 }
 
-add_action( 'woocommerce_archive_description', 'mai_woo_do_term_description', 20 );
-function mai_woo_do_term_description() {
+/**
+ * Display the term description on WooCommerce product archives.
+ *
+ * @return  void
+ */
+add_action( 'woocommerce_archive_description', 'mai_do_woo_term_description', 20 );
+function mai_do_woo_term_description() {
 
 	// If the first page.
 	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
