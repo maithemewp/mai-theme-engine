@@ -2413,9 +2413,7 @@ input[name="post_password"] {
 	z-index: 96; /* lower than search-box */
 }
 
-/* .has-reveal-header:not(.mai-menu-activated) .site-header { */
-.has-reveal-header:not(.mai-menu-activated) .site-header.conceal-header,
-.has-reveal-header:not(.mai-menu-activated) .site-header.reveal-header {
+.has-reveal-header .site-header {
 	-webkit-animation-duration: .3s;
 	animation-duration: .3s;
 	-webkit-animation-fill-mode: both;
@@ -2424,12 +2422,12 @@ input[name="post_password"] {
 	animation-timing-function: ease-in-out;
 }
 
-.has-reveal-header:not(.mai-menu-activated) .site-header.conceal-header {
+.has-reveal-header .site-header.conceal-header {
 	-webkit-animation-name: fadeOutUp;
 	animation-name: fadeOutUp;
 }
 
-.has-reveal-header:not(.mai-menu-activated) .site-header.reveal-header {
+.has-reveal-header .site-header.reveal-header {
 	-webkit-animation-name: fadeInDown;
 	animation-name: fadeInDown;
 }
@@ -3205,12 +3203,13 @@ input[name="post_password"] {
 	color: #323232;
 }
 
-/* ### Standard Menu
---------------------------------------------- */
-
-.mai-standard-menu-activated {
+body.mai-menu-activated {
+	/* prevent scrolling on the body (doesn't work on iOS and maybe other places) */
 	overflow: hidden;
 }
+
+/* ### Standard Menu
+--------------------------------------------- */
 
 .mai-standard-menu-activated .site-header {
 	max-height: 100vh;
@@ -3296,11 +3295,6 @@ input[name="post_password"] {
 	position: static;
 	width: 0;
 	height: 0;
-}
-
-.has-side-menu.mai-menu-activated {
-	/* prevent scrolling on the body (doesn't work on iOS and maybe other places) */
-	overflow: hidden;
 }
 
 .has-side-menu .site-container {
