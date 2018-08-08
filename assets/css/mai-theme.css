@@ -2407,6 +2407,15 @@ input[name="post_password"] {
 --------------------------------------------- */
 
 .has-reveal-header .site-header {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	z-index: 96; /* lower than search-box */
+}
+
+/* .has-reveal-header:not(.mai-menu-activated) .site-header { */
+.has-reveal-header:not(.mai-menu-activated) .site-header.conceal-header,
+.has-reveal-header:not(.mai-menu-activated) .site-header.reveal-header {
 	-webkit-animation-duration: .3s;
 	animation-duration: .3s;
 	-webkit-animation-fill-mode: both;
@@ -2415,19 +2424,12 @@ input[name="post_password"] {
 	animation-timing-function: ease-in-out;
 }
 
-.has-reveal-header .site-header {
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
-	z-index: 96; /* lower than search-box */
-}
-
-.has-reveal-header .site-header.conceal-header {
+.has-reveal-header:not(.mai-menu-activated) .site-header.conceal-header {
 	-webkit-animation-name: fadeOutUp;
 	animation-name: fadeOutUp;
 }
 
-.has-reveal-header .site-header.reveal-header {
+.has-reveal-header:not(.mai-menu-activated) .site-header.reveal-header {
 	-webkit-animation-name: fadeInDown;
 	animation-name: fadeInDown;
 }
@@ -3221,19 +3223,19 @@ input[name="post_password"] {
 	position: fixed;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,0.5);
+	background: rgba(0,0,0,0.6);
 	z-index: 1;
-	-webkit-animation-duration: 300ms;
+	/* -webkit-animation-duration: 300ms;
 	animation-duration: 300ms;
 	-webkit-animation-fill-mode: both;
 	animation-fill-mode: both;
 	-webkit-animation-timing-function: ease-in-out;
 	animation-timing-function: ease-in-out;
 	-webkit-animation-name: fadeIn;
-	animation-name: fadeIn;
+	animation-name: fadeIn; */
 }
 
-@-webkit-keyframes fadeIn {
+/* @-webkit-keyframes fadeIn {
 	from { opacity: 0; }
 	to { opacity: 1; }
 }
@@ -3241,7 +3243,7 @@ input[name="post_password"] {
 @keyframes fadeIn {
 	from { opacity: 0; }
 	to { opacity: 1; }
-}
+} */
 
 /* ### Side Menu
 --------------------------------------------- */
