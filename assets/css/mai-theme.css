@@ -2072,7 +2072,6 @@ input[name="post_password"] {
 	height: 48px;
 	background-color: #fff;
 	color: #323232;
-	font-family: FontAwesome;
 	font-size: 0;
 	line-height: 1;
 	text-align: center;
@@ -2089,10 +2088,28 @@ input[name="post_password"] {
 
 .slick-prev::before,
 .slick-next::before {
-	display: block;
-	font-size: 2.441rem;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	content: '';
+	width: 18px;
+	height: 18px;
+	border-color: #000;
+	border-bottom: 3px solid;
+	border-left: 3px solid;
+	position: absolute;
+	top: 16px;
+}
+
+.slick-prev::before {
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+	left: 18px;
+}
+
+.slick-next::before {
+	-webkit-transform: rotate(-135deg);
+	-ms-transform: rotate(-135deg);
+	transform: rotate(-135deg);
+	right: 18px;
 }
 
 .slick-prev:hover,
@@ -2113,16 +2130,6 @@ input[name="post_password"] {
 .slick-next.slick-disabled::before {
 	opacity: .25;
 	cursor: not-allowed;
-}
-
-.slick-prev::before {
-	margin: -2px 0 0 -4px;
-	content: "\f104";
-}
-
-.slick-next::before {
-	margin: -2px -4px 0 0;
-	content: "\f105";
 }
 
 .slick-prev,
@@ -2408,18 +2415,11 @@ input[name="post_password"] {
 	animation-timing-function: ease-in-out;
 }
 
-.has-reveal-header .site-header.reveal-header,
-.has-reveal-header .site-header.conceal-header {
+.has-reveal-header .site-header {
 	position: -webkit-sticky;
 	position: sticky;
 	top: 0;
 	z-index: 96; /* lower than search-box */
-}
-
-.has-reveal-header .site-header.conceal-header {
-	-webkit-transform: translateY(-100%);
-	-ms-transform: translateY(-100%);
-	transform: translateY(-100%);
 }
 
 .has-reveal-header .site-header.conceal-header {
@@ -2450,7 +2450,7 @@ input[name="post_password"] {
 
 @-webkit-keyframes fadeInDown{
 	from {
-		opacity: 0;
+		opacity: .5;
 		-webkit-transform: translateY(-100px);
 		transform: translateY(-100px);
 	}
@@ -2462,7 +2462,7 @@ input[name="post_password"] {
 }
 @keyframes fadeInDown{
 	from {
-		opacity: 0;
+		opacity: .5;
 		-webkit-transform: translateY(-100px);
 		transform: translateY(-100px);
 	}
@@ -2480,7 +2480,7 @@ input[name="post_password"] {
 		transform: translateY(0);
 	}
 	to {
-		opacity: 0;
+		opacity: .5;
 		-webkit-transform: translateY(-100px);
 		transform: translateY(-100px);
 	}
@@ -2492,7 +2492,7 @@ input[name="post_password"] {
 		transform: translateY(0);
 	}
 	to {
-		opacity: 0;
+		opacity: .5;
 		-webkit-transform: translateY(-100px);
 		transform: translateY(-100px);
 	}
