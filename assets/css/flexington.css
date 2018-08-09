@@ -1081,6 +1081,7 @@
 	margin-bottom: 4px;
 }
 
+.bottom-xs-10,
 .bottom-xs-xxs {
 	margin-bottom: 8px;
 }
@@ -1089,22 +1090,27 @@
 	margin-bottom: 16px;
 }
 
+.bottom-xs-20,
 .bottom-xs-sm {
 	margin-bottom: 24px;
 }
 
+.bottom-xs-30,
 .bottom-xs-md {
 	margin-bottom: 32px;
 }
 
+.bottom-xs-40,
 .bottom-xs-lg {
 	margin-bottom: 40px;
 }
 
+.bottom-xs-50,
 .bottom-xs-xl {
 	margin-bottom: 48px;
 }
 
+.bottom-xs-60,
 .bottom-xs-xxl {
 	margin-bottom: 56px;
 }
@@ -2085,6 +2091,7 @@
 		margin-bottom: 4px;
 	}
 
+	.bottom-sm-10,
 	.bottom-sm-xxs {
 		margin-bottom: 8px;
 	}
@@ -2093,22 +2100,27 @@
 		margin-bottom: 16px;
 	}
 
+	.bottom-sm-20,
 	.bottom-sm-sm {
 		margin-bottom: 24px;
 	}
 
+	.bottom-sm-30,
 	.bottom-sm-md {
 		margin-bottom: 32px;
 	}
 
+	.bottom-sm-40,
 	.bottom-sm-lg {
 		margin-bottom: 40px;
 	}
 
+	.bottom-sm-50,
 	.bottom-sm-xl {
 		margin-bottom: 48px;
 	}
 
+	.bottom-sm-60,
 	.bottom-sm-xxl {
 		margin-bottom: 56px;
 	}
@@ -3091,6 +3103,7 @@
 		margin-bottom: 4px;
 	}
 
+	.bottom-md-10,
 	.bottom-md-xxs {
 		margin-bottom: 8px;
 	}
@@ -3099,22 +3112,27 @@
 		margin-bottom: 16px;
 	}
 
+	.bottom-md-20,
 	.bottom-md-sm {
 		margin-bottom: 24px;
 	}
 
+	.bottom-md-30,
 	.bottom-md-md {
 		margin-bottom: 32px;
 	}
 
+	.bottom-md-40,
 	.bottom-md-lg {
 		margin-bottom: 40px;
 	}
 
+	.bottom-md-50,
 	.bottom-md-xl {
 		margin-bottom: 48px;
 	}
 
+	.bottom-md-60,
 	.bottom-md-xxl {
 		margin-bottom: 56px;
 	}
@@ -4097,6 +4115,7 @@
 		margin-bottom: 4px;
 	}
 
+	.bottom-lg-10,
 	.bottom-lg-xxs {
 		margin-bottom: 8px;
 	}
@@ -4105,22 +4124,27 @@
 		margin-bottom: 16px;
 	}
 
+	.bottom-lg-20,
 	.bottom-lg-sm {
 		margin-bottom: 24px;
 	}
 
+	.bottom-lg-30,
 	.bottom-lg-md {
 		margin-bottom: 32px;
 	}
 
+	.bottom-lg-40,
 	.bottom-lg-lg {
 		margin-bottom: 40px;
 	}
 
+	.bottom-lg-50,
 	.bottom-lg-xl {
 		margin-bottom: 48px;
 	}
 
+	.bottom-lg-60,
 	.bottom-lg-xxl {
 		margin-bottom: 56px;
 	}
@@ -5101,6 +5125,7 @@
 		margin-bottom: 4px;
 	}
 
+	.bottom-xl-10,
 	.bottom-xl-xxs {
 		margin-bottom: 8px;
 	}
@@ -5109,22 +5134,27 @@
 		margin-bottom: 16px;
 	}
 
+	.bottom-xl-20,
 	.bottom-xl-sm {
 		margin-bottom: 24px;
 	}
 
+	.bottom-xl-30,
 	.bottom-xl-md {
 		margin-bottom: 32px;
 	}
 
+	.bottom-xl-40,
 	.bottom-xl-lg {
 		margin-bottom: 40px;
 	}
 
+	.bottom-xl-50,
 	.bottom-xl-xl {
 		margin-bottom: 48px;
 	}
 
+	.bottom-xl-60,
 	.bottom-xl-xxl {
 		margin-bottom: 56px;
 	}
