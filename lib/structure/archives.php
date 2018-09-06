@@ -88,19 +88,6 @@ function mai_do_blog_description() {
 }
 
 /**
- * Hide the title on Woo product cat/tag archives.
- *
- * @return  bool
- */
-add_filter( 'woocommerce_show_page_title', 'mai_remove_woo_taxonomy_title' );
-function mai_remove_woo_taxonomy_title( $return ) {
-	if ( ! is_tax( array( 'product_cat', 'product_tag' ) ) ) {
-		return $return;
-	}
-	return false;
-}
-
-/**
  * Add term description before custom taxonomy loop.
  * This is the core WP term description, not the Genesis Intro Text.
  * Genesis Intro Text is in banner.
