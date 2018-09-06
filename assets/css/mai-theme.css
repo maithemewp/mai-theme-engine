@@ -368,6 +368,17 @@ a:focus,
 	margin-bottom: 24px;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	-webkit-hyphens: auto;
+	-ms-hyphens: auto;
+	hyphens: auto;
+}
+
 /* ## Screen Reader Text
 --------------------------------------------- */
 
@@ -854,7 +865,7 @@ td {
 }
 
 .content {
-	margin-bottom: 48px;
+	margin-bottom: 96px;
 }
 
 /* remove margin on Sections page template content */
@@ -2089,8 +2100,8 @@ input[name="post_password"] {
 .slick-prev::before,
 .slick-next::before {
 	content: '';
-	width: 18px;
-	height: 18px;
+	width: 16px;
+	height: 16px;
 	border-color: #000;
 	border-bottom: 3px solid;
 	border-left: 3px solid;
@@ -2434,7 +2445,7 @@ input[name="post_password"] {
 
 @media only screen and (min-width: 600px) {
 
-	.has-reveal-header.admin-bar .site-header.reveal-header {
+	.has-reveal-header.admin-bar .site-header {
 		top: 46px;
 	}
 
@@ -2442,7 +2453,7 @@ input[name="post_password"] {
 
 @media only screen and (min-width: 782px) {
 
-	.has-reveal-header.admin-bar .site-header.reveal-header {
+	.has-reveal-header.admin-bar .site-header {
 		top: 32px;
 	}
 
@@ -2502,6 +2513,7 @@ input[name="post_password"] {
 --------------------------------------------- */
 
 .has-sticky-header .site-header {
+	position: relative; /* so standard menu works, until position: sticky; */
 	z-index: 96; /* lower than search-box */
 }
 
@@ -2987,10 +2999,7 @@ input[name="post_password"] {
 }
 
 .nav-primary .sub-menu a:hover,
-.nav-primary .sub-menu a:focus,
-.nav-primary .sub-menu .current-menu-item > a,
-.nav-primary .sub-menu .current-menu-item > a:hover,
-.nav-primary .sub-menu .current-menu-item > a:focus {
+.nav-primary .sub-menu a:focus {
 	background-color: #252525;
 	color: #fff;
 }
@@ -3158,12 +3167,13 @@ input[name="post_password"] {
 
 .mai-menu {
 	display: none;
+	max-height: 100vh;
 }
 
 .mai-menu-inner {
 	width: 100%;
 	height: 100%;
-	padding: 24px 24px 80px;
+	padding: 24px 24px 48px;
 }
 
 .mai-menu .widget {
@@ -3211,38 +3221,79 @@ body.mai-menu-activated {
 /* ### Standard Menu
 --------------------------------------------- */
 
-.mai-standard-menu-activated .site-header {
-	max-height: 100vh;
+.has-standard-menu .mai-menu {
+	background-color: #fff;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+	opacity: 0;
+}
+
+.mai-standard-menu-activated .mai-menu {
+	display: block;
+	overflow-x: hidden;
 	overflow-y: auto;
-	z-index: 9;
+	-webkit-overflow-scrolling: touch;
+	-webkit-animation: standardMenu .3s ease-in-out;
+	animation: standardMenu .3s ease-in-out;
+	opacity: 1;
 }
 
 .mai-standard-menu-activated .site-container::after {
 	content: '';
 	position: fixed;
+	top: 0;
 	width: 100%;
 	height: 100%;
 	background: rgba(0,0,0,0.6);
 	z-index: 1;
-	/* -webkit-animation-duration: 300ms;
-	animation-duration: 300ms;
-	-webkit-animation-fill-mode: both;
-	animation-fill-mode: both;
-	-webkit-animation-timing-function: ease-in-out;
-	animation-timing-function: ease-in-out;
-	-webkit-animation-name: fadeIn;
-	animation-name: fadeIn; */
+	-webkit-animation: fadeIn .3s ease-in-out;
+	animation: fadeIn .3s ease-in-out;
+	opacity: 1;
 }
 
-/* @-webkit-keyframes fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
+@-webkit-keyframes standardMenu {
+	0% {
+		top: 80%;
+		opacity: 0;
+	}
+	100% {
+		top: 100%;
+		opacity: 1;
+	}
+}
+
+@keyframes standardMenu {
+	0% {
+		top: 80%;
+		opacity: 0;
+	}
+	100% {
+		top: 100%;
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 @keyframes fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
-} */
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
 
 /* ### Side Menu
 --------------------------------------------- */
@@ -3493,7 +3544,7 @@ body.mai-menu-activated {
 	margin-bottom: 12px;
 }
 
-.banner-area .banner-title {
+.banner-title {
 	font-weight: bold;
 }
 

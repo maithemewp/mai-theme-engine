@@ -36,6 +36,8 @@ function mai_do_settings_body_classes( $classes ) {
 	 */
 	if ( mai_is_side_menu_enabled() ) {
 		$classes[] = 'has-side-menu';
+	} else {
+		$classes[] = 'has-standard-menu';
 	}
 
 	return $classes;
