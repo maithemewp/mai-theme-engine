@@ -2,6 +2,8 @@
 
 Added: New 'Reveal' header setting that hides menu when scrolling down and reveals it when scrolling up.
 Added: [grid][columns][col] 'top' param to add top margin. Accepts 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', or 'xxl'.
+Added: [grid] Added 'target' param to grid to set post urls target to _blank as an example.
+Added: $attributes parameter to mai_get_read_more_link().
 Added: HTML5 gallery and caption support.
 Added: Top/bottom/gutter classes by browser width and size. Example: top-xs-md bottom-xs-lg gutter-xs-sm.
 Added: Headings are now hyphenated via CSS when needed.

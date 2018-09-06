@@ -13,6 +13,8 @@ class Mai_Grid {
 
 	private $content_type;
 
+	private $target;
+
 	private $facetwp = false;
 
 	// Whether facetwp_is_main_query filter has run.
@@ -79,6 +81,7 @@ class Mai_Grid {
 			'show'                 => 'image, title',  // image, title, add_to_cart, author, content, date, excerpt, image, more_link, price, meta, title
 			'status'               => '',  // Comma separated for multiple
 			'tags'                 => '',  // Comma separated tag IDs
+			'target'               => '',
 			'tax_include_children' => true,
 			'tax_operator'         => 'IN',
 			'tax_field'            => 'term_id',
@@ -157,6 +160,7 @@ class Mai_Grid {
 			'show'                 => mai_sanitize_keys( $this->args['show'] ),
 			'status'               => array_filter( explode( ',', $this->args['status'] ) ),
 			'tags'                 => array_filter( explode( ',', sanitize_text_field( $this->args['tags'] ) ) ),
+			'target'               => sanitize_key( $this->args['target'] ),
 			'tax_include_children' => filter_var( $this->args['tax_include_children'], FILTER_VALIDATE_BOOLEAN ),
 			'tax_operator'         => $this->args['tax_operator'], // Validated later as one of a few values
 			'tax_field'            => sanitize_key( $this->args['tax_field'] ),
@@ -544,7 +548,7 @@ class Mai_Grid {
 							// Title.
 							if ( in_array( 'title', $this->args['show'] ) ) {
 								if ( $this->args['link'] ) {
-									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
+									$title = sprintf( '<a href="%s" title="%s"%s>%s</a>', $url, esc_attr( get_the_title() ), $this->get_target(), get_the_title() );
 								} else {
 									$title = get_the_title();
 								}
@@ -605,7 +609,11 @@ class Mai_Grid {
 
 						// More link.
 						if ( $this->args['link'] && in_array( 'more_link', $this->args['show'] ) ) {
-							$entry_content .= mai_get_read_more_link( $post, $this->args['more_link_text'], 'post' );
+							$more_link_atts = array();
+							if ( $this->args['target'] ) {
+								$more_link_atts['target'] = $this->args['target'];
+							}
+							$entry_content .= mai_get_read_more_link( $post, $this->args['more_link_text'], 'post', $more_link_atts );
 						}
 
 						// Add to cart link.
@@ -852,7 +860,11 @@ class Mai_Grid {
 
 						// More link.
 						if ( $this->args['link'] && in_array( 'more_link', $this->args['show'] ) ) {
-							$entry_content .= mai_get_read_more_link( $term, $this->args['more_link_text'], 'term' );
+							$more_link_atts = array();
+							if ( $this->args['target'] ) {
+								$more_link_atts['target'] = $this->args['target'];
+							}
+							$entry_content .= mai_get_read_more_link( $term, $this->args['more_link_text'], 'term', $more_link_atts );
 						}
 
 						// Add entry content wrap if we have content.
@@ -1264,6 +1276,15 @@ class Mai_Grid {
 	}
 
 	/**
+	 * Get the target HTML for links.
+	 *
+	 * @return  string  The link target or empty string.
+	 */
+	function get_target() {
+		return ! empty( $this->args['target'] ) ? sprintf( ' target="%s"', $this->args['target'] ) : '';
+	}
+
+	/**
 	 * Get the add to cart link with screen reader text.
 	 *
 	 * @return  string|HTML
@@ -1380,6 +1401,9 @@ class Mai_Grid {
 		$attributes['title'] = $att_title;
 		if ( $this->args['link'] ) {
 			$attributes['href'] = $url;
+			if ( $this->args['target'] ) {
+				$attributes['target'] = $this->args['target'];
+			}
 			$image_wrap = 'a';
 		} else {
 			$image_wrap = 'span';
