@@ -143,6 +143,10 @@ function _mai_cmb_hide_featured_image_show_on_cb() {
 	if ( ! $display ) {
 		return false;
 	}
+	// Bail if editing the WooCommerce Shop page.
+	if ( class_exists( 'WooCommerce' ) && get_the_ID() === (int) get_option( 'woocommerce_shop_page_id' ) ) {
+		return false;
+	}
 	return true;
 }
 
