@@ -19,6 +19,7 @@ Fixed: "Hide featured image" setting won't show if post type doesn't support fea
 Fixed: Don't show empty archive-description wrap if there is no editor content on page-for-posts.
 Fixed: Overly aggressive bottom margin on entries.
 Fixed: Fix WP's Google Schema error, "The property logo is not recognised by Google for an object of type WPHeader".
+Fixed: Duplicate archive title/description on Woo taxonomy archives since Genesis Connect for WooCommerce added this in 1.0.
 
 #### 1.3.7 (7/13/18)
 * Fixed: Site header search bar CSS moved to larger screens only.

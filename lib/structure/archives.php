@@ -101,20 +101,6 @@ function mai_remove_woo_taxonomy_title( $return ) {
 }
 
 /**
- * Display Genesis taxonomy title/description on WooCommerce archives.
- *
- * @return  void
- */
-add_action( 'woocommerce_archive_description', 'mai_do_woo_taxonomy_title_description', 15 );
-function mai_do_woo_taxonomy_title_description() {
-	// Remove headline/title if banner is enabled, cause it's in there.
-	if ( mai_is_banner_area_enabled() ) {
-		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_headline', 10, 3 );
-	}
-	genesis_do_taxonomy_title_description();
-}
-
-/**
  * Add term description before custom taxonomy loop.
  * This is the core WP term description, not the Genesis Intro Text.
  * Genesis Intro Text is in banner.
