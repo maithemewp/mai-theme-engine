@@ -74,7 +74,6 @@
 					if ( false !== shrinkFired ) {
 						return;
 					}
-					// console.log( 'shrink' );
 					shrinkHeader();
 					shrinkFired   = true;
 					unshrinkFired = false;
@@ -82,7 +81,6 @@
 					if ( false !== unshrinkFired ) {
 						return;
 					}
-					// console.log( 'unshrink' );
 					unshrinkHeader();
 					unshrinkFired = true;
 					shrinkFired   = false;
@@ -147,9 +145,7 @@
 			return;
 		}
 
-		var lastScrollTop   = $body.scrollTop(),
-			shouldNotScroll = false,
-			threshold       = 5;
+		var shouldNotScroll = false;
 
 		/**
  		 * Temporarily disable the scroll function
@@ -201,16 +197,13 @@
 			var scrollTop = $window.scrollTop();
 
 			// Scrolled to the top.
-			if ( 0 === scrollTop ) {
+			if ( scrollTop <= 1 ) {
 				unshrinkHeader();
 			}
 			// Scrolling either direction and header is not shrunk.
 			else if ( ! $header.hasClass( 'shrink' ) ) {
 				shrinkHeader();
 			}
-
-			// Current scroll saved as the last scroll position.
-			lastScrollTop = scrollTop;
 
 		});
 
@@ -220,8 +213,8 @@
 	 * Resize logo and title.
 	 */
 	function reSize() {
-		// Bigger windows.
-		if ( $window.width() > 768 ) {
+		// Bigger windows and not shrunk.
+		if ( $window.width() > 768 && ! $header.hasClass( 'shrink' )  ) {
 			// Show normal size.
 			unshrinkLogo();
 			unshrinkTitle();
