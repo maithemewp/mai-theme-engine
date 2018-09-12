@@ -37,7 +37,7 @@ function mai_enqueue_styles() {
 	$suffix = mai_get_suffix();
 
 	wp_enqueue_style( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/mai-theme{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
-	wp_enqueue_style( 'flexington', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/flexington{$suffix}.css", array(), '2.3.5' );
+	wp_enqueue_style( 'flexington', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/flexington{$suffix}.css", array(), '2.4.0' );
 	wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', array(), MAI_THEME_ENGINE_VERSION );
 }
 
