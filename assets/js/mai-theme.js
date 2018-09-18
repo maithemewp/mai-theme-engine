@@ -429,6 +429,11 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 			// Set max-height as window height minus header height.
 			$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
 
+			// Set max-height if window is resized.
+			$window.on( 'resize', function(e) {
+				$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
+			});
+
 			// Allow additional keyboard nav.
 			$(document).keydown( function(e) {
 				// Use switch to easily add new keystrokes.
@@ -443,17 +448,21 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 				e.preventDefault(); // prevent the default action (scroll / move caret).
 			});
 
-		} else {
+		}
+		// Closing the menu.
+		else {
 
 			// Re-enable body scroll.
 			bodyScrollLock.enableBodyScroll( targetElement );
 
 			// Remove inline styles.
 			$maiMenu.css( 'max-height', '' );
+
+			_closeAll();
 		}
 
-		// On click of close button, close all.
-		$(document).on( 'click', '.menu-close', function(e){
+		// On click of close button inside the side menu, close all.
+		$siteHeader.on( 'click', '.menu-close', function(e){
 			_closeAll();
 		});
 
@@ -534,7 +543,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 			.attr( 'aria-expanded', false )
 			.attr( 'aria-pressed', false );
 
-		$( '.' + menuClass + ', ' + menuClass + ' .sub-menu' )
+		$( '.' + menuClass + ', .' + menuClass + ' .sub-menu' )
 			.removeClass( 'activated' )
 			.attr( 'style', '' )
 			.attr( 'aria-pressed', false );
