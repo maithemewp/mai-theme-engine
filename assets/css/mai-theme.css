@@ -2724,7 +2724,9 @@ input[name="post_password"] {
 
 .genesis-nav-menu a {
 	position: relative;
-	display: block;
+	display: -webkit-box;display: -ms-flexbox;display: flex;
+	-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;
+	-webkit-box-align: center;-ms-flex-align: center;align-items: center;
 	width: 100%;
 	height: 100%;
 	font-size: 100%;
@@ -2756,10 +2758,26 @@ input[name="post_password"] {
 }
 
 .genesis-nav-menu .menu-item-has-children > a::after {
-	content: "\f107";
-	font-family: FontAwesome;
-	margin-left: 8px;
-	-webkit-font-smoothing: antialiased;
+	content: '';
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	margin-left: 10px;
+	border-style: solid;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-color: currentColor;
+	border-top: 0;
+	border-left: 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.genesis-nav-menu .sub-menu .menu-item-has-children > a::after {
+	-webkit-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
 }
 
 .nav-secondary .genesis-nav-menu .menu-item-has-children > a::after,
@@ -2799,12 +2817,6 @@ input[name="post_password"] {
 	margin: 0;
 }
 
-.genesis-nav-menu .sub-menu .menu-item-has-children > a::after {
-	-webkit-align-self: flex-end;-ms-flex-item-align: end;align-self: flex-end;
-	-webkit-align-self: center;-ms-flex-item-align: center;-ms-grid-row-align: center;align-self: center;
-	content: "\f105";
-}
-
 /* ## Navigation Search Box
 --------------------------------------------- */
 
@@ -2823,6 +2835,7 @@ input[name="post_password"] {
 	position: relative;
 	height: 100%;
 	background: transparent;
+	fill: currentColor;
 	border: none;
 	-webkit-box-shadow: none;box-shadow: none;
 	text-align: center;
@@ -2830,21 +2843,28 @@ input[name="post_password"] {
 	margin: 0;
 }
 
-.nav-search::before {
-	display: block;
-	display: -ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
-	content: "\f002";
-	font-family: FontAwesome;
-	font-size: 1.563em;
-	padding: 8px 0;
-	margin: 0 auto;
-	-webkit-font-smoothing: antialiased;
+.search-icon {
+	content: '';
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border: 3px solid currentColor;
+	border-radius: 50%;
+	-webkit-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
 }
 
-.search.activated .nav-search::before {
-	content: "\f010";
+.search-icon::before {
+	content: '';
+	display: inline-block;
+	width: 3px;
+	height: 12px;
+	position: absolute;
+	right: calc( 50% - 1.5px );
+	bottom: -12px;
+	background: currentColor;
 }
 
 .genesis-nav-menu .search-box {
@@ -3465,7 +3485,7 @@ body.mai-menu-activated {
 	border-top: none;
 }
 
-.mobile-menu .sub-menu-toggle::before {
+/* .mobile-menu .sub-menu-toggle::before {
 	display: block;
 	width: 100%;
 	-ms-flex: 1 1 100%;-webkit-box-flex: 1;flex: 1 1 100%;
@@ -3473,10 +3493,24 @@ body.mai-menu-activated {
 	content: '\f107';
 	font-family: FontAwesome;
 	-webkit-font-smoothing: antialiased;
+} */
+
+.mobile-menu .sub-menu-toggle::before {
+	/* content: ''; */
+	/* height: 8px; */
+	/* width: 8px; */
+	/* background: url( '/assets/images/chevron-down.svg' ); */
+
+	/* display: block; */
+	/* text-indent: -9999px; */
+	/* width: 100px; */
+	/* height: 82px; */
+	/* background: url(kiwi.svg); */
+	/* background-size: 100px 82px; */
 }
 
 .mobile-menu .sub-menu-toggle.activated::before {
-	content: '\f106';
+	/* content: '\f106';  */
 }
 
 /* removes sub-menu double border on nested sub-menu-toggles */
