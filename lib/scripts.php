@@ -10,10 +10,9 @@ function mai_enqueue_scripts() {
 	// Enqueue the main global js file.
 	wp_enqueue_script( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-theme{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
 	wp_localize_script( 'mai-theme-engine', 'maiVars', array(
-		'mainMenu'    => __( 'Menu', 'genesis' ),
-		'subMenu'     => __( 'Menu', 'genesis' ),
-		'subMenuAria' => __( 'sub-menu toggle', 'genesis' ),
-		'search_box'  => sprintf( '<div class="search-box" style="display:none;">%s</div>', get_search_form(false) ),
+		'mainMenu'  => __( 'Menu', 'mai-theme-engine' ),
+		'subMenu'   => __( 'Submenu', 'mai-theme-engine' ),
+		'searchBox' => sprintf( '<div class="search-box" style="display:none;">%s</div>', get_search_form( false ) ),
 	) );
 
 	// Maybe enabled responsive videos.

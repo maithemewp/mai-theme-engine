@@ -306,113 +306,101 @@
 
 /**
  * This script adds the accessibility-ready responsive menu.
- * Based off https://github.com/copyblogger/responsive-menus.
+ * Loosely off https://github.com/copyblogger/responsive-menus.
  *
- * @version  1.0.0
+ * Props @robincornett for some help/code.
+ *
+ * @version  2.0.0
  */
-var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
+( function( window, document, $, undefined ) {
 
-( function( document, $, undefined ) {
-	'use strict';
+	var $maiMenu = $( '.mai-menu' );
 
+	// Bail if no menu.
+	if ( ! $maiMenu.length ) {
+		return;
+	}
 
-	var maiMenu            = {},
-		maiMenuClass       = 'mai-menu',
-		maiButtonClass     = 'mai-toggle',
-		subMenuButtonClass = 'sub-menu-toggle',
-		menuClass          = 'mobile-menu';
+	// Build toggle buttons.
+	var $maiToggle = $( '<button />', {
+			'id' : 'mai-toggle',
+			'class' : 'mai-toggle',
+			'aria-expanded' : false,
+			'aria-pressed' : false,
+			'role' : 'button'
+		}).append( '<span class="screen-reader-text">' + maiVars.mainMenu + '</span><span class="mai-bars"></span></span>' );
 
-	var $window      = $(window),
-		$body        = $( 'body' ),
-		$siteHeader  = $( '.site-header' ),
-		$maiMenu     = $( '.' + maiMenuClass ),
-		$mobileMenus = $maiMenu.find( '.menu' );
+	var $maiSubToggle = $( '<button />', {
+			'class' : 'sub-menu-toggle',
+			'aria-expanded' : false,
+			'aria-pressed' : false,
+			'role' : 'button'
+		}).append( '<span class="screen-reader-text">' + maiVars.subMenu + '</span>' );
 
-	// Initialize.
-	maiMenu.init = function() {
+	// Set vars.
+	var $window        = $(window),
+		$body          = $( 'body' ),
+		$siteHeader    = $( '.site-header' ),
+		$siteHeaderRow = $( '.site-header-row' ),
+		$maiMenus      = $( '.mai-menu .menu' ),
+		$maiSubToggles = $( '.mai-menu .sub-menu-toggle' ),
+		$maiSubMenus   = $( '.mai-menu .sub-menu' );
 
-		var toggleButtons = {
-			menu : $( '<button />', {
-				'id' : maiButtonClass,
-				'class' : maiButtonClass,
-				'aria-expanded' : false,
-				'aria-pressed' : false,
-				'role' : 'button'
-			} )
-			.append( '<span class="screen-reader-text">' + maiMenuParams.mainMenu + '</span><span class="mai-bars"></span></span>' ),
-			submenu : $( '<button />', {
-				'class' : subMenuButtonClass,
-				'aria-expanded' : false,
-				'aria-pressed' : false,
-				'role' : 'button'
-			} )
-			.append( '<span class="screen-reader-text">' + maiMenuParams.subMenu + '</span>' ),
-		};
+	// Add the main nav and sub-menu toggle button.
+	_addMenuButtons();
 
-		// Add the main nav and sub-menu toggle button.
-		_addMenuButtons( toggleButtons );
+	// Toggle triggers.
+	$siteHeader.on( 'click', '.mai-toggle', _doToggleMenu );
+	$maiMenu.on( 'click', '.sub-menu-toggle', _doToggleSubMenu );
 
-		// Add the responsive menu class to the menus.
-		_addResponsiveMenuClass();
-
-		// Action triggers.
-		$( '.' + maiButtonClass ).on( 'click.maiMenu-mainbutton', _maiMenuToggle );
-		$( '.' + subMenuButtonClass ).on( 'click.maiMenu-subbutton', _submenuToggle );
-		$window.on( 'resize.maiMenu', _doResize ).triggerHandler( 'resize.maiMenu' );
-
-	};
+	// Resize.
+	$window.on( 'load resize', function(e) {
+		_maybeCloseAll();
+		_changeSkipLink();
+	});
 
 	/**
 	 * Add toggle buttons.
-	 * @param {toggleButtons} Object of menu buttons to use for toggles.
 	 */
-	function _addMenuButtons( toggleButtons ) {
+	function _addMenuButtons() {
 
-		$( '.site-header-row' ).append( toggleButtons.menu ); // add the main nav button.
+		// Add the main mobile nav toggle.
+		$siteHeaderRow.append( $maiToggle );
 
-		if ( $mobileMenus.length > 0 ) {
-			$( '.' + maiMenuClass ).find( '.sub-menu' ).before( toggleButtons.submenu ); // add the submenu nav buttons.
-		}
-
-	}
-
-	/**
-	 * Add the responsive menu class.
-	 */
-	function _addResponsiveMenuClass() {
-		$.each( $mobileMenus, function() {
-			$(this).addClass( menuClass );
-		});
-	}
-
-	/**
-	 * Execute our responsive menu functions on window resizing.
-	 */
-	function _doResize() {
-
-		if ( typeof maiButtonClass === 'undefined' ) {
+		// Bail if no menus in the mobile menu. It could just be widget content.
+		if ( 0 == $maiMenus.length ) {
 			return;
 		}
-		_maybeClose();
-		_changeSkipLink();
+
+		// Add the submenu toggles.
+		$maiSubMenus.before( $maiSubToggle );
+
+		// Add the responsive menu class to the menus.
+		$.each( $maiMenus, function(e) {
+			$(this).addClass( 'mobile-menu' );
+		});
 	}
 
 	/**
 	 * Action to happen when the main menu button is clicked.
 	 */
-	function _maiMenuToggle() {
+	function _doToggleMenu() {
 
 		var $this = $(this);
 
-		toggleAria( $this, 'aria-pressed' );
-		toggleAria( $this, 'aria-expanded' );
-		$this.toggleClass( 'activated' );
+		// Toggle the mobile menu activated.
+		_toggleActivated( $this );
+
+		// Activated body class.
 		$body.toggleClass( 'mai-menu-activated' );
 
+		// If we have a side menu.
 		if ( $body.hasClass( 'has-side-menu' ) ) {
 			// Side menu activated class.
 			$body.toggleClass( 'mai-side-menu-activated' );
-		} else {
+		}
+		// Standard menu.
+		else {
 			// Standard menu activated class.
 			$body.toggleClass( 'mai-standard-menu-activated' );
 		}
@@ -436,16 +424,18 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 			// Allow additional keyboard nav.
 			$(document).keydown( function(e) {
+
 				// Use switch to easily add new keystrokes.
 				switch(e.which) {
 					case 27: // esc.
-					// Close popup with esc key.
-					_closeAll();
-					break;
-
-					default: return; // exit this handler for other keys.
+						// Close popup with esc key.
+						_closeAll();
+						break;
+					default: return; // Exit this handler for other keys.
 				}
-				e.preventDefault(); // prevent the default action (scroll / move caret).
+
+				// Prevent the default action (scroll/move caret).
+				e.preventDefault();
 			});
 
 		}
@@ -469,21 +459,15 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	}
 
 	/**
-	 * Action for submenu toggles.
+	 * Action for sub-menu toggles.
 	 */
-	function _submenuToggle() {
+	function _doToggleSubMenu() {
 
-		var $this  = $( this ),
-			others = $this.closest( '.menu-item' ).siblings();
+		// Close all open sub-menus.
+		_closeOpenSubMenus();
 
-		toggleAria( $this, 'aria-pressed' );
-		toggleAria( $this, 'aria-expanded' );
-		$this.toggleClass( 'activated' );
-		$this.next( '.sub-menu' ).slideToggle( 'fast' );
-
-		others.find( '.' + subMenuButtonClass ).removeClass( 'activated' ).attr( 'aria-pressed', false );
-		others.find( '.sub-menu' ).slideUp( 'fast' );
-
+		// Open this sub-menu.
+		_toggleSubMenu( $(this) );
 	}
 
 	/**
@@ -491,29 +475,38 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	 */
 	function _changeSkipLink() {
 
+		// Get vars.
 		var $skipLinksUL    = $( '.genesis-skip-link' ),
 			$mobileSkipLink = $( '.genesis-skip-link a[href="#mai-toggle"]' ),
 			$menuSkipLinks  = $( '.genesis-skip-link a[href*="#genesis-nav"]' );
 
-		var buttonDisplay = _getDisplayValue( maiButtonClass );
+		// Whether mobile menu toggle is visible.
+		var toggleDisplay = _getDisplayValue( $maiToggle );
 
-		if ( $mobileSkipLink.length == 0 ) {
-			$skipLinksUL.prepend( '<li><a href="#' + maiButtonClass + '" class="screen-reader-shortcut"> ' + maiMenuParams.mainMenu + '</a></li>' );
+		// If mai-toggle skip link is not created yet.
+		if ( 0 == $mobileSkipLink.length ) {
+			$skipLinksUL.prepend( '<li><a href="#mai-toggle" class="screen-reader-shortcut"> ' + maiVars.mainMenu + '</a></li>' );
 			$mobileSkipLink = $( '.genesis-skip-link a[href="#mobile-nav"]' );
 		}
 
-		if ( 'none' == buttonDisplay ) {
+		// If mai-toggle is not visible.
+		if ( 'none' == toggleDisplay ) {
 			$mobileSkipLink.addClass( 'skip-link-hidden' );
-		} else {
+		}
+		// Visible.
+		else {
 			$mobileSkipLink.removeClass( 'skip-link-hidden' );
 		}
 
+		// Manage skip link visibility.
 		$.each( $menuSkipLinks, function () {
 
-			if ( 'none' == buttonDisplay ) {
-				$(this).removeClass( 'skip-link-hidden' );
+			var $this = $(this);
+
+			if ( 'none' == toggleDisplay ) {
+				$this.removeClass( 'skip-link-hidden' );
 			} else {
-				$(this).addClass( 'skip-link-hidden' );
+				$this.addClass( 'skip-link-hidden' );
 			}
 
 		});
@@ -522,9 +515,9 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 	/**
 	 * Maybe close all the things.
 	 */
-	function _maybeClose() {
+	function _maybeCloseAll() {
 
-		if ( 'none' !== _getDisplayValue( maiButtonClass ) ) {
+		if ( 'none' !== _getDisplayValue( $maiToggle ) ) {
 			return true;
 		}
 
@@ -538,67 +531,60 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 		$body.removeClass( 'mai-menu-activated mai-standard-menu-activated mai-side-menu-activated' )
 
-		$( '.' + maiButtonClass + ', .' + menuClass + ' .sub-menu-toggle' )
-			.removeClass( 'activated' )
-			.attr( 'aria-expanded', false )
-			.attr( 'aria-pressed', false );
+		_closeElement( $maiToggle );
+		_closeOpenSubMenus();
+	}
 
-		$( '.' + menuClass + ', .' + menuClass + ' .sub-menu' )
-			.removeClass( 'activated' )
-			.attr( 'style', '' )
-			.attr( 'aria-pressed', false );
+	/**
+	 * Close any open sub-menu.
+	 */
+	function _closeOpenSubMenus() {
+		$.each( $( '.sub-menu-toggle.activated' ), function(e) {
+			_toggleSubMenu( $(this) );
+		});
+	}
 
-		// Hide any open sub-menus.
-		$( '.' + menuClass + ' .sub-menu' ).hide();
+	/**
+	 * Close a sub-menu by toggle.
+	 */
+	function _toggleSubMenu( $button ) {
+		_toggleActivated( $button );
+		$button.next( '.sub-menu' ).slideToggle( 'fast' );
+	}
+
+	/**
+	 * Toggle an element as pressed/expanded/activated.
+	 */
+	function _toggleActivated( $element ) {
+		toggleAria( $element, 'aria-expanded' );
+		toggleAria( $element, 'aria-pressed' );
+		$element.toggleClass( 'activated' );
+	}
+
+	/**
+	 * Close multiple elements.
+	 */
+	function _closeElements( $elements ) {
+		$.each( $elements, function( index, value ) {
+			_closeElement( $(this) );
+		});
+	}
+
+	/**
+	 * Close an element.
+	 */
+	function _closeElement( $element ) {
+		$element.removeClass( 'activated' ).attr( 'aria-expanded', false ).attr( 'aria-pressed', false );
 	}
 
 	/**
 	 * Generic function to get the display value of an element.
-	 * @param  {id} $id ID to check.
-	 * @return {string} CSS value of display property.
 	 */
-	function _getDisplayValue( $id ) {
-		var element = document.getElementById( $id ),
-			style   = window.getComputedStyle( element );
-		return style.getPropertyValue( 'display' );
+	function _getDisplayValue( $element ) {
+		return $element.css( 'display' );
 	}
 
-	/**
-	 * Helper function to return a group array of all the mobile menus.
-	 * @return {array} Array of all menu items as class selectors.
-	 */
-	function _getAllMenusArray() {
-
-		// Start with an empty array.
-		var menuList = [];
-
-		// If there are menus in the '$mobileMenus' array, add them to 'menuList'.
-		if ( $mobileMenus.length != 0 ) {
-
-			$.each( $mobileMenus, function( key, value ) {
-				menuList.push( value.valueOf() );
-			});
-
-		}
-
-		if ( menuList.length > 0 ) {
-			return menuList;
-		} else {
-			return null;
-		}
-
-	}
-
-	// Make it happen.
-	$(document).ready(function () {
-
-		// Initiate if there is menu content.
-		if ( $maiMenu.length > 0 ) {
-			maiMenu.init();
-		}
-	});
-
-})( document, jQuery );
+})( window, document, jQuery );
 
 /**
  * Body scroll lock.
@@ -613,7 +599,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
  * Convert menu items with .search class to a search icon with a fade in search box.
  * Show/hide search box on click, and allow closing by clicking outside of search box.
  *
- * @version  1.0.0
+ * @version  1.1.0
  */
 ( function( document, $, undefined ) {
 
@@ -627,7 +613,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 
 		var $this = $(this);
 
-		$this.html( '<button class="nav-search"><span class="screen-reader-text">' + $this.text() + '</span></button>' ).show();
+		$this.html( '<button class="nav-search"><span class="search-icon"></span><span class="screen-reader-text">' + $this.text() + '</span></button>' ).show();
 
 		var $searchButton = $this.find( 'button' );
 
@@ -635,7 +621,7 @@ var maiMenuParams = typeof maiVars === 'undefined' ? '' : maiVars;
 		toggleAria( $searchButton, 'aria-expanded' );
 
 		// Add the search box after the link.
-		$this.append( maiVars.search_box );
+		$this.append( maiVars.searchBox );
 
 		// On click of the search button.
 		$this.on( 'click', 'button', function(e){
