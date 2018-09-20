@@ -3471,6 +3471,10 @@ body.mai-menu-activated {
 	-webkit-box-shadow: none;box-shadow: none;
 }
 
+.mobile-menu .current-menu-item a {
+	color: #067CCC;
+}
+
 .mobile-menu > .menu-item > a {
 	border-bottom: 1px solid #dfdcdf;
 }

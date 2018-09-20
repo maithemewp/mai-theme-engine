@@ -333,6 +333,9 @@
 	// Add the main nav and sub-menu toggle button.
 	_addMenuButtons();
 
+	// Remove classes that may unintentially inherit styling.
+	$maiMenus.removeClass( 'nav-header nav-primary nav-secondary' );
+
 	// Toggle triggers.
 	$siteHeader.on( 'click', '.mai-toggle', _doToggleMenu );
 	$maiMenu.on( 'click', '.sub-menu-toggle:not(.sub-sub-menu-toggle)', _doToggleSubMenu );
