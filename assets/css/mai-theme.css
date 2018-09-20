@@ -1718,14 +1718,14 @@ img.alignnone,
 a.alignleft,
 img.alignleft,
 .wp-caption.alignleft {
-	margin: 0 22px 14px 0;
+	margin: 24px 24px 24px 0;
 }
 
 .alignright,
 a.alignright,
 img.alignright,
 .wp-caption.alignright {
-	margin: 0 0 14px 22px;
+	margin: 24px 0 24px 24px
 }
 
 .wp-caption-text,
@@ -2253,22 +2253,22 @@ input[name="post_password"] {
 .slick-dots li {
 	position: relative;
 	display: inline-block;
-	width: 20px;
-	height: 20px;
-	margin: 0 2px;
+	width: 10px;
+	height: 10px;
+	margin: 0 4px 8px;
 	padding: 0;
 	cursor: pointer;
 }
 
 .slick-dots li button {
 	display: block;
-	width: 20px;
-	height: 20px;
+	width: 10px;
+	height: 10px;
 	background: transparent;
 	color: transparent;
 	font-size: 0;
 	line-height: 0;
-	padding: 5px;
+	padding: 0;
 	border: 0;
 	outline: none;
 	cursor: pointer;
@@ -2285,17 +2285,14 @@ input[name="post_password"] {
 }
 
 .slick-dots li button::before {
-	content: '\f111';
+	content: '';
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 20px;
-	height: 20px;
-	color: #323232;
-	font-family: FontAwesome;
-	font-size: 0.64rem;
-	line-height: 20px;
-	text-align: center;
+	width: 10px;
+	height: 10px;
+	background: #323232;
+	border-radius: 50%;
 	opacity: .25;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -3127,13 +3124,14 @@ input[name="post_password"] {
 .mai-bars::after {
 	display: block;
 	height: 2px;
-	background-color: #323232;
+	background-color: currentColor;
 	overflow: visible;
 }
 
 .mai-bars {
 	position: relative;
 	width: 32px;
+	color: #323232;
 	-webkit-transition: background 0s 0.2s;
 	-o-transition: background 0s 0.2s;
 	transition: background 0s 0.2s;
@@ -3336,29 +3334,27 @@ body.mai-menu-activated {
 .woocommerce.has-side-menu .menu-close {
 	display: block;
 	width: 100%;
-	background-color: rgba(0, 0, 0, 0.05);
+	background-color: transparent;
+	color: rgba(0, 0, 0, 0.4);
 	font-size: 0.8em;
 	letter-spacing: 1px;
 	text-transform: uppercase;
-	padding: 16px;
-	margin: 0;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+	padding: 0;
+	margin: 0 0 24px;
+	border: none;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-}
-
-.has-side-menu .menu-close,
-.woocommerce.has-side-menu .menu-close {
-	color: rgba(0, 0, 0, 0.4);
 }
 
 .has-side-menu .menu-close:hover,
 .has-side-menu .menu-close:focus,
 .woocommerce.has-side-menu .menu-close:hover,
 .woocommerce.has-side-menu .menu-close:focus {
-	background-color: rgba(0, 0, 0, 0.05);
+	background-color: transparent;
 	color: rgba(0, 0, 0, 0.8);
-	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+	padding: 0;
+	margin: 0 0 24px;
+	border: none;
 }
 
 .has-side-menu .menu-close::before,
@@ -3497,34 +3493,6 @@ body.mai-menu-activated {
 
 .mobile-menu > .menu-item > .sub-menu-toggle {
 	border-top: none;
-}
-
-/* .mobile-menu .sub-menu-toggle::before {
-	display: block;
-	width: 100%;
-	-ms-flex: 1 1 100%;-webkit-box-flex: 1;flex: 1 1 100%;
-	max-width: 100%;
-	content: '\f107';
-	font-family: FontAwesome;
-	-webkit-font-smoothing: antialiased;
-} */
-
-.mobile-menu .sub-menu-toggle::before {
-	/* content: ''; */
-	/* height: 8px; */
-	/* width: 8px; */
-	/* background: url( '/assets/images/chevron-down.svg' ); */
-
-	/* display: block; */
-	/* text-indent: -9999px; */
-	/* width: 100px; */
-	/* height: 82px; */
-	/* background: url(kiwi.svg); */
-	/* background-size: 100px 82px; */
-}
-
-.mobile-menu .sub-menu-toggle.activated::before {
-	/* content: '\f106';  */
 }
 
 /* removes sub-menu double border on nested sub-menu-toggles */
