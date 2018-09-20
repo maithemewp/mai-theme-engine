@@ -2757,12 +2757,12 @@ input[name="post_password"] {
 	margin-left: 6px;
 }
 
+.mai-menu .sub-menu-toggle::after,
 .genesis-nav-menu .menu-item-has-children > a::after {
 	content: '';
 	display: inline-block;
 	width: 6px;
 	height: 6px;
-	margin-left: 10px;
 	border-style: solid;
 	border-right-width: 1px;
 	border-bottom-width: 1px;
@@ -2774,10 +2774,25 @@ input[name="post_password"] {
 	transform: rotate(45deg);
 }
 
+.genesis-nav-menu > .menu-item-has-children > a::after {
+	margin-top: -3px;
+}
+
+.genesis-nav-menu .menu-item-has-children > a::after {
+	margin-left: 10px;
+}
+
 .genesis-nav-menu .sub-menu .menu-item-has-children > a::after {
 	-webkit-transform: rotate(-45deg);
 	-ms-transform: rotate(-45deg);
 	transform: rotate(-45deg);
+}
+
+.mai-menu .sub-menu-toggle.activated::after {
+	margin-top: 3px;
+	-webkit-transform: rotate(-135deg);
+	-ms-transform: rotate(-135deg);
+	transform: rotate(-135deg);
 }
 
 .nav-secondary .genesis-nav-menu .menu-item-has-children > a::after,
@@ -2824,23 +2839,22 @@ input[name="post_password"] {
 	display: none;
 }
 
-.genesis-nav-menu .search,
-.nav-search {
-	width: 50px;
-}
-
 .nav-search,
 .nav-search:hover,
 .nav-search:focus {
 	position: relative;
 	height: 100%;
 	background: transparent;
-	fill: currentColor;
 	border: none;
 	-webkit-box-shadow: none;box-shadow: none;
 	text-align: center;
-	padding: 0;
-	margin: 0;
+	padding: 8px 12px;
+}
+
+.search-icon,
+.search-icon:hover,
+.search-icon:focus {
+	border-color: currentColor;
 }
 
 .search-icon {
@@ -2849,7 +2863,7 @@ input[name="post_password"] {
 	display: inline-block;
 	width: 20px;
 	height: 20px;
-	border: 3px solid currentColor;
+	border: 3px solid;
 	border-radius: 50%;
 	-webkit-transform: rotate(-45deg);
 	-ms-transform: rotate(-45deg);
@@ -3515,7 +3529,7 @@ body.mai-menu-activated {
 
 /* removes sub-menu double border on nested sub-menu-toggles */
 .mobile-menu .sub-menu .sub-menu-toggle {
-	margin: -1px -1px -1px 0;
+	margin: 0 -1px -1px 0;
 }
 
 .mobile-menu .sub-menu {

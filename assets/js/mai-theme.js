@@ -1,4 +1,14 @@
 /**
+ * Body scroll lock.
+ *
+ *  @link    https://github.com/willmcpo/body-scroll-lock
+ *
+ * @version  2.5.1
+ */
+!function(o,e){if("function"==typeof define&&define.amd)define(["exports"],e);else if("undefined"!=typeof exports)e(exports);else{var t={};e(t),o.bodyScrollLock=t}}(this,function(exports){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n="undefined"!=typeof window&&window.navigator&&window.navigator.platform&&/iPad|iPhone|iPod|(iPad Simulator)|(iPhone Simulator)|(iPod Simulator)/.test(window.navigator.platform),i=null,l=[],d=!1,u=-1,c=void 0,a=void 0,s=function(o){var e=o||window.event;return e.preventDefault&&e.preventDefault(),!1},o=function(){setTimeout(function(){void 0!==a&&(document.body.style.paddingRight=a,a=void 0),void 0!==c&&(document.body.style.overflow=c,c=void 0)})};exports.disableBodyScroll=function(r,o){var t;n?r&&!l.includes(r)&&(l=[].concat(function(o){if(Array.isArray(o)){for(var e=0,t=Array(o.length);e<o.length;e++)t[e]=o[e];return t}return Array.from(o)}(l),[r]),r.ontouchstart=function(o){1===o.targetTouches.length&&(u=o.targetTouches[0].clientY)},r.ontouchmove=function(o){var e,t,n,i;1===o.targetTouches.length&&(t=r,i=(e=o).targetTouches[0].clientY-u,t&&0===t.scrollTop&&0<i?s(e):(n=t)&&n.scrollHeight-n.scrollTop<=n.clientHeight&&i<0?s(e):e.stopPropagation())},d||(document.addEventListener("touchmove",s,{passive:!1}),d=!0)):(t=o,setTimeout(function(){if(void 0===a){var o=!!t&&!0===t.reserveScrollBarGap,e=window.innerWidth-document.documentElement.clientWidth;o&&0<e&&(a=document.body.style.paddingRight,document.body.style.paddingRight=e+"px")}void 0===c&&(c=document.body.style.overflow,document.body.style.overflow="hidden")}),i||(i=r))},exports.clearAllBodyScrollLocks=function(){n?(l.forEach(function(o){o.ontouchstart=null,o.ontouchmove=null}),d&&(document.removeEventListener("touchmove",s,{passive:!1}),d=!1),l=[],u=-1):(o(),i=null)},exports.enableBodyScroll=function(e){n?(e.ontouchstart=null,e.ontouchmove=null,l=l.filter(function(o){return o!==e}),d&&0===l.length&&(document.removeEventListener("touchmove",s,{passive:!1}),d=!1)):i===e&&(o(),i=null)}});
+
+
+/**
  * Header shrink helper functions.
  * Everything here rebuilt for v1.4.0.
  *
@@ -279,32 +289,6 @@
 
 
 /**
- * Set an elements min-height
- * according to the aspect ratio of its' background image.
- *
- * @version  2.0.0
- */
-( function( window, document, $, undefined ) {
-
-	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
-	window.addEventListener( 'load', aspectRatio );
-	window.addEventListener( 'resize', aspectRatio );
-
-	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
-	$( document ).on( 'facetwp-loaded', function() {
-		aspectRatio();
-	});
-
-	function aspectRatio() {
-		return document.querySelectorAll( '.aspect-ratio' ).forEach( function( el ) {
-			return el.style.minHeight = el.offsetWidth / ( el.getAttribute( 'data-aspect-width' ) / el.getAttribute('data-aspect-height') ) + 'px';
-		});
-	}
-
-})( window, document, jQuery );
-
-
-/**
  * This script adds the accessibility-ready responsive menu.
  * Loosely off https://github.com/copyblogger/responsive-menus.
  *
@@ -351,7 +335,8 @@
 
 	// Toggle triggers.
 	$siteHeader.on( 'click', '.mai-toggle', _doToggleMenu );
-	$maiMenu.on( 'click', '.sub-menu-toggle', _doToggleSubMenu );
+	$maiMenu.on( 'click', '.sub-menu-toggle:not(.sub-sub-menu-toggle)', _doToggleSubMenu );
+	$maiMenu.on( 'click', '.sub-menu-toggle.sub-sub-menu-toggle', _doToggleSubSubMenu );
 
 	// Resize.
 	$window.on( 'load resize', function(e) {
@@ -372,13 +357,15 @@
 			return;
 		}
 
-		// Add the submenu toggles.
-		$maiSubMenus.before( $maiSubToggle );
-
 		// Add the responsive menu class to the menus.
 		$.each( $maiMenus, function(e) {
 			$(this).addClass( 'mobile-menu' );
 		});
+
+		// Add the submenu toggles.
+		$maiSubMenus.before( $maiSubToggle );
+
+		$( '.sub-menu .sub-menu-toggle' ).addClass( 'sub-sub-menu-toggle' );
 	}
 
 	/**
@@ -389,7 +376,7 @@
 		var $this = $(this);
 
 		// Toggle the mobile menu activated.
-		_toggleActivated( $this );
+		$this._toggleActive();
 
 		// Activated body class.
 		$body.toggleClass( 'mai-menu-activated' );
@@ -462,12 +449,15 @@
 	 * Action for sub-menu toggles.
 	 */
 	function _doToggleSubMenu() {
+		$(this)._toggleSubMenu();
+		$( '.sub-menu-toggle.activated' ).not( $(this) )._closeSubMenu();
+	}
 
-		// Close all open sub-menus.
-		_closeOpenSubMenus();
-
-		// Open this sub-menu.
-		_toggleSubMenu( $(this) );
+	/**
+	 * Action for nested sub-menu toggles.
+	 */
+	function _doToggleSubSubMenu() {
+		$(this)._toggleSubMenu();
 	}
 
 	/**
@@ -531,69 +521,48 @@
 
 		$body.removeClass( 'mai-menu-activated mai-standard-menu-activated mai-side-menu-activated' )
 
-		_closeElement( $maiToggle );
-		_closeOpenSubMenus();
+		$maiToggle._closeElement();
+		$( '.sub-menu-toggle.activated' )._closeSubMenu();
 	}
 
 	/**
-	 * Close any open sub-menu.
-	 */
-	function _closeOpenSubMenus() {
-		$.each( $( '.sub-menu-toggle.activated' ), function(e) {
-			_toggleSubMenu( $(this) );
-		});
-	}
-
-	/**
-	 * Close a sub-menu by toggle.
-	 */
-	function _toggleSubMenu( $button ) {
-		_toggleActivated( $button );
-		$button.next( '.sub-menu' ).slideToggle( 'fast' );
-	}
-
-	/**
-	 * Toggle an element as pressed/expanded/activated.
-	 */
-	function _toggleActivated( $element ) {
-		toggleAria( $element, 'aria-expanded' );
-		toggleAria( $element, 'aria-pressed' );
-		$element.toggleClass( 'activated' );
-	}
-
-	/**
-	 * Close multiple elements.
-	 */
-	function _closeElements( $elements ) {
-		$.each( $elements, function( index, value ) {
-			_closeElement( $(this) );
-		});
-	}
-
-	/**
-	 * Close an element.
-	 */
-	function _closeElement( $element ) {
-		$element.removeClass( 'activated' ).attr( 'aria-expanded', false ).attr( 'aria-pressed', false );
-	}
-
-	/**
-	 * Generic function to get the display value of an element.
+	 * Get the display value of an element.
 	 */
 	function _getDisplayValue( $element ) {
 		return $element.css( 'display' );
 	}
 
+	$.fn._toggleSubMenu = function(){
+		$(this)._toggleActive().next( '.sub-menu' ).slideToggle( 'fast' );
+		return $(this);
+	};
+
+	$.fn._closeSubMenu = function(){
+		$(this)._closeElement().next( '.sub-menu' ).slideUp( 'fast' );
+		return $(this);
+	};
+
+	$.fn._closeElement = function(){
+		$(this).removeClass( 'activated' ).attr( 'aria-expanded', false ).attr( 'aria-pressed', false );
+		return $(this);
+	};
+
+	$.fn._toggleActive = function(){
+		$(this)._toggleArias().toggleClass( 'activated' );
+		return $(this);
+	};
+
+	$.fn._toggleArias = function(){
+		$(this).attr( 'aria-expanded', $(this)._toggleAttr( 'aria-expanded' ) ).attr( 'aria-pressed', $(this)._toggleAttr( 'aria-pressed' ) );
+		return $(this);
+	};
+
+	$.fn._toggleAttr = function( attr ){
+		return $(this).attr( attr ) === true ? false : true;
+	};
+
 })( window, document, jQuery );
 
-/**
- * Body scroll lock.
- *
- *  @link    https://github.com/willmcpo/body-scroll-lock
- *
- * @version  2.5.1
- */
-!function(o,e){if("function"==typeof define&&define.amd)define(["exports"],e);else if("undefined"!=typeof exports)e(exports);else{var t={};e(t),o.bodyScrollLock=t}}(this,function(exports){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n="undefined"!=typeof window&&window.navigator&&window.navigator.platform&&/iPad|iPhone|iPod|(iPad Simulator)|(iPhone Simulator)|(iPod Simulator)/.test(window.navigator.platform),i=null,l=[],d=!1,u=-1,c=void 0,a=void 0,s=function(o){var e=o||window.event;return e.preventDefault&&e.preventDefault(),!1},o=function(){setTimeout(function(){void 0!==a&&(document.body.style.paddingRight=a,a=void 0),void 0!==c&&(document.body.style.overflow=c,c=void 0)})};exports.disableBodyScroll=function(r,o){var t;n?r&&!l.includes(r)&&(l=[].concat(function(o){if(Array.isArray(o)){for(var e=0,t=Array(o.length);e<o.length;e++)t[e]=o[e];return t}return Array.from(o)}(l),[r]),r.ontouchstart=function(o){1===o.targetTouches.length&&(u=o.targetTouches[0].clientY)},r.ontouchmove=function(o){var e,t,n,i;1===o.targetTouches.length&&(t=r,i=(e=o).targetTouches[0].clientY-u,t&&0===t.scrollTop&&0<i?s(e):(n=t)&&n.scrollHeight-n.scrollTop<=n.clientHeight&&i<0?s(e):e.stopPropagation())},d||(document.addEventListener("touchmove",s,{passive:!1}),d=!0)):(t=o,setTimeout(function(){if(void 0===a){var o=!!t&&!0===t.reserveScrollBarGap,e=window.innerWidth-document.documentElement.clientWidth;o&&0<e&&(a=document.body.style.paddingRight,document.body.style.paddingRight=e+"px")}void 0===c&&(c=document.body.style.overflow,document.body.style.overflow="hidden")}),i||(i=r))},exports.clearAllBodyScrollLocks=function(){n?(l.forEach(function(o){o.ontouchstart=null,o.ontouchmove=null}),d&&(document.removeEventListener("touchmove",s,{passive:!1}),d=!1),l=[],u=-1):(o(),i=null)},exports.enableBodyScroll=function(e){n?(e.ontouchstart=null,e.ontouchmove=null,l=l.filter(function(o){return o!==e}),d&&0===l.length&&(document.removeEventListener("touchmove",s,{passive:!1}),d=!1)):i===e&&(o(),i=null)}});
 
 /**
  * Convert menu items with .search class to a search icon with a fade in search box.
@@ -602,6 +571,8 @@
  * @version  1.1.0
  */
 ( function( document, $, undefined ) {
+
+	// TODO: MOVE ALL THIS INTO MAIN MENU SCRIPT TO USE _toggleArias FUNCTION!
 
 	var $searchItems = $( '.genesis-nav-menu .search' );
 
@@ -682,6 +653,32 @@
 	}
 
 })( document, jQuery );
+
+
+/**
+ * Set an elements min-height
+ * according to the aspect ratio of its' background image.
+ *
+ * @version  2.0.0
+ */
+( function( window, document, $, undefined ) {
+
+	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
+	window.addEventListener( 'load', aspectRatio );
+	window.addEventListener( 'resize', aspectRatio );
+
+	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
+	$( document ).on( 'facetwp-loaded', function() {
+		aspectRatio();
+	});
+
+	function aspectRatio() {
+		return document.querySelectorAll( '.aspect-ratio' ).forEach( function( el ) {
+			return el.style.minHeight = el.offsetWidth / ( el.getAttribute( 'data-aspect-width' ) / el.getAttribute('data-aspect-height') ) + 'px';
+		});
+	}
+
+})( window, document, jQuery );
 
 
 /**
