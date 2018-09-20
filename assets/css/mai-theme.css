@@ -3339,8 +3339,8 @@ body.mai-menu-activated {
 	font-size: 0.8em;
 	letter-spacing: 1px;
 	text-transform: uppercase;
-	padding: 0;
-	margin: 0 0 24px;
+	padding: 16px;
+	margin: -16px 0 4px;
 	border: none;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -3352,8 +3352,8 @@ body.mai-menu-activated {
 .woocommerce.has-side-menu .menu-close:focus {
 	background-color: transparent;
 	color: rgba(0, 0, 0, 0.8);
-	padding: 0;
-	margin: 0 0 24px;
+	padding: 16px;
+	margin: -16px 0 4px;
 	border: none;
 }
 

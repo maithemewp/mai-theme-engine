@@ -305,6 +305,8 @@
 		return;
 	}
 
+	_maiGlobalFunctions();
+
 	// Build toggle buttons.
 	var $maiToggle = $( '<button />', {
 			'id' : 'mai-toggle',
@@ -545,25 +547,6 @@
 		return $(this);
 	};
 
-	$.fn._closeElement = function(){
-		$(this).removeClass( 'activated' ).attr( 'aria-expanded', false ).attr( 'aria-pressed', false );
-		return $(this);
-	};
-
-	$.fn._toggleActive = function(){
-		$(this)._toggleArias().toggleClass( 'activated' );
-		return $(this);
-	};
-
-	$.fn._toggleArias = function(){
-		$(this).attr( 'aria-expanded', $(this)._toggleAttr( 'aria-expanded' ) ).attr( 'aria-pressed', $(this)._toggleAttr( 'aria-pressed' ) );
-		return $(this);
-	};
-
-	$.fn._toggleAttr = function( attr ){
-		return $(this).attr( attr ) === true ? false : true;
-	};
-
 })( window, document, jQuery );
 
 
@@ -571,89 +554,83 @@
  * Convert menu items with .search class to a search icon with a fade in search box.
  * Show/hide search box on click, and allow closing by clicking outside of search box.
  *
- * @version  1.1.0
+ * @version  2.0.0
  */
 ( function( document, $, undefined ) {
 
-	// TODO: MOVE ALL THIS INTO MAIN MENU SCRIPT TO USE _toggleArias FUNCTION!
+	var $navMenu    = $( '.genesis-nav-menu' ),
+		$searchItem = $navMenu.children( '.search' );
 
-	var $searchItems = $( '.genesis-nav-menu .search' );
-
-	if ( 0 === $searchItems.length ) {
+	// Bail if no search items.
+	if ( 0 === $searchItem.length ) {
 		return;
 	}
 
-	$.each( $searchItems, function(){
+	_maiGlobalFunctions();
 
-		var $this = $(this);
+	$searchItem.html( '<button class="nav-search" aria-expanded="false" aria-pressed="false"><span class="search-icon"></span><span class="screen-reader-text">' + $searchItem.text() + '</span></button>' ).show();
 
-		$this.html( '<button class="nav-search"><span class="search-icon"></span><span class="screen-reader-text">' + $this.text() + '</span></button>' ).show();
+	// Add the search box after the link.
+	$searchItem.append( maiVars.searchBox );
 
-		var $searchButton = $this.find( 'button' );
+	$navMenu.on( 'click', '.nav-search', function(e){
 
-		toggleAria( $searchButton, 'aria-pressed' );
-		toggleAria( $searchButton, 'aria-expanded' );
+		$searchButton = $(this);
 
-		// Add the search box after the link.
-		$this.append( maiVars.searchBox );
+		// If already opened.
+		if ( $searchItem.hasClass( 'activated' ) ) {
 
-		// On click of the search button.
-		$this.on( 'click', 'button', function(e){
+			$searchButton._searchClose();
 
-			e.preventDefault();
+		}
+		// Closing.
+		else {
 
-			toggleAria( $(this), 'aria-pressed' );
-			toggleAria( $(this), 'aria-expanded' );
+			// Close other search boxes.
+			$( '.nav-search' ).not( $searchButton )._searchClose();
 
-			// Close if the button has open class, otherwise open.
-			if ( $this.hasClass( 'activated' ) ) {
+			$searchButton._searchOpen();
 
-				_searchClose( $this );
+			// Close search listener.
+			$( 'body' ).mouseup( function(e){
+				/**
+				 * Bail if:
+				 * If click is on our search box container.
+				 * If click is on a child of our search box container.
+				 */
+				if ( $(this).hasClass( 'search-box' ) || ( $searchItem.has( e.target ).length ) ) {
+					return;
+				}
+				$searchButton._searchClose();
+			});
 
-			} else {
+			// Close search if esc key pressed.
+			$(document).keydown( function(e) {
+				// Use switch to easily add new keystrokes.
+				switch(e.which) {
+					case 27: // esc.
+					$searchButton._searchClose();
+					break;
+					// Exit this handler for other keys.
+					default: return;
+				}
+			});
 
-				_searchOpen( $this );
-
-				// Close search listener
-				$( 'body' ).mouseup(function(e){
-					/**
-					 * Bail if:
-					 * If click is on our search box container.
-					 * If click is on a child of our search box container.
-					 */
-					if ( $(this).hasClass( 'search-box' ) || ( $this.has(e.target).length ) ) {
-						return;
-					}
-					_searchClose( $this );
-				});
-
-				// Close search if esc key pressed.
-				$(document).keydown(function(e) {
-					// Use switch to easily add new keystrokes.
-					switch(e.which) {
-						case 27: // esc.
-						// Close search box with esc key.
-						_searchClose( $this );
-						break;
-
-						default: return; // exit this handler for other keys.
-					}
-				});
-
-			}
-		});
+		}
 
 	});
 
-	// Helper function to open search form and add class to search button.
-	function _searchOpen( $this ) {
-		$this.addClass( 'activated' ).find( '.search-box' ).fadeIn( 'fast' ).find( 'input[type="search"]' ).focus();
-	}
+	$.fn._searchOpen = function(){
+		var $this = $(this);
+		$this._toggleArias().addClass( 'activated' ).next( '.search-box' ).fadeIn( 'fast' ).find( 'input[type="search"]' ).focus();
+		return $this;
+	};
 
-	// Helper function to close search form and remove class to search button.
-	function _searchClose( $this ) {
-		$this.removeClass( 'activated' ).find( '.search-box' ).fadeOut( 'fast' );
-	}
+	$.fn._searchClose = function(){
+		var $this = $(this);
+		$this._toggleArias().removeClass( 'activated' ).next( '.search-box' ).fadeOut( 'fast' );
+		return $this;
+	};
 
 })( document, jQuery );
 
@@ -682,19 +659,6 @@
 	}
 
 })( window, document, jQuery );
-
-
-/**
- * Toggle aria attributes.
- * @param  {button} $this   passed through.
- * @param  {aria-xx}        attribute aria attribute to toggle.
- * @return {bool}           from _ariaReturn.
- */
-function toggleAria( $this, attribute ) {
-	$this.attr( attribute, function( index, value ) {
-		return 'false' === value;
-	});
-}
 
 
 /**
@@ -730,7 +694,7 @@ function toggleAria( $this, attribute ) {
  */
 ( function( document, $, undefined ) {
 
-	$('.js-superfish').superfish({
+	$( '.js-superfish' ).superfish({
 		'delay': 100,
 		'speed': 'fast',
 		'speedOut': 'slow',
@@ -738,3 +702,39 @@ function toggleAria( $this, attribute ) {
 	});
 
 })( document, jQuery );
+
+
+/**
+ * Build some helper functions.
+ *
+ * @access  private.
+ */
+function _maiGlobalFunctions(){
+
+	var $ = jQuery;
+
+	$.fn._toggleActive = function(){
+		var $this = $(this);
+		$this._toggleArias().toggleClass( 'activated' );
+		return $this;
+	};
+
+	$.fn._toggleArias = function(){
+		var $this = $(this);
+		$this.attr({
+			'aria-expanded': 'false' === $this.attr( 'aria-expanded' ),
+			'aria-pressed': 'false' === $this.attr( 'aria-pressed' ),
+		});
+		return $this;
+	};
+
+	$.fn._closeElement = function(){
+		var $this = $(this);
+		$this.removeClass( 'activated' ).attr({
+			'aria-expanded': false,
+			'aria-pressed': false,
+		});
+		return $this;
+	};
+
+}
