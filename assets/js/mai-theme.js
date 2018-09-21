@@ -605,7 +605,8 @@
 			});
 
 			// Close search if esc key pressed.
-			$(document).keydown( function(e) {
+			$(document).keydown( function(e){
+
 				// Use switch to easily add new keystrokes.
 				switch(e.which) {
 					case 27: // esc.
