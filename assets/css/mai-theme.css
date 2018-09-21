@@ -350,6 +350,9 @@ a:focus,
 }
 
 .flex-entry .entry-title {
+	-webkit-hyphens: auto;
+	-ms-hyphens: auto;
+	hyphens: auto;
 	margin-bottom: 0;
 }
 
@@ -366,17 +369,6 @@ a:focus,
 .sidebar .widgettitle,
 .sidebar .widget-title {
 	margin-bottom: 24px;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	-webkit-hyphens: auto;
-	-ms-hyphens: auto;
-	hyphens: auto;
 }
 
 /* ## Screen Reader Text
@@ -1844,6 +1836,14 @@ input[name="post_password"] {
 }
 .mai-slider[data-slidestoscroll="6"]:not(.slick-initialized) .mai-slide {
 	max-width: 16.66666667%;
+}
+
+.js .mai-slider[data-slidestoshow="1"]:not(.slick-initialized) .mai-slide:nth-child(n+2),
+.js .mai-slider[data-slidestoshow="2"]:not(.slick-initialized) .mai-slide:nth-child(n+3),
+.js .mai-slider[data-slidestoshow="3"]:not(.slick-initialized) .mai-slide:nth-child(n+4),
+.js .mai-slider[data-slidestoshow="4"]:not(.slick-initialized) .mai-slide:nth-child(n+5),
+.js .mai-slider[data-slidestoshow="6"]:not(.slick-initialized) .mai-slide:nth-child(n+7) {
+	display: none;
 }
 
 .mai-slider .slick-list {
@@ -3727,6 +3727,11 @@ p ~ .flex-grid {
 
 .flex-entry .entry-content .entry-image-link {
 	margin-bottom: 14px;
+}
+
+.flex-entry .entry-image-link.alignleft,
+.flex-entry .entry-image-link.alignright {
+	margin-top: 8px;
 }
 
 .flex-entry .entry-image-link.alignnone .entry-image,
