@@ -1,25 +1,29 @@
 ### Changelog
 
+#### 1.4.0 (TBD)
 Added: New 'Reveal' header setting that hides menu when scrolling down and reveals it when scrolling up.
 Added: [grid][columns][col] 'top' param to add top margin. Accepts 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', or 'xxl'.
-Added: [grid] Added 'target' param to grid to set post urls target to _blank as an example.
-Added: $attributes parameter to mai_get_read_more_link().
+Added: [grid] Added 'target' param to grid to set post urls target to '_blank', as an example.
+Added: [grid] Added 'rel' param to grid to set post urls rel to 'noopener', as an example.
+Added: $attributes parameter to mai_get_read_more_link() and mai_get_bg_image_link() functions.
 Added: HTML5 gallery and caption support.
 Added: Top/bottom/gutter classes by browser width and size. Example: top-xs-md bottom-xs-lg gutter-xs-sm.
-Added: Headings are now hyphenated via CSS when needed.
+Added: Flex entry headings are now hyphenated via CSS when needed.
+Added: rel="noopener" to Genesis Connect for WooCommerce install notice.
 Changed: Deprecated bottom/gutter number values (10, 20, 30, etc) in favor of sizes (xs, sm, md, etc).
 Changed: Converted most padding/margin to values divisible by 4's or 8's.
 Changed: Aspect ratio calculations now use vanilla JS. Props @tomhodgins from cssplus.
+Changed: [grid] slider now hides extra slides via CSS until Slick is initialized and builds the slider.
 Changed: Bump Flexington version to 2.4.0. New top helper classes.
-Changed: Removed CSS initial since IE doesn't support it. Specified a color value.
+Changed: Removed CSS color: initial; since IE doesn't support it. Specified a color value.
 Changed: WooCommerce product category/tag archives display Archive Intro Text when banner is disabled.
 Fixed: [grid] Better FacetWP handling when there are no results after filtering.
 Fixed: Banner/Featured image field should show even when banner is disabled, since this image is used for [grid] as well.
 Fixed: "Hide featured image" setting won't show if post type doesn't support featured images.
+Fixed: Duplicate archive title/description on Woo taxonomy archives since Genesis Connect for WooCommerce added this in 1.0.
 Fixed: Don't show empty archive-description wrap if there is no editor content on page-for-posts.
 Fixed: Overly aggressive bottom margin on entries.
 Fixed: Fix WP's Google Schema error, "The property logo is not recognised by Google for an object of type WPHeader".
-Fixed: Duplicate archive title/description on Woo taxonomy archives since Genesis Connect for WooCommerce added this in 1.0.
 Fixed: Out of date template notice in WooCommerce content-product.php.
 
 #### 1.3.7 (7/13/18)
