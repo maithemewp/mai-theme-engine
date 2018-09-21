@@ -63,7 +63,7 @@ function mai_notice_script() {
  */
 function mai_woocommerce_theme_notice() {
 
-	$notice_html = sprintf( __( 'Please install and activate <a href="https://wordpress.org/plugins/genesis-connect-woocommerce/" target="_blank" rel="noopener>Genesis Connect for WooCommerce</a> to <strong>enable WooCommerce support for %s</strong>.', 'mai-theme-engine' ), esc_html( CHILD_THEME_NAME ) );
+	$notice_html = sprintf( __( 'Please install and activate <a href="https://wordpress.org/plugins/genesis-connect-woocommerce/" target="_blank" rel="noopener">Genesis Connect for WooCommerce</a> to <strong>enable WooCommerce support for %s</strong>.', 'mai-theme-engine' ), esc_html( CHILD_THEME_NAME ) );
 
 	if ( current_user_can( 'install_plugins' ) ) {
 		$plugin_slug  = 'genesis-connect-woocommerce';
