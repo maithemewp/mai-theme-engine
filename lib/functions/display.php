@@ -224,14 +224,17 @@ function mai_do_bg_image_link() {
  *
  * @param   string  $url (optional)    The URL to use for the HTML.
  * @param   string  $title (optional)  The title to use for the HTML.
+ * @param   array   $attributes        Additional link attributes.
  *
  * @return  string|HTML
  */
-function mai_get_bg_image_link( $url = '', $title = '', $target = '' ) {
-	$url    = $url ? esc_url( $url ) : get_permalink();
-	$title  = $title ? esc_html( $title ) : get_the_title();
-	$target = $target ? sprintf( ' target="%s"', esc_attr( $target ) ) : '';
-	return sprintf( '<div class="bg-link-wrap"><a href="%s" class="bg-link"%s><span class="screen-reader-text" aria-hidden="true">%s</span></a></div>', $url, $target, $title );
+function mai_get_bg_image_link( $url = '', $title = '', $attributes = array() ) {
+	$title      = $title ? esc_html( $title ) : get_the_title();
+	$attributes = wp_parse_args( $attributes, array(
+		'class' => 'bg-link',
+		'href'  => $url ? esc_url( $url ) : get_permalink(),
+	) );
+	return sprintf( '<div class="bg-link-wrap"><a %s><span class="screen-reader-text" aria-hidden="true">%s</span></a></div>', genesis_attr( 'bg-link', $attributes ), $title );
 }
 
 /**
@@ -240,7 +243,7 @@ function mai_get_bg_image_link( $url = '', $title = '', $target = '' ) {
  * @param  int|WP_Post|WP_term?  $object      The object to get read more link for.
  * @param  string                $text        The "Read More" text.
  * @param  string                $type        The object type ('post' or 'term').
- * @param  array                 $attributes  Allow custom attributes.
+ * @param  array                 $attributes  Additional link attributes.
  *
  * @return HTML string for the link.
  */
