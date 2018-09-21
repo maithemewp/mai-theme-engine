@@ -10,7 +10,7 @@ Added: HTML5 gallery and caption support.
 Added: Top/bottom/gutter classes by browser width and size. Example: top-xs-md bottom-xs-lg gutter-xs-sm.
 Added: Flex entry headings are now hyphenated via CSS when needed.
 Added: rel="noopener" to Genesis Connect for WooCommerce install notice.
-Changed: Remove Font Awesome for new installs.
+Changed: No longer enqueue Font Awesome for new installs.
 Changed: Menu dropdown icons, menu search icon, grid/slick slider arrow icon are now pure HTML/CSS.
 Changed: Deprecated bottom/gutter number values (10, 20, 30, etc) in favor of sizes (xs, sm, md, etc).
 Changed: Converted most padding/margin to values divisible by 4's or 8's.

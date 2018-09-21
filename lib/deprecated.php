@@ -1,6 +1,14 @@
 <?php
 
-// Enqueue Javascript files
+/**
+ * Maybe enqueue files.
+ *
+ * @version  1.0.0
+ *
+ * @since    1.4.0
+ *
+ * @return   void
+ */
 add_action( 'wp_enqueue_scripts', 'mai_maybe_enqueue_deprecated_scripts' );
 function mai_maybe_enqueue_deprecated_scripts() {
 
