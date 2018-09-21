@@ -69,10 +69,15 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 
 		// If Woo default taxo.
 		if ( class_exists( 'WooCommerce' ) && in_array( $taxonomy, array( 'product_cat', 'product_tag' ) ) ) {
-			// Hide the banner image field, Woo has their own image field.
+			// If checking for the banner image.
 			if ( 'banner' === $field->args['id'] ) {
-				return false;
-			} else {
+				// Hide the banner image field if Product Category, Woo has their own category image field.
+				if ( 'product_cat' === $taxonomy ) {
+					return false;
+				}
+			}
+			// Not checking banner image field.
+			else {
 				// Don't show field if banner area is globally disabled.
 				if ( ! $banner_enabled ) {
 					return false;
