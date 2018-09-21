@@ -13,8 +13,6 @@ class Mai_Grid {
 
 	private $content_type;
 
-	private $target;
-
 	private $facetwp = false;
 
 	// Whether facetwp_is_main_query filter has run.
@@ -77,6 +75,7 @@ class Mai_Grid {
 			'order_by'             => '',
 			'overlay'              => '',
 			'parent'               => '',
+			'rel'                  => '',
 			'row_class'            => '',
 			'show'                 => 'image, title',  // image, title, add_to_cart, author, content, date, excerpt, image, more_link, price, meta, title
 			'status'               => '',  // Comma separated for multiple
@@ -156,6 +155,7 @@ class Mai_Grid {
 			'order_by'             => sanitize_key( $this->args['order_by'] ),
 			'overlay'              => sanitize_key( $this->args['overlay'] ),
 			'parent'               => $this->args['parent'], // Validated later, after check for 'current'
+			'rel'                  => sanitize_key( $this->args['rel'] ),
 			'row_class'            => mai_sanitize_html_classes( $this->args['row_class'] ),
 			'show'                 => mai_sanitize_keys( $this->args['show'] ),
 			'status'               => array_filter( explode( ',', $this->args['status'] ) ),
@@ -548,7 +548,7 @@ class Mai_Grid {
 							// Title.
 							if ( in_array( 'title', $this->args['show'] ) ) {
 								if ( $this->args['link'] ) {
-									$title = sprintf( '<a href="%s" title="%s"%s>%s</a>', $url, esc_attr( get_the_title() ), $this->get_target(), get_the_title() );
+									$title = sprintf( '<a href="%s" title="%s"%s%s>%s</a>', $url, esc_attr( get_the_title() ), $this->get_target(), $this->get_rel(), get_the_title() );
 								} else {
 									$title = get_the_title();
 								}
@@ -613,6 +613,9 @@ class Mai_Grid {
 							if ( $this->args['target'] ) {
 								$more_link_atts['target'] = $this->args['target'];
 							}
+							if ( $this->args['rel'] ) {
+								$more_link_atts['rel'] = $this->args['rel'];
+							}
 							$entry_content .= mai_get_read_more_link( $post, $this->args['more_link_text'], 'post', $more_link_atts );
 						}
 
@@ -641,7 +644,14 @@ class Mai_Grid {
 
 						// Image.
 						if ( ( 'bg' == $this->args['image_location'] ) && $this->args['link'] ) {
-							$html .= mai_get_bg_image_link( $url, get_the_title() );
+							$more_link_atts = array();
+							if ( $this->args['target'] ) {
+								$more_link_atts['target'] = $this->args['target'];
+							}
+							if ( $this->args['rel'] ) {
+								$more_link_atts['rel'] = $this->args['rel'];
+							}
+							$html .= mai_get_bg_image_link( $url, get_the_title(), $more_link_atts );
 						}
 
 					$html .= $this->get_entry_wrap_close();
@@ -817,7 +827,7 @@ class Mai_Grid {
 							// Title.
 							if ( in_array( 'title', $this->args['show'] ) ) {
 								if ( $this->args['link'] ) {
-									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
+									$title = sprintf( '<a href="%s" title="%s"%s%s>%s</a>', $url, esc_attr( $term->name ), $this->get_target(), $this->get_rel(), $term->name );
 								} else {
 									$title = $term->name;
 								}
@@ -864,6 +874,9 @@ class Mai_Grid {
 							if ( $this->args['target'] ) {
 								$more_link_atts['target'] = $this->args['target'];
 							}
+							if ( $this->args['rel'] ) {
+								$more_link_atts['rel'] = $this->args['rel'];
+							}
 							$entry_content .= mai_get_read_more_link( $term, $this->args['more_link_text'], 'term', $more_link_atts );
 						}
 
@@ -882,7 +895,14 @@ class Mai_Grid {
 
 						// Image.
 						if ( ( 'bg' == $this->args['image_location'] ) && $this->args['link'] ) {
-							$html .= mai_get_bg_image_link( $url, $term->name );
+							$more_link_atts = array();
+							if ( $this->args['target'] ) {
+								$more_link_atts['target'] = $this->args['target'];
+							}
+							if ( $this->args['rel'] ) {
+								$more_link_atts['rel'] = $this->args['rel'];
+							}
+							$html .= mai_get_bg_image_link( $url, $term->name, $more_link_atts );
 						}
 
 					$html .= $this->get_entry_wrap_close();
@@ -1285,6 +1305,15 @@ class Mai_Grid {
 	}
 
 	/**
+	 * Get the rel HTML for links.
+	 *
+	 * @return  string  The link rel or empty string.
+	 */
+	function get_rel() {
+		return ! empty( $this->args['rel'] ) ? sprintf( ' rel="%s"', $this->args['rel'] ) : '';
+	}
+
+	/**
 	 * Get the add to cart link with screen reader text.
 	 *
 	 * @return  string|HTML
@@ -1403,6 +1432,9 @@ class Mai_Grid {
 			$attributes['href'] = $url;
 			if ( $this->args['target'] ) {
 				$attributes['target'] = $this->args['target'];
+			}
+			if ( $this->args['rel'] ) {
+				$attributes['rel'] = $this->args['rel'];
 			}
 			$image_wrap = 'a';
 		} else {
