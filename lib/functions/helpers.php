@@ -417,20 +417,20 @@ function mai_get_gutter_size( $gutter ) {
  * Helper function to check if archive is a flex loop.
  * This doesn't check if viewing an actual archive, but this layout should not be an option if ! is_archive()
  *
- * @return  bool  Whether the layout is a grid archive
+ * @return  bool  Whether the layout is a grid archive.
  */
 function mai_is_flex_loop() {
-	// Bail if not a content archive
+	// Bail if not a content archive.
 	if ( ! mai_is_content_archive() ) {
 		return false;
 	}
-	// Get columns
+	// Get columns.
 	$columns = mai_get_columns();
-	// If we have more than 1 column or if we are using featured image as bg image, it's a flex loop
+	// If we have more than 1 column or if we are using featured image as bg image, it's a flex loop.
 	if ( ( $columns > 1 ) || ( 'background' === mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) ) ) ) {
 		return true;
 	}
-	// Not a flex loop
+	// Not a flex loop.
 	return false;
 }
 

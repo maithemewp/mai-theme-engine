@@ -854,6 +854,45 @@ function mai_get_bottom_class( $bottom ) {
 }
 
 /**
+ * Get flex look classes.
+ *
+ * @access  private
+ *
+ * @param   array  $classes  The existing classes array.
+ *
+ * @return  void
+ */
+function mai_flex_loop_post_class( $classes ) {
+
+	$classes[] = 'flex-entry';
+	$classes[] = 'col';
+
+	$breaks  = array();
+	$columns = mai_get_columns();
+
+	if ( $columns > 2 ) {
+		$breaks['sm'] = 6;
+	}
+	if ( $columns > 3 ) {
+		$breaks['md'] = 6;
+	}
+
+	$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $breaks, mai_get_size_by_columns( $columns ), $return = 'array' ) );
+
+	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
+	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
+
+	// If background image or image is not aligned.
+	if ( 'background' === $img_location || empty( $img_alignment ) ) {
+		$classes[] = 'column';
+	} else {
+		$classes[] = 'has-image-' . str_replace( 'align', '', $img_alignment );
+	}
+
+	return $classes;
+}
+
+/**
  * If gutter is a valid Flexington size.
  */
 function mai_is_valid_gutter( $gutter ) {
