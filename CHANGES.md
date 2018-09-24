@@ -19,6 +19,7 @@ Changed: [grid] slider now hides extra slides via CSS until Slick is initialized
 Changed: Bump Flexington version to 2.4.0. New top helper classes.
 Changed: Removed CSS color: initial; since IE doesn't support it. Specified a color value.
 Changed: WooCommerce product category/tag archives display Archive Intro Text when banner is disabled.
+Changed: More efficient Woo product shortcode loop entry classes.
 Fixed: [grid] Better FacetWP handling when there are no results after filtering.
 Fixed: Banner/Featured image field should show even when banner is disabled, since this image is used for [grid] as well.
 Fixed: "Hide featured image" setting won't show if post type doesn't support featured images.
