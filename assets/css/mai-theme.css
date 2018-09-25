@@ -2845,7 +2845,7 @@ input[name="post_password"] {
 	border: none;
 	-webkit-box-shadow: none;box-shadow: none;
 	text-align: center;
-	padding: 8px 12px;
+	padding: 8px 16px;
 }
 
 .search-icon,
