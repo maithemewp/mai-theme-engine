@@ -3264,6 +3264,11 @@ body.mai-menu-activated {
 	opacity: 0;
 }
 
+.mai-standard-menu-activated .site-header {
+	position: relative;
+	z-index: 99;
+}
+
 .mai-standard-menu-activated .mai-menu {
 	display: block;
 	overflow-x: hidden;
