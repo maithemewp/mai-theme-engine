@@ -679,6 +679,15 @@ input[type="submit"].small,
 	padding: 11px 14px;
 }
 
+button.large,
+input[type="button"].large,
+input[type="reset"].large,
+input[type="submit"].large,
+.button.large,
+.entry-content .button.large {
+	font-size: 1.25rem;
+}
+
 .button.alt,
 .comment-reply-link,
 .entry-content .button.alt,
