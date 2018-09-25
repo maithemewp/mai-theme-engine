@@ -578,7 +578,7 @@
 		$searchButton = $(this);
 
 		// If already opened.
-		if ( $searchItem.hasClass( 'activated' ) ) {
+		if ( $searchButton.hasClass( 'activated' ) ) {
 
 			$searchButton._searchClose();
 
