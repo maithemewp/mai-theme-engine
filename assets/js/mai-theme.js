@@ -655,7 +655,7 @@
 
 	function aspectRatio() {
 		return document.querySelectorAll( '.aspect-ratio' ).forEach( function( el ) {
-			return el.style.minHeight = el.offsetWidth / ( el.getAttribute( 'data-aspect-width' ) / el.getAttribute('data-aspect-height') ) + 'px';
+			return el.style.minHeight = Math.round( el.offsetWidth / ( el.getAttribute( 'data-aspect-width' ) / el.getAttribute('data-aspect-height') ) ) + 'px';
 		});
 	}
 
