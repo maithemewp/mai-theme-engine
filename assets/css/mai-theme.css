@@ -3443,6 +3443,11 @@ body.mai-menu-activated {
 	overflow-y: auto;
 }
 
+/* hide side menu when site-container is boxed */
+.has-side-menu .site-container.boxed .site-header {
+	overflow: hidden;
+}
+
 /* ### Mobile Menu
 --------------------------------------------- */
 
