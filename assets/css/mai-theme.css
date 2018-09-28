@@ -1555,7 +1555,9 @@ body.has-boxed-site-container {
 .light-content h6,
 .light-content a,
 .light-content .entry-meta,
-.light-content .entry-meta a {
+.light-content .entry-meta a,
+.light-content .gallery-caption,
+.light-content .wp-caption-text {
 	color: #fff;
 }
 
@@ -1720,6 +1722,11 @@ a.alignleft,
 img.alignleft,
 .wp-caption.alignleft {
 	margin: 24px 24px 24px 0;
+}
+
+.entry-image-link.alignleft,
+.entry-image-link.alignright {
+	margin-top: 8px;
 }
 
 .alignright,
@@ -3746,11 +3753,6 @@ p ~ .flex-grid {
 
 .flex-entry .entry-content .entry-image-link {
 	margin-bottom: 14px;
-}
-
-.flex-entry .entry-image-link.alignleft,
-.flex-entry .entry-image-link.alignright {
-	margin-top: 8px;
 }
 
 .flex-entry .entry-image-link.alignnone .entry-image,
