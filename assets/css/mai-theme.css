@@ -3284,11 +3284,6 @@ body.mai-menu-activated {
 	opacity: 0;
 }
 
-.mai-standard-menu-activated .site-header {
-	position: relative;
-	z-index: 99;
-}
-
 .mai-standard-menu-activated .mai-menu {
 	display: block;
 	overflow-x: hidden;
@@ -3310,6 +3305,12 @@ body.mai-menu-activated {
 	-webkit-animation: fadeIn .3s ease-in-out;
 	animation: fadeIn .3s ease-in-out;
 	opacity: 1;
+}
+
+/* when standard menu is activated and header is all the way at the top */
+.mai-standard-menu-activated:not(.scroll) .site-header {
+	position: relative;
+	z-index: 99;
 }
 
 @-webkit-keyframes standardMenu {
