@@ -3305,7 +3305,7 @@ body.mai-menu-activated {
 }
 
 /* when standard menu is activated and header is all the way at the top */
-.mai-standard-menu-activated:not(.scroll) .site-header {
+.mai-standard-menu-activated:not(.has-sticky-header) .site-header {
 	position: relative;
 	z-index: 99;
 }
