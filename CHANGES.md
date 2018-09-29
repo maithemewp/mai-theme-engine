@@ -8,7 +8,6 @@ Added: [grid] Added 'rel' param to grid to set post urls rel to 'noopener', as a
 Added: $attributes parameter to mai_get_read_more_link() and mai_get_bg_image_link() functions.
 Added: HTML5 gallery and caption support.
 Added: Top/bottom/gutter classes by browser width and size. Example: top-xs-md bottom-xs-lg gutter-xs-sm.
-Added: Flex entry headings are now hyphenated via CSS when needed.
 Added: rel="noopener" to Genesis Connect for WooCommerce install notice.
 Added: text-xxl utility class.
 Changed: Banner image size is now crops to 16x9 instead of 3x1.
