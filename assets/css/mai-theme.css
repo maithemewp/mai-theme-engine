@@ -2332,8 +2332,6 @@ input[name="post_password"] {
 ---------------------------------------------------------------------------------------------------- */
 
 .widget {
-	word-wrap: break-word;
-	-webkit-hyphens: auto;-ms-hyphens: auto;hyphens: auto;
 	overflow: hidden; /* fix avatar cut-off when floated left in widget */
 }
 
