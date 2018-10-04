@@ -378,7 +378,8 @@
 	 */
 	function _doToggleMenu() {
 
-		var $this = $(this);
+		var $this       = $(this),
+			hasSideMenu = $body.hasClass( 'has-side-menu' );
 
 		// Toggle the mobile menu activated.
 		$this._toggleActive();
@@ -387,7 +388,7 @@
 		$body.toggleClass( 'mai-menu-activated' );
 
 		// If we have a side menu.
-		if ( $body.hasClass( 'has-side-menu' ) ) {
+		if ( hasSideMenu ) {
 			// Side menu activated class.
 			$body.toggleClass( 'mai-side-menu-activated' );
 		}
@@ -406,13 +407,16 @@
 			// Disable body scroll (stupid iOS) while allowing the menu to scroll.
 			bodyScrollLock.disableBodyScroll( targetElement );
 
-			// Set max-height as window height minus header height.
-			$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
+			if ( ! hasSideMenu ) {
 
-			// Set max-height if window is resized.
-			$window.on( 'resize', function(e) {
+				// Set max-height as window height minus header height.
 				$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
-			});
+
+				// Set max-height if window is resized.
+				$window.on( 'resize', function(e) {
+					$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
+				});
+			}
 
 			// Allow additional keyboard nav.
 			$(document).keydown( function(e) {
@@ -437,8 +441,11 @@
 			// Re-enable body scroll.
 			bodyScrollLock.enableBodyScroll( targetElement );
 
-			// Remove inline styles.
-			$maiMenu.css( 'max-height', '' );
+			if ( ! hasSideMenu ) {
+
+				// Remove inline styles.
+				$maiMenu.css( 'max-height', '' );
+			}
 
 			_closeAll();
 		}

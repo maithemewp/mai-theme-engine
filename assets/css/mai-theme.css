@@ -2377,6 +2377,7 @@ input[name="post_password"] {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
+	max-width: 360px;
 }
 
 .widget.enews-widget .enews input[type="email"] {
@@ -3417,13 +3418,6 @@ body.mai-menu-activated {
 	margin-left: 2px;
 }
 
-.has-side-menu .mai-menu {
-	display: block;
-	position: static;
-	width: 0;
-	height: 0;
-}
-
 .has-side-menu .site-container {
 	-webkit-transition: margin 0.3s;-o-transition: margin 0.3s;transition: margin 0.3s;
 }
@@ -3433,7 +3427,8 @@ body.mai-menu-activated {
 	margin-right: 288px;
 }
 
-.has-side-menu .mai-menu-outer {
+.has-side-menu .mai-menu {
+	display: block;
 	-webkit-transition: right 0.3s;-o-transition: right 0.3s;transition: right 0.3s;
 	background-color: #f1f1f1;
 	position: fixed;
@@ -3441,38 +3436,40 @@ body.mai-menu-activated {
 	right: -288px;
 	width: 288px;
 	height: 100vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 	-webkit-box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
 	box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
 	z-index: 99;
 }
 
-.has-side-menu.mai-menu-activated .mai-menu-outer {
+.has-side-menu.mai-menu-activated .mai-menu {
 	right: 0;
 }
 
-.admin-bar.has-side-menu .mai-menu-outer {
-	top: 32px;
+.has-side-menu .mai-menu-inner {
+	padding-bottom: 96px;
+}
+
+.admin-bar.has-side-menu .mai-menu {
+	top: 46px;
 }
 
 .admin-bar.has-side-menu .mai-menu-inner {
-	height: calc( 100% - 32px );
+	height: calc( 100% - 46px );
 }
 
-@media only screen and (max-width: 782px) {
+@media only screen and (min-width: 782px) {
 
-	.admin-bar.has-side-menu .mai-menu-outer {
-		top: 46px;
+	.admin-bar.has-side-menu .mai-menu {
+		top: 32px;
 	}
 
 	.admin-bar.has-side-menu .mai-menu-inner {
-		height: calc( 100% - 46px );
+		height: calc( 100% - 32px );
 	}
 
-}
-
-.has-side-menu .mai-menu-inner {
-	overflow-x: hidden;
-	overflow-y: auto;
 }
 
 /* hide side menu when site-container is boxed */
@@ -3522,7 +3519,8 @@ body.mai-menu-activated {
 	-webkit-box-shadow: none;box-shadow: none;
 }
 
-.mobile-menu .current-menu-item a {
+.mobile-menu .current-page-ancestor > a,
+.mobile-menu .current-menu-item > a {
 	color: #067CCC;
 }
 
