@@ -240,6 +240,11 @@ final class Mai_Theme_Engine {
 			$image_sizes = array(
 				'banner' => array(
 					'width'  => 1600,
+					'height' => 533,
+					'crop'   => true, // 3x1
+				),
+				'section' => array(
+					'width'  => 1600,
 					'height' => 900,
 					'crop'   => true, // 16x9
 				),

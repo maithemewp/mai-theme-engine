@@ -44,6 +44,11 @@ class Mai_Section {
 			'wrap_class'    => '',
 		), $this->args, 'section' );
 
+		// Set the image size to larger size if height is tall.
+		if ( in_array( $this->args['height'], array( 'lg', 'xl' ) ) ) {
+			$this->args['image_size'] = 'section';
+		}
+
 		// Sanitized args.
 		$this->args = array(
 			'align'         => mai_sanitize_keys( $this->args['align'] ), // array with left, center, right, mostly for text-align (array for back compat)
@@ -95,7 +100,7 @@ class Mai_Section {
 		// Set some vars.
 		$this->has_content      = ! empty( $this->content );
 		$this->full_width_image = false !== strpos( $this->args['class'], 'full-width-image' );
-		$this->has_wrap         = ( ! empty( $this->args['title'] ) || $this->has_content ) && ! $this->full_width_image;
+		$this->has_wrap         = ! $this->full_width_image;
 		$this->has_overlay      = mai_is_valid_overlay( $this->args['overlay'] );
 		$this->has_inner        = mai_is_valid_inner( $this->args['inner'] ) && ! empty( $this->content );
 
@@ -157,11 +162,8 @@ class Mai_Section {
 		// If we have an image ID.
 		if ( $this->args['image'] ) {
 
-			// If using aspect ratio.
-			$has_aspect_ratio = $this->has_content ? false : true;
-
-			// Add the aspect ratio attributes.
-			$attributes = mai_add_background_image_attributes( $attributes, $this->args['image'], $this->args['image_size'], $has_aspect_ratio );
+			// Add the background-image attributes.
+			$attributes = mai_add_background_image_attributes( $attributes, $this->args['image'], $this->args['image_size'], false );
 
 			/**
 			 * Add content shade class if we don't have inner.
@@ -318,8 +320,12 @@ class Mai_Section {
 				'class' => 'section-content',
 			);
 
-			// Content width.
-			$attributes['class'] = mai_add_content_width_classes( $attributes['class'], $this->args['content_width'] );
+			// If we have content. We may have hidden title in banner.
+			if ( $this->has_content ) {
+
+				// Add extra content width.
+				$attributes['class'] = mai_add_content_width_classes( $attributes['class'], $this->args['content_width'] );
+			}
 
 			$html = sprintf( '<div %s>', genesis_attr( 'section-content', $attributes, $this->args ) );
 		}

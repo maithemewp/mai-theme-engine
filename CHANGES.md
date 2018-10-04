@@ -2,6 +2,7 @@
 
 #### 1.4.0 (TBD)
 Added: New 'Reveal' header setting that hides menu when scrolling down and reveals it when scrolling up.
+Added: New 'section' image size (1600px by 900px) for banner/sections that height is lg/xl.
 Added: [grid][columns][col] 'top' param to add top margin. Accepts 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', or 'xxl'.
 Added: [grid] Added 'target' param to grid to set post urls target to '_blank', as an example.
 Added: [grid] Added 'rel' param to grid to set post urls rel to 'noopener', as an example.
@@ -10,7 +11,7 @@ Added: HTML5 gallery and caption support.
 Added: Top/bottom/gutter classes by browser width and size. Example: top-xs-md bottom-xs-lg gutter-xs-sm.
 Added: rel="noopener" to Genesis Connect for WooCommerce install notice.
 Added: text-xxl utility class.
-Changed: Banner image size is now crops to 16x9 instead of 3x1.
+Added: Basic styling for Genesis eNews Extended plugin/widget.
 Changed: No longer enqueue Font Awesome for new installs.
 Changed: Menu dropdown icons, menu search icon, grid/slick slider arrow icon are now pure HTML/CSS.
 Changed: Deprecated bottom/gutter number values (10, 20, 30, etc) in favor of sizes (xs, sm, md, etc).
