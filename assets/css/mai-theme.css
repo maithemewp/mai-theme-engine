@@ -694,6 +694,7 @@ input[type="submit"].large,
 .entry-content .button.alt,
 .entry-content .more-link,
 .footer-widgets .button,
+.footer-widgets input[type="submit"],
 .site-footer .button,
 .woocommerce .actions .button,
 .woocommerce a.button.alt,
@@ -712,6 +713,8 @@ input[type="submit"].large,
 .entry-content .more-link:focus,
 .footer-widgets .button:hover,
 .footer-widgets .button:focus,
+.footer-widgets input[type="submit"]:hover,
+.footer-widgets input[type="submit"]:focus,
 .site-footer .button:hover,
 .site-footer .button:focus,
 .woocommerce .actions .button:hover,
@@ -2366,6 +2369,28 @@ input[name="post_password"] {
 
 /* # Plugins
 ---------------------------------------------------------------------------------------------------- */
+
+/* ## eNews Extended
+--------------------------------------------- */
+
+.enews > form {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.widget.enews-widget .enews input[type="email"] {
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
+	width: auto;
+	border-radius: 3px 0 0 3px;
+}
+
+.widget.enews-widget .enews input[type="submit"] {
+	margin-left: -1px;
+	border-radius: 0 3px 3px 0;
+}
 
 /* ## Jetpack
 --------------------------------------------- */
