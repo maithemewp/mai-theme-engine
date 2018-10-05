@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.4.0 (TBD)
+#### 1.4.0 (10/5/18)
 Added: New 'Reveal' header setting that hides menu when scrolling down and reveals it when scrolling up.
 Added: New 'section' image size (1600px by 900px) for banner/sections that height is lg/xl.
 Added: [grid][columns][col] 'top' param to add top margin. Accepts 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', or 'xxl'.
