@@ -26,61 +26,53 @@ function mai_register_customizer_header_footer_settings( $wp_customize ) {
 		)
 	);
 
-	// Header heading.
+	// Header style.
 	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'header_customizer_heading' ),
+		_mai_customizer_get_field_name( $settings_field, 'header_style' ),
 		array(
-			'default' => '',
-			'type'    => 'option',
+			'default'           => sanitize_key( mai_get_default_option( 'header_style' ) ),
+			'type'              => 'option',
+			'sanitize_callback' => 'sanitize_key',
 		)
 	);
 	$wp_customize->add_control(
-		new Mai_Customize_Control_Content( $wp_customize,
-			'header_customizer_heading',
-			array(
-				'label'       => __( 'Header', 'mai-theme-engine' ),
-				'description' => __( 'These settings are disabled on mobile.', 'mai-theme-engine' ),
-				'section'     => $section,
-				'settings'    => false,
-			)
+		'header_style',
+		array(
+			'label'    => __( 'Header style', 'mai-theme-engine' ),
+			'section'  => $section,
+			'settings' => _mai_customizer_get_field_name( $settings_field, 'header_style' ),
+			'type'     => 'select',
+			'choices'  => array(
+				'standard'      => __( 'Standard Header' ),
+				'sticky'        => __( 'Sticky Header' ),
+				'reveal'        => __( 'Reveal Header' ),
+				'sticky_shrink' => __( 'Sticky/Shrink Header' ),
+				'reveal_shrink' => __( 'Reveal/Shrink Header' ),
+			),
 		)
 	);
 
-	// Sticky Header.
+	// Mobile menu.
 	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'enable_sticky_header' ),
+		_mai_customizer_get_field_name( $settings_field, 'mobile_menu_style' ),
 		array(
-			'default'           => 0,
+			'default'           => sanitize_key( mai_get_default_option( 'mobile_menu_style' ) ),
 			'type'              => 'option',
-			'sanitize_callback' => 'mai_sanitize_one_zero',
+			'sanitize_callback' => 'sanitize_key',
 		)
 	);
 	$wp_customize->add_control(
-		'enable_sticky_header',
+		'mobile_menu_style',
 		array(
-			'label'    => __( 'Enable sticky header', 'mai-theme-engine' ),
+			'label'    => __( 'Mobile menu style', 'mai-theme-engine' ),
 			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $settings_field, 'enable_sticky_header' ),
-			'type'     => 'checkbox',
-		)
-	);
-
-	// Shrink Header.
-	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'enable_shrink_header' ),
-		array(
-			'default'           => 0,
-			'type'              => 'option',
-			'sanitize_callback' => 'mai_sanitize_one_zero',
-		)
-	);
-	$wp_customize->add_control(
-		'enable_shrink_header',
-		array(
-			'label'    => __( 'Enable shrink header', 'mai-theme-engine' ),
-			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $settings_field, 'enable_shrink_header' ),
-			'type'     => 'checkbox',
+			'settings' => _mai_customizer_get_field_name( $settings_field, 'mobile_menu_style' ),
+			'priority' => 10,
+			'type'     => 'select',
+			'choices'  => array(
+				'standard' => __( 'Standard Menu', 'mai-theme-engine' ),
+				'side'     => __( 'Side Menu', 'mai-theme-engine' ),
+			),
 		)
 	);
 
@@ -88,7 +80,7 @@ function mai_register_customizer_header_footer_settings( $wp_customize ) {
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'footer_widget_count' ),
 		array(
-			'default'           => 2,
+			'default'           => absint( mai_get_default_option( 'footer_widget_count' ) ),
 			'type'              => 'option',
 			'sanitize_callback' => 'absint',
 		)
@@ -109,30 +101,6 @@ function mai_register_customizer_header_footer_settings( $wp_customize ) {
 				3 => __( '3', 'mai-theme-engine' ),
 				4 => __( '4', 'mai-theme-engine' ),
 				6 => __( '6', 'mai-theme-engine' ),
-			),
-		)
-	);
-
-	// Mobile menu.
-	$wp_customize->add_setting(
-		_mai_customizer_get_field_name( $settings_field, 'mobile_menu_style' ),
-		array(
-			'default'           => 'standard',
-			'type'              => 'option',
-			'sanitize_callback' => 'sanitize_key',
-		)
-	);
-	$wp_customize->add_control(
-		'mobile_menu_style',
-		array(
-			'label'    => __( 'Mobile menu style', 'mai-theme-engine' ),
-			'section'  => $section,
-			'settings' => _mai_customizer_get_field_name( $settings_field, 'mobile_menu_style' ),
-			'priority' => 10,
-			'type'     => 'select',
-			'choices'  => array(
-				'standard' => __( 'Standard Menu', 'mai-theme-engine' ),
-				'side'     => __( 'Side Menu', 'mai-theme-engine' ),
 			),
 		)
 	);

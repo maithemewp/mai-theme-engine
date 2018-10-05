@@ -24,7 +24,7 @@ class Mai_Col {
 			'align'      => '', // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
 			'align_text' => '', // "center, middle" Comma separted
 			'bg'         => '', // 3 or 6 dig hex color with or without hash
-			'bottom'     => '',
+			'bottom'     => '', // Bottom margin. none, xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'class'      => '',
 			'id'         => '',
 			'image'      => '', // image id or 'featured' if link is a post id
@@ -32,6 +32,7 @@ class Mai_Col {
 			'overlay'    => '', // 'dark', 'light', 'gradient', or none/false to force disable
 			'link'       => '',
 			'style'      => '', // HTML inline style
+			'top'        => '', // Top margin. none, xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'xs'         => '12',
 			'sm'         => '',
 			'md'         => '',
@@ -44,7 +45,7 @@ class Mai_Col {
 			'align'      => mai_sanitize_keys( $this->args['align'] ),
 			'align_text' => mai_sanitize_keys( $this->args['align_text'] ),
 			'bg'         => mai_sanitize_hex_color( $this->args['bg'] ),
-			'bottom'     => is_numeric( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
+			'bottom'     => sanitize_key( $this->args['bottom'] ),
 			'class'      => mai_sanitize_html_classes( $this->args['class'] ),
 			'id'         => sanitize_html_class( $this->args['id'] ),
 			'image'      => sanitize_key( $this->args['image'] ),
@@ -52,6 +53,7 @@ class Mai_Col {
 			'overlay'    => sanitize_key( $this->args['overlay'] ),
 			'link'       => sanitize_text_field( $this->args['link'] ), // URL or post ID
 			'style'      => sanitize_text_field( $this->args['style'] ),
+			'top'        => sanitize_key( $this->args['top'] ),
 			'xs'         => sanitize_key( $this->args['xs'] ),
 			'sm'         => sanitize_key( $this->args['sm'] ),
 			'md'         => sanitize_key( $this->args['md'] ),
@@ -154,6 +156,11 @@ class Mai_Col {
 
 		// Shade class
 		$attributes['class'] .= $light_content ? ' light-content' : '';
+
+		// Add top margin classes.
+		if ( mai_is_valid_top( $this->args['top'] ) ) {
+			$attributes['class'] = mai_add_classes( mai_get_top_class( $this->args['top'] ), $attributes['class'] );
+		}
 
 		// Add bottom margin classes.
 		if ( mai_is_valid_bottom( $this->args['bottom'] ) ) {

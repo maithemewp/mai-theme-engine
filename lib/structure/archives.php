@@ -8,7 +8,7 @@
 add_action( 'genesis_before_while', 'mai_add_before_content_archive_hook', 100 );
 function mai_add_before_content_archive_hook() {
 
-	// Bail if not a flex loop
+	// Bail if not a flex loop.
 	if ( ! mai_is_content_archive() ) {
 		return;
 	}
@@ -24,7 +24,7 @@ function mai_add_before_content_archive_hook() {
 add_action( 'genesis_before_while', 'mai_add_before_flex_loop_hook', 100 );
 function mai_add_before_flex_loop_hook() {
 
-	// Bail if not a flex loop
+	// Bail if not a flex loop.
 	if ( ! mai_is_flex_loop() ) {
 		return;
 	}
@@ -40,7 +40,7 @@ function mai_add_before_flex_loop_hook() {
 add_action( 'genesis_after_endwhile', 'mai_add_after_flex_loop_hook' );
 function mai_add_after_flex_loop_hook() {
 
-	// Bail if not a flex loop
+	// Bail if not a flex loop.
 	if ( ! mai_is_flex_loop() ) {
 		return;
 	}
@@ -56,7 +56,7 @@ function mai_add_after_flex_loop_hook() {
 add_action( 'genesis_after_endwhile', 'mai_add_after_content_archive_hook' );
 function mai_add_after_content_archive_hook() {
 
-	// Bail if not a flex loop
+	// Bail if not a flex loop.
 	if ( ! mai_is_content_archive() ) {
 		return;
 	}
@@ -72,14 +72,20 @@ function mai_add_after_content_archive_hook() {
 add_action( 'mai_before_content_archive', 'mai_do_blog_description', 20 );
 function mai_do_blog_description() {
 
-	// Bail if not the blog page
+	// Bail if not the blog page.
 	if ( ! ( is_home() && $posts_page = get_option( 'page_for_posts' ) ) ) {
 		return;
 	}
 
-	printf( '<div class="archive-description posts-page-description">%s</div>', apply_filters( 'the_content', get_post( $posts_page )->post_content ) );
-}
+	$content = apply_filters( 'the_content', get_post( $posts_page )->post_content );
 
+	// Bail if no content.
+	if ( empty( $content ) ) {
+		return;
+	}
+
+	printf( '<div class="archive-description posts-page-description">%s</div>', $content );
+}
 
 /**
  * Add term description before custom taxonomy loop.
@@ -91,18 +97,48 @@ function mai_do_blog_description() {
 add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
 function mai_do_term_description() {
 
-	// Bail if not a taxonomy archive
+	// Bail if not a taxonomy archive.
 	if ( ! ( is_category() || is_tag() || is_tax() ) ) {
 		return;
 	}
 
-	// If the first page
-	if ( 0 === absint( get_query_var( 'paged' ) ) ) {
-		$description = term_description();
-		if ( $description ) {
-			echo '<div class="archive-description term-description">' . do_shortcode($description) . '</div>';
-		}
+	// Bail if WooCommerce product category/tag.
+	if ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
+		return;
 	}
+
+	// If the first page.
+	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+		return;
+	}
+
+	$description = term_description();
+	if ( ! $description ) {
+		return;
+	}
+
+	echo '<div class="archive-description term-description">' . do_shortcode( $description ) . '</div>';
+}
+
+/**
+ * Display the term description on WooCommerce product archives.
+ *
+ * @return  void
+ */
+add_action( 'woocommerce_archive_description', 'mai_do_woo_term_description', 20 );
+function mai_do_woo_term_description() {
+
+	// If the first page.
+	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
+		return;
+	}
+
+	$description = term_description();
+	if ( ! $description ) {
+		return;
+	}
+
+	echo '<div class="archive-description term-description">' . do_shortcode( $description ) . '</div>';
 }
 
 /**
@@ -113,18 +149,18 @@ function mai_do_term_description() {
 add_action( 'genesis_before_loop', 'mai_remove_content_archive_loop' );
 function mai_remove_content_archive_loop() {
 
-	// Bail if not a content archive
+	// Bail if not a content archive.
 	if ( ! mai_is_content_archive() ) {
 		return;
 	}
 
-	// Bail if not removing the loop
+	// Bail if not removing the loop.
 	$remove_loop = mai_get_the_archive_setting( 'remove_loop' );
 	if ( ! (bool) $remove_loop ) {
 		return;
 	}
 
-	// Remove the loop
+	// Remove the loop.
 	remove_action( 'genesis_loop',           'genesis_do_loop' );
 	remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 	remove_action( 'genesis_after_loop',     'genesis_posts_nav' );
@@ -214,11 +250,11 @@ function mai_do_flex_loop_open() {
 
 	// Flex row wrap.
 	$attributes = array(
-		'class' => 'row gutter-30',
+		'class' => 'row gutter-md',
 	);
 	printf( '<div %s>', genesis_attr( 'flex-row', $attributes ) );
 
-	// Add flex entry classes
+	// Add flex entry classes.
 	add_filter( 'post_class', 'mai_flex_loop_post_class' );
 	add_filter( 'product_cat_class', 'mai_flex_loop_post_class' );
 }
@@ -242,105 +278,39 @@ function mai_do_flex_loop_close() {
 	echo '</div>';
 }
 
-function mai_flex_loop_post_class( $classes ) {
-
-	$classes[] = 'flex-entry';
-	$classes[] = 'col';
-
-	$breaks  = array();
-	$columns = mai_get_columns();
-
-	if ( $columns > 2 ) {
-		$breaks['sm'] = 6;
-	}
-	if ( $columns > 3 ) {
-		$breaks['md'] = 6;
-	}
-
-	$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $breaks, mai_get_size_by_columns( $columns ), $return = 'array' ) );
-
-	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
-	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
-
-	// If background image or image is not aligned.
-	if ( 'background' === $img_location || empty( $img_alignment ) ) {
-		$classes[] = 'column';
-	} else {
-		$classes[] = 'has-image-' . str_replace( 'align', '', $img_alignment );
-	}
-
-	return $classes;
-}
-
 /**
- * Add the WooCommerce shortcode column count to the flex loop setting.
+ * Add the WooCommerce shortcode column count and classes to the entries.
  *
  * @access  private
  *
  * @return  void
  */
-add_action( 'woocommerce_shortcode_before_products_loop',              'mai_woo_shortcode_before_loop' );
-add_action( 'woocommerce_shortcode_before_recent_products_loop',       'mai_woo_shortcode_before_loop' );
-add_action( 'woocommerce_shortcode_before_sale_products_loop',         'mai_woo_shortcode_before_loop' );
-add_action( 'woocommerce_shortcode_before_best_selling_products_loop', 'mai_woo_shortcode_before_loop' );
-add_action( 'woocommerce_shortcode_before_top_rated_products_loop',    'mai_woo_shortcode_before_loop' );
-add_action( 'woocommerce_shortcode_before_featured_products_loop',     'mai_woo_shortcode_before_loop' );
-add_action( 'woocommerce_shortcode_before_related_products_loop',      'mai_woo_shortcode_before_loop' );
-function mai_woo_shortcode_before_loop( $atts ) {
+add_filter( 'woocommerce_product_loop_start', 'mai_woo_shortcode_before_loop' );
+function mai_woo_shortcode_before_loop( $content ) {
+
+	// Bail if not a shortcode loop.
+	if ( ! wc_get_loop_prop( 'is_shortcode' ) ) {
+		return $content;
+	}
+
+	// Get columns from shortcode attribute.
+	$columns = wc_get_loop_prop( 'columns' );
 
 	// Create an anonomous function using the column count
-	$shortcode_columns = function( $columns ) use ( $atts ) {
-		return $atts['columns'];
+	$shortcode_columns = function() use ( $columns ) {
+		return $columns;
 	};
 
-	// Set the columns to the Woo shortcode att
+	// Short-circuit the column count get function.
 	add_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
 
-	// Create an anonomous function using the column count
-	$entry_classes = function( $classes ) {
-		$classes[] .= 'entry column';
-		return $classes;
-	};
-	// Add flex entry classes
-	add_filter( 'post_class',        $entry_classes );
-	add_filter( 'product_cat_class', $entry_classes );
+	// Remove the filters setting the columns.
+	add_action( 'woocommerce_product_loop_end', function( $content ) use ( $shortcode_columns ) {
+		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
+		return $content;
+	});
 
-	// Remove the filters setting the columns
-	add_action( 'woocommerce_shortcode_before_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
-		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class',        $entry_classes );
-		remove_filter( 'product_cat_class', $entry_classes );
-	});
-	add_action( 'woocommerce_shortcode_after_recent_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
-		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class',        $entry_classes );
-		remove_filter( 'product_cat_class', $entry_classes );
-	});
-	add_action( 'woocommerce_shortcode_after_sale_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
-		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class',        $entry_classes );
-		remove_filter( 'product_cat_class', $entry_classes );
-	});
-	add_action( 'woocommerce_shortcode_after_best_selling_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
-		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class',        $entry_classes );
-		remove_filter( 'product_cat_class', $entry_classes );
-	});
-	add_action( 'woocommerce_shortcode_after_top_rated_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
-		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class',        $entry_classes );
-		remove_filter( 'product_cat_class', $entry_classes );
-	});
-	add_action( 'woocommerce_shortcode_after_featured_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
-		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class',        $entry_classes );
-		remove_filter( 'product_cat_class', $entry_classes );
-	});
-	add_action( 'woocommerce_shortcode_after_related_products_loop', function() use ( $shortcode_columns, $entry_classes ) {
-		remove_filter( 'mai_pre_get_archive_setting_columns', $shortcode_columns );
-		remove_filter( 'post_class',        $entry_classes );
-		remove_filter( 'product_cat_class', $entry_classes );
-	});
+	return $content;
 }
 
 /**
@@ -502,5 +472,6 @@ function mai_do_more_link() {
 	if ( ! $more_link ) {
 		return;
 	}
+
 	echo mai_get_read_more_link( get_the_ID() );
 }

@@ -224,29 +224,34 @@ function mai_do_bg_image_link() {
  *
  * @param   string  $url (optional)    The URL to use for the HTML.
  * @param   string  $title (optional)  The title to use for the HTML.
+ * @param   array   $attributes        Additional link attributes.
  *
  * @return  string|HTML
  */
-function mai_get_bg_image_link( $url = '', $title = '' ) {
-	$url   = $url ? esc_url( $url ) : get_permalink();
-	$title = $title ? esc_html( $title ) : get_the_title();
-	return sprintf( '<div class="bg-link-wrap"><a href="%s" class="bg-link"><span class="screen-reader-text" aria-hidden="true">%s</span></a></div>', $url, $title );
+function mai_get_bg_image_link( $url = '', $title = '', $attributes = array() ) {
+	$title      = $title ? esc_html( $title ) : get_the_title();
+	$attributes = wp_parse_args( $attributes, array(
+		'class' => 'bg-link',
+		'href'  => $url ? esc_url( $url ) : get_permalink(),
+	) );
+	return sprintf( '<div class="bg-link-wrap"><a %s><span class="screen-reader-text" aria-hidden="true">%s</span></a></div>', genesis_attr( 'bg-link', $attributes ), $title );
 }
 
 /**
  * Helper function to get a read more link for a post or term
  *
- * @param  int|WP_Post|WP_term?  $object  The object to get read more link for.
- * @param  string                $text    The "Read More" text.
- * @param  string                $type    The object type ('post' or 'term').
+ * @param  int|WP_Post|WP_term?  $object      The object to get read more link for.
+ * @param  string                $text        The "Read More" text.
+ * @param  string                $type        The object type ('post' or 'term').
+ * @param  array                 $attributes  Additional link attributes.
  *
  * @return HTML string for the link.
  */
-function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post' ) {
+function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post', $attributes = array() ) {
 
 	$link = $url = $screen_reader_html = $screen_reader_text = '';
 
-	$text           = $text ? sanitize_text_field($text) : __( 'Read More', 'mai-theme-engine' );
+	$text           = $text ? sanitize_text_field( $text ) : __( 'Read More', 'mai-theme-engine' );
 	$more_link_text = sanitize_text_field( apply_filters( 'mai_more_link_text', $text, $object_or_id, $type ) );
 
 	switch ( $type ) {
@@ -268,10 +273,10 @@ function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post' 
 
 	// If we have a url
 	if ( $url ) {
-		$attributes = array(
+		$attributes = wp_parse_args( $attributes, array(
 			'class' => 'more-link',
 			'href'  => esc_url( $url ),
-		);
+		) );
 		$link = sprintf( '<a %s>%s%s</a>', genesis_attr( 'more-link', $attributes ), $screen_reader_html, $more_link_text );
 	}
 
@@ -284,11 +289,11 @@ function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post' 
 }
 
 /**
- * Get a post's post_meta
+ * Get a post's post_meta.
  *
- * @param  int|object  $post  (Optional) the post to get the meta for.
+ * @param  int|object   $post  (Optional) the post to get the meta for.
  *
- * @return string|HTML The post meta
+ * @return string|HTML  The post meta.
  */
 function mai_get_the_posts_meta( $post = '' ) {
 

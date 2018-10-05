@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.3.7
+ * Version:         1.4.0
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -89,10 +89,10 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.3.7' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.4.0' );
 
 		// DB version.
-		define( 'MAI_THEME_ENGINE_DB_VERSION', '1161' );
+		define( 'MAI_THEME_ENGINE_DB_VERSION', '1400' );
 
 		// Plugin Folder Path.
 		define( 'MAI_THEME_ENGINE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -165,18 +165,22 @@ final class Mai_Theme_Engine {
 		 */
 		add_action( 'genesis_setup', function() {
 
-			// Do not load old stuff
+			// Do not load old stuff.
 			add_filter( 'genesis_load_deprecated', '__return_false' );
 
-			// Add HTML5 markup structure
+			// Add HTML5 markup structure.
 			add_theme_support( 'html5' );
 
-			// Add title tag support
+			// Add HTML5 gallery and caption support.
+			add_theme_support( 'html5', array( 'gallery', 'caption' ) );
+
+			// Add title tag support.
 			add_theme_support( 'title-tag' );
 
-			// Add viewport meta tag for mobile browsers
+			// Add viewport meta tag for mobile browsers.
 			add_theme_support( 'genesis-responsive-viewport' );
 
+			// Add support for Genesis menus.
 			add_theme_support( 'genesis-menus', array(
 				'primary'      => __( 'Primary Menu', 'mai-theme-engine' ),
 				'header_left'  => __( 'Header Left Menu', 'mai-theme-engine' ),
@@ -185,7 +189,7 @@ final class Mai_Theme_Engine {
 				'mobile'       => __( 'Mobile Menu', 'mai-theme-engine' ),
 			) );
 
-			// Add support for structural wraps
+			// Add support for Genesis structural wraps.
 			add_theme_support( 'genesis-structural-wraps', array(
 				'archive-description',
 				'breadcrumb',
@@ -196,7 +200,7 @@ final class Mai_Theme_Engine {
 				'footer',
 			) );
 
-			// Add Accessibility support
+			// Add Genesis accessibility support.
 			add_theme_support( 'genesis-accessibility', array(
 				'404-page',
 				'drop-down-menu',
@@ -205,7 +209,7 @@ final class Mai_Theme_Engine {
 				'skip-links',
 			) );
 
-			// Add custom logo support
+			// Add custom logo support.
 			add_theme_support( 'custom-logo', array(
 				'height'        => 120, // Optional size
 				'width'         => 240, // Optional size
@@ -213,7 +217,7 @@ final class Mai_Theme_Engine {
 				'flex-width'    => true,
 			) );
 
-			// Add excerpt support for pages
+			// Add excerpt support for pages.
 			add_post_type_support( 'page', 'excerpt' );
 
 			/**
@@ -238,6 +242,11 @@ final class Mai_Theme_Engine {
 					'width'  => 1600,
 					'height' => 533,
 					'crop'   => true, // 3x1
+				),
+				'section' => array(
+					'width'  => 1600,
+					'height' => 900,
+					'crop'   => true, // 16x9
 				),
 				'featured' => array(
 					'width'  => 800,

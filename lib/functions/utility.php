@@ -189,24 +189,6 @@ function mai_get_archive_setting_by_template( $key, $check_for_archive_setting, 
 }
 
 /**
- * Check if fixed header is enabled
- *
- * @return bool
- */
-function mai_is_sticky_header_enabled() {
-	return filter_var( genesis_get_option( 'enable_sticky_header' ), FILTER_VALIDATE_BOOLEAN );
-}
-
-/**
- * Check if shrink header is enabled
- *
- * @return bool
- */
-function mai_is_shrink_header_enabled() {
-	return filter_var( genesis_get_option( 'enable_shrink_header' ), FILTER_VALIDATE_BOOLEAN );
-}
-
-/**
  * Check if banner area is enabled globally
  *
  * @return bool

@@ -90,28 +90,24 @@ function mai_get_default_options() {
 		'image_size'                => 'one-third',
 		'image_alignment'           => '',
 		'posts_nav'                 => 'numeric',
-		// Mai Settings.
-		'enable_sticky_header'      => 0,
-		'enable_shrink_header'      => 0,
-		'boxed_elements'            => array( 'entry_singular', 'entry_archive', 'sidebar_widgets', 'sidebar_alt_widgets', 'author_box', 'after_entry_widgets', 'adjacent_entry_nav', 'comment_wrap', 'comment', 'comment_respond', 'pings' ),
-		'singular_image_page'       => 1,
-		'singular_image_post'       => 1,
+		// Header & Footer Settings.
+		'header_style'              => 'standard',
 		'footer_widget_count'       => 2,
 		'mobile_menu_style'         => 'standard',
 		// Mai Banner.
 		'enable_banner_area'        => 1,
 		'banner_background_color'   => '#f1f1f1',
 		'banner_id'                 => '',
+		'banner_featured_image'     => 0,
 		'banner_overlay'            => '',
 		'banner_inner'              => '',
 		'banner_height'             => 'md',
 		'banner_content_width'      => 'auto',
-		'banner_align_text'         => 'center',
 		'banner_align_content'      => 'center',
-		'banner_featured_image'     => 0,
+		'banner_align_text'         => 'center',
 		'banner_disable_post_types' => array(),
 		'banner_disable_taxonomies' => array(),
-		// Mai Archives.
+		// Mai Content Types.
 		'columns'                   => 1,
 		'image_location'            => 'before_title',
 		'more_link'                 => 0,
@@ -122,10 +118,11 @@ function mai_get_default_options() {
 		'singular_image_page'       => 1,
 		'singular_image_post'       => 1,
 		'remove_meta_post'          => array(),
-		// Mai Layouts.
+		// Mai Site Layout.
+		'layout_archive'            => 'full-width-content',
 		'layout_page'               => '',
 		'layout_post'               => '',
-		'layout_archive'            => 'full-width-content',
+		'boxed_elements'            => array( 'entry_singular', 'entry_archive', 'sidebar_widgets', 'sidebar_alt_widgets', 'author_box', 'after_entry_widgets', 'adjacent_entry_nav', 'comment_wrap', 'comment', 'comment_respond', 'pings' ),
 		// Mai Utility.
 		'mai_db_version'            => MAI_THEME_ENGINE_DB_VERSION,
 	);

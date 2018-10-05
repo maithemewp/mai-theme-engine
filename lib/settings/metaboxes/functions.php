@@ -35,15 +35,15 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 
 function _mai_cmb_banner_show_on_cb( $field ) {
 
-	$show = true;
-
 	global $pagenow, $typenow;
+
+	$banner_enabled = mai_is_banner_area_enabled_globally();
 
 	// Posts.
 	if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
 
 		// Don't show field if banner area is globally disabled.
-		if ( ! mai_is_banner_area_enabled_globally() ) {
+		if ( ! $banner_enabled ) {
 			return false;
 		}
 
@@ -69,12 +69,17 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 
 		// If Woo default taxo.
 		if ( class_exists( 'WooCommerce' ) && in_array( $taxonomy, array( 'product_cat', 'product_tag' ) ) ) {
-			// Hide the banner image field, Woo has their own image field.
+			// If checking for the banner image.
 			if ( 'banner' === $field->args['id'] ) {
-				return false;
-			} else {
+				// Hide the banner image field if Product Category, Woo has their own category image field.
+				if ( 'product_cat' === $taxonomy ) {
+					return false;
+				}
+			}
+			// Not checking banner image field.
+			else {
 				// Don't show field if banner area is globally disabled.
-				if ( ! mai_is_banner_area_enabled_globally() ) {
+				if ( ! $banner_enabled ) {
 					return false;
 				}
 				return true;
@@ -83,8 +88,13 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 		// Not a Woo default taxo.
 		else {
 
-			// Don't show field if banner area is globally disabled.
-			if ( ! mai_is_banner_area_enabled_globally() ) {
+			// Banner image field should always be visible on terms, since they are used by [grid].
+			if ( 'banner' === $field->args['id'] ) {
+				return true;
+			}
+
+			// Don't show ohter fields if banner area is globally disabled.
+			if ( ! $banner_enabled ) {
 				return false;
 			}
 
@@ -110,7 +120,7 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 
 	}
 
-	return $show;
+	return true;
 }
 
 function _mai_cmb_hide_breacrumbs_show_on_cb() {
@@ -126,12 +136,20 @@ function _mai_cmb_hide_breacrumbs_show_on_cb() {
 }
 
 function _mai_cmb_hide_featured_image_show_on_cb() {
+	// Bail if post type doesn't support featured image.
+	if ( ! post_type_supports( get_post_type(), 'thumbnail' ) ) {
+		return false;
+	}
 	global $typenow;
 	// Check if auto-displaying the featured image.
 	$key     = sprintf( 'singular_image_%s', $typenow );
 	$display = genesis_get_option( $key );
 	// Bail if not displaying.
 	if ( ! $display ) {
+		return false;
+	}
+	// Bail if editing the WooCommerce Shop page.
+	if ( class_exists( 'WooCommerce' ) && get_the_ID() === (int) get_option( 'woocommerce_shop_page_id' ) ) {
 		return false;
 	}
 	return true;

@@ -124,3 +124,44 @@ function mai_get_col_one_whole_shortcode( $atts, $content = null ) {
 	$col = new Mai_Col( '12', $atts, $content );
 	return $col->render();
 }
+
+/**
+ * Filters the default gallery shortcode CSS styles.
+ *
+ * @since   1.3.8
+ *
+ * @param   string   $output  Default CSS styles and opening HTML div container
+ *                            for the gallery shortcode output.
+ *
+ * @return  string  The gallery HTML.
+ */
+add_filter( 'post_gallery', 'mai_post_gallery', 10, 3 );
+function mai_post_gallery( $output, $atts, $instance ) {
+
+	// Remove filter to avoid infinite loop.
+	remove_filter( 'post_gallery', 'mai_post_gallery', 10, 3 );
+
+	// Make sure we have a columns value.
+	$atts = wp_parse_args( $atts, array( 'columns' => 3 ) );
+
+	// Add flex row classes.
+	add_filter( 'gallery_style', function( $output ) use ( $atts ) {
+		$classes = 'row gutter-sm';
+		$output  = str_replace( "class='", sprintf( "class='%s ", $classes ), $output );
+		return $output;
+	});
+
+	// Get the full gallery markup.
+	$output = gallery_shortcode( $atts );
+
+	// Build our new entry/item classes.
+	$classes = 'gallery-item col';
+	$classes = mai_add_classes( mai_get_col_classes_by_columns( $atts['columns'] ), $classes );
+	$classes = mai_add_classes( 'bottom-xs-sm', $classes );
+	$output  = str_replace( 'gallery-item', $classes, $output );
+
+	// Add filter back incase there is another gallery.
+	add_filter( 'post_gallery', 'mai_post_gallery', 10, 3 );
+
+	return $output;
+}

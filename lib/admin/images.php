@@ -15,6 +15,7 @@ function mai_do_media_chooser_sizes( $sizes ) {
 		'one-third'  => __( 'One Third', 'mai-theme-engine' ),
 		'one-fourth' => __( 'One Fourth', 'mai-theme-engine' ),
 		'banner'     => __( 'Banner', 'mai-theme-engine' ),
+		'section'    => __( 'Section', 'mai-theme-engine' ),
 	);
 	$newsizes = array_merge( $sizes, $addsizes );
 	return $newsizes;

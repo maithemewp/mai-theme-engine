@@ -29,18 +29,18 @@ class Mai_Grid {
 
 		// Parse defaults and args.
 		$this->args = shortcode_atts( array(
-			'align'                => '',  // "top, left" Comma separted. overrides align_cols and align_text for most times one setting makes sense
-			'align_cols'           => '',  // "top, left" Comma separted
-			'align_text'           => '',  // "center" Comma separted
+			'align'                => '',   // "top, left" Comma separted. overrides align_cols and align_text.
+			'align_cols'           => '',   // "top, left" Comma separted
+			'align_text'           => '',   // "center" Comma separted. for most times one setting makes sense
 			'author_after'         => '',
 			'author_before'        => '',
-			'authors'              => '',  // Comma separated author/user IDs
-			'bottom'               => '',  // Bottom margin. 0, 5, 10, 20, 30, 40, 50, 60
+			'authors'              => '',   // Comma separated author/user IDs
+			'bottom'               => '',   // Bottom margin. none, xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'boxed'                => true, // Display in boxed look
-			'categories'           => '',  // Comma separated category IDs
-			'columns'              => 3,   // "1", "2", "3", "4" or "6".
+			'categories'           => '',   // Comma separated category IDs
+			'columns'              => 3,    // "1", "2", "3", "4" or "6".
 			'content'              => 'post',  // post_type name (comma separated if multiple), or taxonomy name
-			'content_limit'        => '',  // Limit number of words
+			'content_limit'        => '',   // Limit number of words
 			'content_type'         => '',
 			'context'              => 'flex-grid',
 			'date_after'           => '',
@@ -57,7 +57,7 @@ class Mai_Grid {
 			'grid_title'           => '',
 			'grid_title_class'     => '',
 			'grid_title_wrap'      => 'h2',
-			'gutter'               => 30,
+			'gutter'               => 'md',  // xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'hide_empty'           => true,
 			'ids'                  => '',
 			'ignore_sticky_posts'  => true,  // normal WP_Query is false
@@ -75,16 +75,19 @@ class Mai_Grid {
 			'order_by'             => '',
 			'overlay'              => '',
 			'parent'               => '',
+			'rel'                  => '',
 			'row_class'            => '',
 			'show'                 => 'image, title',  // image, title, add_to_cart, author, content, date, excerpt, image, more_link, price, meta, title
 			'status'               => '',  // Comma separated for multiple
 			'tags'                 => '',  // Comma separated tag IDs
+			'target'               => '',
 			'tax_include_children' => true,
 			'tax_operator'         => 'IN',
 			'tax_field'            => 'term_id',
 			'taxonomy'             => '',
 			'terms'                => '',  // Comma-separated or 'current'
 			'title_wrap'           => 'h3',
+			'top'                  => '',  // Top margin. none, xxxs, xxs, xs, sm, md, lg, xl, xxl
 			'class'                => '',
 			'id'                   => '',
 			'xs'                   => 12, // Span out of 12 column grid. '4' is 1/3 since 4x3=12.
@@ -112,7 +115,7 @@ class Mai_Grid {
 			'author_after'         => sanitize_key( $this->args['author_after'] ),
 			'author_before'        => sanitize_key( $this->args['author_before'] ),
 			'authors'              => $this->args['authors'], // Validated later
-			'bottom'               => is_numeric( $this->args['bottom'] ) ? absint( $this->args['bottom'] ) : '',
+			'bottom'               => sanitize_key( $this->args['bottom'] ),
 			'boxed'                => filter_var( $this->args['boxed'], FILTER_VALIDATE_BOOLEAN ),
 			'categories'           => array_filter( explode( ',', sanitize_text_field( $this->args['categories'] ) ) ),
 			'columns'              => absint( $this->args['columns'] ),
@@ -134,7 +137,7 @@ class Mai_Grid {
 			'grid_title'           => sanitize_text_field( $this->args['grid_title'] ),
 			'grid_title_class'     => sanitize_text_field( $this->args['grid_title_class'] ),
 			'grid_title_wrap'      => sanitize_key( $this->args['grid_title_wrap'] ),
-			'gutter'               => mai_is_valid_gutter( absint( $this->args['gutter'] ) ) ? absint( $this->args['gutter'] ) : 30,
+			'gutter'               => mai_is_valid_gutter( sanitize_key( $this->args['gutter'] ) ) ? sanitize_key( $this->args['gutter'] ) : 'md',
 			'hide_empty'           => filter_var( $this->args['hide_empty'], FILTER_VALIDATE_BOOLEAN ),
 			'ids'                  => array_filter( array_map( 'absint', explode( ',', sanitize_text_field( $this->args['ids'] ) ) ) ),
 			'ignore_sticky_posts'  => filter_var( $this->args['ignore_sticky_posts'], FILTER_VALIDATE_BOOLEAN ),
@@ -152,16 +155,19 @@ class Mai_Grid {
 			'order_by'             => sanitize_key( $this->args['order_by'] ),
 			'overlay'              => sanitize_key( $this->args['overlay'] ),
 			'parent'               => $this->args['parent'], // Validated later, after check for 'current'
+			'rel'                  => sanitize_key( $this->args['rel'] ),
 			'row_class'            => mai_sanitize_html_classes( $this->args['row_class'] ),
 			'show'                 => mai_sanitize_keys( $this->args['show'] ),
 			'status'               => array_filter( explode( ',', $this->args['status'] ) ),
 			'tags'                 => array_filter( explode( ',', sanitize_text_field( $this->args['tags'] ) ) ),
+			'target'               => sanitize_key( $this->args['target'] ),
 			'tax_include_children' => filter_var( $this->args['tax_include_children'], FILTER_VALIDATE_BOOLEAN ),
 			'tax_operator'         => $this->args['tax_operator'], // Validated later as one of a few values
 			'tax_field'            => sanitize_key( $this->args['tax_field'] ),
 			'taxonomy'             => sanitize_key( $this->args['taxonomy'] ),
 			'terms'                => $this->args['terms'], // Validated later, after check for 'current'
 			'title_wrap'           => sanitize_key( $this->args['title_wrap'] ),
+			'top'                  => sanitize_key( $this->args['top'] ),
 			'class'                => mai_sanitize_html_classes( $this->args['class'] ),
 			'id'                   => sanitize_html_class( $this->args['id'] ),
 			'xs'                   => sanitize_key( $this->args['xs'] ),
@@ -229,8 +235,15 @@ class Mai_Grid {
 			return '';
 		}
 
+		// Set attributes.
+		$attributes = array(
+			'class' => mai_add_classes( $this->args['class'], 'flex-grid' ),
+			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
+		);
+
 		// If this is a facetwp grid, filter the main query.
 		if ( $this->facetwp ) {
+
 			// If the filter hasn't run yet.
 			if ( ! $this::$facetwp_filter ) {
 				/**
@@ -244,11 +257,6 @@ class Mai_Grid {
 			}
 		}
 
-		// Set attributes.
-		$attributes = array(
-			'class' => mai_add_classes( $this->args['class'], 'flex-grid' ),
-			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
-		);
 
 		return sprintf( '<div %s>%s</div>', genesis_attr( $this->args['context'], $attributes, $this->args ), $content );
 	}
@@ -540,7 +548,7 @@ class Mai_Grid {
 							// Title.
 							if ( in_array( 'title', $this->args['show'] ) ) {
 								if ( $this->args['link'] ) {
-									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( get_the_title() ), get_the_title() );
+									$title = sprintf( '<a href="%s" title="%s"%s%s>%s</a>', $url, esc_attr( get_the_title() ), $this->get_target(), $this->get_rel(), get_the_title() );
 								} else {
 									$title = get_the_title();
 								}
@@ -601,7 +609,14 @@ class Mai_Grid {
 
 						// More link.
 						if ( $this->args['link'] && in_array( 'more_link', $this->args['show'] ) ) {
-							$entry_content .= mai_get_read_more_link( $post, $this->args['more_link_text'], 'post' );
+							$more_link_atts = array();
+							if ( $this->args['target'] ) {
+								$more_link_atts['target'] = $this->args['target'];
+							}
+							if ( $this->args['rel'] ) {
+								$more_link_atts['rel'] = $this->args['rel'];
+							}
+							$entry_content .= mai_get_read_more_link( $post, $this->args['more_link_text'], 'post', $more_link_atts );
 						}
 
 						// Add to cart link.
@@ -629,7 +644,14 @@ class Mai_Grid {
 
 						// Image.
 						if ( ( 'bg' == $this->args['image_location'] ) && $this->args['link'] ) {
-							$html .= mai_get_bg_image_link( $url, get_the_title() );
+							$more_link_atts = array();
+							if ( $this->args['target'] ) {
+								$more_link_atts['target'] = $this->args['target'];
+							}
+							if ( $this->args['rel'] ) {
+								$more_link_atts['rel'] = $this->args['rel'];
+							}
+							$html .= mai_get_bg_image_link( $url, get_the_title(), $more_link_atts );
 						}
 
 					$html .= $this->get_entry_wrap_close();
@@ -645,12 +667,18 @@ class Mai_Grid {
 
 		// No posts.
 		else {
+			$no_results = $no_results_open = $no_results_close = '';
+			if ( $this->facetwp ) {
+				$no_results_open  = '<div class="facetwp-template">';
+				$no_results_close = '</div>';
+			}
+			$no_results = $no_results_open . wpautop( $this->args['no_content_message'] ) . $no_results_close;
 			/**
 			 * Filter content to display if no posts match the current query.
 			 *
 			 * @param string $no_posts_message Content to display, returned via {@see wpautop()}.
 			 */
-			$html = apply_filters( 'mai_grid_no_results', wpautop( $this->args['no_content_message'] ) );
+			$html = apply_filters( 'mai_grid_no_results', $no_results );
 		}
 
 		wp_reset_postdata();
@@ -799,7 +827,7 @@ class Mai_Grid {
 							// Title.
 							if ( in_array( 'title', $this->args['show'] ) ) {
 								if ( $this->args['link'] ) {
-									$title = sprintf( '<a href="%s" title="%s">%s</a>', $url, esc_attr( $term->name ), $term->name );
+									$title = sprintf( '<a href="%s" title="%s"%s%s>%s</a>', $url, esc_attr( $term->name ), $this->get_target(), $this->get_rel(), $term->name );
 								} else {
 									$title = $term->name;
 								}
@@ -842,7 +870,14 @@ class Mai_Grid {
 
 						// More link.
 						if ( $this->args['link'] && in_array( 'more_link', $this->args['show'] ) ) {
-							$entry_content .= mai_get_read_more_link( $term, $this->args['more_link_text'], 'term' );
+							$more_link_atts = array();
+							if ( $this->args['target'] ) {
+								$more_link_atts['target'] = $this->args['target'];
+							}
+							if ( $this->args['rel'] ) {
+								$more_link_atts['rel'] = $this->args['rel'];
+							}
+							$entry_content .= mai_get_read_more_link( $term, $this->args['more_link_text'], 'term', $more_link_atts );
 						}
 
 						// Add entry content wrap if we have content.
@@ -860,7 +895,14 @@ class Mai_Grid {
 
 						// Image.
 						if ( ( 'bg' == $this->args['image_location'] ) && $this->args['link'] ) {
-							$html .= mai_get_bg_image_link( $url, $term->name );
+							$more_link_atts = array();
+							if ( $this->args['target'] ) {
+								$more_link_atts['target'] = $this->args['target'];
+							}
+							if ( $this->args['rel'] ) {
+								$more_link_atts['rel'] = $this->args['rel'];
+							}
+							$html .= mai_get_bg_image_link( $url, $term->name, $more_link_atts );
 						}
 
 					$html .= $this->get_entry_wrap_close();
@@ -876,12 +918,18 @@ class Mai_Grid {
 
 		// No terms.
 		else {
+			$no_results = $no_results_open = $no_results_close = '';
+			if ( $this->facetwp ) {
+				$no_results_open  = '<div class="facetwp-template">';
+				$no_results_close = '</div>';
+			}
+			$no_results = $no_results_open . wpautop( $this->args['no_content_message'] ) . $no_results_close;
 			/**
-			 * Filter content to display if no posts match the current query.
+			 * Filter content to display if no terms match the current query.
 			 *
 			 * @param string $no_posts_message Content to display, returned via {@see wpautop()}.
 			 */
-			$html = apply_filters( 'mai_grid_no_results', wpautop( $this->args['no_content_message'] ) );
+			$html = apply_filters( 'mai_grid_no_results', $no_results );
 		}
 
 		return $html;
@@ -952,27 +1000,25 @@ class Mai_Grid {
 
 			// Slider HTML data attributes.
 			$attributes = $this->add_slider_data_attributes( $attributes );
-
 		}
 		// Not on slider.
 		else {
 
 			// Add gutter class.
-			$attributes['class'] = mai_add_classes( sprintf( 'gutter-%s', $this->args['gutter'] ), $attributes['class'] );
+			$attributes['class'] = mai_add_classes( mai_get_gutter_class( $this->args['gutter'] ), $attributes['class'] );
 
 			// Add row align classes.
 			$attributes['class'] = mai_add_row_align_classes( $attributes['class'], $this->args );
-
-		}
-
-		// WooCommerce.
-		if ( class_exists( 'WooCommerce' ) && in_array( 'product', $this->args['content'] ) ) {
-			$attributes['class'] .= ' woocommerce';
 		}
 
 		// FacetWP.
 		if ( $this->args['facetwp'] ) {
 			$attributes['class'] = mai_add_classes( 'facetwp-template', $attributes['class'] );
+		}
+
+		// WooCommerce.
+		if ( class_exists( 'WooCommerce' ) && in_array( 'product', $this->args['content'] ) ) {
+			$attributes['class'] .= ' woocommerce';
 		}
 
 		// Bring it home.
@@ -1087,7 +1133,7 @@ class Mai_Grid {
 		$attributes['data-slidestoscroll'] = $this->args['slidestoscroll'];
 		$attributes['data-slidestoshow']   = $this->args['columns'];
 		$attributes['data-speed']          = $this->args['speed'];
-		$attributes['data-gutter']         = $this->args['gutter'];
+		$attributes['data-gutter']         = mai_get_gutter_size( $this->args['gutter'] );
 		return $attributes;
 	}
 
@@ -1134,6 +1180,14 @@ class Mai_Grid {
 		// If image is not aligned.
 		if ( $this->args['image_align'] ) {
 			$classes[] = 'has-image-' . $this->args['image_align'];
+		}
+
+		// Add top margin classes.
+		if ( mai_is_valid_top( $this->args['top'] ) ) {
+			$top = mai_get_top_class( $this->args['top'] );
+			if ( $top ) {
+				$classes[] = $top;
+			}
 		}
 
 		// Add bottom margin classes.
@@ -1239,6 +1293,24 @@ class Mai_Grid {
 				$link = '';
 		}
 		return $link;
+	}
+
+	/**
+	 * Get the target HTML for links.
+	 *
+	 * @return  string  The link target or empty string.
+	 */
+	function get_target() {
+		return ! empty( $this->args['target'] ) ? sprintf( ' target="%s"', $this->args['target'] ) : '';
+	}
+
+	/**
+	 * Get the rel HTML for links.
+	 *
+	 * @return  string  The link rel or empty string.
+	 */
+	function get_rel() {
+		return ! empty( $this->args['rel'] ) ? sprintf( ' rel="%s"', $this->args['rel'] ) : '';
 	}
 
 	/**
@@ -1358,6 +1430,12 @@ class Mai_Grid {
 		$attributes['title'] = $att_title;
 		if ( $this->args['link'] ) {
 			$attributes['href'] = $url;
+			if ( $this->args['target'] ) {
+				$attributes['target'] = $this->args['target'];
+			}
+			if ( $this->args['rel'] ) {
+				$attributes['rel'] = $this->args['rel'];
+			}
 			$image_wrap = 'a';
 		} else {
 			$image_wrap = 'span';

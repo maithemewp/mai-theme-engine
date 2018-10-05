@@ -9,25 +9,35 @@
  */
 add_filter( 'body_class', 'mai_do_settings_body_classes' );
 function mai_do_settings_body_classes( $classes ) {
-	/**
-	 * Add sticky header styling
-	 */
-	if ( mai_is_sticky_header_enabled() && ! is_page_template( 'landing.php' ) ) {
-		$classes[] = 'sticky-header';
-	}
 
-	/**
-	 * Add shrink header styling
-	 */
-	if ( mai_is_shrink_header_enabled() && ! is_page_template( 'landing.php' ) ) {
-		$classes[] = 'shrink-header';
+	// Header style.
+	$header_style = genesis_get_option( 'header_style' );
+	if ( $header_style && ! is_page_template( 'landing.php' ) ) {
+		switch ( $header_style ) {
+			case 'sticky':
+				$classes[] = 'has-sticky-header';
+				break;
+			case 'reveal':
+				$classes[] = 'has-reveal-header';
+				break;
+			case 'sticky_shrink':
+				$classes[] = 'has-sticky-header';
+				$classes[] = 'has-sticky-shrink-header';
+			break;
+				case 'reveal_shrink':
+				$classes[] = 'has-reveal-header';
+				$classes[] = 'has-reveal-shrink-header';
+			break;
+		}
 	}
 
 	/**
 	 * Use a side mobile menu in place of the standard the mobile menu
 	 */
 	if ( mai_is_side_menu_enabled() ) {
-		$classes[] = 'side-menu';
+		$classes[] = 'has-side-menu';
+	} else {
+		$classes[] = 'has-standard-menu';
 	}
 
 	return $classes;

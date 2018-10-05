@@ -47,9 +47,45 @@ function mai_update_database_version() {
 		mai_upgrade_1161();
 	}
 
+	if ( $option_db_version < '1400' ) {
+		mai_upgrade_1400();
+	}
+
 	// Update the version number option.
 	update_option( 'mai_db_version', MAI_THEME_ENGINE_DB_VERSION );
 
+}
+
+/**
+ * Update new header_style setting.
+ *
+ * @since 1.4.0
+ */
+function mai_upgrade_1400() {
+
+	// Get header settings.
+	$sticky_header = genesis_get_option( 'enable_sticky_header' );
+	$shrink_header = genesis_get_option( 'enable_shrink_header' );
+
+	// Bail if neither sticky or shrink header are enabled.
+	if ( ! ( $sticky_header || $shrink_header ) ) {
+		return;
+	}
+
+	$settings = array();
+
+	// If sticky and shrink.
+	if ( $sticky_header && $shrink_header ) {
+		$settings['header_style'] = 'sticky_shrink';
+	}
+	// Sticky only.
+	elseif ( $sticky_header ) {
+		$settings['header_style'] = 'sticky';
+	}
+	// We don't check for shrink only because this is bad UI and shouldn't even have been possible.
+
+	// Update new header_style setting.
+	genesis_update_settings( $settings );
 }
 
 /**
