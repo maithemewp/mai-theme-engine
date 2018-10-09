@@ -40,6 +40,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 8px;
+	word-break: normal; /* override out .site-inner a {} code. */
 }
 
 .woocommerce p.stars a,
