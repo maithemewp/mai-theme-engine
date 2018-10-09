@@ -3,6 +3,7 @@
 #### 1.4.1 (10/9/18)
 Fixed: Body not able to scroll after closing the side menu in some edge-case scenarios.
 Fixed: WooCommerce shop page star ratings display bug.
+Fixed: Better cross-browser support for aspect ratio JS helper function.
 
 #### 1.4.0 (10/5/18)
 Added: New 'Reveal' header setting that hides menu when scrolling down and reveals it when scrolling up.
