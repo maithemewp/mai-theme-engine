@@ -651,6 +651,9 @@
  */
 ( function( window, document, $, undefined ) {
 
+	// Get all our elements.
+	var elements = document.querySelectorAll( '.aspect-ratio' );
+
 	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
 	window.addEventListener( 'load', aspectRatio );
 	window.addEventListener( 'resize', aspectRatio );
@@ -661,10 +664,18 @@
 	});
 
 	function aspectRatio() {
-		return document.querySelectorAll( '.aspect-ratio' ).forEach( function( el ) {
-			return el.style.minHeight = Math.round( el.offsetWidth / ( el.getAttribute( 'data-aspect-width' ) / el.getAttribute('data-aspect-height') ) ) + 'px';
+		forEach( elements, function( index, value ) {
+			return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
 		});
 	}
+
+	// Thanks Todd! @link https://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
+	var forEach = function( array, callback, scope ) {
+		for ( var i = 0; i < array.length; i++ ) {
+			// Passes back stuff we need.
+			callback.call( scope, i, array[i] );
+		}
+	};
 
 })( window, document, jQuery );
 
