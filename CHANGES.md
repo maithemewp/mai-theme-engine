@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.4.1 (10/9/18)
+Fixed: Body not able to scroll after closing the side menu in some edge-case scenarios.
+Fixed: WooCommerce shop page star ratings display bug.
+
 #### 1.4.0 (10/5/18)
 Added: New 'Reveal' header setting that hides menu when scrolling down and reveals it when scrolling up.
 Added: New 'section' image size (1600px by 900px) for banner/sections that height is lg/xl.
