@@ -647,12 +647,17 @@
  * Set an elements min-height
  * according to the aspect ratio of its' background image.
  *
- * @version  2.0.0
+ * @version  2.1.0
  */
 ( function( window, document, $, undefined ) {
 
 	// Get all our elements.
 	var elements = document.querySelectorAll( '.aspect-ratio' );
+
+	// Bail if no elements.
+	if ( 0 === elements.length ) {
+		return;
+	}
 
 	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
 	window.addEventListener( 'load', aspectRatio );
@@ -663,6 +668,7 @@
 		aspectRatio();
 	});
 
+	// Helper function to loop through the elements and set the aspect ratio.
 	function aspectRatio() {
 		forEach( elements, function( index, value ) {
 			return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
