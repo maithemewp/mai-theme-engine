@@ -452,6 +452,10 @@
 
 		// On click of close button inside the side menu, close all.
 		$siteHeader.on( 'click', '.menu-close', function(e){
+
+			// Re-enable body scroll.
+			bodyScrollLock.enableBodyScroll( targetElement );
+
 			_closeAll();
 		});
 
@@ -647,9 +651,17 @@
  * Set an elements min-height
  * according to the aspect ratio of its' background image.
  *
- * @version  2.0.0
+ * @version  2.1.0
  */
 ( function( window, document, $, undefined ) {
+
+	// Get all our elements.
+	var elements = document.querySelectorAll( '.aspect-ratio' );
+
+	// Bail if no elements.
+	if ( 0 === elements.length ) {
+		return;
+	}
 
 	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
 	window.addEventListener( 'load', aspectRatio );
@@ -660,11 +672,20 @@
 		aspectRatio();
 	});
 
+	// Helper function to loop through the elements and set the aspect ratio.
 	function aspectRatio() {
-		return document.querySelectorAll( '.aspect-ratio' ).forEach( function( el ) {
-			return el.style.minHeight = Math.round( el.offsetWidth / ( el.getAttribute( 'data-aspect-width' ) / el.getAttribute('data-aspect-height') ) ) + 'px';
+		forEach( elements, function( index, value ) {
+			return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
 		});
 	}
+
+	// Thanks Todd! @link https://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
+	var forEach = function( array, callback, scope ) {
+		for ( var i = 0; i < array.length; i++ ) {
+			// Passes back stuff we need.
+			callback.call( scope, i, array[i] );
+		}
+	};
 
 })( window, document, jQuery );
 
