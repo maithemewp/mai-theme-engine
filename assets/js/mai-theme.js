@@ -452,6 +452,10 @@
 
 		// On click of close button inside the side menu, close all.
 		$siteHeader.on( 'click', '.menu-close', function(e){
+
+			// Re-enable body scroll.
+			bodyScrollLock.enableBodyScroll( targetElement );
+
 			_closeAll();
 		});
 
