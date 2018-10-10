@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.4.2 TBD
+Fixed: Mobile side-menu top margin when logged in on mobile.
+
 #### 1.4.1 (10/9/18)
 Fixed: Body not able to scroll after closing the side menu in some edge-case scenarios.
 Fixed: WooCommerce shop page star ratings display bug.
