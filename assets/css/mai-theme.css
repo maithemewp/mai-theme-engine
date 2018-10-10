@@ -2489,7 +2489,7 @@ input[name="post_password"] {
 
 }
 
-@media only screen and (min-width: 782px) {
+@media only screen and (min-width: 783px) {
 
 	.has-reveal-header.admin-bar .site-header {
 		top: 32px;
@@ -2573,7 +2573,7 @@ input[name="post_password"] {
 
 }
 
-@media only screen and (min-width: 782px) {
+@media only screen and (min-width: 783px) {
 
 	.admin-bar.has-sticky-header .site-header {
 		top: 32px;
@@ -3452,21 +3452,21 @@ body.mai-menu-activated {
 	padding-bottom: 96px;
 }
 
-.admin-bar.has-side-menu .mai-menu {
+.admin-bar.has-side-menu:not(.scroll) .mai-menu {
 	top: 46px;
 }
 
-.admin-bar.has-side-menu .mai-menu-inner {
+.admin-bar.has-side-menu:not(.scroll) .mai-menu-inner {
 	height: calc( 100% - 46px );
 }
 
-@media only screen and (min-width: 782px) {
+@media only screen and (min-width: 783px) {
 
-	.admin-bar.has-side-menu .mai-menu {
+	.admin-bar.has-side-menu:not(.scroll) .mai-menu {
 		top: 32px;
 	}
 
-	.admin-bar.has-side-menu .mai-menu-inner {
+	.admin-bar.has-side-menu:not(.scroll) .mai-menu-inner {
 		height: calc( 100% - 32px );
 	}
 
