@@ -56,7 +56,7 @@ class Mai_Section {
 			'bg'            => mai_sanitize_hex_color( $this->args['bg'] ), // 3 or 6 dig hex color with or without hash
 			'class'         => mai_sanitize_html_classes( $this->args['class'] ),
 			'content_width' => sanitize_key( $this->args['content_width'] ),
-			'context'       => sanitize_title_with_dashes( $this->args['context'] ),
+			'context'       => sanitize_key( $this->args['context'] ),
 			'height'        => sanitize_key( $this->args['height'] ),
 			'id'            => sanitize_html_class( $this->args['id'] ),
 			'image'         => absint( $this->args['image'] ), // 'image=246' with an image ID from the media library to use a full width background image.
