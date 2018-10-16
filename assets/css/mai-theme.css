@@ -201,12 +201,14 @@ a {
 }
 
 p > a {
+	text-decoration: none;
 	border-bottom-width: 1px;
 	border-bottom-style: dotted;
 }
 
 p > a:hover,
 p > a:focus {
+	text-decoration: none;
 	border-bottom-style: solid;
 }
 
@@ -4199,7 +4201,6 @@ ol.comment-list {
 
 .footer-widgets a:hover {
 	color: #fff;
-	text-decoration: underline;
 }
 
 .footer-widgets .widgettitle,
@@ -4237,7 +4238,7 @@ ol.comment-list {
 .site-footer h4,
 .site-footer h5,
 .site-footer h6 {
-	color: rgba(255, 255, 255, 0.5);
+	color: rgba(255, 255, 255, 0.6);
 }
 
 .site-footer p {
@@ -4548,7 +4549,24 @@ ol.comment-list {
 
 @media only screen and (max-width: 768px) {}
 
-@media only screen and (max-width: 544px) {}
+@media only screen and (max-width: 544px) {
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	.heading,
+	.banner-title,
+	.entry-title {
+		word-wrap: break-word;
+		-webkit-hyphens: auto;
+		-ms-hyphens: auto;
+		hyphens: auto;
+	}
+
+}
 
 /* # Print Styles
 ---------------------------------------------------------------------------------------------------- */
