@@ -1,6 +1,7 @@
 ### Changelog
 
 #### 1.4.2 TBD
+Added: New mai_entry_image_link filter on the entry image link HTML.
 Fixed: Mobile side-menu top margin when logged in on mobile.
 Fixed: Mobile side-menu overlapping when opening the menu after scrolling down with Reveal Header setting enabled.
 Changed: Sections template display now uses sanitize_key instead of sanitize_title_with_dashes for "context" because it's more performant.

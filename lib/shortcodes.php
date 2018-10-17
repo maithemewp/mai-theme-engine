@@ -126,12 +126,28 @@ function mai_get_col_one_whole_shortcode( $atts, $content = null ) {
 }
 
 /**
- * Filters the default gallery shortcode CSS styles.
+ * Add utility classes to the default gallery shortcode wrap.
  *
- * @since   1.3.8
+ * @since   1.4.2
  *
  * @param   string   $output  Default CSS styles and opening HTML div container
  *                            for the gallery shortcode output.
+ *
+ * @return  string  The gallery HTML.
+ */
+add_filter( 'gallery_style', 'mai_gallery_style' );
+function mai_gallery_style( $output ) {
+	return str_replace( "class='", "class='row gutter-md ", $output );
+}
+
+/**
+ * Add utility classes to the default gallery shortcode.
+ *
+ * @since   1.3.8
+ *
+ * @param string $output   The gallery output. Default empty.
+ * @param array  $atts     Attributes of the gallery shortcode.
+ * @param int    $instance Unique numeric ID of this gallery shortcode instance.
  *
  * @return  string  The gallery HTML.
  */
@@ -144,20 +160,13 @@ function mai_post_gallery( $output, $atts, $instance ) {
 	// Make sure we have a columns value.
 	$atts = wp_parse_args( $atts, array( 'columns' => 3 ) );
 
-	// Add flex row classes.
-	add_filter( 'gallery_style', function( $output ) use ( $atts ) {
-		$classes = 'row gutter-sm';
-		$output  = str_replace( "class='", sprintf( "class='%s ", $classes ), $output );
-		return $output;
-	});
-
 	// Get the full gallery markup.
 	$output = gallery_shortcode( $atts );
 
 	// Build our new entry/item classes.
 	$classes = 'gallery-item col';
 	$classes = mai_add_classes( mai_get_col_classes_by_columns( $atts['columns'] ), $classes );
-	$classes = mai_add_classes( 'bottom-xs-sm', $classes );
+	$classes = mai_add_classes( 'bottom-xs-md', $classes );
 	$output  = str_replace( 'gallery-item', $classes, $output );
 
 	// Add filter back incase there is another gallery.
