@@ -150,11 +150,6 @@
 		// Initialise.
 		headroom.init();
 
-		// Bail if not shrinking.
-		if ( ! hasRevealShrink ) {
-			return;
-		}
-
 		var shouldNotScroll = false;
 
 		/**
@@ -185,6 +180,11 @@
 				}, 300 );
 			}
 		});
+
+		// Bail if not shrinking.
+		if ( ! hasRevealShrink ) {
+			return;
+		}
 
 		$window.on( 'resize scroll', function() {
 

@@ -201,12 +201,14 @@ a {
 }
 
 p > a {
+	text-decoration: none;
 	border-bottom-width: 1px;
 	border-bottom-style: dotted;
 }
 
 p > a:hover,
 p > a:focus {
+	text-decoration: none;
 	border-bottom-style: solid;
 }
 
@@ -1728,16 +1730,18 @@ img.alignleft,
 	margin: 24px 24px 24px 0;
 }
 
-.entry-image-link.alignleft,
-.entry-image-link.alignright {
-	margin-top: 8px;
-}
-
 .alignright,
 a.alignright,
 img.alignright,
 .wp-caption.alignright {
 	margin: 24px 0 24px 24px
+}
+
+.entry-image-link.alignleft,
+.entry-image-link.alignright,
+.entry-image-link .alignleft,
+.entry-image-link .alignright {
+	margin-top: 8px;
 }
 
 .wp-caption-text,
@@ -2489,7 +2493,7 @@ input[name="post_password"] {
 
 }
 
-@media only screen and (min-width: 782px) {
+@media only screen and (min-width: 783px) {
 
 	.has-reveal-header.admin-bar .site-header {
 		top: 32px;
@@ -2573,7 +2577,7 @@ input[name="post_password"] {
 
 }
 
-@media only screen and (min-width: 782px) {
+@media only screen and (min-width: 783px) {
 
 	.admin-bar.has-sticky-header .site-header {
 		top: 32px;
@@ -2901,6 +2905,7 @@ input[name="post_password"] {
 	display: block;
 	width: 21px;
 	height: 21px;
+	margin-top: -6px;
 	border: 3px solid;
 	border-radius: 50%;
 	-webkit-transform: rotate(-45deg);
@@ -3452,21 +3457,21 @@ body.mai-menu-activated {
 	padding-bottom: 96px;
 }
 
-.admin-bar.has-side-menu .mai-menu {
+.admin-bar.has-side-menu:not(.scroll) .mai-menu {
 	top: 46px;
 }
 
-.admin-bar.has-side-menu .mai-menu-inner {
+.admin-bar.has-side-menu:not(.scroll) .mai-menu-inner {
 	height: calc( 100% - 46px );
 }
 
-@media only screen and (min-width: 782px) {
+@media only screen and (min-width: 783px) {
 
-	.admin-bar.has-side-menu .mai-menu {
+	.admin-bar.has-side-menu:not(.scroll) .mai-menu {
 		top: 32px;
 	}
 
-	.admin-bar.has-side-menu .mai-menu-inner {
+	.admin-bar.has-side-menu:not(.scroll) .mai-menu-inner {
 		height: calc( 100% - 32px );
 	}
 
@@ -4198,7 +4203,6 @@ ol.comment-list {
 
 .footer-widgets a:hover {
 	color: #fff;
-	text-decoration: underline;
 }
 
 .footer-widgets .widgettitle,
@@ -4236,7 +4240,7 @@ ol.comment-list {
 .site-footer h4,
 .site-footer h5,
 .site-footer h6 {
-	color: rgba(255, 255, 255, 0.5);
+	color: rgba(255, 255, 255, 0.6);
 }
 
 .site-footer p {
@@ -4547,7 +4551,24 @@ ol.comment-list {
 
 @media only screen and (max-width: 768px) {}
 
-@media only screen and (max-width: 544px) {}
+@media only screen and (max-width: 544px) {
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	.heading,
+	.banner-title,
+	.entry-title {
+		word-wrap: break-word;
+		-webkit-hyphens: auto;
+		-ms-hyphens: auto;
+		hyphens: auto;
+	}
+
+}
 
 /* # Print Styles
 ---------------------------------------------------------------------------------------------------- */

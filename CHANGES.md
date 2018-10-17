@@ -1,5 +1,12 @@
 ### Changelog
 
+#### 1.4.2 (10/17/18)
+Added: New mai_entry_image_link filter on the entry image link HTML.
+Fixed: Mobile side-menu top margin when logged in on mobile.
+Fixed: Mobile side-menu overlapping when opening the menu after scrolling down with Reveal Header setting enabled.
+Fixed: Duplicate gallery wrap utility classes when more than one gallery was on a page.
+Changed: Sections template display now uses sanitize_key instead of sanitize_title_with_dashes for "context" because it's more performant.
+
 #### 1.4.1 (10/9/18)
 Fixed: Body not able to scroll after closing the side menu in some edge-case scenarios.
 Fixed: WooCommerce shop page star ratings display bug.
