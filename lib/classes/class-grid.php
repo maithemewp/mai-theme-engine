@@ -1440,7 +1440,8 @@ class Mai_Grid {
 		} else {
 			$image_wrap = 'span';
 		}
-		return sprintf( '<%s %s>%s</%s>', $image_wrap, genesis_attr( 'flex-entry-image-link', $attributes, $this->args ), $image, $image_wrap );
+		$html = sprintf( '<%s %s>%s</%s>', $image_wrap, genesis_attr( 'flex-entry-image-link', $attributes, $this->args ), $image, $image_wrap );
+		return apply_filters( 'mai_entry_image_link', $html, $this->args, $this->original_args );
 	}
 
 	/**
