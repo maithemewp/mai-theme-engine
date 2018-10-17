@@ -1730,16 +1730,18 @@ img.alignleft,
 	margin: 24px 24px 24px 0;
 }
 
-.entry-image-link.alignleft,
-.entry-image-link.alignright {
-	margin-top: 8px;
-}
-
 .alignright,
 a.alignright,
 img.alignright,
 .wp-caption.alignright {
 	margin: 24px 0 24px 24px
+}
+
+.entry-image-link.alignleft,
+.entry-image-link.alignright,
+.entry-image-link .alignleft,
+.entry-image-link .alignright {
+	margin-top: 8px;
 }
 
 .wp-caption-text,
