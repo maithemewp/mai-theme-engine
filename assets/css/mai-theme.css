@@ -2501,6 +2501,7 @@ input[name="post_password"] {
 
 }
 
+/* Fade in and down a fixed height so it's smooth but doesn't take long for taller headers. */
 @-webkit-keyframes fadeInDown{
 	from {
 		opacity: .5;
@@ -2526,6 +2527,7 @@ input[name="post_password"] {
 	}
 }
 
+/* Fade out and up regardless of how tall the header is. */
 @-webkit-keyframes fadeOutUp {
 	from {
 		opacity: 1;
@@ -2534,8 +2536,8 @@ input[name="post_password"] {
 	}
 	to {
 		opacity: .5;
-		-webkit-transform: translateY(-100px);
-		transform: translateY(-100px);
+		-webkit-transform: translateY(-100%);
+		transform: translateY(-100%);
 	}
 }
 @keyframes fadeOutUp {
@@ -2546,8 +2548,8 @@ input[name="post_password"] {
 	}
 	to {
 		opacity: .5;
-		-webkit-transform: translateY(-100px);
-		transform: translateY(-100px);
+		-webkit-transform: translateY(-100%);
+		transform: translateY(-100%);
 	}
 }
 
