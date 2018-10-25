@@ -5,6 +5,7 @@ Added: New mai_entry_image_link filter on the entry image link HTML.
 Fixed: Mobile side-menu top margin when logged in on mobile.
 Fixed: Mobile side-menu overlapping when opening the menu after scrolling down with Reveal Header setting enabled.
 Fixed: Duplicate gallery wrap utility classes when more than one gallery was on a page.
+Fixed: Reveal header setting not fully hiding headers when AdSense or other content is added which makes the header taller than expected.
 Changed: Sections template display now uses sanitize_key instead of sanitize_title_with_dashes for "context" because it's more performant.
 
 #### 1.4.1 (10/9/18)
