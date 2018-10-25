@@ -126,36 +126,27 @@ function mai_get_col_one_whole_shortcode( $atts, $content = null ) {
 }
 
 /**
- * Add utility classes to the default gallery shortcode wrap.
- *
- * @since   1.4.2
- *
- * @param   string   $output  Default CSS styles and opening HTML div container
- *                            for the gallery shortcode output.
- *
- * @return  string  The gallery HTML.
- */
-add_filter( 'gallery_style', 'mai_gallery_style' );
-function mai_gallery_style( $output ) {
-	return str_replace( "class='", "class='row gutter-md ", $output );
-}
-
-/**
  * Add utility classes to the default gallery shortcode.
  *
  * @since   1.3.8
  *
- * @param string $output   The gallery output. Default empty.
- * @param array  $atts     Attributes of the gallery shortcode.
- * @param int    $instance Unique numeric ID of this gallery shortcode instance.
+ * @param  string  $output    The gallery output. Default empty.
+ * @param  array   $atts      Attributes of the gallery shortcode.
+ * @param  int     $instance  Unique numeric ID of this gallery shortcode instance.
  *
  * @return  string  The gallery HTML.
  */
 add_filter( 'post_gallery', 'mai_post_gallery', 10, 3 );
 function mai_post_gallery( $output, $atts, $instance ) {
 
+	// Bail if not a default gallery. This fixes compatibility with Jetpack galleries.
+	if ( isset( $atts['type'] ) && ! in_array( $atts['type'], array( 'default', 'thumbnails' ) ) ) {
+		return $output;
+	}
+
 	// Remove filter to avoid infinite loop.
 	remove_filter( 'post_gallery', 'mai_post_gallery', 10, 3 );
+	add_filter( 'gallery_style', 'mai_gallery_style' );
 
 	// Make sure we have a columns value.
 	$atts = wp_parse_args( $atts, array( 'columns' => 3 ) );
@@ -171,6 +162,22 @@ function mai_post_gallery( $output, $atts, $instance ) {
 
 	// Add filter back incase there is another gallery.
 	add_filter( 'post_gallery', 'mai_post_gallery', 10, 3 );
+	remove_filter( 'gallery_style', 'mai_gallery_style' );
 
 	return $output;
+}
+
+/**
+ * Add utility classes to the default gallery shortcode wrap.
+ *
+ * @since    1.4.2
+ * @updated  1.4.3
+ *
+ * @param   string   $output  Default CSS styles and opening HTML div container
+ *                            for the gallery shortcode output.
+ *
+ * @return  string  The gallery HTML.
+ */
+function mai_gallery_style( $output ) {
+	return str_replace( "class='", "class='row gutter-md ", $output );
 }
