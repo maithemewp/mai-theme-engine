@@ -22,10 +22,12 @@ function mai_do_settings_body_classes( $classes ) {
 				break;
 			case 'sticky_shrink':
 				$classes[] = 'has-sticky-header';
+				$classes[] = 'has-shrink-header';
 				$classes[] = 'has-sticky-shrink-header';
-			break;
-				case 'reveal_shrink':
+				break;
+			case 'reveal_shrink':
 				$classes[] = 'has-reveal-header';
+				$classes[] = 'has-shrink-header';
 				$classes[] = 'has-reveal-shrink-header';
 			break;
 		}
