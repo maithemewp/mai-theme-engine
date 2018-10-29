@@ -82,13 +82,18 @@ function mai_content_filter_shortcodes( $content ) {
  * @return  void
  */
 function mai_do_featured_image( $size = 'featured' ) {
-	echo '<div class="featured-image">';
-		echo genesis_get_image( array(
-			'format' => 'html',
-			'size'   => $size,
-			'attr'   => array( 'class' => 'wp-post-image' )
-		) );
-	echo '</div>';
+
+	$image = genesis_get_image( array(
+		'format' => 'html',
+		'size'   => $size,
+		'attr'   => array( 'class' => 'wp-post-image' )
+	) );
+
+	if ( ! $image ) {
+		return;
+	}
+
+	printf( '<div class="featured-image">%s</div>', $image );
 
 	$attachment = get_post( get_post_thumbnail_id() );
 	if ( ! $attachment ) {
