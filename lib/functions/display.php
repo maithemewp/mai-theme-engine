@@ -87,12 +87,17 @@ function mai_do_featured_image( $size = 'featured' ) {
 			'format' => 'html',
 			'size'   => $size,
 			'attr'   => array( 'class' => 'wp-post-image' )
-			));
+		) );
 	echo '</div>';
 
-	$caption = get_post( get_post_thumbnail_id() )->post_excerpt;
+	$attachment = get_post( get_post_thumbnail_id() );
+	if ( ! $attachment ) {
+		return;
+	}
+
+	$caption = $attachment->post_excerpt;
 	if ( $caption ) {
-		echo '<span class="image-caption">' . $caption . '</span>';
+		printf( '<span class="image-caption">%s</span>', $caption );
 	}
 }
 
