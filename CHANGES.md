@@ -1,6 +1,7 @@
 ### Changelog
 
 #### 1.4.3 (TBD)
+Added: New ghost button CSS classes.
 Added: Bring back editor "button" style attribute dropdown.
 Fixed: Reveal header setting not fully hiding headers when AdSense or other content is added which makes the header taller than expected.
 

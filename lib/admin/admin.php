@@ -48,6 +48,16 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 			'classes'  => 'button large',
 		),
 		array(
+			'title'    => __( 'Primary Ghost Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost',
+		),
+		array(
+			'title'    => __( 'Primary Ghost Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost large',
+		),
+		array(
 			'title'    => __( 'Secondary Button', 'mai-theme-engine' ),
 			'selector' => 'a',
 			'classes'  => 'button alt',
@@ -58,6 +68,16 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 			'classes'  => 'button alt large',
 		),
 		array(
+			'title'    => __( 'Secondary Ghost Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost',
+		),
+		array(
+			'title'    => __( 'Secondary Ghost Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost large',
+		),
+		array(
 			'title'    => __( 'White Button', 'mai-theme-engine' ),
 			'selector' => 'a',
 			'classes'  => 'button white',
@@ -66,6 +86,16 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 			'title'    => __( 'White Button (Large)', 'mai-theme-engine' ),
 			'selector' => 'a',
 			'classes'  => 'button white large',
+		),
+		array(
+			'title'    => __( 'White Ghost Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost',
+		),
+		array(
+			'title'    => __( 'White Ghost Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost large',
 		),
 	);
 	// Insert the array, JSON encoded, into 'style_formats'.
