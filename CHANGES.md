@@ -5,6 +5,7 @@ Added: New ghost button CSS classes.
 Added: Bring back editor "button" style attribute dropdown.
 Fixed: Featured image error notice if media attachement is deleted or lost.
 Fixed: Reveal header setting not fully hiding headers when AdSense or other content is added which makes the header taller than expected.
+Fixed: Duplicate category description if no intro text was set in WooCommerce product category/tag archives.
 
 #### 1.4.2 (10/17/18)
 Added: New mai_entry_image_link filter on the entry image link HTML.
