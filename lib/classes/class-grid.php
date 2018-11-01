@@ -375,8 +375,13 @@ class Mai_Grid {
 		if ( '' !== $this->args['parent'] ) {
 			if ( is_singular() && 'current' == $this->args['parent'] ) {
 				$query_args['post_parent'] = get_the_ID();
-			} else {
+			} elseif ( is_numeric( $this->args['parent'] ) ) {
 				$query_args['post_parent'] = intval( $this->args['parent'] );
+			} elseif ( is_string( $this->args['parent'] ) ) {
+				$parent_post = get_page_by_path( $this->args['parent'], 'OBJECT', $this->args['content'] );
+				if ( $parent_post ) {
+					$query_args['post_parent'] = intval( $parent_post->ID );
+				}
 			}
 		}
 
@@ -747,8 +752,13 @@ class Mai_Grid {
 		if ( '' !== $this->args['parent'] ) {
 			if ( ( is_category() || is_tag() || is_tax() ) && 'current' === $this->args['parent'] ) {
 				$query_args['parent'] = get_queried_object_id();
-			} else {
+			} elseif ( is_numeric( $this->args['parent'] ) ) {
 				$query_args['parent'] = intval( $this->args['parent'] );
+			} elseif ( is_string( $this->args['parent'] ) ) {
+				$parent_term = get_term_by( 'slug', $this->args['parent'], $this->args['content'][0] );
+				if ( $parent_term ) {
+					$query_args['parent'] = intval( $parent_term->term_id );
+				}
 			}
 		}
 

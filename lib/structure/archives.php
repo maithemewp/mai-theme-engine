@@ -6,6 +6,7 @@
  * @return void.
  */
 add_action( 'genesis_before_while', 'mai_add_before_content_archive_hook', 100 );
+add_action( 'woocommerce_archive_description', 'mai_add_before_content_archive_hook', 100 );
 function mai_add_before_content_archive_hook() {
 
 	// Bail if not a flex loop.
@@ -53,7 +54,8 @@ function mai_add_after_flex_loop_hook() {
  *
  * @return void.
  */
-add_action( 'genesis_after_endwhile', 'mai_add_after_content_archive_hook' );
+add_action( 'genesis_after_endwhile',         'mai_add_after_content_archive_hook' );
+add_action( 'woocommerce_after_main_content', 'mai_add_after_content_archive_hook' );
 function mai_add_after_content_archive_hook() {
 
 	// Bail if not a flex loop.
@@ -94,7 +96,7 @@ function mai_do_blog_description() {
  *
  * @return  void
  */
-add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
+add_action( 'mai_before_content_archive', 'mai_do_term_description', 20 );
 function mai_do_term_description() {
 
 	// Bail if not a taxonomy archive.
@@ -102,31 +104,8 @@ function mai_do_term_description() {
 		return;
 	}
 
-	// Bail if WooCommerce product category/tag.
-	if ( class_exists( 'WooCommerce' ) && is_tax( get_object_taxonomies( 'product', 'names' ) ) ) {
-		return;
-	}
-
-	// If the first page.
-	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
-		return;
-	}
-
-	$description = term_description();
-	if ( ! $description ) {
-		return;
-	}
-
-	echo '<div class="archive-description term-description">' . do_shortcode( $description ) . '</div>';
-}
-
-/**
- * Display the term description on WooCommerce product archives.
- *
- * @return  void
- */
-add_action( 'woocommerce_archive_description', 'mai_do_woo_term_description', 20 );
-function mai_do_woo_term_description() {
+	// Remove Genesis Connect output of term. We don't want a fallback, we want them separate.
+	remove_filter( 'genesis_term_intro_text_output', 'genesiswooc_term_intro_text_output' );
 
 	// If the first page.
 	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {

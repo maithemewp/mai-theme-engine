@@ -183,9 +183,9 @@ textarea:focus,
 .button,
 .gallery img,
 .more-link {
-	-webkit-transition: all 0.1s ease-in-out;
-	-o-transition: all 0.1s ease-in-out;
-	transition: all 0.1s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
 }
 
 input[type="button"],
@@ -757,6 +757,45 @@ input[type="submit"].white:focus,
 	text-shadow: none;
 }
 
+.button.ghost {
+	background-color: transparent;
+	color: #323232;
+	border: 2px solid currentColor;
+}
+
+.button.ghost:hover,
+.button.ghost:focus {
+	background-color: #323232;
+	color: #fff;
+	border: 2px solid #323232;
+}
+
+.button.alt.ghost {
+	background-color: transparent;
+	color: #515151;
+	border: 2px solid #dad8da;
+}
+
+.button.alt.ghost:hover,
+.button.alt.ghost:focus {
+	background-color: #ebe9eb;
+	color: #515151;
+	border: 2px solid #ebe9eb;
+}
+
+.button.white.ghost {
+	background-color: transparent;
+	color: #fff;
+	border: 2px solid currentColor;
+}
+
+.button.white.ghost:hover,
+.button.white.ghost:focus {
+	background-color: #fff;
+	color: #323232;
+	border: 2px solid #fff;
+}
+
 .button.icon .fa,
 .button.icon-left .fa,
 .button.icon-right .fa {
@@ -856,8 +895,6 @@ td {
 
 /* we don't want to add hyphens in links */
 .site-inner a:not(.button):not(button) {
-	-ms-word-break: break-all;
-	word-break: break-all;
 	word-break: break-word; /* Non standard for WebKit */
 }
 
@@ -2501,6 +2538,7 @@ input[name="post_password"] {
 
 }
 
+/* Fade in and down a fixed height so it's smooth but doesn't take long for taller headers. */
 @-webkit-keyframes fadeInDown{
 	from {
 		opacity: .5;
@@ -2526,6 +2564,7 @@ input[name="post_password"] {
 	}
 }
 
+/* Fade out and up regardless of how tall the header is. */
 @-webkit-keyframes fadeOutUp {
 	from {
 		opacity: 1;
@@ -2534,8 +2573,8 @@ input[name="post_password"] {
 	}
 	to {
 		opacity: .5;
-		-webkit-transform: translateY(-100px);
-		transform: translateY(-100px);
+		-webkit-transform: translateY(-100%);
+		transform: translateY(-100%);
 	}
 }
 @keyframes fadeOutUp {
@@ -2546,8 +2585,8 @@ input[name="post_password"] {
 	}
 	to {
 		opacity: .5;
-		-webkit-transform: translateY(-100px);
-		transform: translateY(-100px);
+		-webkit-transform: translateY(-100%);
+		transform: translateY(-100%);
 	}
 }
 
@@ -4079,10 +4118,6 @@ ol.comment-list {
 
 .comment-meta a:hover {
 	color: #323232;
-}
-
-.comment-content a {
-	word-break: break-all;
 }
 
 .comment-content ul > li {

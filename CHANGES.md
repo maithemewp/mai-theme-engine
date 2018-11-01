@@ -1,5 +1,13 @@
 ### Changelog
 
+#### 1.4.3 (11/1/18)
+Added: [grid] 'parent' param now accepts the post/term slug instead of requiring ID or 'current'.
+Added: New ghost button CSS classes.
+Added: Bring back editor "button" style attribute dropdown, with new button styles/options.
+Fixed: Featured image error notice if media attachement is deleted or lost.
+Fixed: Reveal header setting not fully hiding headers when AdSense or other content is added which makes the header taller than expected.
+Fixed: Duplicate category description if no intro text was set in WooCommerce product category/tag archives.
+
 #### 1.4.2 (10/17/18)
 Added: New mai_entry_image_link filter on the entry image link HTML.
 Fixed: Mobile side-menu top margin when logged in on mobile.

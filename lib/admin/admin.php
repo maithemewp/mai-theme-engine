@@ -16,6 +16,94 @@ function mai_admin_enqueue_scripts() {
 }
 
 /**
+ * Adds a new select bar to the WP editor.
+ * Insert 'styleselect' into the $buttons array.
+ * _2 places the new button on the second line.
+ *
+ * @return  array
+ */
+add_filter( 'mce_buttons_2', 'mai_add_styleselect_dropdown' );
+function mai_add_styleselect_dropdown( $buttons ) {
+	array_unshift( $buttons, 'styleselect' );
+	return $buttons;
+}
+/**
+ * Add a button option to the editor.
+ *
+ * @param   array  $init_array
+ *
+ * @return  array
+ */
+add_filter( 'tiny_mce_before_init', 'mai_add_style_format_options_to_editor' );
+function mai_add_style_format_options_to_editor( $init_array ) {
+	$style_formats = array(
+		array(
+			'title'    => __( 'Primary Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button',
+		),
+		array(
+			'title'    => __( 'Primary Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button large',
+		),
+		array(
+			'title'    => __( 'Primary Ghost Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost',
+		),
+		array(
+			'title'    => __( 'Primary Ghost Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost large',
+		),
+		array(
+			'title'    => __( 'Secondary Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button alt',
+		),
+		array(
+			'title'    => __( 'Secondary Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button alt large',
+		),
+		array(
+			'title'    => __( 'Secondary Ghost Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost',
+		),
+		array(
+			'title'    => __( 'Secondary Ghost Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost large',
+		),
+		array(
+			'title'    => __( 'White Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button white',
+		),
+		array(
+			'title'    => __( 'White Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button white large',
+		),
+		array(
+			'title'    => __( 'White Ghost Button', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost',
+		),
+		array(
+			'title'    => __( 'White Ghost Button (Large)', 'mai-theme-engine' ),
+			'selector' => 'a',
+			'classes'  => 'button ghost large',
+		),
+	);
+	// Insert the array, JSON encoded, into 'style_formats'.
+	$init_array['style_formats'] = json_encode( $style_formats );
+	return $init_array;
+}
+
+/**
  * Yoast (and possibly others) run do_shortcode on category descriptions in admin list,
  * which blows things up on [grid] when parent="current" and it searches for the category/post ID.
  *

@@ -181,9 +181,6 @@ add_filter ( 'genesis_edit_post_link', '__return_false' );
 // Remove author 'says' text.
 add_filter( 'comment_author_says_text', '__return_empty_string' );
 
-// Turn off gallery CSS
-add_filter( 'use_default_gallery_style', '__return_false' );
-
 // Disable the Genesis Favicon
 remove_action( 'wp_head', 'genesis_load_favicon' );
 
