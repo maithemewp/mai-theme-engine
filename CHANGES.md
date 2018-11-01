@@ -1,6 +1,7 @@
 ### Changelog
 
 #### 1.4.3 (TBD)
+Added: [grid] 'parent' param now accepts the post/term slug instead of requiring ID or 'current'.
 Added: New ghost button CSS classes.
 Added: Bring back editor "button" style attribute dropdown.
 Fixed: Featured image error notice if media attachement is deleted or lost.
