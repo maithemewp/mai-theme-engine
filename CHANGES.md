@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.5.0 (11/2/18)
+* Fixed: 1.4.3 had featured updates so should have been bumped to 1.5.0 (Semantic Versioning FTW).
+* Fixed: Category descriptions not displaying when "Hide entries" was checked off.
+
 #### 1.4.3 (11/1/18)
 * Added: [grid] 'parent' param now accepts the post/term slug instead of requiring ID or 'current'.
 * Added: New ghost button CSS classes.

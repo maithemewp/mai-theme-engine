@@ -69,9 +69,11 @@ function mai_add_after_content_archive_hook() {
 /**
  * Output the static blog page content before the posts.
  *
+ * This can't run on 'mai_content_archive' or similar because "Hide entries" may remove the actual loop.
+ *
  * @return  void
  */
-add_action( 'mai_before_content_archive', 'mai_do_blog_description', 20 );
+add_action( 'genesis_before_loop', 'mai_do_blog_description', 20 );
 function mai_do_blog_description() {
 
 	// Bail if not the blog page.
@@ -94,9 +96,11 @@ function mai_do_blog_description() {
  * This is the core WP term description, not the Genesis Intro Text.
  * Genesis Intro Text is in banner.
  *
+ * This can't run on 'mai_content_archive' or similar because "Hide entries" may remove the actual loop.
+ *
  * @return  void
  */
-add_action( 'mai_before_content_archive', 'mai_do_term_description', 20 );
+add_action( 'genesis_before_loop', 'mai_do_term_description', 20 );
 function mai_do_term_description() {
 
 	// Bail if not a taxonomy archive.
