@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.5.1 (TBD)
+* Fixed: [grid] Stripping whitespaces and some characters from author_before, author_after, date_before, date_after parameters.
+* Fixed: Search icon in Header Before widget area navigation menus.
+
 #### 1.5.0 (11/2/18)
 * Fixed: 1.4.3 had featured updates so should have been bumped to 1.5.0 (Semantic Versioning FTW).
 * Fixed: Category descriptions not displaying when "Hide entries" was checked off.
