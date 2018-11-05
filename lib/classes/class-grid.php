@@ -521,7 +521,6 @@ class Mai_Grid {
 
 						// Author.
 						if ( in_array( 'author', $this->args['show'] ) ) {
-							d( $this->args['author_before'] );
 							/**
 							 * If author has no link this shortcode defaults to genesis_post_author_shortcode() [post_author].
 							 */
