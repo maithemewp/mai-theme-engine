@@ -912,6 +912,10 @@ td {
 	margin-bottom: 96px;
 }
 
+.has-sidebar .has-boxed-children .content {
+	margin-bottom: 16px;
+}
+
 /* remove margin on Sections page template content */
 .mai-sections .content {
 	margin-top: 0;
@@ -2755,15 +2759,6 @@ input[name="post_password"] {
 	color: #323232;
 }
 
-.header-before .genesis-nav-menu .search,
-.header-before .nav-header .nav-search {
-	width: 40px;
-}
-
-.header-before .nav-header .nav-search::before {
-	font-size: 1.25rem;
-}
-
 .header-left,
 .header-right {
 	line-height: 1.5;
@@ -2952,6 +2947,19 @@ input[name="post_password"] {
 	transform: rotate(-45deg);
 }
 
+.header-before .nav-search,
+.header-before .nav-search:hover,
+.header-before .nav-search:focus {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.header-before .search-icon {
+	-webkit-transform: rotate(-45deg) scale(.8);
+	-ms-transform: rotate(-45deg) scale(.8);
+	transform: rotate(-45deg) scale(.8);
+}
+
 .search-icon::before {
 	content: '';
 	display: inline-block;
@@ -2973,6 +2981,7 @@ input[name="post_password"] {
 	top: 84%;
 	min-width: 320px;
 	background-color: #fff;
+	font-size: .9rem;
 	padding: 20px;
 	margin: 0 auto;
 	border: 1px solid rgba(0, 0, 0, 0.06);
@@ -3488,6 +3497,14 @@ body.mai-menu-activated {
 	z-index: 99;
 }
 
+@media only screen and (min-width: 1160px) {
+
+	.has-side-menu .mai-menu {
+		display: none;
+	}
+
+}
+
 .has-side-menu.mai-menu-activated .mai-menu {
 	right: 0;
 }
@@ -3514,11 +3531,6 @@ body.mai-menu-activated {
 		height: calc( 100% - 32px );
 	}
 
-}
-
-/* hide side menu when site-container is boxed */
-.has-side-menu .site-container.boxed .site-header {
-	overflow: hidden;
 }
 
 /* ### Mobile Menu
