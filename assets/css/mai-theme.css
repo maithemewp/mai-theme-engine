@@ -3798,7 +3798,7 @@ body.mai-menu-activated {
 /* ## Grid Entries
 --------------------------------------------- */
 
-p ~ .flex-grid {
+p ~ .flex-grid:first-of-type {
 	margin-top: 36px;
 }
 
