@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 1.5.2 (11/8/18)
+* Fixed: No longer add top margin to .flex-grid when there are 2 [grid]'s one after another.
+* Fixed: Redeclare function error for edge case when Woo upsells template is called twice.
+
 #### 1.5.1 (11/6/18)
 * Fixed: [grid] Stripping whitespaces and some characters from author_before, author_after, date_before, date_after parameters.
 * Fixed: Search icon in Header Before widget area navigation menus.
