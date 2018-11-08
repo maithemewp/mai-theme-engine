@@ -223,9 +223,10 @@ function mai_woo_shop_notice( $post ) {
 /**
  * Add columns filter before up-sells.
  *
- * @since   1.3.0
- * @access  private
- * @return  void
+ * @since    1.3.0
+ * @updated  1.5.2
+ * @access   private
+ * @return   void
  */
 add_action( 'woocommerce_before_template_part', 'mai_woo_before_upsells', 10, 4 );
 function mai_woo_before_upsells( $template_name, $template_path, $located, $args ) {
@@ -234,9 +235,9 @@ function mai_woo_before_upsells( $template_name, $template_path, $located, $args
 		return;
 	}
 	add_filter( 'mai_get_columns', 'mai_woo_upsells_columns' );
-	function mai_woo_upsells_columns( $columns ) {
-		return 3;
-	}
+}
+function mai_woo_upsells_columns( $columns ) {
+	return 3;
 }
 
 /**
