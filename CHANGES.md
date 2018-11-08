@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.5.2 (TBD)
+#### 1.5.2 (11/8/18)
 * Fixed: No longer add top margin to .flex-grid when there are 2 [grid]'s one after another.
 * Fixed: Redeclare function error for edge case when Woo upsells template is called twice.
 
