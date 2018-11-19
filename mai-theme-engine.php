@@ -223,9 +223,17 @@ final class Mai_Theme_Engine {
 			/**
 			 * Move Genesis child theme style sheet to a later priority
 			 * to make sure Mai Theme Engine loads CSS first.
+			 *
+			 * Add file time to the version for easier cache-busting when editing files.
 			 */
 			remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
-			add_action( 'wp_enqueue_scripts', 'genesis_enqueue_main_stylesheet', 999 );
+			add_action( 'wp_enqueue_scripts', 'mai_enqueue_main_stylesheet', 999 );
+			function mai_enqueue_main_stylesheet() {
+				$handle   = defined( 'CHILD_THEME_NAME' ) && CHILD_THEME_NAME ? sanitize_title_with_dashes( CHILD_THEME_NAME ): 'child-theme';
+				$version  = defined( 'CHILD_THEME_VERSION' ) && CHILD_THEME_VERSION ? CHILD_THEME_VERSION : PARENT_THEME_VERSION;
+				$version .= '.' . date ( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) );
+				wp_enqueue_style( $handle, get_stylesheet_uri(), false, $version );
+			}
 
 			// Load default favicon.
 			add_filter( 'genesis_pre_load_favicon', 'mai_default_favicon' );
