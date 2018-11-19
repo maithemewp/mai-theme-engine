@@ -4466,7 +4466,7 @@ ol.comment-list {
 @media only screen and (min-width: 993px) {
 
 	.sidebar {
-		margin-bottom: 48px;
+		margin-bottom: 16px;
 	}
 
 	.has-sidebar .content-sidebar-wrap {
