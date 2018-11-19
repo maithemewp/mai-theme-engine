@@ -3990,15 +3990,20 @@ p.entry-meta {
 	-webkit-box-align: center;
 	-ms-flex-align: center;
 	align-items: center;
+	height: 100%;
 }
 
 .adjacent-entry-pagination .pagination-previous .adjacent-post-link {
-	-webkit-box-pack: start;-ms-flex-pack: start;justify-content: flex-start;
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
 	margin-left: -4px;
 }
 
 .adjacent-entry-pagination .pagination-next .adjacent-post-link {
-	-webkit-box-pack: end;-ms-flex-pack: end;justify-content: flex-end;
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
 	margin-right: -4px;
 }
 
