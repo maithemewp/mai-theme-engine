@@ -1601,6 +1601,7 @@ body.has-boxed-site-container {
 .light-content h5,
 .light-content h6,
 .light-content a,
+.light-content .entry-title a,
 .light-content .entry-meta,
 .light-content .entry-meta a,
 .light-content .gallery-caption,
@@ -2964,10 +2965,10 @@ input[name="post_password"] {
 	content: '';
 	display: inline-block;
 	width: 3px;
-	height: 12px;
+	height: 10px;
 	position: absolute;
 	right: 6px;
-	bottom: -12px;
+	bottom: -13px;
 	background: currentColor;
 }
 
