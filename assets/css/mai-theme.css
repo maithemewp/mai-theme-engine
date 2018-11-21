@@ -288,6 +288,18 @@ h2,
 h3,
 h4,
 h5,
+h6,
+.heading,
+.banner-title,
+.entry-title {
+	word-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
 h6 {
 	font-weight: normal;
 	line-height: 1.2;
@@ -895,7 +907,7 @@ td {
 
 /* we don't want to add hyphens in links */
 .site-inner a:not(.button):not(button) {
-	word-break: break-word; /* Non standard for WebKit */
+	word-break: break-word;
 }
 
 .content-sidebar-wrap {
@@ -4623,21 +4635,7 @@ ol.comment-list {
 
 @media only screen and (max-width: 768px) {}
 
-@media only screen and (max-width: 544px) {
-
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6,
-	.heading,
-	.banner-title,
-	.entry-title {
-		word-wrap: break-word;
-	}
-
-}
+@media only screen and (max-width: 544px) {}
 
 /* # Print Styles
 ---------------------------------------------------------------------------------------------------- */
