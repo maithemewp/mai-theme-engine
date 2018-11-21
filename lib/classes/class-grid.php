@@ -273,6 +273,7 @@ class Mai_Grid {
 			'post_type'           => $this->args['content'],
 			'posts_per_page'      => $this->get_number(),
 			'ignore_sticky_posts' => $this->args['ignore_sticky_posts'],
+			'no_found_rows'       => true,
 		);
 
 		// Authors.
