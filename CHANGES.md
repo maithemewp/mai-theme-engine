@@ -1,5 +1,7 @@
 ### Changelog
 
+* Changed: Removed heading/title hyphens on mobile. Too many people didn't like it. Only using word-break now when the word is larger than the container.
+
 #### 1.5.3 (11/21/18)
 * Fixed: Better accessibility (aria) in menu search icon.
 * Fixed: Nav menu search box now opens above menu when used in Footer menu location.

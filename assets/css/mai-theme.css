@@ -4002,6 +4002,7 @@ p.entry-meta {
 	-webkit-box-pack: start;
 	-ms-flex-pack: start;
 	justify-content: flex-start;
+	text-align: left;
 	margin-left: -4px;
 }
 
@@ -4009,6 +4010,7 @@ p.entry-meta {
 	-webkit-box-pack: end;
 	-ms-flex-pack: end;
 	justify-content: flex-end;
+	text-align: right;
 	margin-right: -4px;
 }
 
@@ -4633,9 +4635,6 @@ ol.comment-list {
 	.banner-title,
 	.entry-title {
 		word-wrap: break-word;
-		-webkit-hyphens: auto;
-		-ms-hyphens: auto;
-		hyphens: auto;
 	}
 
 }
