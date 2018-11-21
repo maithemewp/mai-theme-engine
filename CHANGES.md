@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.5.3 (TBD)
+#### 1.5.3 (11.21.18)
 * Fixed: Better accessibility (aria) in menu search icon.
 * Fixed: Nav menu search box now opens above menu when used in Footer menu location.
 * Fixed: Sidebar bottom margin now matches content regardless of boxed container settings.
