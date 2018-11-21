@@ -138,7 +138,7 @@ function mai_login_logo_css() {
 	}
 
 	// Hide the default logo and heading.
-	echo '<style  type="text/css">
+	echo '<style>
 		.login h1,
 		.login h1 a {
 			background: none !important;
@@ -161,6 +161,10 @@ function mai_login_logo_css() {
 		.login #login_error,
 		.login .message {
 			margin-top: 16px !important;
+		}
+		.login #nav,
+		.login #backtoblog {
+			text-align: center;
 		}
 	</style>';
 
