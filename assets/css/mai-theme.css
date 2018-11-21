@@ -2988,6 +2988,11 @@ input[name="post_password"] {
 	z-index: 98; /* 1 under fixed .site-header */
 }
 
+.nav-secondary .search-box {
+	top: auto;
+	bottom: 84%;
+}
+
 .genesis-nav-menu .search-box .search-form {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	width: 100%;
@@ -3110,8 +3115,8 @@ input[name="post_password"] {
 .nav-primary a:focus,
 .nav-primary .current-menu-item > a,
 .nav-primary .current-menu-ancestor > a,
-.nav-primary .menu-item-has-children:hover > a,
-.nav-primary .menu-item-has-children:focus > a,
+.nav-primary > .menu-item-has-children:hover > a,
+.nav-primary > .menu-item-has-children:focus > a,
 .nav-primary .nav-search:hover,
 .nav-primary .nav-search:focus {
 	background-color: #252525;
@@ -3159,8 +3164,8 @@ input[name="post_password"] {
 .nav-secondary a:focus,
 .nav-secondary .current-menu-item > a,
 .nav-secondary .current-menu-ancestor > a,
-.nav-secondary .menu-item-has-children:hover > a,
-.nav-secondary .menu-item-has-children:focus > a,
+.nav-secondary > .menu-item-has-children:hover > a,
+.nav-secondary > .menu-item-has-children:focus > a,
 .nav-secondary .nav-search:hover,
 .nav-secondary .nav-search:focus,
 .nav-secondary .sub-menu a:hover,
