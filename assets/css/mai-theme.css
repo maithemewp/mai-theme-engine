@@ -77,8 +77,8 @@
 /* # HTML5 Reset
 ---------------------------------------------------------------------------------------------------- */
 
-/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
-button,hr,input{overflow:visible}progress,sub,sup{vertical-align:baseline}[type=checkbox],[type=radio],legend{-webkit-box-sizing:border-box;box-sizing:border-box;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{-webkit-box-sizing:content-box;box-sizing:content-box;height:0}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}b,strong{font-weight:bolder}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:ButtonText dotted 1px}fieldset{padding:.35em .75em .625em}legend{color:inherit;display:table;max-width:100%;white-space:normal}textarea{overflow:auto}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}[hidden],template{display:none}
+/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+button,hr,input{overflow:visible}progress,sub,sup{vertical-align:baseline}[type=checkbox],[type=radio],legend{-webkit-box-sizing:border-box;box-sizing:border-box;padding:0}html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}details,main{display:block}h1{font-size:2em;margin:.67em 0}hr{-webkit-box-sizing:content-box;box-sizing:content-box;height:0}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}b,strong{font-weight:bolder}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:ButtonText dotted 1px}fieldset{padding:.35em .75em .625em}legend{color:inherit;display:table;max-width:100%;white-space:normal}textarea{overflow:auto}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}[hidden],template{display:none}
 
 /* # Defaults
 ---------------------------------------------------------------------------------------------------- */
@@ -1321,7 +1321,6 @@ body.has-boxed-site-container {
 	.entry.boxed,
 	.after-entry .widget.boxed,
 	.author-box.boxed,
-	.adjacent-entry-pagination a.boxed,
 	.comment-respond.boxed,
 	.entry-comments.boxed,
 	.comment-respond-wrap.boxed,
@@ -1601,6 +1600,7 @@ body.has-boxed-site-container {
 .light-content h5,
 .light-content h6,
 .light-content a,
+.light-content .entry-title a,
 .light-content .entry-meta,
 .light-content .entry-meta a,
 .light-content .gallery-caption,
@@ -2964,10 +2964,10 @@ input[name="post_password"] {
 	content: '';
 	display: inline-block;
 	width: 3px;
-	height: 12px;
+	height: 10px;
 	position: absolute;
 	right: 6px;
-	bottom: -12px;
+	bottom: -13px;
 	background: currentColor;
 }
 
@@ -2986,6 +2986,11 @@ input[name="post_password"] {
 	margin: 0 auto;
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	z-index: 98; /* 1 under fixed .site-header */
+}
+
+.nav-secondary .search-box {
+	top: auto;
+	bottom: 84%;
 }
 
 .genesis-nav-menu .search-box .search-form {
@@ -3047,10 +3052,10 @@ input[name="post_password"] {
 
 .nav-header a:hover,
 .nav-header a:focus,
-.nav-header .current-menu-item > a,
-.nav-header .current-menu-ancestor > a,
-.nav-header .menu-item-has-children:not(.highlight):hover > a,
-.nav-header .menu-item-has-children:not(.highlight):focus > a,
+.nav-header > .current-menu-item > a,
+.nav-header > .current-menu-ancestor > a,
+.nav-header > .menu-item-has-children:not(.highlight):hover > a,
+.nav-header > .menu-item-has-children:not(.highlight):focus > a,
 .nav-header .nav-search:hover,
 .nav-header .nav-search:focus,
 .nav-header .sub-menu a:hover,
@@ -3110,8 +3115,8 @@ input[name="post_password"] {
 .nav-primary a:focus,
 .nav-primary .current-menu-item > a,
 .nav-primary .current-menu-ancestor > a,
-.nav-primary .menu-item-has-children:hover > a,
-.nav-primary .menu-item-has-children:focus > a,
+.nav-primary > .menu-item-has-children:hover > a,
+.nav-primary > .menu-item-has-children:focus > a,
 .nav-primary .nav-search:hover,
 .nav-primary .nav-search:focus {
 	background-color: #252525;
@@ -3159,8 +3164,8 @@ input[name="post_password"] {
 .nav-secondary a:focus,
 .nav-secondary .current-menu-item > a,
 .nav-secondary .current-menu-ancestor > a,
-.nav-secondary .menu-item-has-children:hover > a,
-.nav-secondary .menu-item-has-children:focus > a,
+.nav-secondary > .menu-item-has-children:hover > a,
+.nav-secondary > .menu-item-has-children:focus > a,
 .nav-secondary .nav-search:hover,
 .nav-secondary .nav-search:focus,
 .nav-secondary .sub-menu a:hover,
@@ -3951,27 +3956,31 @@ p.entry-meta {
 @media only screen and (min-width: 549px) {
 
 	.adjacent-entry-pagination {
-		display: -webkit-box;display: -ms-flexbox;display: flex;
-		-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-pack: justify;
+		-ms-flex-pack: justify;
+		justify-content: space-between;
 	}
 
 	.adjacent-entry-pagination .pagination-previous,
 	.adjacent-entry-pagination .pagination-next {
-		display: -webkit-box;display: -ms-flexbox;display: flex;
-		-ms-flex-preferred-size: calc( 50% - 12px );flex-basis: calc( 50% - 12px );
+		-ms-flex-preferred-size: calc( 50% - 12px );
+		flex-basis: calc( 50% - 12px );
 		max-width: calc( 50% - 12px );
 	}
 
 }
 
-.adjacent-entry-pagination a {
-	display: -webkit-box;display: -ms-flexbox;display: flex;
-	-webkit-box-align: center;-ms-flex-align: center;align-items: center;
+.adjacent-entry-pagination .pagination-previous a,
+.adjacent-entry-pagination .pagination-next a {
+	display: block;
 	width: 100%;
 	height: 100%;
-	max-width: 100%;
 	color: rgba(0, 0, 0, 0.5);
 	line-height: 1.5;
+	padding: 16px;
 }
 
 .adjacent-entry-pagination a:hover {
@@ -3979,14 +3988,28 @@ p.entry-meta {
 	border-color: rgba(0, 0, 0, 0.2);
 }
 
-.adjacent-entry-pagination .pagination-previous a {
-	-webkit-box-pack: start;-ms-flex-pack: start;justify-content: flex-start;
-	padding: 16px 16px 16px 12px;
+.adjacent-entry-pagination .adjacent-post-link {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	height: 100%;
 }
 
-.adjacent-entry-pagination .pagination-next a {
-	-webkit-box-pack: end;-ms-flex-pack: end;justify-content: flex-end;
-	padding: 16px 12px 16px 16px;
+.adjacent-entry-pagination .pagination-previous .adjacent-post-link {
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	margin-left: -4px;
+}
+
+.adjacent-entry-pagination .pagination-next .adjacent-post-link {
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
+	margin-right: -4px;
 }
 
 .adjacent-entry-pagination .pagination-icon {
@@ -4448,7 +4471,7 @@ ol.comment-list {
 @media only screen and (min-width: 993px) {
 
 	.sidebar {
-		margin-bottom: 48px;
+		margin-bottom: 16px;
 	}
 
 	.has-sidebar .content-sidebar-wrap {

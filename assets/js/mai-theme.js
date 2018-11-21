@@ -634,13 +634,13 @@
 
 	$.fn._searchOpen = function(){
 		var $this = $(this);
-		$this._toggleArias().addClass( 'activated' ).next( '.search-box' ).fadeIn( 'fast' ).find( 'input[type="search"]' ).focus();
+		$this._openElement().next( '.search-box' ).fadeIn( 'fast' ).find( 'input[type="search"]' ).focus();
 		return $this;
 	};
 
 	$.fn._searchClose = function(){
 		var $this = $(this);
-		$this._toggleArias().removeClass( 'activated' ).next( '.search-box' ).fadeOut( 'fast' );
+		$this._closeElement().removeClass( 'activated' ).next( '.search-box' ).fadeOut( 'fast' );
 		return $this;
 	};
 
@@ -753,6 +753,15 @@ function _maiGlobalFunctions(){
 		$this.attr({
 			'aria-expanded': 'false' === $this.attr( 'aria-expanded' ),
 			'aria-pressed': 'false' === $this.attr( 'aria-pressed' ),
+		});
+		return $this;
+	};
+
+	$.fn._openElement = function(){
+		var $this = $(this);
+		$this.addClass( 'activated' ).attr({
+			'aria-expanded': true,
+			'aria-pressed': true,
 		});
 		return $this;
 	};

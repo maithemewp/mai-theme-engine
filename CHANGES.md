@@ -1,5 +1,18 @@
 ### Changelog
 
+#### 1.5.3 (11.21.18)
+* Fixed: Better accessibility (aria) in menu search icon.
+* Fixed: Nav menu search box now opens above menu when used in Footer menu location.
+* Fixed: Sidebar bottom margin now matches content regardless of boxed container settings.
+* Fixed: Adjacent entry nav now works with Genesis 2.7+.
+* Fixed: Entry titles when displayed over dark section background.
+* Changed: [grid] More performant via no_found_rows being set to false.
+* Changed: Add file time to the main stylesheet version for easy cache-busting when editing the file.
+* Changed: Center login menu links below form.
+* Changed: Slightly tweaked CSS when using 3 levels of menu items (pro tip: don't do this).
+* Changed: More pixel-perfect CSS search icon in nav so we can use CSS transparency for color.
+* Changed: Bump normalize.css to latest v8.0.1.
+
 #### 1.5.2 (11/8/18)
 * Fixed: No longer add top margin to .flex-grid when there are 2 [grid]'s one after another.
 * Fixed: Redeclare function error for edge case when Woo upsells template is called twice.
