@@ -1,6 +1,18 @@
 /* ## General
 --------------------------------------------- */
 
+.content ul.woocommerce-error,
+.content ul.woocommerce-info,
+.content ul.woocommerce-message {
+	margin-left: 0;
+}
+
+.content ul.woocommerce-error > li,
+.content ul.woocommerce-info > li,
+.content ul.woocommerce-message > li {
+	margin-bottom: 0; /* undo the default margin on li */
+}
+
 @media only screen and (min-width: 545px) {
 
 	.woocommerce-error,
@@ -12,6 +24,12 @@
 		-webkit-box-align: center;
 		-ms-flex-align: center;
 		align-items: center
+	}
+
+	.woocommerce-error > *,
+	.woocommerce-info > *,
+	.woocommerce-message > * {
+		margin-left: 8px;
 	}
 
 	.woocommerce-error::before,
@@ -34,7 +52,6 @@
 		order: 6;
 		margin-left: auto;
 	}
-
 
 	.woocommerce-error::after,
 	.woocommerce-info::after,
@@ -449,6 +466,24 @@ body.woocommerce-cart .cart input[name="update_cart"] {
 
 /* ## Checkout
 --------------------------------------------- */
+
+.woocommerce form.checkout_coupon {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	    flex-wrap: wrap;
+}
+
+.woocommerce form.checkout_coupon > p:first-child {
+	-ms-flex-preferred-size: 100%;
+	    flex-basis: 100%;
+	max-width: 100%;
+}
+
+.woocommerce form.checkout_coupon button[name="apply_coupon"] {
+	height: 100%;
+}
 
 .woocommerce .cart_totals .button.alt.checkout-button {
 	width: 100%;
