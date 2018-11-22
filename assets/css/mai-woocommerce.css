@@ -1,3 +1,51 @@
+/* ## General
+--------------------------------------------- */
+
+@media only screen and (min-width: 545px) {
+
+	.woocommerce-error,
+	.woocommerce-info,
+	.woocommerce-message {
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center
+	}
+
+	.woocommerce-error::before,
+	.woocommerce-info::before,
+	.woocommerce-message::before {
+		top: 50%;
+		-webkit-transform: translate(0, -50%);
+		-ms-transform: translate(0, -50%);
+		transform: translate(0, -50%);
+	}
+
+	.woocommerce-error .button.wc-forward,
+	.woocommerce-info .button.wc-forward,
+	.woocommerce-message .button.wc-forward {
+		-ms-flex: 0 0 auto;
+		-webkit-box-flex: 0;
+		flex: 0 0 auto;
+		-webkit-box-ordinal-group: 7;
+		-ms-flex-order: 6;
+		order: 6;
+		margin-left: auto;
+	}
+
+
+	.woocommerce-error::after,
+	.woocommerce-info::after,
+	.woocommerce-message::after {
+		content: ' ';
+		display: block;
+		margin-right: 16px;
+	}
+
+}
+
 /* ## Products - General
 --------------------------------------------- */
 
