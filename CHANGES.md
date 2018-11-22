@@ -2,6 +2,7 @@
 
 * Added: Better WooCommerce payment from styling.
 * Changed: More thorough WooCommerce button styling.
+* Changed: More thorough WooCommerce notices styling.
 * Changed: Removed heading/title hyphens on mobile. Too many people didn't like it. Only using word-break now when the word is larger than the container.
 
 #### 1.5.3 (11/21/18)
