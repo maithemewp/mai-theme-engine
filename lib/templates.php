@@ -66,6 +66,33 @@ function mai_plugin_include_theme_page_templates( $template ) {
 }
 
 /**
+ * Disable Gutenberg on Sections template.
+ *
+ * @since  1.5.4
+ */
+add_filter( 'gutenberg_can_edit_post_type', 'mai_sections_template_disable_gutenberg', 10, 2 );
+function mai_sections_template_disable_gutenberg( $can_edit, $post_type ) {
+
+	// Bail if not a page.
+	if ( 'page' !== $post_type ) {
+		return $can_edit;
+	}
+
+	// Bail if not in admin or no post ID.
+	if ( ! ( is_admin() || isset( $_GET['post'] ) ) || empty( $_GET['post'] ) ) {
+		return $can_edit;
+	}
+
+	// Bail if not Sections template.
+	if ( 'sections.php' !== get_page_template_slug( absint( $_GET['post'] ) ) ) {
+		return $can_edit;
+	}
+
+	// Disable Gutenberg.
+	return false;
+}
+
+/**
  * Run Sections template hooks and filters.
  * This allows us to still use front-page.php and other template files
  * while still getting the benefit of the Sections layout/styling.
