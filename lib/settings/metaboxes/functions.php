@@ -27,7 +27,6 @@ function mai_before_mai_metabox( $cmb_id, $object_id, $object_type, $cmb ) {
 		&& ( strpos( $cmb_id, 'mai-cpt-archive-settings-' ) === false ) ) {
 		return;
 	}
-
 	// Enqueue
 	wp_enqueue_style( 'mai-cmb2' );
 	wp_enqueue_script( 'mai-cmb2' );
