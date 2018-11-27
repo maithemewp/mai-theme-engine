@@ -2863,7 +2863,6 @@ input[name="post_password"] {
 	display: inline-block;
 	width: 6px;
 	height: 6px;
-	margin: auto;
 	border-style: solid;
 	border-right-width: 1px;
 	border-bottom-width: 1px;
@@ -2873,6 +2872,10 @@ input[name="post_password"] {
 	-webkit-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);
 	transform: rotate(45deg);
+}
+
+.mai-menu .sub-menu-toggle::after {
+	margin: auto;
 }
 
 .genesis-nav-menu > .menu-item-has-children > a::after {
