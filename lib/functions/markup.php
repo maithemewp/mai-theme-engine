@@ -906,7 +906,6 @@ function mai_is_valid_top( $top ) {
 	return in_array( (string) $top, array( 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '0', '5', '10', '20', '30', '40', '50', '60' ) );
 }
 
-
 /**
  * If bottom is a valid Flexington size.
  */
@@ -926,4 +925,11 @@ function mai_is_valid_overlay( $overlay ) {
  */
 function mai_is_valid_inner( $inner ) {
 	return in_array( $inner, array( 'light', 'dark' ) );
+}
+
+/**
+ * If image_align is a valid type.
+ */
+function mai_is_valid_image_align( $image_align ) {
+	return in_array( $image_align, array( 'left', 'right', 'center' ) );
 }
