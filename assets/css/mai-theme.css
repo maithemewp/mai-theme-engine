@@ -2863,6 +2863,7 @@ input[name="post_password"] {
 	display: inline-block;
 	width: 6px;
 	height: 6px;
+	margin: auto;
 	border-style: solid;
 	border-right-width: 1px;
 	border-bottom-width: 1px;
