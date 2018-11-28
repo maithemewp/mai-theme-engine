@@ -68,10 +68,6 @@ function mai_add_entry_align_classes( $classes, $args, $direction = 'row' ) {
 		$classes = mai_add_alignment_classes( $classes, $args['align'], $direction );
 		$classes = mai_add_align_text_classes( $classes, $args['align'] );
 	} else {
-		// Align columns.
-		if ( isset( $args['align_cols'] ) && ! empty( $args['align_cols'] ) ) {
-			$classes = mai_add_alignment_classes( $classes, $args['align_cols'], $direction );
-		}
 		// Align text.
 		if ( isset( $args['align_text'] ) && ! empty( $args['align_text'] ) ) {
 			$classes = mai_add_alignment_classes( $classes, $args['align_text'], $direction );
