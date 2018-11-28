@@ -68,7 +68,7 @@ function mai_plugin_include_theme_page_templates( $template ) {
 /**
  * Disable Gutenberg on Sections template.
  *
- * @since  1.5.4
+ * @since  1.6.0
  */
 add_filter( 'gutenberg_can_edit_post_type', 'mai_sections_template_disable_gutenberg', 10, 2 );
 function mai_sections_template_disable_gutenberg( $can_edit, $post_type ) {
