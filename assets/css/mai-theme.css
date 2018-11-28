@@ -288,6 +288,18 @@ h2,
 h3,
 h4,
 h5,
+h6,
+.heading,
+.banner-title,
+.entry-title {
+	word-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
 h6 {
 	font-weight: normal;
 	line-height: 1.2;
@@ -564,7 +576,7 @@ input[type="submit"],
 .button,
 .entry-content .button,
 .entry-content .more-link,
-.menu-item.highlight a,
+.menu-item.highlight > a,
 .woocommerce a.button,
 .woocommerce button.button,
 .woocommerce input.button,
@@ -666,7 +678,19 @@ input[type="submit"],
 .woocommerce #respond input#submit,
 .woocommerce a.button,
 .woocommerce button.button,
-.woocommerce input.button {
+.woocommerce input.button,
+.woocommerce #respond input#submit.disabled,
+.woocommerce #respond input#submit:disabled,
+.woocommerce #respond input#submit:disabled[disabled],
+.woocommerce a.button.disabled,
+.woocommerce a.button:disabled,
+.woocommerce a.button:disabled[disabled],
+.woocommerce button.button.disabled,
+.woocommerce button.button:disabled,
+.woocommerce button.button:disabled[disabled],
+.woocommerce input.button.disabled,
+.woocommerce input.button:disabled,
+.woocommerce input.button:disabled[disabled] {
 	font-size: 1rem;
 	padding: 14px 20px;
 }
@@ -895,7 +919,7 @@ td {
 
 /* we don't want to add hyphens in links */
 .site-inner a:not(.button):not(button) {
-	word-break: break-word; /* Non standard for WebKit */
+	word-break: break-word;
 }
 
 .content-sidebar-wrap {
@@ -1903,11 +1927,11 @@ input[name="post_password"] {
 	max-width: 16.66666667%;
 }
 
-.js .mai-slider[data-slidestoshow="1"]:not(.slick-initialized) .mai-slide:nth-child(n+2),
-.js .mai-slider[data-slidestoshow="2"]:not(.slick-initialized) .mai-slide:nth-child(n+3),
-.js .mai-slider[data-slidestoshow="3"]:not(.slick-initialized) .mai-slide:nth-child(n+4),
-.js .mai-slider[data-slidestoshow="4"]:not(.slick-initialized) .mai-slide:nth-child(n+5),
-.js .mai-slider[data-slidestoshow="6"]:not(.slick-initialized) .mai-slide:nth-child(n+7) {
+.mai-slider[data-slidestoshow="1"]:not(.slick-initialized) .mai-slide:nth-child(n+2),
+.mai-slider[data-slidestoshow="2"]:not(.slick-initialized) .mai-slide:nth-child(n+3),
+.mai-slider[data-slidestoshow="3"]:not(.slick-initialized) .mai-slide:nth-child(n+4),
+.mai-slider[data-slidestoshow="4"]:not(.slick-initialized) .mai-slide:nth-child(n+5),
+.mai-slider[data-slidestoshow="6"]:not(.slick-initialized) .mai-slide:nth-child(n+7) {
 	display: none;
 }
 
@@ -2850,6 +2874,10 @@ input[name="post_password"] {
 	transform: rotate(45deg);
 }
 
+.mai-menu .sub-menu-toggle::after {
+	margin: auto;
+}
+
 .genesis-nav-menu > .menu-item-has-children > a::after {
 	margin-top: -3px;
 }
@@ -3743,7 +3771,7 @@ body.mai-menu-activated {
 }
 
 .content ol,
-.content ul {
+.content ul:not(.wp-block-gallery) {
 	margin-left: 32px;
 }
 
@@ -3751,7 +3779,7 @@ body.mai-menu-activated {
 	list-style-type: decimal;
 }
 
-.content ul {
+.content ul:not(.wp-block-gallery) {
 	list-style-type: disc;
 }
 
@@ -4002,6 +4030,7 @@ p.entry-meta {
 	-webkit-box-pack: start;
 	-ms-flex-pack: start;
 	justify-content: flex-start;
+	text-align: left;
 	margin-left: -4px;
 }
 
@@ -4009,6 +4038,7 @@ p.entry-meta {
 	-webkit-box-pack: end;
 	-ms-flex-pack: end;
 	justify-content: flex-end;
+	text-align: right;
 	margin-right: -4px;
 }
 
@@ -4621,24 +4651,7 @@ ol.comment-list {
 
 @media only screen and (max-width: 768px) {}
 
-@media only screen and (max-width: 544px) {
-
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6,
-	.heading,
-	.banner-title,
-	.entry-title {
-		word-wrap: break-word;
-		-webkit-hyphens: auto;
-		-ms-hyphens: auto;
-		hyphens: auto;
-	}
-
-}
+@media only screen and (max-width: 544px) {}
 
 /* # Print Styles
 ---------------------------------------------------------------------------------------------------- */

@@ -68,10 +68,6 @@ function mai_add_entry_align_classes( $classes, $args, $direction = 'row' ) {
 		$classes = mai_add_alignment_classes( $classes, $args['align'], $direction );
 		$classes = mai_add_align_text_classes( $classes, $args['align'] );
 	} else {
-		// Align columns.
-		if ( isset( $args['align_cols'] ) && ! empty( $args['align_cols'] ) ) {
-			$classes = mai_add_alignment_classes( $classes, $args['align_cols'], $direction );
-		}
 		// Align text.
 		if ( isset( $args['align_text'] ) && ! empty( $args['align_text'] ) ) {
 			$classes = mai_add_alignment_classes( $classes, $args['align_text'], $direction );
@@ -906,7 +902,6 @@ function mai_is_valid_top( $top ) {
 	return in_array( (string) $top, array( 'none', 'xxxs', 'xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', '0', '5', '10', '20', '30', '40', '50', '60' ) );
 }
 
-
 /**
  * If bottom is a valid Flexington size.
  */
@@ -926,4 +921,11 @@ function mai_is_valid_overlay( $overlay ) {
  */
 function mai_is_valid_inner( $inner ) {
 	return in_array( $inner, array( 'light', 'dark' ) );
+}
+
+/**
+ * If image_align is a valid type.
+ */
+function mai_is_valid_image_align( $image_align ) {
+	return in_array( $image_align, array( 'left', 'right', 'center' ) );
 }

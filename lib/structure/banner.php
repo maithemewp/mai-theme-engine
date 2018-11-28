@@ -23,7 +23,7 @@ function mai_do_banner_area_body_class( $classes ) {
  * Check if we need to display the banner area
  *
  * @since   1.0.0
- * @since   1.3.0  Changed from `genesis_before_content_sidebar_wrap' to `genesis_after_header `hook.
+ * @since   1.3.0  Changed from `genesis_before_content_sidebar_wrap` to `genesis_after_header` hook.
  *
  * @return  void
  */

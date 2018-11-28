@@ -1189,7 +1189,7 @@ class Mai_Grid {
 		}
 
 		// If image is not aligned.
-		if ( $this->args['image_align'] ) {
+		if ( mai_is_valid_image_align( $this->args['image_align'] ) ) {
 			$classes[] = 'has-image-' . $this->args['image_align'];
 		}
 
@@ -1258,7 +1258,7 @@ class Mai_Grid {
 	 * @return  bool
 	 */
 	function is_vertically_aligned() {
-		return 'bg' === $this->args['image_location'] || empty( $this->args['image_align'] ) || array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
+		return 'bg' === $this->args['image_location'] || ! mai_is_valid_image_align( $this->args['image_align'] ) || array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
 	}
 
 	/**
@@ -1423,7 +1423,7 @@ class Mai_Grid {
 		if ( $this->args['image_location'] ) {
 			$attributes['class'] .= sprintf( ' entry-image-%s', str_replace( '_', '-', $this->args['image_location'] ) );
 		}
-		if ( $this->args['image_align'] ) {
+		if ( mai_is_valid_image_align( $this->args['image_align'] ) ) {
 			switch ( $this->args['image_align'] ) {
 				case 'left':
 					$attributes['class'] .= ' alignleft';

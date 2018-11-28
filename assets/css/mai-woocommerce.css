@@ -1,3 +1,68 @@
+/* ## General
+--------------------------------------------- */
+
+.content ul.woocommerce-error,
+.content ul.woocommerce-info,
+.content ul.woocommerce-message {
+	margin-left: 0;
+}
+
+.content ul.woocommerce-error > li,
+.content ul.woocommerce-info > li,
+.content ul.woocommerce-message > li {
+	margin-bottom: 0; /* undo the default margin on li */
+}
+
+@media only screen and (min-width: 545px) {
+
+	.woocommerce-error,
+	.woocommerce-info,
+	.woocommerce-message {
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center
+	}
+
+	.woocommerce-error > *,
+	.woocommerce-info > *,
+	.woocommerce-message > * {
+		margin-left: 8px;
+	}
+
+	.woocommerce-error::before,
+	.woocommerce-info::before,
+	.woocommerce-message::before {
+		top: 50%;
+		-webkit-transform: translate(0, -50%);
+		-ms-transform: translate(0, -50%);
+		transform: translate(0, -50%);
+	}
+
+	.woocommerce-error .button.wc-forward,
+	.woocommerce-info .button.wc-forward,
+	.woocommerce-message .button.wc-forward {
+		-ms-flex: 0 0 auto;
+		-webkit-box-flex: 0;
+		flex: 0 0 auto;
+		-webkit-box-ordinal-group: 7;
+		-ms-flex-order: 6;
+		order: 6;
+		margin-left: auto;
+	}
+
+	.woocommerce-error::after,
+	.woocommerce-info::after,
+	.woocommerce-message::after {
+		content: ' ';
+		display: block;
+		margin-right: 16px;
+	}
+
+}
+
 /* ## Products - General
 --------------------------------------------- */
 
@@ -402,6 +467,24 @@ body.woocommerce-cart .cart input[name="update_cart"] {
 /* ## Checkout
 --------------------------------------------- */
 
+.woocommerce form.checkout_coupon {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	    flex-wrap: wrap;
+}
+
+.woocommerce form.checkout_coupon > p:first-child {
+	-ms-flex-preferred-size: 100%;
+	    flex-basis: 100%;
+	max-width: 100%;
+}
+
+.woocommerce form.checkout_coupon button[name="apply_coupon"] {
+	height: 100%;
+}
+
 .woocommerce .cart_totals .button.alt.checkout-button {
 	width: 100%;
 	font-size: 18px;
@@ -422,6 +505,23 @@ body.woocommerce-checkout #payment ul.payment_methods li img {
 
 body.woocommerce-checkout form.checkout_coupon .form-row {
 	margin: 0;
+}
+
+#add_payment_method #payment div.payment_box,
+.woocommerce-cart #payment div.payment_box,
+.woocommerce-checkout #payment div.payment_box {
+	padding: 24px 24px 0;
+}
+
+#add_payment_method #payment div.payment_box .form-row,
+.woocommerce-cart #payment div.payment_box .form-row,
+.woocommerce-checkout #payment div.payment_box .form-row {
+	padding: 0;
+}
+
+.wc-credit-card-form .wc-stripe-elements-field,
+.wc-credit-card-form .wc-stripe-iban-element-field {
+	padding: 14px;
 }
 
 /* ## My Account
