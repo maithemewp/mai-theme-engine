@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 1.6.0 (TBD)
+#### 1.6.0 (11/28/18)
 * Added: Disable Gutenberg on any page using the Sections template (requires page refresh if setting page template inside Gutenberg).
 * Added: Better WooCommerce payment from styling.
 * Added: Better WooCommerce checkout coupon form styling.
