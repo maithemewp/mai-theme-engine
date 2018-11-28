@@ -1927,11 +1927,11 @@ input[name="post_password"] {
 	max-width: 16.66666667%;
 }
 
-.js .mai-slider[data-slidestoshow="1"]:not(.slick-initialized) .mai-slide:nth-child(n+2),
-.js .mai-slider[data-slidestoshow="2"]:not(.slick-initialized) .mai-slide:nth-child(n+3),
-.js .mai-slider[data-slidestoshow="3"]:not(.slick-initialized) .mai-slide:nth-child(n+4),
-.js .mai-slider[data-slidestoshow="4"]:not(.slick-initialized) .mai-slide:nth-child(n+5),
-.js .mai-slider[data-slidestoshow="6"]:not(.slick-initialized) .mai-slide:nth-child(n+7) {
+.mai-slider[data-slidestoshow="1"]:not(.slick-initialized) .mai-slide:nth-child(n+2),
+.mai-slider[data-slidestoshow="2"]:not(.slick-initialized) .mai-slide:nth-child(n+3),
+.mai-slider[data-slidestoshow="3"]:not(.slick-initialized) .mai-slide:nth-child(n+4),
+.mai-slider[data-slidestoshow="4"]:not(.slick-initialized) .mai-slide:nth-child(n+5),
+.mai-slider[data-slidestoshow="6"]:not(.slick-initialized) .mai-slide:nth-child(n+7) {
 	display: none;
 }
 
