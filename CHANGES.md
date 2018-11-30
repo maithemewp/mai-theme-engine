@@ -1,7 +1,7 @@
 ### Changelog
 
 
-#### 1.6.1 (TBD)
+#### 1.6.1 (11/30/18)
 * Fixed: Left margin is no longer added to ul's that are flexington rows.
 * Changed: Filter genesis sitemap to show all public post types anywhere the sitemap is used.
 * Changed: [grid] Only strip HTML tags from excerpt/content if image_location is bg.
