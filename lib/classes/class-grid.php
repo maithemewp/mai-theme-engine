@@ -583,13 +583,20 @@ class Mai_Grid {
 
 						// Excerpt.
 						if ( in_array( 'excerpt', $this->args['show'] ) ) {
-							// Strip tags and shortcodes cause things go nuts, especially if showing image as background
-							$entry_content .= wpautop( wp_strip_all_tags( strip_shortcodes( get_the_excerpt() ) ) );
+							$excerpt = strip_shortcodes( get_the_excerpt() );
+							if ( 'bg' === $this->args['image_location'] ) {
+								$excerpt = wpautop( wp_strip_all_tags( $excerpt ) );
+							}
+							$entry_content .= $excerpt;
 						}
 
 						// Content.
 						if ( in_array( 'content', $this->args['show'] ) ) {
-							$entry_content .= wp_strip_all_tags( strip_shortcodes( get_the_content() ) );
+							$content = strip_shortcodes( get_the_content() );
+							if ( 'bg' === $this->args['image_location'] ) {
+								$content = wp_strip_all_tags( $content );
+							}
+							$entry_content .= $content;
 						}
 
 						// Limit content. Empty string is sanitized to zero.
@@ -862,7 +869,11 @@ class Mai_Grid {
 
 						// Excerpt/Content.
 						if ( in_array( 'excerpt', $this->args['show'] ) || in_array( 'content', $this->args['show'] ) ) {
-							$entry_content .= wpautop( wp_strip_all_tags( strip_shortcodes( term_description( $term->term_id, $term->taxonomy ) ) ) );
+							$content = strip_shortcodes( term_description( $term->term_id, $term->taxonomy ) );
+							if ( 'bg' === $this->args['image_location'] ) {
+								$content = wpautop( wp_strip_all_tags( $content ) );
+							}
+							$entry_content .= $content;
 						}
 
 						// Limit content. Empty string is sanitized to zero.
