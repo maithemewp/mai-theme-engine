@@ -1,14 +1,20 @@
 ### Changelog
 
+
+#### 1.6.1 (TBD)
+* Fixed: Left margin is no longer added to ul's that are flexington rows.
+* Changed: Filter genesis sitemap to show all public post types anywhere the sitemap is used.
+* Changed: [grid] Only strip HTML tags from excerpt/content if image_location is bg.
+
 #### 1.6.0 (11/28/18)
 * Added: Disable Gutenberg on any page using the Sections template (requires page refresh if setting page template inside Gutenberg).
-* Added: Better WooCommerce payment from styling.
+* Added: Better WooCommerce payment form styling.
 * Added: Better WooCommerce checkout coupon form styling.
 * Changed: Fully rebuilt sitemap.php template. 'mai_sitemap_post_types' filter now passes all post types that will be displayed.
 * Changed: More thorough WooCommerce button styling.
 * Changed: More thorough WooCommerce notices styling.
 * Changed: Removed heading/title hyphens on mobile. Too many people didn't like it. Only using word-break now when the word is larger than the container.
-* Changed: [grid] Hide additonal slides on page load before slider is initialized.
+* Changed: [grid] Hide additional slides on page load before slider is initialized.
 * Changed: [grid] Whitelist image_align values so uses an unaccepted value won't break things.
 * Fixed: [grid] align_cols parameter shouldn’t be adding entry classes.
 
