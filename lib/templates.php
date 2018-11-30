@@ -93,6 +93,18 @@ function mai_sections_template_disable_gutenberg( $can_edit, $post_type ) {
 }
 
 /**
+ * Show a list of all public post types, including category, author, and montly archives.
+ *
+ * @since   1.6.1  A big rebuild based on genesis_get_sitemap().
+ *
+ * @return  void
+ */
+add_filter( 'genesis_pre_get_sitemap', 'mai_genesis_pre_get_sitemap' );
+function mai_genesis_pre_get_sitemap( $sitemap ) {
+	return mai_get_sitemap();
+}
+
+/**
  * Run Sections template hooks and filters.
  * This allows us to still use front-page.php and other template files
  * while still getting the benefit of the Sections layout/styling.
