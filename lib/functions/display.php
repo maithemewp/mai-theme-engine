@@ -437,3 +437,79 @@ function mai_get_sections( $sections ) {
 
 	return $html;
 }
+
+/**
+ * Get the sitemap content
+ * A lot of code taken from genesis_get_sitemap() function.
+ *
+ * @since   1.6.1
+ * @access  private
+ *
+ * @return  string|HTML
+ */
+function mai_get_sitemap() {
+
+	$sitemap = '';
+
+	// Get public post types.
+	$post_types = get_post_types( array(
+		'public' => true,
+	), 'objects' );
+
+	// Filter for devs to add or remove specific post types.
+	$post_types = apply_filters( 'mai_sitemap_post_types', $post_types );
+
+	// Bail if no post types. Unlikely.
+	if ( ! $post_types ) {
+		return $sitemap;
+	}
+
+	$number  = 100;
+	$heading = 'h2';
+
+	// Loop through the posts.
+	foreach ( $post_types as $post_type ) {
+
+		$list = wp_get_archives( array(
+			'post_type' => $post_type->name,
+			'type'      => 'postbypost',
+			'limit'     => $number,
+			'echo'      => false,
+		) );
+
+		// Skip if no posts.
+		if ( ! $list ) {
+			continue;
+		}
+
+		// Add the posts to the sitemap variable.
+		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', $post_type->label, $heading );
+		$sitemap .= sprintf( '<ul>%s</ul>', $list );
+	}
+
+	$post_counts = wp_count_posts();
+	if ( $post_counts->publish > 0 ) {
+		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Categories:', 'genesis' ), $heading );
+		$sitemap .= sprintf( '<ul>%s</ul>', wp_list_categories( array(
+			'number'      => $number,
+			'sort_column' => 'name',
+			'title_li'    => '',
+			'echo'        => false,
+		) ) );
+		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Authors:', 'genesis' ), $heading );
+		$sitemap .= sprintf( '<ul>%s</ul>', wp_list_authors( array(
+			'number'        => $number,
+			'exclude_admin' => false,
+			'optioncount'   => true,
+			'echo'          => false,
+		) ) );
+		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Monthly:', 'genesis' ), $heading );
+		$sitemap .= sprintf( '<ul>%s</ul>', wp_get_archives( array(
+			'number' => $number,
+			'type'   => 'monthly',
+			'echo'   => false,
+		) ) );
+	}
+
+	return $sitemap;
+}
