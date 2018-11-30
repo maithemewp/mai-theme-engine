@@ -3771,7 +3771,7 @@ body.mai-menu-activated {
 }
 
 .content ol,
-.content ul:not(.wp-block-gallery) {
+.content ul:not(.row):not(.wp-block-gallery) {
 	margin-left: 32px;
 }
 
@@ -3779,7 +3779,7 @@ body.mai-menu-activated {
 	list-style-type: decimal;
 }
 
-.content ul:not(.wp-block-gallery) {
+.content ul:not(.row):not(.wp-block-gallery) {
 	list-style-type: disc;
 }
 
