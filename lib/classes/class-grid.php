@@ -583,9 +583,9 @@ class Mai_Grid {
 
 						// Excerpt.
 						if ( in_array( 'excerpt', $this->args['show'] ) ) {
-							$excerpt = strip_shortcodes( get_the_excerpt() );
+							$excerpt = get_the_excerpt();
 							if ( 'bg' === $this->args['image_location'] ) {
-								$excerpt = wpautop( wp_strip_all_tags( $excerpt ) );
+								$excerpt = wp_strip_all_tags( $excerpt );
 							}
 							$entry_content .= $excerpt;
 						}
@@ -601,8 +601,18 @@ class Mai_Grid {
 
 						// Limit content. Empty string is sanitized to zero.
 						if ( $this->args['content_limit'] > 0 ) {
-							// Reset the variable while trimming the content.
-							$entry_content = wpautop( wp_trim_words( $entry_content, $this->args['content_limit'], '&hellip;' ) );
+							// Reset the variable while trimming the content. wp_trim_words runs wp_strip_all_tags so we need to do this before re-processing.
+							$entry_content = wp_trim_words( $entry_content, $this->args['content_limit'], '&hellip;' );
+						}
+
+						// Process excerpt.
+						if ( in_array( 'excerpt', $this->args['show'] ) ) {
+							$entry_content = $this->get_processed_excerpt( $entry_content );
+						}
+
+						// Process content.
+						if ( in_array( 'content', $this->args['show'] ) ) {
+							$entry_content = $this->get_processed_content( $entry_content );
 						}
 
 						// Price.
@@ -871,15 +881,25 @@ class Mai_Grid {
 						if ( in_array( 'excerpt', $this->args['show'] ) || in_array( 'content', $this->args['show'] ) ) {
 							$content = strip_shortcodes( term_description( $term->term_id, $term->taxonomy ) );
 							if ( 'bg' === $this->args['image_location'] ) {
-								$content = wpautop( wp_strip_all_tags( $content ) );
+								$content = wp_strip_all_tags( $content );
 							}
 							$entry_content .= $content;
 						}
 
 						// Limit content. Empty string is sanitized to zero.
 						if ( $this->args['content_limit'] > 0 ) {
-							// Reset the variable while trimming the content.
-							$entry_content = wpautop( wp_trim_words( $entry_content, $this->args['content_limit'], '&hellip;' ) );
+							// Reset the variable while trimming the content. wp_trim_words runs wp_strip_all_tags so we need to do this before re-processing.
+							$entry_content = wp_trim_words( $entry_content, $this->args['content_limit'], '&hellip;' );
+						}
+
+						// Process excerpt.
+						if ( in_array( 'excerpt', $this->args['show'] ) ) {
+							$entry_content = $this->get_processed_excerpt( $entry_content );
+						}
+
+						// Process content.
+						if ( in_array( 'content', $this->args['show'] ) ) {
+							$entry_content = $this->get_processed_content( $entry_content );
 						}
 
 						// Image. This runs at the end because the image was getting stripped content_limit was too low.
@@ -1488,6 +1508,38 @@ class Mai_Grid {
 			$number = $this->args['number'];
 		}
 		return intval( $number );
+	}
+
+	/**
+	 * Get the processed excerpt, in the order WP core does things on the_excerpt filter.
+	 *
+	 * @since   1.6.2
+	 *
+	 * @return  string|HTML
+	 */
+	function get_processed_excerpt( $excerpt ) {
+		$excerpt = wptexturize( $excerpt );
+		$excerpt = convert_smilies( $excerpt );
+		$excerpt = convert_chars( $excerpt );
+		$excerpt = wpautop( $excerpt );
+		$excerpt = shortcode_unautop( $excerpt );
+		return $excerpt;
+	}
+
+	/**
+	 * Get the processed content, in the order WP core does things on the_content filter.
+	 *
+	 * @since   1.6.2
+	 *
+	 * @return  string|HTML
+	 */
+	function get_processed_content( $content ) {
+		$content = wptexturize( $content );
+		$content = convert_smilies( $content );
+		$content = wpautop( $content );
+		$content = shortcode_unautop( $content );
+		$content = wp_make_content_images_responsive( $content );
+		return $content;
 	}
 
 	/**
