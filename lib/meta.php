@@ -38,7 +38,7 @@ function mai_post_author_link_defaults( $out, $pairs, $atts ) {
 	return $out;
 }
 
-// Customize the entry meta in the entry header
+// Customize the entry meta in the entry header.
 add_filter( 'genesis_post_info', 'mai_post_info' );
 function mai_post_info( $post_info ) {
 	$post_info = '[post_date] [post_author_posts_link]';
@@ -48,8 +48,8 @@ function mai_post_info( $post_info ) {
 	return $post_info;
 }
 
-// Add all public taxonomies to post meta
-add_filter( 'genesis_post_meta','mai_post_meta', 11 );
+// Add all public taxonomies to post meta.
+add_filter( 'genesis_post_meta', 'mai_post_meta', 11 );
 function mai_post_meta( $post_meta ) {
 	global $post;
 
@@ -72,13 +72,13 @@ function mai_post_meta( $post_meta ) {
 	return $post_meta;
 }
 
-// Modify the size of the Gravatar in the author box
+// Modify the size of the Gravatar in the author box.
 add_filter( 'genesis_author_box_gravatar_size', 'mai_author_box_gravatar_size' );
 function mai_author_box_gravatar_size( $size ) {
 	return '200';
 }
 
-// Modify the size of the Gravatar in comments
+// Modify the size of the Gravatar in comments.
 add_filter( 'genesis_comment_list_args', 'mai_comments_gravatar' );
 function mai_comments_gravatar( $args ) {
 	$args['avatar_size'] = 160;
