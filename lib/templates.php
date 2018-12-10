@@ -68,9 +68,13 @@ function mai_plugin_include_theme_page_templates( $template ) {
 /**
  * Disable Gutenberg on Sections template.
  *
- * @since  1.6.0
+ * @since   1.6.0
+ * @since   1.6.2  Added use_block_editor_for_post_type filter.
+ *
+ * @return  bool
  */
-add_filter( 'gutenberg_can_edit_post_type', 'mai_sections_template_disable_gutenberg', 10, 2 );
+add_filter( 'gutenberg_can_edit_post_type',   'mai_sections_template_disable_gutenberg', 10, 2 ); // Gutenberg plugin.
+add_filter( 'use_block_editor_for_post_type', 'mai_sections_template_disable_gutenberg', 10, 2 ); // WP 5.0 core.
 function mai_sections_template_disable_gutenberg( $can_edit, $post_type ) {
 
 	// Bail if not a page.
