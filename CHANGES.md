@@ -1,6 +1,10 @@
 ### Changelog
 
 
+#### 1.6.2-beta.1 (12/10/18)
+* Changed: Now only add left margin to ul's that don't have a class.
+* Changed: [grid] Better processing/formatting of content and excerpts.
+
 #### 1.6.1 (11/30/18)
 * Fixed: Left margin is no longer added to ul's that are flexington rows.
 * Changed: Filter genesis sitemap to show all public post types anywhere the sitemap is used.
