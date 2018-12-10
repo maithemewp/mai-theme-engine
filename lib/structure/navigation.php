@@ -88,19 +88,19 @@ function mai_limit_nav_secondary_menu_depth( $args ) {
 	return $args;
 }
 
-// Reposition the secondary navigation menu
+// Reposition the secondary navigation menu.
 remove_action( 'genesis_after_header', 'genesis_do_subnav' );
 add_action( 'genesis_before_footer', 'genesis_do_subnav' );
 
-// Reposition the breadcrumbs
+// Reposition the breadcrumbs.
 remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
 add_action( 'genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 12 );
 
-// Move archive pagination
+// Move archive pagination.
 remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
 add_action( 'genesis_after_loop', 'genesis_posts_nav' );
 
-// Add previous/next post links to single posts
+// Add previous/next post links to single posts.
 add_post_type_support( 'post', 'genesis-adjacent-entry-nav' );
 
 // Remove Genesis filters added in 2.7 to add float classes, since we use flexbox.
@@ -154,8 +154,8 @@ function _mai_get_adjacent_post_output( $output, $post ) {
 }
 
 /**
- * Add mobile menu on custom hook, after the site header row
- * We need to return this data because it's used via a genesis_structural_wrap filter
+ * Add mobile menu on custom hook, after the site header row.
+ * We need to return this data because it's used via a genesis_structural_wrap filter.
  *
  * @return  mixed
  */

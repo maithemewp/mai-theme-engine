@@ -117,13 +117,51 @@ function mai_limit_term_description( $desc ) {
 	return wp_trim_words( strip_tags( $desc ), 24, '...' );
 }
 
-// Show the editor on the page set for is_home().
-add_action( 'edit_form_after_title', 'mai_posts_page_edit_form' );
+/**
+ * Enable the editor on the page for posts.
+ * Force an empty space as the post content so block editor (Gutenberg) will show in the admin when editing this page,
+ * otherwise default editor will show. This is stupid and hacky and I wish Gutenberg didn't do this.
+ *
+ * @since   1.6.2
+ *
+ * @return  void
+ */
+add_action( 'admin_head', 'mai_posts_page_edit_form' );
 function mai_posts_page_edit_form() {
-	global $post, $post_type, $post_ID;
-	if ( $post_ID == get_option( 'page_for_posts' ) && empty( $post->post_content ) ) {
-		add_post_type_support( $post_type, 'editor' );
+
+	$current_screen = get_current_screen();
+
+	// Bail if not editing a page.
+	if ( ! $current_screen || 'page' !== $current_screen->id ) {
+		return;
 	}
+
+	// Bail if not editing the "Page for Posts".
+	if ( (int) get_the_ID() !== (int) get_option( 'page_for_posts' ) ) {
+		return;
+	}
+
+	// Add the editor.
+	add_post_type_support( 'page', 'editor' );
+
+	// Get the post object.
+	$post = get_post( get_the_ID() );
+
+	// Bail if no post. Safety first!
+	if ( ! $post ) {
+		return;
+	}
+
+	// Bail the post has content.
+	if ( ! empty( $post->post_content ) ) {
+		return;
+	}
+
+	// Update the post, adding a space as the content.
+	wp_update_post( array(
+		'ID'           => $post->ID,
+		'post_content' => ' ',
+	) );
 }
 
 // Change login logo.

@@ -49,8 +49,8 @@ function mai_do_remove_breadcrumbs() {
 }
 
 /**
- * Add an action hook if hide breadcrumbs settings is checked.
- * This allows custom themes with breadcrumbs in a different location to remove them via this hook.
+ * Add an action hook if hide title settings is checked.
+ * This allows custom themes with title in a different location to remove them via this hook.
  *
  * @since   1.3.0
  *
@@ -142,13 +142,19 @@ function mai_hide_title() {
 
 
 
-// Remove the page title from the front page
+/**
+ * Remove the page title from the front page.
+ *
+ * @return  void
+ */
 add_action( 'genesis_before_content_sidebar_wrap', 'mai_remove_front_page_post_title' );
 function mai_remove_front_page_post_title() {
-	// Bail if not front page
+
+	// Bail if not front page.
 	if ( ! is_front_page() ) {
 		return;
 	}
+
 	/**
 	 * Bail if home.
 	 * This would happen if front page is set to recent posts,
@@ -157,17 +163,18 @@ function mai_remove_front_page_post_title() {
 	if ( is_home() ) {
 		return;
 	}
-	// Remove post title
+
+	// Remove post title.
 	remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 }
 
-// Unregister header right widget area
+// Unregister header right widget area.
 unregister_sidebar( 'header-right' );
 
 // This action may cause duplicate or empty header-widget-area markup, so remove it.
 remove_all_actions( 'genesis_header_right' );
 
-// Remove Blog & Archive Template From Genesis
+// Remove Blog & Archive Template From Genesis.
 add_filter( 'theme_page_templates', 'mai_remove_page_templates' );
 function mai_remove_page_templates( $templates ) {
 	unset( $templates['page_blog.php'] );
@@ -175,13 +182,13 @@ function mai_remove_page_templates( $templates ) {
 	return $templates;
 }
 
-// Remove edit post link
+// Remove edit post link.
 add_filter ( 'genesis_edit_post_link', '__return_false' );
 
 // Remove author 'says' text.
 add_filter( 'comment_author_says_text', '__return_empty_string' );
 
-// Disable the Genesis Favicon
+// Disable the Genesis Favicon.
 remove_action( 'wp_head', 'genesis_load_favicon' );
 
 /**
