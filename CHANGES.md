@@ -1,9 +1,11 @@
 ### Changelog
 
 
-#### 1.6.2-beta.1 (12/10/18)
+#### 1.6.2 (12/10/18)
 * Changed: Now only add left margin to ul's that don't have a class.
 * Changed: [grid] Better processing/formatting of content and excerpts.
+* Fixed: Sections template now properly disables the block editor in WP 5.0.
+* Fixed: Editing the blog page now correctly shows the editor whether using Classic or Gutenberg/Block editor.
 
 #### 1.6.1 (11/30/18)
 * Fixed: Left margin is no longer added to ul's that are flexington rows.
