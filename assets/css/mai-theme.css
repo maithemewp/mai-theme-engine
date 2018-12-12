@@ -3968,7 +3968,6 @@ p.entry-meta {
 	margin: 32px 0;
 }
 
-.adjacent-entry-pagination,
 .archive-pagination,
 .entry-pagination {
 	overflow: hidden;
@@ -4164,7 +4163,6 @@ ol.comment-list {
 
 .comment-header {
 	margin-bottom: 16px;
-	overflow: hidden;
 }
 
 .comment-author span[itemprop="name"] {
