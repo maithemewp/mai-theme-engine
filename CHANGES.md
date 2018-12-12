@@ -1,6 +1,10 @@
 ### Changelog
 
 
+#### 1.6.3 (12/12/18)
+* Changed: Updated CMB2 to 2.5.1.
+* Changed: Remove overflow hidden on some elements to allow easier styling enhancements.
+
 #### 1.6.2 (12/10/18)
 * Changed: Now only add left margin to ul's that don't have a class.
 * Changed: [grid] Better processing/formatting of content and excerpts.
