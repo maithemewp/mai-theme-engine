@@ -1,6 +1,10 @@
 ### Changelog
 
 
+#### 1.6.4 (TBD)
+* Changed: Sections now pass args to genesis_markup function.
+* Changed: Add priority to Mai Banner Area customizer settings.
+
 #### 1.6.3 (12/12/18)
 * Changed: Updated CMB2 to 2.5.1.
 * Changed: Remove overflow hidden on some elements to allow easier styling enhancements.
