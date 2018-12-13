@@ -41,6 +41,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'label'    => __( 'Enable Banner Area', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ),
+			'priority' => 2,
 			'type'     => 'checkbox',
 		)
 	);
@@ -61,6 +62,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'label'           => __( 'Background Color', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_background_color' ),
+			'priority'        => 6,
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
@@ -84,6 +86,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'description'     => __( 'Set a default banner image. Can be overridden per post/page.', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
+			'priority'        => 6,
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
