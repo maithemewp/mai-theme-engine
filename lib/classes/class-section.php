@@ -109,6 +109,7 @@ class Mai_Section {
 			'close'   => $this->get_section_close(),
 			'content' => $this->get_section_inside(),
 			'context' => $this->args['context'],
+			'params'  => $this->args,
 			'echo'    => false,
 		) );
 	}
