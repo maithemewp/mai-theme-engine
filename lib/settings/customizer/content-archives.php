@@ -49,7 +49,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'columns' ),
 			'type'     => 'select',
 			'choices'  => array(
-				1 => __( 'None', 'mai-theme-engine' ),
+				1 => __( '- None -', 'genesis' ),
 				2 => __( '2', 'mai-theme-engine' ),
 				3 => __( '3', 'mai-theme-engine' ),
 				4 => __( '4', 'mai-theme-engine' ),

@@ -674,7 +674,7 @@ function mai_register_cpt_settings( $wp_customize, $post_type, $settings ) {
 				'priority' => 10,
 				'type'     => 'select',
 				'choices'  => array(
-					1 => __( 'None', 'mai-theme-engine' ),
+					1 => __( '- None -', 'genesis' ),
 					2 => __( '2', 'mai-theme-engine' ),
 					3 => __( '3', 'mai-theme-engine' ),
 					4 => __( '4', 'mai-theme-engine' ),
