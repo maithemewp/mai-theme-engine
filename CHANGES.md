@@ -1,6 +1,12 @@
 ### Changelog
 
 
+#### 1.7.0 (12/14/18)
+* Added: New 'mai_valid_section_args' filter to allow new settings to get passed to mai_get_section() function when using the Sections template.
+* Changed: Now use wp_parse_args to allow new items added via shortcode_atts_ filter to still pass to Mai_Section class.
+* Changed: Sections now pass args to genesis_markup function.
+* Changed: Add priority to Mai Banner Area customizer settings.
+
 #### 1.6.3 (12/12/18)
 * Changed: Updated CMB2 to 2.5.1.
 * Changed: Remove overflow hidden on some elements to allow easier styling enhancements.

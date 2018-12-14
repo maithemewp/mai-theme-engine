@@ -41,6 +41,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'label'    => __( 'Enable Banner Area', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'enable_banner_area' ),
+			'priority' => 2,
 			'type'     => 'checkbox',
 		)
 	);
@@ -61,6 +62,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'label'           => __( 'Background Color', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_background_color' ),
+			'priority'        => 4,
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
@@ -84,6 +86,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'description'     => __( 'Set a default banner image. Can be overridden per post/page.', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
+			'priority'        => 4,
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				return _mai_customizer_is_banner_area_enabled_globally( $wp_customize, $settings_field );
 			},
@@ -107,7 +110,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 				'description' => __( 'Use featured image as banner image on:', 'mai-theme-engine' ),
 				'section'     => $section,
 				'settings'    => _mai_customizer_get_field_name( $settings_field, 'banner_featured_image' ),
-				'priority'    => 10,
+				'priority'    => 6,
 				'choices'     => array(
 					'page' => __( 'Pages', 'mai-theme-engine' ),
 					'post' => __( 'Posts', 'mai-theme-engine' ),
@@ -137,7 +140,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				''         => __( 'None', 'mai-theme-engine' ),
+				''         => __( '- None -', 'genesis' ),
 				'light'    => __( 'Light', 'mai-theme-engine' ),
 				'dark'     => __( 'Dark', 'mai-theme-engine' ),
 				'gradient' => __( 'Gradient', 'mai-theme-engine' ),
@@ -166,7 +169,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				''      => __( 'None', 'mai-theme-engine' ),
+				''      => __( '- None -', 'genesis' ),
 				'light' => __( 'Light Box', 'mai-theme-engine' ),
 				'dark'  => __( 'Dark Box', 'mai-theme-engine' ),
 			),

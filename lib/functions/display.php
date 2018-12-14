@@ -364,6 +364,7 @@ function mai_get_section( $content, $args = array() ) {
  *
  * @access  private
  * @since   1.3.0
+ * @since   1.7.0  Added 'mai_valid_section_args' filter.
  * @param   array  $sections  The 'mai_sections' meta data.
  *
  * @return  string|HTML  The sections HTML
@@ -374,7 +375,7 @@ function mai_get_sections( $sections ) {
 	$has_banner = mai_is_banner_area_enabled();
 	$has_h1     = false;
 
-	$settings = array(
+	$valid = array(
 		'align',
 		'align_content',
 		'bg',
@@ -388,6 +389,13 @@ function mai_get_sections( $sections ) {
 		'title',
 	);
 
+	/**
+	 * Filter to allow new settings to get passed to mai_get_section() function.
+	 *
+	 * @since  1.7.0.
+	 */
+	$valid = apply_filters( 'mai_valid_section_args', $valid );
+
 	// Loop through each section.
 	foreach ( $sections as $section ) {
 
@@ -395,7 +403,7 @@ function mai_get_sections( $sections ) {
 		$args = array();
 
 		// Set the args.
-		foreach ( $settings as $setting ) {
+		foreach ( $valid as $setting ) {
 			$args[ $setting ] = isset( $section[ $setting ] ) ? $section[ $setting ] : '';
 		}
 

@@ -95,7 +95,7 @@ function mai_register_customizer_header_footer_settings( $wp_customize ) {
 			'priority'    => 10,
 			'type'        => 'select',
 			'choices'     => array(
-				0 => __( 'None', 'mai-theme-engine' ),
+				0 => __( '- None -', 'genesis' ),
 				1 => __( '1', 'mai-theme-engine' ),
 				2 => __( '2', 'mai-theme-engine' ),
 				3 => __( '3', 'mai-theme-engine' ),
