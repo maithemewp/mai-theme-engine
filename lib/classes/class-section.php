@@ -49,8 +49,8 @@ class Mai_Section {
 			$this->args['image_size'] = 'section';
 		}
 
-		// Sanitized args.
-		$this->args = array(
+		// Sanitized args. Allows new items added via shortcode_atts_ filter to still pass.
+		$this->args = wp_parse_args( array(
 			'align'         => mai_sanitize_keys( $this->args['align'] ), // array with left, center, right, mostly for text-align (array for back compat)
 			'align_content' => sanitize_key( $this->args['align_content'] ), // left, lefttop, leftbottom, center, centertop, centerbottom, right, righttop, rightbottom
 			'bg'            => mai_sanitize_hex_color( $this->args['bg'] ), // 3 or 6 dig hex color with or without hash
@@ -69,7 +69,7 @@ class Mai_Section {
 			'title_wrap'    => sanitize_key( $this->args['title_wrap'] ),
 			'wrapper'       => sanitize_key( $this->args['wrapper'] ),
 			'wrap_class'    => mai_sanitize_html_classes( $this->args['wrap_class'] ),
-		);
+		), $this->args );
 
 		/**
 		 * Section args filter.
