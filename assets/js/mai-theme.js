@@ -50,11 +50,6 @@
 		}
 	});
 
-	// Resize logo/title when resizing the browser window.
-	$window.on( 'resize', function() {
-		reSize();
-	});
-
 	// If doing a sticky shrink header.
 	if ( hasStickyShrink ) {
 
