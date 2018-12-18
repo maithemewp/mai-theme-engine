@@ -1,6 +1,10 @@
 ### Changelog
 
 
+#### 1.8.0 (TBD)
+* Added: Now enable beta updates of all Mai plugins via the Customizer > Theme Settings.
+* Fixed: Logo shrinking to 0px in Firefox.
+
 #### 1.7.0 (12/14/18)
 * Added: New 'mai_valid_section_args' filter to allow new settings to get passed to mai_get_section() function when using the Sections template.
 * Changed: Now use wp_parse_args to allow new items added via shortcode_atts_ filter to still pass to Mai_Section class.
