@@ -3,6 +3,8 @@
 
 #### 1.8.0 (TBD)
 * Added: Now enable beta updates of all Mai plugins via the Customizer > Theme Settings.
+* Added: Window size body utility class (window-xs, window-sm, window-md, window-lg, window-xl).
+* Changed: Use CSS to set max-width on logo for window-xs and window-sm sizes.
 * Changed: Scale text based site title according to window/browser width.
 * Fixed: Logo shrinking to 0px in Firefox.
 

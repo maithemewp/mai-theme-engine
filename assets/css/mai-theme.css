@@ -2704,14 +2704,6 @@ input[name="post_password"] {
 
 }
 
-@media only screen and (max-width: 768px) {
-
-	.title-area .custom-logo-link {
-		max-width: 180px;
-	}
-
-}
-
 @media only screen and (min-width: 769px) and (max-width: 992px)  {
 
 	.has-header-left.has-header-right .site-title a {
@@ -2737,6 +2729,14 @@ input[name="post_password"] {
 .wp-custom-logo .site-title a {
 	font-size: 0;
 	line-height: 1;
+}
+
+.window-xs .custom-logo-link {
+	max-width: 180px;
+}
+
+.window-sm .custom-logo-link {
+	max-width: 240px;
 }
 
 /* ## Header Content
