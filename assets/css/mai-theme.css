@@ -3601,8 +3601,8 @@ body.mai-menu-activated {
 	color: #323232;
 	font-size: 1rem;
 	text-transform: capitalize;
-	padding: 12px 10px 12px 0;
-	margin: 0;
+	padding: 4px 12px 4px 0;
+	margin: 4px 0;
 	border: none;
 	border-radius: 0;
 	-webkit-box-shadow: none;box-shadow: none;
@@ -3613,14 +3613,9 @@ body.mai-menu-activated {
 	color: #067CCC;
 }
 
-.mobile-menu > .menu-item > a {
-	border-bottom: 1px solid #dfdcdf;
-}
-
 .mobile-menu .highlight > a {
-	margin-left: 0;
-	margin-right: 0;
-	border-bottom: none;
+	padding: 12px;
+	margin: 8px 0;
 }
 
 .mobile-menu .sub-menu-toggle {
@@ -3630,16 +3625,6 @@ body.mai-menu-activated {
 	width: 44px;
 	padding: 0;
 	margin: 0;
-	border: 1px solid #dfdcdf;
-}
-
-.mobile-menu > .menu-item > .sub-menu-toggle {
-	border-top: none;
-}
-
-/* removes sub-menu double border on nested sub-menu-toggles */
-.mobile-menu .sub-menu .sub-menu-toggle {
-	margin: 0 -1px -1px 0;
 }
 
 .mobile-menu .sub-menu {
@@ -3648,8 +3633,6 @@ body.mai-menu-activated {
 	width: 100%;
 	background-color: rgba(0,0,0,0.01);
 	margin: 0;
-	border: 1px solid #dfdcdf;
-	border-top: none;
 	opacity: 1;
 }
 
@@ -3671,11 +3654,6 @@ body.mai-menu-activated {
 .mobile-menu .sub-menu a:focus,
 .mobile-menu .sub-menu a:active {
 	color: #067CCC;
-}
-
-.mobile-menu .sub-menu .sub-menu {
-	border: none;
-	border-top: 1px solid #dfdcdf;
 }
 
 .mobile-menu .menu-item > a:focus ul.sub-menu,
