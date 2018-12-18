@@ -139,9 +139,12 @@ final class Mai_Theme_Engine {
 			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
 
 			// Get the branch. If checking for beta releases.
-			$branch = genesis_get_option( 'mai_updater_branch' ) ? 'beta' : 'master';
+			$tester = genesis_get_option( 'mai_tester' );
+			$tester = $tester ? 'beta' : 'master';
+
 			// Allow branch and updater object manipulation.
-			$branch = apply_filters( 'mai_updater_branch', $branch );
+			$branch = apply_filters( 'mai_updater_branch', $tester );
+
 			// Set the branch.
 			$updater->setBranch( $branch );
 
