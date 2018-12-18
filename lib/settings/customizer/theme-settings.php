@@ -19,13 +19,17 @@ function mai_customizer_theme_settings_config( $config ) {
 	}
 
 	// Add our new settings.
-	$config['genesis']['sections']['genesis_updates']['controls']['mai_beta_updates'] = array(
-		'label'       => __( 'Check For Mai Beta Updates', 'mai-theme-engine' ),
-		'description' => __( 'By checking this box, you allow all Mai plugins to check for beta updates.', 'mai-theme-engine' ),
+	$config['genesis']['sections']['genesis_updates']['controls']['mai_updater_branch'] = array(
+		'label'       => __( 'Mai Theme Updates', 'mai-theme-engine' ),
+		'description' => __( 'Choose the type of Mai plugin updates to check for.', 'mai-theme-engine' ),
 		'section'     => 'genesis_updates',
-		'type'        => 'checkbox',
+		'type'        => 'select',
+		'choices'     => array(
+			'master' => __( 'Stable', 'mai-theme-engine' ),
+			'beta'   => __( 'Beta', 'mai-theme-engine' ),
+		),
 		'settings'    => array(
-			'default' => 0,
+			'default' => 'master',
 		),
 	);
 
