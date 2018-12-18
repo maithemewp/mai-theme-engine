@@ -50,19 +50,6 @@
 		}
 	});
 
-	/**
-	 * Set initial inline width.
-	 * This seems to help with jitters on first scroll.
-	 */
-	reSize();
-
-	/**
-	 * Resize logo/title when resizing the browser window.
-	 */
-	$window.on( 'resize', function() {
-		reSize();
-	});
-
 	// If doing a sticky shrink header.
 	if ( hasStickyShrink ) {
 
@@ -398,7 +385,7 @@
 		}
 
 		// Get a target element that you want to persist scrolling for (such as a modal/lightbox/flyout/nav).
-		const targetElement = document.querySelector( '#mai-menu' );
+		var targetElement = document.querySelector( '#mai-menu' );
 
 		// If opening the menu.
 		if ( $body.hasClass( 'mai-menu-activated' ) ) {
