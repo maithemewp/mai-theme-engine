@@ -138,12 +138,11 @@ final class Mai_Theme_Engine {
 			// Setup the updater.
 			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
 
-			/**
-			 * Allow branch and updater object manipulation.
-			 * This let's us do beta releases via a branch change,
-			 * among other things.
-			 */
-			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
+			// Get the branch. If checking for beta releases.
+			$branch = genesis_get_option( 'mai_beta_updates' ) ? 'beta' : 'master';
+
+			// Allow branch and updater object manipulation.
+			$updater->setBranch( apply_filters( 'mai_updater_branch', $branch ) );
 
 			// Allow tokens to be used to bypass GitHub rate limit.
 			if ( defined( 'MAI_UPDATER_TOKEN' ) ) {
