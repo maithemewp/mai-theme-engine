@@ -2676,7 +2676,7 @@ input[name="post_password"] {
 
 .site-title a {
 	display: inline-block;
-	font-size: 1.953rem;
+	font-size: calc(1rem + 1.2vw);
 	font-weight: bold;
 	line-height: 1.2;
 	margin-top: 8px;
