@@ -472,17 +472,21 @@ body.woocommerce-cart .cart input[name="update_cart"] {
 	display: -ms-flexbox;
 	display: flex;
 	-ms-flex-wrap: wrap;
-	    flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 
 .woocommerce form.checkout_coupon > p:first-child {
 	-ms-flex-preferred-size: 100%;
-	    flex-basis: 100%;
+	flex-basis: 100%;
 	max-width: 100%;
 }
 
 .woocommerce form.checkout_coupon button[name="apply_coupon"] {
 	height: 100%;
+}
+
+#order_review_heading {
+	margin-top: 24px;
 }
 
 .woocommerce .cart_totals .button.alt.checkout-button {
