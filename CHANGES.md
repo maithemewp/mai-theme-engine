@@ -5,6 +5,7 @@
 * Added: Now enable beta updates of all Mai plugins via the Customizer > Theme Settings.
 * Changed: Scale text based site title according to window/browser width.
 * Changed: Remove border from mobile menu items.
+* Changed: Throttle all JS resize and scroll event functions.
 * Fixed: Logo shrinking to 0px in Firefox.
 
 #### 1.7.0 (12/14/18)
