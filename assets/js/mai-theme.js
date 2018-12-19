@@ -28,11 +28,13 @@
 		logoWidth       = $customLogo.outerWidth();
 
 	// Add scroll class.
+	var addScrollClass;
+
 	$window.on( 'resize scroll', function() {
 
 		clearTimeout( addScrollClass );
 
-		var addScrollClass = setTimeout( function() {
+		addScrollClass = setTimeout( function() {
 
 			var scrollClassAdded = false;
 
@@ -53,7 +55,7 @@
 				$body.removeClass( 'scroll' );
 			}
 
-		}, 250 );
+		}, 100 );
 	});
 
 	// If doing a sticky shrink header.
@@ -64,11 +66,13 @@
 			titleShrinkFired = false;
 
 		// On resize and/or scroll.
+		var doStickyShrink;
+
 		$window.on( 'resize scroll', function() {
 
 			clearTimeout( doStickyShrink );
 
-			var doStickyShrink = setTimeout( function() {
+			doStickyShrink = setTimeout( function() {
 
 				var windowWidth = $window.width();
 
@@ -109,7 +113,7 @@
 					titleShrinkFired = true;
 				}
 
-			}, 250 );
+			}, 100 );
 		});
 
 	}
@@ -183,11 +187,13 @@
 			return;
 		}
 
+		var doStickyShrink;
+
 		$window.on( 'resize scroll', function() {
 
 			clearTimeout( doStickyShrink );
 
-			var doStickyShrink = setTimeout( function() {
+			doStickyShrink = setTimeout( function() {
 
 				// Bail if not monitoring scroll.
 				if ( shouldNotScroll ) {
@@ -216,7 +222,7 @@
 					shrinkHeader();
 				}
 
-			}, 250 );
+			}, 100 );
 		});
 
 	}
@@ -328,12 +334,13 @@
 	$maiMenu.on( 'click', '.sub-menu-toggle.sub-sub-menu-toggle', _doToggleSubSubMenu );
 
 	// Resize.
+	var doMaiMenuResize;
 	$window.on( 'load resize', function(e) {
 		clearTimeout( doMaiMenuResize );
-		var doMaiMenuResize = setTimeout( function() {
+		doMaiMenuResize = setTimeout( function() {
 			_maybeCloseAll();
 			_changeSkipLink();
-		}, 250 );
+		}, 100 );
 	});
 
 	/**
@@ -404,7 +411,7 @@
 					clearTimeout( doToggleMenuResize );
 					var doToggleMenuResize = setTimeout( function() {
 						$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
-					}, 250 );
+					}, 100 );
 				});
 			}
 
@@ -653,20 +660,13 @@
 		return;
 	}
 
-	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
-	window.addEventListener( 'load', aspectRatio );
-	window.addEventListener( 'resize', aspectRatio );
-
-	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
-	$( document ).on( 'facetwp-loaded', function() {
-		aspectRatio();
-	});
-
 	// Helper function to loop through the elements and set the aspect ratio.
 	function aspectRatio() {
-		forEach( elements, function( index, value ) {
-			return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
-		});
+		var doAspectRatio = setTimeout( function() {
+			forEach( elements, function( index, value ) {
+				return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
+			});
+		}, 100 );
 	}
 
 	// Thanks Todd! @link https://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
@@ -676,6 +676,16 @@
 			callback.call( scope, i, array[i] );
 		}
 	};
+
+	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
+	var doAspectRatio;
+	window.addEventListener( 'load', aspectRatio );
+	window.addEventListener( 'resize', aspectRatio );
+
+	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
+	$( document ).on( 'facetwp-loaded', function() {
+		aspectRatio();
+	});
 
 })( window, document, jQuery );
 
