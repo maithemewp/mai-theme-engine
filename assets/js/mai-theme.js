@@ -12,7 +12,6 @@
  * Everything here rebuilt for v1.4.0.
  *
  * @since    1.4.0
- * @version  2.0.0
  */
 ( function( document, $, undefined ) {
 
@@ -28,41 +27,33 @@
 		fontSize        = parseInt( $titleText.css( 'font-size' ) ),
 		logoWidth       = $customLogo.outerWidth();
 
-	var breakPoints = {
-		'window-xs': 0,
-		'window-sm': 545,
-		'window-md': 769,
-		'window-lg': 993,
-		'window-xl': 1160
-	};
-
-	// Add window size class.
-	doWindowSizeClass();
-	$window.on( 'resize orientationchange', function() {
-		doWindowSizeClass();
-	});
-
 	// Add scroll class.
 	$window.on( 'resize scroll', function() {
 
-		var scrollClassAdded = false;
+		clearTimeout( addScrollClass );
 
-		// Shrink the header on scroll.
-		if ( $window.scrollTop() > 1 ) {
+		var addScrollClass = setTimeout( function() {
 
-			// Bail if scroll class added.
-			if ( scrollClassAdded ) {
-				return;
+			var scrollClassAdded = false;
+
+			// Shrink the header on scroll.
+			if ( $window.scrollTop() > 1 ) {
+
+				// Bail if scroll class added.
+				if ( scrollClassAdded ) {
+					return;
+				}
+
+				$body.addClass( 'scroll' );
+
+				scrollClassAdded = true;
+
+			} else {
+
+				$body.removeClass( 'scroll' );
 			}
 
-			$body.addClass( 'scroll' );
-
-			scrollClassAdded = true;
-
-		} else {
-
-			$body.removeClass( 'scroll' );
-		}
+		}, 250 );
 	});
 
 	// If doing a sticky shrink header.
@@ -75,45 +66,50 @@
 		// On resize and/or scroll.
 		$window.on( 'resize scroll', function() {
 
-			var windowWidth = $window.width();
+			clearTimeout( doStickyShrink );
 
-			// Larger browser windows.
-			if ( windowWidth > 768 ) {
+			var doStickyShrink = setTimeout( function() {
 
-				// Shrink/Unshrink triggers.
-				if ( $window.scrollTop() > 1 ) {
-					if ( false !== shrinkFired ) {
-						return;
+				var windowWidth = $window.width();
+
+				// Larger browser windows.
+				if ( windowWidth > 768 ) {
+
+					// Shrink/Unshrink triggers.
+					if ( $window.scrollTop() > 1 ) {
+						if ( false !== shrinkFired ) {
+							return;
+						}
+						shrinkHeader();
+						shrinkFired   = true;
+						unshrinkFired = false;
+					} else {
+						if ( false !== unshrinkFired ) {
+							return;
+						}
+						unshrinkHeader();
+						unshrinkFired = true;
+						shrinkFired   = false;
 					}
-					shrinkHeader();
-					shrinkFired   = true;
-					unshrinkFired = false;
-				} else {
-					if ( false !== unshrinkFired ) {
-						return;
+
+					// Unset this incase browser resized small to large.
+					titleShrinkFired = false;
+
+				}
+				// Smaller browser windows.
+				else {
+
+					if ( ! titleShrinkFired ) {
+
+						// Force shrink text on wall windows.
+						shrinkTitle();
+						shrinkLogo();
 					}
-					unshrinkHeader();
-					unshrinkFired = true;
-					shrinkFired   = false;
+
+					titleShrinkFired = true;
 				}
 
-				// Unset this incase browser resized small to large.
-				titleShrinkFired = false;
-
-			}
-			// Smaller browser windows.
-			else {
-
-				if ( ! titleShrinkFired ) {
-
-					// Force shrink text on wall windows.
-					shrinkTitle();
-					shrinkLogo();
-				}
-
-				titleShrinkFired = true;
-			}
-
+			}, 250 );
 		});
 
 	}
@@ -189,65 +185,40 @@
 
 		$window.on( 'resize scroll', function() {
 
-			// Bail if not monitoring scroll.
-			if ( shouldNotScroll ) {
-				return;
-			}
+			clearTimeout( doStickyShrink );
 
-			// Bail if the mobile menu is open. Typically when scrolling with mobile menu open.
-			if ( $body.hasClass( 'mai-menu-activated' ) ) {
-				return;
-			}
+			var doStickyShrink = setTimeout( function() {
 
-			// Bail if smaller window, since everything will always be shrunk.
-			if ( $window.width() <= 768 ) {
-				return;
-			}
+				// Bail if not monitoring scroll.
+				if ( shouldNotScroll ) {
+					return;
+				}
 
-			// Current scroll position and window width.
-			var scrollTop = $window.scrollTop();
+				// Bail if the mobile menu is open. Typically when scrolling with mobile menu open.
+				if ( $body.hasClass( 'mai-menu-activated' ) ) {
+					return;
+				}
 
-			// Scrolled to the top.
-			if ( scrollTop <= 1 ) {
-				unshrinkHeader();
-			}
-			// Scrolling either direction and header is not shrunk.
-			else if ( ! $header.hasClass( 'shrink' ) ) {
-				shrinkHeader();
-			}
+				// Bail if smaller window, since everything will always be shrunk.
+				if ( $window.width() <= 768 ) {
+					return;
+				}
 
+				// Current scroll position and window width.
+				var scrollTop = $window.scrollTop();
+
+				// Scrolled to the top.
+				if ( scrollTop <= 1 ) {
+					unshrinkHeader();
+				}
+				// Scrolling either direction and header is not shrunk.
+				else if ( ! $header.hasClass( 'shrink' ) ) {
+					shrinkHeader();
+				}
+
+			}, 250 );
 		});
 
-	}
-
-	/**
-	 * Add window size body class.
-	 */
-	function doWindowSizeClass() {
-		for ( var breakClass in breakPoints ) {
-			if ( $(this).width() >= breakPoints[breakClass] ) {
-				$body.removeClass( 'window-xs window-sm window-md window-lg window-xl' );
-				$body.addClass( breakClass );
-			}
-		}
-	}
-
-	/**
-	 * Resize logo and title.
-	 */
-	function reSize() {
-		// Bigger windows and not shrunk.
-		if ( $window.width() > 768 && ! $header.hasClass( 'shrink' )  ) {
-			// Show normal size.
-			unshrinkLogo();
-			unshrinkTitle();
-		}
-		// Smaller windows.
-		else {
-			// Show smaller size.
-			shrinkLogo();
-			shrinkTitle();
-		}
 	}
 
 	/* ****** *
@@ -358,8 +329,11 @@
 
 	// Resize.
 	$window.on( 'load resize', function(e) {
-		_maybeCloseAll();
-		_changeSkipLink();
+		clearTimeout( doMaiMenuResize );
+		var doMaiMenuResize = setTimeout( function() {
+			_maybeCloseAll();
+			_changeSkipLink();
+		}, 250 );
 	});
 
 	/**
@@ -412,7 +386,7 @@
 		}
 
 		// Get a target element that you want to persist scrolling for (such as a modal/lightbox/flyout/nav).
-		const targetElement = document.querySelector( '#mai-menu' );
+		var targetElement = document.querySelector( '#mai-menu' );
 
 		// If opening the menu.
 		if ( $body.hasClass( 'mai-menu-activated' ) ) {
@@ -427,7 +401,10 @@
 
 				// Set max-height if window is resized.
 				$window.on( 'resize', function(e) {
-					$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
+					clearTimeout( doToggleMenuResize );
+					var doToggleMenuResize = setTimeout( function() {
+						$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
+					}, 250 );
 				});
 			}
 
@@ -745,13 +722,12 @@
 
 })( document, jQuery );
 
-
 /**
  * Build some helper functions.
  *
  * @access  private.
  */
-function _maiGlobalFunctions(){
+function _maiGlobalFunctions() {
 
 	var $ = jQuery;
 
