@@ -55,7 +55,7 @@
 				$body.removeClass( 'scroll' );
 			}
 
-		}, 100 );
+		}, 10 );
 	});
 
 	// If doing a sticky shrink header.
@@ -113,7 +113,7 @@
 					titleShrinkFired = true;
 				}
 
-			}, 100 );
+			}, 10 );
 		});
 
 	}
@@ -222,7 +222,7 @@
 					shrinkHeader();
 				}
 
-			}, 100 );
+			}, 10 );
 		});
 
 	}
@@ -340,7 +340,7 @@
 		doMaiMenuResize = setTimeout( function() {
 			_maybeCloseAll();
 			_changeSkipLink();
-		}, 100 );
+		}, 10 );
 	});
 
 	/**
@@ -411,7 +411,7 @@
 					clearTimeout( doToggleMenuResize );
 					var doToggleMenuResize = setTimeout( function() {
 						$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
-					}, 100 );
+					}, 10 );
 				});
 			}
 
@@ -666,7 +666,7 @@
 			forEach( elements, function( index, value ) {
 				return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
 			});
-		}, 100 );
+		}, 10 );
 	}
 
 	// Thanks Todd! @link https://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
