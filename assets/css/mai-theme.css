@@ -2532,6 +2532,9 @@ input[name="post_password"] {
 	position: sticky;
 	top: 0;
 	z-index: 96; /* lower than search-box */
+	-webkit-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out; /* for changing background color on scroll */
 }
 
 .has-reveal-header .site-header {
@@ -2627,6 +2630,9 @@ input[name="post_password"] {
 .has-sticky-header .site-header {
 	position: relative; /* so standard menu works, until position: sticky; */
 	z-index: 96; /* lower than search-box */
+	-webkit-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out; /* for changing background color on scroll */
 }
 
 @media only screen and (min-width: 545px) {
