@@ -907,8 +907,8 @@ td {
 .footer-widgets > .wrap,
 .site-footer > .wrap,
 .section > .wrap {
-	padding-left: 24px;
-	padding-right: 24px;
+	padding-left: calc( 8px + 1.5vw );
+	padding-right: calc( 8px + 1.5vw );
 }
 
 .wrap {
@@ -2530,20 +2530,17 @@ input[name="post_password"] {
 .has-reveal-header .site-header {
 	position: -webkit-sticky;
 	position: sticky;
+	z-index: 96;
 	top: 0;
-	z-index: 96; /* lower than search-box */
-	-webkit-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out; /* for changing background color on scroll */
-}
-
-.has-reveal-header .site-header {
 	-webkit-animation-duration: .3s;
 	animation-duration: .3s;
 	-webkit-animation-fill-mode: both;
 	animation-fill-mode: both;
 	-webkit-animation-timing-function: ease-in-out;
 	animation-timing-function: ease-in-out;
+	-webkit-transition: background 0.3s ease-in-out;
+	-o-transition: background 0.3s ease-in-out;
+	transition: background 0.3s ease-in-out; /* for changing background color on scroll */
 }
 
 .has-reveal-header .site-header.conceal-header {
@@ -2556,7 +2553,7 @@ input[name="post_password"] {
 	animation-name: fadeInDown;
 }
 
-@media only screen and (min-width: 600px) {
+@media (min-width: 600px) and (max-width: 782px) {
 
 	.has-reveal-header.admin-bar .site-header {
 		top: 46px;
@@ -2645,7 +2642,7 @@ input[name="post_password"] {
 
 }
 
-@media only screen and (min-width: 600px) {
+@media (min-width: 600px) and (max-width: 782px) {
 
 	.admin-bar.has-sticky-header .site-header {
 		top: 46px;
@@ -2664,10 +2661,21 @@ input[name="post_password"] {
 /* ## Shrink Header
 --------------------------------------------- */
 
-.has-shrink-header .site-header .site-title a {
-	-webkit-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
+@media only screen and (max-width: 768px) {}
+
+	.has-shrink-header .site-header .site-title a {
+		-webkit-transition: none;
+		-o-transition: none;
+		transition: none;
+	}
+
+@media only screen and (min-width: 769px) {
+
+	.has-shrink-header .site-header .site-title a {
+		-webkit-transition: all 0.3s ease-in-out;
+		-o-transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
+	}
 }
 
 .site-header.shrink .site-title a {
@@ -3486,7 +3494,7 @@ body.mai-menu-activated {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	padding: 16px;
-	margin: -16px 0 4px;
+	margin: -20px 0 4px;
 	border: none;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -3559,21 +3567,25 @@ body.mai-menu-activated {
 	padding-bottom: 96px;
 }
 
-.admin-bar.has-side-menu:not(.scroll) .mai-menu {
-	top: 46px;
-}
+@media only screen and (max-width: 782px) {
 
-.admin-bar.has-side-menu:not(.scroll) .mai-menu-inner {
-	height: calc( 100% - 46px );
+	.admin-bar.has-side-menu .mai-menu {
+		top: 46px;
+	}
+
+	.admin-bar.has-side-menu .mai-menu-inner {
+		height: calc( 100% - 46px );
+	}
+
 }
 
 @media only screen and (min-width: 783px) {
 
-	.admin-bar.has-side-menu:not(.scroll) .mai-menu {
+	.admin-bar.has-side-menu .mai-menu {
 		top: 32px;
 	}
 
-	.admin-bar.has-side-menu:not(.scroll) .mai-menu-inner {
+	.admin-bar.has-side-menu .mai-menu-inner {
 		height: calc( 100% - 32px );
 	}
 
@@ -3656,11 +3668,11 @@ body.mai-menu-activated {
 }
 
 .mobile-menu .sub-menu > .menu-item:first-child a {
-	padding-top: 16px;
+	padding-top: 12px;
 }
 
 .mobile-menu .sub-menu > .menu-item:last-child a {
-	padding-bottom: 16px;
+	padding-bottom: 12px;
 }
 
 .mobile-menu .sub-menu a:hover,
