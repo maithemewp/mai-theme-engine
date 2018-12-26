@@ -7,8 +7,6 @@ function mai_enqueue_scripts() {
 	// Use minified files if script debug is not being used.
 	$suffix = mai_get_suffix();
 
-	wp_register_script( 'scroll-events', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/scroll-events{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
-
 	// Enqueue the main global js file.
 	wp_enqueue_script( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-theme{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
 	wp_localize_script( 'mai-theme-engine', 'maiVars', array(
@@ -29,10 +27,6 @@ function mai_enqueue_scripts() {
 	wp_register_script( 'mai-slick', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/slick{$suffix}.js", array( 'jquery' ), '1.8.0', true );
 	wp_register_script( 'mai-slick-init', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/slick-init{$suffix}.js", array( 'mai-slick' ), MAI_THEME_ENGINE_VERSION, true );
 }
-
-// add_action( 'genesis_before', function() {
-// 	wp_enqueue_script( 'scroll-events' );
-// });
 
 // Enqueue CSS files.
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_styles' );
