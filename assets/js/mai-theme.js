@@ -102,11 +102,7 @@
 			// when scrolling down.
 			onUnpin : function() {},
 			// when above offset.
-			onTop : function() {
-				// if ( shouldShrink() ) {
-				// 	unshrinkHeader();
-				// }
-			},
+			onTop : function() {},
 			// when below offset.
 			onNotTop : function() {},
 			// when at bottom of scoll area.
@@ -579,6 +575,7 @@
 	var doAspectRatio;
 	window.addEventListener( 'load', aspectRatio );
 	window.addEventListener( 'resize', aspectRatio );
+	window.addEventListener( 'orientationchange', aspectRatio );
 
 	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
 	$( document ).on( 'facetwp-loaded', function() {
