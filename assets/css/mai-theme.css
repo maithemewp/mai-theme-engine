@@ -2748,18 +2748,6 @@ input[name="post_password"] {
 	line-height: 1;
 }
 
-.custom-logo-link {
-	max-width: 180px;
-}
-
-@media only screen and (min-width: 545px) {
-
-	.custom-logo-link {
-		max-width: 240px;
-	}
-
-}
-
 /* ## Header Content
 --------------------------------------------- */
 
