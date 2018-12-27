@@ -2543,16 +2543,6 @@ input[name="post_password"] {
 	transition: background 0.3s ease-in-out; /* for changing background color on scroll */
 }
 
-.has-reveal-header .site-header.conceal-header {
-	-webkit-animation-name: fadeOutUp;
-	animation-name: fadeOutUp;
-}
-
-.has-reveal-header .site-header.reveal-header {
-	-webkit-animation-name: fadeInDown;
-	animation-name: fadeInDown;
-}
-
 @media (min-width: 600px) and (max-width: 782px) {
 
 	.has-reveal-header.admin-bar .site-header {
@@ -2567,6 +2557,16 @@ input[name="post_password"] {
 		top: 32px;
 	}
 
+}
+
+.has-reveal-header .site-header.conceal-header {
+	-webkit-animation-name: fadeOutUp;
+	animation-name: fadeOutUp;
+}
+
+.has-reveal-header .site-header.reveal-header {
+	-webkit-animation-name: fadeInDown;
+	animation-name: fadeInDown;
 }
 
 /* Fade in and down a fixed height so it's smooth but doesn't take long for taller headers. */
@@ -3473,19 +3473,30 @@ body.mai-menu-activated {
 --------------------------------------------- */
 
 .has-side-menu .menu-close,
-.woocommerce.has-side-menu .menu-close {
+.woocommerce.has-side-menu .menu-close,
+.has-side-menu .menu-close:hover,
+.has-side-menu .menu-close:focus,
+.woocommerce.has-side-menu .menu-close:hover,
+.woocommerce.has-side-menu .menu-close:focus {
 	display: block;
 	width: 100%;
-	background-color: transparent;
-	color: rgba(0, 0, 0, 0.4);
 	font-size: 0.8em;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	padding: 16px;
 	margin: -20px 0 4px;
 	border: none;
+	outline: none;
+	-webkit-box-shadow:	none;
+	box-shadow:	none;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.has-side-menu .menu-close,
+.woocommerce.has-side-menu .menu-close {
+	background-color: transparent;
+	color: rgba(0, 0, 0, 0.4);
 }
 
 .has-side-menu .menu-close:hover,
@@ -3494,9 +3505,6 @@ body.mai-menu-activated {
 .woocommerce.has-side-menu .menu-close:focus {
 	background-color: transparent;
 	color: rgba(0, 0, 0, 0.8);
-	padding: 16px;
-	margin: -16px 0 4px;
-	border: none;
 }
 
 .has-side-menu .menu-close::before,
@@ -3514,7 +3522,9 @@ body.mai-menu-activated {
 }
 
 .has-side-menu .site-container {
-	-webkit-transition: margin 0.3s;-o-transition: margin 0.3s;transition: margin 0.3s;
+	-webkit-transition: margin 0.3s;
+	-o-transition: margin 0.3s;
+	transition: margin 0.3s;
 }
 
 .has-side-menu.mai-menu-activated .site-container {
@@ -3524,7 +3534,6 @@ body.mai-menu-activated {
 
 .has-side-menu .mai-menu {
 	display: block;
-	-webkit-transition: right 0.3s;-o-transition: right 0.3s;transition: right 0.3s;
 	background-color: #f1f1f1;
 	position: fixed;
 	top: 0;
@@ -3533,6 +3542,9 @@ body.mai-menu-activated {
 	height: 100vh;
 	overflow-x: hidden;
 	overflow-y: auto;
+	-webkit-transition: right 0.3s;
+	-o-transition: right 0.3s;
+	transition: right 0.3s;
 	-webkit-overflow-scrolling: touch;
 	-webkit-box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
 	box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
