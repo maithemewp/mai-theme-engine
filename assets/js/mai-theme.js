@@ -27,8 +27,8 @@
 	var $window     = $(window),
 		$body       = $( 'body' ),
 		$header     = $( '.site-header' ),
-		$customLogo = $( '.custom-logo-link' ),
-		$titleText  = $( '.site-title a' ).not( '.custom-logo-link' );
+		$customLogo = $header.find( '.custom-logo-link' ),
+		$titleText  = $header.find( '.site-title a' ).not( '.custom-logo-link' );
 
 	var hasShrink = $body.hasClass( 'has-shrink-header' ),
 		hasReveal = $body.hasClass( 'has-reveal-header' ),
@@ -218,9 +218,9 @@
 		$body          = $( 'body' ),
 		$header        = $( '.site-header' ),
 		$headerRow     = $( '.site-header-row' ),
-		$maiMenus      = $( '.menu' ),
-		$maiSubToggles = $( '.sub-menu-toggle' ),
-		$maiSubMenus   = $( '.sub-menu' );
+		$maiMenus      = $( '.mai-menu .menu' ),
+		$maiSubToggles = $( '.mai-menu .sub-menu-toggle' ),
+		$maiSubMenus   = $( '.mai-menu .sub-menu' );
 
 	// Get a target element that you want to persist scrolling for (such as a modal/lightbox/flyout/nav).
 	var bodyLockElement = document.querySelector( '#mai-menu' );
