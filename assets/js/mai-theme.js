@@ -15,18 +15,20 @@
 !function(a,b){"use strict";"function"==typeof define&&define.amd?define([],b):"object"==typeof exports?module.exports=b():a.Headroom=b()}(this,function(){"use strict";function a(a){this.callback=a,this.ticking=!1}function b(a){return a&&"undefined"!=typeof window&&(a===window||a.nodeType)}function c(a){if(arguments.length<=0)throw new Error("Missing arguments in extend function");var d,e,f=a||{};for(e=1;e<arguments.length;e++){var g=arguments[e]||{};for(d in g)"object"!=typeof f[d]||b(f[d])?f[d]=f[d]||g[d]:f[d]=c(f[d],g[d])}return f}function d(a){return a===Object(a)?a:{down:a,up:a}}function e(a,b){b=c(b,e.options),this.lastKnownScrollY=0,this.elem=a,this.tolerance=d(b.tolerance),this.classes=b.classes,this.offset=b.offset,this.scroller=b.scroller,this.initialised=!1,this.onPin=b.onPin,this.onUnpin=b.onUnpin,this.onTop=b.onTop,this.onNotTop=b.onNotTop,this.onBottom=b.onBottom,this.onNotBottom=b.onNotBottom}var f={bind:!!function(){}.bind,classList:"classList"in document.documentElement,rAF:!!(window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame)};return window.requestAnimationFrame=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame,a.prototype={constructor:a,update:function(){this.callback&&this.callback(),this.ticking=!1},requestTick:function(){this.ticking||(requestAnimationFrame(this.rafCallback||(this.rafCallback=this.update.bind(this))),this.ticking=!0)},handleEvent:function(){this.requestTick()}},e.prototype={constructor:e,init:function(){if(e.cutsTheMustard)return this.debouncer=new a(this.update.bind(this)),this.elem.classList.add(this.classes.initial),setTimeout(this.attachEvent.bind(this),100),this},destroy:function(){var a=this.classes;this.initialised=!1;for(var b in a)a.hasOwnProperty(b)&&this.elem.classList.remove(a[b]);this.scroller.removeEventListener("scroll",this.debouncer,!1)},attachEvent:function(){this.initialised||(this.lastKnownScrollY=this.getScrollY(),this.initialised=!0,this.scroller.addEventListener("scroll",this.debouncer,!1),this.debouncer.handleEvent())},unpin:function(){var a=this.elem.classList,b=this.classes;!a.contains(b.pinned)&&a.contains(b.unpinned)||(a.add(b.unpinned),a.remove(b.pinned),this.onUnpin&&this.onUnpin.call(this))},pin:function(){var a=this.elem.classList,b=this.classes;a.contains(b.unpinned)&&(a.remove(b.unpinned),a.add(b.pinned),this.onPin&&this.onPin.call(this))},top:function(){var a=this.elem.classList,b=this.classes;a.contains(b.top)||(a.add(b.top),a.remove(b.notTop),this.onTop&&this.onTop.call(this))},notTop:function(){var a=this.elem.classList,b=this.classes;a.contains(b.notTop)||(a.add(b.notTop),a.remove(b.top),this.onNotTop&&this.onNotTop.call(this))},bottom:function(){var a=this.elem.classList,b=this.classes;a.contains(b.bottom)||(a.add(b.bottom),a.remove(b.notBottom),this.onBottom&&this.onBottom.call(this))},notBottom:function(){var a=this.elem.classList,b=this.classes;a.contains(b.notBottom)||(a.add(b.notBottom),a.remove(b.bottom),this.onNotBottom&&this.onNotBottom.call(this))},getScrollY:function(){return void 0!==this.scroller.pageYOffset?this.scroller.pageYOffset:void 0!==this.scroller.scrollTop?this.scroller.scrollTop:(document.documentElement||document.body.parentNode||document.body).scrollTop},getViewportHeight:function(){return window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight},getElementPhysicalHeight:function(a){return Math.max(a.offsetHeight,a.clientHeight)},getScrollerPhysicalHeight:function(){return this.scroller===window||this.scroller===document.body?this.getViewportHeight():this.getElementPhysicalHeight(this.scroller)},getDocumentHeight:function(){var a=document.body,b=document.documentElement;return Math.max(a.scrollHeight,b.scrollHeight,a.offsetHeight,b.offsetHeight,a.clientHeight,b.clientHeight)},getElementHeight:function(a){return Math.max(a.scrollHeight,a.offsetHeight,a.clientHeight)},getScrollerHeight:function(){return this.scroller===window||this.scroller===document.body?this.getDocumentHeight():this.getElementHeight(this.scroller)},isOutOfBounds:function(a){var b=a<0,c=a+this.getScrollerPhysicalHeight()>this.getScrollerHeight();return b||c},toleranceExceeded:function(a,b){return Math.abs(a-this.lastKnownScrollY)>=this.tolerance[b]},shouldUnpin:function(a,b){var c=a>this.lastKnownScrollY,d=a>=this.offset;return c&&d&&b},shouldPin:function(a,b){var c=a<this.lastKnownScrollY,d=a<=this.offset;return c&&b||d},update:function(){var a=this.getScrollY(),b=a>this.lastKnownScrollY?"down":"up",c=this.toleranceExceeded(a,b);this.isOutOfBounds(a)||(a<=this.offset?this.top():this.notTop(),a+this.getViewportHeight()>=this.getScrollerHeight()?this.bottom():this.notBottom(),this.shouldUnpin(a,c)?this.unpin():this.shouldPin(a,c)&&this.pin(),this.lastKnownScrollY=a)}},e.options={tolerance:{up:0,down:0},offset:0,scroller:window,classes:{pinned:"headroom--pinned",unpinned:"headroom--unpinned",top:"headroom--top",notTop:"headroom--not-top",bottom:"headroom--bottom",notBottom:"headroom--not-bottom",initial:"headroom"}},e.cutsTheMustard="undefined"!=typeof f&&f.rAF&&f.bind&&f.classList,e});
 
 /**
- * Header shrink helper functions.
- * Everything here rebuilt for v1.4.0.
+ * Header shrink and reveal.
+ * Everything here rebuilt v1.4.0.
+ * Rebuilt again to use Headroom.js for everything v1.8.0
  *
  * @since    1.4.0
+ * @since    1.8.0
  */
 ( function( document, $, undefined ) {
 
-	var $body       = $( 'body' ),
-		$window     = $(window),
+	var $window     = $(window),
+		$body       = $( 'body' ),
 		$header     = $( '.site-header' ),
-		$customLogo = $header.find( '.custom-logo-link' ),
-		$titleText  = $header.find( '.site-title a' ).not( '.custom-logo-link' );
+		$customLogo = $( '.custom-logo-link' ),
+		$titleText  = $( '.site-title a' ).not( '.custom-logo-link' );
 
 	var hasShrink = $body.hasClass( 'has-shrink-header' ),
 		hasReveal = $body.hasClass( 'has-reveal-header' ),
@@ -43,8 +45,7 @@
 		}
 	});
 
-	var $vanillaBody       = document.querySelector( 'body' );
-	var vanillaBodyOptions = {
+	var bodyScrollOptions = {
 		offset: 1,
 		classes : {
 			initial : 'headroom',
@@ -78,15 +79,14 @@
 	}
 
 	// Construct an instance of Headroom, passing the element.
-	var bodyScroll = new Headroom( $vanillaBody, vanillaBodyOptions );
+	var bodyScroll = new Headroom( $body[0], bodyScrollOptions );
 
 	// Initialise bodyScroll.
 	bodyScroll.init();
 
 	if ( hasReveal ) {
 
-		var $vanillaHeader       = document.querySelector( 'header' );
-		var vanillaHeaderOptions = {
+		var headerScrollOptions = {
 			tolerance: 5,
 			classes : {
 				initial : 'headroom',
@@ -110,7 +110,7 @@
 			// when not at bottom of scroll area.
 			onNotBottom : function() {}
 		}
-		var headerScroll = new Headroom( $vanillaHeader, vanillaHeaderOptions );
+		var headerScroll = new Headroom( $header[0], headerScrollOptions );
 
 		// Initialise headerScroll.
 		headerScroll.init();
@@ -122,12 +122,14 @@
 		});
 	}
 
-	/* ****** *
-	 * Shrink *
-	 * ****** */
+	// Whether we should be shrinking/unshrinking.
 	function shouldShrink() {
 		return ( hasShrink && $window.width() > 768 );
 	}
+
+	/* ****** *
+	 * Shrink *
+	 * ****** */
 
 	function shrinkHeader() {
 		$header.addClass( 'shrink' );
@@ -214,11 +216,14 @@
 	// Set vars.
 	var $window        = $(window),
 		$body          = $( 'body' ),
-		$siteHeader    = $( '.site-header' ),
-		$siteHeaderRow = $( '.site-header-row' ),
-		$maiMenus      = $( '.mai-menu .menu' ),
-		$maiSubToggles = $( '.mai-menu .sub-menu-toggle' ),
-		$maiSubMenus   = $( '.mai-menu .sub-menu' );
+		$header        = $( '.site-header' ),
+		$headerRow     = $( '.site-header-row' ),
+		$maiMenus      = $( '.menu' ),
+		$maiSubToggles = $( '.sub-menu-toggle' ),
+		$maiSubMenus   = $( '.sub-menu' );
+
+	// Get a target element that you want to persist scrolling for (such as a modal/lightbox/flyout/nav).
+	var bodyLockElement = document.querySelector( '#mai-menu' );
 
 	// Add the main nav and sub-menu toggle button.
 	_addMenuButtons();
@@ -227,12 +232,13 @@
 	$maiMenus.removeClass( 'nav-header nav-primary nav-secondary' );
 
 	// Toggle triggers.
-	$siteHeader.on( 'click', '.mai-toggle', _doToggleMenu );
+	$header.on( 'click', '.mai-toggle', _doToggleMenu );
 	$maiMenu.on( 'click', '.sub-menu-toggle:not(.sub-sub-menu-toggle)', _doToggleSubMenu );
 	$maiMenu.on( 'click', '.sub-menu-toggle.sub-sub-menu-toggle', _doToggleSubSubMenu );
+	$maiMenu.on( 'click', 'a[href]', _doAnchorLinkClicked );
 
 	// Resize.
-	$window.on( 'load mairesize', function(e) {
+	$window.on( 'load resize orientationchange', function(e) {
 		_maybeCloseAll();
 		_changeSkipLink();
 	});
@@ -243,7 +249,7 @@
 	function _addMenuButtons() {
 
 		// Add the main mobile nav toggle.
-		$siteHeaderRow.append( $maiToggle );
+		$headerRow.append( $maiToggle );
 
 		// Bail if no menus in the mobile menu. It could just be widget content.
 		if ( 0 == $maiMenus.length ) {
@@ -270,7 +276,7 @@
 			hasSideMenu = $body.hasClass( 'has-side-menu' );
 
 		// Remove reveal/conceal classes cause they cause animation issues.
-		$siteHeader.removeClass( 'conceal-header reveal-header' );
+		$header.removeClass( 'conceal-header reveal-header' );
 
 		// Toggle the mobile menu activated.
 		$this._toggleActive();
@@ -289,23 +295,20 @@
 			$body.toggleClass( 'mai-standard-menu-activated' );
 		}
 
-		// Get a target element that you want to persist scrolling for (such as a modal/lightbox/flyout/nav).
-		var targetElement = document.querySelector( '#mai-menu' );
-
 		// If opening the menu.
 		if ( $body.hasClass( 'mai-menu-activated' ) ) {
 
 			// Disable body scroll (stupid iOS) while allowing the menu to scroll.
-			bodyScrollLock.disableBodyScroll( targetElement );
+			bodyScrollLock.disableBodyScroll( bodyLockElement );
 
 			if ( ! hasSideMenu ) {
 
 				// Set max-height as window height minus header height.
-				$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
+				$maiMenu.css( 'max-height', $window.height() - $header.height() + 'px' );
 
 				// Set max-height if window is resized.
-				$window.on( 'mairesize maiorientationchange', function(e) {
-					$maiMenu.css( 'max-height', $window.height() - $siteHeader.height() + 'px' );
+				$window.on( 'resize orientationchange', function(e) {
+					$maiMenu.css( 'max-height', $window.height() - $header.height() + 'px' );
 				});
 			}
 
@@ -329,11 +332,7 @@
 		// Closing the menu.
 		else {
 
-			// Re-enable body scroll.
-			bodyScrollLock.enableBodyScroll( targetElement );
-
 			if ( ! hasSideMenu ) {
-
 				// Remove inline styles.
 				$maiMenu.css( 'max-height', '' );
 			}
@@ -342,11 +341,7 @@
 		}
 
 		// On click of close button inside the side menu, close all.
-		$siteHeader.on( 'click', '.menu-close', function(e){
-
-			// Re-enable body scroll.
-			bodyScrollLock.enableBodyScroll( targetElement );
-
+		$header.on( 'click', '.menu-close', function(e){
 			_closeAll();
 		});
 
@@ -365,6 +360,23 @@
 	 */
 	function _doToggleSubSubMenu() {
 		$(this)._toggleSubMenu();
+	}
+
+	function _doAnchorLinkClicked() {
+		var href = $(this).attr('href');
+		/**
+		 * Bail if 1 or less characters.
+		 * We don't want to do anything on only # links.
+		 * And you shouldn't use those anyway.
+		 */
+		if ( href.length <= 1 ) {
+			return;
+		}
+		// Bail if f link doesn't start with #.
+		if ( ! /^#/.test( href ) ) {
+			return;
+		}
+		_closeAll();
 	}
 
 	/**
@@ -430,6 +442,9 @@
 
 		$maiToggle._closeElement();
 		$( '.sub-menu-toggle.activated' )._closeSubMenu();
+
+		// Re-enable body scroll.
+		bodyScrollLock.enableBodyScroll( bodyLockElement );
 	}
 
 	/**
@@ -554,13 +569,16 @@
 		return;
 	}
 
+	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
+	window.addEventListener( 'load', aspectRatio );
+	window.addEventListener( 'resize', aspectRatio );
+	window.addEventListener( 'orientationchange', aspectRatio );
+
 	// Helper function to loop through the elements and set the aspect ratio.
 	function aspectRatio() {
-		var doAspectRatio = setTimeout( function() {
-			forEach( elements, function( index, value ) {
-				return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
-			});
-		}, 10 );
+		forEach( elements, function( index, value ) {
+			return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
+		});
 	}
 
 	// Thanks Todd! @link https://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
@@ -570,12 +588,6 @@
 			callback.call( scope, i, array[i] );
 		}
 	};
-
-	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
-	var doAspectRatio;
-	window.addEventListener( 'load', aspectRatio );
-	window.addEventListener( 'resize', aspectRatio );
-	window.addEventListener( 'orientationchange', aspectRatio );
 
 	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
 	$( document ).on( 'facetwp-loaded', function() {
@@ -620,12 +632,18 @@
 
 	var $superfish = $( '.js-superfish' );
 
+	// Bail if no object.
 	if ( ! $superfish.length ) {
 		return;
 	}
 
+	// Bail if superfish function does not exist.
+	if ( 'function' !== typeof $superfish.superfish ) {
+		return;
+	}
+
 	$superfish.superfish({
-		'delay': 100,
+		'delay': 1000,
 		'speed': 'fast',
 		'speedOut': 'slow',
 		'disableHI': true,
