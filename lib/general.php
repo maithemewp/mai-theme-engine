@@ -1,6 +1,30 @@
 <?php
 
 /**
+ * Add inline CSS.
+ * Way late cause Engine changes stylesheet to 999.
+ *
+ * @since   1.8.0
+ *
+ * @link    http://www.billerickson.net/code/enqueue-inline-styles/
+ * @link    https://sridharkatakam.com/chevron-shaped-featured-parallax-section-in-genesis-using-clip-path/
+ *
+ * @return  void
+ */
+add_action( 'wp_enqueue_scripts', 'mai_logo_width_css', 1000 );
+function mai_logo_width_css() {
+	if ( ! ( function_exists( 'has_custom_logo' ) || has_custom_logo() ) ) {
+		return;
+	}
+	$width = get_theme_mod( 'custom_logo_width' );
+	if ( ! $width ) {
+		return;
+	}
+	$handle = ( defined( 'CHILD_THEME_NAME' ) && CHILD_THEME_NAME ) ? sanitize_title_with_dashes( CHILD_THEME_NAME ) : 'child-theme';
+	wp_add_inline_style( $handle, sprintf( '.custom-logo-link { max-width: %spx;', absint( $width ) ) );
+}
+
+/**
  * Add body class to enabled specific settings.
  *
  * @param   array  $classes  The body classes.

@@ -51,7 +51,7 @@
 			initial : 'headroom',
 			pinned: 'scroll-up',
 			unpinned: 'scroll-down',
-			top : 'not-scroll',
+			top : 'top',
 			notTop : 'scroll',
 			bottom : 'bottom',
 			notBottom : 'not-bottom'
@@ -92,7 +92,7 @@
 				initial : 'headroom',
 				pinned: 'reveal-header',
 				unpinned: 'conceal-header',
-				top : 'not-scroll',
+				top : 'top',
 				notTop : 'scroll',
 				bottom : 'bottom',
 				notBottom : 'not-bottom'

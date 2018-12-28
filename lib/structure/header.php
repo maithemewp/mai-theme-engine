@@ -2,7 +2,6 @@
 
 /**
  * Add an image inline in the site title element for the main logo.
- *
  * The custom logo is added via the Customiser.
  *
  * @since   1.3.0

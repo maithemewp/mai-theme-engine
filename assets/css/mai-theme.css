@@ -2532,7 +2532,7 @@ input[name="post_password"] {
 	position: sticky;
 	z-index: 96;
 	top: 0;
-	-webkit-animation-duration: .3s;
+	/* -webkit-animation-duration: .3s;
 	animation-duration: .3s;
 	-webkit-animation-fill-mode: both;
 	animation-fill-mode: both;
@@ -2540,7 +2540,8 @@ input[name="post_password"] {
 	animation-timing-function: ease-in-out;
 	-webkit-transition: background 0.3s ease-in-out;
 	-o-transition: background 0.3s ease-in-out;
-	transition: background 0.3s ease-in-out; /* for changing background color on scroll */
+	transition: background 0.3s ease-in-out; */
+	/* for changing background color on scroll */
 }
 
 @media (min-width: 600px) and (max-width: 782px) {
@@ -2627,9 +2628,6 @@ input[name="post_password"] {
 .has-sticky-header .site-header {
 	position: relative; /* so standard menu works, until position: sticky; */
 	z-index: 96; /* lower than search-box */
-	-webkit-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out; /* for changing background color on scroll */
 }
 
 @media only screen and (min-width: 545px) {
@@ -2660,23 +2658,6 @@ input[name="post_password"] {
 
 /* ## Shrink Header
 --------------------------------------------- */
-
-@media only screen and (max-width: 768px) {}
-
-	.has-shrink-header .site-header .site-title a {
-		-webkit-transition: none;
-		-o-transition: none;
-		transition: none;
-	}
-
-@media only screen and (min-width: 769px) {
-
-	.has-shrink-header .site-header .site-title a {
-		-webkit-transition: all 0.3s ease-in-out;
-		-o-transition: all 0.3s ease-in-out;
-		transition: all 0.3s ease-in-out;
-	}
-}
 
 .site-header.shrink .site-title a {
 	margin-top: 4px;
@@ -2723,15 +2704,11 @@ input[name="post_password"] {
 
 @media only screen and (min-width: 769px) and (max-width: 992px)  {
 
-	.has-header-left.has-header-right .site-title a {
+	.has-header-left.has-header-right:not(.shrink) .site-title a {
 		margin-top: 16px;
 		margin-bottom: 16px;
 	}
 
-}
-
-.site-title .custom-logo {
-	display: block;
 }
 
 .site-description {
@@ -2746,6 +2723,71 @@ input[name="post_password"] {
 .wp-custom-logo .site-title a {
 	font-size: 0;
 	line-height: 1;
+}
+
+@media only screen and (max-width: 544px) {
+
+	.has-scroll-logo .custom-scroll-logo {
+		display: none;
+	}
+
+}
+
+@media only screen and (min-width: 545px) {
+
+	.has-scroll-colors .site-header {
+		-webkit-transition: background-color .1s linear;
+		-o-transition: background-color .1s linear;
+		transition: background-color .1s linear;
+	}
+
+	.has-scroll-colors .site-title a {
+		-webkit-transition: margin .1s linear;
+		-o-transition: margin .1s linear;
+		transition: margin .1s linear;
+	}
+
+	.has-scroll-logo:not(.shrink) .custom-logo-link,
+	.has-scroll-logo.scroll:not(.shrink) .custom-logo-link {
+		/* -webkit-transition: none; */
+		/* -o-transition: none; */
+		/* transition: none; */
+	}
+
+	.has-scroll-logo .custom-logo,
+	.has-scroll-logo .custom-scroll-logo {
+		width: 100%;
+		max-height: 100%;
+	}
+
+	.has-scroll-logo.top .custom-logo,
+	.has-scroll-logo.scroll .custom-scroll-logo {
+		-webkit-transition: opacity .3s linear;
+		-o-transition: opacity .3s linear;
+		transition: opacity .3s linear;
+	}
+
+	.has-scroll-logo .custom-logo-link {
+		position: relative;
+	}
+
+	.has-scroll-logo .custom-scroll-logo,
+	.has-scroll-logo.scroll .custom-logo {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		opacity: 0;
+		margin: auto;
+	}
+
+	.has-scroll-logo .custom-logo,
+	.has-scroll-logo.scroll .custom-scroll-logo {
+		position: static;
+		opacity: 1;
+	}
+
 }
 
 /* ## Header Content
