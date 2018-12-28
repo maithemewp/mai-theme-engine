@@ -2532,16 +2532,6 @@ input[name="post_password"] {
 	position: sticky;
 	z-index: 96;
 	top: 0;
-	/* -webkit-animation-duration: .3s;
-	animation-duration: .3s;
-	-webkit-animation-fill-mode: both;
-	animation-fill-mode: both;
-	-webkit-animation-timing-function: ease-in-out;
-	animation-timing-function: ease-in-out;
-	-webkit-transition: background 0.3s ease-in-out;
-	-o-transition: background 0.3s ease-in-out;
-	transition: background 0.3s ease-in-out; */
-	/* for changing background color on scroll */
 }
 
 @media (min-width: 600px) and (max-width: 782px) {

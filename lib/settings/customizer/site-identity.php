@@ -29,7 +29,7 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 		'input_attrs' => array(
 			'min'         => 0,
 			'step'        => 1,
-			'placeholder' => '180px',
+			'placeholder' => '180',
 		),
 		'active_callback' => function() use ( $wp_customize ) {
 			return ! empty( $wp_customize->get_setting( 'custom_logo' )->value() );
