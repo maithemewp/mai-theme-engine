@@ -4,6 +4,7 @@
 ## 1.8.0 (TBD)
 * Added: Logo width field. Great for retina logos and will help with special features in Mai Styles.
 * Added: Now enable beta updates of all Mai plugins via the Customizer > Theme Settings.
+* Changed: Logo shrink size added via CSS instead of JS for better initial pageload performance.
 * Changed: Scale text based site title according to window/browser width.
 * Changed: Remove border from mobile menu items.
 * Changed: Much more efficient scroll listener JS.

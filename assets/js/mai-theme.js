@@ -35,20 +35,10 @@
 		fontSize  = parseInt( $titleText.css( 'font-size' ) ),
 		logoWidth = $customLogo.outerWidth();
 
-	// If shrinking header and on mobile/tablet size window.
-	if ( hasShrink && $window.width() <= 768 ) {
-		shrinkHeader();
-	}
-	$window.on( 'resize orientationchange', function() {
-		if ( hasShrink && $window.width() <= 768 ) {
-			shrinkHeader();
-		}
-	});
-
 	var bodyScrollOptions = {
 		offset: 1,
 		classes : {
-			initial : 'headroom',
+			initial : 'initial',
 			pinned: 'scroll-up',
 			unpinned: 'scroll-down',
 			top : 'top',
@@ -59,18 +49,16 @@
 		// when scrolling up.
 		onPin : function() {},
 		// when scrolling down.
-		onUnpin : function() {},
+		onUnpin : function() {
+			$body.removeClass( 'initial' );
+		},
 		// when above offset.
 		onTop : function() {
-			if ( shouldShrink() ) {
-				unshrinkHeader();
-			}
+			$header.removeClass( 'shrink' );
 		},
 		// when below offset.
 		onNotTop : function() {
-			if ( shouldShrink() ) {
-				shrinkHeader();
-			}
+			$header.addClass( 'shrink' );
 		},
 		// when at bottom of scoll area.
 		onBottom : function() {},
@@ -86,14 +74,15 @@
 
 	if ( hasReveal ) {
 
+		 // high tolerance so it's smoother and doesn't happen on page reload when already down the page or only slightly scrolling up.
 		var headerScrollOptions = {
-			tolerance: 5,
+			tolerance: 15,
 			classes : {
-				initial : 'headroom',
+				initial : 'initial',
 				pinned: 'reveal-header',
 				unpinned: 'conceal-header',
 				top : 'top',
-				notTop : 'scroll',
+				notTop : 'not-top',
 				bottom : 'bottom',
 				notBottom : 'not-bottom'
 			},
@@ -120,59 +109,6 @@
 		$window.on( 'resize orientationchange', function() {
 			headerScroll.offet = $header.height() + 240;
 		});
-	}
-
-	// Whether we should be shrinking/unshrinking.
-	function shouldShrink() {
-		return ( hasShrink && $window.width() > 768 );
-	}
-
-	/* ****** *
-	 * Shrink *
-	 * ****** */
-
-	function shrinkHeader() {
-		$header.addClass( 'shrink' );
-		shrinkLogo();
-		shrinkTitle();
-	}
-
-	function shrinkLogo() {
-		if ( ! $customLogo.length ) {
-			return;
-		}
-		$customLogo.css({ maxWidth: logoWidth * .7 });
-	}
-
-	function shrinkTitle() {
-		if ( ! $titleText.length ) {
-			return;
-		}
-		$titleText.css({ fontSize: fontSize * .8 });
-	}
-
-	/* ******** *
-	 * Unshrink *
-	 * ******** */
-
-	function unshrinkHeader() {
-		$header.removeClass( 'shrink' );
-		unshrinkLogo();
-		unshrinkTitle();
-	}
-
-	function unshrinkLogo() {
-		if ( ! $customLogo.length ) {
-			return;
-		}
-		$customLogo.css({ maxWidth: '' });
-	}
-
-	function unshrinkTitle() {
-		if ( ! $titleText.length ) {
-			return;
-		}
-		$titleText.css({ fontSize: '' });
 	}
 
 })( document, jQuery );
