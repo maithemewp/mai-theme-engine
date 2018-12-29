@@ -20,8 +20,43 @@ function mai_logo_width_css() {
 	if ( ! $width ) {
 		return;
 	}
+	// $css = sprintf( '.custom-logo-link { max-width: %spx; }', absint( $width ) );
+	// if ( mai_has_shrink_header() ) {
+	// 	$css .= sprintf( '.scroll .custom-logo-link { max-width: %spx; }', absint( $width * .7 ) );
+	// 	$css .= sprintf( '@media only screen and (max-width: 768px) { .custom-logo-link { max-width: %spx; } }', absint( $width * .7 ) );
+	// }
+	$width_px  = absint( $width ) . 'px';
+	$shrink_px = absint( $width * .7 ) . 'px';
+	// $css = "";
+	$css = "
+		@media only screen and (max-width: 768px) {
+			.custom-logo-link {
+				max-width: {$shrink_px};
+			}
+		}
+		@media only screen and (min-width: 769px) {
+			.custom-logo-link {
+				max-width: {$width_px};
+			}
+		}
+	";
+	if ( mai_has_shrink_header() ) {
+		$css .= "
+			@media only screen and (min-width: 769px) {
+				.scroll .custom-logo-link {
+					max-width: {$shrink_px};
+				}
+			}
+		";
+	}
 	$handle = ( defined( 'CHILD_THEME_NAME' ) && CHILD_THEME_NAME ) ? sanitize_title_with_dashes( CHILD_THEME_NAME ) : 'child-theme';
-	wp_add_inline_style( $handle, sprintf( '.custom-logo-link { max-width: %spx;', absint( $width ) ) );
+	wp_add_inline_style( $handle, $css );
+}
+
+// add_filter( 'body_class', 'mai_do_initial_body_class' );
+function mai_do_initial_body_class( $classes ) {
+	$classes[] = 'initial';
+	return $classes;
 }
 
 /**
