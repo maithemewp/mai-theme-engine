@@ -2551,63 +2551,77 @@ input[name="post_password"] {
 }
 
 .has-reveal-header .site-header.conceal-header {
-	-webkit-animation-name: fadeOutUp;
-	animation-name: fadeOutUp;
+	-webkit-animation: fadeOutUp .3s ease-in-out;
+	animation: fadeOutUp .3s ease-in-out;
+	-webkit-transform: translateY(-100%);
+	-ms-transform: translateY(-100%);
+	transform: translateY(-100%);
 }
 
 .has-reveal-header .site-header.reveal-header {
-	-webkit-animation-name: fadeInDown;
-	animation-name: fadeInDown;
+	-webkit-animation: fadeInDown .3s ease-in-out;
+	animation: fadeInDown .3s ease-in-out;
+	-webkit-transform: translateY(0);
+	-ms-transform: translateY(0);
+	transform: translateY(0);
 }
 
 /* Fade in and down a fixed height so it's smooth but doesn't take long for taller headers. */
 @-webkit-keyframes fadeInDown{
-	from {
+	0% {
 		opacity: .5;
 		-webkit-transform: translateY(-100px);
+		-ms-transform: translateY(-100px);
 		transform: translateY(-100px);
 	}
-	to {
+	100% {
 		opacity: 1;
 		-webkit-transform: translateY(0);
+		-ms-transform: translateY(0);
 		transform: translateY(0);
 	}
 }
 @keyframes fadeInDown{
-	from {
+	0% {
 		opacity: .5;
-		-webkit-transform: translateY(-100px);
-		transform: translateY(-100px);
+		-webkit-transform: translateY(-100%);
+		-ms-transform: translateY(-100%);
+		transform: translateY(-100%);
 	}
-	to {
+	100% {
 		opacity: 1;
 		-webkit-transform: translateY(0);
+		-ms-transform: translateY(0);
 		transform: translateY(0);
 	}
 }
 
 /* Fade out and up regardless of how tall the header is. */
 @-webkit-keyframes fadeOutUp {
-	from {
+	0% {
 		opacity: 1;
 		-webkit-transform: translateY(0);
+		-ms-transform: translateY(0);
 		transform: translateY(0);
 	}
-	to {
+	100% {
 		opacity: .5;
 		-webkit-transform: translateY(-100%);
+		-ms-transform: translateY(-100%);
 		transform: translateY(-100%);
 	}
 }
 @keyframes fadeOutUp {
-	from {
+	0% {
 		opacity: 1;
 		-webkit-transform: translateY(0);
+		-ms-transform: translateY(0);
 		transform: translateY(0);
 	}
-	to {
+	100% {
 		opacity: .5;
 		-webkit-transform: translateY(-100%);
+		-ms-transform: translateY(-100%);
 		transform: translateY(-100%);
 	}
 }
@@ -2735,13 +2749,6 @@ input[name="post_password"] {
 		-webkit-transition: margin .1s linear;
 		-o-transition: margin .1s linear;
 		transition: margin .1s linear;
-	}
-
-	.has-scroll-logo:not(.shrink) .custom-logo-link,
-	.has-scroll-logo.scroll:not(.shrink) .custom-logo-link {
-		/* -webkit-transition: none; */
-		/* -o-transition: none; */
-		/* transition: none; */
 	}
 
 	.has-scroll-logo .custom-logo,
