@@ -139,6 +139,11 @@ final class Mai_Theme_Engine {
 				return;
 			}
 
+			// Bail if plugin updater is not loaded.
+			if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+				return;
+			}
+
 			// Setup the updater.
 			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
 
