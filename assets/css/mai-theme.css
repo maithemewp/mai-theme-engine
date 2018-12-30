@@ -2352,6 +2352,10 @@ input[name="post_password"] {
 	cursor: pointer;
 }
 
+.slick-dots li:first-child:last-child {
+	display: none;
+}
+
 .slick-dots li button {
 	display: block;
 	width: 10px;
