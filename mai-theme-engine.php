@@ -100,9 +100,6 @@ final class Mai_Theme_Engine {
 		// Plugin Lib Path.
 		define( 'MAI_THEME_ENGINE_LIB_DIR', MAI_THEME_ENGINE_PLUGIN_DIR . 'lib/' );
 
-		// Plugin Includes Path.
-		define( 'MAI_THEME_ENGINE_INCLUDES_DIR', MAI_THEME_ENGINE_PLUGIN_DIR . 'includes/' );
-
 		// Plugin Folder URL.
 		define( 'MAI_THEME_ENGINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -117,15 +114,22 @@ final class Mai_Theme_Engine {
 	/**
 	 * Include required files.
 	 *
+	 * composer require yahnis-elsts/plugin-update-checker
+	 * composer require cmb2/cmb2
+	 *
 	 * @access  private
 	 * @since   1.0.0
 	 * @return  void
 	 */
 	private function hooks() {
 
-		// Includes (Vendor).
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php'; // v2.5.1
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php'; // v4.4
+		/**
+		 * Includes (Vendor).
+		 *
+		 * v2.5.1  CBM2
+		 * v4.5    Plugin Update Checker
+		 */
+		require_once __DIR__ . '/vendor/autoload.php';
 
 		// Run the updater.
 		add_action( 'admin_init', function() {

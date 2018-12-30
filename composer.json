@@ -1,0 +1,6 @@
+{
+    "require": {
+        "yahnis-elsts/plugin-update-checker": "^4.5",
+        "cmb2/cmb2": "^2.5"
+    }
+}
