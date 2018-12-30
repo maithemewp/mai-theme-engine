@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     '89ff252b349d4d088742a09c25f5dd74' => $vendorDir . '/yahnis-elsts/plugin-update-checker/plugin-update-checker.php',
+    'ad901de1e5d16b81f427bfe3dc3de508' => $vendorDir . '/cmb2/cmb2/init.php',
 );
