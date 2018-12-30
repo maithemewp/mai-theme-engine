@@ -117,18 +117,16 @@ final class Mai_Theme_Engine {
 	 * composer require yahnis-elsts/plugin-update-checker
 	 * composer require cmb2/cmb2
 	 *
+	 * v2.5.1   CBM2
+	 * v4.5     Plugin Update Checker*
+	 *
 	 * @access  private
 	 * @since   1.0.0
 	 * @return  void
 	 */
 	private function hooks() {
 
-		/**
-		 * Includes (Vendor).
-		 *
-		 * v2.5.1  CBM2
-		 * v4.5    Plugin Update Checker
-		 */
+		// Include vendor libraries.
 		require_once __DIR__ . '/vendor/autoload.php';
 
 		// Run the updater.
