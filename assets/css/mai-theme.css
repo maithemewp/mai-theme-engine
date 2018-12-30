@@ -2685,6 +2685,9 @@ input[name="post_password"] {
 	margin-bottom: 8px;
 	margin-left: 16px;
 	margin-right: 16px;
+	-webkit-transition: all .1s linear;
+	-o-transition: all .1s linear;
+	transition: all .1s linear;
 }
 
 .site-title a,
@@ -2733,12 +2736,6 @@ input[name="post_password"] {
 	-webkit-transition: background-color .1s linear;
 	-o-transition: background-color .1s linear;
 	transition: background-color .1s linear;
-}
-
-.has-scroll-colors .site-title a {
-	-webkit-transition: margin .1s linear;
-	-o-transition: margin .1s linear;
-	transition: margin .1s linear;
 }
 
 .has-reveal-header.has-scroll-logo .custom-logo,
