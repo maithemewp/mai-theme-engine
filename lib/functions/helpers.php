@@ -548,3 +548,8 @@ function mai_has_shrink_header() {
 	}
 	return true;
 }
+
+function mai_has_scroll_header() {
+	$header_style = genesis_get_option( 'header_style' );
+	return ( $header_style && in_array( $header_style, array( 'sticky', 'reveal', 'sticky_shrink', 'reveal_shrink' ) ) );
+}
