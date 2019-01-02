@@ -38,7 +38,7 @@
 	var bodyScrollOptions = {
 		offset: 1,
 		classes : {
-			initial : 'initial',
+			initial : 'headroom',
 			pinned: 'scroll-up',
 			unpinned: 'scroll-down',
 			top : 'top',
@@ -49,16 +49,18 @@
 		// when scrolling up.
 		onPin : function() {},
 		// when scrolling down.
-		onUnpin : function() {
-			$body.removeClass( 'initial' );
-		},
+		onUnpin : function() {},
 		// when above offset.
 		onTop : function() {
-			$header.removeClass( 'shrink' );
+			if ( hasShrink ) {
+				$header.removeClass( 'shrink' );
+			}
 		},
 		// when below offset.
 		onNotTop : function() {
-			$header.addClass( 'shrink' );
+			if ( hasShrink ) {
+				$header.addClass( 'shrink' );
+			}
 		},
 		// when at bottom of scoll area.
 		onBottom : function() {},
@@ -78,7 +80,7 @@
 		var headerScrollOptions = {
 			tolerance: 15,
 			classes : {
-				initial : 'initial',
+				initial : 'headroom',
 				pinned: 'reveal-header',
 				unpinned: 'conceal-header',
 				top : 'top',
