@@ -53,12 +53,6 @@ function mai_logo_width_css() {
 	wp_add_inline_style( $handle, $css );
 }
 
-// add_filter( 'body_class', 'mai_do_initial_body_class' );
-function mai_do_initial_body_class( $classes ) {
-	$classes[] = 'initial';
-	return $classes;
-}
-
 /**
  * Add body class to enabled specific settings.
  *
