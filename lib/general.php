@@ -27,7 +27,7 @@ function mai_logo_width_css() {
 	// }
 	$width_px  = absint( $width ) . 'px';
 	$shrink_px = absint( $width * .7 ) . 'px';
-	// $css = "";
+
 	$css = "
 		@media only screen and (max-width: 768px) {
 			.custom-logo-link {
@@ -49,8 +49,7 @@ function mai_logo_width_css() {
 			}
 		";
 	}
-	$handle = ( defined( 'CHILD_THEME_NAME' ) && CHILD_THEME_NAME ) ? sanitize_title_with_dashes( CHILD_THEME_NAME ) : 'child-theme';
-	wp_add_inline_style( $handle, $css );
+	wp_add_inline_style( mai_get_handle(), $css );
 }
 
 /**
