@@ -162,10 +162,9 @@ function _mai_get_adjacent_post_output( $output, $post ) {
 function mai_get_mobile_menu() {
 
 	// Widget areas
-	$widget_mobile        = is_active_sidebar( 'mobile_menu' );
-	$widget_header_before = is_active_sidebar( 'header_before' );
-	$widget_header_left   = is_active_sidebar( 'header_left' );
-	$widget_header_right  = is_active_sidebar( 'header_right' );
+	$widget_mobile       = is_active_sidebar( 'mobile_menu' );
+	$widget_header_left  = is_active_sidebar( 'header_left' );
+	$widget_header_right = is_active_sidebar( 'header_right' );
 
 	// Menu locations
 	$mobile_nav = wp_nav_menu( array(
@@ -195,7 +194,7 @@ function mai_get_mobile_menu() {
 	) );
 
 	// Bail if no mobile menu content
-	if ( ! ( $widget_mobile || $widget_header_before || $widget_header_left || $widget_header_right || $mobile_nav || $header_left_nav || $header_right_nav || $primary_nav || $secondary_nav ) ) {
+	if ( ! ( $widget_mobile || $widget_header_left || $widget_header_right || $mobile_nav || $header_left_nav || $header_right_nav || $primary_nav || $secondary_nav ) ) {
 		return;
 	}
 
