@@ -353,9 +353,22 @@ function mai_get_content_shade_from_bg( $hex_color ) {
 }
 
 /**
+ * Get the stylesheet handle.
+ *
+ * @since   1.8.0
+ *
+ * @return  string
+ */
+function mai_get_handle() {
+	return ( defined( 'CHILD_THEME_NAME' ) && CHILD_THEME_NAME ) ? sanitize_title_with_dashes( CHILD_THEME_NAME ) : 'child-theme';
+}
+
+/**
  * Helper function for getting the script/style `.min` suffix for minified files.
  *
- * @return string
+ * @since   0.8.0
+ *
+ * @return  string
  */
 function mai_get_suffix() {
 	$debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
