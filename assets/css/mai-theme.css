@@ -363,7 +363,7 @@ a:focus,
 .flex-entry .entry-title,
 .flex-entry .woocommerce-loop-product__title,
 .flex-entry .woocommerce-loop-category__title {
-	font-size: 1.563em;
+	font-size: 1.563rem;
 	line-height: 1.35;
 }
 
@@ -3643,11 +3643,11 @@ body.mai-menu-activated {
 
 @media only screen and (max-width: 782px) {
 
-	.admin-bar.has-side-menu .mai-menu {
+	.admin-bar.has-side-menu.top .mai-menu {
 		top: 46px;
 	}
 
-	.admin-bar.has-side-menu .mai-menu-inner {
+	.admin-bar.has-side-menu.top .mai-menu-inner {
 		height: calc( 100% - 46px );
 	}
 
@@ -3655,11 +3655,11 @@ body.mai-menu-activated {
 
 @media only screen and (min-width: 783px) {
 
-	.admin-bar.has-side-menu .mai-menu {
+	.admin-bar.has-side-menu.top .mai-menu {
 		top: 32px;
 	}
 
-	.admin-bar.has-side-menu .mai-menu-inner {
+	.admin-bar.has-side-menu.top .mai-menu-inner {
 		height: calc( 100% - 32px );
 	}
 
@@ -3700,7 +3700,7 @@ body.mai-menu-activated {
 	color: #323232;
 	font-size: 1rem;
 	text-transform: capitalize;
-	padding: 4px 12px 4px 0;
+	padding: 6px 12px 6px 0;
 	margin: 4px 0;
 	border: none;
 	border-radius: 0;
