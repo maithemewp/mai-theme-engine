@@ -266,10 +266,22 @@ function mai_do_header_before() {
 		return;
 	}
 
+	// Variable function.
+	$header_before = function( $attributes ) {
+		$attributes['class'] = 'nav-header-before';
+		return $attributes;
+	};
+
+	// Change the header before menu class.
+	add_filter( 'genesis_attr_nav-header', $header_before );
+
 	// Before Header widget area
 	_mai_add_widget_header_menu_args();
 	genesis_widget_area( 'header_before' );
 	_mai_remove_widget_header_menu_args();
+
+	// Remove the filter.
+	remove_filter( 'genesis_attr_nav-header', $header_before );
 }
 
 /**
