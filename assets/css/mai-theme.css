@@ -2689,9 +2689,9 @@ input[name="post_password"] {
 	margin-bottom: 8px;
 	margin-left: 16px;
 	margin-right: 16px;
-	-webkit-transition: all .1s linear;
-	-o-transition: all .1s linear;
-	transition: all .1s linear;
+	-webkit-transition: all .05s linear;
+	-o-transition: all .05s linear;
+	transition: all .05s linear;
 }
 
 .site-title a,
