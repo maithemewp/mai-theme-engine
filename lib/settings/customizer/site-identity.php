@@ -14,25 +14,26 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 	/* ************* *
 	 * Site Identity *
 	 * ************* */
-	$wp_customize->add_setting(
-		'custom_logo_width',
+	$wp_customize->add_setting( 'custom_logo_width',
 		array(
-			'theme_supports' => array( 'custom-logo' ),
+			'default'           => 180,
+			'sanitize_callback' => 'absint',
+			'theme_supports'    => array( 'custom-logo' ),
 		)
 	);
-	$wp_customize->add_control( 'custom_logo_width', array(
-		'type'        => 'number',
-		'priority'    => 8,
-		'section'     => 'title_tagline',
-		'label'       => __( 'Logo Width (in px)', 'mai-theme-engine' ),
-		'description' => '',
-		'input_attrs' => array(
-			'min'         => 0,
-			'step'        => 1,
-			'placeholder' => '180',
-		),
-		'active_callback' => function() use ( $wp_customize ) {
-			return ! empty( $wp_customize->get_setting( 'custom_logo' )->value() );
-		},
-	));
+	$wp_customize->add_control( new Mai_Customize_Control_Slider( $wp_customize, 'custom_logo_width',
+		array(
+			'label'       => esc_attr__( 'Logo Width', 'mai-theme-engine' ),
+			'priority'    => 8,
+			'section'     => 'title_tagline',
+			'input_attrs' => array(
+				'min'  => 0,   // Required.
+				'max'  => 800, // Required.
+				'step' => 1,   // Required.
+			),
+			'active_callback' => function() use ( $wp_customize ) {
+				return ! empty( $wp_customize->get_setting( 'custom_logo' )->value() );
+			},
+		)
+	) );
 }
