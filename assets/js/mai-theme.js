@@ -23,14 +23,19 @@
  */
 ( function( document, $, undefined ) {
 
-	var $window          = $(window);
-	var $html            = $( 'html' );
-	var $body            = $( 'body' );
-	var $header          = $( '.site-header' );
-	var $logoLink        = $( '.custom-logo-link' );
-	var logoWidth        = $logoLink.outerWidth();
-	var hasShrink        = $body.hasClass( 'has-shrink-header' );
-	var	hasReveal        = $body.hasClass( 'has-reveal-header' );
+	var $window   = $(window);
+	var $html     = $( 'html' );
+	var $body     = $( 'body' );
+	var $header   = $( '.site-header' );
+	var $logoLink = $( '.custom-logo-link' );
+	var logoWidth = $logoLink.outerWidth();
+	var hasShrink = $body.hasClass( 'has-shrink-header' );
+	var	hasReveal = $body.hasClass( 'has-reveal-header' );
+
+	// Bail if nothing we need.
+	if ( ! hasShrink || ! hasReveal ) {
+		return;
+	}
 
 	// .2 and .8 must equal 1. This will return a value incremented from 100% down to 80% of the initialValue.
 	// var newValue = ( .2 + ( .8 * ( 1 - e.progress ) ) ) * initialValue;
@@ -59,7 +64,7 @@
 		.on( 'progress', function(e) {
 
 			// Bail if not scrolling the same direction.
-			if ( ! sameDirection( shrinkScrollDir, e ) ) {
+			if ( ! sameDirection( shrinkScrollDir, e, 2 ) ) {
 				return;
 			}
 
@@ -154,7 +159,7 @@
 	}
 
 	// Check if progress has incremented in the same direction .
-	function sameDirection( directions, event, increments = 2 ) {
+	function sameDirection( directions, event, increments ) {
 		// If aleady n increments items in our array.
 		if ( increments === directions.length ) {
 			// Remove the first.
@@ -606,14 +611,24 @@
  */
 ( function ( document, $, undefined ) {
 
-	$( 'body' ).on( 'click', '.scroll-to', function(event) {
-		var target = $(this.getAttribute('href'));
-		if( target.length ) {
-			event.preventDefault();
-			$('html, body').stop().animate({
-				scrollTop: target.offset().top - 120
-			}, 1000 );
+	var $html     = $( 'html' );
+	var $body     = $( 'body' );
+	var $header   = $( '.site-header' );
+	var hasSticky = $body.hasClass( 'has-sticky-header' );
+
+	$body.on( 'click', '.scroll-to', function(e) {
+		var target = $( this.getAttribute('href') );
+		// Bail if empty link.
+		if( ! target.length ) {
+			return;
 		}
+		// Bail if link doesn't start with #.
+		if ( ! /^#/.test( $(this).attr( 'href' ) ) ) {
+			return;
+		}
+		e.preventDefault();
+		var offset = hasSticky ? ( target.offset().top - $header.outerHeight() - parseInt( $html.css( 'marginTop' ) ) - 16 ) : target.offset().top;
+		$( 'html, body' ).stop().animate({ scrollTop: offset }, 1000 );
 	});
 
 })( document, jQuery );
