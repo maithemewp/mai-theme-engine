@@ -33,7 +33,7 @@
 	var	hasReveal = $body.hasClass( 'has-reveal-header' );
 
 	// Bail if nothing we need.
-	if ( ! hasShrink || ! hasReveal ) {
+	if ( ! ( hasShrink || hasReveal ) ) {
 		return;
 	}
 
@@ -627,7 +627,10 @@
 			return;
 		}
 		e.preventDefault();
-		var offset = hasSticky ? ( target.offset().top - $header.outerHeight() - parseInt( $html.css( 'marginTop' ) ) - 16 ) : target.offset().top;
+		var offset = target.offset().top - parseInt( $html.css( 'marginTop' ) );
+		if( hasSticky ) {
+			offset = offset - $header.outerHeight() - parseInt( $html.css( 'marginTop' ) ) - 16;
+		}
 		$( 'html, body' ).stop().animate({ scrollTop: offset }, 1000 );
 	});
 
