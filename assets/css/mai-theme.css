@@ -363,7 +363,7 @@ a:focus,
 .flex-entry .entry-title,
 .flex-entry .woocommerce-loop-product__title,
 .flex-entry .woocommerce-loop-category__title {
-	font-size: 1.563rem;
+	font-size: 1.563em;
 	line-height: 1.35;
 }
 
@@ -547,11 +547,6 @@ legend {
 ::-moz-placeholder,
 ::-webkit-input-placeholder {
 	color: rgba(0, 0, 0, 0.7);
-}
-
-::-moz-selection {
-	background-color: #323232;
-	color: #fff;
 }
 
 ::selection {
@@ -2501,6 +2496,16 @@ input[name="post_password"] {
 /* # Site Header
 ---------------------------------------------------------------------------------------------------- */
 
+#header-trigger {
+	display: block;
+	top: 0;
+	left: 0;
+	width: 1px;
+	height: 1px;
+	margin-bottom: -1px;
+	opacity: 0;
+}
+
 .site-header {
 	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
 	background-color: #fff;
@@ -2689,9 +2694,9 @@ input[name="post_password"] {
 	margin-bottom: 8px;
 	margin-left: 16px;
 	margin-right: 16px;
-	-webkit-transition: all .05s linear;
-	-o-transition: all .05s linear;
-	transition: all .05s linear;
+	-webkit-transition: none;
+	-o-transition: none;
+	transition: none;
 }
 
 .site-title a,
