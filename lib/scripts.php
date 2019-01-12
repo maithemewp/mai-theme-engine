@@ -1,6 +1,26 @@
 <?php
 
-// Enqueue Javascript files
+/**
+ * Enqueue customizer scripts.
+ *
+ * @since   1.8.0
+ *
+ * @return  void
+ */
+add_action( 'customize_controls_enqueue_scripts', 'mytheme_customizer_live_preview' );
+function mytheme_customizer_live_preview() {
+	// Use minified files if script debug is not being used.
+	$suffix = mai_get_suffix();
+	wp_enqueue_script( 'mai-customizer', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-customizer{$suffix}.js", array(), MAI_THEME_ENGINE_VERSION, true );
+}
+
+/**
+ * Enqueue Javascript files.
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_scripts' );
 function mai_enqueue_scripts() {
 
@@ -28,7 +48,13 @@ function mai_enqueue_scripts() {
 	wp_register_script( 'mai-slick-init', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/slick-init{$suffix}.js", array( 'mai-slick' ), MAI_THEME_ENGINE_VERSION, true );
 }
 
-// Enqueue CSS files.
+/**
+ * Enqueue CSS files.
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_styles' );
 function mai_enqueue_styles() {
 
@@ -39,7 +65,13 @@ function mai_enqueue_styles() {
 	wp_enqueue_style( 'flexington', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/flexington{$suffix}.css", array(), '2.4.0' );
 }
 
-// Remove WooCommerce default layout styles.
+/**
+ * Remove WooCommerce default layout styles.
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
 add_filter( 'woocommerce_enqueue_styles', 'mai_woocommerce_styles' );
 function mai_woocommerce_styles( $styles ) {
 
