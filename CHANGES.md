@@ -11,7 +11,8 @@
 * Fixed: [grid] slider dots showing when only one slide.
 * Fixed: Logo shrinking to 0px in Firefox.
 * Fixed: Body not scrollable if closing mobile menu with esc key.
-* Fixed: superfish undefined error when using certain page builders or templates that disable superfish.
+* Fixed: Superfish undefined error when using certain page builders or templates that disable superfish.
+* Fixed: 'scroll-to' class now adjusts to admin bar when logged in and header when when sticky.
 
 ## 1.7.0 (12/14/18)
 * Added: New 'mai_valid_section_args' filter to allow new settings to get passed to mai_get_section() function when using the Sections template.
