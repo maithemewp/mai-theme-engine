@@ -84,6 +84,36 @@ function mai_hide_site_description( $attributes ) {
 }
 
 /**
+ * Add header before markup if there is content.
+ *
+ * @return  void
+ */
+add_action( 'genesis_header', 'mai_header_before', 2 );
+function mai_header_before() {
+	$before = mai_get_do_action( 'mai_header_before' );
+	if ( ! $before ) {
+		return;
+	}
+	printf( '<div %s><div class="wrap">%s</div></div>',
+		genesis_attr( 'header-before', array( 'class' => 'header-before text-sm' ) ),
+		$before
+	);
+}
+
+/**
+ * Add header trigger element.
+ * For ScrollMagic.
+ *
+ * @since   1.8.0
+ *
+ * @return  void
+ */
+add_action( 'genesis_header', 'mai_header_trigger', 3 );
+function mai_header_trigger() {
+	echo '<span id="header-trigger"></span>';
+}
+
+/**
  * Add header action hooks.
  * Filter header elements to modify attributes accordingly.
  *
@@ -217,23 +247,6 @@ function mai_do_header() {
 
 	});
 
-}
-
-/**
- * Add header before markup if there is content.
- *
- * @return  void
- */
-add_action( 'genesis_header', 'mai_header_before', 4 );
-function mai_header_before() {
-	$before = mai_get_do_action( 'mai_header_before' );
-	if ( ! $before ) {
-		return;
-	}
-	printf( '<div %s><div class="wrap">%s</div></div>',
-		genesis_attr( 'header-before', array( 'class' => 'header-before text-sm' ) ),
-		$before
-	);
 }
 
 /**
