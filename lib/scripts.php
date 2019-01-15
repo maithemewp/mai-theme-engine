@@ -33,6 +33,7 @@ function mai_enqueue_scripts() {
 		'mainMenu'  => __( 'Menu', 'mai-theme-engine' ),
 		'subMenu'   => __( 'Submenu', 'mai-theme-engine' ),
 		'searchBox' => sprintf( '<div class="search-box" style="display:none;">%s</div>', get_search_form( false ) ),
+		'logoWidth' => get_theme_mod( 'custom_logo_width' ),
 	) );
 
 	// Maybe enabled responsive videos.

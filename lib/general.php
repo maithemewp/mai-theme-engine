@@ -13,21 +13,23 @@
  */
 add_action( 'wp_enqueue_scripts', 'mai_logo_width_css', 1000 );
 function mai_logo_width_css() {
+
 	if ( ! ( function_exists( 'has_custom_logo' ) || has_custom_logo() ) ) {
 		return;
 	}
+
 	$width = get_theme_mod( 'custom_logo_width' );
 	if ( ! $width ) {
 		return;
 	}
-	// $css = sprintf( '.custom-logo-link { max-width: %spx; }', absint( $width ) );
-	// if ( mai_has_shrink_header() ) {
-	// 	$css .= sprintf( '.scroll .custom-logo-link { max-width: %spx; }', absint( $width * .7 ) );
-	// 	$css .= sprintf( '@media only screen and (max-width: 768px) { .custom-logo-link { max-width: %spx; } }', absint( $width * .7 ) );
-	// }
+
 	$width_px  = absint( $width ) . 'px';
 	$shrink_px = absint( $width * .7 ) . 'px';
 
+	/**
+	 * Set max-width on the logo link.
+	 * Stay shrunk on mobile.
+	 */
 	$css = "
 		@media only screen and (max-width: 768px) {
 			.custom-logo-link {
@@ -43,7 +45,7 @@ function mai_logo_width_css() {
 	if ( mai_has_shrink_header() ) {
 		$css .= "
 			@media only screen and (min-width: 769px) {
-				.scroll .custom-logo-link {
+				.site-header.scroll .custom-logo-link {
 					max-width: {$shrink_px};
 				}
 			}
