@@ -57,7 +57,7 @@
 		offset: - parseInt( $html.css( 'marginTop' ) ), // Start when .site-header hits top, accounting for admin-bar.
 	})
 	.on( 'start', function(e) {
-		if ( window.matchMedia( '(max-width: 768px)' ).matches ) {
+		if ( isSmallWindow() ) {
 			$header.removeClass( 'scroll' );
 			return;
 		}
@@ -72,16 +72,16 @@
 
 	if ( hasShrink ) {
 
-		var $logoLink       = $( '.custom-logo-link' );
-		var shrinkScrollDir = [];
-		var logoWidth       = maiVars.logoWidth ? maiVars.logoWidth : $logoLink.outerWidth();
-		var shrunkLogoWidth = Math.round( logoWidth * .7 );
-		var logoMarginTop   = parseInt( $logoLink.css( 'marginTop' ) );
-		var logoMarginBot   = parseInt( $logoLink.css( 'marginBottom' ) );
+		var $logoLink        = $( '.custom-logo-link' );
+		var shrinkDirections = [];
+		var shrinkProgresses = [];
+		var logoWidth        = maiVars.logoWidth ? maiVars.logoWidth : $logoLink.outerWidth();
+		var shrunkLogoWidth  = Math.round( logoWidth * .7 );
+		var logoMarginTop    = parseInt( $logoLink.css( 'marginTop' ) );
+		var logoMarginBot    = parseInt( $logoLink.css( 'marginBottom' ) );
 		var currentLogoWidth = logoWidth;
 		var currentMarginTop = logoMarginTop;
 		var currentMarginBot = logoMarginBot;
-		var smallWindow      = window.matchMedia( '(max-width: 768px)' ).matches;
 
 		// Shrink Header/Logo.
 		var logoScene = new ScrollMagic.Scene({
@@ -93,15 +93,26 @@
 		.on( 'progress', function(e) {
 
 			// Bail if already small window size. CSS will already be shrunk.
-			if ( smallWindow ) {
+			if ( isSmallWindow() ) {
+				return;
+			}
+
+			// Store our values for comparing later.
+			shrinkDirections = storeItem( shrinkDirections, e.scrollDirection, 2 );
+			shrinkProgresses = storeItem( shrinkProgresses, e.progress, 2 );
+
+			// Adjust logo and bail on first scroll.
+			if ( 1 === shrinkDirections.length ) {
+				adjustLogo( true, e.progress );
 				return;
 			}
 
 			// Bail if not scrolling the same direction.
-			if ( ! sameDirection( shrinkScrollDir, e, 2 ) ) {
+			if ( ! sameItems( shrinkDirections ) ) {
 				return;
 			}
 
+			// Adjust logo.
 			adjustLogo( e.scrollDirection, e.progress );
 		})
 		// .addIndicators()
@@ -109,8 +120,20 @@
 
 		// Update window size and logo width/margin if browser on resize or similar shift.
 		logoScene.on( 'shift', function(e) {
-			smallWindow = window.matchMedia( '(max-width: 768px)' ).matches;
+			// Reset styles.
+			$logoLink.css({
+				'maxWidth' : '',
+				'marginTop' : '',
+				'marginBottom' : '',
+			});
+			// Get the new margins.
+			logoMarginTop = parseInt( $logoLink.css( 'marginTop' ) );
+			logoMarginBot = parseInt( $logoLink.css( 'marginBottom' ) );
+			if ( isSmallWindow() ) {
+				return;
+			}
 			adjustLogo( true, logoScene.progress() );
+			logoScene.refresh();
 		});
 
 		// Adust the logo CSS.
@@ -152,14 +175,14 @@
 
 	}
 
-
 	if ( hasReveal ) {
 
-		var revealScrollDir = [];
-		var revealed        = true; // Header should start showing.
-		var concealed       = false;
-		var fwdScrollTop    = false;
-		var rvsScrollTop    = false;
+		var revealDirections = [];
+		// var revealProgresses = [];
+		var revealed         = true; // Header should start showing.
+		var concealed        = false;
+		var fwdScrollTop     = false;
+		var rvsScrollTop     = false;
 
 		// Reveal Header.
 		var revealScene = new ScrollMagic.Scene({
@@ -170,8 +193,11 @@
 		})
 		.on( 'progress', function(e) {
 
+			revealDirections = storeItem( revealDirections, e.scrollDirection, 3 );
+			// revealProgresses = storeItem( revealProgresses, e.progress, 3 );
+
 			// Reset when changing directions.
-			if ( ! sameDirection( revealScrollDir, e, 3 ) ) {
+			if ( ! sameItems( revealDirections ) ) {
 				fwdScrollTop = false;
 				rvsScrollTop = false;
 			}
@@ -214,19 +240,29 @@
 
 	}
 
-	// Check if progress has incremented in the same direction .
-	function sameDirection( directions, event, increments ) {
-		// If aleady n increments items in our array.
-		if ( increments === directions.length ) {
-			// Remove the first.
-			directions.shift()
+	// Store items in an array.
+	function storeItem( existingItems, newItem, total ) {
+		// If we have more than the total.
+		if ( existingItems.length > total ) {
+			// Set the tempTotal items to 1 less than the actual total.
+			var tempTotal = (total - 1);
+			existingItems = existingItems.slice(-tempTotal);
 		}
-		// Add scroll direction to this array.
-		directions.push( event.scrollDirection );
-		// Check if scroll direction is the same as last progress.
-		return same = directions.every(function(v, i, a) {
+		// Add new item to this array.
+		existingItems.push( newItem );
+		return existingItems;
+	}
+
+	// Check if progress has incremented in the same direction.
+	function sameItems( currentDirections ) {
+		return currentDirections.every( function( v, i, a ) {
 			return i === 0 || v === a[i - 1];
 		});
+	}
+
+	// Check if current window is 768px or smaller.
+	function isSmallWindow() {
+		return window.matchMedia( '(max-width: 768px)' ).matches;
 	}
 
 })( document, jQuery );
