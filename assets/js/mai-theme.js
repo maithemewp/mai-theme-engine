@@ -715,8 +715,9 @@
 		}
 		e.preventDefault();
 		var offset = target.offset().top - parseInt( $html.css( 'marginTop' ) );
-		if( hasSticky ) {
-			offset = offset - $header.outerHeight() - parseInt( $html.css( 'marginTop' ) ) - 16;
+		if ( hasSticky ) {
+			// Offset adds header height plus a little extra.
+			offset = offset - $header.outerHeight() - 16;
 		}
 		$( 'html, body' ).stop().animate({ scrollTop: offset }, 1000 );
 	});
