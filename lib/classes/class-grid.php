@@ -1448,6 +1448,7 @@ class Mai_Grid {
 	 */
 	function get_image_html( $image_id, $url, $att_title ) {
 		$image      = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => 'wp-post-image' ) );
+		$image      = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata(), $image_id );
 		$attributes = array();
 		// Add the default class and add location as a class to the image link.
 		$attributes['class'] = 'entry-image-link';
