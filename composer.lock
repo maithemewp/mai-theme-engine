@@ -8,23 +8,25 @@
     "packages": [
         {
             "name": "cmb2/cmb2",
-            "version": "v2.5.1",
+            "version": "v2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CMB2/CMB2.git",
-                "reference": "1129acf4b7689010789d830f6fba0b7b68ad51ff"
+                "reference": "008d9b83263d971d6bd41c27e31113db852d5ef3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/1129acf4b7689010789d830f6fba0b7b68ad51ff",
-                "reference": "1129acf4b7689010789d830f6fba0b7b68ad51ff",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/008d9b83263d971d6bd41c27e31113db852d5ef3",
+                "reference": "008d9b83263d971d6bd41c27e31113db852d5ef3",
                 "shasum": ""
             },
             "require": {
                 "php": ">5.2.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "apigen/apigen": "4.1.2",
+                "nette/utils": "2.5.3",
+                "phpunit/phpunit": "6.5.13"
             },
             "suggest": {
                 "composer/installers": "~1.0"
@@ -55,7 +57,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2018-12-10T15:11:54+00:00"
+            "time": "2019-01-21T04:30:08+00:00"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
