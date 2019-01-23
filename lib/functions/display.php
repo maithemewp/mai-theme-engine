@@ -93,13 +93,29 @@ function mai_do_featured_image( $size = 'featured' ) {
 		return;
 	}
 
+	// Get featured image ID.
+	$image_id = get_post_thumbnail_id();
+
+	// If we have a featured image (genesis_get_image() has fallbacks).
+	if ( $image_id ) {
+		// Add srcset.
+		$image = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $image_id ), $image_id );
+	}
+
 	printf( '<div class="featured-image">%s</div>', $image );
 
-	$attachment = get_post( get_post_thumbnail_id() );
+	// Bail if no featured image.
+	if ( ! $image_id ) {
+		return;
+	}
+
+	// Get attachment.
+	$attachment = get_post( $image_id );
 	if ( ! $attachment ) {
 		return;
 	}
 
+	// Get the excerpt.
 	$caption = $attachment->post_excerpt;
 	if ( $caption ) {
 		printf( '<span class="image-caption">%s</span>', $caption );
