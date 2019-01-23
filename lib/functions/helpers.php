@@ -28,8 +28,8 @@ function mai_get_image_sizes() {
 		),
 		'full-width' => array(
 			'label'  => __( 'Full Width', 'mai-theme-engine' ),
-			'width'  => 1280,
-			'height' => 853,
+			'width'  => 1248,
+			'height' => 832,
 			'crop'   => true, // 3x2
 		),
 		'featured' => array(
