@@ -1464,6 +1464,30 @@ body.has-boxed-site-container {
 	margin: 0;
 }
 
+.section.has-image-bg {
+	position: relative;
+	overflow: hidden;
+}
+
+.section.has-image-bg .section-bg {
+	display: block;
+	min-width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0%;
+	bottom: 0%;
+	right: 0;
+	left: 0;
+	margin: auto;
+	-o-object-fit: cover;
+	object-fit: cover; /* no IE, whatever. */
+	z-index: 0;
+}
+
+.section.has-image-bg .section-content {
+	z-index: 2;
+}
+
 /* ## Image Background
 --------------------------------------------- */
 
@@ -1518,7 +1542,7 @@ body.has-boxed-site-container {
 	z-index: 0;
 }
 
-.overlay > * {
+.overlay > *:not(img) {
 	position: relative;
 	z-index: 1;
 }
