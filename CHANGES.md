@@ -2,13 +2,15 @@
 
 
 ## 1.8.0 (TBD)
+* Added: Huge performance increases (faster page load times) all around, especially on mobile!
+* Added: Section and [grid] images now serve smaller images on smaller window sizes via srcset.
+* Added: New 'full-width' image size, mostly for section image srcset.
 * Added: Logo width field. Great for retina logos and will help with special features in Mai Styles.
 * Added: Now enable beta updates of all Mai plugins via the Customizer > Theme Settings.
 * Added: Default button styles for Easy Digital Downloads.
 * Changed: Fully rebuilt scroll related JS for better performance.
 * Changed: Scale text based site title according to window/browser width.
 * Changed: Remove border from mobile menu items.
-* Changed: Much more efficient scroll listener JS.
 * Fixed: [grid] slider dots showing when only one slide.
 * Fixed: Logo shrinking to 0px in Firefox.
 * Fixed: Body not scrollable if closing mobile menu with esc key.
