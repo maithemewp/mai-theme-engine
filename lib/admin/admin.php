@@ -16,6 +16,53 @@ function mai_admin_enqueue_scripts() {
 }
 
 /**
+ * Add our image sizes to the media chooser.
+ *
+ * @since   Unknown
+ * @since   1.8.0
+ *
+ * @param   $sizes  The size options.
+ *
+ * @return  array   Modified size options.
+ */
+add_filter( 'image_size_names_choose', 'mai_do_media_chooser_sizes' );
+function mai_do_media_chooser_sizes( $sizes ) {
+
+	// Get the image sizes to register.
+	$new_sizes = mai_get_image_sizes();
+
+	// Bail if no image sizes.
+	if ( ! $new_sizes ) {
+		return $sizes;
+	}
+
+	// Unset the big images.
+	unset( $new_sizes['banner'] );
+	unset( $new_sizes['section'] );
+	unset( $new_sizes['full-width'] );
+
+	return array_merge( $sizes, $new_sizes );;
+}
+
+/**
+ * Remove unsupported FlexGrid gallery options from admin
+ *
+ * @return void
+ */
+add_action( 'admin_head', 'mai_remove_unsupported_flexgrid_gallery_options' );
+function mai_remove_unsupported_flexgrid_gallery_options() {
+	echo '<style type="text/css">
+		.gallery-settings .columns option[value="5"],
+		.gallery-settings .columns option[value="7"],
+		.gallery-settings .columns option[value="8"],
+		.gallery-settings .columns option[value="9"] {
+			display:none !important;
+			visibility: hidden !important;
+		}
+	</style>';
+}
+
+/**
  * Adds a new select bar to the WP editor.
  * Insert 'styleselect' into the $buttons array.
  * _2 places the new button on the second line.
