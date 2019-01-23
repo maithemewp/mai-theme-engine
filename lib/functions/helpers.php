@@ -1,6 +1,101 @@
 <?php
 
 /**
+ * Helper function to get custom image sizes.
+ *
+ * @since   1.8.0
+ *
+ * @return  array  Image sizes and labels.
+ */
+function mai_get_image_sizes() {
+
+	/**
+	 * Create the initial image sizes.
+	 * @link http://andrew.hedges.name/experiments/aspect_ratio/
+	 */
+	$image_sizes = array(
+		'banner' => array(
+			'label'  => __( 'Banner', 'mai-theme-engine' ),
+			'width'  => 1600,
+			'height' => 533,
+			'crop'   => true, // 3x1
+		),
+		'section' => array(
+			'label'  => __( 'Section', 'mai-theme-engine' ),
+			'width'  => 1600,
+			'height' => 900,
+			'crop'   => true, // 16x9
+		),
+		'full-width' => array(
+			'label'  => __( 'Full Width', 'mai-theme-engine' ),
+			'width'  => 1280,
+			'height' => 853,
+			'crop'   => true, // 3x2
+		),
+		'featured' => array(
+			'label'  => __( 'Featured', 'mai-theme-engine' ),
+			'width'  => 800,
+			'height' => 600,
+			'crop'   => true, // 4x3 (works better for no sidebar)
+		),
+		'one-half' => array(
+			'label'  => __( 'One Half', 'mai-theme-engine' ),
+			'width'  => 550,
+			'height' => 413,
+			'crop'   => true, // 4x3
+		),
+		'one-third' => array(
+			'label'  => __( 'One Third', 'mai-theme-engine' ),
+			'width'  => 350,
+			'height' => 263,
+			'crop'   => true, // 4x3
+		),
+		'one-fourth' => array(
+			'label'  => __( 'One Fourth', 'mai-theme-engine' ),
+			'width'  => 260,
+			'height' => 195,
+			'crop'   => true, // 4x3
+		),
+		'tiny' => array(
+			'label'  => __( 'Tiny', 'mai-theme-engine' ),
+			'width'  => 80,
+			'height' => 80,
+			'crop'   => true, // square
+		),
+	);
+
+	/**
+	 * Filter the image sizes to allow the theme to override.
+	 *
+	 * // Change the default Mai image sizes
+	 * add_filter( 'mai_image_sizes', 'prefix_custom_image_sizes' );
+	 * function prefix_custom_image_sizes( $image_sizes ) {
+	 *
+	 *   // Change one-third image size
+	 *   $image_sizes['one-third'] = array(
+	 *       'width'  => 350,
+	 *       'height' => 350,
+	 *       'crop'   => true,
+	 *   );
+	 *
+	 *   // Change one-fourth image size
+	 *   $image_sizes['one-fourth'] = array(
+	 *       'width'  => 260,
+	 *       'height' => 260,
+	 *       'crop'   => true,
+	 *   );
+	 *
+	 *   return $image_sizes;
+	 *
+	 * }
+	 *
+	 */
+	$image_sizes = apply_filters( 'mai_image_sizes', $image_sizes );
+
+	return $image_sizes;
+}
+
+/**
  * Get the site layout.
  *
  * @access  private
