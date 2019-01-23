@@ -83,7 +83,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		'banner_id',
 		array(
 			'label'           => __( 'Banner Image', 'mai-theme-engine' ),
-			'description'     => __( 'Set a default banner image. Can be overridden per post/page.', 'mai-theme-engine' ),
+			'description'     => __( 'Set a default banner image (min. 1600px wide) which auto-crops based on the section content and height. Image can be overridden per post/page.', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 			'priority'        => 4,
