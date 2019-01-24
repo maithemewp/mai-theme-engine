@@ -301,7 +301,7 @@ final class Mai_Theme_Engine {
 	}
 
 	function admin_notices() {
-		printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', __( '<strong>Your theme does not support the Mai Theme Engine plugin</strong>. As a result, this plugin has been deactivated.', 'mai-theme-engine' ) );
+		printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', __( '<strong>Your theme does not support the Mai Theme Engine plugin</strong>. As a result, Mai Theme Engine has been deactivated.', 'mai-theme-engine' ) );
 		// Remove "Plugin activated" notice.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
