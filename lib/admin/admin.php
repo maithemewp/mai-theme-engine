@@ -41,6 +41,9 @@ function mai_do_media_chooser_sizes( $sizes ) {
 	unset( $new_sizes['section'] );
 	unset( $new_sizes['full-width'] );
 
+	// Build new array with 'name' => 'label';
+	$new_sizes = wp_list_pluck( $new_sizes, 'label' );
+
 	return array_merge( $sizes, $new_sizes );;
 }
 
