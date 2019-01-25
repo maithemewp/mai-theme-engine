@@ -1,7 +1,7 @@
 /**
  * Initiate Slick on [grid slider="true"] posts when document ready.
  *
- * @version 1.0.2
+ * @version 1.1.0
  */
 jQuery(document).ready(function($) {
 
@@ -10,6 +10,9 @@ jQuery(document).ready(function($) {
 	if ( ! $sliders.length ) {
 		return;
 	}
+
+	// Get rtl support.
+	var rtl = ( 'rtl' === $( 'html' ).attr( 'dir' ) );
 
 	$.each( $sliders, function() {
 
@@ -23,7 +26,7 @@ jQuery(document).ready(function($) {
 			fade           = Boolean( $(this).data('fade') ), // Only works with 1 slide at a time https://github.com/kenwheeler/slick/issues/830.
 			infinite       = Boolean( $(this).data('infinite') ),
 			slidesToScroll = parseInt( $(this).data('slidestoscroll') ),
-			slidesToShow   = parseInt( $(this).data('slidestoshow') );
+			slidesToShow   = parseInt( $(this).data('slidestoshow') ),
 			speed          = parseInt( $(this).data('speed') );
 
 		var desktopToShow,
@@ -90,6 +93,7 @@ jQuery(document).ready(function($) {
 			infinite: infinite,
 			slidesToScroll: slidesToScroll,
 			slidesToShow: slidesToShow,
+			rtl: rtl,
 			responsive: [{
 				breakpoint: 1200,
 				settings: {

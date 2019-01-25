@@ -12,6 +12,7 @@
 * Changed: Scale text based site title according to window/browser width.
 * Changed: Remove border from mobile menu items.
 * Fixed: [grid] slider dots showing when only one slide.
+* Fixed: [grid] slider now automatically detects and supports rtl sites.
 * Fixed: Logo shrinking to 0px in Firefox.
 * Fixed: Body not scrollable if closing mobile menu with esc key.
 * Fixed: Superfish undefined error when using certain page builders or templates that disable superfish.
