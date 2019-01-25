@@ -178,7 +178,7 @@
 	if ( hasReveal ) {
 
 		var revealDirections = [];
-		// var revealProgresses = [];
+		// var  = [];
 		var revealed         = true; // Header should start showing.
 		var concealed        = false;
 		var fwdScrollTop     = false;
@@ -193,8 +193,12 @@
 		})
 		.on( 'progress', function(e) {
 
+			// Bail if mobile menu is activated.
+			if ( $body.hasClass( 'mai-menu-activated' ) ) {
+				return;
+			}
+
 			revealDirections = storeItem( revealDirections, e.scrollDirection, 3 );
-			// revealProgresses = storeItem( revealProgresses, e.progress, 3 );
 
 			// Reset when changing directions.
 			if ( ! sameItems( revealDirections ) ) {
