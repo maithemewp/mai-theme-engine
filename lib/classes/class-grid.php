@@ -1289,7 +1289,7 @@ class Mai_Grid {
 	 * @return  bool
 	 */
 	function is_vertically_aligned() {
-		return 'bg' === $this->args['image_location'] || ! mai_is_valid_image_align( $this->args['image_align'] ) || array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
+		return 'bg' === $this->args['image_location'] || ( 'center' === $this->args['image_align'] ) || ! in_array( $this->args['image_align'], array( 'left', 'right' ) ) || array_intersect( array( 'top', 'middle', 'bottom' ), $this->args['align_text'] );
 	}
 
 	/**
