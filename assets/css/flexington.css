@@ -49,77 +49,93 @@
 
 .row.gutter-xxxs,
 .row.gutter-5 {
-	margin-left: -4px;
+	margin-left: -2px;
+	margin-right: -2px;
 }
 
 .row.gutter-xxxs > .col,
 .row.gutter-5 > .col {
-	margin-left: 4px;
+	margin-left: 2px;
+	margin-right: 2px;
 }
 
 .row.gutter-xxs,
 .row.gutter-10 {
-	margin-left: -8px;
+	margin-left: -4px;
+	margin-right: -4px;
 }
 
 .row.gutter-xxs > .col,
 .row.gutter-10 > .col {
-	margin-left: 8px;
+	margin-left: 4px;
+	margin-right: 4px;
 }
 
 .row.gutter-xs {
-	margin-left: -16px;
+	margin-left: -8px;
+	margin-right: -8px;
 }
 .row.gutter-xs > .col {
-	margin-left: 16px;
+	margin-left: 8px;
+	margin-right: 8px;
 }
 
 .row.gutter-sm,
 .row.gutter-20 {
-	margin-left: -24px;
+	margin-left: -12px;
+	margin-right: -12px;
 }
 
 .row.gutter-sm > .col,
 .row.gutter-20 > .col {
-	margin-left: 24px;
+	margin-left: 12px;
+	margin-right: 12px;
 }
 
 .row.gutter-md,
 .row.gutter-30 {
-	margin-left: -32px;
+	margin-left: -16px;
+	margin-right: -16px;
 }
 
 .row.gutter-md > .col,
 .row.gutter-30 > .col {
-	margin-left: 32px;
+	margin-left: 16px;
+	margin-right: 16px;
 }
 
 .row.gutter-lg,
 .row.gutter-40 {
-	margin-left: -40px;
+	margin-left: -20px;
+	margin-right: -20px;
 }
 
 .row.gutter-lg > .col,
 .row.gutter-40 > .col {
-	margin-left: 40px;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 .row.gutter-xl,
 .row.gutter-50 {
-	margin-left: -48px;
+	margin-left: -24px;
+	margin-right: -24px;
 }
 
 .row.gutter-xl > .col,
 .row.gutter-50 > .col {
-	margin-left: 48px;
+	margin-left: 24px;
+	margin-right: 24px;
 }
 
 .row.gutter-xxl {
-	margin-left: -56px;
+	margin-left: -28px;
+	margin-right: -28px;
 }
 
 .row.gutter-xxl > .col {
-	margin-left: 56px;
+	margin-left: 28px;
+	margin-right: 28px;
 }
 
 /* Columns Extra Small */

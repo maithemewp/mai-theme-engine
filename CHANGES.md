@@ -13,6 +13,7 @@
 * Changed: Remove border from mobile menu items.
 * Fixed: [grid] slider dots showing when only one slide.
 * Fixed: [grid] slider now automatically detects and supports rtl sites.
+* Fixed: [grid] Read more buttons now aligned to the bottom when image_align="center".
 * Fixed: Logo shrinking to 0px in Firefox.
 * Fixed: Body not scrollable if closing mobile menu with esc key.
 * Fixed: Superfish undefined error when using certain page builders or templates that disable superfish.
