@@ -3,11 +3,15 @@
 /**
  * Helper function to get custom image sizes.
  *
+ * @access  private
  * @since   1.8.0
  *
  * @return  array  Image sizes and labels.
  */
 function mai_get_image_sizes() {
+
+	// Get labels.
+	$labels = mai_get_image_size_labels();
 
 	/**
 	 * Create the initial image sizes.
@@ -15,49 +19,49 @@ function mai_get_image_sizes() {
 	 */
 	$image_sizes = array(
 		'banner' => array(
-			'label'  => __( 'Banner', 'mai-theme-engine' ),
+			'label'  => $labels[ 'banner' ],
 			'width'  => 1600,
 			'height' => 533,
 			'crop'   => true, // 3x1
 		),
 		'section' => array(
-			'label'  => __( 'Section', 'mai-theme-engine' ),
+			'label'  => $labels[ 'section' ],
 			'width'  => 1600,
 			'height' => 900,
 			'crop'   => true, // 16x9
 		),
 		'full-width' => array(
-			'label'  => __( 'Full Width', 'mai-theme-engine' ),
+			'label'  => $labels[ 'full-width' ],
 			'width'  => 1248,
 			'height' => 832,
 			'crop'   => true, // 3x2
 		),
 		'featured' => array(
-			'label'  => __( 'Featured', 'mai-theme-engine' ),
+			'label'  => $labels[ 'featured' ],
 			'width'  => 800,
 			'height' => 600,
 			'crop'   => true, // 4x3 (works better for no sidebar)
 		),
 		'one-half' => array(
-			'label'  => __( 'One Half', 'mai-theme-engine' ),
+			'label'  => $labels[ 'one-half' ],
 			'width'  => 550,
 			'height' => 413,
 			'crop'   => true, // 4x3
 		),
 		'one-third' => array(
-			'label'  => __( 'One Third', 'mai-theme-engine' ),
+			'label'  => $labels[ 'one-third' ],
 			'width'  => 350,
 			'height' => 263,
 			'crop'   => true, // 4x3
 		),
 		'one-fourth' => array(
-			'label'  => __( 'One Fourth', 'mai-theme-engine' ),
+			'label'  => $labels[ 'one-fourth' ],
 			'width'  => 260,
 			'height' => 195,
 			'crop'   => true, // 4x3
 		),
 		'tiny' => array(
-			'label'  => __( 'Tiny', 'mai-theme-engine' ),
+			'label'  => $labels[ 'tiny' ],
 			'width'  => 80,
 			'height' => 80,
 			'crop'   => true, // square
@@ -92,7 +96,39 @@ function mai_get_image_sizes() {
 	 */
 	$image_sizes = apply_filters( 'mai_image_sizes', $image_sizes );
 
+	/**
+	 * Make sure labels are added.
+	 * 'mai_image_sizes' didn't have 'label' in the array prior to 1.8.0.
+	 * This insures existing filters don't break.
+	 */
+	foreach( $image_sizes as $name => $values ) {
+		if ( ! isset( $values['label'] ) || empty( $values['label'] ) ) {
+			$image_sizes[ $name ]['label'] = $labels[ $name ];
+		}
+	}
+
 	return $image_sizes;
+}
+
+/**
+ * Get default image size labels.
+ *
+ * @access  private
+ * @since   1.8.0
+ *
+ * @return  array
+ */
+function mai_get_image_size_labels() {
+	return array(
+		'banner'     => __( 'Banner', 'mai-theme-engine' ),
+		'section'    => __( 'Section', 'mai-theme-engine' ),
+		'full-width' => __( 'Full Width', 'mai-theme-engine' ),
+		'featured'   => __( 'Featured', 'mai-theme-engine' ),
+		'one-half'   => __( 'One Half', 'mai-theme-engine' ),
+		'one-third'  => __( 'One Third', 'mai-theme-engine' ),
+		'one-fourth' => __( 'One Fourth', 'mai-theme-engine' ),
+		'tiny'       => __( 'Tiny', 'mai-theme-engine' ),
+	);
 }
 
 /**
