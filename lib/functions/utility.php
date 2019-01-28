@@ -472,3 +472,58 @@ function mai_ends_with( $haystack, $needle ) {
 	}
 	return ( $needle === substr( $haystack, -$length ) );
 }
+
+
+/**
+ * Pretty Printing
+ *
+ * @since   1.8.0
+ * @author  Chris Bratlien
+ * @author  Bill Erickson
+ * @author  Mike Hemberger
+ *
+ * @param   mixed   $obj
+ * @param   string  $label
+ *
+ * @return  null
+ */
+function mai_pp( $obj, $label = '' ) {
+	$data = json_encode( print_r( $obj,true ) );
+	?>
+	<style type="text/css">
+		#maiLogger {
+			position: absolute;
+			top: 30px;
+			right: 0px;
+			border-left: 4px solid #bbb;
+			padding: 6px;
+			background: white;
+			color: #444;
+			z-index: 999;
+			font-size: 1.2rem;
+			width: 40vw;
+			height: calc( 100vh - 30px );
+			overflow: scroll;
+		}
+	</style>
+	<script type="text/javascript">
+		var doStuff = function() {
+			var obj    = <?php echo $data; ?>;
+			var logger = document.getElementById('maiLogger');
+			if ( ! logger ) {
+				logger = document.createElement('div');
+				logger.id = 'maiLogger';
+				document.body.appendChild(logger);
+			}
+			////console.log(obj);
+			var pre = document.createElement('pre');
+			var h2  = document.createElement('h2');
+			pre.innerHTML = obj;
+			h2.innerHTML  = '<?php echo addslashes($label); ?>';
+			logger.appendChild(h2);
+			logger.appendChild(pre);
+		};
+		window.addEventListener( "DOMContentLoaded", doStuff, false );
+	</script>
+	<?php
+}
