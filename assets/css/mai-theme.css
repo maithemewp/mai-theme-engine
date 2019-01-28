@@ -1452,7 +1452,7 @@ body.has-boxed-site-container {
 	margin-bottom: 8px;
 }
 
-.section .width-full .col {
+.section .width-full .columns-shortcode > .col {
 	padding: calc( 32px + 2vw );
 }
 
