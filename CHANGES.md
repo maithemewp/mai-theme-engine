@@ -2,6 +2,7 @@
 
 
 ## 1.8.0 (TBD)
+* Added: Align full/wide support for the block editor (Gutenberg).
 * Added: Huge performance increases (faster page load times) all around, especially on mobile!
 * Added: Section and [grid] images now serve smaller images on smaller window sizes via srcset.
 * Added: New 'full-width' image size, mostly for section image srcset.

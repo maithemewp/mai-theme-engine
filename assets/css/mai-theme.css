@@ -1014,6 +1014,7 @@ td {
 .content,
 .breadcrumb,
 .section-content,
+.site-container.boxed .alignfull,
 .site-container.boxed .width-full {
 	width: 100%;
 	max-width: 100%;
@@ -1030,14 +1031,19 @@ td {
 	-ms-flex-preferred-size: auto;flex-basis: auto;
 }
 
+.site-container:not(.boxed) .section-content.alignfull,
 .site-container:not(.boxed) .section-content.width-full,
+.site-container:not(.boxed) .section.banner-area > .wrap.alignfull,
 .site-container:not(.boxed) .section.banner-area > .wrap.width-full {
 	-ms-flex-preferred-size: 100vw;flex-basis: 100vw;
 }
 
+.site-container:not(.boxed) .alignfull,
 .site-container:not(.boxed) .width-full,
 .site-container:not(.boxed) .content-no-sidebars .section,
+.site-container:not(.boxed) .section-content.alignfull,
 .site-container:not(.boxed) .section-content.width-full,
+.site-container:not(.boxed) .section.banner-area > .wrap.alignfull,
 .site-container:not(.boxed) .section.banner-area > .wrap.width-full {
 	clear: both;
 	max-width: 100vw;
@@ -1045,12 +1051,14 @@ td {
 	margin-right: calc(-50vw + 50%);
 }
 
+.content-no-sidebars .alignfull,
 .content-no-sidebars .width-full {
 	padding-left: 0;
 	padding-right: 0;
 }
 
 .mai-sections.has-boxed-site-container .content.content-no-sidebars,
+.site-container.boxed .alignfull,
 .site-container.boxed .width-full,
 .site-inner,
 .breadcrumb,
@@ -2262,11 +2270,13 @@ input[name="post_password"] {
 }
 
 .slick-prev,
+.full-width-content .alignfull .slick-prev,
 .full-width-content .width-full .slick-prev {
 	left: 3%;
 }
 
 .slick-next,
+.full-width-content .alignfull .slick-next,
 .full-width-content .width-full .slick-next {
 	right: 3%;
 }
@@ -4405,6 +4415,19 @@ ol.comment-list {
 @media only screen and (min-width: 545px) {}
 
 @media only screen and (min-width: 769px) {
+
+	.alignwide {
+		margin-left: calc(25% - 25vw);
+		margin-right: calc(25% - 25vw);
+		width: auto;
+		max-width: 1000%;
+	}
+
+	.alignwide img,
+	.alignfull img {
+		display: block;
+		margin: 0 auto;
+	}
 
 	.five-sixths,
 	.four-sixths,

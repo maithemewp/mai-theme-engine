@@ -227,6 +227,9 @@ final class Mai_Theme_Engine {
 				'flex-width'    => true,
 			) );
 
+			// Add alignfull and alignwide support.
+			add_theme_support( 'align-wide' );
+
 			// Add excerpt support for pages.
 			add_post_type_support( 'page', 'excerpt' );
 
