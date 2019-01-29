@@ -104,7 +104,7 @@ function mai_do_sections_metabox() {
 			'type'              => 'select',
 			'select_all_button' => false,
 			'options'           => array(
-				''         => __( '- None -', 'genesis' ),
+				''         => __( 'None', 'mai-theme-engine' ),
 				'gradient' => __( 'Gradient', 'mai-theme-engine' ),
 				'light'    => __( 'Light', 'mai-theme-engine' ),
 				'dark'     => __( 'Dark', 'mai-theme-engine' ),
@@ -118,7 +118,7 @@ function mai_do_sections_metabox() {
 			'type'              => 'select',
 			'select_all_button' => false,
 			'options'           => array(
-				''      => __( '- None -', 'genesis' ),
+				''      => __( 'None', 'mai-theme-engine' ),
 				'light' => __( 'Light Box', 'mai-theme-engine' ),
 				'dark'  => __( 'Dark Box', 'mai-theme-engine' ),
 			),
@@ -161,7 +161,7 @@ function mai_do_sections_metabox() {
 			'name'             => __( 'Content Alignment', 'mai-theme-engine' ),
 			'id'               => 'align_content',
 			'type'             => 'select',
-			'show_option_none' => __( '- None -', 'genesis' ),
+			'show_option_none' => __( 'None', 'mai-theme-engine' ),
 			'options'          => array(
 				'left'         => __( 'Left', 'mai-theme-engine' ),
 				'lefttop'      => __( 'Left Top', 'mai-theme-engine' ),
@@ -180,7 +180,7 @@ function mai_do_sections_metabox() {
 			'name'             => __( 'Text Alignment', 'mai-theme-engine' ),
 			'id'               => 'align',
 			'type'             => 'select',
-			'show_option_none' => __( '- None -', 'genesis' ),
+			'show_option_none' => __( 'None', 'mai-theme-engine' ),
 			'options'          => array(
 				'left'   => __( 'Left', 'mai-theme-engine' ),
 				'center' => __( 'Center', 'mai-theme-engine' ),
@@ -193,7 +193,7 @@ function mai_do_sections_metabox() {
 			'name'             => __( 'Text Size', 'mai-theme-engine' ),
 			'id'               => 'text_size',
 			'type'             => 'select',
-			'show_option_none' => __( '- None -', 'genesis' ),
+			'show_option_none' => __( 'None', 'mai-theme-engine' ),
 			'options' => array(
 				'xs' => __( 'Extra Small', 'mai-theme-engine' ),
 				'sm' => __( 'Small', 'mai-theme-engine' ),

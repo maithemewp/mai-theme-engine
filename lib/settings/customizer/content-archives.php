@@ -49,7 +49,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'columns' ),
 			'type'     => 'select',
 			'choices'  => array(
-				1 => __( '- None -', 'genesis' ),
+				1 => __( 'None', 'mai-theme-engine' ),
 				2 => __( '2', 'mai-theme-engine' ),
 				3 => __( '3', 'mai-theme-engine' ),
 				4 => __( '4', 'mai-theme-engine' ),
@@ -76,8 +76,8 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 			'type'     => 'select',
 			'choices'  => array(
 				'none'     => __( 'No content', 'mai-theme-engine' ),
-				'full'     => __( 'Entry content', 'genesis' ),
-				'excerpts' => __( 'Entry excerpts', 'genesis' ),
+				'full'     => __( 'Entry content', 'mai-theme-engine' ),
+				'excerpts' => __( 'Entry excerpts', 'mai-theme-engine' ),
 			),
 		)
 	);
@@ -185,7 +185,7 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'image_size',
 		array(
-			'label'           => __( 'Image Size', 'genesis' ),
+			'label'           => __( 'Image Size', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'image_size' ),
 			'priority'        => 10,
@@ -209,15 +209,15 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'image_alignment',
 		array(
-			'label'    => __( 'Image Alignment', 'genesis' ),
+			'label'    => __( 'Image Alignment', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'image_alignment' ),
 			'type'     => 'select',
 			'choices'  => array(
-				''            => __( '- None -', 'genesis' ),
-				'aligncenter' => __( 'Center', 'genesis' ),
-				'alignleft'   => __( 'Left', 'genesis' ),
-				'alignright'  => __( 'Right', 'genesis' ),
+				''            => __( 'None', 'mai-theme-engine' ),
+				'aligncenter' => __( 'Center', 'mai-theme-engine' ),
+				'alignleft'   => __( 'Left', 'mai-theme-engine' ),
+				'alignright'  => __( 'Right', 'mai-theme-engine' ),
 			),
 			'active_callback' => function() use ( $wp_customize, $settings_field ) {
 				// Showing featured image and background is not image location.
@@ -330,13 +330,13 @@ function mai_register_customizer_content_archives_settings( $wp_customize ) {
 	$wp_customize->add_control(
 		'posts_nav',
 		array(
-			'label'    => __( 'Pagination', 'genesis' ),
+			'label'    => __( 'Pagination', 'mai-theme-engine' ),
 			'section'  => $section,
 			'settings' => _mai_customizer_get_field_name( $settings_field, 'posts_nav' ),
 			'type'     => 'select',
 			'choices'  => array(
-				'prev-next' => __( 'Previous / Next', 'genesis' ),
-				'numeric'   => __( 'Numeric', 'genesis' ),
+				'prev-next' => __( 'Previous / Next', 'mai-theme-engine' ),
+				'numeric'   => __( 'Numeric', 'mai-theme-engine' ),
 			),
 		)
 	);

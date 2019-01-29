@@ -32,9 +32,9 @@ function mai_add_nav_skip_links( $links ) {
 	}
 	$new_links = array_merge( $header_nav, $new_links );
 	if ( has_nav_menu( 'secondary' ) ) {
-		$new_links['genesis-nav-secondary'] = __( 'Skip to secondary navigation', 'genesis' );
+		$new_links['genesis-nav-secondary'] = __( 'Skip to secondary navigation', 'mai-theme-engine' );
 	}
-	$links = array( 'mai-toggle' => __( 'Menu', 'genesis' ) ) + array_merge( $new_links, $links );
+	$links = array( 'mai-toggle' => __( 'Menu', 'mai-theme-engine' ) ) + array_merge( $new_links, $links );
 	return $links;
 }
 

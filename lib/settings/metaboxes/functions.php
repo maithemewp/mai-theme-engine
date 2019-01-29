@@ -341,7 +341,7 @@ function _mai_cmb_columns_config() {
 		'type'       => 'select',
 		'default'    => 1,
 		'options'    => array(
-			1 => __( '- None -', 'genesis' ),
+			1 => __( 'None', 'mai-theme-engine' ),
 			2 => __( '2 Columns', 'mai-theme-engine' ),
 			3 => __( '3 Columns', 'mai-theme-engine' ),
 			4 => __( '4 Columns', 'mai-theme-engine' ),
@@ -352,21 +352,21 @@ function _mai_cmb_columns_config() {
 
 function _mai_cmb_content_archive_config() {
 	return array(
-		'name'    => __( 'Content', 'genesis' ),
+		'name'    => __( 'Content', 'mai-theme-engine' ),
 		'id'      => 'content_archive',
 		'type'    => 'select',
 		'default' => 'excerpts',
 		'options' => array(
 			'none'     => __( 'No content', 'mai-theme-engine' ),
-			'full'     => __( 'Entry content', 'genesis' ),
-			'excerpts' => __( 'Entry excerpts', 'genesis' ),
+			'full'     => __( 'Entry content', 'mai-theme-engine' ),
+			'excerpts' => __( 'Entry excerpts', 'mai-theme-engine' ),
 		),
 	);
 }
 
 function _mai_cmb_content_archive_thumbnail_config() {
 	return array(
-		'name'            => __( 'Featured Image', 'genesis' ),
+		'name'            => __( 'Featured Image', 'mai-theme-engine' ),
 		'desc'            => __( 'Include the Featured Image', 'mai-theme-engine' ),
 		'id'              => 'content_archive_thumbnail',
 		'type'            => 'checkbox',
@@ -400,10 +400,10 @@ function _mai_cmb_image_size_config() {
 		$size_options[$index] = sprintf( '%s (%s x %s)', $index, $value['width'], $value['height'] );
 	}
 	return array(
-		'name'         => __( 'Image Size:', 'genesis' ),
+		'name'         => __( 'Image Size:', 'mai-theme-engine' ),
 		'id'           => 'image_size',
 		'type'         => 'select',
-		'before_field' => __( 'Image Size:', 'genesis' ) . ' ',
+		'before_field' => __( 'Image Size:', 'mai-theme-engine' ) . ' ',
 		'default'      => 'one-third',
 		'options'      => $size_options,
 	);
@@ -411,26 +411,26 @@ function _mai_cmb_image_size_config() {
 
 function _mai_cmb_image_alignment_config() {
 	return array(
-		'name'             => __( 'Image Alignment:', 'genesis' ),
+		'name'             => __( 'Image Alignment:', 'mai-theme-engine' ),
 		'id'               => 'image_alignment',
 		'type'             => 'select',
-		'before_field'     => __( 'Image Alignment:', 'genesis' ) . ' ',
-		'show_option_none' => __( '- None -', 'genesis' ),
+		'before_field'     => __( 'Image Alignment:', 'mai-theme-engine' ) . ' ',
+		'show_option_none' => __( 'None', 'mai-theme-engine' ),
 		'options'          => array(
-			'aligncenter' => __( 'Center', 'genesis' ),
-			'alignleft'   => __( 'Left', 'genesis' ),
-			'alignright'  => __( 'Right', 'genesis' ),
+			'aligncenter' => __( 'Center', 'mai-theme-engine' ),
+			'alignleft'   => __( 'Left', 'mai-theme-engine' ),
+			'alignright'  => __( 'Right', 'mai-theme-engine' ),
 		),
 	);
 }
 
 function _mai_cmb_content_archive_limit_config() {
 	return array(
-		'name'         => __( 'Limit content to', 'genesis' ),
+		'name'         => __( 'Limit content to', 'mai-theme-engine' ),
 		'id'           => 'content_archive_limit',
 		'type'         => 'text_small',
-		'before_field' => __( 'Limit content to', 'genesis' ) . ' ',
-		'after_field'  => ' ' . __( 'characters', 'genesis' ),
+		'before_field' => __( 'Limit content to', 'mai-theme-engine' ) . ' ',
+		'after_field'  => ' ' . __( 'characters', 'mai-theme-engine' ),
 		'attributes'   => array(
 			'type'    => 'number',
 			'pattern' => '\d*',
@@ -479,13 +479,13 @@ function _mai_cmb_posts_per_page_config() {
 function _mai_cmb_posts_nav_config() {
 	return array(
 		'after_row' => '</div>', // close .mai-archive-settings-wrap
-		'name'      => __( 'Entry Pagination', 'genesis' ),
+		'name'      => __( 'Entry Pagination', 'mai-theme-engine' ),
 		'id'        => 'posts_nav',
 		'type'      => 'select',
 		'default'   => 'numeric',
 		'options'   => array(
-			'prev-next' => __( 'Previous / Next', 'genesis' ),
-			'numeric'   => __( 'Numeric', 'genesis' ),
+			'prev-next' => __( 'Previous / Next', 'mai-theme-engine' ),
+			'numeric'   => __( 'Numeric', 'mai-theme-engine' ),
 		),
 	);
 }
