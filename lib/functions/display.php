@@ -188,9 +188,7 @@ function mai_do_archive_image( $location, $image_size ) {
 		add_filter( 'genesis_markup_entry-image-link_close', $image_link_close );
 		add_filter( 'genesis_get_image', $get_image );
 		add_action( 'genesis_entry_header', 'genesis_do_post_image', 0 );
-		// if ( $image_id ) {
-			add_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
-		// }
+		add_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
 
 		// Remove so additional loops are not affected.
 		add_action( 'mai_after_content_archive', function() use ( $get_image, $image_link_open, $image_link_close, $entry ) {
