@@ -7,11 +7,11 @@
  *
  * @return  void
  */
-add_action( 'customize_controls_enqueue_scripts', 'mytheme_customizer_live_preview' );
-function mytheme_customizer_live_preview() {
+add_action( 'customize_preview_init', 'mai_customizer_enqueue_scripts' );
+function mai_customizer_enqueue_scripts() {
 	// Use minified files if script debug is not being used.
 	$suffix = mai_get_suffix();
-	wp_enqueue_script( 'mai-customizer', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-customizer{$suffix}.js", array(), MAI_THEME_ENGINE_VERSION, true );
+	wp_enqueue_script( 'mai-customizer', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-customizer{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
 }
 
 /**
