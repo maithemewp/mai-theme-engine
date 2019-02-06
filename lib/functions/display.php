@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A big ol' helper/cleanup function to
  * enabled embeds inside the shortcodes and
@@ -166,7 +165,7 @@ function mai_do_archive_image( $location, $image_size ) {
  		$width    = $sizes[0];
 		$height   = $sizes[1];
 
-		$entry = function( $attributes ) use ( $image_id, $sizes ) {
+		$entry = function( $attributes ) use ( $image_id, $width, $height ) {
 			if ( $image_id ) {
 				$attributes['class'] .= ' has-bg-image has-bg-link has-overlay light-content';
 			}
