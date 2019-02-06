@@ -394,8 +394,6 @@ function mai_add_inline_styles( $attributes, $styles ) {
 /**
  * Add background color HTML attributes to an element.
  *
- * @todo    Remove all this since we moved to inline images for bg.
- *
  * @access  private
  *
  * @param   array   $attributes    The existing HTML attributes.
