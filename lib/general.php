@@ -430,3 +430,18 @@ function mai_boxed_comment_form() {
 		echo '</div>';
 	}, 0 );
 }
+
+/**
+ * Add srcset markup to images retreived via `genesis_get_image()` function.
+ *
+ * @since   1.8.0
+ *
+ * @return  string|HTML
+ */
+add_filter( 'genesis_get_image', 'mai_genesis_get_image_srcset', 10, 6 );
+function mai_genesis_get_image_srcset( $output, $args, $id, $html, $url, $src ) {
+	if ( 'html' === mb_strtolower( $args['format'] ) ) {
+		return $output;
+	}
+	return wp_image_add_srcset_and_sizes( $html );
+}
