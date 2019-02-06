@@ -13,6 +13,7 @@
 * Changed: Fully rebuilt scroll related JS for better performance.
 * Changed: Scale text based site title according to window/browser width.
 * Changed: Remove border from mobile menu items.
+* Changed: Better styling for Genesis eNews Extended widget.
 * Fixed: [grid] slider dots showing when only one slide.
 * Fixed: [grid] slider now automatically detects and supports rtl sites.
 * Fixed: [grid] Read more buttons now aligned to the bottom when image_align="center".
