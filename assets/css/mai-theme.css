@@ -2464,29 +2464,34 @@ input[name="post_password"] {
 	display: flex;
 	-ms-flex-wrap: wrap;
 	flex-wrap: wrap;
-	max-width: 360px;
+	margin-left: -4px;
+	margin-right: -4px;
 }
 
-.widget.enews-widget .enews input {
-	margin-bottom: 8px;
+.enews form input {
+	margin: 0 4px 10px;
 }
 
-.widget.enews-widget .enews input[type="submit"] {
-	display: block;
+.enews form input[type="text"] {
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 100%;
+	flex: 1 1 100%;
 	width: 100%;
 }
 
-.widget.enews-widget .enews form label[for="subbox"]:first-child + input[type="email"] {
+.enews form input[type="email"] {
 	-webkit-box-flex: 1;
-	-ms-flex: 1 1 auto;
-	flex: 1 1 auto;
+	-ms-flex: 1 1 0px;
+	flex: 1 1 0;
 	width: auto;
-	border-radius: 3px 0 0 3px;
 }
 
-.widget.enews-widget .enews form label[for="subbox"]:first-child + input[type="email"] + input[type="submit"] {
+.enews form input[type="submit"] {
+	-webkit-box-flex: 0;
+	-ms-flex: 0 1 auto;
+	flex: 0 1 auto;
 	width: auto;
-	margin-left: -1px;
+	margin-left: -10px;
 	border-radius: 0 3px 3px 0;
 }
 
