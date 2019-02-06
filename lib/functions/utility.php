@@ -340,9 +340,9 @@ function mai_sanitize_hex_color( $color, $hash = true ) {
  * Generate a hex value that has appropriate contrast
  * against the inputted value.
  *
- * @since 1.0.0
+ * @since   1.0.0
  *
- * @return string Hex color code for contrasting color.
+ * @return  string Hex color code for contrasting color.
  */
 function mai_get_content_shade_from_bg( $hex_color ) {
 	$color = new Mai_Color( $hex_color );
@@ -350,6 +350,34 @@ function mai_get_content_shade_from_bg( $hex_color ) {
 		return 'dark-content';
 	}
 	return 'light-content';
+}
+
+/**
+ * Get an image width and height.
+ *
+ * @since   1.8.0
+ *
+ * @return  array  An array with [0] being width and [1] being height.
+ */
+function mai_get_image_width_height( $image_size, $image_id = '' ) {
+	global $_wp_additional_image_sizes;
+	// Get width/height from global image sizes.
+	if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
+		$registered_image = $_wp_additional_image_sizes[ $image_size ];
+		$width  = $registered_image['width'];
+		$height = $registered_image['height'];
+	}
+	// Otherwise use the actual image dimensions.
+	elseif ( $image_id && $image = wp_get_attachment_image_src( $image_id, $image_size ) ) {
+		$width  = $image[1];
+		$height = $image[2];
+	}
+	// Fallback.
+	else {
+		$width  = 4;
+		$height = 3;
+	}
+	return array( $width, $height );
 }
 
 /**

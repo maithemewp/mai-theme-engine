@@ -143,7 +143,7 @@ class Mai_Section {
 	 */
 	function get_section_open() {
 
-		$image_html = '';
+		$inner_html = '';
 
 		// Set attributes.
 		$attributes = array(
@@ -187,13 +187,14 @@ class Mai_Section {
 
 			// Build img to be used as background via CSS.
 			add_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
-			$image = wp_get_attachment_image( $this->args['image'], $this->args['image_size'], false, array( 'class' => 'section-bg' ) );
+			$image = wp_get_attachment_image( $this->args['image'], $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
+			$image = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $this->args['image'] ), $this->args['image'] );
 			remove_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
 
 			if ( $image ) {
-				$image_html .= $image;
+				$inner_html .= $image;
 				// Add has-background-image class.
-				$attributes['class'] = mai_add_classes( 'has-image-bg', $attributes['class'] );
+				$attributes['class'] = mai_add_classes( 'has-bg-image', $attributes['class'] );
 			}
 
 			/**
@@ -206,21 +207,23 @@ class Mai_Section {
 
 		}
 
+		// Maybe add inline styles.
+		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
+
 		// If we have an overlay.
 		if ( $this->has_overlay ) {
 
 			$light_content = false;
 
-			// Add overlay classes.
-			$attributes['class'] = mai_add_overlay_classes( $attributes['class'], $this->args['overlay'] );
+			// Add has-overlay class to the section.
+			$attributes['class'] = mai_add_classes( 'has-overlay', $attributes['class'] );
 
+			// Get overlay.
+			$inner_html .= mai_get_overlay_html( $this->args['overlay'] );
 		}
 
-		// Maybe add inline styles.
-		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
-
 		// Build the opening markup.
-		return sprintf( '<%s %s>%s', $this->args['wrapper'], genesis_attr( $this->args['context'], $attributes, $this->args ), $image_html );
+		return sprintf( '<%s %s>%s', $this->args['wrapper'], genesis_attr( $this->args['context'], $attributes, $this->args ), $inner_html );
 	}
 
 	/**

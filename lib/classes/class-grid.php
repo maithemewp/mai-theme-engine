@@ -8,19 +8,16 @@
 class Mai_Grid {
 
 	private $args;
-
 	private $original_args;
-
 	private $content_type;
-
 	private $facetwp = false;
-
-	// Whether facetwp_is_main_query filter has run.
-	public static $facetwp_filter = false;
 
 	// All displayed items incase exclude_displayed is true in any instance of grid.
 	public static $existing_post_ids = array();
 	public static $existing_term_ids = array();
+
+	// Whether facetwp_is_main_query filter has run.
+	public static $facetwp_filter = false;
 
 	public function __construct( $args = array() ) {
 
@@ -201,7 +198,6 @@ class Mai_Grid {
 
 		// Get the content type.
 		$this->content_type = $this->get_content_type();
-
 	}
 
 	/**
@@ -464,7 +460,7 @@ class Mai_Grid {
 
 			$html .= $this->get_grid_title();
 
-			$html .= $this->get_row_wrap_open();
+			$html .= $this->get_row_open();
 
 				// Loop through posts.
 				while ( $query->have_posts() ) : $query->the_post();
@@ -491,14 +487,24 @@ class Mai_Grid {
 					}
 
 					// Opening wrap.
-					$html .= $this->get_entry_wrap_open( $post, $has_bg_image );
+					$html .= $this->get_entry_open( $post, $has_bg_image );
 
 						// Set url as a variable.
 						$url = $this->get_entry_link( $post );
 
 						// Build the image html.
-						if ( $do_image && ! $this->is_bg_image() ) {
+						if ( $do_image ) {
+
 							$image_html = $this->get_image_html( $image_id, $url, the_title_attribute( 'echo=0' ) );
+
+							if ( $has_bg_image ) {
+								$html .= $image_html;
+							}
+						}
+
+						// Overlay.
+						if ( mai_is_valid_overlay( $this->args['overlay'] ) ) {
+							$html .= mai_get_overlay_html( $this->args['overlay'] );
 						}
 
 						// Image.
@@ -804,7 +810,7 @@ class Mai_Grid {
 
 			$html .= $this->get_grid_title();
 
-			$html .= $this->get_row_wrap_open();
+			$html .= $this->get_row_open();
 
 				// Loop through terms.
 				foreach ( $terms as $term ) {
@@ -829,14 +835,24 @@ class Mai_Grid {
 					}
 
 					// Opening wrap.
-					$html .= $this->get_entry_wrap_open( $term, $has_bg_image );
+					$html .= $this->get_entry_open( $term, $has_bg_image );
 
 						// Set url as a variable.
 						$url = $this->get_entry_link( $term );
 
 						// Build the image html.
-						if ( $do_image && ! $this->is_bg_image() ) {
+						if ( $do_image ) {
+
 							$image_html = $this->get_image_html( $image_id, $url, esc_attr( $term->name ) );
+
+							if ( $has_bg_image ) {
+								$html .= $image_html;
+							}
+						}
+
+						// Overlay.
+						if ( mai_is_valid_overlay( $this->args['overlay'] ) ) {
+							$html .= mai_get_overlay_html( $this->args['overlay'] );
 						}
 
 						// Image.
@@ -1023,7 +1039,7 @@ class Mai_Grid {
 	 *
 	 * @return  string|HTML
 	 */
-	function get_row_wrap_open() {
+	function get_row_open() {
 
 		// Row attributes.
 		$attributes = array(
@@ -1081,7 +1097,7 @@ class Mai_Grid {
 	 *
 	 * @return  string|HTML
 	 */
-	function get_entry_wrap_open( $object, $has_bg_image ) {
+	function get_entry_open( $object, $has_bg_image ) {
 
 		// Set the entry classes.
 		$attributes = array(
@@ -1103,10 +1119,17 @@ class Mai_Grid {
 				// Don't pass image ID if we're not showing it.
 				$image_id = $has_bg_image ? $this->get_image_id( $object_id ) : false;
 
-				// Add background image and/or aspect ratio attributes.
-				$attributes = mai_add_background_image_attributes( $attributes, $image_id, $this->args['image_size'] );
+				// Get sizes.
+				$sizes  = mai_get_image_width_height( $this->args['image_size'], $image_id );
+				$width  = $sizes[0];
+				$height = $sizes[1];
+
+				// Add aspect ratio data attributes.
+				$attributes = mai_add_aspect_ratio_attributes( $attributes, $width, $height );
 
 				if ( $has_bg_image ) {
+
+					$attributes['class'] .= ' has-bg-image';
 
 					// Set dark overlay if we don't have one.
 					$this->args['overlay'] = empty( $this->args['overlay'] ) ? 'dark' : $this->args['overlay'];
@@ -1132,8 +1155,8 @@ class Mai_Grid {
 				$light_content = true;
 			}
 
-			// Add overlay classes.
-			$attributes['class'] = mai_add_overlay_classes( $attributes['class'], $this->args['overlay'] );
+			// Add has-overlay class to the entry.
+			$attributes['class'] = mai_add_classes( 'has-overlay', $attributes['class'] );
 		}
 
 		// Shade class
@@ -1447,9 +1470,17 @@ class Mai_Grid {
 	 * @return  string}HTML  The image HTML.
 	 */
 	function get_image_html( $image_id, $url, $att_title ) {
-		$image      = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => 'wp-post-image' ) );
-		$image      = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata(), $image_id );
-		$attributes = array();
+		$has_bg_image  = ( 'bg' === $this->args['image_location'] );
+		$image_classes = 'wp-post-image';
+		$image_classes = $has_bg_image ? $image_classes . ' bg-image' : $image_classes;
+		$image         = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => $image_classes ) );
+		$image         = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $image_id ), $image_id );
+
+		if ( $has_bg_image ) {
+			return $image;
+		}
+
+		$attributes    = array();
 		// Add the default class and add location as a class to the image link.
 		$attributes['class'] = 'entry-image-link';
 		if ( $this->args['image_location'] ) {
@@ -1467,6 +1498,8 @@ class Mai_Grid {
 					$attributes['class'] .= ' alignright';
 				break;
 			}
+		} elseif ( $has_bg_image ) {
+			// $attributes['class'] .= ' bg-image';
 		} else {
 			$attributes['class'] .= ' alignnone';
 		}
