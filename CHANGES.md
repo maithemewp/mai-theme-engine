@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.8.0 (TBD)
+## 1.8.0 (2/7/19)
 * Added: Align full/wide support for the block editor (Gutenberg).
 * Added: Huge performance increases (faster page load times) all around, especially on mobile!
 * Added: Section and [grid] images now serve smaller images on smaller window sizes via srcset.
