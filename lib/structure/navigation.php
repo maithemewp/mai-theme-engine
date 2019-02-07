@@ -32,9 +32,9 @@ function mai_add_nav_skip_links( $links ) {
 	}
 	$new_links = array_merge( $header_nav, $new_links );
 	if ( has_nav_menu( 'secondary' ) ) {
-		$new_links['genesis-nav-secondary'] = __( 'Skip to secondary navigation', 'genesis' );
+		$new_links['genesis-nav-secondary'] = __( 'Skip to secondary navigation', 'mai-theme-engine' );
 	}
-	$links = array( 'mai-toggle' => __( 'Menu', 'genesis' ) ) + array_merge( $new_links, $links );
+	$links = array( 'mai-toggle' => __( 'Menu', 'mai-theme-engine' ) ) + array_merge( $new_links, $links );
 	return $links;
 }
 
@@ -162,10 +162,9 @@ function _mai_get_adjacent_post_output( $output, $post ) {
 function mai_get_mobile_menu() {
 
 	// Widget areas
-	$widget_mobile        = is_active_sidebar( 'mobile_menu' );
-	$widget_header_before = is_active_sidebar( 'header_before' );
-	$widget_header_left   = is_active_sidebar( 'header_left' );
-	$widget_header_right  = is_active_sidebar( 'header_right' );
+	$widget_mobile       = is_active_sidebar( 'mobile_menu' );
+	$widget_header_left  = is_active_sidebar( 'header_left' );
+	$widget_header_right = is_active_sidebar( 'header_right' );
 
 	// Menu locations
 	$mobile_nav = wp_nav_menu( array(
@@ -195,7 +194,7 @@ function mai_get_mobile_menu() {
 	) );
 
 	// Bail if no mobile menu content
-	if ( ! ( $widget_mobile || $widget_header_before || $widget_header_left || $widget_header_right || $mobile_nav || $header_left_nav || $header_right_nav || $primary_nav || $secondary_nav ) ) {
+	if ( ! ( $widget_mobile || $widget_header_left || $widget_header_right || $mobile_nav || $header_left_nav || $header_right_nav || $primary_nav || $secondary_nav ) ) {
 		return;
 	}
 

@@ -33,7 +33,7 @@ class Mai_Section {
 			'height'        => 'md',
 			'id'            => '',
 			'image'         => '',
-			'image_size'    => 'banner',
+			'image_size'    => '',
 			'inner'         => '',
 			'overlay'       => '',
 			'style'         => '',
@@ -44,9 +44,9 @@ class Mai_Section {
 			'wrap_class'    => '',
 		), $this->args, 'section' );
 
-		// Set the image size to larger size if height is tall.
-		if ( in_array( $this->args['height'], array( 'lg', 'xl' ) ) ) {
-			$this->args['image_size'] = 'section';
+		// Set image size.
+		if ( $this->args['image'] && ! $this->args['image_size'] ) {
+			$this->args['image_size'] = $this->get_image_size();
 		}
 
 		// Sanitized args. Allows new items added via shortcode_atts_ filter to still pass.
@@ -82,6 +82,26 @@ class Mai_Section {
 		 * @return  array  The args.
 		 */
 		$this->args = apply_filters( 'mai_section_args', $this->args, $this->original_args );
+	}
+
+	/**
+	 * Get the default image size.
+	 *
+	 * @return  string
+	 */
+	function get_image_size() {
+
+		$size = 'banner';
+
+		if ( in_array( 'site_container', (array) genesis_get_option( 'boxed_elements' ) ) ) {
+			$size = 'full-width';
+		}
+		// Set the image size to larger size if height is tall.
+		elseif ( in_array( $this->args['height'], array( 'lg', 'xl' ) ) ) {
+			$size = 'section';
+		}
+
+		return $size;
 	}
 
 	/**
@@ -123,6 +143,8 @@ class Mai_Section {
 	 */
 	function get_section_open() {
 
+		$inner_html = '';
+
 		// Set attributes.
 		$attributes = array(
 			'class' => mai_add_classes( $this->args['class'], 'section' ),
@@ -163,8 +185,17 @@ class Mai_Section {
 		// If we have an image ID.
 		if ( $this->args['image'] ) {
 
-			// Add the background-image attributes.
-			$attributes = mai_add_background_image_attributes( $attributes, $this->args['image'], $this->args['image_size'], false );
+			// Build img to be used as background via CSS.
+			add_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
+			$image = wp_get_attachment_image( $this->args['image'], $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
+			$image = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $this->args['image'] ), $this->args['image'] );
+			remove_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
+
+			if ( $image ) {
+				$inner_html .= $image;
+				// Add has-background-image class.
+				$attributes['class'] = mai_add_classes( 'has-bg-image', $attributes['class'] );
+			}
 
 			/**
 			 * Add content shade class if we don't have inner.
@@ -176,21 +207,23 @@ class Mai_Section {
 
 		}
 
+		// Maybe add inline styles.
+		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
+
 		// If we have an overlay.
 		if ( $this->has_overlay ) {
 
 			$light_content = false;
 
-			// Add overlay classes.
-			$attributes['class'] = mai_add_overlay_classes( $attributes['class'], $this->args['overlay'] );
+			// Add has-overlay class to the section.
+			$attributes['class'] = mai_add_classes( 'has-overlay', $attributes['class'] );
 
+			// Get overlay.
+			$inner_html .= mai_get_overlay_html( $this->args['overlay'] );
 		}
 
-		// Maybe add inline styles.
-		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
-
 		// Build the opening markup.
-		return sprintf( '<%s %s>', $this->args['wrapper'], genesis_attr( $this->args['context'], $attributes, $this->args ) );
+		return sprintf( '<%s %s>%s', $this->args['wrapper'], genesis_attr( $this->args['context'], $attributes, $this->args ), $inner_html );
 	}
 
 	/**
@@ -450,6 +483,54 @@ class Mai_Section {
 			$html = '</div>';
 		}
 		return $html;
+	}
+
+	/**
+	 * Calculate section image srcset.
+	 * Adds srcset of smaller images with a broad (but still landscape) aspect ratio.
+	 *
+	 * @since   1.8.0
+	 *
+	 * @return  string|HTML
+	 */
+	function calculate_srcset( $sources, $size_array, $image_src, $image_meta, $attachment_id ) {
+
+		$sizes = $image_meta['sizes'];
+
+		// Bail if no sizes.
+		if ( ! array( $sizes ) || empty( $sizes ) ) {
+			return $sources;
+		}
+
+		foreach( $sizes as $size => $values ) {
+
+			// Skip if not a size we want to check.
+			if ( ! in_array( $size, array( 'full-width', 'featured', 'one-half', 'one-third', 'one-fourth' ) ) ) {
+				continue;
+			}
+
+			// Get new image data.
+			$source   = wp_get_attachment_image_src( $attachment_id, $size );
+			$url      = $source[0];
+			$width    = $source[1];
+			$height   = $source[2];
+			$ratio    = $width/$height;
+			$in_range = ( $ratio > 1 ) && ( $ratio < 3 );
+
+			// Skip if this image size isn't a valid aspect ratio.
+			if ( ! $in_range ) {
+				continue;
+			}
+
+			// Add to our new srcset.
+			$sources[ $values['width'] ] = array(
+				'url'        => $url,
+				'descriptor' => 'w',
+				'value'      => $width,
+			);
+		}
+
+		return $sources;
 	}
 
 }

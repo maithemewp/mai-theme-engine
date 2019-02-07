@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * A big ol' helper/cleanup function to
  * enabled embeds inside the shortcodes and
@@ -93,13 +92,24 @@ function mai_do_featured_image( $size = 'featured' ) {
 		return;
 	}
 
+	// Get featured image ID.
+	$image_id = get_post_thumbnail_id();
+
+	// Display image.
 	printf( '<div class="featured-image">%s</div>', $image );
 
-	$attachment = get_post( get_post_thumbnail_id() );
+	// Bail if no featured image.
+	if ( ! $image_id ) {
+		return;
+	}
+
+	// Get attachment.
+	$attachment = get_post( $image_id );
 	if ( ! $attachment ) {
 		return;
 	}
 
+	// Get the excerpt.
 	$caption = $attachment->post_excerpt;
 	if ( $caption ) {
 		printf( '<span class="image-caption">%s</span>', $caption );
@@ -115,7 +125,7 @@ function mai_do_featured_image( $size = 'featured' ) {
  *
  * @return  void
  */
-function mai_do_archive_image( $location ) {
+function mai_do_archive_image( $location, $image_size ) {
 
 	// Bail if no location
 	if ( ! $location ) {
@@ -144,13 +154,44 @@ function mai_do_archive_image( $location ) {
 	}
 	// Background Image
 	elseif ( 'background' === $location ) {
-		// Add the entry image as a background image
-		add_action( 'genesis_before_entry', 'mai_do_entry_image_background' );
-		// Add the background image link
+
+		$image_id = get_post_thumbnail_id();
+		$sizes    = mai_get_image_width_height( $image_size, $image_id );
+ 		$width    = $sizes[0];
+		$height   = $sizes[1];
+
+		$entry = function( $attributes ) use ( $image_id, $width, $height ) {
+			if ( $image_id ) {
+				$attributes['class'] .= ' has-bg-image has-bg-link has-overlay light-content';
+			}
+			$attributes = mai_add_aspect_ratio_attributes( $attributes, $width, $height );
+			return $attributes;
+		};
+		$image_link_open = $image_link_close = function() {
+			return '';
+		};
+		$get_image = function( $output ) {
+			$output = str_replace( 'class="', 'class="bg-image has-overlay', $output );
+			$output = $output . mai_get_overlay_html( 'dark' );
+			return $output;
+		};
+
+		// Add the entry image as a background image.
+		add_filter( 'genesis_attr_entry', $entry );
+		add_filter( 'genesis_markup_entry-image-link_open', $image_link_open );
+		add_filter( 'genesis_markup_entry-image-link_close', $image_link_close );
+		add_filter( 'genesis_get_image', $get_image );
+		add_action( 'genesis_entry_header', 'genesis_do_post_image', 0 );
 		add_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
-		// Remove bg iamge link function so additional loops are not affected
-		add_action( 'mai_after_content_archive', function() {
+
+		// Remove so additional loops are not affected.
+		add_action( 'mai_after_content_archive', function() use ( $get_image, $image_link_open, $image_link_close, $entry ) {
 			remove_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
+			remove_action( 'genesis_entry_header', 'genesis_do_post_image', 0 );
+			remove_filter( 'genesis_get_image', $get_image );
+			remove_filter( 'genesis_markup_entry-image-link_open', $image_link_open );
+			remove_filter( 'genesis_markup_entry-image-link_close', $image_link_close );
+			remove_filter( 'genesis_attr_entry', $entry );
 		});
 	}
 
@@ -175,7 +216,9 @@ function mai_do_archive_image( $location ) {
  * Change the markup to wrap the entire entry in an href link.
  * Remove the title link.
  *
- * @return void.
+ * @todo    Remove all this since we moved to inline images for bg.
+ *
+ * @return  void.
  */
 function mai_do_entry_image_background() {
 
@@ -244,7 +287,32 @@ function mai_get_bg_image_link( $url = '', $title = '', $attributes = array() ) 
 		'class' => 'bg-link',
 		'href'  => $url ? esc_url( $url ) : get_permalink(),
 	) );
-	return sprintf( '<div class="bg-link-wrap"><a %s><span class="screen-reader-text" aria-hidden="true">%s</span></a></div>', genesis_attr( 'bg-link', $attributes ), $title );
+	return sprintf( '<a %s><span class="screen-reader-text" aria-hidden="true">%s</span></a>', genesis_attr( 'bg-link', $attributes ), $title );
+	// return sprintf( '<div class="bg-link-wrap"><a %s><span class="screen-reader-text" aria-hidden="true">%s</span></a></div>', genesis_attr( 'bg-link', $attributes ), $title );
+}
+
+/**
+ * Get overlay HTML.
+ *
+ * @since   1.8.0
+ * @param   string  $overlay  The type of overlay to get.
+ *
+ * @return  string|HTML
+ */
+function mai_get_overlay_html( $overlay = '' ) {
+	$overlay_classes = 'overlay';
+	switch ( $overlay ) {
+		case 'gradient':
+			$overlay_classes .= ' overlay-gradient';
+			break;
+		case 'light':
+			$overlay_classes .= ' overlay-light';
+			break;
+		case 'dark':
+			$overlay_classes .= ' overlay-dark';
+			break;
+	}
+	return sprintf( '<span class="%s"></span>', $overlay_classes );
 }
 
 /**
@@ -497,21 +565,21 @@ function mai_get_sitemap() {
 
 	$post_counts = wp_count_posts();
 	if ( $post_counts->publish > 0 ) {
-		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Categories:', 'genesis' ), $heading );
+		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Categories:', 'mai-theme-engine' ), $heading );
 		$sitemap .= sprintf( '<ul>%s</ul>', wp_list_categories( array(
 			'number'      => $number,
 			'sort_column' => 'name',
 			'title_li'    => '',
 			'echo'        => false,
 		) ) );
-		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Authors:', 'genesis' ), $heading );
+		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Authors:', 'mai-theme-engine' ), $heading );
 		$sitemap .= sprintf( '<ul>%s</ul>', wp_list_authors( array(
 			'number'        => $number,
 			'exclude_admin' => false,
 			'optioncount'   => true,
 			'echo'          => false,
 		) ) );
-		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Monthly:', 'genesis' ), $heading );
+		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Monthly:', 'mai-theme-engine' ), $heading );
 		$sitemap .= sprintf( '<ul>%s</ul>', wp_get_archives( array(
 			'number' => $number,
 			'type'   => 'monthly',

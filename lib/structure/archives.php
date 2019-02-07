@@ -369,7 +369,7 @@ function mai_do_content_archive_archive_options() {
 	if ( $content_archive_thumbnail && $image_location ) {
 
 		// Add the image back, in a custom location
-		mai_do_archive_image( $image_location );
+		mai_do_archive_image( $image_location, $image_size );
 
 		/**
 		 * Content Archive Thumbnail.

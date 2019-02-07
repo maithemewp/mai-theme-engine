@@ -125,6 +125,7 @@ function mai_get_default_options() {
 		'boxed_elements'            => array( 'entry_singular', 'entry_archive', 'sidebar_widgets', 'sidebar_alt_widgets', 'author_box', 'after_entry_widgets', 'adjacent_entry_nav', 'comment_wrap', 'comment', 'comment_respond', 'pings' ),
 		// Mai Utility.
 		'mai_db_version'            => MAI_THEME_ENGINE_DB_VERSION,
+		'mai_tester'                => 0,
 	);
 
 	/**

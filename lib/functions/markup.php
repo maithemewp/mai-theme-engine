@@ -426,28 +426,49 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
 		$attributes['class'] .= ' image-bg-none';
 	}
 
+	/**
+	 * Add aspect ratio class, for JS to target.
+	 * We do this even without an image to maintain equal height elements.
+	 */
 	if ( $aspect_ratio ) {
-
-		/**
-		 * Add aspect ratio class, for JS to target.
-		 * We do this even without an image to maintain equal height elements.
-		 */
-		$attributes['class'] .= ' aspect-ratio';
 
 		// If image size is in the global (it should be).
 		if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
 			$registered_image = $_wp_additional_image_sizes[ $image_size ];
-			$attributes['data-aspect-width']  = $registered_image['width'];
-			$attributes['data-aspect-height'] = $registered_image['height'];
+			$width  = $registered_image['width'];
+			$height = $registered_image['height'];
 		}
 		// Otherwise use the actual image dimensions.
 		elseif ( $image ) {
-			$attributes['data-aspect-width']  = $image[1];
-			$attributes['data-aspect-height'] = $image[2];
+			$width  = $image[1];
+			$height = $image[2];
+		}
+		// Fallback.
+		else {
+			$width  = 4;
+			$height = 3;
 		}
 
+		$attributes = mai_add_aspect_ratio_attributes( $attributes, $width, $height );
 	}
 
+	return $attributes;
+}
+
+/**
+ * Add aspect ratio class and data attributes.
+ *
+ * @since   1.8.0
+ * @access  private
+ *
+ * @param   array   $attributes    The existing HTML attributes.
+ *
+ * @return  array   The modified attributes.
+ */
+function mai_add_aspect_ratio_attributes( $attributes, $width, $height ) {
+	$attributes['class']              = mai_add_classes( 'aspect-ratio', $attributes['class'] );
+	$attributes['data-aspect-width']  = $width;
+	$attributes['data-aspect-height'] = $height;
 	return $attributes;
 }
 

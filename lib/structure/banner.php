@@ -100,7 +100,7 @@ function mai_do_banner_content() {
 
 	// Front page displays your latest posts.
 	if ( is_front_page() && is_home() ) {
-		$title = __( 'Blog', 'genesis' );
+		$title = __( 'Blog', 'mai-theme-engine' );
 	}
 
 	// Static front page.
@@ -198,17 +198,17 @@ function mai_do_banner_content() {
 	// Date archives.
 	elseif ( is_date() ) {
 		if ( is_day() ) {
-			$title = __( 'Archives for ', 'genesis' ) . get_the_date();
+			$title = __( 'Archives for ', 'mai-theme-engine' ) . get_the_date();
 		} elseif ( is_month() ) {
-			$title = __( 'Archives for ', 'genesis' ) . single_month_title( ' ', false );
+			$title = __( 'Archives for ', 'mai-theme-engine' ) . single_month_title( ' ', false );
 		} elseif ( is_year() ) {
-			$title = __( 'Archives for ', 'genesis' ) . get_query_var( 'year' );
+			$title = __( 'Archives for ', 'mai-theme-engine' ) . get_query_var( 'year' );
 		}
 	}
 
 	// Search results.
 	elseif ( is_search() ) {
-		$title = sprintf( '%s %s', apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'genesis' ) ), get_search_query() );
+		$title = sprintf( '%s %s', apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'mai-theme-engine' ) ), get_search_query() );
 	}
 
 	// 404.
@@ -219,7 +219,7 @@ function mai_do_banner_content() {
 		add_filter( 'genesis_markup_entry-title_content', '__return_empty_string' );
 		add_filter( 'genesis_markup_entry-title_close', '__return_empty_string' );
 
-		$title = apply_filters( 'genesis_404_entry_title', __( 'Not found, error 404', 'genesis' ) );
+		$title = apply_filters( 'genesis_404_entry_title', __( 'Not found, error 404', 'mai-theme-engine' ) );
 	}
 
 	// Banner content filters.

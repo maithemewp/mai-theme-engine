@@ -1,0 +1,116 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "21a3cd9ca02c059a8c52189234346d60",
+    "packages": [
+        {
+            "name": "cmb2/cmb2",
+            "version": "v2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CMB2/CMB2.git",
+                "reference": "008d9b83263d971d6bd41c27e31113db852d5ef3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/008d9b83263d971d6bd41c27e31113db852d5ef3",
+                "reference": "008d9b83263d971d6bd41c27e31113db852d5ef3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">5.2.4"
+            },
+            "require-dev": {
+                "apigen/apigen": "4.1.2",
+                "nette/utils": "2.5.3",
+                "phpunit/phpunit": "6.5.13"
+            },
+            "suggest": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WebDevStudios",
+                    "email": "contact@webdevstudios.com",
+                    "homepage": "https://github.com/WebDevStudios",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Justin Sternberg",
+                    "email": "justin@dsgnwrks.pro",
+                    "homepage": "https://dsgnwrks.pro",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CMB2 is a metabox, custom fields, and forms library for WordPress that will blow your mind.",
+            "homepage": "https://github.com/CMB2/CMB2",
+            "keywords": [
+                "metabox",
+                "plugin",
+                "wordpress"
+            ],
+            "time": "2019-01-21T04:30:08+00:00"
+        },
+        {
+            "name": "yahnis-elsts/plugin-update-checker",
+            "version": "v4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
+                "reference": "d98d6bc6caac4b46b61186447a947323a466a021"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/d98d6bc6caac4b46b61186447a947323a466a021",
+                "reference": "d98d6bc6caac4b46b61186447a947323a466a021",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "plugin-update-checker.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yahnis Elsts",
+                    "email": "whiteshadow@w-shadow.com",
+                    "homepage": "http://w-shadow.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A custom update checker for WordPress plugins and themes. Useful if you can't host your plugin in the official WP repository but still want it to support automatic updates.",
+            "homepage": "https://github.com/YahnisElsts/plugin-update-checker/",
+            "keywords": [
+                "automatic updates",
+                "plugin updates",
+                "theme updates",
+                "wordpress"
+            ],
+            "time": "2018-12-30T10:38:32+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

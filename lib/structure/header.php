@@ -2,7 +2,6 @@
 
 /**
  * Add an image inline in the site title element for the main logo.
- *
  * The custom logo is added via the Customiser.
  *
  * @since   1.3.0
@@ -82,6 +81,36 @@ add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
 function mai_hide_site_description( $attributes ) {
 	$attributes['class'] .= ' screen-reader-text';
 	return $attributes;
+}
+
+/**
+ * Add header before markup if there is content.
+ *
+ * @return  void
+ */
+add_action( 'genesis_header', 'mai_header_before', 2 );
+function mai_header_before() {
+	$before = mai_get_do_action( 'mai_header_before' );
+	if ( ! $before ) {
+		return;
+	}
+	printf( '<div %s><div class="wrap">%s</div></div>',
+		genesis_attr( 'header-before', array( 'class' => 'header-before text-sm' ) ),
+		$before
+	);
+}
+
+/**
+ * Add header trigger element.
+ * For ScrollMagic.
+ *
+ * @since   1.8.0
+ *
+ * @return  void
+ */
+add_action( 'genesis_header', 'mai_header_trigger', 3 );
+function mai_header_trigger() {
+	echo '<span id="header-trigger"></span>';
 }
 
 /**
@@ -221,23 +250,6 @@ function mai_do_header() {
 }
 
 /**
- * Add header before markup if there is content.
- *
- * @return  void
- */
-add_action( 'genesis_header', 'mai_header_before', 4 );
-function mai_header_before() {
-	$before = mai_get_do_action( 'mai_header_before' );
-	if ( ! $before ) {
-		return;
-	}
-	printf( '<div %s><div class="wrap">%s</div></div>',
-		genesis_attr( 'header-before', array( 'class' => 'header-before text-sm' ) ),
-		$before
-	);
-}
-
-/**
  * Add header after markup if there is content.
  *
  * @return  void
@@ -267,10 +279,22 @@ function mai_do_header_before() {
 		return;
 	}
 
+	// Variable function.
+	$header_before = function( $attributes ) {
+		$attributes['class'] = 'nav-header-before';
+		return $attributes;
+	};
+
+	// Change the header before menu class.
+	add_filter( 'genesis_attr_nav-header', $header_before );
+
 	// Before Header widget area
 	_mai_add_widget_header_menu_args();
 	genesis_widget_area( 'header_before' );
 	_mai_remove_widget_header_menu_args();
+
+	// Remove the filter.
+	remove_filter( 'genesis_attr_nav-header', $header_before );
 }
 
 /**

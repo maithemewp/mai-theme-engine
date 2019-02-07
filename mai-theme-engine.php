@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.7.0
+ * Version:         1.8.0
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -89,7 +89,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.7.0' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.8.0' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1400' );
@@ -99,9 +99,6 @@ final class Mai_Theme_Engine {
 
 		// Plugin Lib Path.
 		define( 'MAI_THEME_ENGINE_LIB_DIR', MAI_THEME_ENGINE_PLUGIN_DIR . 'lib/' );
-
-		// Plugin Includes Path.
-		define( 'MAI_THEME_ENGINE_INCLUDES_DIR', MAI_THEME_ENGINE_PLUGIN_DIR . 'includes/' );
 
 		// Plugin Folder URL.
 		define( 'MAI_THEME_ENGINE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -117,15 +114,20 @@ final class Mai_Theme_Engine {
 	/**
 	 * Include required files.
 	 *
+	 * composer require yahnis-elsts/plugin-update-checker
+	 * composer require cmb2/cmb2
+	 *
+	 * v2.6.0   CBM2
+	 * v4.5     Plugin Update Checker
+	 *
 	 * @access  private
 	 * @since   1.0.0
 	 * @return  void
 	 */
 	private function hooks() {
 
-		// Includes (Vendor).
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'CMB2/init.php'; // v2.5.1
-		require_once MAI_THEME_ENGINE_INCLUDES_DIR . 'plugin-update-checker/plugin-update-checker.php'; // v4.4
+		// Include vendor libraries.
+		require_once __DIR__ . '/vendor/autoload.php';
 
 		// Run the updater.
 		add_action( 'admin_init', function() {
@@ -135,15 +137,23 @@ final class Mai_Theme_Engine {
 				return;
 			}
 
+			// Bail if plugin updater is not loaded.
+			if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+				return;
+			}
+
 			// Setup the updater.
 			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
 
-			/**
-			 * Allow branch and updater object manipulation.
-			 * This let's us do beta releases via a branch change,
-			 * among other things.
-			 */
-			$updater->setBranch( apply_filters( 'mai_updater_branch', 'master' ) );
+			// Get the branch. If checking for beta releases.
+			$tester = genesis_get_option( 'mai_tester' );
+			$tester = $tester ? 'beta' : 'master';
+
+			// Allow branch and updater object manipulation.
+			$branch = apply_filters( 'mai_updater_branch', $tester );
+
+			// Set the branch.
+			$updater->setBranch( $branch );
 
 			// Allow tokens to be used to bypass GitHub rate limit.
 			if ( defined( 'MAI_UPDATER_TOKEN' ) ) {
@@ -217,6 +227,9 @@ final class Mai_Theme_Engine {
 				'flex-width'    => true,
 			) );
 
+			// Add alignfull and alignwide support.
+			add_theme_support( 'align-wide' );
+
 			// Add excerpt support for pages.
 			add_post_type_support( 'page', 'excerpt' );
 
@@ -229,91 +242,15 @@ final class Mai_Theme_Engine {
 			remove_action( 'genesis_meta', 'genesis_load_stylesheet' );
 			add_action( 'wp_enqueue_scripts', 'mai_enqueue_main_stylesheet', 999 );
 			function mai_enqueue_main_stylesheet() {
-				$handle   = defined( 'CHILD_THEME_NAME' ) && CHILD_THEME_NAME ? sanitize_title_with_dashes( CHILD_THEME_NAME ): 'child-theme';
 				$version  = defined( 'CHILD_THEME_VERSION' ) && CHILD_THEME_VERSION ? CHILD_THEME_VERSION : PARENT_THEME_VERSION;
 				$version .= '.' . date ( 'njYHi', filemtime( get_stylesheet_directory() . '/style.css' ) );
-				wp_enqueue_style( $handle, get_stylesheet_uri(), false, $version );
+				wp_enqueue_style( mai_get_handle(), get_stylesheet_uri(), false, $version );
 			}
 
 			// Load default favicon.
 			add_filter( 'genesis_pre_load_favicon', 'mai_default_favicon' );
 			function mai_default_favicon( $favicon ) {
 				return MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/favicon.png';
-			}
-
-			/**
-			 * Create the initial image sizes.
-			 * @link http://andrew.hedges.name/experiments/aspect_ratio/
-			 */
-			$image_sizes = array(
-				'banner' => array(
-					'width'  => 1600,
-					'height' => 533,
-					'crop'   => true, // 3x1
-				),
-				'section' => array(
-					'width'  => 1600,
-					'height' => 900,
-					'crop'   => true, // 16x9
-				),
-				'featured' => array(
-					'width'  => 800,
-					'height' => 600,
-					'crop'   => true, // 4x3 (works better for no sidebar)
-				),
-				'one-half' => array(
-					'width'  => 550,
-					'height' => 413,
-					'crop'   => true, // 4x3
-				),
-				'one-third' => array(
-					'width'  => 350,
-					'height' => 263,
-					'crop'   => true, // 4x3
-				),
-				'one-fourth' => array(
-					'width'  => 260,
-					'height' => 195,
-					'crop'   => true, // 4x3
-				),
-				'tiny' => array(
-					'width'  => 80,
-					'height' => 80,
-					'crop'   => true, // square
-				),
-			);
-
-			/**
-			 * Filter the image sizes to allow the theme to override.
-			 *
-			 * // Change the default Mai image sizes
-			 * add_filter( 'mai_image_sizes', 'prefix_custom_image_sizes' );
-			 * function prefix_custom_image_sizes( $image_sizes ) {
-			 *
-			 *   // Change one-third image size
-			 *   $image_sizes['one-third'] = array(
-			 *       'width'  => 350,
-			 *       'height' => 350,
-			 *       'crop'   => true,
-			 *   );
-			 *
-			 *   // Change one-fourth image size
-			 *   $image_sizes['one-fourth'] = array(
-			 *       'width'  => 260,
-			 *       'height' => 260,
-			 *       'crop'   => true,
-			 *   );
-			 *
-			 *   return $image_sizes;
-			 *
-			 * }
-			 *
-			 */
-			$image_sizes = apply_filters( 'mai_image_sizes', $image_sizes );
-
-			// Loop through and add the image sizes.
-			foreach ( $image_sizes as $name => $data ) {
-				add_image_size( $name, $data['width'], $data['height'], $data['crop'] );
 			}
 
 		}, 15 );
@@ -346,6 +283,18 @@ final class Mai_Theme_Engine {
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'settings/metaboxes/*.php' ) as $file ) { include_once $file; }
 			foreach ( glob( MAI_THEME_ENGINE_LIB_DIR . 'structure/*.php' ) as $file ) { include_once $file; }
 
+			// Get the image sizes to register.
+			$image_sizes = mai_get_image_sizes();
+
+			// If image sizes.
+			if ( $image_sizes ) {
+
+				// Loop through and add the image sizes.
+				foreach ( $image_sizes as $name => $values ) {
+					add_image_size( $name, $values['width'], $values['height'], $values['crop'] );
+				}
+			}
+
 		}, 8 );
 
 	}
@@ -355,7 +304,7 @@ final class Mai_Theme_Engine {
 	}
 
 	function admin_notices() {
-		printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', __( '<strong>Your theme does not support the Mai Theme Engine plugin</strong>. As a result, this plugin has been deactivated.', 'mai-theme-engine' ) );
+		printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', __( '<strong>Your theme does not support the Mai Theme Engine plugin</strong>. As a result, Mai Theme Engine has been deactivated.', 'mai-theme-engine' ) );
 		// Remove "Plugin activated" notice.
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );

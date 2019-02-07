@@ -181,8 +181,12 @@ function mai_do_layout() {
  */
 add_filter( 'genesis_structural_wrap-footer-widgets', 'mai_footer_widgets_flex_row', 10, 2 );
 function mai_footer_widgets_flex_row( $output, $original_output ) {
+	$columns = mai_get_footer_widgets_count();
+	if ( 1 >= $columns ) {
+		return $output;
+	}
 	if ( 'open' == $original_output ) {
-		$output = $output . '<div class="footer-widgets-wrap">';
+		$output = $output . '<div class="row gutter-xl">';
 	}
 	elseif ( 'close' == $original_output ) {
 		$output = '</div>' . $output;
@@ -191,13 +195,18 @@ function mai_footer_widgets_flex_row( $output, $original_output ) {
 }
 
 /**
- * Add footer widgets has columns class.
+ * Add footer widgets column classes.
  *
- * @param   array  The footer-widgets attributes.
+ * @param   array  $attributes  The footer-widget-area attributes.
  *
  * @return  array  The modified attributes.
  */
-add_filter( 'genesis_attr_footer-widgets', function( $attributes ) {
-	$attributes['class'] = mai_add_classes( sprintf( 'footer-widgets-has-%s', mai_get_footer_widgets_count() ), $attributes['class'] );
+add_filter( 'genesis_attr_footer-widget-area', 'mai_footer_widget_flex_col' );
+function mai_footer_widget_flex_col( $attributes ) {
+	$columns = mai_get_footer_widgets_count();
+	if ( 1 >= $columns ) {
+		return $attributes;
+	}
+	$attributes['class'] = mai_add_classes( array( 'col', mai_get_col_classes_by_columns( $columns ) ), $attributes['class'] );
 	return $attributes;
-});
+}

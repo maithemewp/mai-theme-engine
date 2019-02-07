@@ -1,6 +1,26 @@
 <?php
 
-// Enqueue Javascript files
+/**
+ * Enqueue customizer scripts.
+ *
+ * @since   1.8.0
+ *
+ * @return  void
+ */
+add_action( 'customize_preview_init', 'mai_customizer_enqueue_scripts' );
+function mai_customizer_enqueue_scripts() {
+	// Use minified files if script debug is not being used.
+	$suffix = mai_get_suffix();
+	wp_enqueue_script( 'mai-customizer', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-customizer{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
+}
+
+/**
+ * Enqueue Javascript files.
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_scripts' );
 function mai_enqueue_scripts() {
 
@@ -13,6 +33,7 @@ function mai_enqueue_scripts() {
 		'mainMenu'  => __( 'Menu', 'mai-theme-engine' ),
 		'subMenu'   => __( 'Submenu', 'mai-theme-engine' ),
 		'searchBox' => sprintf( '<div class="search-box" style="display:none;">%s</div>', get_search_form( false ) ),
+		'logoWidth' => get_theme_mod( 'custom_logo_width' ),
 	) );
 
 	// Maybe enabled responsive videos.
@@ -28,7 +49,13 @@ function mai_enqueue_scripts() {
 	wp_register_script( 'mai-slick-init', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/slick-init{$suffix}.js", array( 'mai-slick' ), MAI_THEME_ENGINE_VERSION, true );
 }
 
-// Enqueue CSS files.
+/**
+ * Enqueue CSS files.
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_styles' );
 function mai_enqueue_styles() {
 
@@ -36,10 +63,19 @@ function mai_enqueue_styles() {
 	$suffix = mai_get_suffix();
 
 	wp_enqueue_style( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/mai-theme{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
-	wp_enqueue_style( 'flexington', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/flexington{$suffix}.css", array(), '2.4.0' );
+	wp_enqueue_style( 'flexington', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/flexington{$suffix}.css", array(), '2.5.0' );
+	if ( is_rtl() ) {
+		wp_enqueue_style( 'mai-theme-engine-rtl', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/mai-theme-rtl{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
+	}
 }
 
-// Remove WooCommerce default layout styles.
+/**
+ * Remove WooCommerce default layout styles.
+ *
+ * @since   1.0.0
+ *
+ * @return  void
+ */
 add_filter( 'woocommerce_enqueue_styles', 'mai_woocommerce_styles' );
 function mai_woocommerce_styles( $styles ) {
 

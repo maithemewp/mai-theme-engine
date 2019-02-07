@@ -1,6 +1,60 @@
 <?php
 
 /**
+ * Add inline CSS.
+ * Way late cause Engine changes stylesheet to 999.
+ *
+ * @since   1.8.0
+ *
+ * @link    http://www.billerickson.net/code/enqueue-inline-styles/
+ * @link    https://sridharkatakam.com/chevron-shaped-featured-parallax-section-in-genesis-using-clip-path/
+ *
+ * @return  void
+ */
+add_action( 'wp_enqueue_scripts', 'mai_logo_width_css', 1000 );
+function mai_logo_width_css() {
+
+	if ( ! ( function_exists( 'has_custom_logo' ) || has_custom_logo() ) ) {
+		return;
+	}
+
+	$width = get_theme_mod( 'custom_logo_width' );
+	if ( ! $width ) {
+		return;
+	}
+
+	$width_px  = absint( $width ) . 'px';
+	$shrink_px = absint( $width * .7 ) . 'px';
+
+	/**
+	 * Set max-width on the logo link.
+	 * Stay shrunk on mobile.
+	 */
+	$css = "
+		@media only screen and (max-width: 768px) {
+			.custom-logo-link {
+				max-width: {$shrink_px};
+			}
+		}
+		@media only screen and (min-width: 769px) {
+			.custom-logo-link {
+				max-width: {$width_px};
+			}
+		}
+	";
+	if ( mai_has_shrink_header() ) {
+		$css .= "
+			@media only screen and (min-width: 769px) {
+				.site-header.scroll .custom-logo-link {
+					max-width: {$shrink_px};
+				}
+			}
+		";
+	}
+	wp_add_inline_style( mai_get_handle(), $css );
+}
+
+/**
  * Add body class to enabled specific settings.
  *
  * @param   array  $classes  The body classes.
@@ -375,4 +429,19 @@ function mai_boxed_comment_form() {
 	add_action( 'comment_form_after', function() {
 		echo '</div>';
 	}, 0 );
+}
+
+/**
+ * Add srcset markup to images retreived via `genesis_get_image()` function.
+ *
+ * @since   1.8.0
+ *
+ * @return  string|HTML
+ */
+add_filter( 'genesis_get_image', 'mai_genesis_get_image_srcset', 10, 6 );
+function mai_genesis_get_image_srcset( $output, $args, $id, $html, $url, $src ) {
+	if ( 'html' === mb_strtolower( $args['format'] ) ) {
+		return $output;
+	}
+	return wp_image_add_srcset_and_sizes( $html );
 }

@@ -83,7 +83,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 		'banner_id',
 		array(
 			'label'           => __( 'Banner Image', 'mai-theme-engine' ),
-			'description'     => __( 'Set a default banner image. Can be overridden per post/page.', 'mai-theme-engine' ),
+			'description'     => __( 'Set a default banner image (min. 1600px wide) which auto-crops based on the section content and height. Image can be overridden per post/page.', 'mai-theme-engine' ),
 			'section'         => $section,
 			'settings'        => _mai_customizer_get_field_name( $settings_field, 'banner_id' ),
 			'priority'        => 4,
@@ -140,7 +140,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				''         => __( '- None -', 'genesis' ),
+				''         => __( 'None', 'mai-theme-engine' ),
 				'light'    => __( 'Light', 'mai-theme-engine' ),
 				'dark'     => __( 'Dark', 'mai-theme-engine' ),
 				'gradient' => __( 'Gradient', 'mai-theme-engine' ),
@@ -169,7 +169,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				''      => __( '- None -', 'genesis' ),
+				''      => __( 'None', 'mai-theme-engine' ),
 				'light' => __( 'Light Box', 'mai-theme-engine' ),
 				'dark'  => __( 'Dark Box', 'mai-theme-engine' ),
 			),
@@ -259,7 +259,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				''             => __( '- None -', 'genesis' ),
+				''             => __( 'None', 'mai-theme-engine' ),
 				'left'         => __( 'Left', 'mai-theme-engine' ),
 				'lefttop'      => __( 'Left Top', 'mai-theme-engine' ),
 				'leftbottom'   => __( 'Left Bottom', 'mai-theme-engine' ),
@@ -294,7 +294,7 @@ function mai_register_banner_customizer_settings( $wp_customize ) {
 			'priority' => 10,
 			'type'     => 'select',
 			'choices'  => array(
-				''       => __( '- None -', 'genesis' ),
+				''       => __( 'None', 'mai-theme-engine' ),
 				'left'   => __( 'Left', 'mai-theme-engine' ),
 				'center' => __( 'Center', 'mai-theme-engine' ),
 				'right'  => __( 'Right', 'mai-theme-engine' ),

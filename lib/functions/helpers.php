@@ -1,6 +1,137 @@
 <?php
 
 /**
+ * Helper function to get custom image sizes.
+ *
+ * @access  private
+ * @since   1.8.0
+ *
+ * @return  array  Image sizes and labels.
+ */
+function mai_get_image_sizes() {
+
+	// Get labels.
+	$labels = mai_get_image_size_labels();
+
+	/**
+	 * Create the initial image sizes.
+	 * @link http://andrew.hedges.name/experiments/aspect_ratio/
+	 */
+	$image_sizes = array(
+		'banner' => array(
+			'label'  => $labels[ 'banner' ],
+			'width'  => 1600,
+			'height' => 533,
+			'crop'   => true, // 3x1
+		),
+		'section' => array(
+			'label'  => $labels[ 'section' ],
+			'width'  => 1600,
+			'height' => 900,
+			'crop'   => true, // 16x9
+		),
+		'full-width' => array(
+			'label'  => $labels[ 'full-width' ],
+			'width'  => 1248,
+			'height' => 832,
+			'crop'   => true, // 3x2
+		),
+		'featured' => array(
+			'label'  => $labels[ 'featured' ],
+			'width'  => 800,
+			'height' => 600,
+			'crop'   => true, // 4x3 (works better for no sidebar)
+		),
+		'one-half' => array(
+			'label'  => $labels[ 'one-half' ],
+			'width'  => 550,
+			'height' => 413,
+			'crop'   => true, // 4x3
+		),
+		'one-third' => array(
+			'label'  => $labels[ 'one-third' ],
+			'width'  => 350,
+			'height' => 263,
+			'crop'   => true, // 4x3
+		),
+		'one-fourth' => array(
+			'label'  => $labels[ 'one-fourth' ],
+			'width'  => 260,
+			'height' => 195,
+			'crop'   => true, // 4x3
+		),
+		'tiny' => array(
+			'label'  => $labels[ 'tiny' ],
+			'width'  => 80,
+			'height' => 80,
+			'crop'   => true, // square
+		),
+	);
+
+	/**
+	 * Filter the image sizes to allow the theme to override.
+	 *
+	 * // Change the default Mai image sizes
+	 * add_filter( 'mai_image_sizes', 'prefix_custom_image_sizes' );
+	 * function prefix_custom_image_sizes( $image_sizes ) {
+	 *
+	 *   // Change one-third image size
+	 *   $image_sizes['one-third'] = array(
+	 *       'width'  => 350,
+	 *       'height' => 350,
+	 *       'crop'   => true,
+	 *   );
+	 *
+	 *   // Change one-fourth image size
+	 *   $image_sizes['one-fourth'] = array(
+	 *       'width'  => 260,
+	 *       'height' => 260,
+	 *       'crop'   => true,
+	 *   );
+	 *
+	 *   return $image_sizes;
+	 *
+	 * }
+	 *
+	 */
+	$image_sizes = apply_filters( 'mai_image_sizes', $image_sizes );
+
+	/**
+	 * Make sure labels are added.
+	 * 'mai_image_sizes' didn't have 'label' in the array prior to 1.8.0.
+	 * This insures existing filters don't break.
+	 */
+	foreach( $image_sizes as $name => $values ) {
+		if ( ! isset( $values['label'] ) || empty( $values['label'] ) ) {
+			$image_sizes[ $name ]['label'] = $labels[ $name ];
+		}
+	}
+
+	return $image_sizes;
+}
+
+/**
+ * Get default image size labels.
+ *
+ * @access  private
+ * @since   1.8.0
+ *
+ * @return  array
+ */
+function mai_get_image_size_labels() {
+	return array(
+		'banner'     => __( 'Banner', 'mai-theme-engine' ),
+		'section'    => __( 'Section', 'mai-theme-engine' ),
+		'full-width' => __( 'Full Width', 'mai-theme-engine' ),
+		'featured'   => __( 'Featured', 'mai-theme-engine' ),
+		'one-half'   => __( 'One Half', 'mai-theme-engine' ),
+		'one-third'  => __( 'One Third', 'mai-theme-engine' ),
+		'one-fourth' => __( 'One Fourth', 'mai-theme-engine' ),
+		'tiny'       => __( 'Tiny', 'mai-theme-engine' ),
+	);
+}
+
+/**
  * Get the site layout.
  *
  * @access  private
@@ -536,4 +667,20 @@ function mai_sections_has_title( $post_id ) {
 	}
 
 	return $has_title;
+}
+
+function mai_has_shrink_header() {
+	$header_style = genesis_get_option( 'header_style' );
+	if ( ! $header_style ) {
+		return false;
+	}
+	if ( ! in_array( $header_style, array( 'sticky_shink', 'reveal_shrink' ) ) ) {
+		return false;
+	}
+	return true;
+}
+
+function mai_has_scroll_header() {
+	$header_style = genesis_get_option( 'header_style' );
+	return ( $header_style && in_array( $header_style, array( 'sticky', 'reveal', 'sticky_shrink', 'reveal_shrink' ) ) );
 }

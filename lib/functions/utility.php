@@ -340,9 +340,9 @@ function mai_sanitize_hex_color( $color, $hash = true ) {
  * Generate a hex value that has appropriate contrast
  * against the inputted value.
  *
- * @since 1.0.0
+ * @since   1.0.0
  *
- * @return string Hex color code for contrasting color.
+ * @return  string Hex color code for contrasting color.
  */
 function mai_get_content_shade_from_bg( $hex_color ) {
 	$color = new Mai_Color( $hex_color );
@@ -353,9 +353,50 @@ function mai_get_content_shade_from_bg( $hex_color ) {
 }
 
 /**
+ * Get an image width and height.
+ *
+ * @since   1.8.0
+ *
+ * @return  array  An array with [0] being width and [1] being height.
+ */
+function mai_get_image_width_height( $image_size, $image_id = '' ) {
+	global $_wp_additional_image_sizes;
+	// Get width/height from global image sizes.
+	if ( isset( $_wp_additional_image_sizes[ $image_size ] ) ) {
+		$registered_image = $_wp_additional_image_sizes[ $image_size ];
+		$width  = $registered_image['width'];
+		$height = $registered_image['height'];
+	}
+	// Otherwise use the actual image dimensions.
+	elseif ( $image_id && $image = wp_get_attachment_image_src( $image_id, $image_size ) ) {
+		$width  = $image[1];
+		$height = $image[2];
+	}
+	// Fallback.
+	else {
+		$width  = 4;
+		$height = 3;
+	}
+	return array( $width, $height );
+}
+
+/**
+ * Get the stylesheet handle.
+ *
+ * @since   1.8.0
+ *
+ * @return  string
+ */
+function mai_get_handle() {
+	return ( defined( 'CHILD_THEME_NAME' ) && CHILD_THEME_NAME ) ? sanitize_title_with_dashes( CHILD_THEME_NAME ) : 'child-theme';
+}
+
+/**
  * Helper function for getting the script/style `.min` suffix for minified files.
  *
- * @return string
+ * @since   0.8.0
+ *
+ * @return  string
  */
 function mai_get_suffix() {
 	$debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
@@ -458,4 +499,59 @@ function mai_ends_with( $haystack, $needle ) {
 		return true;
 	}
 	return ( $needle === substr( $haystack, -$length ) );
+}
+
+
+/**
+ * Pretty Printing
+ *
+ * @since   1.8.0
+ * @author  Chris Bratlien
+ * @author  Bill Erickson
+ * @author  Mike Hemberger
+ *
+ * @param   mixed   $obj
+ * @param   string  $label
+ *
+ * @return  null
+ */
+function mai_pp( $obj, $label = '' ) {
+	$data = json_encode( print_r( $obj,true ) );
+	?>
+	<style type="text/css">
+		#maiLogger {
+			position: absolute;
+			top: 30px;
+			right: 0px;
+			border-left: 4px solid #bbb;
+			padding: 6px;
+			background: white;
+			color: #444;
+			z-index: 999;
+			font-size: 1.2rem;
+			width: 40vw;
+			height: calc( 100vh - 30px );
+			overflow: scroll;
+		}
+	</style>
+	<script type="text/javascript">
+		var doStuff = function() {
+			var obj    = <?php echo $data; ?>;
+			var logger = document.getElementById('maiLogger');
+			if ( ! logger ) {
+				logger = document.createElement('div');
+				logger.id = 'maiLogger';
+				document.body.appendChild(logger);
+			}
+			////console.log(obj);
+			var pre = document.createElement('pre');
+			var h2  = document.createElement('h2');
+			pre.innerHTML = obj;
+			h2.innerHTML  = '<?php echo addslashes($label); ?>';
+			logger.appendChild(h2);
+			logger.appendChild(pre);
+		};
+		window.addEventListener( "DOMContentLoaded", doStuff, false );
+	</script>
+	<?php
 }
