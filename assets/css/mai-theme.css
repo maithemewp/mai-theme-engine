@@ -1481,7 +1481,7 @@ body.has-boxed-site-container {
 
 .section.has-overlay .section-content,
 .section.has-bg-image .section-content {
-	z-index: 2;
+	z-index: 3;
 }
 
 /* ## Image Background
