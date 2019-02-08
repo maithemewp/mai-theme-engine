@@ -443,5 +443,5 @@ function mai_genesis_get_image_srcset( $output, $args, $id, $html, $url, $src ) 
 	if ( 'html' === mb_strtolower( $args['format'] ) ) {
 		return $output;
 	}
-	return wp_image_add_srcset_and_sizes( $html, wp_get_attachment_metadata( $image_id ), $id );
+	return wp_image_add_srcset_and_sizes( $html, wp_get_attachment_metadata( $id ), $id );
 }
