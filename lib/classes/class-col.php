@@ -84,6 +84,11 @@ class Mai_Col {
 	 */
 	function get_col() {
 
+		// Trim because testing returned string of nbsp.
+		$this->content = mai_get_processed_content( trim( $this->content ) );
+
+		$image = $overlay = '';
+
 		$attributes = array(
 			'class' => $this->get_classes(),
 			'id'    => ! empty( $this->args['id'] ) ? $this->args['id'] : '',
@@ -138,8 +143,12 @@ class Mai_Col {
 				$image_id = absint( $this->args['image'] );
 			}
 
-			// Add the aspect ratio attributes.
-			$attributes = mai_add_background_image_attributes( $attributes, $image_id, $this->args['image_size'] );
+			// Do the image.
+			$image_html = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
+			if ( $image_html ) {
+				$attributes['class'] .= ' has-bg-image';
+				$image = wp_image_add_srcset_and_sizes( $image_html, wp_get_attachment_metadata( $image_id ), $image_id );
+			}
 		}
 
 		// If we have a valid overlay.
@@ -150,8 +159,11 @@ class Mai_Col {
 				$light_content = true;
 			}
 
+			// Build the overlay.
+			$overlay = mai_get_overlay_html( $this->args['overlay'] );
+
 			// Add overlay classes.
-			$attributes['class'] = mai_add_overlay_classes( $attributes['class'], $this->args['overlay'] );
+			$attributes['class'] .= ' has-overlay';
 		}
 
 		// Shade class
@@ -170,14 +182,17 @@ class Mai_Col {
 		// Maybe add inline styles.
 		$attributes = mai_add_inline_styles( $attributes, $this->args['style'] );
 
-		// Trim because testing returned string of nbsp.
-		$this->content = trim( $this->content );
-
 		/**
 		 * Return the content with col wrap.
 		 * With flex-col attr so devs can filter elsewhere.
 		 */
-		return sprintf( '<div %s>%s%s</div>', genesis_attr( 'flex-col', $attributes, $this->args ), mai_get_processed_content( $this->content ), $bg_link );
+		return sprintf( '<div %s>%s%s%s%s</div>',
+			genesis_attr( 'flex-col', $attributes, $this->args ),
+			$image,
+			$overlay,
+			$this->content,
+			$bg_link
+		);
 	}
 
 	/**

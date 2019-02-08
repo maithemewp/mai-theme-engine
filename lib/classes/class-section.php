@@ -223,7 +223,11 @@ class Mai_Section {
 		}
 
 		// Build the opening markup.
-		return sprintf( '<%s %s>%s', $this->args['wrapper'], genesis_attr( $this->args['context'], $attributes, $this->args ), $inner_html );
+		return sprintf( '<%s %s>%s',
+			$this->args['wrapper'],
+			genesis_attr( $this->args['context'], $attributes, $this->args ),
+			$inner_html
+		);
 	}
 
 	/**
