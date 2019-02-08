@@ -2420,10 +2420,6 @@ input[name="post_password"] {
 /* # Widgets
 ---------------------------------------------------------------------------------------------------- */
 
-.widget {
-	overflow: hidden; /* fix avatar cut-off when floated left in widget */
-}
-
 .widget .entry:not(.flex-entry) {
 	background-color: transparent;
 	padding: 0;

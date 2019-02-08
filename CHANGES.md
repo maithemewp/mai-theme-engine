@@ -1,5 +1,7 @@
 # Changelog
 
+##
+* Fixed: Hidden overflow on widgets hiding grid slider arrows.
 
 ## 1.8.1 (2/7/19)
 * Fixed: Hotfix for missing argument in srscet function.
