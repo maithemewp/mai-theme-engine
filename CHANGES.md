@@ -1,6 +1,9 @@
 # Changelog
 
 
+## 1.8.1 (2/7/19)
+* Fixed: Hotfix for missing argument in srscet function.
+
 ## 1.8.0 (2/7/19)
 * Added: Align full/wide support for the block editor (Gutenberg).
 * Added: Huge performance increases (faster page load times) all around, especially on mobile!
