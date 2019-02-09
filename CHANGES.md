@@ -1,7 +1,10 @@
 # Changelog
 
-##
+## 1.8.2 (2/8/19)
+* Fixed: Broken layout when using [col] shortcodes with image attribute.
 * Fixed: Hidden overflow on widgets hiding grid slider arrows.
+* Fixed: Jetpack Photon "Speed up image load times" setting blowing up image srcset filters.
+* Fixed: Error when switching to a non-Mai Theme in multisite.
 
 ## 1.8.1 (2/7/19)
 * Fixed: Hotfix for missing argument in srscet function.
