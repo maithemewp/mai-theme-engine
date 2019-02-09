@@ -15,6 +15,7 @@ class Mai_Section {
 	private $has_overlay;
 	private $has_inner;
 
+	private $image_sizes = array();
 
 	public function __construct( $args = array(), $content = null ) {
 
@@ -499,6 +500,16 @@ class Mai_Section {
 	 */
 	function calculate_srcset( $sources, $size_array, $image_src, $image_meta, $attachment_id ) {
 
+		// Bail if no sources.
+		if ( ! is_array( $sources ) ) {
+			return $sources;
+		}
+
+		// Bail if Jetpack Photon (image performance) is active.
+		if ( class_exists( 'Jetpack_Photon' ) && class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
+			return $sources;
+		}
+
 		$sizes = $image_meta['sizes'];
 
 		// Bail if no sizes.
@@ -506,28 +517,42 @@ class Mai_Section {
 			return $sources;
 		}
 
-		foreach( $sizes as $size => $values ) {
+		$theme_sizes = array( 'full-width', 'featured', 'one-half', 'one-third', 'one-fourth' );
+
+		foreach( $sizes as $size => $value ) {
 
 			// Skip if not a size we want to check.
-			if ( ! in_array( $size, array( 'full-width', 'featured', 'one-half', 'one-third', 'one-fourth' ) ) ) {
+			if ( ! in_array( $size, $theme_sizes ) ) {
 				continue;
 			}
 
 			// Get new image data.
-			$source   = wp_get_attachment_image_src( $attachment_id, $size );
+			$source = wp_get_attachment_image_src( $attachment_id, $size );
+			if ( ! $source ) {
+				continue;
+			}
+
 			$url      = $source[0];
 			$width    = $source[1];
 			$height   = $source[2];
+			$crop     = $source[3];
 			$ratio    = $width/$height;
 			$in_range = ( $ratio > 1 ) && ( $ratio < 3 );
+
+			// Skip if not hard-cropping.
+			if ( ! $crop ) {
+				continue;
+			}
 
 			// Skip if this image size isn't a valid aspect ratio.
 			if ( ! $in_range ) {
 				continue;
 			}
 
+			$this->image_sizes[] = $value['width'];
+
 			// Add to our new srcset.
-			$sources[ $values['width'] ] = array(
+			$sources[ $value['width'] ] = array(
 				'url'        => $url,
 				'descriptor' => 'w',
 				'value'      => $width,
