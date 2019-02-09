@@ -15,8 +15,6 @@ class Mai_Section {
 	private $has_overlay;
 	private $has_inner;
 
-	private $image_sizes = array();
-
 	public function __construct( $args = array(), $content = null ) {
 
 		// Save original args in a variable for filtering later.
@@ -548,8 +546,6 @@ class Mai_Section {
 			if ( ! $in_range ) {
 				continue;
 			}
-
-			$this->image_sizes[] = $value['width'];
 
 			// Add to our new srcset.
 			$sources[ $value['width'] ] = array(
