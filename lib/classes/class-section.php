@@ -123,14 +123,26 @@ class Mai_Section {
 		$this->has_overlay      = mai_is_valid_overlay( $this->args['overlay'] );
 		$this->has_inner        = mai_is_valid_inner( $this->args['inner'] ) && ! empty( $this->content );
 
-		return genesis_markup( array(
-			'open'    => $this->get_section_open(),
-			'close'   => $this->get_section_close(),
+		$attributes_function = function( $attributes ) {
+			return $this->get_attributes();
+		};
+
+		// Add attributes.
+		add_filter( 'genesis_attr_section', $attributes_function );
+
+		$html = genesis_markup( array(
+			'open'    => "<{$this->args['wrapper']} %s>",
+			'close'   => "</{$this->args['wrapper']}>",
 			'content' => $this->get_section_inside(),
 			'context' => $this->args['context'],
 			'params'  => $this->args,
 			'echo'    => false,
 		) );
+
+		// Remove attributes since they are different for each section.
+		remove_filter( 'genesis_attr_section', $attributes_function );
+
+		return $html;
 	}
 
 	/**
@@ -140,9 +152,9 @@ class Mai_Section {
 	 *
 	 * @return  string|HTML
 	 */
-	function get_section_open() {
+	function get_attributes() {
 
-		$inner_html = '';
+		$shade = '';
 
 		// Set attributes.
 		$attributes = array(
@@ -171,7 +183,7 @@ class Mai_Section {
 			 * Add content shade class if we don't have inner.
 			 * Inner will handle these classes if we have it.
 			 */
-			$attributes['class'] .= $dark_bg ? ' light-content' : '';
+			$shade = $dark_bg ? 'light-content' : '';
 		}
 
 		// Maybe add the inline background color.
@@ -184,24 +196,15 @@ class Mai_Section {
 		// If we have an image ID.
 		if ( $this->args['image'] ) {
 
-			// Build img to be used as background via CSS.
-			add_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
-			$image = wp_get_attachment_image( $this->args['image'], $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
-			$image = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $this->args['image'] ), $this->args['image'] );
-			remove_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
-
-			if ( $image ) {
-				$inner_html .= $image;
-				// Add has-background-image class.
-				$attributes['class'] = mai_add_classes( 'has-bg-image', $attributes['class'] );
-			}
+			// Add has-background-image class.
+			$attributes['class'] = mai_add_classes( 'has-bg-image', $attributes['class'] );
 
 			/**
 			 * Add content shade class if we don't have inner.
 			 * Inner will handle these classes if we have it.
 			 */
 			if ( ! ( $this->has_overlay && $this->has_inner ) ) {
-				$attributes['class'] .= $dark_bg ? ' light-content' : '';
+				$shade = $dark_bg ? 'light-content' : '';
 			}
 
 		}
@@ -212,32 +215,15 @@ class Mai_Section {
 		// If we have an overlay.
 		if ( $this->has_overlay ) {
 
-			$light_content = false;
-
 			// Add has-overlay class to the section.
 			$attributes['class'] = mai_add_classes( 'has-overlay', $attributes['class'] );
-
-			// Get overlay.
-			$inner_html .= mai_get_overlay_html( $this->args['overlay'] );
 		}
 
-		// Build the opening markup.
-		return sprintf( '<%s %s>%s',
-			$this->args['wrapper'],
-			genesis_attr( $this->args['context'], $attributes, $this->args ),
-			$inner_html
-		);
-	}
+		if ( $shade ) {
+			$attributes['class'] = mai_add_classes( $shade, $attributes['class'] );
+		}
 
-	/**
-	 * Get closing HTML.
-	 *
-	 * @since   1.1.0
-	 *
-	 * @return  string|HTML
-	 */
-	function get_section_close() {
-		return sprintf( '</%s>', $this->args['wrapper'] );
+		return $attributes;
 	}
 
 	/**
@@ -249,6 +235,8 @@ class Mai_Section {
 	 */
 	function get_section_inside() {
 		$html = '';
+		$html .= $this->get_image();
+		$html .= $this->get_overlay();
 		$html .= $this->get_section_wrap_open();
 		$html .= $this->get_section_content_open();
 		$html .= $this->get_section_inner_open();
@@ -257,6 +245,45 @@ class Mai_Section {
 		$html .= $this->get_section_content_close();
 		$html .= $this->get_section_wrap_close();
 		return $html;
+	}
+
+	/**
+	 * Get the image HTML.
+	 *
+	 * @since   1.8.3
+	 *
+	 * @return  string|HTML
+	 */
+	function get_image() {
+		// Bail if no image.
+		if ( ! $this->args['image'] ) {
+			return '';
+		}
+		// Build img to be used as background via CSS.
+		$image = wp_get_attachment_image( $this->args['image'], $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
+		if ( ! $image ) {
+			return '';
+		}
+		// Add srcset.
+		add_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
+		$image = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $this->args['image'] ), $this->args['image'] );
+		remove_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
+		return $image;
+	}
+
+	/**
+	 * Get the overlay HTML.
+	 *
+	 * @since   1.8.3
+	 *
+	 * @return  string|HTML
+	 */
+	function get_overlay() {
+		// Bail if no overlay.
+		if ( ! $this->has_overlay ) {
+			return '';
+		}
+		return mai_get_overlay_html( $this->args['overlay'] );
 	}
 
 	/**
@@ -503,11 +530,6 @@ class Mai_Section {
 			return $sources;
 		}
 
-		// Bail if Jetpack Photon (image performance) is active.
-		if ( class_exists( 'Jetpack_Photon' ) && class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
-			return $sources;
-		}
-
 		$sizes = $image_meta['sizes'];
 
 		// Bail if no sizes.
@@ -546,6 +568,8 @@ class Mai_Section {
 			if ( ! $in_range ) {
 				continue;
 			}
+
+			$this->image_sizes[] = $value['width'];
 
 			// Add to our new srcset.
 			$sources[ $value['width'] ] = array(
