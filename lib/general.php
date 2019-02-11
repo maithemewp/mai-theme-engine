@@ -440,8 +440,11 @@ function mai_boxed_comment_form() {
  */
 add_filter( 'genesis_get_image', 'mai_genesis_get_image_srcset', 10, 6 );
 function mai_genesis_get_image_srcset( $output, $args, $id, $html, $url, $src ) {
-	if ( 'html' === mb_strtolower( $args['format'] ) ) {
+	if ( 'html' !== mb_strtolower( $args['format'] ) ) {
 		return $output;
 	}
-	return wp_image_add_srcset_and_sizes( $html, wp_get_attachment_metadata( $id ), $id );
+	if ( ! $output ) {
+		return $output;
+	}
+	return wp_image_add_srcset_and_sizes( $output, wp_get_attachment_metadata( $id ), $id );
 }
