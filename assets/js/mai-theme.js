@@ -36,6 +36,26 @@
 	var hasShrink = $body.hasClass( 'has-shrink-header' );
 	var	hasReveal = $body.hasClass( 'has-reveal-header' );
 
+	// Setup ScrollMagic controller.
+	var controller = new ScrollMagic.Controller();
+
+	// Scroll class.
+	var scrollScene = new ScrollMagic.Scene({
+		triggerElement: '#header-trigger',
+		// triggerElement: 'body',
+		triggerHook: 0,
+		offset: - parseInt( $html.css( 'marginTop' ) ), // Start when .site-header hits top, accounting for admin-bar.
+		duration: '2',
+	})
+	.on( 'enter', function(e) {
+		$body.removeClass( 'scroll' );
+	})
+	.on( 'leave', function(e) {
+		$body.addClass( 'scroll' );
+	})
+	// .addIndicators()
+	.addTo(controller);
+
 	// Bail if nothing we need.
 	if ( ! ( hasShrink || hasReveal ) ) {
 		return;
@@ -46,29 +66,6 @@
 
 	// This will progress a value incremended from an initialValue to an endValue.
 	// var newValue = initialValue - ( ( initialValue - endValue ) * e.progress )
-
-	// Setup ScrollMagic controller.
-	var controller = new ScrollMagic.Controller();
-
-	// Shrink Header/Logo.
-	var logoScene = new ScrollMagic.Scene({
-		triggerElement: '#header-trigger',
-		triggerHook: 0,
-		offset: - parseInt( $html.css( 'marginTop' ) ), // Start when .site-header hits top, accounting for admin-bar.
-	})
-	.on( 'start', function(e) {
-		if ( isSmallWindow() ) {
-			$header.removeClass( 'scroll' );
-			return;
-		}
-		if ( 'FORWARD' === e.scrollDirection ) {
-			$header.addClass( 'scroll' );
-		} else if ( 'REVERSE' === e.scrollDirection ) {
-			$header.removeClass( 'scroll' );
-		}
-	})
-	// .addIndicators()
-	.addTo(controller);
 
 	if ( hasShrink ) {
 
@@ -90,6 +87,12 @@
 			offset: - parseInt( $html.css( 'marginTop' ) ), // Start when .site-header hits top, accounting for admin-bar.
 			duration: '240',
 		})
+		// .on( 'enter', function(e) {
+		// 	$logoLink.addClass( 'shrinking' );
+		// })
+		// .on( 'start', function(e) {
+		// 	$logoLink.addClass( 'shrunk' );
+		// })
 		.on( 'progress', function(e) {
 
 			// Bail if already small window size. CSS will already be shrunk.
