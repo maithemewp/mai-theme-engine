@@ -33,8 +33,39 @@
 	var $html     = $( 'html' );
 	var $body     = $( 'body' );
 	var $header   = $( '.site-header' );
-	var hasShrink = $body.hasClass( 'has-shrink-header' );
+	var $logoLink = $( '.custom-logo-link' );
+	var hasShrink = ( $logoLink.length > 0 ) && $body.hasClass( 'has-shrink-header' );
 	var	hasReveal = $body.hasClass( 'has-reveal-header' );
+
+	// Setup ScrollMagic controller.
+	var controller = new ScrollMagic.Controller();
+
+	// Scroll class.
+	var scrollScene = new ScrollMagic.Scene({
+		triggerElement: '#header-trigger',
+		triggerHook: 0,
+		offset: - parseInt( $html.css( 'marginTop' ) ), // Start when .site-header hits top, accounting for admin-bar.
+		duration: '2',
+	})
+	.on( 'enter', function(e) {
+		$body.removeClass( 'scroll' );
+		// Resets when fast jumps to top of window.
+		if ( hasShrink ) {
+			$logoLink.stop(true,false).css({
+				'maxWidth' : '',
+				'marginTop' : '',
+				'marginBottom' : '',
+			});
+		}
+		if ( hasReveal && $header.hasClass( 'conceal-header' ) ) {
+			$header.addClass( 'reveal-header' ).removeClass( 'conceal-header' );
+		}
+	})
+	.on( 'leave', function(e) {
+		$body.addClass( 'scroll' );
+	})
+	// .addIndicators()
+	.addTo(controller);
 
 	// Bail if nothing we need.
 	if ( ! ( hasShrink || hasReveal ) ) {
@@ -47,32 +78,8 @@
 	// This will progress a value incremended from an initialValue to an endValue.
 	// var newValue = initialValue - ( ( initialValue - endValue ) * e.progress )
 
-	// Setup ScrollMagic controller.
-	var controller = new ScrollMagic.Controller();
-
-	// Shrink Header/Logo.
-	var logoScene = new ScrollMagic.Scene({
-		triggerElement: '#header-trigger',
-		triggerHook: 0,
-		offset: - parseInt( $html.css( 'marginTop' ) ), // Start when .site-header hits top, accounting for admin-bar.
-	})
-	.on( 'start', function(e) {
-		if ( isSmallWindow() ) {
-			$header.removeClass( 'scroll' );
-			return;
-		}
-		if ( 'FORWARD' === e.scrollDirection ) {
-			$header.addClass( 'scroll' );
-		} else if ( 'REVERSE' === e.scrollDirection ) {
-			$header.removeClass( 'scroll' );
-		}
-	})
-	// .addIndicators()
-	.addTo(controller);
-
 	if ( hasShrink ) {
 
-		var $logoLink        = $( '.custom-logo-link' );
 		var shrinkDirections = [];
 		var shrinkProgresses = [];
 		var logoWidth        = maiVars.logoWidth ? maiVars.logoWidth : $logoLink.outerWidth();
@@ -126,7 +133,7 @@
 				'marginTop' : '',
 				'marginBottom' : '',
 			});
-			// Get the new margins.
+			// Set the new margins.
 			logoMarginTop = parseInt( $logoLink.css( 'marginTop' ) );
 			logoMarginBot = parseInt( $logoLink.css( 'marginBottom' ) );
 			if ( isSmallWindow() ) {
@@ -161,7 +168,7 @@
 				if ( doMarginBot ) {
 					$css = $.extend( $css, { marginBottom: + newMarginBot + 'px' });
 				}
-				$logoLink.css( $css );
+				$logoLink.stop(true,true).css( $css );
 			}
 		}
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.3 (2/12/19)
+* Fixed: Some background images not displaying correctly.
+* Fixed: Incompatibility with Jetpack Photon "Speed up image load times" setting, again.
+* Fixed: More solid header/logo shrink when scrolling/jumping quickly up/down the page.
+* Fixed: Added back the .scroll class to the body any time a user is scrolled on a page.
+
 ## 1.8.2 (2/8/19)
 * Fixed: Broken layout when using [col] shortcodes with image attribute.
 * Fixed: Hidden overflow on widgets hiding grid slider arrows.

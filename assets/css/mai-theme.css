@@ -2738,6 +2738,12 @@ input[name="post_password"] {
 	border: none;
 }
 
+.site-title .custom-logo-link {
+	-webkit-transition: all 50ms linear;
+	-o-transition: all 50ms linear;
+	transition: all 50ms linear;
+}
+
 @media only screen and (min-width: 769px) {
 
 	.site-header.has-header-left.has-header-right .site-title {
