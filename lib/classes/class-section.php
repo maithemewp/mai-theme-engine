@@ -123,12 +123,13 @@ class Mai_Section {
 		$this->has_overlay      = mai_is_valid_overlay( $this->args['overlay'] );
 		$this->has_inner        = mai_is_valid_inner( $this->args['inner'] ) && ! empty( $this->content );
 
+		// Anonymous function.
 		$attributes_function = function( $attributes ) {
 			return $this->get_attributes();
 		};
 
 		// Add attributes.
-		add_filter( 'genesis_attr_section', $attributes_function );
+		add_filter( "genesis_attr_{$this->args['context']}", $attributes_function );
 
 		$html = genesis_markup( array(
 			'open'    => "<{$this->args['wrapper']} %s>",
@@ -140,7 +141,7 @@ class Mai_Section {
 		) );
 
 		// Remove attributes since they are different for each section.
-		remove_filter( 'genesis_attr_section', $attributes_function );
+		remove_filter( "genesis_attr_{$this->args['context']}", $attributes_function );
 
 		return $html;
 	}
