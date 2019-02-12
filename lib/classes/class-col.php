@@ -129,6 +129,8 @@ class Mai_Col {
 		// If we have an image ID.
 		if ( $this->args['image'] ) {
 
+			global $_wp_additional_image_sizes;
+
 			// If we have content.
 			if ( $this->content ) {
 				// Set dark overlay if we don't have one.
@@ -149,6 +151,25 @@ class Mai_Col {
 				$attributes['class'] .= ' has-bg-image';
 				$image = wp_image_add_srcset_and_sizes( $image_html, wp_get_attachment_metadata( $image_id ), $image_id );
 			}
+
+			// If image size is in the global (it should be).
+			if ( isset( $_wp_additional_image_sizes[ $this->args['image_size'] ] ) ) {
+				$registered_image = $_wp_additional_image_sizes[ $this->args['image_size'] ];
+				$width  = $registered_image['width'];
+				$height = $registered_image['height'];
+			}
+			// Otherwise use the actual image dimensions.
+			elseif ( $image ) {
+				$width  = $image[1];
+				$height = $image[2];
+			}
+			// Fallback.
+			else {
+				$width  = 4;
+				$height = 3;
+			}
+
+			$attributes = mai_add_aspect_ratio_attributes( $attributes, $width, $height );
 		}
 
 		// If we have a valid overlay.
