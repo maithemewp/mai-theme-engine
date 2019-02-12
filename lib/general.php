@@ -18,7 +18,7 @@ function mai_logo_width_css() {
 		return;
 	}
 
-	$width = get_theme_mod( 'custom_logo_width' );
+	$width = get_theme_mod( 'custom_logo_width', 180 );
 	if ( ! $width ) {
 		return;
 	}
