@@ -34,7 +34,8 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 			),
 			'active_callback' => function() use ( $wp_customize ) {
 				// Need to set this as a variable cause older PHP was freaking out.
-				$has_logo = ! empty( $wp_customize->get_setting( 'custom_logo' )->value() );
+				$logo     = $wp_customize->get_setting( 'custom_logo' )->value();
+				$has_logo = ! empty( $logo );
 				return $has_logo;
 			},
 		)
