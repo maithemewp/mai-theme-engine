@@ -460,7 +460,9 @@ function mai_get_sections( $sections ) {
 	/**
 	 * Filter to allow new settings to get passed to mai_get_section() function.
 	 *
-	 * @since  1.7.0.
+	 * @access  private
+	 *
+	 * @since   1.7.0
 	 */
 	$valid = apply_filters( 'mai_valid_section_args', $valid );
 

@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 1.8.3.1 (2/13/19)
+* Fixed: Better support for older PHP in logo width customizer field. Please just run PHP 7 though.
+
 ## 1.8.3 (2/12/19)
 * Fixed: Some background images not displaying correctly.
 * Fixed: Incompatibility with Jetpack Photon "Speed up image load times" setting, again.
