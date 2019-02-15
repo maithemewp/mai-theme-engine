@@ -1484,6 +1484,21 @@ body.has-boxed-site-container {
 	z-index: 3;
 }
 
+.section.has-bg-image .bg-image {
+	height: 140%;
+	-webkit-transform: translateY(var(--translateY));
+	-ms-transform: translateY(var(--translateY));
+	transform: translateY(var(--translateY));
+	will-change: transform;
+	/* -webkit-transition: all 10ms linear; */
+	/* -o-transition: all 10ms linear; */
+	/* transition: all 10ms linear; */
+}
+
+.has-shrink-header .custom-logo-link {
+	max-width: var(--logo-width);
+}
+
 /* ## Image Background
 --------------------------------------------- */
 
@@ -2739,9 +2754,9 @@ input[name="post_password"] {
 }
 
 .site-title .custom-logo-link {
-	-webkit-transition: all 50ms linear;
-	-o-transition: all 50ms linear;
-	transition: all 50ms linear;
+	-webkit-transition: all 10ms linear;
+	-o-transition: all 10ms linear;
+	transition: all 10ms linear;
 }
 
 @media only screen and (min-width: 769px) {

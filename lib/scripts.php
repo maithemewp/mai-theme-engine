@@ -36,6 +36,11 @@ function mai_enqueue_scripts() {
 		'logoWidth' => get_theme_mod( 'custom_logo_width', 180 ),
 	) );
 
+	wp_enqueue_script( 'mai-scroll', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-scroll{$suffix}.js", array(), MAI_THEME_ENGINE_VERSION, true );
+	wp_localize_script( 'mai-scroll', 'maiScroll', array(
+		'logoWidth' => get_theme_mod( 'custom_logo_width', 180 ),
+	) );
+
 	// Maybe enabled responsive videos.
 	$responsive_videos = apply_filters( 'mai_enable_responsive_videos', '__return_true' );
 	if ( $responsive_videos ) {

@@ -11,7 +11,8 @@
  *
  * @return  void
  */
-add_action( 'wp_enqueue_scripts', 'mai_logo_width_css', 1000 );
+// add_action( 'wp_enqueue_scripts', 'mai_logo_width_css', 1000 );
+add_action( 'wp_head', 'mai_logo_width_css' );
 function mai_logo_width_css() {
 
 	if ( ! ( function_exists( 'has_custom_logo' ) || has_custom_logo() ) ) {
@@ -31,27 +32,35 @@ function mai_logo_width_css() {
 	 * Stay shrunk on mobile.
 	 */
 	$css = "
+	<style>
+		root: {
+			--logo-width: {$width_px};
+			--logo-shrink-width: {$shrink_px};
+		}
 		@media only screen and (max-width: 768px) {
 			.custom-logo-link {
-				max-width: {$shrink_px};
+				max-width: var(--logo-width);
 			}
 		}
 		@media only screen and (min-width: 769px) {
 			.custom-logo-link {
-				max-width: {$width_px};
+				max-width: var(--logo-shrink-width);
 			}
 		}
+	</style>
 	";
-	if ( mai_has_shrink_header() ) {
-		$css .= "
-			@media only screen and (min-width: 769px) {
-				.site-header.scroll .custom-logo-link {
-					max-width: {$shrink_px};
-				}
-			}
-		";
-	}
-	wp_add_inline_style( mai_get_handle(), $css );
+
+	echo $css;
+	// if ( mai_has_shrink_header() ) {
+	// 	$css .= "
+	// 		@media only screen and (min-width: 769px) {
+	// 			.site-header.scroll .custom-logo-link {
+	// 				max-width: {$shrink_px};
+	// 			}
+	// 		}
+	// 	";
+	// }
+	// wp_add_inline_style( mai_get_handle(), $css );
 }
 
 /**
