@@ -38,12 +38,18 @@ basicScroll.create({
 		}
 	},
 	inside: (instance, percentage, props) => {
+
+		console.log( 'inside' );
+
 		if ( ! headerAnimating ) {
 			headerAnimating = true;
 		}
 	},
 	outside: (instance, percentage, props) => {
-		if( headerAnimating ) {
+
+		// console.log( 'outside' );
+
+		if ( headerAnimating ) {
 			headerAnimating = false;
 		}
 	}
@@ -78,11 +84,11 @@ basicScroll.create({
 			return;
 		}
 
-		console.log( headerAnimating );
-
 		if ( headerAnimating ) {
 			return;
 		}
+
+		// console.log( headerAnimating );
 
 		down          = ( percentage > previous );
 		previous      = percentage;
@@ -98,8 +104,8 @@ basicScroll.create({
 		if ( down ) {
 			if ( ! concealed ) {
 				if ( sameDirection ) {
-					siteHeader.classList.remove( 'reveal-header' );
-					siteHeader.classList.add( 'conceal-header' );
+					// siteHeader.classList.remove( 'reveal-header' );
+					// siteHeader.classList.add( 'conceal-header' );
 					concealed = true;
 				}
 			}
@@ -108,8 +114,8 @@ basicScroll.create({
 		else {
 			if ( concealed ) {
 				if ( sameDirection ) {
-					siteHeader.classList.remove( 'conceal-header' );
-					siteHeader.classList.add( 'reveal-header' );
+					// siteHeader.classList.remove( 'conceal-header' );
+					// siteHeader.classList.add( 'reveal-header' );
 					concealed = false;
 				}
 			}
