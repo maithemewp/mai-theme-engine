@@ -1,5 +1,6 @@
 # Changelog
 
+* Fixed: Better handling of comma separated grid parameters.
 
 ## 1.8.3.1 (2/13/19)
 * Fixed: Better support for older PHP in logo width customizer field. Please just run PHP 7 though.
