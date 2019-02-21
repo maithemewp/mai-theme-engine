@@ -1,20 +1,6 @@
 <?php
 
 /**
- * Enqueue customizer scripts.
- *
- * @since   1.8.0
- *
- * @return  void
- */
-add_action( 'customize_preview_init', 'mai_customizer_enqueue_scripts' );
-function mai_customizer_enqueue_scripts() {
-	// Use minified files if script debug is not being used.
-	$suffix = mai_get_suffix();
-	wp_enqueue_script( 'mai-customizer', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-customizer{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
-}
-
-/**
  * Enqueue Javascript files.
  *
  * @since   1.0.0
@@ -24,7 +10,6 @@ function mai_customizer_enqueue_scripts() {
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_scripts' );
 function mai_enqueue_scripts() {
 
-	// Use minified files if script debug is not being used.
 	$suffix = mai_get_suffix();
 
 	// Enqueue the main global js file.
@@ -36,7 +21,9 @@ function mai_enqueue_scripts() {
 		'logoWidth' => get_theme_mod( 'custom_logo_width', 180 ),
 	) );
 
-	wp_enqueue_script( 'mai-scroll', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-scroll{$suffix}.js", array(), MAI_THEME_ENGINE_VERSION, true );
+	// Enqueue scroll js.
+	wp_enqueue_script( 'basic-scroll', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/basic-scroll{$suffix}.js", array(), '3.0.1', true );
+	wp_enqueue_script( 'mai-scroll', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-scroll{$suffix}.js", array( 'basic-scroll' ), MAI_THEME_ENGINE_VERSION, true );
 	wp_localize_script( 'mai-scroll', 'maiScroll', array(
 		'logoWidth' => get_theme_mod( 'custom_logo_width', 180 ),
 	) );
@@ -64,7 +51,6 @@ function mai_enqueue_scripts() {
 add_action( 'wp_enqueue_scripts', 'mai_enqueue_styles' );
 function mai_enqueue_styles() {
 
-	// Use minified files if script debug is not being used.
 	$suffix = mai_get_suffix();
 
 	wp_enqueue_style( 'mai-theme-engine', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/mai-theme{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
@@ -93,7 +79,6 @@ function mai_woocommerce_styles( $styles ) {
 		$src = get_stylesheet_directory_uri() . '/assets/css/' . $file_name . 'css';
 	} else {
 
-		// Use minified files if script debug is not being used.
 		$suffix = mai_get_suffix();
 
 		// Use our plugin file

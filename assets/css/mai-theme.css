@@ -36,7 +36,6 @@
 		- Simple Social Icons
 	- Site Header
 		- Sticky Header
-		- Shrink Header
 		- Title Area
 		- Header Content
 	- Site Navigation
@@ -1495,10 +1494,6 @@ body.has-boxed-site-container {
 	/* transition: all 10ms linear; */
 }
 
-.has-shrink-header .custom-logo-link {
-	max-width: var(--logo-width);
-}
-
 /* ## Image Background
 --------------------------------------------- */
 
@@ -1773,6 +1768,12 @@ body.has-boxed-site-container {
 
 /* ## WordPress
 --------------------------------------------- */
+
+#wpadminbar {
+	/* fix jitters & jank */
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
 
 .entry-image-link,
 .entry-image-link:hover,
@@ -2589,6 +2590,10 @@ input[name="post_password"] {
 	position: sticky;
 	z-index: 96;
 	top: 0;
+	will-change: transform;
+	-webkit-transform: translate(0);
+	-ms-transform: translate(0);
+	transform: translate(0);
 }
 
 @media (min-width: 600px) and (max-width: 782px) {
@@ -2610,46 +2615,46 @@ input[name="post_password"] {
 .has-reveal-header .site-header.conceal-header {
 	-webkit-animation: fadeOutUp .3s ease-in-out;
 	animation: fadeOutUp .3s ease-in-out;
-	-webkit-transform: translateY(-100%);
-	-ms-transform: translateY(-100%);
-	transform: translateY(-100%);
+	-webkit-transform: translate(0,-100%);
+	-ms-transform: translate(0,-100%);
+	transform: translate(0,-100%);
 }
 
 .has-reveal-header .site-header.reveal-header {
 	-webkit-animation: fadeInDown .3s ease-in-out;
 	animation: fadeInDown .3s ease-in-out;
-	-webkit-transform: translateY(0);
-	-ms-transform: translateY(0);
-	transform: translateY(0);
+	-webkit-transform: translate(0,0);
+	-ms-transform: translate(0,0);
+	transform: translate(0,0);
 }
 
 /* Fade in and down a fixed height so it's smooth but doesn't take long for taller headers. */
 @-webkit-keyframes fadeInDown{
 	0% {
 		opacity: .5;
-		-webkit-transform: translateY(-100px);
-		-ms-transform: translateY(-100px);
-		transform: translateY(-100px);
+		-webkit-transform: translate(0,-100px);
+		-ms-transform: translate(0,-100px);
+		transform: translate(0,-100px);
 	}
 	100% {
 		opacity: 1;
-		-webkit-transform: translateY(0);
-		-ms-transform: translateY(0);
-		transform: translateY(0);
+		-webkit-transform: translate(0,0);
+		-ms-transform: translate(0,0);
+		transform: translate(0,0);
 	}
 }
 @keyframes fadeInDown{
 	0% {
 		opacity: .5;
-		-webkit-transform: translateY(-100%);
-		-ms-transform: translateY(-100%);
-		transform: translateY(-100%);
+		-webkit-transform: translate(0,-100%);
+		-ms-transform: translate(0,-100%);
+		transform: translate(0,-100%);
 	}
 	100% {
 		opacity: 1;
-		-webkit-transform: translateY(0);
-		-ms-transform: translateY(0);
-		transform: translateY(0);
+		-webkit-transform: translate(0,0);
+		-ms-transform: translate(0,0);
+		transform: translate(0,0);
 	}
 }
 
@@ -2657,29 +2662,29 @@ input[name="post_password"] {
 @-webkit-keyframes fadeOutUp {
 	0% {
 		opacity: 1;
-		-webkit-transform: translateY(0);
-		-ms-transform: translateY(0);
-		transform: translateY(0);
+		-webkit-transform: translate(0,0);
+		-ms-transform: translate(0,0);
+		transform: translate(0,0);
 	}
 	100% {
 		opacity: .5;
-		-webkit-transform: translateY(-100%);
-		-ms-transform: translateY(-100%);
-		transform: translateY(-100%);
+		-webkit-transform: translate(0,-100%);
+		-ms-transform: translate(0,-100%);
+		transform: translate(0,-100%);
 	}
 }
 @keyframes fadeOutUp {
 	0% {
 		opacity: 1;
-		-webkit-transform: translateY(0);
-		-ms-transform: translateY(0);
-		transform: translateY(0);
+		-webkit-transform: translate(0,0);
+		-ms-transform: translate(0,0);
+		transform: translate(0,0);
 	}
 	100% {
 		opacity: .5;
-		-webkit-transform: translateY(-100%);
-		-ms-transform: translateY(-100%);
-		transform: translateY(-100%);
+		-webkit-transform: translate(0,-100%);
+		-ms-transform: translate(0,-100%);
+		transform: translate(0,-100%);
 	}
 }
 
@@ -2717,14 +2722,6 @@ input[name="post_password"] {
 
 }
 
-/* ## Shrink Header
---------------------------------------------- */
-
-.site-header.shrink .site-title a {
-	margin-top: 4px;
-	margin-bottom: 4px;
-}
-
 /* ## Title Area
 --------------------------------------------- */
 
@@ -2738,8 +2735,6 @@ input[name="post_password"] {
 	font-size: calc(1rem + 1.2vw);
 	font-weight: bold;
 	line-height: 1.2;
-	margin-top: 8px;
-	margin-bottom: 8px;
 	margin-left: 16px;
 	margin-right: 16px;
 	-webkit-transition: none;
@@ -2765,18 +2760,12 @@ input[name="post_password"] {
 		text-align: center;
 	}
 
-	.site-title a {
-		margin-top: 24px;
-		margin-bottom: 24px;
-	}
-
 }
 
 @media only screen and (min-width: 769px) and (max-width: 992px)  {
 
-	.has-header-left.has-header-right:not(.shrink) .site-title a {
-		margin-top: 16px;
-		margin-bottom: 16px;
+	.site-header.has-header-left.has-header-right > .wrap {
+		padding-top: 8px;
 	}
 
 }
@@ -2793,12 +2782,6 @@ input[name="post_password"] {
 .wp-custom-logo .site-title a {
 	font-size: 0;
 	line-height: 1;
-}
-
-.has-scroll-colors .site-header {
-	-webkit-transition: background-color .1s linear;
-	-o-transition: background-color .1s linear;
-	transition: background-color .1s linear;
 }
 
 /* ## Header Content

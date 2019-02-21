@@ -36,10 +36,8 @@ function mai_register_customizer_field_types() {
 		 * @return void
 		 */
 		public function enqueue() {
-			// Use minified files if script debug is not being used.
 			$suffix = mai_get_suffix();
-			// Enqueue.
-			wp_enqueue_script( 'mai-customize-controls', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/customize-controls{$suffix}.js", array( 'jquery', 'jquery-ui-core' ), MAI_THEME_ENGINE_VERSION, true );
+			wp_enqueue_script( 'mai-customize-controls', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/admin/customize-controls{$suffix}.js", array( 'jquery', 'jquery-ui-core' ), MAI_THEME_ENGINE_VERSION, true );
 		}
 
 		/**
@@ -114,8 +112,8 @@ function mai_register_customizer_field_types() {
 			// Use minified files if script debug is not being used.
 			$suffix = mai_get_suffix();
 			// Enqueue.
-			wp_enqueue_script( 'mai-customize-controls', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/customize-controls{$suffix}.js", array( 'jquery', 'jquery-ui-core' ), MAI_THEME_ENGINE_VERSION, true );
-			wp_enqueue_style( 'mai-customize-controls', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/customize-controls{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION, 'all' );
+			wp_enqueue_script( 'mai-customize-controls', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/admin/customize-controls{$suffix}.js", array( 'jquery', 'jquery-ui-core' ), MAI_THEME_ENGINE_VERSION, true );
+			wp_enqueue_style( 'mai-customize-controls', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/admin/customize-controls{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION, 'all' );
 		}
 
 		/**

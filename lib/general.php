@@ -2,22 +2,14 @@
 
 /**
  * Add inline CSS.
- * Way late cause Engine changes stylesheet to 999.
  *
  * @since   1.8.0
- *
- * @link    http://www.billerickson.net/code/enqueue-inline-styles/
- * @link    https://sridharkatakam.com/chevron-shaped-featured-parallax-section-in-genesis-using-clip-path/
+ * @since   1.9.0  Converted to CSS vars for basicScroll.
  *
  * @return  void
  */
-// add_action( 'wp_enqueue_scripts', 'mai_logo_width_css', 1000 );
 add_action( 'wp_head', 'mai_logo_width_css' );
 function mai_logo_width_css() {
-
-	if ( ! ( function_exists( 'has_custom_logo' ) || has_custom_logo() ) ) {
-		return;
-	}
 
 	$width = get_theme_mod( 'custom_logo_width', 180 );
 	if ( ! $width ) {
@@ -31,36 +23,32 @@ function mai_logo_width_css() {
 	 * Set max-width on the logo link.
 	 * Stay shrunk on mobile.
 	 */
-	$css = "
-	<style>
-		root: {
-			--logo-width: {$width_px};
-			--logo-shrink-width: {$shrink_px};
+	echo "<style>
+	:root {
+		--logo-width: {$width_px};
+		--logo-shrink-width: {$shrink_px};
+		--logo-margin-top: 24px;
+		--logo-margin-bottom: 24px;
+	}
+	@media only screen and (min-width: 769px) {
+		.site-title a {
+			margin-top: var(--logo-margin-top);
+			margin-bottom: var(--logo-margin-bottom);
 		}
-		@media only screen and (max-width: 768px) {
-			.custom-logo-link {
-				max-width: var(--logo-width);
-			}
+		.custom-logo-link {
+			max-width: var(--logo-width);
 		}
-		@media only screen and (min-width: 769px) {
-			.custom-logo-link {
-				max-width: var(--logo-shrink-width);
-			}
+	}
+	@media only screen and (max-width: 768px) {
+		.site-title a {
+			margin-top: 4px;
+			margin-bottom: 4px;
 		}
-	</style>
-	";
-
-	echo $css;
-	// if ( mai_has_shrink_header() ) {
-	// 	$css .= "
-	// 		@media only screen and (min-width: 769px) {
-	// 			.site-header.scroll .custom-logo-link {
-	// 				max-width: {$shrink_px};
-	// 			}
-	// 		}
-	// 	";
-	// }
-	// wp_add_inline_style( mai_get_handle(), $css );
+		.custom-logo-link {
+			max-width: var(--logo-shrink-width);
+		}
+	}
+	</style>";
 }
 
 /**
