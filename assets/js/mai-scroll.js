@@ -84,11 +84,13 @@ const bodyScroll = basicScroll.create({
 		}
 	},
 	outside: (instance, percentage, props) => {
-		if ( ( percentage <= 0 ) && scrollClassAdded ) {
-			removeScrollClass();
-		}
-		if ( headerConcealed ) {
-			revealHeader();
+		if ( percentage <= 0 ) {
+			if ( scrollClassAdded ) {
+				removeScrollClass();
+			}
+			if ( headerConcealed ) {
+				revealHeader();
+			}
 		}
 	}
 })
@@ -157,18 +159,27 @@ function removeScrollClass() {
 
 // Add shrink.
 function addShrinkClass() {
+	if ( ! siteHeader ) {
+		return;
+	}
 	siteHeader.classList.add( 'shrink' );
 	shrinkClassAdded = true;
 }
 
 // Remove shrink.
 function removeShrinkClass() {
+	if ( ! siteHeader ) {
+		return;
+	}
 	siteHeader.classList.remove( 'shrink' );
 	shrinkClassAdded = false;
 }
 
 // Conceal the header.
 function concealHeader() {
+	if ( ! siteHeader ) {
+		return;
+	}
 	siteHeader.classList.remove( 'reveal-header' );
 	siteHeader.classList.add( 'conceal-header' );
 	headerConcealed = true;
@@ -176,6 +187,9 @@ function concealHeader() {
 
 // Reveal the header.
 function revealHeader() {
+	if ( ! siteHeader ) {
+		return;
+	}
 	siteHeader.classList.remove( 'conceal-header' );
 	siteHeader.classList.add( 'reveal-header' );
 	headerConcealed = false;
