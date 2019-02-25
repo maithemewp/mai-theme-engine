@@ -251,8 +251,11 @@ function mai_login_logo_css() {
 		return;
 	}
 
+	$width    = get_theme_mod( 'custom_logo_width', 180 );
+	$width_px = absint( $width ) . 'px';
+
 	// Hide the default logo and heading.
-	echo '<style>
+	echo "<style>
 		.login h1,
 		.login h1 a {
 			background: none !important;
@@ -264,6 +267,11 @@ function mai_login_logo_css() {
 			margin: 0 !important;
 			border: 0 !important;
 			overflow: hidden !important;
+		}
+		.login .mai-login-logo a {
+			max-width: {$width_px};
+			display: block;
+			margin: auto;
 		}
 		.login .mai-login-logo img {
 			display: block !important;
@@ -280,7 +288,7 @@ function mai_login_logo_css() {
 		.login #backtoblog {
 			text-align: center;
 		}
-	</style>';
+	</style>";
 
 	// Add our own inline logo.
 	add_action( 'login_message', function() use ( $logo_id ) {
