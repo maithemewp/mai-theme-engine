@@ -27,13 +27,12 @@ function mai_logo_width_css() {
 	:root {
 		--logo-width: {$width_px};
 		--logo-shrink-width: {$shrink_px};
-		--logo-margin-top: 24px;
-		--logo-margin-bottom: 24px;
+		--logo-margin: 24px;
 	}
 	@media only screen and (min-width: 769px) {
 		.site-title a {
-			margin-top: var(--logo-margin-top);
-			margin-bottom: var(--logo-margin-bottom);
+			margin-top: var(--logo-margin);
+			margin-bottom: var(--logo-margin);
 		}
 		.custom-logo-link {
 			max-width: var(--logo-width);
