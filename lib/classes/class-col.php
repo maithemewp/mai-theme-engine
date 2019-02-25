@@ -152,23 +152,12 @@ class Mai_Col {
 				$image = wp_image_add_srcset_and_sizes( $image_html, wp_get_attachment_metadata( $image_id ), $image_id );
 			}
 
-			// If image size is in the global (it should be).
-			if ( isset( $_wp_additional_image_sizes[ $this->args['image_size'] ] ) ) {
-				$registered_image = $_wp_additional_image_sizes[ $this->args['image_size'] ];
-				$width  = $registered_image['width'];
-				$height = $registered_image['height'];
-			}
-			// Otherwise use the actual image dimensions.
-			elseif ( $image ) {
-				$width  = $image[1];
-				$height = $image[2];
-			}
-			// Fallback.
-			else {
-				$width  = 4;
-				$height = 3;
-			}
+			// Get sizes.
+			$sizes  = mai_get_image_width_height( $this->args['image_size'], $image_id );
+			$width  = $sizes[0];
+			$height = $sizes[1];
 
+			// Add aspect ratio data attributes.
 			$attributes = mai_add_aspect_ratio_attributes( $attributes, $width, $height );
 		}
 
