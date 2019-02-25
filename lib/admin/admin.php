@@ -166,7 +166,7 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 
 	// Add to existing formats.
 	if ( isset( $init_array['style_formats'] ) && ! empty( $init_array['style_formats'] ) ) {
-		$decoded        = json_decode( $init_array['style_formats'], true );
+		$decoded       = json_decode( $init_array['style_formats'], true );
 		$style_formats = array_merge( $decoded, $style_formats );
 	}
 
