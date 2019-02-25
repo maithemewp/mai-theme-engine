@@ -84,9 +84,14 @@ function mai_remove_unsupported_flexgrid_gallery_options() {
  */
 add_filter( 'mce_buttons_2', 'mai_add_styleselect_dropdown' );
 function mai_add_styleselect_dropdown( $buttons ) {
+	// Bail if we already have styleselect.
+	if ( in_array( 'styleselect', $buttons ) ) {
+		return $buttons;
+	}
 	array_unshift( $buttons, 'styleselect' );
 	return $buttons;
 }
+
 /**
  * Add a button option to the editor.
  *
@@ -96,7 +101,6 @@ function mai_add_styleselect_dropdown( $buttons ) {
  */
 add_filter( 'tiny_mce_before_init', 'mai_add_style_format_options_to_editor' );
 function mai_add_style_format_options_to_editor( $init_array ) {
-	// mai_pp( $init_array );
 	$style_formats = array(
 		array(
 			'title'    => __( 'Primary Button', 'mai-theme-engine' ),
@@ -159,66 +163,20 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 			'classes'  => 'button ghost large',
 		),
 	);
-	// Insert the array, JSON encoded, into 'style_formats'.
-	$init_array['style_formats'] = json_encode( $style_formats );
+
+	// Add to existing formats.
+	if ( isset( $init_array['style_formats'] ) && ! empty( $init_array['style_formats'] ) ) {
+		$decoded        = json_decode( $init_array['style_formats'], true );
+		$style_formats = array_merge( $decoded, $style_formats );
+	}
+
+	// JSON encode the array.
+	$style_formats = json_encode( $style_formats );
+
+	// Add the formats.
+	$init_array['style_formats'] = $style_formats;
+
 	return $init_array;
-}
-
-add_filter( 'tiny_mce_before_init', 'my_mce_before_init_insert_formats' );
-function my_mce_before_init_insert_formats( $init_array ) {
-
-	$style_formats = array(
-		array(
-			'title'   => 'Patt Divider',
-			'block'   => 'div',
-			'classes' => 'patt-header',
-			'wrapper' => true,
-		),
-		array(
-			'title'   => 'Patt Designer',
-			'block'   => 'div',
-			'classes' => 'designer',
-			'wrapper' => true,
-		),
-		array(
-			'title'   => 'Content Block',
-			'block'   => 'span',
-			'classes' => 'content-block',
-			'wrapper' => true,
-		),
-		array(
-			'title'   => 'tutorials',
-			'block'   => 'div',
-			'classes' => 'tutorials',
-			'wrapper' => true,
-		),
-		array(
-			'title'   => 'notes new',
-			'block'   => 'div',
-			'classes' => 'notes-new',
-			'wrapper' => true,
-		),
-		array(
-			'title'   => 'errata',
-			'inline'  => 'span',
-			'classes' => 'errata',
-			'wrapper' => true,
-		),
-		array(
-			'title'   => 'notes old',
-			'block'   => 'div',
-			'classes' => 'notes',
-			'wrapper' => true,
-		),
-	);
-
-	mai_pp( $init_array['style_formats'] );
-
-
-	// Insert the array, JSON ENCODED, into 'style_formats'
-	// $init_array['style_formats'] .= json_encode( $style_formats );
-	return $init_array;
-
 }
 
 /**
