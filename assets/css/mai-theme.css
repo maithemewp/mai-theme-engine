@@ -1483,17 +1483,6 @@ body.has-boxed-site-container {
 	z-index: 3;
 }
 
-.section.has-bg-image .bg-image {
-	height: 140%;
-	-webkit-transform: translateY(var(--translateY));
-	-ms-transform: translateY(var(--translateY));
-	transform: translateY(var(--translateY));
-	will-change: transform;
-	/* -webkit-transition: all 10ms linear; */
-	/* -o-transition: all 10ms linear; */
-	/* transition: all 10ms linear; */
-}
-
 /* ## Image Background
 --------------------------------------------- */
 
@@ -2591,9 +2580,9 @@ input[name="post_password"] {
 	z-index: 96;
 	top: 0;
 	will-change: transform;
-	-webkit-transform: translate(0);
-	-ms-transform: translate(0);
-	transform: translate(0);
+	-webkit-transform: translateY(0);
+	-ms-transform: translateY(0);
+	transform: translateY(0);
 }
 
 @media (min-width: 600px) and (max-width: 782px) {
@@ -2615,46 +2604,46 @@ input[name="post_password"] {
 .has-reveal-header .site-header.conceal-header {
 	-webkit-animation: fadeOutUp .3s ease-in-out;
 	animation: fadeOutUp .3s ease-in-out;
-	-webkit-transform: translate(0,-100%);
-	-ms-transform: translate(0,-100%);
-	transform: translate(0,-100%);
+	-webkit-transform: translateY(-100%);
+	-ms-transform: translateY(-100%);
+	transform: translateY(-100%);
 }
 
 .has-reveal-header .site-header.reveal-header {
 	-webkit-animation: fadeInDown .3s ease-in-out;
 	animation: fadeInDown .3s ease-in-out;
-	-webkit-transform: translate(0,0);
-	-ms-transform: translate(0,0);
-	transform: translate(0,0);
+	-webkit-transform: translateY(0);
+	-ms-transform: translateY(0);
+	transform: translateY(0);
 }
 
 /* Fade in and down a fixed height so it's smooth but doesn't take long for taller headers. */
 @-webkit-keyframes fadeInDown{
 	0% {
 		opacity: .5;
-		-webkit-transform: translate(0,-100px);
-		-ms-transform: translate(0,-100px);
-		transform: translate(0,-100px);
+		-webkit-transform: translateY(-100px);
+		-ms-transform: translateY(-100px);
+		transform: translateY(-100px);
 	}
 	100% {
 		opacity: 1;
-		-webkit-transform: translate(0,0);
-		-ms-transform: translate(0,0);
-		transform: translate(0,0);
+		-webkit-transform: translateY(0);
+		-ms-transform: translateY(0);
+		transform: translateY(0);
 	}
 }
 @keyframes fadeInDown{
 	0% {
 		opacity: .5;
-		-webkit-transform: translate(0,-100%);
-		-ms-transform: translate(0,-100%);
-		transform: translate(0,-100%);
+		-webkit-transform: translateY(-100px);
+		-ms-transform: translateY(-100px);
+		transform: translateY(-100px);
 	}
 	100% {
 		opacity: 1;
-		-webkit-transform: translate(0,0);
-		-ms-transform: translate(0,0);
-		transform: translate(0,0);
+		-webkit-transform: translateY(0);
+		-ms-transform: translateY(0);
+		transform: translateY(0);
 	}
 }
 
@@ -2662,29 +2651,29 @@ input[name="post_password"] {
 @-webkit-keyframes fadeOutUp {
 	0% {
 		opacity: 1;
-		-webkit-transform: translate(0,0);
-		-ms-transform: translate(0,0);
-		transform: translate(0,0);
+		-webkit-transform: translateY(0);
+		-ms-transform: translateY(0);
+		transform: translateY(0);
 	}
 	100% {
 		opacity: .5;
-		-webkit-transform: translate(0,-100%);
-		-ms-transform: translate(0,-100%);
-		transform: translate(0,-100%);
+		-webkit-transform: translateY(-100%);
+		-ms-transform: translateY(-100%);
+		transform: translateY(-100%);
 	}
 }
 @keyframes fadeOutUp {
 	0% {
 		opacity: 1;
-		-webkit-transform: translate(0,0);
-		-ms-transform: translate(0,0);
-		transform: translate(0,0);
+		-webkit-transform: translateY(0);
+		-ms-transform: translateY(0);
+		transform: translateY(0);
 	}
 	100% {
 		opacity: .5;
-		-webkit-transform: translate(0,-100%);
-		-ms-transform: translate(0,-100%);
-		transform: translate(0,-100%);
+		-webkit-transform: translateY(-100%);
+		-ms-transform: translateY(-100%);
+		transform: translateY(-100%);
 	}
 }
 
@@ -2826,6 +2815,15 @@ input[name="post_password"] {
 .header-before .nav-header .nav-search:hover,
 .header-before .nav-header .nav-search:focus {
 	color: #323232;
+}
+
+.header-before .sub-menu {
+	margin-top: -1px;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.header-before .sub-menu a {
+	background-color: #fff;
 }
 
 .header-left,
