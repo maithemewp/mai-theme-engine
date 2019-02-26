@@ -5,12 +5,11 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	var html            = document.querySelector( 'html' );
 	var body            = document.querySelector( 'body' );
 	var header          = document.querySelector( '.site-header' );
-	var htmlStyles      = window.getComputedStyle( html );
-	var headerStyles    = window.getComputedStyle( html );
 	var logoWidth       = maiScroll.logoWidth;
 	var shrunkLogoWidth = Math.round( logoWidth * .7 );
 	var hasShrinkHeader = body.classList.contains( 'has-shrink-header' );
 	var hasRevealHeader = body.classList.contains( 'has-reveal-header' );
+	var hasStickyHeader = ( hasRevealHeader || body.classList.contains( 'has-shrink-header' ) );
 
 	// Set vars.
 	var scrollClassAdded   = false,
@@ -21,7 +20,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		percentage         = 0,
 		previousPercentage = 0,
 		scrollDowns        = [],
-		shrinkClassAdded   = false,
+		stuckClassAdded    = false,
 		afterHeader        = false;
 
 	/**
@@ -109,36 +108,38 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	});
 	bodyScroll.start();
 
-
 	/**
 	 * Handle header scroll tracking.
 	 * This is always running, just not always outputting CSS vars.
 	 *
 	 * @version  1.0.0
 	 */
-	var headerFrom  = parseInt( headerStyles.marginTop ) - parseInt( htmlStyles.marginTop ),
-		headerTo    = headerFrom + 200,
-		headerProps = hasShrinkHeader ? {
-			'--logo-width': {
-				from: logoWidth + 'px',
-				to: shrunkLogoWidth + 'px'
-			},
-			'--logo-margin': {
-				from: '24px',
-				to: '4px'
-			}
-		} : [];
+	var headerFrom   = header.offsetTop,
+		headerTo     = headerFrom + 200;
 
 	var headerScroll = basicScroll.create({
 		elem: header,
 		from: headerFrom,
 		to: headerTo,
-		props: headerProps,
+		// We need really large values to force whole numbers and partially help jitters/jank.
+		// See https://github.com/electerious/basicScroll/issues/39
+		props: hasShrinkHeader ? {
+			'--logo-width': {
+				from: ( logoWidth * 100000 ) + 'px',
+				to: ( shrunkLogoWidth * 100000 ) + 'px',
+			},
+			'--logo-margin': {
+				from: '2400000px',
+				to: '400000px'
+			},
+		} : [],
 		inside: (instance, percentage, props) => {
-			if ( ( percentage > 0 ) && ! shrinkClassAdded ) {
-				addShrinkClass();
-			} else if ( ( percentage <= 0 ) && shrinkClassAdded ) {
-				removeShrinkClass();
+			if ( hasStickyHeader ) {
+				if ( ( percentage > 0 ) && ! stuckClassAdded ) {
+					addStuckClass();
+				} else if ( ( percentage <= 0 ) && stuckClassAdded ) {
+					removeStuckClass();
+				}
 			}
 			if ( afterHeader ) {
 				afterHeader = false;
@@ -146,7 +147,9 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		},
 		outside: (instance, percentage, props) => {
 			if ( percentage <= 0 ) {
-				removeShrinkClass();
+				if ( hasStickyHeader ) {
+					removeStuckClass();
+				}
 				if ( afterHeader ) {
 					afterHeader = false;
 				}
@@ -159,34 +162,34 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	});
 	headerScroll.start();
 
-	// Add scroll.
+	// Add scroll class.
 	function addScrollClass() {
 		body.classList.add( 'scroll' );
 		scrollClassAdded = true;
 	}
 
-	// Remove scroll.
+	// Remove scroll class.
 	function removeScrollClass() {
 		body.classList.remove( 'scroll' );
 		scrollClassAdded = false;
 	}
 
-	// Add shrink.
-	function addShrinkClass() {
+	// Add stuck class.
+	function addStuckClass() {
 		if ( ! header ) {
 			return;
 		}
-		header.classList.add( 'shrink' );
-		shrinkClassAdded = true;
+		header.classList.add( 'stuck' );
+		stuckClassAdded = true;
 	}
 
-	// Remove shrink.
-	function removeShrinkClass() {
+	// Remove sticky class.
+	function removeStuckClass() {
 		if ( ! header ) {
 			return;
 		}
-		header.classList.remove( 'shrink' );
-		shrinkClassAdded = false;
+		header.classList.remove( 'stuck' );
+		stuckClassAdded = false;
 	}
 
 	// Conceal the header.

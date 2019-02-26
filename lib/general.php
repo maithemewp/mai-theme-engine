@@ -31,11 +31,11 @@ function mai_logo_width_css() {
 	}
 	@media only screen and (min-width: 769px) {
 		.site-title a {
-			margin-top: var(--logo-margin);
-			margin-bottom: var(--logo-margin);
+			margin-top: calc( var(--logo-margin) / 100000 );
+			margin-bottom: calc( var(--logo-margin) / 100000 );
 		}
 		.custom-logo-link {
-			max-width: var(--logo-width);
+			max-width: calc( var(--logo-width) / 100000 );
 		}
 	}
 	@media only screen and (max-width: 768px) {
