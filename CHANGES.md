@@ -1,6 +1,10 @@
 # Changelog
 
+* Added: Better scroll performance.
+* Added: Use logo width setting for login logo.
 * Fixed: Better handling of comma separated grid parameters.
+* Fixed: Allow additional styleselect elements with the classic editor.
+* Fixed: Transparent sub-menu when using Navigation Menu widget in Before Header widget area.
 
 ## 1.8.3.1 (2/13/19)
 * Fixed: Better support for older PHP in logo width customizer field. Please just run PHP 7 though.
