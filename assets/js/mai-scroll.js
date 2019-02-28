@@ -118,7 +118,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		headerTo     = headerFrom + 200;
 
 	var headerScroll = basicScroll.create({
-		elem: header,
+		elem: body,
 		from: headerFrom,
 		to: headerTo,
 		// We need really large values to force whole numbers and partially help jitters/jank.
