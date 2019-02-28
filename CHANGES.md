@@ -2,6 +2,7 @@
 
 * Added: Better scroll performance.
 * Added: Use logo width setting for login logo.
+* Changed: More precise "checkerboard" css for [col]. Only apply padding to when 2 [col] shortcodes are used as the immediate child in a full-width section.
 * Fixed: Better handling of comma separated grid parameters.
 * Fixed: Allow additional styleselect elements with the classic editor.
 * Fixed: Transparent sub-menu when using Navigation Menu widget in Before Header widget area.

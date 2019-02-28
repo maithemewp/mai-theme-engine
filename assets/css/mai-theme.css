@@ -1471,7 +1471,9 @@ body.has-boxed-site-container {
 	margin-bottom: 8px;
 }
 
-.section .width-full .columns-shortcode > .col {
+/* only add padding when 2 [col] shortcodes are used as the immediate child in a full-width section. */
+.section .width-full > .columns-shortcode > .col:nth-last-of-type(2):first-of-type,
+.section .width-full > .columns-shortcode > .col:nth-of-type(2):last-of-type {
 	padding: calc( 32px + 2vw );
 }
 
