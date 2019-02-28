@@ -7,6 +7,7 @@
 * Fixed: Transparent sub-menu when using Navigation Menu widget in Before Header widget area.
 * Fixed: Duplicated category description on WooCommerce product categories when intro text was empty.
 * Fixed: Align the header's last menu item's sub-menu to the right so it's not outside of the window.
+* Fixed: Remove extra padding on Sections template when content sidebar wrap is boxed.
 
 ## 1.8.3.1 (2/13/19)
 * Fixed: Better support for older PHP in logo width customizer field. Please just run PHP 7 though.

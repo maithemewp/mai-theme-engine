@@ -938,9 +938,12 @@ td {
 	margin-bottom: 36px;
 }
 
-.mai-sections .content-sidebar-wrap {
+.mai-sections .content-sidebar-wrap,
+.mai-sections .content-sidebar-wrap.boxed {
+	padding: 0;
 	margin-top: 0;
 	margin-bottom: 0;
+	border: none;
 }
 
 .content {
