@@ -938,12 +938,15 @@ td {
 	margin-bottom: 36px;
 }
 
-.mai-sections .content-sidebar-wrap,
-.mai-sections .content-sidebar-wrap.boxed {
-	padding: 0;
+.mai-sections .content-sidebar-wrap {
 	margin-top: 0;
 	margin-bottom: 0;
 	border: none;
+}
+
+.mai-sections .content-sidebar-wrap:not(.boxed),
+.mai-sections:not(.has-boxed-site-container) .content-sidebar-wrap.boxed {
+	padding: 0;
 }
 
 .content {
