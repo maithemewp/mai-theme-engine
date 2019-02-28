@@ -21,20 +21,24 @@ add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 
 // Remove genesis entry meta support.
-add_action( 'init', 'mai_woocommerce_int', 99 );
+add_action( 'woocommerce_init', 'mai_woocommerce_int', 99 );
 function mai_woocommerce_int() {
-	if ( ! class_exists( 'WooCommerce' ) ) {
-		return;
-	}
 	remove_post_type_support( 'product', 'genesis-entry-meta-before-content' );
 	remove_post_type_support( 'product', 'genesis-entry-meta-after-content' );
 }
 
-// Remove taxonomy archive description since Mai has this functionality already.
-remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
+// Remove archive things we don't need.
+add_action( 'genesis_before', function() {
 
-// Replace Woocommerce Default pagination with Genesis Framework Pagination.
-remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
+	// Remove Genesis Connect output of term. We don't want a fallback, we want them separate.
+	remove_filter( 'genesis_term_intro_text_output', 'genesiswooc_term_intro_text_output' );
+
+	// Remove taxonomy archive description since Mai has this functionality already.
+	remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
+
+	// Replace Woocommerce Default pagination with Genesis Framework Pagination.
+	remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
+});
 
 // Maybe remove Woo shop page title when banner is enabled.
 add_filter( 'woocommerce_show_page_title', 'mai_woocommerce_show_page_title' );

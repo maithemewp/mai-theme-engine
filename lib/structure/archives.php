@@ -113,9 +113,6 @@ function mai_do_term_description() {
 		return;
 	}
 
-	// Remove Genesis Connect output of term. We don't want a fallback, we want them separate.
-	remove_filter( 'genesis_term_intro_text_output', 'genesiswooc_term_intro_text_output' );
-
 	// If not the first page.
 	if ( 0 !== absint( get_query_var( 'paged' ) ) ) {
 		return;
