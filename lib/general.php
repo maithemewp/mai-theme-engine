@@ -12,22 +12,25 @@ add_action( 'wp_head', 'mai_logo_width_css' );
 function mai_logo_width_css() {
 
 	$width = get_theme_mod( 'custom_logo_width', 180 );
+
 	if ( ! $width ) {
 		return;
 	}
 
-	$width_px  = absint( $width ) . 'px';
-	$shrink_px = absint( $width * .7 ) . 'px';
+	$width_px  = absint( $width ) * 100000 . 'px';
+	$shrink_px = absint( $width * .7 ) * 100000 . 'px';
 
 	/**
 	 * Set max-width on the logo link.
 	 * Stay shrunk on mobile.
+	 *
+	 * Large values to force whole pixel values via basicScroll.
 	 */
 	echo "<style>
 	:root {
 		--logo-width: {$width_px};
 		--logo-shrink-width: {$shrink_px};
-		--logo-margin: 24px;
+		--logo-margin: 2400000px;
 	}
 	@media only screen and (min-width: 769px) {
 		.site-title a {
