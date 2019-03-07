@@ -11,6 +11,11 @@
 add_action( 'wp_head', 'mai_logo_width_css' );
 function mai_logo_width_css() {
 
+	// Bail if in the Dasbhoard.
+	if ( is_admin() ) {
+		return;
+	}
+
 	$width = get_theme_mod( 'custom_logo_width', 180 );
 
 	if ( ! $width ) {
@@ -47,7 +52,7 @@ function mai_logo_width_css() {
 			margin-bottom: 4px;
 		}
 		.custom-logo-link {
-			max-width: var(--logo-shrink-width);
+			max-width: calc( var(--logo-shrink-width) / 100000 );
 		}
 	}
 	</style>";

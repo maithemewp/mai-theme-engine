@@ -1471,9 +1471,7 @@ body.has-boxed-site-container {
 	margin-bottom: 8px;
 }
 
-/* only add padding when 2 [col] shortcodes are used as the immediate child in a full-width section. */
-.section .width-full > .columns-shortcode > .col:nth-last-of-type(2):first-of-type,
-.section .width-full > .columns-shortcode > .col:nth-of-type(2):last-of-type {
+.section .width-full .columns-shortcode > .col {
 	padding: calc( 32px + 2vw );
 }
 
@@ -1792,14 +1790,40 @@ a.alignnone {
 	display: inline-block;
 }
 
-.alignleft {
-	float: left;
-	text-align: left;
+@media only screen and (max-width: 544px) {
+
+	.alignleft,
+	.alignright {
+		text-align: center;
+	}
+
+	.alignleft,
+	.alignright {
+		margin: 24px auto;
+	}
+
 }
 
-.alignright {
-	float: right;
-	text-align: right;
+@media only screen and (min-width: 545px) {
+
+	.alignleft,
+	a.alignleft,
+	img.alignleft,
+	.wp-caption.alignleft {
+		float: left;
+		text-align: left;
+		margin: 24px 24px 24px 0;
+	}
+
+	.alignright,
+	a.alignright,
+	img.alignright,
+	.wp-caption.alignright {
+		float: right;
+		text-align: right;
+		margin: 24px 0 24px 24px;
+	}
+
 }
 
 a.alignleft,
@@ -1817,20 +1841,6 @@ img.centered,
 img.alignnone,
 .alignnone {
 	margin-bottom: 12px;
-}
-
-.alignleft,
-a.alignleft,
-img.alignleft,
-.wp-caption.alignleft {
-	margin: 24px 24px 24px 0;
-}
-
-.alignright,
-a.alignright,
-img.alignright,
-.wp-caption.alignright {
-	margin: 24px 0 24px 24px
 }
 
 .entry-image-link.alignleft,
