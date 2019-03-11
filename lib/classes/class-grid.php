@@ -589,7 +589,7 @@ class Mai_Grid {
 
 						// Excerpt.
 						if ( in_array( 'excerpt', $this->args['show'] ) ) {
-							$excerpt = get_the_excerpt();
+							$excerpt = get_the_excerpt( $post );
 							if ( 'bg' === $this->args['image_location'] ) {
 								$excerpt = wp_strip_all_tags( $excerpt );
 							}
