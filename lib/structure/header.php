@@ -108,7 +108,7 @@ function mai_header_before() {
  *
  * @return  void
  */
-add_action( 'genesis_header', 'mai_header_trigger', 3 );
+// add_action( 'genesis_header', 'mai_header_trigger', 3 );
 function mai_header_trigger() {
 	echo '<span id="header-trigger"></span>';
 }
