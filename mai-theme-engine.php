@@ -118,7 +118,7 @@ final class Mai_Theme_Engine {
 	 * composer require cmb2/cmb2
 	 *
 	 * v2.6.0   CBM2
-	 * v4.5     Plugin Update Checker
+	 * v4.5.1   Plugin Update Checker
 	 *
 	 * @access  private
 	 * @since   1.0.0
