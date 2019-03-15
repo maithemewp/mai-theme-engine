@@ -2734,6 +2734,14 @@ input[name="post_password"] {
 /* ## Title Area
 --------------------------------------------- */
 
+.wp-custom-logo .title-area,
+.wp-custom-logo .title-area a,
+.wp-custom-logo .site-title,
+.wp-custom-logo .site-title a {
+	font-size: 0;
+	line-height: 1;
+}
+
 .site-title {
 	padding: 0;
 	margin: 0;
@@ -2763,6 +2771,10 @@ input[name="post_password"] {
 	transition: all 10ms linear;
 }
 
+.custom-logo {
+	width: 100%;
+}
+
 @media only screen and (min-width: 769px) {
 
 	.site-header.has-header-left.has-header-right .site-title {
@@ -2783,14 +2795,6 @@ input[name="post_password"] {
 	color: #555;
 	font-size: 1.25rem;
 	margin-bottom: 12px;
-}
-
-.wp-custom-logo .title-area,
-.wp-custom-logo .title-area a,
-.wp-custom-logo .site-title,
-.wp-custom-logo .site-title a {
-	font-size: 0;
-	line-height: 1;
 }
 
 /* ## Header Content
