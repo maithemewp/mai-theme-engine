@@ -503,7 +503,7 @@ class Mai_Grid {
 						}
 
 						// Overlay.
-						if ( mai_is_valid_overlay( $this->args['overlay'] ) ) {
+						if ( 'bg' === $this->args['image_location'] && mai_is_valid_overlay( $this->args['overlay'] ) ) {
 							$html .= mai_get_overlay_html( $this->args['overlay'] );
 						}
 
