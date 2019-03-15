@@ -68,7 +68,20 @@
 		margin-right: 16px;
 	}
 
+	.woocommerce .woocommerce-error .button,
+	.woocommerce .woocommerce-info .button,
+	.woocommerce .woocommerce-message .button,
+	.woocommerce-page .woocommerce-error .button,
+	.woocommerce-page .woocommerce-info .button,
+	.woocommerce-page .woocommerce-message .button {
+		float: none;
+		-webkit-box-ordinal-group: 100;
+		-ms-flex-order: 99;
+		order: 99;
+		margin-left: auto;
+	}
 }
+
 
 /* ## Products - General
 --------------------------------------------- */
@@ -149,9 +162,16 @@
 }
 
 .flex-entry.entry .entry-content .woocommerce-LoopProduct-link {
-	display: -ms-flexbox;display: -webkit-box;display: flex;
-	-webkit-box-orient: vertical;-webkit-box-direction: normal;-ms-flex-direction: column;flex-direction: column;
-	-webkit-box-flex: 1;-ms-flex: 1 1 auto;flex: 1 1 auto;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto;
 }
 
 .flex-entry.entry .entry-content .price,
