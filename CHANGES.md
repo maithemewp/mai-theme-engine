@@ -10,7 +10,8 @@
 * Fixed: Align the header's last menu item's sub-menu to the right so it's not outside of the window.
 * Fixed: Remove extra padding on Sections template when content sidebar wrap is boxed.
 * Fixed: Check if doing ajax before running update_post_metadata filter.
-* Fixed: More thorough handling of Woo notices with long content.
+* Fixed: More thorough handling of WooCommerce notices with long content.
+* Fixed: Remove references to FontAwesome on WooCommerce account navigation.
 * Fixed: [grid] Only use overlay parameters if image_location="bg".
 
 ## 1.8.3.1 (2/13/19)
