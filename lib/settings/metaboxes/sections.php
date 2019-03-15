@@ -448,6 +448,11 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 add_filter( 'update_post_metadata', 'mai_update_to_or_from_sections_template', 10, 5 );
 function mai_update_to_or_from_sections_template( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 
+	// Bail if doing ajax (for onboarding and programmatically updating this meta via onboarding).
+	if ( wp_doing_ajax() ) {
+		return $check;
+	}
+
 	// Bail if no value change or not updating page template.
 	if ( $meta_value === $prev_value || '_wp_page_template' !== $meta_key ) {
 		return $check;
