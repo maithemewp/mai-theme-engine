@@ -201,14 +201,14 @@ a {
 	text-decoration: none;
 }
 
-p > a {
+p > a:not([class]) {
 	text-decoration: none;
 	border-bottom-width: 1px;
 	border-bottom-style: dotted;
 }
 
-p > a:hover,
-p > a:focus {
+p > a:not([class]):hover,
+p > a:not([class]):focus {
 	text-decoration: none;
 	border-bottom-style: solid;
 }

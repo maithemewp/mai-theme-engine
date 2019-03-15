@@ -12,6 +12,7 @@
 * Fixed: Check if doing ajax before running update_post_metadata filter.
 * Fixed: More thorough handling of WooCommerce notices with long content.
 * Fixed: Remove references to FontAwesome on WooCommerce account navigation.
+* Fixed: Only add bottom border to links that don't have a class.
 * Fixed: [grid] Only use overlay parameters if image_location="bg".
 
 ## 1.8.3.1 (2/13/19)
