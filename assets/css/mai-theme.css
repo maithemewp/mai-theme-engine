@@ -480,7 +480,9 @@ figure {
 
 input,
 textarea {
-	-webkit-appearance: none;-moz-appearance: none;appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 	width: 100%;
 	background-color: #f8f8f8;
 	color: rgba(0, 0, 0, 0.7);
@@ -518,15 +520,20 @@ input[type="radio"] {
 	width: auto;
 	margin: 0 12px 6px 0;
 	vertical-align: middle;
-	-webkit-box-sizing: border-box;box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 input[type="checkbox"] {
-	-webkit-appearance: checkbox;-moz-appearance: checkbox;appearance: checkbox;
+	-webkit-appearance: checkbox;
+	-moz-appearance: checkbox;
+	appearance: checkbox;
 }
 
 input[type="radio"] {
-	-webkit-appearance: radio;-moz-appearance: radio;appearance: radio;
+	-webkit-appearance: radio;
+	-moz-appearance: radio;
+	appearance: radio;
 }
 
 input[type="search"]::-webkit-search-cancel-button,
@@ -586,9 +593,15 @@ input[type="submit"],
 .woocommerce .button.alt.checkout-button,
 .woocommerce #payment #place_order,
 .woocommerce-page #payment #place_order {
-	display: -webkit-inline-box;display: -ms-inline-flexbox;display: inline-flex;
-	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-ms-flex-pack: center;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-ms-flex-align: center;
+	-webkit-box-align: center;
+	align-items: center;
 	cursor: pointer;
 	width: auto;
 	white-space: normal;
@@ -604,7 +617,8 @@ input[type="submit"],
 	margin: 0;
 	border: none;
 	border-radius: 0;
-	-webkit-box-shadow: none;box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 	-webkit-font-smoothing: antialiased;
 }
 
