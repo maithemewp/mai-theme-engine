@@ -1,5 +1,6 @@
 # Changelog
 
+## 1.9.0 (3/26/19)
 * Added: Better scroll performance.
 * Added: Use logo width setting for login logo.
 * Changed: More precise "checkerboard" css for [col]. Only apply padding to when 2 [col] shortcodes are used as the immediate child in a full-width section.
