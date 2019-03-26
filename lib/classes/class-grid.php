@@ -537,7 +537,7 @@ class Mai_Grid {
 							if ( $has_bg_image ) {
 								$author_shortcode_name = 'post_author';
 							} else {
-								$author_shortcode_name = 'post_author_link';
+								$author_shortcode_name = 'post_author_posts_link';
 							}
 							$author_shortcode = sprintf( '[%s%s%s]', $author_shortcode_name, $author_before, $author_after );
 							// Use Genesis output for author, including link.
