@@ -51,6 +51,9 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 			if ( in_array( $typenow, (array) genesis_get_option( 'banner_disable_post_types' ) ) ) {
 				return false;
 			}
+			if ( class_exists( 'WooCommerce' ) && ( get_the_ID() === (int) get_option( 'woocommerce_shop_page_id' ) ) ) {
+				return false;
+			}
 		}
 		// CPT.
 		else {
