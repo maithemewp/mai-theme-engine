@@ -11,8 +11,8 @@
 add_action( 'genesis_before', 'mai_do_remove_breadcrumbs' );
 function mai_do_remove_breadcrumbs() {
 
-	// Bail if blog or single post.
-	if ( ! ( is_front_page() || is_home() || is_singular() ) ) {
+	// Bail if not blog, single page/post/cpt, or WooCommerce Shop page.
+	if ( ! ( is_singular() || ( class_exists( 'WooCommerce' ) && is_shop() ) ) ) {
 		return;
 	}
 
@@ -22,15 +22,15 @@ function mai_do_remove_breadcrumbs() {
 	 */
 	$object = false;
 
-	// Static blog.
-	if ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
-		$object = get_post( $posts_page_id );
-	}
-
 	// Singular.
-	elseif ( is_singular() && ! is_home() ) {
+	if ( is_singular() && ! is_home() ) {
 		global $post;
 		$object = $post;
+	}
+
+	// WooCommerce Shop.
+	elseif ( is_shop() ) {
+		$object = get_post( get_option( 'woocommerce_shop_page_id' ) );
 	}
 
 	// Bail if no object.
@@ -59,8 +59,8 @@ function mai_do_remove_breadcrumbs() {
 add_action( 'genesis_before', 'mai_do_remove_title' );
 function mai_do_remove_title() {
 
-	// Bail if not front page, blog, or single post.
-	if ( ! ( is_front_page() || is_home() || is_singular() ) ) {
+	// Bail if not front page, blog, single page/post/cpt, or WooCommerce Shop page.
+	if ( ! ( is_front_page() || is_home() || is_singular() || ( class_exists( 'WooCommerce' ) && is_shop() ) ) ) {
 		return;
 	}
 
@@ -84,6 +84,11 @@ function mai_do_remove_title() {
 	elseif ( is_singular() && ! is_home() ) {
 		global $post;
 		$object = $post;
+	}
+
+	// WooCommerce Shop.
+	elseif ( is_shop() ) {
+		$object = get_post( get_option( 'woocommerce_shop_page_id' ) );
 	}
 
 	// Bail if no object.
@@ -137,10 +142,9 @@ function mai_hide_title() {
 		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_open', 5, 3 );
 		remove_action( 'genesis_archive_title_descriptions', 'genesis_do_archive_headings_close', 15, 3 );
 	}
+	// WooCommerce.
+	add_filter( 'woocommerce_show_page_title' , '__return_false' );
 }
-
-
-
 
 /**
  * Remove the page title from the front page.

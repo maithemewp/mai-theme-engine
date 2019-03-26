@@ -2,56 +2,60 @@
 
 /**
  * Add inline CSS.
- * Way late cause Engine changes stylesheet to 999.
  *
  * @since   1.8.0
- *
- * @link    http://www.billerickson.net/code/enqueue-inline-styles/
- * @link    https://sridharkatakam.com/chevron-shaped-featured-parallax-section-in-genesis-using-clip-path/
+ * @since   1.9.0  Converted to CSS vars for basicScroll.
  *
  * @return  void
  */
-add_action( 'wp_enqueue_scripts', 'mai_logo_width_css', 1000 );
+add_action( 'wp_head', 'mai_logo_width_css' );
 function mai_logo_width_css() {
 
-	if ( ! ( function_exists( 'has_custom_logo' ) || has_custom_logo() ) ) {
+	// Bail if in the Dasbhoard.
+	if ( is_admin() ) {
 		return;
 	}
 
 	$width = get_theme_mod( 'custom_logo_width', 180 );
+
 	if ( ! $width ) {
 		return;
 	}
 
-	$width_px  = absint( $width ) . 'px';
-	$shrink_px = absint( $width * .7 ) . 'px';
+	$width_px  = absint( $width ) * 100000 . 'px';
+	$shrink_px = absint( $width * .7 ) * 100000 . 'px';
 
 	/**
 	 * Set max-width on the logo link.
 	 * Stay shrunk on mobile.
+	 *
+	 * Large values to force whole pixel values via basicScroll.
 	 */
-	$css = "
-		@media only screen and (max-width: 768px) {
-			.custom-logo-link {
-				max-width: {$shrink_px};
-			}
-		}
-		@media only screen and (min-width: 769px) {
-			.custom-logo-link {
-				max-width: {$width_px};
-			}
-		}
-	";
-	if ( mai_has_shrink_header() ) {
-		$css .= "
-			@media only screen and (min-width: 769px) {
-				.site-header.scroll .custom-logo-link {
-					max-width: {$shrink_px};
-				}
-			}
-		";
+	echo "<style>
+	:root {
+		--logo-width: {$width_px};
+		--logo-shrink-width: {$shrink_px};
+		--logo-margin: 2400000px;
 	}
-	wp_add_inline_style( mai_get_handle(), $css );
+	@media only screen and (min-width: 769px) {
+		.site-title a {
+			margin-top: calc( var(--logo-margin) / 100000 );
+			margin-bottom: calc( var(--logo-margin) / 100000 );
+		}
+		.custom-logo-link {
+			max-width: calc( var(--logo-width) / 100000 );
+		}
+	}
+	@media only screen and (max-width: 768px) {
+		.site-title a {
+			margin-top: 4px;
+			margin-bottom: 4px;
+		}
+		.custom-logo-link {
+			max-width: calc( var(--logo-shrink-width) / 100000 );
+		}
+	}
+	</style>";
 }
 
 /**

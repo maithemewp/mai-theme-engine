@@ -7,12 +7,22 @@
  */
 add_action( 'admin_enqueue_scripts', 'mai_admin_enqueue_scripts' );
 function mai_admin_enqueue_scripts() {
-
-	// Use minified files if script debug is not being used.
 	$suffix = mai_get_suffix();
+	wp_register_style( 'mai-admin', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/admin/mai-admin{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
+	wp_register_script( 'mai-admin', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/admin/mai-admin{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
+}
 
-	wp_register_style( 'mai-admin', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/mai-admin{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION );
-	wp_register_script( 'mai-admin', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-admin{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
+/**
+ * Enqueue customizer scripts.
+ *
+ * @since   1.8.0
+ *
+ * @return  void
+ */
+add_action( 'customize_preview_init', 'mai_customizer_enqueue_scripts' );
+function mai_customizer_enqueue_scripts() {
+	$suffix = mai_get_suffix();
+	wp_enqueue_script( 'mai-customizer', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/admin/mai-customizer{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
 }
 
 /**
@@ -74,9 +84,14 @@ function mai_remove_unsupported_flexgrid_gallery_options() {
  */
 add_filter( 'mce_buttons_2', 'mai_add_styleselect_dropdown' );
 function mai_add_styleselect_dropdown( $buttons ) {
+	// Bail if we already have styleselect.
+	if ( in_array( 'styleselect', $buttons ) ) {
+		return $buttons;
+	}
 	array_unshift( $buttons, 'styleselect' );
 	return $buttons;
 }
+
 /**
  * Add a button option to the editor.
  *
@@ -148,8 +163,19 @@ function mai_add_style_format_options_to_editor( $init_array ) {
 			'classes'  => 'button ghost large',
 		),
 	);
-	// Insert the array, JSON encoded, into 'style_formats'.
-	$init_array['style_formats'] = json_encode( $style_formats );
+
+	// Add to existing formats.
+	if ( isset( $init_array['style_formats'] ) && ! empty( $init_array['style_formats'] ) ) {
+		$decoded       = json_decode( $init_array['style_formats'], true );
+		$style_formats = array_merge( $decoded, $style_formats );
+	}
+
+	// JSON encode the array.
+	$style_formats = json_encode( $style_formats );
+
+	// Add the formats.
+	$init_array['style_formats'] = $style_formats;
+
 	return $init_array;
 }
 
@@ -225,8 +251,11 @@ function mai_login_logo_css() {
 		return;
 	}
 
+	$width    = get_theme_mod( 'custom_logo_width', 180 );
+	$width_px = absint( $width ) . 'px';
+
 	// Hide the default logo and heading.
-	echo '<style>
+	echo "<style>
 		.login h1,
 		.login h1 a {
 			background: none !important;
@@ -238,6 +267,11 @@ function mai_login_logo_css() {
 			margin: 0 !important;
 			border: 0 !important;
 			overflow: hidden !important;
+		}
+		.login .mai-login-logo a {
+			max-width: {$width_px};
+			display: block;
+			margin: auto;
 		}
 		.login .mai-login-logo img {
 			display: block !important;
@@ -254,7 +288,7 @@ function mai_login_logo_css() {
 		.login #backtoblog {
 			text-align: center;
 		}
-	</style>';
+	</style>";
 
 	// Add our own inline logo.
 	add_action( 'login_message', function() use ( $logo_id ) {

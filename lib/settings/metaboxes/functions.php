@@ -51,6 +51,9 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 			if ( in_array( $typenow, (array) genesis_get_option( 'banner_disable_post_types' ) ) ) {
 				return false;
 			}
+			if ( class_exists( 'WooCommerce' ) && ( get_the_ID() === (int) get_option( 'woocommerce_shop_page_id' ) ) ) {
+				return false;
+			}
 		}
 		// CPT.
 		else {
@@ -129,6 +132,10 @@ function _mai_cmb_hide_breacrumbs_show_on_cb() {
 	}
 	// Hide on static front page. This is handled in Genesis Theme Settings.
 	if ( get_the_ID() === (int) get_option( 'page_on_front' ) ) {
+		return false;
+	}
+	// Hide on static blog page. This is handled in Genesis Theme Settings.
+	if ( get_the_ID() === (int) get_option( 'page_for_posts' ) ) {
 		return false;
 	}
 	return true;
