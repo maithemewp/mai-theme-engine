@@ -15,6 +15,7 @@
 * Fixed: WooCommerce account navigation extra margin.
 * Fixed: Only add bottom border to links that don't have a class.
 * Fixed: [grid] Only use overlay parameters if image_location="bg".
+* Fixed: [grid] Correctly link/display author name to match blog archive defaults.
 
 ## 1.8.3.1 (2/13/19)
 * Fixed: Better support for older PHP in logo width customizer field. Please just run PHP 7 though.

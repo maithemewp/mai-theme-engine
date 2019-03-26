@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.9.0-beta.1
+ * Version:         1.9.0-beta.2
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -89,7 +89,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.9.0-beta.1' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.9.0-beta.2' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1400' );
@@ -112,7 +112,7 @@ final class Mai_Theme_Engine {
 	}
 
 	/**
-	 * Include required files.
+	 * Run the hooks.
 	 *
 	 * composer require yahnis-elsts/plugin-update-checker
 	 * composer require cmb2/cmb2
