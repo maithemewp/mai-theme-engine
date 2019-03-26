@@ -134,6 +134,10 @@ function _mai_cmb_hide_breacrumbs_show_on_cb() {
 	if ( get_the_ID() === (int) get_option( 'page_on_front' ) ) {
 		return false;
 	}
+	// Hide on static blog page. This is handled in Genesis Theme Settings.
+	if ( get_the_ID() === (int) get_option( 'page_for_posts' ) ) {
+		return false;
+	}
 	return true;
 }
 
