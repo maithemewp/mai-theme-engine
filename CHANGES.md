@@ -3,7 +3,6 @@
 ## 1.9.0 (3/26/19)
 * Added: Better scroll performance.
 * Added: Use logo width setting for login logo.
-* Changed: More precise "checkerboard" css for [col]. Only apply padding to when 2 [col] shortcodes are used as the immediate child in a full-width section.
 * Fixed: Better handling of comma separated grid parameters.
 * Fixed: Allow additional styleselect elements with the classic editor.
 * Fixed: Transparent sub-menu when using Navigation Menu widget in Before Header widget area.
@@ -14,7 +13,7 @@
 * Fixed: More thorough handling of WooCommerce notices with long content.
 * Fixed: Remove references to FontAwesome on WooCommerce account navigation.
 * Fixed: WooCommerce account navigation extra margin.
-* Fixed: Hide the banner visibility setting on WooCommerce Shop page. Banner uses the customizer setting since its technically a CPT archive.
+* Fixed: Hide the banner visibility setting on WooCommerce Shop page. Banner uses the customizer setting since it's technically a CPT archive.
 * Fixed: Only add bottom border to links that don't have a class.
 * Fixed: [grid] Only use overlay parameters if image_location="bg".
 * Fixed: [grid] Correctly link/display author name to match blog archive defaults.
