@@ -29,7 +29,7 @@ function mai_do_remove_breadcrumbs() {
 	}
 
 	// WooCommerce Shop.
-	elseif ( is_shop() ) {
+	elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
 		$object = get_post( get_option( 'woocommerce_shop_page_id' ) );
 	}
 
@@ -87,7 +87,7 @@ function mai_do_remove_title() {
 	}
 
 	// WooCommerce Shop.
-	elseif ( is_shop() ) {
+	elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
 		$object = get_post( get_option( 'woocommerce_shop_page_id' ) );
 	}
 

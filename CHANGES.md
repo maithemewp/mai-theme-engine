@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.1 (3/26/19)
+* Fixed: Error with visibility settings on WooCommerce Shop page when WooCommerce is not active.
+
 ## 1.9.0 (3/26/19)
 * Added: Better scroll performance.
 * Added: Use logo width setting for login logo.
