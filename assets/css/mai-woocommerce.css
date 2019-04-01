@@ -556,10 +556,10 @@ body.woocommerce-checkout form.checkout_coupon .form-row {
 	margin: 0;
 }
 
-#add_payment_method #payment div.payment_box,
-.woocommerce-cart #payment div.payment_box,
-.woocommerce-checkout #payment div.payment_box {
-	padding: 24px 24px 0;
+#add_payment_method #payment div.payment_box p:last-of-type,
+.woocommerce-cart #payment div.payment_box p:last-of-type,
+.woocommerce-checkout #payment div.payment_box p:last-of-type {
+	margin-bottom: 0;
 }
 
 #add_payment_method #payment div.payment_box .form-row,
