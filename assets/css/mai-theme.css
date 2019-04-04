@@ -1381,6 +1381,10 @@ body.has-boxed-site-container {
 	padding-left: 24px;
 }
 
+.comment-form .form-submit {
+	margin-top: 24px;
+}
+
 @media only screen and (min-width: 769px) {
 
 	.content-sidebar-wrap.boxed,
@@ -3204,12 +3208,12 @@ input[name="post_password"] {
 @media only screen and (max-width: 1400px) {
 
 	/* align the last menu item's sub-menu to the right so it's not outside of the window */
-	.header-before .genesis-nav-menu .menu-item:last-child > a:focus + ul.sub-menu,
-	.header-before .genesis-nav-menu .menu-item:last-child.sfHover > ul.sub-menu,
-	.header-before .genesis-nav-menu .menu-item:last-child:hover > .sub-menu,
-	.header-right .genesis-nav-menu .menu-item:last-child > a:focus + ul.sub-menu,
-	.header-right .genesis-nav-menu .menu-item:last-child.sfHover > ul.sub-menu,
-	.header-right .genesis-nav-menu .menu-item:last-child:hover > .sub-menu {
+	.header-before .genesis-nav-menu .menu-item:not(.search):last-child > a:focus + ul.sub-menu,
+	.header-before .genesis-nav-menu .menu-item:not(.search):last-child.sfHover > ul.sub-menu,
+	.header-before .genesis-nav-menu .menu-item:not(.search):last-child:hover > .sub-menu,
+	.header-right .genesis-nav-menu .menu-item:not(.search):last-child > a:focus + ul.sub-menu,
+	.header-right .genesis-nav-menu .menu-item:not(.search):last-child.sfHover > ul.sub-menu,
+	.header-right .genesis-nav-menu .menu-item:not(.search):last-child:hover > .sub-menu {
 		left: auto;
 		right: 0;
 	}
