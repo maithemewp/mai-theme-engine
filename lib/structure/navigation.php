@@ -153,6 +153,14 @@ function _mai_get_adjacent_post_output( $output, $post ) {
 	return $output;
 }
 
+add_action( 'genesis_before', function() {
+	// Bail if side menu is not enabled.
+	if ( ! mai_is_side_menu_enabled() ) {
+		return;
+	}
+	echo mai_get_mobile_menu();
+});
+
 /**
  * Add mobile menu on custom hook, after the site header row.
  * We need to return this data because it's used via a genesis_structural_wrap filter.
@@ -161,12 +169,12 @@ function _mai_get_adjacent_post_output( $output, $post ) {
  */
 function mai_get_mobile_menu() {
 
-	// Widget areas
+	// Widget areas.
 	$widget_mobile       = is_active_sidebar( 'mobile_menu' );
 	$widget_header_left  = is_active_sidebar( 'header_left' );
 	$widget_header_right = is_active_sidebar( 'header_right' );
 
-	// Menu locations
+	// Menu locations.
 	$mobile_nav = wp_nav_menu( array(
 		'theme_location' => 'mobile',
 		'echo'           => false,
@@ -193,7 +201,7 @@ function mai_get_mobile_menu() {
 		'fallback_cb'    => false,
 	) );
 
-	// Bail if no mobile menu content
+	// Bail if no mobile menu content.
 	if ( ! ( $widget_mobile || $widget_header_left || $widget_header_right || $mobile_nav || $header_left_nav || $header_right_nav || $primary_nav || $secondary_nav ) ) {
 		return;
 	}
@@ -216,46 +224,46 @@ function mai_get_mobile_menu() {
 			 */
 			ob_start();
 
-				if ( $widget_mobile || $mobile_nav ) {
+			if ( $widget_mobile || $mobile_nav ) {
 
-					if ( ! empty( $mobile_nav ) ) {
-						get_search_form();
-						echo $mobile_nav;
-					}
-
-					genesis_widget_area( 'mobile_menu' );
-
-				} else {
-
+				if ( ! empty( $mobile_nav ) ) {
 					get_search_form();
-
-					if ( $widget_header_left || $header_left_nav ) {
-
-						if ( ! empty( $header_left_nav ) ) {
-							echo $header_left_nav;
-						}
-
-						genesis_widget_area( 'header_left' );
-					}
-
-					if ( $widget_header_left || $header_right_nav ) {
-
-						if ( ! empty( $header_right_nav ) ) {
-							echo $header_right_nav;
-						}
-
-						genesis_widget_area( 'header_right' );
-					}
-
-					if ( ! empty( $primary_nav ) ) {
-						echo $primary_nav;
-					}
-
-					if ( ! empty( $secondary_nav ) ) {
-						echo $secondary_nav;
-					}
-
+					echo $mobile_nav;
 				}
+
+				genesis_widget_area( 'mobile_menu' );
+
+			} else {
+
+				get_search_form();
+
+				if ( $widget_header_left || $header_left_nav ) {
+
+					if ( ! empty( $header_left_nav ) ) {
+						echo $header_left_nav;
+					}
+
+					genesis_widget_area( 'header_left' );
+				}
+
+				if ( $widget_header_left || $header_right_nav ) {
+
+					if ( ! empty( $header_right_nav ) ) {
+						echo $header_right_nav;
+					}
+
+					genesis_widget_area( 'header_right' );
+				}
+
+				if ( ! empty( $primary_nav ) ) {
+					echo $primary_nav;
+				}
+
+				if ( ! empty( $secondary_nav ) ) {
+					echo $secondary_nav;
+				}
+
+			}
 
 			$menu .= ob_get_clean();
 

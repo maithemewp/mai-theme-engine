@@ -101,19 +101,6 @@ function mai_header_before() {
 }
 
 /**
- * Add header trigger element.
- * For ScrollMagic.
- *
- * @since   1.8.0
- *
- * @return  void
- */
-// add_action( 'genesis_header', 'mai_header_trigger', 3 );
-function mai_header_trigger() {
-	echo '<span id="header-trigger"></span>';
-}
-
-/**
  * Add header action hooks.
  * Filter header elements to modify attributes accordingly.
  *
@@ -123,9 +110,10 @@ add_action( 'genesis_header', 'mai_do_header', 4 );
 function mai_do_header() {
 
 	// These are basically do_action() hooks you can use, with filters (via mai_get_do_action helper) so we can easily remove elements from templates
-	$left   = mai_get_do_action( 'mai_header_left' );
-	$right  = mai_get_do_action( 'mai_header_right' );
-	$mobile = apply_filters( '_mai_mobile_menu', mai_get_mobile_menu() );
+	$left       = mai_get_do_action( 'mai_header_left' );
+	$right      = mai_get_do_action( 'mai_header_right' );
+	$mobile     = ! mai_is_side_menu_enabled() ? mai_get_mobile_menu() : '';
+	$has_mobile = apply_filters( '_mai_mobile_menu', true );
 
 	/**
 	 * Add classes to know when the header has left or right header content.
@@ -158,7 +146,7 @@ function mai_do_header() {
 	 *
 	 * @return  string|HTML  The content
 	 */
-	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $left, $right, $mobile ) {
+	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $left, $right, $has_mobile, $mobile ) {
 
 		if ( 'open' == $original_output ) {
 
@@ -166,10 +154,10 @@ function mai_do_header() {
 			$row['class'] = 'site-header-row row middle-xs';
 
 			// Alignment.
-			$row['class'] .= $mobile ? ' between-xs' : ' around-xs';
+			$row['class'] .= $has_mobile ? ' between-xs' : ' around-xs';
 
 			// Justification. If no left or right, and we have mobile. If no mobile we already have around-xs.
-			$row['class'] .= ( ! ( $left || $right ) && $mobile ) ? ' around-md' : '';
+			$row['class'] .= ( ! ( $left || $right ) && $has_mobile ) ? ' around-md' : '';
 
 			// Output with row open.
 			$output = $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );

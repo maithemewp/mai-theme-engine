@@ -170,7 +170,7 @@
 		}
 
 		// On click of close button inside the side menu, close all.
-		$header.on( 'click', '.menu-close', function(e){
+		$body.on( 'click', '.menu-close', function(e){
 			_closeAll();
 		});
 
