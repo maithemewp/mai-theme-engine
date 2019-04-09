@@ -552,9 +552,17 @@ legend {
 	padding: 0 12px;
 }
 
-::-moz-placeholder,
-::-webkit-input-placeholder {
-	color: rgba(0, 0, 0, 0.7);
+input::-webkit-input-placeholder {
+	color: rgba(0, 0, 0, 0.3);
+}
+input:-ms-input-placeholder {
+	color: rgba(0, 0, 0, 0.3);
+}
+input::-ms-input-placeholder {
+	color: rgba(0, 0, 0, 0.3);
+}
+input::placeholder {
+	color: rgba(0, 0, 0, 0.3);
 }
 
 ::selection {
