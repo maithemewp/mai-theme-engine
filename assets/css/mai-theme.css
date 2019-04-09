@@ -734,7 +734,8 @@ input[type="reset"].small,
 input[type="submit"].small,
 .button.small,
 .entry-content .button.small,
-.more-link {
+.more-link,
+.woocommerce table.shop_table .button {
 	font-size: 0.8rem;
 	padding: 11px 14px;
 }
@@ -755,6 +756,7 @@ input[type="submit"].large,
 .footer-widgets .button,
 .footer-widgets input[type="submit"],
 .site-footer .button,
+.woocommerce table.shop_table .button,
 .woocommerce .actions .button,
 .woocommerce a.button.alt,
 .woocommerce a.button.add_to_cart_button {
@@ -776,6 +778,8 @@ input[type="submit"].large,
 .footer-widgets input[type="submit"]:focus,
 .site-footer .button:hover,
 .site-footer .button:focus,
+.woocommerce table.shop_table .button:hover,
+.woocommerce table.shop_table .button:focus,
 .woocommerce .actions .button:hover,
 .woocommerce .actions .button:focus,
 .woocommerce a.button.alt:hover,
