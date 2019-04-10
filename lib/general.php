@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Add inline CSS.
+ * Add inline logo width CSS.
  *
  * @since   1.8.0
  * @since   1.9.0  Converted to CSS vars for basicScroll.
@@ -59,7 +59,42 @@ function mai_logo_width_css() {
 }
 
 /**
+ * Mobile menu width CSS.
+ *
+ * @since   1.10.0
+ *
+ * @return  void
+ */
+add_action( 'wp_head', 'mai_mobile_menu_width_css' );
+function mai_mobile_menu_width_css() {
+
+	// Bail if in the Dasbhoard.
+	if ( is_admin() ) {
+		return;
+	}
+
+	$width = absint( genesis_get_option( 'mobile_menu_width' ) );
+
+	echo "<style>
+	@media only screen and (max-width: {$width}px) {
+		.header-before,
+		.header-left,
+		.header-right,
+		.nav-primary,
+		.nav-secondary {
+			display: none;
+		}
+		.mai-toggle {
+			display: block;
+		}
+	}
+	</style>";
+}
+
+/**
  * Add body class to enabled specific settings.
+ *
+ * @since   Unknown.
  *
  * @param   array  $classes  The body classes.
  *

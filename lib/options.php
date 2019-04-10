@@ -94,6 +94,7 @@ function mai_get_default_options() {
 		'header_style'              => 'standard',
 		'footer_widget_count'       => 2,
 		'mobile_menu_style'         => 'standard',
+		'mobile_menu_width'         => 768,
 		// Mai Banner.
 		'enable_banner_area'        => 1,
 		'banner_background_color'   => '#f1f1f1',

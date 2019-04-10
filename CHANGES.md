@@ -1,5 +1,6 @@
 # Changelog
 
+* Added: Setting to define when the mobile menu should display.
 * Changed: Better WooCommerce payment box description margins.
 * Changed: Slightly more spacing on comment form button.
 * Changed: Removed WooCommerce notice flexbox code. Too hard to take all scenarios into consideration.

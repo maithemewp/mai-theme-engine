@@ -54,7 +54,7 @@ function mai_register_customizer_field_types() {
 			}
 
 			if ( ! empty( $this->label ) ) {
-				printf( '<span class="customize-control-title">%s</span>', esc_html( $this->label ) );
+				printf( '<label class="customize-control-title">%s</label>', esc_html( $this->label ) );
 			}
 
 			if ( ! empty( $this->description ) ) {
@@ -126,7 +126,15 @@ function mai_register_customizer_field_types() {
 		public function render_content() {
 		?>
 			<div class="slider-custom-control">
-				<label class="customize-control-title"><?php echo esc_html( $this->label ); ?></label>
+				<?php
+				if ( ! empty( $this->label ) ) {
+					printf( '<label class="customize-control-title">%s</label>', esc_html( $this->label ) );
+				}
+
+				if ( ! empty( $this->description ) ) {
+					printf( '<span class="description customize-control-description">%s</span>', $this->description );
+				}
+				?>
 				<div class="slider-controls-wrap">
 					<span class="slider-reset dashicons dashicons-image-rotate" slider-reset-value="<?php echo esc_attr( $this->value() ); ?>"></span>
 					<div class="slider" slider-min-value="<?php echo esc_attr( $this->input_attrs['min'] ); ?>" slider-max-value="<?php echo esc_attr( $this->input_attrs['max'] ); ?>" slider-step-value="<?php echo esc_attr( $this->input_attrs['step'] ); ?>"></div>
@@ -201,7 +209,7 @@ function mai_register_customizer_field_types() {
 		public function render_content() {
 
 			if ( ! empty( $this->label ) ) {
-				printf( '<span class="customize-control-title">%s</span>', esc_html( $this->label ) );
+				printf( '<label class="customize-control-title">%s</label>', esc_html( $this->label ) );
 			}
 
 			if ( ! empty( $this->description ) ) {

@@ -2901,7 +2901,13 @@ input[name="post_password"] {
 .header-right,
 .nav-primary,
 .nav-secondary {
-	display: none;
+	display: block;
+}
+
+.nav-header {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
 }
 
 /* ## General Navigation
@@ -3332,14 +3338,19 @@ input[name="post_password"] {
 --------------------------------------------- */
 
 .mai-toggle {
-	-ms-flex-negative: 0;flex-shrink: 0;
+	display: none;
+	-ms-flex-negative: 0;
+	flex-shrink: 0;
 }
 
 .mai-toggle,
 .sub-menu-toggle {
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	-webkit-touch-callout: none;
-	-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .mai-toggle,
@@ -3353,7 +3364,8 @@ input[name="post_password"] {
 	margin: 0;
 	border: none;
 	border-radius: 0;
-	-webkit-box-shadow: none;box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 
 .mai-toggle:focus,
@@ -3662,7 +3674,6 @@ body.mai-menu-activated {
 }
 
 .has-side-menu .mai-menu {
-	display: block;
 	background-color: #f1f1f1;
 	position: fixed;
 	top: 0;
@@ -4567,22 +4578,6 @@ ol.comment-list {
 	h1.entry-title,
 	.banner-title {
 		font-size: 2.441rem;
-	}
-
-	.header-before,
-	.header-left,
-	.header-right,
-	.nav-primary,
-	.nav-secondary {
-		display: block;
-	}
-
-	.nav-header {
-		display: -webkit-inline-box;display: -ms-inline-flexbox;display: inline-flex;
-	}
-
-	.mai-toggle {
-		display: none;
 	}
 
 }
