@@ -108,59 +108,64 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	});
 	bodyScroll.start();
 
-	/**
-	 * Handle header scroll tracking.
-	 * This is always running, just not always outputting CSS vars.
-	 *
-	 * @version  1.0.0
-	 */
-	var headerFrom   = header.offsetTop,
-		headerTo     = headerFrom + 200;
+	// Make sure we have a header.
+	if ( header ) {
 
-	var headerScroll = basicScroll.create({
-		elem: header,
-		from: headerFrom,
-		to: headerTo,
-		// We need really large values to force whole numbers and partially help jitters/jank.
-		// See https://github.com/electerious/basicScroll/issues/39
-		props: hasShrinkHeader ? {
-			'--logo-width': {
-				from: ( logoWidth * 100000 ) + 'px',
-				to: ( shrunkLogoWidth * 100000 ) + 'px',
-			},
-			'--logo-margin': {
-				from: '2400000px',
-				to: '400000px'
-			},
-		} : [],
-		inside: (instance, percentage, props) => {
-			if ( hasStickyHeader ) {
-				if ( ( percentage > 0 ) && ! stuckClassAdded ) {
-					addStuckClass();
-				} else if ( ( percentage <= 0 ) && stuckClassAdded ) {
-					removeStuckClass();
-				}
-			}
-			if ( afterHeader ) {
-				afterHeader = false;
-			}
-		},
-		outside: (instance, percentage, props) => {
-			if ( percentage <= 0 ) {
+		/**
+		 * Handle header scroll tracking.
+		 * This is always running, just not always outputting CSS vars.
+		 *
+		 * @version  1.0.0
+		 */
+		var headerFrom   = header.offsetTop,
+			headerTo     = headerFrom + 200;
+
+		var headerScroll = basicScroll.create({
+			elem: header,
+			from: headerFrom,
+			to: headerTo,
+			// We need really large values to force whole numbers and partially help jitters/jank.
+			// See https://github.com/electerious/basicScroll/issues/39
+			props: hasShrinkHeader ? {
+				'--logo-width': {
+					from: ( logoWidth * 100000 ) + 'px',
+					to: ( shrunkLogoWidth * 100000 ) + 'px',
+				},
+				'--logo-margin': {
+					from: '2400000px',
+					to: '400000px'
+				},
+			} : [],
+			inside: (instance, percentage, props) => {
 				if ( hasStickyHeader ) {
-					removeStuckClass();
+					if ( ( percentage > 0 ) && ! stuckClassAdded ) {
+						addStuckClass();
+					} else if ( ( percentage <= 0 ) && stuckClassAdded ) {
+						removeStuckClass();
+					}
 				}
 				if ( afterHeader ) {
 					afterHeader = false;
 				}
-			} else {
-				if ( ! afterHeader ) {
-					afterHeader = true;
+			},
+			outside: (instance, percentage, props) => {
+				if ( percentage <= 0 ) {
+					if ( hasStickyHeader ) {
+						removeStuckClass();
+					}
+					if ( afterHeader ) {
+						afterHeader = false;
+					}
+				} else {
+					if ( ! afterHeader ) {
+						afterHeader = true;
+					}
 				}
 			}
-		}
-	});
-	headerScroll.start();
+		});
+		headerScroll.start();
+
+	}
 
 	// Add scroll class.
 	function addScrollClass() {
