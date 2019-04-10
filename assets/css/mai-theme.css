@@ -3458,7 +3458,6 @@ input[name="post_password"] {
 --------------------------------------------- */
 
 .mai-menu {
-	display: none;
 	max-height: 100vh;
 }
 
@@ -3514,6 +3513,7 @@ body.mai-menu-activated {
 --------------------------------------------- */
 
 .has-standard-menu .mai-menu {
+	display: none;
 	background-color: #fff;
 	position: absolute;
 	top: 100%;
