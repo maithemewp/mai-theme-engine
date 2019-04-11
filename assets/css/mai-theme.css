@@ -2855,7 +2855,7 @@ input[name="post_password"] {
 }
 
 .header-before .menu-item a,
-.header-before .nav-header .nav-search {
+.header-before .nav-search {
 	color: #6b6b6b;
 }
 
@@ -2866,8 +2866,8 @@ input[name="post_password"] {
 
 .header-before .menu-item a:hover,
 .header-before .menu-item.current-menu-item > a,
-.header-before .nav-header .nav-search:hover,
-.header-before .nav-header .nav-search:focus {
+.header-before .nav-search:hover,
+.header-before .nav-search:focus {
 	color: #323232;
 }
 
@@ -3172,7 +3172,6 @@ input[name="post_password"] {
 
 .home .nav-header .current-menu-item > a,
 .nav-header .nav-search,
-.nav-header .nav-search:focus,
 .nav-header a {
 	color: #323232;
 }
@@ -3261,7 +3260,6 @@ input[name="post_password"] {
 
 .home .nav-primary .current-menu-item > a,
 .nav-primary .nav-search,
-.nav-primary .nav-search:focus,
 .nav-primary a {
 	color: #e4e4e4;
 }
@@ -3310,7 +3308,6 @@ input[name="post_password"] {
 
 .home .nav-secondary .current-menu-item > a,
 .nav-secondary .nav-search,
-.nav-secondary .nav-search:focus,
 .nav-secondary a {
 	color: #e4e4e4;
 }
