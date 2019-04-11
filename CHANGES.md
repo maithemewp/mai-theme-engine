@@ -4,6 +4,7 @@
 * Changed: Better WooCommerce payment box description margins.
 * Changed: Slightly more spacing on comment form button.
 * Changed: Removed WooCommerce notice flexbox code. Too hard to take all scenarios into consideration.
+* Fixed: Missing search icon if used in before header widget area.
 
 ## 1.9.1 (3/26/19)
 * Fixed: Error with visibility settings on WooCommerce Shop page when WooCommerce is not active.
