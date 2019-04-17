@@ -1,3 +1,83 @@
+.customize-control-heading + .customize-control-checkbox,
+.customize-control-heading + .customize-control-checkbox + .customize-control-checkbox {
+	margin-top: -12px !important;
+}
+
+.customize-control-heading ~ .customize-control-checkbox label {
+	padding-top: 3px !important;
+	padding-bottom: 3px !important;
+}
+
+.customize-control-break {
+	min-height: 10px;
+	background: #d5d5d5;
+	color: #555d66;
+	padding: 4px 12px;
+	margin-top: 6px;
+	margin-left: -12px;
+	margin-right: -12px;
+	border-left: 4px solid #555d66;
+}
+
+.customize-control-break .customize-control-title {
+	margin-bottom: 0px;
+}
+
+#customize-control-custom_logo_width,
+#customize-control-custom_logo_top,
+#customize-control-custom_logo_bottom,
+#customize-control-custom_logo_shrink_width,
+#customize-control-custom_logo_shrink_top,
+#customize-control-custom_logo_shrink_bottom {
+	clear: none;
+	position: relative;
+	float: left;
+	width: calc(33.333333% - 8px);
+}
+
+#customize-control-custom_logo_width,
+#customize-control-custom_logo_top,
+#customize-control-custom_logo_shrink_width,
+#customize-control-custom_logo_shrink_top {
+	margin-right: 12px;
+}
+
+#customize-control-custom_logo_width input,
+#customize-control-custom_logo_top input,
+#customize-control-custom_logo_bottom input,
+#customize-control-custom_logo_shrink_width input,
+#customize-control-custom_logo_shrink_top input,
+#customize-control-custom_logo_shrink_bottom input {
+	width: calc( 100% - 27px );
+}
+
+#customize-control-custom_logo_width::after,
+#customize-control-custom_logo_top::after,
+#customize-control-custom_logo_bottom::after,
+#customize-control-custom_logo_shrink_width::after,
+#customize-control-custom_logo_shrink_top::after,
+#customize-control-custom_logo_shrink_bottom::after {
+	content: ' px';
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	position: absolute;
+    bottom: 0;
+	right: 0;
+	background: rgba(0,0,0,0.02);
+	width: 26px;
+	height: 26px;
+	line-height: 18px;
+	border: 1px solid #ddd;
+	border-radius: 0 4px 4px 0;
+}
+
 .slider-custom-control {
 	margin: 4px 0;
 }

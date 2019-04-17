@@ -1,5 +1,24 @@
 <?php
 
+// add_action( 'genesis_before', 'mai_scroll_trigger', 12 );
+function mai_scroll_trigger() {
+	echo '<span id="scroll-trigger"></span>';
+}
+
+
+/**
+ * Add header trigger element.
+ * For basicScroll.
+ *
+ * @since   1.8.0
+ *
+ * @return  void
+ */
+add_action( 'genesis_header', 'mai_header_trigger', 3 );
+function mai_header_trigger() {
+	echo '<span id="header-trigger"></span>';
+}
+
 /**
  * Add an image inline in the site title element for the main logo.
  * The custom logo is added via the Customiser.
@@ -31,10 +50,29 @@ add_filter( 'get_custom_logo', function( $html ) {
 });
 
 /**
+ * Add logo vs text class to site title.
+ *
+ * @since   1.10.0
+ *
+ * @param   array  $attributes  Current attributes.
+ *
+ * @return  array  The modified attributes.
+ */
+add_filter( 'genesis_attr_site-title', 'mai_site_title_type' );
+function mai_site_title_type( $attributes ) {
+	// Bail if has a logo.
+	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
+		return $attributes;
+	}
+	$attributes['class'] .= ' has-text-title';
+	return $attributes;
+}
+
+/**
  * Use h1 on site title when banner area isn't enabled,
  * and using sections template without h1 in content and without any section titles.
  *
- * @param  $wrap
+ * @param  string  $wrap
  *
  * @return string
  */
@@ -73,9 +111,9 @@ function mai_site_title_wrap( $wrap ) {
  * Add class for screen readers to site description.
  * This will keep the site description markup but will not have any visual presence on the page.
  *
- * @param   array  $attributes Current attributes.
+ * @param   array  $attributes  Current attributes.
  *
- * @return  array  The attributes.
+ * @return  array  The modified attributes.
  */
 add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
 function mai_hide_site_description( $attributes ) {

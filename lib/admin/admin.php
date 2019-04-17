@@ -22,7 +22,8 @@ function mai_admin_enqueue_scripts() {
 add_action( 'customize_preview_init', 'mai_customizer_enqueue_scripts' );
 function mai_customizer_enqueue_scripts() {
 	$suffix = mai_get_suffix();
-	wp_enqueue_script( 'mai-customizer', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/admin/mai-customizer{$suffix}.js", array( 'jquery' ), MAI_THEME_ENGINE_VERSION, true );
+	wp_enqueue_script( 'mai-customize', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/admin/mai-customizer{$suffix}.js", array( 'jquery', 'jquery-ui-core' ), MAI_THEME_ENGINE_VERSION, true );
+	wp_enqueue_style( 'mai-customize', MAI_THEME_ENGINE_PLUGIN_URL . "assets/css/admin/mai-customizer{$suffix}.css", array(), MAI_THEME_ENGINE_VERSION, 'all' );
 }
 
 /**

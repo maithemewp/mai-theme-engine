@@ -1,5 +1,12 @@
 <?php
 
+// Click to scroll by 1px.
+// add_action( 'genesis_before_loop', function() {
+// 	echo '<button style="position:fixed;top:24%;right:0;z-index:99999;" onclick="window.scrollBy(0,1)">Scroll up 1px</button>';
+// 	echo '<button style="position:fixed;top:26%;right:0;z-index:99999;" onclick="window.scrollBy(0,-1)">Scroll down 1px</button>';
+// });
+
+
 /**
  * Add inline logo width CSS.
  *
@@ -16,14 +23,21 @@ function mai_logo_width_css() {
 		return;
 	}
 
-	$width = get_theme_mod( 'custom_logo_width', 180 );
+	// Values.
+	$width         = get_theme_mod( 'custom_logo_width', 180 );
+	$top           = get_theme_mod( 'custom_logo_top', 24 );
+	$bottom        = get_theme_mod( 'custom_logo_bottom', 24 );
+	$shrink_width  = get_theme_mod( 'custom_logo_shrink_width', 120 );
+	$shrink_top    = get_theme_mod( 'custom_logo_shrink_top', 4 );
+	$shrink_bottom = get_theme_mod( 'custom_logo_shrink_bottom', 4 );
 
-	if ( ! $width ) {
-		return;
-	}
-
-	$width_px  = absint( $width ) * 100000 . 'px';
-	$shrink_px = absint( $width * .7 ) * 100000 . 'px';
+	// Pixel values.
+	$width_px         = absint( $width ) . 'px';
+	$top_px           = absint( $top ) . 'px';
+	$bottom_px        = absint( $bottom ) . 'px';
+	$shrink_width_px  = absint( $shrink_width ) . 'px';
+	$shrink_top_px    = absint( $shrink_top ) . 'px';
+	$shrink_bottom_px = absint( $shrink_bottom ) . 'px';
 
 	/**
 	 * Set max-width on the logo link.
@@ -33,17 +47,22 @@ function mai_logo_width_css() {
 	 */
 	echo "<style>
 	:root {
+		--text-title: 100%;
 		--logo-width: {$width_px};
-		--logo-shrink-width: {$shrink_px};
-		--logo-margin: 2400000px;
+		--logo-shrink-width: {$shrink_width_px};
+		--logo-margin-top: {$top_px};
+		--logo-margin-bottom: {$bottom_px};
+	}
+	.site-title.has-text-title a {
+		font-size: var(--text-title);
 	}
 	@media only screen and (min-width: 769px) {
 		.site-title a {
-			margin-top: calc( var(--logo-margin) / 100000 );
-			margin-bottom: calc( var(--logo-margin) / 100000 );
+			margin-top: var(--logo-margin-top);
+			margin-bottom: var(--logo-margin-bottom);
 		}
 		.custom-logo-link {
-			max-width: calc( var(--logo-width) / 100000 );
+			max-width: var(--logo-width);
 		}
 	}
 	@media only screen and (max-width: 768px) {
@@ -52,10 +71,94 @@ function mai_logo_width_css() {
 			margin-bottom: 4px;
 		}
 		.custom-logo-link {
-			max-width: calc( var(--logo-shrink-width) / 100000 );
+			max-width: var(--logo-shrink-width);
 		}
 	}
 	</style>";
+
+
+	// $width_px  = absint( $width ) * 100000 . 'px';
+	// $shrink_px = absint( $width * .7 ) * 100000 . 'px';
+	// /**
+	//  * Set max-width on the logo link.
+	//  * Stay shrunk on mobile.
+	//  *
+	//  * Large values to force whole pixel values via basicScroll.
+	//  */
+	// echo "<style>
+	// :root {
+	// 	--text-title: 100%;
+	// 	--logo-width: {$width_px};
+	// 	--logo-shrink-width: {$shrink_px};
+	// 	--logo-margin: 2400000px;
+	// }
+	// .site-title.has-text-title a {
+	// 	font-size: calc( var(--text-title) / 100000 );
+	// }
+	// @media only screen and (min-width: 769px) {
+	// 	body {
+	// 		padding-top: calc( var(--logo-offset) / 100000 );
+	// 	}
+	// 	.site-title a {
+	// 		margin-top: calc( var(--logo-margin) / 100000 );
+	// 		margin-bottom: calc( var(--logo-margin) / 100000 );
+	// 	}
+	// 	.custom-logo-link {
+	// 		max-width: calc( var(--logo-width) / 100000 );
+	// 	}
+	// }
+	// @media only screen and (max-width: 768px) {
+	// 	.site-title a {
+	// 		margin-top: 4px;
+	// 		margin-bottom: 4px;
+	// 	}
+	// 	.custom-logo-link {
+	// 		max-width: calc( var(--logo-shrink-width) / 100000 );
+	// 	}
+	// }
+	// </style>";
+
+
+	// $width_px  = absint( $width ) * 100000 . 'px';
+	// $shrink_px = absint( $width * .7 ) * 100000 . 'px';
+	// /**
+	//  * Set max-width on the logo link.
+	//  * Stay shrunk on mobile.
+	//  *
+	//  * Large values to force whole pixel values via basicScroll.
+	//  */
+	// echo "<style>
+	// :root {
+	// 	--text-title: 100%;
+	// 	--logo-width: {$width_px};
+	// 	--logo-shrink-width: {$shrink_px};
+	// 	--logo-margin: 2400000px;
+	// }
+	// .site-title.has-text-title a {
+	// 	font-size: calc( var(--text-title) / 100000 );
+	// }
+	// @media only screen and (min-width: 769px) {
+	// 	body {
+	// 		padding-top: calc( 2400000px - ( var(--logo-offset) / 100000 ) );
+	// 	}
+	// 	.site-title a {
+	// 		margin-top: calc( var(--logo-margin) / 100000 );
+	// 		margin-bottom: calc( var(--logo-margin) / 100000 );
+	// 	}
+	// 	.custom-logo-link {
+	// 		max-width: calc( var(--logo-width) / 100000 );
+	// 	}
+	// }
+	// @media only screen and (max-width: 768px) {
+	// 	.site-title a {
+	// 		margin-top: 4px;
+	// 		margin-bottom: 4px;
+	// 	}
+	// 	.custom-logo-link {
+	// 		max-width: calc( var(--logo-shrink-width) / 100000 );
+	// 	}
+	// }
+	// </style>";
 }
 
 /**
@@ -126,9 +229,7 @@ function mai_do_settings_body_classes( $classes ) {
 		}
 	}
 
-	/**
-	 * Use a side mobile menu in place of the standard the mobile menu
-	 */
+	// Mobile menu class.
 	if ( mai_is_side_menu_enabled() ) {
 		$classes[] = 'has-side-menu';
 	} else {

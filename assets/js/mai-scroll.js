@@ -2,14 +2,18 @@
 document.addEventListener( 'DOMContentLoaded', function() {
 
 	// Set consts.
-	var html            = document.querySelector( 'html' );
-	var body            = document.querySelector( 'body' );
-	var header          = document.querySelector( '.site-header' );
-	var logoWidth       = maiScroll.logoWidth;
-	var shrunkLogoWidth = Math.round( logoWidth * .7 );
-	var hasShrinkHeader = body.classList.contains( 'has-shrink-header' );
-	var hasRevealHeader = body.classList.contains( 'has-reveal-header' );
-	var hasStickyHeader = ( hasRevealHeader || body.classList.contains( 'has-shrink-header' ) );
+	var html             = document.querySelector( 'html' );
+	var body             = document.querySelector( 'body' );
+	var header           = document.querySelector( '.site-header' );
+	var logoWidth        = maiScroll.logoWidth;
+	var logoTop          = maiScroll.logoTop;
+	var logoBottom       = maiScroll.logoBottom;
+	var logoShrinkWidth  = maiScroll.logoShrinkWidth;
+	var logoShrinkTop    = maiScroll.logoShrinkTop;
+	var logoShrinkBottom = maiScroll.logoShrinkBottom;
+	var hasShrinkHeader  = body.classList.contains( 'has-shrink-header' );
+	var hasRevealHeader  = body.classList.contains( 'has-reveal-header' );
+	var hasStickyHeader  = ( hasRevealHeader || body.classList.contains( 'has-shrink-header' ) );
 
 	// Set vars.
 	var scrollClassAdded   = false,
@@ -117,30 +121,41 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		 *
 		 * @version  1.0.0
 		 */
-		var headerFrom   = header.offsetTop,
-			headerTo     = headerFrom + 200;
+		var headerTrigger = document.querySelector( '#header-trigger' );
 
 		var headerScroll = basicScroll.create({
 			elem: header,
-			from: headerFrom,
-			to: headerTo,
-			// We need really large values to force whole numbers and partially help jitters/jank.
-			// See https://github.com/electerious/basicScroll/issues/39
+			from: headerTrigger.offsetTop,
+			to: headerTrigger.offsetTop + 200,
 			props: hasShrinkHeader ? {
-				'--logo-width': {
-					from: ( logoWidth * 100000 ) + 'px',
-					to: ( shrunkLogoWidth * 100000 ) + 'px',
+				'--text-title': {
+					from: '100%',
+					to: '70%',
 				},
-				'--logo-margin': {
-					from: '2400000px',
-					to: '400000px'
+				'--logo-width': {
+					from: logoWidth + 'px',
+					to: logoShrinkWidth + 'px',
+				},
+				'--logo-margin-top': {
+					from: logoTop + 'px',
+					to: logoShrinkTop + 'px',
+				},
+				'--logo-margin-bottom': {
+					from: logoBottom + 'px',
+					to: logoShrinkBottom + 'px',
 				},
 			} : [],
 			inside: (instance, percentage, props) => {
 				if ( hasStickyHeader ) {
 					if ( ( percentage > 0 ) && ! stuckClassAdded ) {
+						if ( hasShrinkHeader ) {
+							addBodyMargin();
+						}
 						addStuckClass();
 					} else if ( ( percentage <= 0 ) && stuckClassAdded ) {
+						if ( hasShrinkHeader ) {
+							removeBodyMargin();
+						}
 						removeStuckClass();
 					}
 				}
@@ -151,6 +166,9 @@ document.addEventListener( 'DOMContentLoaded', function() {
 			outside: (instance, percentage, props) => {
 				if ( percentage <= 0 ) {
 					if ( hasStickyHeader ) {
+						if ( hasShrinkHeader ) {
+							removeBodyMargin();
+						}
 						removeStuckClass();
 					}
 					if ( afterHeader ) {
@@ -179,11 +197,30 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		scrollClassAdded = false;
 	}
 
+	// Add body margin.
+	function addBodyMargin() {
+		if ( ! header ) {
+			return;
+		}
+		if ( window.innerWidth >= 769 ) {
+			body.style.marginTop = header.offsetHeight + 'px';
+		}
+	}
+
+	// Remove body margin.
+	function removeBodyMargin() {
+		if ( ! header ) {
+			return;
+		}
+		body.style.marginTop = '';
+	}
+
 	// Add stuck class.
 	function addStuckClass() {
 		if ( ! header ) {
 			return;
 		}
+		body.classList.add( 'header-stuck' );
 		header.classList.add( 'stuck' );
 		stuckClassAdded = true;
 	}
@@ -193,6 +230,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		if ( ! header ) {
 			return;
 		}
+		body.classList.remove( 'header-stuck' );
 		header.classList.remove( 'stuck' );
 		stuckClassAdded = false;
 	}

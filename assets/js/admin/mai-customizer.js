@@ -8,11 +8,27 @@
  */
 ( function( $ ) {
 
-	// Update the logo width in real time.
+	// Update the values in real time.
+
+	// Logo Width.
 	wp.customize( 'custom_logo_width', function( value ) {
 		value.bind( function( newval ) {
 			$( '.custom-logo-link' ).css( 'maxWidth', newval + 'px' );
 		});
 	} );
+
+	// Top Margin.
+	// wp.customize( 'custom_logo_top', function( value ) {
+	// 	value.bind( function( newval ) {
+	// 		$( '.site-title > a' ).css( 'marginTop', newval + 'px' );
+	// 	});
+	// } );
+
+	// // Bottom Margin.
+	// wp.customize( 'custom_logo_bottom', function( value ) {
+	// 	value.bind( function( newval ) {
+	// 		$( '.site-title > a' ).css( 'marginBottom', newval + 'px' );
+	// 	});
+	// } );
 
 } )( jQuery );

@@ -36,6 +36,7 @@
 		- Simple Social Icons
 	- Site Header
 		- Sticky Header
+		- Shrink Header
 		- Title Area
 		- Header Content
 	- Site Navigation
@@ -1484,7 +1485,9 @@ body.has-boxed-site-container {
 
 .section > .wrap {
 	-webkit-box-sizing: border-box;box-sizing: border-box;
-	display: -webkit-box;display: -ms-flexbox;display: flex;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
 }
 
 /* add top margin any time a section is after another element */
@@ -2584,6 +2587,10 @@ input[name="post_password"] {
 /* # Site Header
 ---------------------------------------------------------------------------------------------------- */
 
+.site-container {
+	position: relative;
+}
+
 #header-trigger {
 	display: block;
 	top: 0;
@@ -2594,8 +2601,22 @@ input[name="post_password"] {
 	opacity: 0;
 }
 
+#scroll-trigger {
+	/* position: absolute; */
+	/* top: 0; */
+	/* left: 0; */
+	/* width: 1px; */
+	/* height: 256px; */
+	/* margin-left: -1px; */
+	/* width: 12px; */
+	/* background: lightgreen; */
+	/* z-index: 999999; */
+}
+
 .site-header {
-	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
+	-ms-flex: 0 0 auto;
+	-webkit-box-flex: 0;
+	flex: 0 0 auto; /* fix IE11 height bug */
 	background-color: #fff;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -2761,6 +2782,19 @@ input[name="post_password"] {
 
 }
 
+/* ## Shrink Header
+--------------------------------------------- */
+
+@media only screen and (min-width: 769px) {
+
+	.js.has-sticky-header.has-shrink-header:not(.mai-menu-activated) .site-header.stuck,
+	.js.has-reveal-header.has-shrink-header:not(.mai-menu-activated) .site-header.stuck {
+		position: fixed;
+		width: 100%;
+	}
+
+}
+
 /* ## Title Area
 --------------------------------------------- */
 
@@ -2777,28 +2811,29 @@ input[name="post_password"] {
 	margin: 0;
 }
 
-.site-title a {
-	display: inline-block;
+.site-title.has-text-title {
 	font-size: calc(1rem + 1.2vw);
+}
+
+.site-title a {
+	display: block;
 	font-weight: bold;
 	line-height: 1.2;
 	margin-left: 16px;
 	margin-right: 16px;
-	-webkit-transition: none;
-	-o-transition: none;
-	transition: none;
+	will-change: margin-top, margin-bottom, max-width, font-size;
+	-webkit-transition: all 20ms linear;
+	-o-transition: all 20ms linear;
+	transition: all 20ms linear;
+	/* -webkit-transition: none; */
+	/* -o-transition: none; */
+	/* transition: none; */
 }
 
 .site-title a,
 .site-title a:hover,
 .site-title a:focus {
 	border: none;
-}
-
-.site-title .custom-logo-link {
-	-webkit-transition: all 10ms linear;
-	-o-transition: all 10ms linear;
-	transition: all 10ms linear;
 }
 
 .custom-logo {
@@ -2837,7 +2872,9 @@ input[name="post_password"] {
 }
 
 .header-before .widget-area {
-	display: -webkit-box;display: -ms-flexbox;display: flex;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
 	-webkit-box-pack: end;-ms-flex-pack: end;justify-content: flex-end;
 	-webkit-box-align: center;-ms-flex-align: center;align-items: center;
 }
@@ -2915,21 +2952,34 @@ input[name="post_password"] {
 
 .genesis-nav-menu {
 	clear: both;
-	display: -ms-flexbox;display: -webkit-box;display: flex;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
 	line-height: 1; /* Fix IE bug, line-height added back on span[itemprop="name"] */
 	list-style-type: none;
 }
 
 .genesis-nav-menu .menu-item {
-	position: relative;display: -ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto;
+	position: relative;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
+	-ms-flex: 0 0 auto;
+	-webkit-box-flex: 0;
+	flex: 0 0 auto;
 }
 
 .genesis-nav-menu a {
 	position: relative;
-	display: -webkit-box;display: -ms-flexbox;display: flex;
-	-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;
-	-webkit-box-align: center;-ms-flex-align: center;align-items: center;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
 	width: 100%;
 	height: 100%;
 	font-size: 100%;
@@ -2942,9 +2992,15 @@ input[name="post_password"] {
 }
 
 .genesis-nav-menu a span[itemprop="name"] {
-	display: -ms-inline-flexbox;display: -webkit-inline-box;display: inline-flex;
-	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
+	display: -ms-inline-flexbox;
+	display: -webkit-inline-box;
+	display: inline-flex;
+	-ms-flex-pack: center;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-ms-flex-align: center;
+	-webkit-box-align: center;
+	align-items: center;
 	line-height: 1.5;
 }
 
@@ -3111,7 +3167,9 @@ input[name="post_password"] {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex-pack: center;
 	-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
+	-ms-flex-align: center;
+	-webkit-box-align: center;
+	align-items: center;
 	position: absolute;
 	right: -1px;
 	top: 84%;
@@ -3147,7 +3205,9 @@ input[name="post_password"] {
 }
 
 .genesis-nav-menu .search-box .search-close {
-	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto;
+	-ms-flex: 0 0 auto;
+	-webkit-box-flex: 0;
+	flex: 0 0 auto;
 	color: red;
 	padding: 6px 12px;
 }
@@ -3648,26 +3708,33 @@ body.mai-menu-activated {
 	margin-left: 2px;
 }
 
-.has-side-menu .site-container,
+.has-side-menu .mai-menu,
+.has-side-menu .site-container {
+	transition: margin 0.3s ease-in-out;
+}
+
 .has-side-menu .mai-menu {
-	will-change: transform;
-	-webkit-transition: -webkit-transform .3s;
-	transition: -webkit-transform .3s;
-	-o-transition: transform .3s;
-	transition: transform .3s;
-	transition: transform .3s, -webkit-transform .3s;
+	will-change: margin-right;
+	/* -webkit-transition: -webkit-transform .3s; */
+	/* transition: -webkit-transform .3s; */
+	/* -o-transition: transform .3s; */
+	/* transition: transform .3s; */
+	/* transition: transform .3s, -webkit-transform .3s; */
 }
 
 .has-side-menu .site-container {
-	-webkit-transform: translateX(0);
-	-ms-transform: translateX(0);
-	transform: translateX(0);
+	will-change: margin-left, margin-right;
+	/* -webkit-transform: translateX(0); */
+	/* -ms-transform: translateX(0); */
+	/* transform: translateX(0); */
 }
 
 .has-side-menu.mai-menu-activated .site-container {
-	-webkit-transform: translateX(-288px);
-	-ms-transform: translateX(-288px);
-	transform: translateX(-288px);
+	/* -webkit-transform: translateX(-288px); */
+	/* -ms-transform: translateX(-288px); */
+	/* transform: translateX(-288px); */
+	margin-left: -288px;
+	margin-right: 288px;
 }
 
 .has-side-menu .mai-menu {
@@ -3679,25 +3746,29 @@ body.mai-menu-activated {
 	height: 100vh;
 	overflow-x: hidden;
 	overflow-y: auto;
-	-webkit-transform: translateX(288px);
-	-ms-transform: translateX(288px);
-	transform: translateX(288px);
+	margin-right: -288px;
 	-webkit-overflow-scrolling: touch;
 	-webkit-box-shadow: inset 8px 0 16px rgba(0,0,0,.05);
 	box-shadow: inset 8px 0 16px rgba(0,0,0,.05);
 }
 
 .has-side-menu.mai-menu-activated .mai-menu {
-	-webkit-transform: translateX(0);
-	-ms-transform: translateX(0);
-	transform: translateX(0);
+	margin-right: 0;
 }
 
 .has-side-menu .mai-menu-inner {
 	padding-bottom: 96px;
 }
 
-@media only screen and (max-width: 782px) {
+@media only screen and (max-width: 599px) {
+
+	.admin-bar.has-side-menu:not(.header-stuck) .mai-menu {
+		top: 46px;
+	}
+
+}
+
+@media (min-width: 600px) and (max-width: 782px) {
 
 	.admin-bar.has-side-menu .mai-menu {
 		top: 46px;
@@ -3775,8 +3846,12 @@ body.mai-menu-activated {
 
 .mobile-menu .sub-menu-toggle {
 	display:-ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
+	-ms-flex-pack: center;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-ms-flex-align: center;
+	-webkit-box-align: center;
+	align-items: center;
 	width: 44px;
 	padding: 0;
 	margin: 0;
@@ -3972,7 +4047,9 @@ p ~ .flex-grid:first-of-type {
 }
 
 .flex-entry .entry-image-link {
-	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
+	-ms-flex: 0 0 auto;
+	-webkit-box-flex: 0;
+	flex: 0 0 auto; /* fix IE11 height bug */
 	display: block;
 	font-size: 0;
 	line-height: 1;
