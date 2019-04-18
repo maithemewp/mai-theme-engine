@@ -11,10 +11,6 @@
 add_action( 'customize_register', 'mai_register_customizer_site_identity_settings', 10 );
 function mai_register_customizer_site_identity_settings( $wp_customize ) {
 
-	$logo       = $wp_customize->get_setting( 'custom_logo' )->value();
-	$has_logo   = ! empty( $logo );
-	$has_shrink = mai_has_shrink_header();
-
 	/* ************* *
 	 * Site Identity *
 	 * ************* */
@@ -45,9 +41,10 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 		'label'           => esc_attr__( 'Width', 'mai-theme-engine' ),
 		'section'         => 'title_tagline',
 		'priority'        => 8,
-		'type'            => 'number',
-		'active_callback' => function() use ( $has_logo ) {
-			return $has_logo;
+		'type'            => 'text',
+		'active_callback' => function() use ( $wp_customize ) {
+			$logo = $wp_customize->get_setting( 'custom_logo' )->value();
+			return ! empty( $logo );
 		},
 	) );
 
@@ -60,7 +57,7 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 		'label'    => esc_attr__( 'Top', 'mai-theme-engine' ),
 		'section'  => 'title_tagline',
 		'priority' => 8,
-		'type'     => 'number',
+		'type'     => 'text',
 	) );
 
 	// Logo Bottom Margin.
@@ -72,10 +69,10 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 		'label'    => esc_attr__( 'Bottom', 'mai-theme-engine' ),
 		'section'  => 'title_tagline',
 		'priority' => 8,
-		'type'     => 'number',
+		'type'     => 'text',
 	) );
 
-	// Shrunk Logo Sizing.
+	// Shrink & Mobile Logo Sizing.
 	$wp_customize->add_setting( 'custom_logo_shrink_sizing_break',	array(
 		'default' => '',
 	) );
@@ -83,18 +80,15 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 		new Mai_Customize_Control_Break( $wp_customize,
 			'custom_logo_shrink_sizing_break',
 			array(
-				'label'    => __( 'Shrunk Logo Sizing', 'mai-theme-engine' ),
+				'label'    => __( 'Shrink & Mobile Logo Sizing', 'mai-theme-engine' ),
 				'section'  => 'title_tagline',
 				'priority' => 8,
 				'settings' => false,
-				'active_callback' => function() use ( $has_shrink ) {
-					return $has_shrink;
-				},
 			)
 		)
 	);
 
-	// Shrunk Logo Width.
+	// Shrink Logo Width.
 	$wp_customize->add_setting( 'custom_logo_shrink_width', array(
 		'default'           => 120,
 		'sanitize_callback' => 'absint',
@@ -104,13 +98,14 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 		'label'           => esc_attr__( 'Width', 'mai-theme-engine' ),
 		'section'         => 'title_tagline',
 		'priority'        => 8,
-		'type'            => 'number',
-		'active_callback' => function() use ( $has_logo, $has_shrink ) {
-			return ( $has_logo && $has_shrink );
+		'type'            => 'text',
+		'active_callback' => function() use ( $wp_customize ) {
+			$logo = $wp_customize->get_setting( 'custom_logo' )->value();
+			return ! empty( $logo );
 		},
 	) );
 
-	// Shrunk Logo Top Margin.
+	// Shrink Logo Top Margin.
 	$wp_customize->add_setting( 'custom_logo_shrink_top', array(
 		'default'           => 4,
 		'sanitize_callback' => 'absint',
@@ -119,13 +114,10 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 		'label'    => esc_attr__( 'Top', 'mai-theme-engine' ),
 		'section'  => 'title_tagline',
 		'priority' => 8,
-		'type'     => 'number',
-		'active_callback' => function() use ( $has_shrink ) {
-			return $has_shrink;
-		},
+		'type'     => 'text',
 	) );
 
-	// Shrunk Logo Bottom Margin.
+	// Shrink Logo Bottom Margin.
 	$wp_customize->add_setting( 'custom_logo_shrink_bottom', array(
 		'default'           => 4,
 		'sanitize_callback' => 'absint',
@@ -134,10 +126,7 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 		'label'    => esc_attr__( 'Bottom', 'mai-theme-engine' ),
 		'section'  => 'title_tagline',
 		'priority' => 8,
-		'type'     => 'number',
-		'active_callback' => function() use ( $has_shrink ) {
-			return $has_shrink;
-		},
+		'type'     => 'text',
 	) );
 
 	// Site Info.
