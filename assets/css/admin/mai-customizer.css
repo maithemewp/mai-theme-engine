@@ -72,9 +72,10 @@
 	right: 0;
 	background: rgba(0,0,0,0.02);
 	width: 26px;
-	height: 26px;
+	height: 24px;
 	line-height: 18px;
 	border: 1px solid #ddd;
+	border-left: none;
 	border-radius: 0 4px 4px 0;
 }
 
