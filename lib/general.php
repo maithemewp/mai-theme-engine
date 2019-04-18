@@ -67,8 +67,8 @@ function mai_logo_width_css() {
 	}
 	@media only screen and (max-width: 768px) {
 		.site-title a {
-			margin-top: 4px;
-			margin-bottom: 4px;
+			margin-top: {$shrink_top_px};
+			margin-bottom: {$shrink_bottom_px};
 		}
 		.custom-logo-link {
 			max-width: var(--logo-shrink-width);
