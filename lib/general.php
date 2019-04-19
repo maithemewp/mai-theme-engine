@@ -2,10 +2,9 @@
 
 // Click to scroll by 1px.
 // add_action( 'genesis_before_loop', function() {
-// 	echo '<button style="position:fixed;top:24%;right:0;z-index:99999;" onclick="window.scrollBy(0,1)">Scroll up 1px</button>';
-// 	echo '<button style="position:fixed;top:26%;right:0;z-index:99999;" onclick="window.scrollBy(0,-1)">Scroll down 1px</button>';
+// 	echo '<button style="display:block;width:164px;position:fixed;top:24%;right:0;z-index:99999;" onclick="window.scrollBy(0,1)">Scroll up 1px</button>';
+// 	echo '<button style="display:block;width:164px;position:fixed;top:28%;right:0;z-index:99999;" onclick="window.scrollBy(0,-1)">Scroll down 1px</button>';
 // });
-
 
 /**
  * Add inline logo width CSS.
@@ -27,7 +26,7 @@ function mai_logo_width_css() {
 	$width         = get_theme_mod( 'custom_logo_width', 180 );
 	$top           = get_theme_mod( 'custom_logo_top', 24 );
 	$bottom        = get_theme_mod( 'custom_logo_bottom', 24 );
-	$shrink_width  = get_theme_mod( 'custom_logo_shrink_width', 120 );
+	$shrink_width  = get_theme_mod( 'custom_logo_shrink_width', absint( $width * .7 ) );
 	$shrink_top    = get_theme_mod( 'custom_logo_shrink_top', 4 );
 	$shrink_bottom = get_theme_mod( 'custom_logo_shrink_bottom', 4 );
 
@@ -47,6 +46,7 @@ function mai_logo_width_css() {
 	 */
 	echo "<style>
 	:root {
+		--header-height: 0;
 		--text-title: 100%;
 		--logo-width: {$width_px};
 		--logo-shrink-width: {$shrink_width_px};

@@ -11,6 +11,9 @@
 add_action( 'customize_register', 'mai_register_customizer_site_identity_settings', 10 );
 function mai_register_customizer_site_identity_settings( $wp_customize ) {
 
+	$width         = get_theme_mod( 'custom_logo_width', 180 );
+	$shrink_width  = get_theme_mod( 'custom_logo_shrink_width', absint( $width * .7 ) );
+
 	/* ************* *
 	 * Site Identity *
 	 * ************* */
@@ -33,7 +36,7 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 
 	// Logo Width.
 	$wp_customize->add_setting( 'custom_logo_width', array(
-		'default'           => 180,
+		'default'           => $width,
 		'sanitize_callback' => 'absint',
 		'theme_supports'    => array( 'custom-logo' ),
 	) );
@@ -90,7 +93,7 @@ function mai_register_customizer_site_identity_settings( $wp_customize ) {
 
 	// Shrink Logo Width.
 	$wp_customize->add_setting( 'custom_logo_shrink_width', array(
-		'default'           => 120,
+		'default'           => absint( $shrink_width ),
 		'sanitize_callback' => 'absint',
 		'theme_supports'    => array( 'custom-logo' ),
 	) );
