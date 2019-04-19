@@ -21,7 +21,6 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		scrollingUp        = false,
 		headerConcealed    = false,
 		startDistance      = false,
-		percentage         = 0,
 		previousPercentage = 0,
 		scrollDowns        = [],
 		stuckClassAdded    = false,
@@ -121,12 +120,14 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		 *
 		 * @version  1.0.0
 		 */
-		var headerTrigger = document.querySelector( '#header-trigger' );
+		var trigger      = document.querySelector( '#header-trigger' );
+		var root         = document.documentElement;
+		var headerHeight = 0;
 
 		var headerScroll = basicScroll.create({
 			elem: header,
-			from: headerTrigger.offsetTop,
-			to: headerTrigger.offsetTop + 200,
+			from: trigger.getBoundingClientRect().top - html.getBoundingClientRect().top,
+			to: ( trigger.getBoundingClientRect().top - html.getBoundingClientRect().top ) + 200,
 			props: hasShrinkHeader ? {
 				'--text-title': {
 					from: '100%',
@@ -146,35 +147,33 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				},
 			} : [],
 			inside: (instance, percentage, props) => {
-				if ( hasStickyHeader ) {
-					if ( ( percentage > 0 ) && ! stuckClassAdded ) {
-						if ( hasShrinkHeader ) {
-							addBodyMargin();
-						}
-						addStuckClass();
-					} else if ( ( percentage <= 0 ) && stuckClassAdded ) {
-						if ( hasShrinkHeader ) {
-							removeBodyMargin();
-						}
-						removeStuckClass();
-					}
-				}
 				if ( afterHeader ) {
 					afterHeader = false;
 				}
+				if ( ! hasStickyHeader ) {
+					return;
+				}
+				// Slight tolerance since we have position:sticky; fallback. Less jarring.
+				if ( percentage > 5 ) {
+					headerHeight = header.clientHeight;
+					stick();
+				} else {
+					unstick();
+				}
 			},
 			outside: (instance, percentage, props) => {
-				if ( percentage <= 0 ) {
-					if ( hasStickyHeader ) {
-						if ( hasShrinkHeader ) {
-							removeBodyMargin();
-						}
-						removeStuckClass();
-					}
+				// Negative percentage is space above the header. Slight tolerance since we have position:sticky; fallback. Less jarring.
+				if ( percentage <= 5 ) {
 					if ( afterHeader ) {
 						afterHeader = false;
 					}
-				} else {
+					if ( ! hasStickyHeader ) {
+						return;
+					}
+					unstick();
+				}
+				// Below the header.
+				else {
 					if ( ! afterHeader ) {
 						afterHeader = true;
 					}
@@ -197,42 +196,32 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		scrollClassAdded = false;
 	}
 
-	// Add body margin.
-	function addBodyMargin() {
-		if ( ! header ) {
+	// Do sticky things.
+	function stick() {
+		if ( ! stuckClassAdded ) {
+			body.classList.add( 'header-stuck' );
+			header.classList.add( 'stuck' );
+			stuckClassAdded = true;
+		}
+		if ( ! hasShrinkHeader ) {
 			return;
 		}
-		if ( window.innerWidth >= 769 ) {
-			body.style.marginTop = header.offsetHeight + 'px';
-		}
+		header.style.position = 'fixed';
+		root.style.setProperty( '--header-height', headerHeight + 'px' );
 	}
 
-	// Remove body margin.
-	function removeBodyMargin() {
-		if ( ! header ) {
+	// Remove sticky things.
+	function unstick() {
+		if ( stuckClassAdded ) {
+			body.classList.remove( 'header-stuck' );
+			header.classList.remove( 'stuck' );
+			stuckClassAdded = false;
+		}
+		if ( ! hasShrinkHeader ) {
 			return;
 		}
-		body.style.marginTop = '';
-	}
-
-	// Add stuck class.
-	function addStuckClass() {
-		if ( ! header ) {
-			return;
-		}
-		body.classList.add( 'header-stuck' );
-		header.classList.add( 'stuck' );
-		stuckClassAdded = true;
-	}
-
-	// Remove sticky class.
-	function removeStuckClass() {
-		if ( ! header ) {
-			return;
-		}
-		body.classList.remove( 'header-stuck' );
-		header.classList.remove( 'stuck' );
-		stuckClassAdded = false;
+		header.style.position = '';
+		root.style.setProperty( '--header-height', '0' );
 	}
 
 	// Conceal the header.

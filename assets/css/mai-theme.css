@@ -30,6 +30,7 @@
 		- Slick
 			- Slick Arrows
 			- Slick Dots
+	- Blocks
 	- Widgets
 	- Plugins
 		- Jetpack
@@ -1094,6 +1095,7 @@ td {
 .mai-sections.has-boxed-site-container .content.content-no-sidebars,
 .site-container.boxed .alignfull,
 .site-container.boxed .width-full,
+.site-container.boxed .site-header.stuck,
 .site-inner,
 .breadcrumb,
 .wrap,
@@ -2475,6 +2477,13 @@ input[name="post_password"] {
 	color: #fff;
 }
 
+/* # Blocks
+---------------------------------------------------------------------------------------------------- */
+
+ul.wp-block-gallery {
+	margin-left: 0;
+}
+
 /* # Widgets
 ---------------------------------------------------------------------------------------------------- */
 
@@ -2592,12 +2601,11 @@ input[name="post_password"] {
 }
 
 #header-trigger {
+	margin-top: var(--header-height);
 	display: block;
 	top: 0;
 	left: 0;
-	width: 1px;
-	height: 1px;
-	margin-bottom: -1px;
+	width: 0;
 	opacity: 0;
 }
 
@@ -2785,11 +2793,37 @@ input[name="post_password"] {
 /* ## Shrink Header
 --------------------------------------------- */
 
+.has-shrink-header .site-header {
+	/* display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: nowrap;
+	flex-wrap: nowrap;
+	-webkit-box-align: start;
+	-ms-flex-align: start;
+	align-items: flex-start; */
+}
+
+.has-shrink-header .header-spacer {
+	/* -webkit-box-flex: 0;
+	-ms-flex: 0 0 6px;
+	flex: 0 0 6px;
+	max-width: 6px;
+	background: red; */
+}
+
+.has-shrink-header .header-wrapper {
+	/* -webkit-box-flex: 1;
+	-ms-flex: 1 1 100%;
+	flex: 1 1 100%;
+	max-width: 100%; */
+}
+
 @media only screen and (min-width: 769px) {
 
 	.js.has-sticky-header.has-shrink-header:not(.mai-menu-activated) .site-header.stuck,
 	.js.has-reveal-header.has-shrink-header:not(.mai-menu-activated) .site-header.stuck {
-		position: fixed;
+		/* position: fixed; */
 		width: 100%;
 	}
 
