@@ -274,11 +274,8 @@ class Mai_Grid {
 
 		// Authors.
 		if ( ! empty( $this->args['authors'] ) ) {
-			if ( 'current' === $this->args['authors'] && is_user_logged_in() ) {
-				$query_args['author__in'] = get_current_user_id();
-			} elseif( 'current' === $this->args['authors'] ) {
-				// Force an unused meta key so no results are found.
-				$query_args['meta_key'] = 'mai_no_results_abcdefg';
+			if ( is_singular() && ( 'current' === $this->args['authors'] ) ) {
+				$query_args['author__in'] = array( get_the_author_meta( 'ID' ) );
 			} else {
 				$query_args['author__in'] = explode( ',', sanitize_text_field( $this->args['authors'] ) );
 			}
