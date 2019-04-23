@@ -1,6 +1,8 @@
 # Changelog
 
+* Added: [grid] Allow author="current" to display posts from the author of the currently viewed post.
 * Added: Setting to define when the mobile menu should display.
+* Changed: Make sure primary sidebar widget content is always 300px wide (for ads) regardless of boxed settings.
 * Changed: Better WooCommerce payment box description margins.
 * Changed: Slightly more spacing on comment form button.
 * Changed: Removed WooCommerce notice flexbox code. Too hard to take all scenarios into consideration.

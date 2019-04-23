@@ -4706,9 +4706,23 @@ ol.comment-list {
 
 	.has-one-sidebar .sidebar-primary {
 		-webkit-box-flex: 1;
-		-ms-flex: 1 0 360px;
-		flex: 1 0 360px;
-		max-width: 360px;
+		-ms-flex: 1 0 300px;
+		flex: 1 0 300px;
+		max-width: 300px;
+	}
+
+	/* This makes sure the actual widget content area is 300px for ads. */
+	.has-one-sidebar .sidebar-primary.has-boxed {
+		-webkit-box-flex: 1;
+		-ms-flex: 1 0 374px;
+		flex: 1 0 374px;
+		max-width: 374px;
+	}
+
+	/* Boxed sidebar and boxed widgets. Shouldn't do this, but just incase. */
+	.sidebar.has-boxed.boxed .widget.boxed {
+		padding: 16px;
+		margin: -16px -16px 36px;
 	}
 
 	.has-two-sidebars .sidebar-primary {
