@@ -1109,14 +1109,12 @@ class Mai_Grid {
 			'class' => mai_add_classes( $this->get_entry_classes() ),
 		);
 
-		// Set aspect classes.
-		$aspect_attributes = array(
-			'class' => 'aspect-inner',
-		);
-
 		// Get the align classes.
 		if ( $this->is_bg_image() ) {
+			// Build aspect ratio inner markup.
+			$aspect_attributes          = array( 'class' => 'aspect-inner' );
 			$aspect_attributes['class'] = mai_add_entry_align_classes( $aspect_attributes['class'], $this->args, $this->get_direction() );
+			$aspect_inner               = sprintf( '<div %s>', genesis_attr( 'aspect-inner', $aspect_attributes, $this->args ) );
 		} else {
 			$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
 		}
@@ -1134,9 +1132,6 @@ class Mai_Grid {
 
 			// Add aspect ratio data attributes.
 			$attributes = mai_add_aspect_ratio_attributes( $attributes, $this->aspect_width, $this->aspect_height );
-
-			// Build aspect ratio inner markup.
-			$aspect_inner = sprintf( '<div %s>', genesis_attr( 'aspect-inner', $aspect_attributes, $this->args ) );
 
 			// Get the object ID.
 			$object_id = $this->get_object_id( $object );
