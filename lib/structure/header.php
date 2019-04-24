@@ -1,11 +1,5 @@
 <?php
 
-// add_action( 'genesis_before', 'mai_scroll_trigger', 12 );
-function mai_scroll_trigger() {
-	echo '<span id="scroll-trigger"></span>';
-}
-
-
 /**
  * Add header trigger element.
  * For basicScroll.

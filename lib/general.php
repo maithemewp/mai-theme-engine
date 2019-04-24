@@ -1,11 +1,5 @@
 <?php
 
-// Click to scroll by 1px.
-// add_action( 'genesis_before_loop', function() {
-// 	echo '<button style="display:block;width:164px;position:fixed;top:24%;right:0;z-index:99999;" onclick="window.scrollBy(0,1)">Scroll up 1px</button>';
-// 	echo '<button style="display:block;width:164px;position:fixed;top:28%;right:0;z-index:99999;" onclick="window.scrollBy(0,-1)">Scroll down 1px</button>';
-// });
-
 /**
  * Add inline logo width CSS.
  *
