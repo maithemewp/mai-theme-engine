@@ -60,7 +60,7 @@ function mai_add_row_align_classes( $classes, $args ) {
  */
 function mai_add_entry_align_classes( $classes, $args, $direction = 'row' ) {
 	// If direction is column, and we don't have column class yet, add it.
-	if ( 'column' === $direction && false === strpos ( $classes, 'column' ) ) {
+	if ( 'column' === $direction && false === strpos( $classes, 'column' ) ) {
 		$classes = mai_add_classes( 'column', $classes );
 	}
 	// "align" takes precendence over "align_cols" and "align_text".
