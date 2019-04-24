@@ -26,11 +26,11 @@ function mai_logo_width_css() {
 
 	// Pixel values.
 	$width_px         = absint( $width ) . 'px';
-	$top_px           = absint( $top ) . 'px';
-	$bottom_px        = absint( $bottom ) . 'px';
+	$top_px           = intval( $top ) . 'px';
+	$bottom_px        = intval( $bottom ) . 'px';
 	$shrink_width_px  = absint( $shrink_width ) . 'px';
-	$shrink_top_px    = absint( $shrink_top ) . 'px';
-	$shrink_bottom_px = absint( $shrink_bottom ) . 'px';
+	$shrink_top_px    = intval( $shrink_top ) . 'px';
+	$shrink_bottom_px = intval( $shrink_bottom ) . 'px';
 
 	/**
 	 * Set max-width on the logo link.
