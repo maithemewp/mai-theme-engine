@@ -240,7 +240,7 @@ function mai_do_flex_loop_open() {
 	printf( '<div %s>', genesis_attr( 'flex-row', $attributes ) );
 
 	// Add flex entry classes.
-	add_filter( 'post_class', 'mai_flex_loop_post_class' );
+	add_filter( 'post_class',        'mai_flex_loop_post_class' );
 	add_filter( 'product_cat_class', 'mai_flex_loop_post_class' );
 }
 
@@ -258,7 +258,7 @@ function mai_do_flex_loop_open() {
  */
 add_action( 'mai_after_flex_loop', 'mai_do_flex_loop_close' );
 function mai_do_flex_loop_close() {
-	remove_filter( 'post_class', 'mai_flex_loop_post_class' );
+	remove_filter( 'post_class',        'mai_flex_loop_post_class' );
 	remove_filter( 'product_cat_class', 'mai_flex_loop_post_class' );
 	echo '</div>';
 }

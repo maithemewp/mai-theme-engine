@@ -3,6 +3,7 @@
 * Added: Logo and Shrink/Mobile logo sizing/spacing settings.
 * Added: Setting to define when the mobile menu should display.
 * Added: [grid] Allow author="current" to display posts from the author of the currently viewed post.
+* Changed: Aspect ratio boxes are now pure CSS and load instantly instead of waiting until JS is loaded.
 * Changed: Make sure primary sidebar widget content is always 300px wide (for ads) regardless of boxed settings.
 * Changed: Better WooCommerce payment box description margins.
 * Changed: Slightly more spacing on comment form button.

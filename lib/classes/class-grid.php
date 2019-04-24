@@ -1,5 +1,10 @@
 <?php
 
+add_action( 'genesis_before_loop', function() {
+	// global $_wp_additional_image_sizes;
+	// vd( $_wp_additional_image_sizes );
+});
+
 /**
  * Build a grid of content.
  *
@@ -10,6 +15,8 @@ class Mai_Grid {
 	private $args;
 	private $original_args;
 	private $content_type;
+	private $aspect_width;
+	private $aspect_height;
 	private $facetwp = false;
 
 	// All displayed items incase exclude_displayed is true in any instance of grid.
@@ -252,7 +259,6 @@ class Mai_Grid {
 				$this::$facetwp_filter = true;
 			}
 		}
-
 
 		return sprintf( '<div %s>%s</div>', genesis_attr( $this->args['context'], $attributes, $this->args ), $content );
 	}
@@ -1096,17 +1102,41 @@ class Mai_Grid {
 	 */
 	function get_entry_open( $object, $has_bg_image ) {
 
+		$aspect_inner = '';
+
 		// Set the entry classes.
 		$attributes = array(
 			'class' => mai_add_classes( $this->get_entry_classes() ),
 		);
 
-		// Add the align classes.
-		$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
+		// Set aspect classes.
+		$aspect_attributes = array(
+			'class' => 'aspect-inner',
+		);
+
+		// Get the align classes.
+		if ( $this->is_bg_image() ) {
+			$aspect_attributes['class'] = mai_add_entry_align_classes( $aspect_attributes['class'], $this->args, $this->get_direction() );
+		} else {
+			$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
+		}
 
 		$light_content = false;
 
 		if ( $this->is_bg_image() ) {
+
+			// Get sizes.
+			if ( ! ( $this->aspect_width && $this->aspect_height ) ) {
+				$sizes = mai_get_image_width_height( $this->args['image_size'] );
+				$this->aspect_width  = $sizes[0];
+				$this->aspect_height = $sizes[1];
+			}
+
+			// Add aspect ratio data attributes.
+			$attributes = mai_add_aspect_ratio_attributes( $attributes, $this->aspect_width, $this->aspect_height );
+
+			// Build aspect ratio inner markup.
+			$aspect_inner = sprintf( '<div %s>', genesis_attr( 'aspect-inner', $aspect_attributes, $this->args ) );
 
 			// Get the object ID.
 			$object_id = $this->get_object_id( $object );
@@ -1115,14 +1145,6 @@ class Mai_Grid {
 
 				// Don't pass image ID if we're not showing it.
 				$image_id = $has_bg_image ? $this->get_image_id( $object_id ) : false;
-
-				// Get sizes.
-				$sizes  = mai_get_image_width_height( $this->args['image_size'], $image_id );
-				$width  = $sizes[0];
-				$height = $sizes[1];
-
-				// Add aspect ratio data attributes.
-				$attributes = mai_add_aspect_ratio_attributes( $attributes, $width, $height );
 
 				if ( $has_bg_image ) {
 
@@ -1143,6 +1165,7 @@ class Mai_Grid {
 				// Add has-bg-link class.
 				$attributes['class'] .= ' has-bg-link';
 			}
+
 		}
 
 		if ( mai_is_valid_overlay( $this->args['overlay'] ) ) {
@@ -1163,7 +1186,7 @@ class Mai_Grid {
 		 * Main entry col wrap.
 		 * If we use genesis_attr( 'entry' ) then it resets the classes.
 		 */
-		return sprintf( '<div %s>', genesis_attr( 'flex-entry', $attributes, $this->args ) );
+		return sprintf( '<div %s>%s', genesis_attr( 'flex-entry', $attributes, $this->args ), $aspect_inner );
 	}
 
 	/**
@@ -1172,7 +1195,8 @@ class Mai_Grid {
 	 * @return  string|HTML
 	 */
 	function get_entry_wrap_close() {
-		return '</div>';
+		$aspect_inner = $this->is_bg_image() ? '</div>' : '';
+		return sprintf( '%s</div>', $aspect_inner );
 	}
 
 	/**
