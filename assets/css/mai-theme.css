@@ -1741,6 +1741,7 @@ body.has-boxed-site-container {
 	left: 0;
 	height: 100%;
 	width: 100%;
+	padding: inherit;
 }
 
 /* ## Page Builders
