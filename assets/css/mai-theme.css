@@ -1682,6 +1682,7 @@ body.has-boxed-site-container {
 .light-content h5,
 .light-content h6,
 .light-content a,
+.light-content .entry-title,
 .light-content .entry-title a,
 .light-content .entry-meta,
 .light-content .entry-meta a,
@@ -2596,10 +2597,6 @@ ul.wp-block-gallery {
 /* # Site Header
 ---------------------------------------------------------------------------------------------------- */
 
-.site-container {
-	position: relative;
-}
-
 #header-trigger {
 	margin-top: var(--header-height);
 	display: block;
@@ -2607,18 +2604,6 @@ ul.wp-block-gallery {
 	left: 0;
 	width: 0;
 	opacity: 0;
-}
-
-#scroll-trigger {
-	/* position: absolute; */
-	/* top: 0; */
-	/* left: 0; */
-	/* width: 1px; */
-	/* height: 256px; */
-	/* margin-left: -1px; */
-	/* width: 12px; */
-	/* background: lightgreen; */
-	/* z-index: 999999; */
 }
 
 .site-header {
@@ -2639,13 +2624,15 @@ ul.wp-block-gallery {
 /* forces logo and mobile toggle on same line */
 .site-header.has-header-left:not(.has-header-right) .wrap > .row,
 .site-header.has-header-right:not(.has-header-left) .wrap > .row {
-	-ms-flex-wrap: nowrap;flex-wrap: nowrap;
+	-ms-flex-wrap: nowrap;
+	flex-wrap: nowrap;
 }
 
 @media only screen and (max-width: 544px) {
 
 	.site-header > .wrap > .row {
-		-ms-flex-wrap: nowrap;flex-wrap: nowrap;
+		-ms-flex-wrap: nowrap;
+		flex-wrap: nowrap;
 	}
 
 }
