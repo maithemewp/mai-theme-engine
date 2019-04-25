@@ -1727,21 +1727,24 @@ body.has-boxed-site-container {
 	display: block; /* can't be flex container or breaks in older Edge/FF */
 }
 
-.aspect-ratio[style*="--aspect-ratio"]::after {
+.aspect-ratio[style*="--aspect-ratio"]::before {
 	content: '';
-	display: block;
+	float: left;
+	width: 1px;
+	height: 0;
+	margin-left: -1px;
 	padding-bottom: calc( 100% / (var(--aspect-ratio)) );
 }
 
+.aspect-ratio[style*="--aspect-ratio"]::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
 .aspect-inner {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	height: 100%;
 	width: 100%;
-	padding: inherit;
+	height: 100%;;
 }
 
 /* ## Page Builders
@@ -2667,6 +2670,7 @@ ul.wp-block-gallery {
 --------------------------------------------- */
 
 .has-reveal-header .site-header {
+	width: 100%;
 	position: -webkit-sticky;
 	position: sticky;
 	z-index: 96;
