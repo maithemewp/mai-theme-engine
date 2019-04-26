@@ -9,6 +9,7 @@
 * Changed: Slightly more spacing on comment form button.
 * Changed: Removed WooCommerce notice flexbox code. Too hard to take all scenarios into consideration.
 * Fixed: Side mobile menu bug when using Reveal Header setting.
+* Fixed: Fix alignment of nested submenu when used as last submenu item of the last top level menu item.
 * Fixed: Missing search icon if used in before header widget area.
 
 ## 1.9.1 (3/26/19)
