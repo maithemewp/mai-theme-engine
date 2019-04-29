@@ -221,10 +221,10 @@ final class Mai_Theme_Engine {
 
 			// Add custom logo support.
 			add_theme_support( 'custom-logo', array(
-				'height'        => 120, // Optional size
-				'width'         => 240, // Optional size
-				'flex-height'   => true,
-				'flex-width'    => true,
+				'height'      => 120, // Optional size
+				'width'       => 240, // Optional size
+				'flex-height' => true,
+				'flex-width'  => true,
 			) );
 
 			// Add alignfull and alignwide support.

@@ -44,9 +44,12 @@ function mai_enqueue_scripts() {
 	// Maybe enabled responsive videos.
 	$responsive_videos = apply_filters( 'mai_enable_responsive_videos', '__return_true' );
 	if ( $responsive_videos ) {
-		// FitVids.
-		wp_enqueue_script( 'mai-responsive-videos', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/fitvids{$suffix}.js", array( 'jquery' ), '1.2.0', true );
-		wp_enqueue_script( 'mai-responsive-video-init', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/fitvids-init{$suffix}.js", array( 'mai-responsive-videos' ), MAI_THEME_ENGINE_VERSION, true );
+		// If not on a Gutenberg page/post that has responsive embeds enabled.
+		if ( ! ( function_exists( 'has_blocks' ) && has_blocks() && current_theme_supports( 'responsive-embeds' ) ) ) {
+			// FitVids.
+			wp_enqueue_script( 'mai-responsive-videos', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/fitvids{$suffix}.js", array( 'jquery' ), '1.2.0', true );
+			wp_enqueue_script( 'mai-responsive-video-init', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/fitvids-init{$suffix}.js", array( 'mai-responsive-videos' ), MAI_THEME_ENGINE_VERSION, true );
+		}
 	}
 
 	// Register Slick.
