@@ -11,6 +11,7 @@
 * Fixed: Side mobile menu bug when using Reveal Header setting.
 * Fixed: Fix alignment of nested submenu when used as last submenu item of the last top level menu item.
 * Fixed: Missing search icon if used in before header widget area.
+* Fixed: No longer enqueue FitVids.js if theme is customized to add support for 'responsive-embeds'.
 
 ## 1.9.1 (3/26/19)
 * Fixed: Error with visibility settings on WooCommerce Shop page when WooCommerce is not active.
