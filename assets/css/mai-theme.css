@@ -39,7 +39,6 @@
 	- Header Trigger
 	- Site Header
 		- Sticky Header
-		- Shrink Header
 		- Title Area
 		- Header Content
 	- Site Navigation
@@ -2638,7 +2637,7 @@ ul.wp-block-gallery {
 #header-trigger-wrap {
 	position: relative;
 	height: 0;
-	margin-bottom: var(--header-height);
+	margin-bottom: var(--header-spacer);
 }
 
 #header-trigger {
@@ -2648,7 +2647,7 @@ ul.wp-block-gallery {
 	height: 200px;
 }
 
-@media only screen and (min-width: 545px) {
+@media only screen and (min-width: 601px) and (max-width: 782px) {
 
 	#header-trigger {
 		top: -46px;
@@ -2671,6 +2670,7 @@ ul.wp-block-gallery {
 	-ms-flex: 0 0 auto;
 	-webkit-box-flex: 0;
 	flex: 0 0 auto; /* fix IE11 height bug */
+	width: 100%; /* for position: fixed; settings */
 	background-color: #fff;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -2702,7 +2702,6 @@ ul.wp-block-gallery {
 --------------------------------------------- */
 
 .has-reveal-header .site-header {
-	width: 100%;
 	position: -webkit-sticky;
 	position: sticky;
 	z-index: 96;
@@ -2823,7 +2822,7 @@ ul.wp-block-gallery {
 
 }
 
-@media (min-width: 600px) and (max-width: 782px) {
+@media (min-width: 601px) and (max-width: 782px) {
 
 	.admin-bar.has-sticky-header .site-header {
 		top: 46px;
@@ -2835,45 +2834,6 @@ ul.wp-block-gallery {
 
 	.admin-bar.has-sticky-header .site-header {
 		top: 32px;
-	}
-
-}
-
-/* ## Shrink Header
---------------------------------------------- */
-
-.has-shrink-header .site-header {
-	/* display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-ms-flex-wrap: nowrap;
-	flex-wrap: nowrap;
-	-webkit-box-align: start;
-	-ms-flex-align: start;
-	align-items: flex-start; */
-}
-
-.has-shrink-header .header-spacer {
-	/* -webkit-box-flex: 0;
-	-ms-flex: 0 0 6px;
-	flex: 0 0 6px;
-	max-width: 6px;
-	background: red; */
-}
-
-.has-shrink-header .header-wrapper {
-	/* -webkit-box-flex: 1;
-	-ms-flex: 1 1 100%;
-	flex: 1 1 100%;
-	max-width: 100%; */
-}
-
-@media only screen and (min-width: 769px) {
-
-	.js.has-sticky-header.has-shrink-header:not(.mai-menu-activated) .site-header.stuck,
-	.js.has-reveal-header.has-shrink-header:not(.mai-menu-activated) .site-header.stuck {
-		/* position: fixed; */
-		width: 100%;
 	}
 
 }
@@ -2908,9 +2868,6 @@ ul.wp-block-gallery {
 	-webkit-transition: all 20ms linear;
 	-o-transition: all 20ms linear;
 	transition: all 20ms linear;
-	/* -webkit-transition: none; */
-	/* -o-transition: none; */
-	/* transition: none; */
 }
 
 .site-title a,
@@ -5046,5 +5003,4 @@ ol.comment-list {
 		page-break-before: avoid;
 	}
 
-}
 }

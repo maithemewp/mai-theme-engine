@@ -151,6 +151,10 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				if ( ! hasStickyHeader ) {
 					return;
 				}
+				// Shrink only happens > 768 so CSS position: sticky; is fine, bail out here.
+				if ( window.innerWidth <= 768 ) {
+					return;
+				}
 				// Slight tolerance since we have position:sticky; fallback. Less jarring.
 				if ( percentage > 5 ) {
 					headerHeight = header.clientHeight;
@@ -166,6 +170,10 @@ document.addEventListener( 'DOMContentLoaded', function() {
 						afterHeader = false;
 					}
 					if ( ! hasStickyHeader ) {
+						return;
+					}
+					// Shrink only happens > 768 so CSS position: sticky; is fine, bail out here.
+					if ( window.innerWidth <= 768 ) {
 						return;
 					}
 					unstick();
@@ -196,30 +204,32 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
 	// Do sticky things.
 	function stick() {
-		if ( ! stuckClassAdded ) {
-			body.classList.add( 'header-stuck' );
-			header.classList.add( 'stuck' );
-			stuckClassAdded = true;
+		if ( stuckClassAdded ) {
+			return;
 		}
+		body.classList.add( 'header-stuck' );
+		header.classList.add( 'stuck' );
+		stuckClassAdded = true;
 		if ( ! hasShrinkHeader ) {
 			return;
 		}
 		header.style.position = 'fixed';
-		root.style.setProperty( '--header-height', headerHeight + 'px' );
+		root.style.setProperty( '--header-spacer', headerHeight + 'px' );
 	}
 
 	// Remove sticky things.
 	function unstick() {
-		if ( stuckClassAdded ) {
-			body.classList.remove( 'header-stuck' );
-			header.classList.remove( 'stuck' );
-			stuckClassAdded = false;
+		if ( ! stuckClassAdded ) {
+			return;
 		}
+		body.classList.remove( 'header-stuck' );
+		header.classList.remove( 'stuck' );
+		stuckClassAdded = false;
 		if ( ! hasShrinkHeader ) {
 			return;
 		}
 		header.style.position = '';
-		root.style.setProperty( '--header-height', '0' );
+		root.style.setProperty( '--header-spacer', '0' );
 	}
 
 	// Conceal the header.

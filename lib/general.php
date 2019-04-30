@@ -40,7 +40,7 @@ function mai_logo_width_css() {
 	 */
 	echo "<style>
 	:root {
-		--header-height: 0;
+		--header-spacer: 0;
 		--text-title: 100%;
 		--logo-width: {$width_px};
 		--logo-shrink-width: {$shrink_width_px};
