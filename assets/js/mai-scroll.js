@@ -2,7 +2,6 @@
 document.addEventListener( 'DOMContentLoaded', function() {
 
 	// Set consts.
-	var html             = document.querySelector( 'html' );
 	var body             = document.querySelector( 'body' );
 	var header           = document.querySelector( '.site-header' );
 	var logoWidth        = maiScroll.logoWidth;
@@ -32,9 +31,9 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	 * @version  1.0.0
 	 */
 	var bodyScroll = basicScroll.create({
-		elem: html,
-		from: 'top-top',
-		to: 'bottom-bottom',
+		elem: body,
+		from: 0,
+		to: 100,
 		props: {},
 		inside: (instance, percentage, props) => {
 
@@ -120,14 +119,13 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		 *
 		 * @version  1.0.0
 		 */
-		var trigger      = document.querySelector( '#header-trigger' );
 		var root         = document.documentElement;
 		var headerHeight = 0;
 
 		var headerScroll = basicScroll.create({
-			elem: header,
-			from: trigger.getBoundingClientRect().top - html.getBoundingClientRect().top,
-			to: ( trigger.getBoundingClientRect().top - html.getBoundingClientRect().top ) + 200,
+			elem: document.querySelector( '#header-trigger' ),
+			from: 'top-top',
+			to: 'bottom-top',
 			props: hasShrinkHeader ? {
 				'--text-title': {
 					from: '100%',

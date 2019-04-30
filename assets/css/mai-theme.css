@@ -36,6 +36,7 @@
 	- Plugins
 		- Jetpack
 		- Simple Social Icons
+	- Header Trigger
 	- Site Header
 		- Sticky Header
 		- Shrink Header
@@ -2623,17 +2624,48 @@ ul.wp-block-gallery {
 	padding: 6px !important;
 }
 
-/* # Site Header
+/* # Header Trigger
 ---------------------------------------------------------------------------------------------------- */
 
+#header-trigger-wrap,
 #header-trigger {
-	margin-top: var(--header-height);
 	display: block;
-	top: 0;
-	left: 0;
 	width: 0;
 	opacity: 0;
+	pointer-events: none;
 }
+
+#header-trigger-wrap {
+	position: relative;
+	height: 0;
+	margin-bottom: var(--header-height);
+}
+
+#header-trigger {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 200px;
+}
+
+@media only screen and (min-width: 545px) {
+
+	#header-trigger {
+		top: -46px;
+	}
+
+}
+
+@media only screen and (min-width: 783px) {
+
+	#header-trigger {
+		top: -32px;
+	}
+
+}
+
+/* # Site Header
+---------------------------------------------------------------------------------------------------- */
 
 .site-header {
 	-ms-flex: 0 0 auto;
@@ -5014,4 +5046,5 @@ ol.comment-list {
 		page-break-before: avoid;
 	}
 
+}
 }
