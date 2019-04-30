@@ -191,7 +191,7 @@ function mai_js_detection_body_class( $classes ) {
  * @link https://github.com/GaryJones/genesis-js-no-js/
  * @link https://www.paulirish.com/2009/avoiding-the-fouc-v3/
  */
-add_action( 'genesis_before', 'mai_js_detection_script' );
+add_action( 'genesis_before', 'mai_js_detection_script', 8 );
 function mai_js_detection_script() {
 	?>
 	<script>
