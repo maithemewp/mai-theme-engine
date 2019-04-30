@@ -4,13 +4,14 @@
  * Add header trigger element.
  * For basicScroll.
  *
+ * @access  private
  * @since   1.8.0
  *
  * @return  void
  */
 add_action( 'genesis_header', 'mai_header_trigger', 3 );
 function mai_header_trigger() {
-	echo '<span id="header-trigger"></span>';
+	echo '<span id="header-trigger-wrap"><span id="header-trigger"></span></span>';
 }
 
 /**
