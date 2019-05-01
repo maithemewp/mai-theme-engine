@@ -33,7 +33,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	var bodyScroll = basicScroll.create({
 		elem: body,
 		from: 0,
-		to: 100,
+		to: 'bottom-bottom',
 		props: {},
 		inside: (instance, percentage, props) => {
 
@@ -56,6 +56,8 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				scrollTop     = document.documentElement.scrollTop;
 				startDistance = scrollTop;
 			}
+
+			console.log( percentage );
 
 			// Store items.
 			scrollingDown      = ( percentage > previousPercentage );
