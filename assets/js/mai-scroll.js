@@ -292,10 +292,6 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
 	// If scrolled down enough.
 	function scrolledDownEnough( firstItem, lastItem ) {
-
-		// console.log( 'First: ' + firstItem );
-		// console.log( 'Last: ' + lastItem );
-
 		return ( lastItem - firstItem ) > 320;
 	}
 
