@@ -57,8 +57,6 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				startDistance = scrollTop;
 			}
 
-			console.log( percentage );
-
 			// Store items.
 			scrollingDown      = ( percentage > previousPercentage );
 			scrollingUp        = ! scrollingDown;
