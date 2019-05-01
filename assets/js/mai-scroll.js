@@ -28,7 +28,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	/**
 	 * Handle body scroll tracking.
 	 *
-	 * @version  1.0.0
+	 * @version  1.1.0
 	 */
 	var bodyScroll = basicScroll.create({
 		elem: body,
@@ -117,7 +117,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		 * Handle header scroll tracking.
 		 * This is always running, just not always outputting CSS vars.
 		 *
-		 * @version  1.0.0
+		 * @version  1.1.0
 		 */
 		var root         = document.documentElement;
 		var headerHeight = 0;
