@@ -151,13 +151,8 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				if ( ! hasStickyHeader ) {
 					return;
 				}
-				// Shrink only happens > 768 so CSS position: sticky; is fine, bail out here.
-				if ( window.innerWidth <= 768 ) {
-					return;
-				}
 				// Slight tolerance since we have position:sticky; fallback. Less jarring.
 				if ( percentage > 5 ) {
-					headerHeight = header.clientHeight;
 					stick();
 				} else {
 					unstick();
@@ -170,10 +165,6 @@ document.addEventListener( 'DOMContentLoaded', function() {
 						afterHeader = false;
 					}
 					if ( ! hasStickyHeader ) {
-						return;
-					}
-					// Shrink only happens > 768 so CSS position: sticky; is fine, bail out here.
-					if ( window.innerWidth <= 768 ) {
 						return;
 					}
 					unstick();
@@ -213,7 +204,14 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		if ( ! hasShrinkHeader ) {
 			return;
 		}
-		header.style.position = 'fixed';
+		// Shrink only happens > 768 so CSS position: sticky; is fine, bail out here.
+		if ( window.innerWidth <= 768 ) {
+			return;
+		}
+		if ( '' === header.style.position ) {
+			header.style.position = 'fixed';
+		}
+		headerHeight = header.clientHeight;
 		root.style.setProperty( '--header-spacer', headerHeight + 'px' );
 	}
 
@@ -226,6 +224,13 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		header.classList.remove( 'stuck' );
 		stuckClassAdded = false;
 		if ( ! hasShrinkHeader ) {
+			return;
+		}
+		/**
+		 * Shrink only happens > 768 so CSS position: sticky; is fine, bail out here if position is already cleared.
+		 * Hit an issue when resizing from > 768 to < 768 if position is still fixed it was never cleared.
+		 */
+		if ( window.innerWidth <= 768 && ( '' === header.style.position ) ) {
 			return;
 		}
 		header.style.position = '';
