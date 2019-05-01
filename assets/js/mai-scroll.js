@@ -1,21 +1,19 @@
 // Get it started.
 document.addEventListener( 'DOMContentLoaded', function() {
 
-	// Set consts.
-	var body             = document.querySelector( 'body' );
-	var header           = document.querySelector( '.site-header' );
-	var logoWidth        = maiScroll.logoWidth;
-	var logoTop          = maiScroll.logoTop;
-	var logoBottom       = maiScroll.logoBottom;
-	var logoShrinkWidth  = maiScroll.logoShrinkWidth;
-	var logoShrinkTop    = maiScroll.logoShrinkTop;
-	var logoShrinkBottom = maiScroll.logoShrinkBottom;
-	var hasShrinkHeader  = body.classList.contains( 'has-shrink-header' );
-	var hasRevealHeader  = body.classList.contains( 'has-reveal-header' );
-	var hasStickyHeader  = ( hasRevealHeader || body.classList.contains( 'has-shrink-header' ) );
-
 	// Set vars.
-	var scrollClassAdded   = false,
+	var	body               = document.querySelector( 'body' ),
+		header             = document.querySelector( '.site-header' ),
+		logoWidth          = maiScroll.logoWidth,
+		logoTop            = maiScroll.logoTop,
+		logoBottom         = maiScroll.logoBottom,
+		logoShrinkWidth    = maiScroll.logoShrinkWidth,
+		logoShrinkTop      = maiScroll.logoShrinkTop,
+		logoShrinkBottom   = maiScroll.logoShrinkBottom,
+		hasShrinkHeader    = body.classList.contains( 'has-shrink-header' ),
+		hasRevealHeader    = body.classList.contains( 'has-reveal-header' ),
+		hasStickyHeader    = ( hasRevealHeader || body.classList.contains( 'has-shrink-header' ) ),
+		scrollClassAdded   = false,
 		scrollingDown      = true,
 		scrollingUp        = false,
 		headerConcealed    = false,
@@ -49,11 +47,12 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				return;
 			}
 
+			// Start as false each time.
 			var scrollTop = false;
 
 			// Maybe set the new start distance.
 			if ( false === startDistance ) {
-				scrollTop     = document.documentElement.scrollTop;
+				scrollTop     = getScrollTop();
 				startDistance = scrollTop;
 			}
 
@@ -72,7 +71,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
 			// Maybe get scrollTop if we haven't yet.
 			if ( false === scrollTop ) {
-				scrollTop = document.documentElement.scrollTop;
+				scrollTop = getScrollTop();
 			}
 
 			// Check if scrolled enough.
@@ -181,6 +180,12 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
 	}
 
+	// Get current scrollTop value.
+	function getScrollTop() {
+		return (document.scrollingElement || document.documentElement).scrollTop;
+		// return Math.max( window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop );
+	}
+
 	// Add scroll class.
 	function addScrollClass() {
 		body.classList.add( 'scroll' );
@@ -287,6 +292,10 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
 	// If scrolled down enough.
 	function scrolledDownEnough( firstItem, lastItem ) {
+
+		// console.log( 'First: ' + firstItem );
+		// console.log( 'Last: ' + lastItem );
+
 		return ( lastItem - firstItem ) > 320;
 	}
 
