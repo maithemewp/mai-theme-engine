@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.1 (5/2/19)
+* Fixed: Aspect ratio vertical height issue.
+
 ## 1.10.0 (5/2/19)
 * Added: Logo and Shrink/Mobile logo sizing/spacing settings.
 * Added: Setting to define when the mobile menu should display.
