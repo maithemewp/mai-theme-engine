@@ -13,72 +13,6 @@
 	margin-bottom: 0; /* undo the default margin on li */
 }
 
-@media only screen and (min-width: 545px) {
-
-	.woocommerce-error,
-	.woocommerce-info,
-	.woocommerce-message {
-		display: -webkit-box;
-		display: -ms-flexbox;
-		display: flex;
-		-ms-flex-wrap: wrap;
-		flex-wrap: wrap;
-		-webkit-box-align: center;
-		-ms-flex-align: center;
-		align-items: center
-	}
-
-	.woocommerce-error > *,
-	.woocommerce-info > *,
-	.woocommerce-message > * {
-		margin-left: 4px;
-		margin-right: 4px;
-	}
-
-	.woocommerce-error::before,
-	.woocommerce-info::before,
-	.woocommerce-message::before {
-		top: 50%;
-		-webkit-transform: translate(0, -50%);
-		-ms-transform: translate(0, -50%);
-		transform: translate(0, -50%);
-	}
-
-	.woocommerce-error .button.wc-forward,
-	.woocommerce-info .button.wc-forward,
-	.woocommerce-message .button.wc-forward {
-		-ms-flex: 0 0 auto;
-		-webkit-box-flex: 0;
-		flex: 0 0 auto;
-		-webkit-box-ordinal-group: 7;
-		-ms-flex-order: 6;
-		order: 6;
-		margin-left: auto;
-	}
-
-	.woocommerce-error::after,
-	.woocommerce-info::after,
-	.woocommerce-message::after {
-		content: ' ';
-		display: block;
-		margin-right: 16px;
-	}
-
-	.woocommerce .woocommerce-error .button,
-	.woocommerce .woocommerce-info .button,
-	.woocommerce .woocommerce-message .button,
-	.woocommerce-page .woocommerce-error .button,
-	.woocommerce-page .woocommerce-info .button,
-	.woocommerce-page .woocommerce-message .button {
-		float: none;
-		-webkit-box-ordinal-group: 100;
-		-ms-flex-order: 99;
-		order: 99;
-		margin-left: auto;
-	}
-}
-
-
 /* ## Products - General
 --------------------------------------------- */
 
@@ -274,6 +208,10 @@
 
 .woocommerce div.product form.cart div.quantity {
 	margin-right: 8px;
+}
+
+.woocommerce div.product form.cart div.quantity.hidden {
+	margin: 0;
 }
 
 .sku_wrapper,
@@ -556,10 +494,10 @@ body.woocommerce-checkout form.checkout_coupon .form-row {
 	margin: 0;
 }
 
-#add_payment_method #payment div.payment_box,
-.woocommerce-cart #payment div.payment_box,
-.woocommerce-checkout #payment div.payment_box {
-	padding: 24px 24px 0;
+#add_payment_method #payment div.payment_box p:last-of-type,
+.woocommerce-cart #payment div.payment_box p:last-of-type,
+.woocommerce-checkout #payment div.payment_box p:last-of-type {
+	margin-bottom: 0;
 }
 
 #add_payment_method #payment div.payment_box .form-row,

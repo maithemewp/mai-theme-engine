@@ -1,23 +1,23 @@
 // Get it started.
 document.addEventListener( 'DOMContentLoaded', function() {
 
-	// Set consts.
-	var html            = document.querySelector( 'html' );
-	var body            = document.querySelector( 'body' );
-	var header          = document.querySelector( '.site-header' );
-	var logoWidth       = maiScroll.logoWidth;
-	var shrunkLogoWidth = Math.round( logoWidth * .7 );
-	var hasShrinkHeader = body.classList.contains( 'has-shrink-header' );
-	var hasRevealHeader = body.classList.contains( 'has-reveal-header' );
-	var hasStickyHeader = ( hasRevealHeader || body.classList.contains( 'has-shrink-header' ) );
-
 	// Set vars.
-	var scrollClassAdded   = false,
+	var	body               = document.querySelector( 'body' ),
+		header             = document.querySelector( '.site-header' ),
+		logoWidth          = maiScroll.logoWidth,
+		logoTop            = maiScroll.logoTop,
+		logoBottom         = maiScroll.logoBottom,
+		logoShrinkWidth    = maiScroll.logoShrinkWidth,
+		logoShrinkTop      = maiScroll.logoShrinkTop,
+		logoShrinkBottom   = maiScroll.logoShrinkBottom,
+		hasShrinkHeader    = body.classList.contains( 'has-shrink-header' ),
+		hasRevealHeader    = body.classList.contains( 'has-reveal-header' ),
+		hasStickyHeader    = ( hasRevealHeader || body.classList.contains( 'has-shrink-header' ) ),
+		scrollClassAdded   = false,
 		scrollingDown      = true,
 		scrollingUp        = false,
 		headerConcealed    = false,
 		startDistance      = false,
-		percentage         = 0,
 		previousPercentage = 0,
 		scrollDowns        = [],
 		stuckClassAdded    = false,
@@ -26,11 +26,11 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	/**
 	 * Handle body scroll tracking.
 	 *
-	 * @version  1.0.0
+	 * @version  1.1.0
 	 */
 	var bodyScroll = basicScroll.create({
-		elem: html,
-		from: 'top-top',
+		elem: body,
+		from: 0,
 		to: 'bottom-bottom',
 		props: {},
 		inside: (instance, percentage, props) => {
@@ -47,11 +47,12 @@ document.addEventListener( 'DOMContentLoaded', function() {
 				return;
 			}
 
+			// Start as false each time.
 			var scrollTop = false;
 
 			// Maybe set the new start distance.
 			if ( false === startDistance ) {
-				scrollTop     = document.documentElement.scrollTop;
+				scrollTop     = getScrollTop();
 				startDistance = scrollTop;
 			}
 
@@ -70,7 +71,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
 			// Maybe get scrollTop if we haven't yet.
 			if ( false === scrollTop ) {
-				scrollTop = document.documentElement.scrollTop;
+				scrollTop = getScrollTop();
 			}
 
 			// Check if scrolled enough.
@@ -108,59 +109,82 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	});
 	bodyScroll.start();
 
-	/**
-	 * Handle header scroll tracking.
-	 * This is always running, just not always outputting CSS vars.
-	 *
-	 * @version  1.0.0
-	 */
-	var headerFrom   = header.offsetTop,
-		headerTo     = headerFrom + 200;
+	// Make sure we have a header.
+	if ( header ) {
 
-	var headerScroll = basicScroll.create({
-		elem: header,
-		from: headerFrom,
-		to: headerTo,
-		// We need really large values to force whole numbers and partially help jitters/jank.
-		// See https://github.com/electerious/basicScroll/issues/39
-		props: hasShrinkHeader ? {
-			'--logo-width': {
-				from: ( logoWidth * 100000 ) + 'px',
-				to: ( shrunkLogoWidth * 100000 ) + 'px',
-			},
-			'--logo-margin': {
-				from: '2400000px',
-				to: '400000px'
-			},
-		} : [],
-		inside: (instance, percentage, props) => {
-			if ( hasStickyHeader ) {
-				if ( ( percentage > 0 ) && ! stuckClassAdded ) {
-					addStuckClass();
-				} else if ( ( percentage <= 0 ) && stuckClassAdded ) {
-					removeStuckClass();
-				}
-			}
-			if ( afterHeader ) {
-				afterHeader = false;
-			}
-		},
-		outside: (instance, percentage, props) => {
-			if ( percentage <= 0 ) {
-				if ( hasStickyHeader ) {
-					removeStuckClass();
-				}
+		/**
+		 * Handle header scroll tracking.
+		 * This is always running, just not always outputting CSS vars.
+		 *
+		 * @version  1.1.0
+		 */
+		var root         = document.documentElement;
+		var headerHeight = 0;
+
+		var headerScroll = basicScroll.create({
+			elem: document.querySelector( '#header-trigger' ),
+			from: 'top-top',
+			to: 'bottom-top',
+			props: hasShrinkHeader ? {
+				'--text-title': {
+					from: '100%',
+					to: '70%',
+				},
+				'--logo-width': {
+					from: logoWidth + 'px',
+					to: logoShrinkWidth + 'px',
+				},
+				'--logo-margin-top': {
+					from: logoTop + 'px',
+					to: logoShrinkTop + 'px',
+				},
+				'--logo-margin-bottom': {
+					from: logoBottom + 'px',
+					to: logoShrinkBottom + 'px',
+				},
+			} : [],
+			inside: (instance, percentage, props) => {
 				if ( afterHeader ) {
 					afterHeader = false;
 				}
-			} else {
-				if ( ! afterHeader ) {
-					afterHeader = true;
+				if ( ! hasStickyHeader ) {
+					return;
+				}
+				// Slight tolerance since we have position:sticky; fallback. Less jarring.
+				if ( percentage > 5 ) {
+					stick();
+				} else {
+					unstick();
+				}
+			},
+			outside: (instance, percentage, props) => {
+				// Negative percentage is space above the header. Slight tolerance since we have position:sticky; fallback. Less jarring.
+				if ( percentage <= 5 ) {
+					if ( afterHeader ) {
+						afterHeader = false;
+					}
+					if ( ! hasStickyHeader ) {
+						return;
+					}
+					unstick();
+				}
+				// Below the header.
+				else {
+					if ( ! afterHeader ) {
+						afterHeader = true;
+					}
 				}
 			}
-		}
-	});
-	headerScroll.start();
+		});
+		headerScroll.start();
+
+	}
+
+	// Get current scrollTop value.
+	function getScrollTop() {
+		return (document.scrollingElement || document.documentElement).scrollTop;
+		// return Math.max( window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop );
+	}
 
 	// Add scroll class.
 	function addScrollClass() {
@@ -174,22 +198,48 @@ document.addEventListener( 'DOMContentLoaded', function() {
 		scrollClassAdded = false;
 	}
 
-	// Add stuck class.
-	function addStuckClass() {
-		if ( ! header ) {
+	// Do sticky things.
+	function stick() {
+		if ( stuckClassAdded ) {
 			return;
 		}
+		body.classList.add( 'header-stuck' );
 		header.classList.add( 'stuck' );
 		stuckClassAdded = true;
-	}
-
-	// Remove sticky class.
-	function removeStuckClass() {
-		if ( ! header ) {
+		if ( ! hasShrinkHeader ) {
 			return;
 		}
+		// Shrink only happens > 768 so CSS position: sticky; is fine, bail out here.
+		if ( window.innerWidth <= 768 ) {
+			return;
+		}
+		if ( '' === header.style.position ) {
+			header.style.position = 'fixed';
+		}
+		headerHeight = header.clientHeight;
+		root.style.setProperty( '--header-spacer', headerHeight + 'px' );
+	}
+
+	// Remove sticky things.
+	function unstick() {
+		if ( ! stuckClassAdded ) {
+			return;
+		}
+		body.classList.remove( 'header-stuck' );
 		header.classList.remove( 'stuck' );
 		stuckClassAdded = false;
+		if ( ! hasShrinkHeader ) {
+			return;
+		}
+		/**
+		 * Shrink only happens > 768 so CSS position: sticky; is fine, bail out here if position is already cleared.
+		 * Hit an issue when resizing from > 768 to < 768 if position is still fixed it was never cleared.
+		 */
+		if ( window.innerWidth <= 768 && ( '' === header.style.position ) ) {
+			return;
+		}
+		header.style.position = '';
+		root.style.setProperty( '--header-spacer', '0' );
 	}
 
 	// Conceal the header.

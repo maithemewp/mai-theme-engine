@@ -170,7 +170,7 @@
 		}
 
 		// On click of close button inside the side menu, close all.
-		$header.on( 'click', '.menu-close', function(e){
+		$body.on( 'click', '.menu-close', function(e){
 			_closeAll();
 		});
 
@@ -380,50 +380,6 @@
 	};
 
 })( document, jQuery );
-
-
-/**
- * Set an elements min-height
- * according to the aspect ratio of its' background image.
- *
- * @version  2.1.0
- */
-( function( window, document, $, undefined ) {
-
-	// Get all our elements.
-	var elements = document.querySelectorAll( '.aspect-ratio' );
-
-	// Bail if no elements.
-	if ( 0 === elements.length ) {
-		return;
-	}
-
-	// Resize after the window is ready. WP Rocket critical CSS needs this to wait, among other things.
-	window.addEventListener( 'load', aspectRatio );
-	window.addEventListener( 'resize', aspectRatio );
-	window.addEventListener( 'orientationchange', aspectRatio );
-
-	// Helper function to loop through the elements and set the aspect ratio.
-	function aspectRatio() {
-		forEach( elements, function( index, value ) {
-			return value.style.minHeight = Math.round( value.offsetWidth / ( value.getAttribute( 'data-aspect-width' ) / value.getAttribute('data-aspect-height') ) ) + 'px';
-		});
-	}
-
-	// Thanks Todd! @link https://toddmotto.com/ditch-the-array-foreach-call-nodelist-hack/
-	var forEach = function( array, callback, scope ) {
-		for ( var i = 0; i < array.length; i++ ) {
-			// Passes back stuff we need.
-			callback.call( scope, i, array[i] );
-		}
-	};
-
-	// After FacetWP is loaded/refreshed. We needed to get the elements again because of the way FWP re-displays them.
-	$( document ).on( 'facetwp-loaded', function() {
-		aspectRatio();
-	});
-
-})( window, document, jQuery );
 
 
 /**

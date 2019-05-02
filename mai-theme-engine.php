@@ -5,7 +5,7 @@
  * Plugin URI:      https://maitheme.com/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.9.1
+ * Version:         1.10.0
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -89,7 +89,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.9.1' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.10.0' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1400' );
@@ -221,10 +221,10 @@ final class Mai_Theme_Engine {
 
 			// Add custom logo support.
 			add_theme_support( 'custom-logo', array(
-				'height'        => 120, // Optional size
-				'width'         => 240, // Optional size
-				'flex-height'   => true,
-				'flex-width'    => true,
+				'height'      => 120, // Optional size
+				'width'       => 240, // Optional size
+				'flex-height' => true,
+				'flex-width'  => true,
 			) );
 
 			// Add alignfull and alignwide support.

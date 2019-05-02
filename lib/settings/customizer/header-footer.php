@@ -76,6 +76,27 @@ function mai_register_customizer_header_footer_settings( $wp_customize ) {
 		)
 	);
 
+	// Mobile menu width.
+	$wp_customize->add_setting(
+		_mai_customizer_get_field_name( $settings_field, 'mobile_menu_width' ),
+		array(
+			'default'           => absint( mai_get_default_option( 'mobile_menu_width' ) ),
+			'type'              => 'option',
+			'sanitize_callback' => 'absint',
+		)
+	);
+	$wp_customize->add_control(
+		'mobile_menu_width',
+		array(
+			'label'       => esc_attr__( 'Mobile menu width', 'mai-theme-engine' ),
+			'description' => sprintf( __( 'The largest screen width at which the mobile menu becomes active. Default %spx.', 'mai-theme-engine' ), absint( mai_get_default_option( 'mobile_menu_width' ) ) ),
+			'section'     => $section,
+			'settings'    => _mai_customizer_get_field_name( $settings_field, 'mobile_menu_width' ),
+			'priority'    => 10,
+			'type'        => 'text',
+		)
+	);
+
 	// Footer widgets.
 	$wp_customize->add_setting(
 		_mai_customizer_get_field_name( $settings_field, 'footer_widget_count' ),

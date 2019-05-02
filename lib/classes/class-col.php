@@ -87,7 +87,7 @@ class Mai_Col {
 		// Trim because testing returned string of nbsp.
 		$this->content = mai_get_processed_content( trim( $this->content ) );
 
-		$image = $overlay = '';
+		$aspect_inner = $image = $overlay = '';
 
 		$attributes = array(
 			'class' => $this->get_classes(),
@@ -97,8 +97,15 @@ class Mai_Col {
 		// Custom classes.
 		$attributes['class'] = mai_add_classes( $this->args['class'], $attributes['class'] );
 
-		// Add the align classes.
-		$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
+		// Get the align classes. A lof of this taken from grid.
+		if ( $this->args['image'] && $this->content ) {
+			// Build aspect ratio inner markup.
+			$aspect_attributes          = array( 'class' => 'aspect-inner' );
+			$aspect_attributes['class'] = mai_add_entry_align_classes( $aspect_attributes['class'], $this->args, $this->get_direction() );
+			$aspect_inner               = sprintf( '<div %s>', genesis_attr( 'aspect-inner', $aspect_attributes, $this->args ) );
+		} else {
+			$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
+		}
 
 		// URL.
 		$bg_link = $bg_link_title = '';
@@ -129,10 +136,9 @@ class Mai_Col {
 		// If we have an image ID.
 		if ( $this->args['image'] ) {
 
-			global $_wp_additional_image_sizes;
-
 			// If we have content.
 			if ( $this->content ) {
+
 				// Set dark overlay if we don't have one.
 				$this->args['overlay'] = ! $this->args['overlay'] ? 'dark' : $this->args['overlay'];
 				$light_content         = true;
@@ -196,12 +202,14 @@ class Mai_Col {
 		 * Return the content with col wrap.
 		 * With flex-col attr so devs can filter elsewhere.
 		 */
-		return sprintf( '<div %s>%s%s%s%s</div>',
+		return sprintf( '<div %s>%s%s%s%s%s%s</div>',
 			genesis_attr( 'flex-col', $attributes, $this->args ),
+			$aspect_inner,
 			$image,
 			$overlay,
 			$this->content,
-			$bg_link
+			$bg_link,
+			$aspect_inner ? '</div>' : ''
 		);
 	}
 

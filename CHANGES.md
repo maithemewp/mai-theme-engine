@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.10.0 (5/2/19)
+* Added: Logo and Shrink/Mobile logo sizing/spacing settings.
+* Added: Setting to define when the mobile menu should display.
+* Added: [grid] Allow author="current" to display posts from the author of the currently viewed post.
+* Changed: Aspect ratio boxes are now pure CSS and load instantly instead of waiting until JS is loaded.
+* Changed: Make sure primary sidebar widget content is always 300px wide (for ads) regardless of boxed settings.
+* Changed: Better WooCommerce payment box description margins.
+* Changed: Slightly more spacing on comment form button.
+* Changed: Removed WooCommerce notice flexbox code. Too hard to take all scenarios into consideration.
+* Fixed: Side mobile menu bug when using Reveal Header setting.
+* Fixed: Fix alignment of nested submenu when used as last submenu item of the last top level menu item.
+* Fixed: Missing search icon if used in before header widget area.
+* Fixed: No longer enqueue FitVids.js if theme is customized to add support for 'responsive-embeds'.
+
 ## 1.9.1 (3/26/19)
 * Fixed: Error with visibility settings on WooCommerce Shop page when WooCommerce is not active.
 

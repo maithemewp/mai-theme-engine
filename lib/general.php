@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Add inline CSS.
+ * Add inline logo width CSS.
  *
  * @since   1.8.0
  * @since   1.9.0  Converted to CSS vars for basicScroll.
@@ -16,14 +16,21 @@ function mai_logo_width_css() {
 		return;
 	}
 
-	$width = get_theme_mod( 'custom_logo_width', 180 );
+	// Values.
+	$width         = get_theme_mod( 'custom_logo_width', 180 );
+	$top           = get_theme_mod( 'custom_logo_top', 24 );
+	$bottom        = get_theme_mod( 'custom_logo_bottom', 24 );
+	$shrink_width  = get_theme_mod( 'custom_logo_shrink_width', absint( $width * .7 ) );
+	$shrink_top    = get_theme_mod( 'custom_logo_shrink_top', 4 );
+	$shrink_bottom = get_theme_mod( 'custom_logo_shrink_bottom', 4 );
 
-	if ( ! $width ) {
-		return;
-	}
-
-	$width_px  = absint( $width ) * 100000 . 'px';
-	$shrink_px = absint( $width * .7 ) * 100000 . 'px';
+	// Pixel values.
+	$width_px         = absint( $width ) . 'px';
+	$top_px           = intval( $top ) . 'px';
+	$bottom_px        = intval( $bottom ) . 'px';
+	$shrink_width_px  = absint( $shrink_width ) . 'px';
+	$shrink_top_px    = intval( $shrink_top ) . 'px';
+	$shrink_bottom_px = intval( $shrink_bottom ) . 'px';
 
 	/**
 	 * Set max-width on the logo link.
@@ -33,26 +40,65 @@ function mai_logo_width_css() {
 	 */
 	echo "<style>
 	:root {
+		--header-spacer: 0;
+		--text-title: 100%;
 		--logo-width: {$width_px};
-		--logo-shrink-width: {$shrink_px};
-		--logo-margin: 2400000px;
+		--logo-shrink-width: {$shrink_width_px};
+		--logo-margin-top: {$top_px};
+		--logo-margin-bottom: {$bottom_px};
+	}
+	.site-title.has-text-title a {
+		font-size: var(--text-title);
 	}
 	@media only screen and (min-width: 769px) {
 		.site-title a {
-			margin-top: calc( var(--logo-margin) / 100000 );
-			margin-bottom: calc( var(--logo-margin) / 100000 );
+			margin-top: var(--logo-margin-top);
+			margin-bottom: var(--logo-margin-bottom);
 		}
 		.custom-logo-link {
-			max-width: calc( var(--logo-width) / 100000 );
+			max-width: var(--logo-width);
 		}
 	}
 	@media only screen and (max-width: 768px) {
 		.site-title a {
-			margin-top: 4px;
-			margin-bottom: 4px;
+			margin-top: {$shrink_top_px};
+			margin-bottom: {$shrink_bottom_px};
 		}
 		.custom-logo-link {
-			max-width: calc( var(--logo-shrink-width) / 100000 );
+			max-width: var(--logo-shrink-width);
+		}
+	}
+	</style>";
+}
+
+/**
+ * Mobile menu width CSS.
+ *
+ * @since   1.10.0
+ *
+ * @return  void
+ */
+add_action( 'wp_head', 'mai_mobile_menu_width_css' );
+function mai_mobile_menu_width_css() {
+
+	// Bail if in the Dasbhoard.
+	if ( is_admin() ) {
+		return;
+	}
+
+	$width = absint( genesis_get_option( 'mobile_menu_width' ) );
+
+	echo "<style>
+	@media only screen and (max-width: {$width}px) {
+		.header-before,
+		.header-left,
+		.header-right,
+		.nav-primary,
+		.nav-secondary {
+			display: none;
+		}
+		.mai-toggle {
+			display: block;
 		}
 	}
 	</style>";
@@ -60,6 +106,8 @@ function mai_logo_width_css() {
 
 /**
  * Add body class to enabled specific settings.
+ *
+ * @since   Unknown.
  *
  * @param   array  $classes  The body classes.
  *
@@ -91,9 +139,7 @@ function mai_do_settings_body_classes( $classes ) {
 		}
 	}
 
-	/**
-	 * Use a side mobile menu in place of the standard the mobile menu
-	 */
+	// Mobile menu class.
 	if ( mai_is_side_menu_enabled() ) {
 		$classes[] = 'has-side-menu';
 	} else {
@@ -145,7 +191,7 @@ function mai_js_detection_body_class( $classes ) {
  * @link https://github.com/GaryJones/genesis-js-no-js/
  * @link https://www.paulirish.com/2009/avoiding-the-fouc-v3/
  */
-add_action( 'genesis_before', 'mai_js_detection_script' );
+add_action( 'genesis_before', 'mai_js_detection_script', 8 );
 function mai_js_detection_script() {
 	?>
 	<script>
@@ -158,52 +204,6 @@ function mai_js_detection_script() {
 		//]]>
 	</script>
 	<?php
-}
-
-/**
- * Maybe add has-boxed-children class if content/entry or sidebar/widgets have boxed setting enabled.
- *
- * @since   1.3.0
- *
- * @access  private
- *
- * @param   $attributes  The existing attributes.
- *
- * @return  $attributes  The modifed attributes.
- */
-add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_boxed_content_sidebar_wrap' );
-function mai_boxed_content_sidebar_wrap( $attributes ) {
-
-	$elements = genesis_get_option( 'boxed_elements' );
-
-	// Bail if no boxed elements.
-	if ( ! $elements ) {
-		return $attributes;
-	}
-
-	// Check for boxed content and sidebar elements. Intentially not checking for secondary sidebar.
-	$content_wrap = (bool) in_array( 'content', $elements );
-	$entry        = (bool) array_intersect( $elements, array( 'entry_singular', 'entry_archive' ) );
-	$content      = (bool) $content_wrap || $entry;
-	$sidebar      = (bool) array_intersect( $elements, array( 'sidebar', 'sidebar_widgets' ) );
-
-	// If seamless.
-	if ( ! ( $content || $sidebar ) ) {
-		// Add class to show all children are seamless.
-		$attributes['class'] .= ' no-boxed-children';
-	}
-	// If only content or sidebar has a boxed child.
-	elseif ( ( $content && ! $sidebar ) || ( ! $content && $sidebar ) ) {
-		// Add class to show all children have boxes.
-		$attributes['class'] .= ' has-boxed-child';
-	}
-	// If content and sidebar have boxed children.
-	elseif ( $content && $sidebar ) {
-		// Add class to show all children have boxes.
-		$attributes['class'] .= ' has-boxed-children';
-	}
-
-	return $attributes;
 }
 
 /**
@@ -254,6 +254,87 @@ function mai_do_boxed_elements() {
 		}
 
 	}
+}
+
+/**
+ * Maybe add has-boxed-children class if content/entry or sidebar/widgets have boxed setting enabled.
+ *
+ * @since   1.3.0
+ *
+ * @access  private
+ *
+ * @param   $attributes  The existing attributes.
+ *
+ * @return  $attributes  The modifed attributes.
+ */
+add_filter( 'genesis_attr_content-sidebar-wrap', 'mai_boxed_content_sidebar_wrap' );
+function mai_boxed_content_sidebar_wrap( $attributes ) {
+
+	$elements = genesis_get_option( 'boxed_elements' );
+
+	// Bail if no boxed elements.
+	if ( ! $elements ) {
+		return $attributes;
+	}
+
+	// Check for boxed content and sidebar elements. Intentially not checking for secondary sidebar.
+	$content_wrap = (bool) in_array( 'content', $elements );
+	$entry        = (bool) array_intersect( $elements, array( 'entry_singular', 'entry_archive' ) );
+	$content      = (bool) $content_wrap || $entry;
+	$sidebar      = (bool) array_intersect( $elements, array( 'sidebar', 'sidebar_widgets' ) );
+
+	// If seamless.
+	if ( ! ( $content || $sidebar ) ) {
+		// Add class to show all children are seamless.
+		$attributes['class'] .= ' no-boxed-children';
+	}
+	// If only content or sidebar has a boxed child.
+	elseif ( ( $content && ! $sidebar ) || ( ! $content && $sidebar ) ) {
+		// Add class to show all children have boxes.
+		$attributes['class'] .= ' has-boxed-child';
+	}
+	// If content and sidebar have boxed children.
+	elseif ( $content && $sidebar ) {
+		// Add class to show all children have boxes.
+		$attributes['class'] .= ' has-boxed-children';
+	}
+
+	return $attributes;
+}
+
+/**
+ * Maybe add has-boxed class if sidebar or widgets have boxed setting enabled.
+ *
+ * @since   1.10.0
+ *
+ * @access  private
+ *
+ * @param   $attributes  The existing attributes.
+ *
+ * @return  $attributes  The modifed attributes.
+ */
+add_filter( 'genesis_attr_sidebar-primary', 'mai_boxed_sidebar_primary' );
+function mai_boxed_sidebar_primary( $attributes ) {
+
+	$elements = genesis_get_option( 'boxed_elements' );
+
+	// Bail if no boxed elements.
+	if ( ! $elements ) {
+		return $attributes;
+	}
+
+	// Check if any sidebar elements are boxed.
+	$sidebar = (bool) array_intersect( $elements, array( 'sidebar', 'sidebar_widgets' ) );
+
+	// Bail if no boxed sidebar elements.
+	if ( ! $sidebar ) {
+		return $attributes;
+	}
+
+	// Add class to show something is boxed.
+	$attributes['class'] .= ' has-boxed';
+
+	return $attributes;
 }
 
 /**

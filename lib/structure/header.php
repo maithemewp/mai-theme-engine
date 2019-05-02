@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Add header trigger element.
+ * For basicScroll.
+ *
+ * @access  private
+ * @since   1.8.0
+ *
+ * @return  void
+ */
+add_action( 'genesis_header', 'mai_header_trigger', 3 );
+function mai_header_trigger() {
+	echo '<span id="header-trigger-wrap"><span id="header-trigger"></span></span>';
+}
+
+/**
  * Add an image inline in the site title element for the main logo.
  * The custom logo is added via the Customiser.
  *
@@ -31,10 +45,29 @@ add_filter( 'get_custom_logo', function( $html ) {
 });
 
 /**
+ * Add logo vs text class to site title.
+ *
+ * @since   1.10.0
+ *
+ * @param   array  $attributes  Current attributes.
+ *
+ * @return  array  The modified attributes.
+ */
+add_filter( 'genesis_attr_site-title', 'mai_site_title_type' );
+function mai_site_title_type( $attributes ) {
+	// Bail if has a logo.
+	if ( function_exists( 'has_custom_logo' ) && has_custom_logo() ) {
+		return $attributes;
+	}
+	$attributes['class'] .= ' has-text-title';
+	return $attributes;
+}
+
+/**
  * Use h1 on site title when banner area isn't enabled,
  * and using sections template without h1 in content and without any section titles.
  *
- * @param  $wrap
+ * @param  string  $wrap
  *
  * @return string
  */
@@ -73,9 +106,9 @@ function mai_site_title_wrap( $wrap ) {
  * Add class for screen readers to site description.
  * This will keep the site description markup but will not have any visual presence on the page.
  *
- * @param   array  $attributes Current attributes.
+ * @param   array  $attributes  Current attributes.
  *
- * @return  array  The attributes.
+ * @return  array  The modified attributes.
  */
 add_filter( 'genesis_attr_site-description', 'mai_hide_site_description' );
 function mai_hide_site_description( $attributes ) {
@@ -101,19 +134,6 @@ function mai_header_before() {
 }
 
 /**
- * Add header trigger element.
- * For ScrollMagic.
- *
- * @since   1.8.0
- *
- * @return  void
- */
-// add_action( 'genesis_header', 'mai_header_trigger', 3 );
-function mai_header_trigger() {
-	echo '<span id="header-trigger"></span>';
-}
-
-/**
  * Add header action hooks.
  * Filter header elements to modify attributes accordingly.
  *
@@ -123,9 +143,10 @@ add_action( 'genesis_header', 'mai_do_header', 4 );
 function mai_do_header() {
 
 	// These are basically do_action() hooks you can use, with filters (via mai_get_do_action helper) so we can easily remove elements from templates
-	$left   = mai_get_do_action( 'mai_header_left' );
-	$right  = mai_get_do_action( 'mai_header_right' );
-	$mobile = apply_filters( '_mai_mobile_menu', mai_get_mobile_menu() );
+	$left       = mai_get_do_action( 'mai_header_left' );
+	$right      = mai_get_do_action( 'mai_header_right' );
+	$mobile     = ! mai_is_side_menu_enabled() ? mai_get_mobile_menu() : '';
+	$has_mobile = apply_filters( '_mai_mobile_menu', true );
 
 	/**
 	 * Add classes to know when the header has left or right header content.
@@ -158,7 +179,7 @@ function mai_do_header() {
 	 *
 	 * @return  string|HTML  The content
 	 */
-	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $left, $right, $mobile ) {
+	add_filter( 'genesis_structural_wrap-header', function( $output, $original_output ) use ( $left, $right, $has_mobile, $mobile ) {
 
 		if ( 'open' == $original_output ) {
 
@@ -166,10 +187,10 @@ function mai_do_header() {
 			$row['class'] = 'site-header-row row middle-xs';
 
 			// Alignment.
-			$row['class'] .= $mobile ? ' between-xs' : ' around-xs';
+			$row['class'] .= $has_mobile ? ' between-xs' : ' around-xs';
 
 			// Justification. If no left or right, and we have mobile. If no mobile we already have around-xs.
-			$row['class'] .= ( ! ( $left || $right ) && $mobile ) ? ' around-md' : '';
+			$row['class'] .= ( ! ( $left || $right ) && $has_mobile ) ? ' around-md' : '';
 
 			// Output with row open.
 			$output = $output . sprintf( '<div %s>', genesis_attr( 'site-header-row', $row ) );

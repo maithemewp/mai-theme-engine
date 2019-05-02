@@ -161,9 +161,7 @@ function mai_do_archive_image( $location, $image_size ) {
 		$height   = $sizes[1];
 
 		$entry = function( $attributes ) use ( $image_id, $width, $height ) {
-			if ( $image_id ) {
-				$attributes['class'] .= ' has-bg-image has-bg-link has-overlay light-content';
-			}
+			$attributes['class'] .= ' has-bg-image has-bg-link has-overlay light-content';
 			$attributes = mai_add_aspect_ratio_attributes( $attributes, $width, $height );
 			return $attributes;
 		};
@@ -175,19 +173,37 @@ function mai_do_archive_image( $location, $image_size ) {
 			$output = $output . mai_get_overlay_html( 'dark' );
 			return $output;
 		};
+		$entry_header = function() use ( $width, $height ) {
+			// Set aspect classes.
+			$attributes = array(
+				'class' => 'aspect-inner column middle-xs center-xs text-xs-center',
+			);
+			// Build aspect ratio inner markup.
+			printf( '<div %s>', genesis_attr( 'aspect-inner', $attributes, array() ) );
+		};
+		$entry_footer = function() {
+			echo '</div>';
+		};
 
-		// Add the entry image as a background image.
+		// Add the entry image as an inline background image.
 		add_filter( 'genesis_attr_entry', $entry );
-		add_filter( 'genesis_markup_entry-image-link_open', $image_link_open );
+		add_filter( 'genesis_markup_entry-image-link_open',  $image_link_open );
 		add_filter( 'genesis_markup_entry-image-link_close', $image_link_close );
 		add_filter( 'genesis_get_image', $get_image );
+
+		// Add the aspect-inner markup. This duplicates grid code.
+		add_action( 'genesis_entry_header', $entry_header, 0 );
+		add_action( 'genesis_entry_footer', $entry_footer, 99 );
+
 		add_action( 'genesis_entry_header', 'genesis_do_post_image', 0 );
 		add_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
 
 		// Remove so additional loops are not affected.
-		add_action( 'mai_after_content_archive', function() use ( $get_image, $image_link_open, $image_link_close, $entry ) {
+		add_action( 'mai_after_content_archive', function() use ( $entry_footer, $entry_header, $get_image, $image_link_open, $image_link_close, $entry ) {
 			remove_action( 'genesis_entry_footer', 'mai_do_bg_image_link', 30 );
 			remove_action( 'genesis_entry_header', 'genesis_do_post_image', 0 );
+			remove_action( 'genesis_entry_footer', $entry_footer, 99 );
+			remove_action( 'genesis_entry_header', $entry_header, 0 );
 			remove_filter( 'genesis_get_image', $get_image );
 			remove_filter( 'genesis_markup_entry-image-link_open', $image_link_open );
 			remove_filter( 'genesis_markup_entry-image-link_close', $image_link_close );

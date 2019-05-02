@@ -60,7 +60,7 @@ function mai_add_row_align_classes( $classes, $args ) {
  */
 function mai_add_entry_align_classes( $classes, $args, $direction = 'row' ) {
 	// If direction is column, and we don't have column class yet, add it.
-	if ( 'column' === $direction && false === strpos ( $classes, 'column' ) ) {
+	if ( 'column' === $direction && false === strpos( $classes, 'column' ) ) {
 		$classes = mai_add_classes( 'column', $classes );
 	}
 	// "align" takes precendence over "align_cols" and "align_text".
@@ -466,9 +466,8 @@ function mai_add_background_image_attributes( $attributes, $image_id, $image_siz
  * @return  array   The modified attributes.
  */
 function mai_add_aspect_ratio_attributes( $attributes, $width, $height ) {
-	$attributes['class']              = mai_add_classes( 'aspect-ratio', $attributes['class'] );
-	$attributes['data-aspect-width']  = $width;
-	$attributes['data-aspect-height'] = $height;
+	$attributes['class'] = mai_add_classes( 'aspect-ratio', $attributes['class'] );
+	$attributes['style'] = sprintf( '--aspect-ratio:%s/%s;', absint( $width ), absint( $height ) );
 	return $attributes;
 }
 
@@ -899,10 +898,8 @@ function mai_flex_loop_post_class( $classes ) {
 	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
 	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
 
-	// If background image or image is not aligned.
-	if ( 'background' === $img_location || empty( $img_alignment ) ) {
-		$classes[] = 'column';
-	} else {
+	// If not a background image.
+	if ( 'background' !== $img_location ) {
 		$classes[] = 'has-image-' . str_replace( 'align', '', $img_alignment );
 	}
 

@@ -22,6 +22,7 @@
 		- Overlay
 			- Background Link
 		- Color Contrast
+		- Aspect Ratio
 		- Avatar
 		- Search Form
 		- WordPress
@@ -30,10 +31,12 @@
 		- Slick
 			- Slick Arrows
 			- Slick Dots
+	- Blocks
 	- Widgets
 	- Plugins
 		- Jetpack
 		- Simple Social Icons
+	- Header Trigger
 	- Site Header
 		- Sticky Header
 		- Title Area
@@ -494,7 +497,7 @@ textarea {
 
 textarea,
 input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]),
-.gform_wrapper input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]) {
+.site-container .gform_wrapper input:not([type=radio]):not([type=checkbox]):not([type=submit]):not([type=button]):not([type=image]):not([type=file]) {
 	line-height: 1.5;
 	padding: 10px 12px;
 	border-radius: 3px;
@@ -552,9 +555,17 @@ legend {
 	padding: 0 12px;
 }
 
-::-moz-placeholder,
-::-webkit-input-placeholder {
-	color: rgba(0, 0, 0, 0.7);
+input::-webkit-input-placeholder {
+	color: rgba(0, 0, 0, 0.3);
+}
+input:-ms-input-placeholder {
+	color: rgba(0, 0, 0, 0.3);
+}
+input::-ms-input-placeholder {
+	color: rgba(0, 0, 0, 0.3);
+}
+input::placeholder {
+	color: rgba(0, 0, 0, 0.3);
 }
 
 ::selection {
@@ -726,7 +737,8 @@ input[type="reset"].small,
 input[type="submit"].small,
 .button.small,
 .entry-content .button.small,
-.more-link {
+.more-link,
+.woocommerce table.shop_table .button {
 	font-size: 0.8rem;
 	padding: 11px 14px;
 }
@@ -747,6 +759,7 @@ input[type="submit"].large,
 .footer-widgets .button,
 .footer-widgets input[type="submit"],
 .site-footer .button,
+.woocommerce table.shop_table .button,
 .woocommerce .actions .button,
 .woocommerce a.button.alt,
 .woocommerce a.button.add_to_cart_button {
@@ -768,6 +781,8 @@ input[type="submit"].large,
 .footer-widgets input[type="submit"]:focus,
 .site-footer .button:hover,
 .site-footer .button:focus,
+.woocommerce table.shop_table .button:hover,
+.woocommerce table.shop_table .button:focus,
 .woocommerce .actions .button:hover,
 .woocommerce .actions .button:focus,
 .woocommerce a.button.alt:hover,
@@ -1081,6 +1096,7 @@ td {
 .mai-sections.has-boxed-site-container .content.content-no-sidebars,
 .site-container.boxed .alignfull,
 .site-container.boxed .width-full,
+.site-container.boxed .site-header.stuck,
 .site-inner,
 .breadcrumb,
 .wrap,
@@ -1381,6 +1397,10 @@ body.has-boxed-site-container {
 	padding-left: 24px;
 }
 
+.comment-form .form-submit {
+	margin-top: 24px;
+}
+
 @media only screen and (min-width: 769px) {
 
 	.content-sidebar-wrap.boxed,
@@ -1468,7 +1488,9 @@ body.has-boxed-site-container {
 
 .section > .wrap {
 	-webkit-box-sizing: border-box;box-sizing: border-box;
-	display: -webkit-box;display: -ms-flexbox;display: flex;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
 }
 
 /* add top margin any time a section is after another element */
@@ -1661,6 +1683,7 @@ body.has-boxed-site-container {
 .light-content h5,
 .light-content h6,
 .light-content a,
+.light-content .entry-title,
 .light-content .entry-title a,
 .light-content .entry-meta,
 .light-content .entry-meta a,
@@ -1694,6 +1717,34 @@ body.has-boxed-site-container {
 .light-content .entry-footer a:hover,
 .light-content .entry-footer a:focus {
 	border-bottom-style: solid;
+}
+
+/* ## Aspect Ratio
+--------------------------------------------- */
+
+.aspect-ratio[style*="--aspect-ratio"] {
+	position: relative;
+	display: block; /* can't be flex container or breaks in older Edge/FF */
+}
+
+.aspect-ratio[style*="--aspect-ratio"]::before {
+	content: '';
+	float: left;
+	width: 1px;
+	height: 0;
+	margin-left: -1px;
+	padding-bottom: calc( 100% / (var(--aspect-ratio)) );
+}
+
+.aspect-ratio[style*="--aspect-ratio"]::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+.aspect-inner {
+	width: 100%;
+	height: 100%;;
 }
 
 /* ## Page Builders
@@ -2456,6 +2507,13 @@ input[name="post_password"] {
 	color: #fff;
 }
 
+/* # Blocks
+---------------------------------------------------------------------------------------------------- */
+
+ul.wp-block-gallery {
+	margin-left: 0;
+}
+
 /* # Widgets
 ---------------------------------------------------------------------------------------------------- */
 
@@ -2565,21 +2623,54 @@ input[name="post_password"] {
 	padding: 6px !important;
 }
 
+/* # Header Trigger
+---------------------------------------------------------------------------------------------------- */
+
+#header-trigger-wrap,
+#header-trigger {
+	display: block;
+	width: 0;
+	opacity: 0;
+	pointer-events: none;
+}
+
+#header-trigger-wrap {
+	position: relative;
+	height: 0;
+	margin-bottom: var(--header-spacer);
+}
+
+#header-trigger {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 200px;
+}
+
+@media only screen and (min-width: 601px) and (max-width: 782px) {
+
+	#header-trigger {
+		top: -46px;
+	}
+
+}
+
+@media only screen and (min-width: 783px) {
+
+	#header-trigger {
+		top: -32px;
+	}
+
+}
+
 /* # Site Header
 ---------------------------------------------------------------------------------------------------- */
 
-#header-trigger {
-	display: block;
-	top: 0;
-	left: 0;
-	width: 1px;
-	height: 1px;
-	margin-bottom: -1px;
-	opacity: 0;
-}
-
 .site-header {
-	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
+	-ms-flex: 0 0 auto;
+	-webkit-box-flex: 0;
+	flex: 0 0 auto; /* fix IE11 height bug */
+	width: 100%; /* for position: fixed; settings */
 	background-color: #fff;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -2594,13 +2685,15 @@ input[name="post_password"] {
 /* forces logo and mobile toggle on same line */
 .site-header.has-header-left:not(.has-header-right) .wrap > .row,
 .site-header.has-header-right:not(.has-header-left) .wrap > .row {
-	-ms-flex-wrap: nowrap;flex-wrap: nowrap;
+	-ms-flex-wrap: nowrap;
+	flex-wrap: nowrap;
 }
 
 @media only screen and (max-width: 544px) {
 
 	.site-header > .wrap > .row {
-		-ms-flex-wrap: nowrap;flex-wrap: nowrap;
+		-ms-flex-wrap: nowrap;
+		flex-wrap: nowrap;
 	}
 
 }
@@ -2614,9 +2707,9 @@ input[name="post_password"] {
 	z-index: 96;
 	top: 0;
 	will-change: transform;
-	-webkit-transform: translateY(0);
-	-ms-transform: translateY(0);
-	transform: translateY(0);
+	-webkit-transform: translate(0);
+	-ms-transform: translate(0);
+	transform: translate(0);
 }
 
 @media (min-width: 600px) and (max-width: 782px) {
@@ -2729,7 +2822,7 @@ input[name="post_password"] {
 
 }
 
-@media (min-width: 600px) and (max-width: 782px) {
+@media (min-width: 601px) and (max-width: 782px) {
 
 	.admin-bar.has-sticky-header .site-header {
 		top: 46px;
@@ -2761,28 +2854,26 @@ input[name="post_password"] {
 	margin: 0;
 }
 
-.site-title a {
-	display: inline-block;
+.site-title.has-text-title {
 	font-size: calc(1rem + 1.2vw);
+}
+
+.site-title a {
+	display: block;
 	font-weight: bold;
 	line-height: 1.2;
 	margin-left: 16px;
 	margin-right: 16px;
-	-webkit-transition: none;
-	-o-transition: none;
-	transition: none;
+	will-change: margin-top, margin-bottom, max-width, font-size;
+	-webkit-transition: all 20ms linear;
+	-o-transition: all 20ms linear;
+	transition: all 20ms linear;
 }
 
 .site-title a,
 .site-title a:hover,
 .site-title a:focus {
 	border: none;
-}
-
-.site-title .custom-logo-link {
-	-webkit-transition: all 10ms linear;
-	-o-transition: all 10ms linear;
-	transition: all 10ms linear;
 }
 
 .custom-logo {
@@ -2821,7 +2912,9 @@ input[name="post_password"] {
 }
 
 .header-before .widget-area {
-	display: -webkit-box;display: -ms-flexbox;display: flex;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
 	-webkit-box-pack: end;-ms-flex-pack: end;justify-content: flex-end;
 	-webkit-box-align: center;-ms-flex-align: center;align-items: center;
 }
@@ -2839,8 +2932,16 @@ input[name="post_password"] {
 }
 
 .header-before .menu-item a,
-.header-before .nav-header .nav-search {
+.header-before .nav-search {
 	color: #6b6b6b;
+}
+
+.header-before .menu-item.highlight a {
+	color: rgba(255, 255, 255, 1);
+}
+.header-before .menu-item.highlight a:hover,
+.header-before .menu-item.highlight a:focus {
+	color: #fff;
 }
 
 .header-before .menu-item a {
@@ -2850,8 +2951,8 @@ input[name="post_password"] {
 
 .header-before .menu-item a:hover,
 .header-before .menu-item.current-menu-item > a,
-.header-before .nav-header .nav-search:hover,
-.header-before .nav-header .nav-search:focus {
+.header-before .nav-search:hover,
+.header-before .nav-search:focus {
 	color: #323232;
 }
 
@@ -2885,7 +2986,13 @@ input[name="post_password"] {
 .header-right,
 .nav-primary,
 .nav-secondary {
-	display: none;
+	display: block;
+}
+
+.nav-header {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
 }
 
 /* ## General Navigation
@@ -2893,21 +3000,34 @@ input[name="post_password"] {
 
 .genesis-nav-menu {
 	clear: both;
-	display: -ms-flexbox;display: -webkit-box;display: flex;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
 	line-height: 1; /* Fix IE bug, line-height added back on span[itemprop="name"] */
 	list-style-type: none;
 }
 
 .genesis-nav-menu .menu-item {
-	position: relative;display: -ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto;
+	position: relative;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
+	-ms-flex: 0 0 auto;
+	-webkit-box-flex: 0;
+	flex: 0 0 auto;
 }
 
 .genesis-nav-menu a {
 	position: relative;
-	display: -webkit-box;display: -ms-flexbox;display: flex;
-	-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;
-	-webkit-box-align: center;-ms-flex-align: center;align-items: center;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
 	width: 100%;
 	height: 100%;
 	font-size: 100%;
@@ -2920,9 +3040,15 @@ input[name="post_password"] {
 }
 
 .genesis-nav-menu a span[itemprop="name"] {
-	display: -ms-inline-flexbox;display: -webkit-inline-box;display: inline-flex;
-	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
+	display: -ms-inline-flexbox;
+	display: -webkit-inline-box;
+	display: inline-flex;
+	-ms-flex-pack: center;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-ms-flex-align: center;
+	-webkit-box-align: center;
+	align-items: center;
 	line-height: 1.5;
 }
 
@@ -3089,7 +3215,9 @@ input[name="post_password"] {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex-wrap: wrap;flex-wrap: wrap;-ms-flex-pack: center;
 	-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
+	-ms-flex-align: center;
+	-webkit-box-align: center;
+	align-items: center;
 	position: absolute;
 	right: -1px;
 	top: 84%;
@@ -3125,7 +3253,9 @@ input[name="post_password"] {
 }
 
 .genesis-nav-menu .search-box .search-close {
-	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto;
+	-ms-flex: 0 0 auto;
+	-webkit-box-flex: 0;
+	flex: 0 0 auto;
 	color: red;
 	padding: 6px 12px;
 }
@@ -3139,18 +3269,19 @@ input[name="post_password"] {
 }
 
 .nav-header a {
-	padding: 10px 16px;
+	padding: 2px 16px;
 	margin: 0 2px;
 }
 
 .nav-header .highlight > a {
+	padding-top: 10px;
+	padding-bottom: 10px;
 	margin-left: 12px;
 	margin-right: 12px;
 }
 
 .home .nav-header .current-menu-item > a,
 .nav-header .nav-search,
-.nav-header .nav-search:focus,
 .nav-header a {
 	color: #323232;
 }
@@ -3204,12 +3335,12 @@ input[name="post_password"] {
 @media only screen and (max-width: 1400px) {
 
 	/* align the last menu item's sub-menu to the right so it's not outside of the window */
-	.header-before .genesis-nav-menu .menu-item:last-child > a:focus + ul.sub-menu,
-	.header-before .genesis-nav-menu .menu-item:last-child.sfHover > ul.sub-menu,
-	.header-before .genesis-nav-menu .menu-item:last-child:hover > .sub-menu,
-	.header-right .genesis-nav-menu .menu-item:last-child > a:focus + ul.sub-menu,
-	.header-right .genesis-nav-menu .menu-item:last-child.sfHover > ul.sub-menu,
-	.header-right .genesis-nav-menu .menu-item:last-child:hover > .sub-menu {
+	.header-before .genesis-nav-menu > .menu > .menu-item:last-child > a:focus + ul.sub-menu,
+	.header-before .genesis-nav-menu > .menu > .menu-item:last-child.sfHover > ul.sub-menu,
+	.header-before .genesis-nav-menu > .menu > .menu-item:last-child:hover > .sub-menu,
+	.header-right .genesis-nav-menu > .menu > .menu-item:last-child > a:focus + ul.sub-menu,
+	.header-right .genesis-nav-menu > .menu > .menu-item:last-child.sfHover > ul.sub-menu,
+	.header-right .genesis-nav-menu > .menu > .menu-item:last-child:hover > .sub-menu {
 		left: auto;
 		right: 0;
 	}
@@ -3239,7 +3370,6 @@ input[name="post_password"] {
 
 .home .nav-primary .current-menu-item > a,
 .nav-primary .nav-search,
-.nav-primary .nav-search:focus,
 .nav-primary a {
 	color: #e4e4e4;
 }
@@ -3288,7 +3418,6 @@ input[name="post_password"] {
 
 .home .nav-secondary .current-menu-item > a,
 .nav-secondary .nav-search,
-.nav-secondary .nav-search:focus,
 .nav-secondary a {
 	color: #e4e4e4;
 }
@@ -3316,14 +3445,19 @@ input[name="post_password"] {
 --------------------------------------------- */
 
 .mai-toggle {
-	-ms-flex-negative: 0;flex-shrink: 0;
+	display: none;
+	-ms-flex-negative: 0;
+	flex-shrink: 0;
 }
 
 .mai-toggle,
 .sub-menu-toggle {
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	-webkit-touch-callout: none;
-	-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .mai-toggle,
@@ -3337,7 +3471,8 @@ input[name="post_password"] {
 	margin: 0;
 	border: none;
 	border-radius: 0;
-	-webkit-box-shadow: none;box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 
 .mai-toggle:focus,
@@ -3375,6 +3510,7 @@ input[name="post_password"] {
 	position: absolute;
 	left: 0;
 	width: 100%;
+	will-change: transform;
 	-webkit-transform: rotate(0deg);
 	-ms-transform: rotate(0deg);
 	transform: rotate(0deg);
@@ -3430,7 +3566,6 @@ input[name="post_password"] {
 --------------------------------------------- */
 
 .mai-menu {
-	display: none;
 	max-height: 100vh;
 }
 
@@ -3486,6 +3621,7 @@ body.mai-menu-activated {
 --------------------------------------------- */
 
 .has-standard-menu .mai-menu {
+	display: none;
 	background-color: #fff;
 	position: absolute;
 	top: 100%;
@@ -3506,17 +3642,23 @@ body.mai-menu-activated {
 	opacity: 1;
 }
 
-.mai-standard-menu-activated .site-container::after {
-	content: '';
-	position: fixed;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0,0,0,0.6);
-	z-index: 1;
-	-webkit-animation: fadeIn .3s ease-in-out;
-	animation: fadeIn .3s ease-in-out;
-	opacity: 1;
+/* only show overlay when window width is the same or less than site-container. */
+@media only screen and (max-width: 1248px) {
+
+	.mai-standard-menu-activated .site-container::after {
+		content: '';
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0,0,0,0.6);
+		z-index: 1;
+		-webkit-animation: fadeIn .3s ease-in-out;
+		animation: fadeIn .3s ease-in-out;
+		opacity: 1;
+	}
+
 }
 
 /* when standard menu is activated and header is all the way at the top */
@@ -3617,10 +3759,19 @@ body.mai-menu-activated {
 	margin-left: 2px;
 }
 
+.has-side-menu .mai-menu,
 .has-side-menu .site-container {
-	-webkit-transition: margin 0.3s;
-	-o-transition: margin 0.3s;
-	transition: margin 0.3s;
+	-webkit-transition: margin 0.3s ease-in-out;
+	-o-transition: margin 0.3s ease-in-out;
+	transition: margin 0.3s ease-in-out;
+}
+
+.has-side-menu .mai-menu {
+	will-change: margin-right;
+}
+
+.has-side-menu .site-container {
+	will-change: margin-left, margin-right;
 }
 
 .has-side-menu.mai-menu-activated .site-container {
@@ -3629,47 +3780,43 @@ body.mai-menu-activated {
 }
 
 .has-side-menu .mai-menu {
-	display: block;
 	background-color: #f1f1f1;
 	position: fixed;
 	top: 0;
-	right: -288px;
+	right: 0;
 	width: 288px;
 	height: 100vh;
 	overflow-x: hidden;
 	overflow-y: auto;
-	-webkit-transition: right 0.3s;
-	-o-transition: right 0.3s;
-	transition: right 0.3s;
+	margin-right: -288px;
 	-webkit-overflow-scrolling: touch;
-	-webkit-box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
-	box-shadow: inset 10px -10px 10px -13px rgba(81, 81, 81, 0.4);
-	z-index: 99;
-}
-
-@media only screen and (min-width: 1160px) {
-
-	.has-side-menu .mai-menu {
-		display: none;
-	}
-
+	-webkit-box-shadow: inset 8px 0 16px rgba(0,0,0,.05);
+	box-shadow: inset 8px 0 16px rgba(0,0,0,.05);
 }
 
 .has-side-menu.mai-menu-activated .mai-menu {
-	right: 0;
+	margin-right: 0;
 }
 
 .has-side-menu .mai-menu-inner {
 	padding-bottom: 96px;
 }
 
-@media only screen and (max-width: 782px) {
+@media only screen and (max-width: 599px) {
 
-	.admin-bar.has-side-menu.top .mai-menu {
+	.admin-bar.has-side-menu:not(.header-stuck) .mai-menu {
 		top: 46px;
 	}
 
-	.admin-bar.has-side-menu.top .mai-menu-inner {
+}
+
+@media (min-width: 600px) and (max-width: 782px) {
+
+	.admin-bar.has-side-menu .mai-menu {
+		top: 46px;
+	}
+
+	.admin-bar.has-side-menu .mai-menu-inner {
 		height: calc( 100% - 46px );
 	}
 
@@ -3677,11 +3824,11 @@ body.mai-menu-activated {
 
 @media only screen and (min-width: 783px) {
 
-	.admin-bar.has-side-menu.top .mai-menu {
+	.admin-bar.has-side-menu .mai-menu {
 		top: 32px;
 	}
 
-	.admin-bar.has-side-menu.top .mai-menu-inner {
+	.admin-bar.has-side-menu .mai-menu-inner {
 		height: calc( 100% - 32px );
 	}
 
@@ -3741,8 +3888,12 @@ body.mai-menu-activated {
 
 .mobile-menu .sub-menu-toggle {
 	display:-ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex-pack: center;-webkit-box-pack: center;justify-content: center;
-	-ms-flex-align: center;-webkit-box-align: center;align-items: center;
+	-ms-flex-pack: center;
+	-webkit-box-pack: center;
+	justify-content: center;
+	-ms-flex-align: center;
+	-webkit-box-align: center;
+	align-items: center;
 	width: 44px;
 	padding: 0;
 	margin: 0;
@@ -3938,7 +4089,9 @@ p ~ .flex-grid:first-of-type {
 }
 
 .flex-entry .entry-image-link {
-	-ms-flex: 0 0 auto;-webkit-box-flex: 0;flex: 0 0 auto; /* fix IE11 height bug */
+	-ms-flex: 0 0 auto;
+	-webkit-box-flex: 0;
+	flex: 0 0 auto; /* fix IE11 height bug */
 	display: block;
 	font-size: 0;
 	line-height: 1;
@@ -3969,7 +4122,7 @@ p ~ .flex-grid:first-of-type {
 }
 
 /* stretch grid entries that aren't vertically aligned via text_align */
-.flex-entry.column:not(.start-xs):not(.center-xs):not(.end-xs) .entry-content {
+.flex-entry.column:not(.start-xs):not(.center-xs):not(.end-xs) .entry-content:not(:empty) {
 	display: -ms-flexbox;display: -webkit-box;display: flex;
 	-ms-flex-direction: column;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;
 	-ms-flex: 1 0 auto;-webkit-box-flex: 1;flex: 1 0 auto;
@@ -4543,22 +4696,6 @@ ol.comment-list {
 		font-size: 2.441rem;
 	}
 
-	.header-before,
-	.header-left,
-	.header-right,
-	.nav-primary,
-	.nav-secondary {
-		display: block;
-	}
-
-	.nav-header {
-		display: -webkit-inline-box;display: -ms-inline-flexbox;display: inline-flex;
-	}
-
-	.mai-toggle {
-		display: none;
-	}
-
 }
 
 @media only screen and (min-width: 993px) {
@@ -4575,9 +4712,23 @@ ol.comment-list {
 
 	.has-one-sidebar .sidebar-primary {
 		-webkit-box-flex: 1;
-		-ms-flex: 1 0 360px;
-		flex: 1 0 360px;
-		max-width: 360px;
+		-ms-flex: 1 0 300px;
+		flex: 1 0 300px;
+		max-width: 300px;
+	}
+
+	/* This makes sure the actual widget content area is 300px for ads. */
+	.has-one-sidebar .sidebar-primary.has-boxed {
+		-webkit-box-flex: 1;
+		-ms-flex: 1 0 374px;
+		flex: 1 0 374px;
+		max-width: 374px;
+	}
+
+	/* Boxed sidebar and boxed widgets. Shouldn't do this, but just incase. */
+	.sidebar.has-boxed.boxed .widget.boxed {
+		padding: 16px;
+		margin: -16px -16px 36px;
 	}
 
 	.has-two-sidebars .sidebar-primary {
