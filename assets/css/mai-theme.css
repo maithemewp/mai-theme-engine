@@ -1728,23 +1728,23 @@ body.has-boxed-site-container {
 }
 
 .aspect-ratio[style*="--aspect-ratio"]::before {
+	display: block;
 	content: '';
-	float: left;
 	width: 1px;
 	height: 0;
 	margin-left: -1px;
 	padding-bottom: calc( 100% / (var(--aspect-ratio)) );
 }
 
-.aspect-ratio[style*="--aspect-ratio"]::after {
-	content: '';
-	display: table;
-	clear: both;
-}
-
 .aspect-inner {
 	width: 100%;
-	height: 100%;;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: inherit;
 }
 
 /* ## Page Builders
