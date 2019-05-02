@@ -1,5 +1,6 @@
 # Changelog
 
+## 1.10.0 (5/2/19)
 * Added: Logo and Shrink/Mobile logo sizing/spacing settings.
 * Added: Setting to define when the mobile menu should display.
 * Added: [grid] Allow author="current" to display posts from the author of the currently viewed post.
