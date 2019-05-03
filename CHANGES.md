@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.2 (5/3/19)
+* Fixed: Logo and menu alignment when using centered logo via left and right header navigation.
+
 ## 1.10.1 (5/2/19)
 * Fixed: Aspect ratio vertical height issue.
 

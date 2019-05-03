@@ -2859,7 +2859,7 @@ ul.wp-block-gallery {
 }
 
 .site-title a {
-	display: block;
+	display: inline-block; /* can't be block or centered logo gets weird when it centers */
 	font-weight: bold;
 	line-height: 1.2;
 	margin-left: 16px;
@@ -2987,12 +2987,6 @@ ul.wp-block-gallery {
 .nav-primary,
 .nav-secondary {
 	display: block;
-}
-
-.nav-header {
-	display: -webkit-inline-box;
-	display: -ms-inline-flexbox;
-	display: inline-flex;
 }
 
 /* ## General Navigation
@@ -3262,6 +3256,12 @@ ul.wp-block-gallery {
 
 /* ## Header Navigation
 --------------------------------------------- */
+
+.nav-header {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+}
 
 .has-header-right:not(.has-header-left) .nav-header,
 .has-header-left:not(.has-header-right) .nav-header {
