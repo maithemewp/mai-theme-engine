@@ -1102,7 +1102,7 @@ class Mai_Grid {
 	 */
 	function get_entry_open( $object, $has_bg_image ) {
 
-		$aspect_inner = '';
+		$aspect_html = '';
 
 		// Set the entry classes.
 		$attributes = array(
@@ -1111,10 +1111,10 @@ class Mai_Grid {
 
 		// Get the align classes.
 		if ( $this->is_bg_image() ) {
-			// Build aspect ratio inner markup.
+			// Build aspect ratio inner markup. Can't be flex container or breaks in older Edge (<=16) (18 is current at this time) / FF (<=59) (66 is current at this time).
 			$aspect_attributes          = array( 'class' => 'aspect-inner' );
 			$aspect_attributes['class'] = mai_add_entry_align_classes( $aspect_attributes['class'], $this->args, $this->get_direction() );
-			$aspect_inner               = sprintf( '<div %s>', genesis_attr( 'aspect-inner', $aspect_attributes, $this->args ) );
+			$aspect_html                = sprintf( '<div class="aspect-outer"><div %s>', genesis_attr( 'aspect-inner', $aspect_attributes, $this->args ) );
 		} else {
 			$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
 		}
@@ -1181,7 +1181,7 @@ class Mai_Grid {
 		 * Main entry col wrap.
 		 * If we use genesis_attr( 'entry' ) then it resets the classes.
 		 */
-		return sprintf( '<div %s>%s', genesis_attr( 'flex-entry', $attributes, $this->args ), $aspect_inner );
+		return sprintf( '<div %s>%s', genesis_attr( 'flex-entry', $attributes, $this->args ), $aspect_html );
 	}
 
 	/**
@@ -1190,8 +1190,8 @@ class Mai_Grid {
 	 * @return  string|HTML
 	 */
 	function get_entry_wrap_close() {
-		$aspect_inner = $this->is_bg_image() ? '</div>' : '';
-		return sprintf( '%s</div>', $aspect_inner );
+		$aspect_html = $this->is_bg_image() ? '</div></div>' : '';
+		return sprintf( '%s</div>', $aspect_html );
 	}
 
 	/**

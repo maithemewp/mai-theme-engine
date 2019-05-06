@@ -1724,7 +1724,9 @@ body.has-boxed-site-container {
 
 .aspect-ratio[style*="--aspect-ratio"] {
 	position: relative;
-	display: block; /* can't be flex container or breaks in older Edge/FF */
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
 }
 
 .aspect-ratio[style*="--aspect-ratio"]::before {
@@ -1736,15 +1738,11 @@ body.has-boxed-site-container {
 	padding-bottom: calc( 100% / (var(--aspect-ratio)) );
 }
 
+/* we need outer because padding bottom on flex child element breaks in older Edge (<=16) (18 is current at this time) / FF (<=59) (66 is current at this time) */
+.aspect-outer,
 .aspect-inner {
 	width: 100%;
 	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	padding: inherit;
 }
 
 /* ## Page Builders
@@ -2042,7 +2040,9 @@ input[name="post_password"] {
 }
 
 .mai-slider .slick-list {
-	-ms-flex: 1 1 100%;-webkit-box-flex: 1;flex: 1 1 100%;
+	-ms-flex: 1 1 100%;
+	-webkit-box-flex: 1;
+	flex: 1 1 100%;
 	max-width: 100%;
 }
 
@@ -2052,14 +2052,23 @@ input[name="post_password"] {
 }
 
 .mai-slider .slick-track {
-	display: -ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex: 0 1 auto;-webkit-box-flex: 0;flex: 0 1 auto;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
+	-ms-flex: 0 1 auto;
+	-webkit-box-flex: 0;
+	flex: 0 1 auto;
 	height: 100%;
 }
 
-.mai-slider.slick-initialized .slick-slide {
-	display: -ms-flexbox;display: -webkit-box;display: flex;
-	-ms-flex-direction: column;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;
+.mai-slider.slick-initialized .slick-slide:not(.aspect-ratio) {
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
+	-ms-flex-direction: column;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	flex-direction: column;
 }
 
 .mai-slider .slick-slide {
@@ -2170,8 +2179,12 @@ input[name="post_password"] {
 .slick-slider {
 	position: relative;
 	display: block;
-	-webkit-box-sizing: border-box;box-sizing: border-box;
-	-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 	-webkit-touch-callout: none;
 	-khtml-user-select: none;
 	-ms-touch-action: pan-y;touch-action: pan-y;
@@ -2198,7 +2211,8 @@ input[name="post_password"] {
 
 .slick-slider .slick-track,
 .slick-slider .slick-list {
-	-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
 }
 
 .slick-track {
@@ -2240,7 +2254,7 @@ input[name="post_password"] {
 	pointer-events: none;
 }
 
-.slick-initialized .slick-slide {
+.slick-initialized .slick-slide:not(.aspect-ratio) {
 	display: block;
 }
 
@@ -2265,9 +2279,17 @@ input[name="post_password"] {
 .slick-next {
 	position: absolute;
 	top: 50%;
-	-webkit-transform: translate(0, -50%);-ms-transform: translate(0, -50%);transform: translate(0, -50%);-ms-flex: 0 0 48px;-webkit-box-flex: 0;flex: 0 0 48px;
+	-webkit-transform: translate(0, -50%);
+	-ms-transform: translate(0, -50%);
+	transform: translate(0, -50%);
+	-ms-flex: 0 0 48px;
+	-webkit-box-flex: 0;
+	flex: 0 0 48px;
 	max-width: 48px;
-	-webkit-align-self: center;-ms-flex-item-align: center;-ms-grid-row-align: center;align-self: center;
+	-webkit-align-self: center;
+	-ms-flex-item-align: center;
+	-ms-grid-row-align: center;
+	align-self: center;
 	display: block;
 	width: 48px;
 	height: 48px;
@@ -2354,7 +2376,9 @@ input[name="post_password"] {
 }
 
 .slick-slide.testimonial .entry-header {
-	-ms-flex-order: 2;-webkit-box-ordinal-group: 3;order: 2;
+	-ms-flex-order: 2;
+	-webkit-box-ordinal-group: 3;
+	order: 2;
 }
 
 .slick-slide.column.testimonial .entry-content {
