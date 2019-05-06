@@ -178,11 +178,11 @@ function mai_do_archive_image( $location, $image_size ) {
 			$attributes = array(
 				'class' => 'aspect-inner column middle-xs center-xs text-xs-center',
 			);
-			// Build aspect ratio inner markup.
-			printf( '<div %s>', genesis_attr( 'aspect-inner', $attributes, array() ) );
+			// Build aspect ratio inner markup. Can't be flex container or breaks in older Edge (<=16) (18 is current at this time) / FF (<=59) (66 is current at this time).
+			printf( '<div class="aspect-outer"><div %s>', genesis_attr( 'aspect-inner', $attributes, array() ) );
 		};
 		$entry_footer = function() {
-			echo '</div>';
+			echo '</div></div>';
 		};
 
 		// Add the entry image as an inline background image.

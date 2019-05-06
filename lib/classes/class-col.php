@@ -87,7 +87,7 @@ class Mai_Col {
 		// Trim because testing returned string of nbsp.
 		$this->content = mai_get_processed_content( trim( $this->content ) );
 
-		$aspect_inner = $image = $overlay = '';
+		$aspect_html = $image = $overlay = '';
 
 		$attributes = array(
 			'class' => $this->get_classes(),
@@ -99,10 +99,10 @@ class Mai_Col {
 
 		// Get the align classes. A lof of this taken from grid.
 		if ( $this->args['image'] && $this->content ) {
-			// Build aspect ratio inner markup.
+			// Build aspect ratio inner markup. Can't be flex container or breaks in older Edge (<=16) (18 is current at this time) / FF (<=59) (66 is current at this time).
 			$aspect_attributes          = array( 'class' => 'aspect-inner' );
 			$aspect_attributes['class'] = mai_add_entry_align_classes( $aspect_attributes['class'], $this->args, $this->get_direction() );
-			$aspect_inner               = sprintf( '<div %s>', genesis_attr( 'aspect-inner', $aspect_attributes, $this->args ) );
+			$aspect_html                = sprintf( '<div class="aspect-outer"><div %s>', genesis_attr( 'aspect-inner', $aspect_attributes, $this->args ) );
 		} else {
 			$attributes['class'] = mai_add_entry_align_classes( $attributes['class'], $this->args, $this->get_direction() );
 		}
@@ -204,12 +204,12 @@ class Mai_Col {
 		 */
 		return sprintf( '<div %s>%s%s%s%s%s%s</div>',
 			genesis_attr( 'flex-col', $attributes, $this->args ),
-			$aspect_inner,
+			$aspect_html,
 			$image,
 			$overlay,
 			$this->content,
 			$bg_link,
-			$aspect_inner ? '</div>' : ''
+			$aspect_html ? '</div></div>' : ''
 		);
 	}
 
