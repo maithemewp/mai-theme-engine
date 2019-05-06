@@ -39,6 +39,7 @@
 	- Header Trigger
 	- Site Header
 		- Sticky Header
+		- Shrink Header
 		- Title Area
 		- Header Content
 	- Site Navigation
@@ -2661,7 +2662,6 @@ ul.wp-block-gallery {
 #header-trigger-wrap {
 	position: relative;
 	height: 0;
-	margin-bottom: var(--header-spacer);
 }
 
 #header-trigger {
@@ -2673,7 +2673,7 @@ ul.wp-block-gallery {
 
 @media only screen and (min-width: 601px) and (max-width: 782px) {
 
-	#header-trigger {
+	.admin-bar #header-trigger {
 		top: -46px;
 	}
 
@@ -2681,7 +2681,7 @@ ul.wp-block-gallery {
 
 @media only screen and (min-width: 783px) {
 
-	#header-trigger {
+	.admin-bar #header-trigger {
 		top: -32px;
 	}
 
@@ -2860,6 +2860,10 @@ ul.wp-block-gallery {
 		top: 32px;
 	}
 
+}
+
+.has-shrink-header {
+	margin-top: var(--header-spacer);
 }
 
 /* ## Title Area
