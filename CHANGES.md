@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.3 (5/6/19)
+* Changed: Better support for older Edge and Firefox when using background images on entries (aspect ratio boxes).
+* Fixed: Content overlay issue on mobile when using background images on entries (aspect ratio boxes).
+* Fixed: Header sticking too early when logged out and not using Before Header widget area.
+
 ## 1.10.2 (5/3/19)
 * Fixed: Logo and menu alignment when using centered logo via left and right header navigation.
 
