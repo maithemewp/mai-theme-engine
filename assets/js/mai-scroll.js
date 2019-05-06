@@ -151,7 +151,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 					return;
 				}
 				// Slight tolerance since we have position:sticky; fallback. Less jarring.
-				if ( percentage > 5 ) {
+				if ( percentage > 10 ) {
 					stick();
 				} else {
 					unstick();
@@ -159,7 +159,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 			},
 			outside: (instance, percentage, props) => {
 				// Negative percentage is space above the header. Slight tolerance since we have position:sticky; fallback. Less jarring.
-				if ( percentage <= 5 ) {
+				if ( percentage <= 10 ) {
 					if ( afterHeader ) {
 						afterHeader = false;
 					}
@@ -183,7 +183,6 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	// Get current scrollTop value.
 	function getScrollTop() {
 		return (document.scrollingElement || document.documentElement).scrollTop;
-		// return Math.max( window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop );
 	}
 
 	// Add scroll class.
