@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.4 (5/6/19)
+* Fixed: Forgot to update version number, sorry!
+
 ## 1.10.3 (5/6/19)
 * Changed: Better support for older Edge and Firefox when using background images on entries (aspect ratio boxes).
 * Fixed: Content overlay issue on mobile when using background images on entries (aspect ratio boxes).
