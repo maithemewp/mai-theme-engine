@@ -1,10 +1,5 @@
 <?php
 
-add_action( 'genesis_before_loop', function() {
-	// global $_wp_additional_image_sizes;
-	// vd( $_wp_additional_image_sizes );
-});
-
 /**
  * Build a grid of content.
  *
@@ -402,7 +397,6 @@ class Mai_Grid {
 				$post_terms = wp_get_post_terms( get_the_ID(), $this->args['taxonomy'] );
 				if ( ! is_wp_error( $post_terms ) ) {
 					foreach ( $post_terms as $term ) {
-						// Get the form by type.
 						switch ( $this->args['tax_field'] ) {
 							case 'slug':
 							$terms[] = $term->slug;
