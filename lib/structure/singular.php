@@ -101,6 +101,25 @@ function mai_remove_singular_meta() {
 }
 
 /**
+ * Add has-avatars class to entry comments wrap.
+ *
+ * @since   1.11.0
+ *
+ * @param   $attributes  The existing attributes.
+ *
+ * @return  $attributes  The modifed attributes.
+ */
+add_filter( 'genesis_attr_entry-comments', 'mai_entry_comments_attributes' );
+function mai_entry_comments_attributes( $attributes ) {
+	// Bail if not showing avatars.
+	if ( ! get_option( 'show_avatars' ) ) {
+		return $attributes;
+	}
+	$attributes['class'] .= ' has-avatars';
+	return $attributes;
+}
+
+/**
  * Add slow scroll class to comments link.
  *
  * @return  string|HTML  The modified output.
