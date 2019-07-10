@@ -152,10 +152,12 @@ class Mai_Col {
 			}
 
 			// Do the image.
-			$image_html = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
-			if ( $image_html ) {
+			$image = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
+			if ( $image ) {
 				$attributes['class'] .= ' has-bg-image';
-				$image = wp_image_add_srcset_and_sizes( $image_html, wp_get_attachment_metadata( $image_id ), $image_id );
+				// $image = wp_image_add_srcset_and_sizes( $image_html, wp_get_attachment_metadata( $image_id ), $image_id );
+				$sources = mai_get_picture_sources( $image_id, $this->args['image_size'] );
+				$image   = sprintf( '<picture>%s%s</picture>', $sources, $image );
 			}
 
 			// Get sizes.
