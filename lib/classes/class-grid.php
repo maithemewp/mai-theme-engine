@@ -1484,7 +1484,9 @@ class Mai_Grid {
 		$image_classes = 'wp-post-image';
 		$image_classes = $has_bg_image ? $image_classes . ' bg-image' : $image_classes;
 		$image         = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => $image_classes ) );
-		$image         = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $image_id ), $image_id );
+		// $image         = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $image_id ), $image_id );
+		$sources       = mai_get_picture_sources( $image_id, $this->args['image_size'] );
+		$image         = sprintf( '<picture>%s%s</picture>', $sources, $image );
 
 		if ( $has_bg_image ) {
 			return $image;
