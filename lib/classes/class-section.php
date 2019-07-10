@@ -15,10 +15,12 @@ class Mai_Section {
 	private $has_overlay;
 	private $has_inner;
 
+	private static $used_sizes = array();
+
 	public function __construct( $args = array(), $content = null ) {
 
 		// Save original args in a variable for filtering later.
-		$this->args    = $this->original_args = $args;
+		$this->args = $this->original_args = $args;
 		$this->content = $content;
 
 		// Shortcode section atts.
@@ -260,15 +262,16 @@ class Mai_Section {
 		if ( ! $this->args['image'] ) {
 			return '';
 		}
-		// Build img to be used as background via CSS.
+		// Build image and add srcset.
+		add_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
+		add_filter( 'wp_calculate_image_sizes',  array( $this, 'calculate_sizes' ), 10, 5 );
 		$image = wp_get_attachment_image( $this->args['image'], $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
+		remove_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
+		remove_filter( 'wp_calculate_image_sizes',  array( $this, 'calculate_sizes' ), 10, 5 );
+		// Bail if no image.
 		if ( ! $image ) {
 			return '';
 		}
-		// Add srcset.
-		add_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
-		$image = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $this->args['image'] ), $this->args['image'] );
-		remove_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
 		return $image;
 	}
 
@@ -531,56 +534,92 @@ class Mai_Section {
 			return $sources;
 		}
 
-		$sizes = $image_meta['sizes'];
+		// If empty (this would be the first section).
+		if ( empty( $this::$used_sizes ) ) {
 
-		// Bail if no sizes.
-		if ( ! array( $sizes ) || empty( $sizes ) ) {
-			return $sources;
+			// Get and store all sizes sorted smallest to largest.
+			$all_sizes = wp_list_sort( $image_meta['sizes'], 'width', 'ASC', true );
+
+			// Bail if no sizes.
+			if ( ! array( $all_sizes ) || empty( $all_sizes ) ) {
+				return $sources;
+			}
+
+			foreach( $all_sizes as $name => $values ) {
+
+				// Get new image data.
+				$source = wp_get_attachment_image_src( $attachment_id, $name );
+
+				// Bail if no data.
+				if ( ! $source ) {
+					continue;
+				}
+
+				// Set image vars.
+				$url      = $source[0];
+				$width    = $source[1];
+				$height   = $source[2];
+				$crop     = $source[3];
+				$ratio    = $width/$height;
+				$in_range = ( $ratio > 1 ) && ( $ratio < 3 );
+
+				// Skip if not hard-cropping.
+				if ( ! $crop ) {
+					continue;
+				}
+
+				// Skip if this image size isn't a valid aspect ratio.
+				if ( ! $in_range ) {
+					continue;
+				}
+
+				// Add to the used sizes array for later.
+				$this::$used_sizes[ $name ] = array(
+					'width' => $width,
+					'url'   => $url,
+				);
+			}
+
 		}
 
-		$theme_sizes = array( 'full-width', 'featured', 'one-half', 'one-third', 'one-fourth' );
-
-		foreach( $sizes as $size => $value ) {
-
-			// Skip if not a size we want to check.
-			if ( ! in_array( $size, $theme_sizes ) ) {
-				continue;
-			}
-
-			// Get new image data.
-			$source = wp_get_attachment_image_src( $attachment_id, $size );
-			if ( ! $source ) {
-				continue;
-			}
-
-			$url      = $source[0];
-			$width    = $source[1];
-			$height   = $source[2];
-			$crop     = $source[3];
-			$ratio    = $width/$height;
-			$in_range = ( $ratio > 1 ) && ( $ratio < 3 );
-
-			// Skip if not hard-cropping.
-			if ( ! $crop ) {
-				continue;
-			}
-
-			// Skip if this image size isn't a valid aspect ratio.
-			if ( ! $in_range ) {
-				continue;
-			}
-
-			$this->image_sizes[] = $value['width'];
+		// Add our sources.
+		foreach( $this::$used_sizes as $name => $values ) {
 
 			// Add to our new srcset.
-			$sources[ $value['width'] ] = array(
-				'url'        => $url,
+			$sources[ $values['width'] ] = array(
+				'url'        => $values['url'],
 				'descriptor' => 'w',
-				'value'      => $width,
+				'value'      => $values['width'],
 			);
 		}
 
 		return $sources;
+	}
+
+	/**
+	 * Calculate section image sizes attribute.
+	 * Adds sizes breakpoints.
+	 *
+	 * @since   1.11.0
+	 *
+	 * @return  string|HTML
+	 */
+	function calculate_sizes( $sizes, $size, $image_src, $image_meta, $attachment_id ) {
+
+		// Bail if no sizes.
+		if ( ! $this::$used_sizes ) {
+			return $sizes;
+		}
+
+		$sizes = '';
+
+		foreach( $this::$used_sizes as $name => $values ) {
+			$sizes .= "(min-width: {$values['width']}px) 100vw, ";
+		}
+
+		$sizes = rtrim( $sizes, ', ' );
+
+		return $sizes;
 	}
 
 }
