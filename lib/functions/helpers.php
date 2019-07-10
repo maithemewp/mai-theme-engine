@@ -189,11 +189,19 @@ function mai_get_picture_sources( $image_id, $image_size ) {
 		return $sources;
 	}
 
-	// Get only sizes and values we need.
-	$sizes = array_intersect_key( $all_sizes, array_flip( $picture_sizes ) );
+	/**
+	 * Get only sizes and values we need.
+	 * Tonya says this is faster than array_intersect_key( $all_sizes, array_flip( $picture_sizes ) ).
+	 */
+	$sizes = array();
+	foreach ( $picture_sizes as $key ) {
+		if ( array_key_exists( $key, $all_sizes ) ) {
+			$sizes[ $key ] = $all_sizes[ $key ];
+		}
+	}
 
 	// Bail if no sizes.
-	if ( ! array( $sizes ) || empty( $sizes ) ) {
+	if ( ! $sizes ) {
 		return $sources;
 	}
 
