@@ -163,6 +163,81 @@ function mai_get_available_image_sizes() {
 }
 
 /**
+ * Get <picture> <sources> HTML.
+ *
+ * @since   1.11.0
+ *
+ * @param   int     The image ID.
+ * @param   string  The image size.
+ *
+ * @return  string  The <sources> HTML.
+ */
+function mai_get_picture_sources( $image_id, $image_size ) {
+
+	$sources       = '';
+	$picture_sizes = mai_get_picture_sizes( $image_size );
+
+	// Bail if no picture sizes.
+	if ( ! array( $picture_sizes ) || empty( $picture_sizes ) ) {
+		return $sources;
+	}
+
+	$all_sizes = wp_list_sort( mai_get_available_image_sizes(), 'width', 'ASC', true );
+
+	// Bail if no sizes.
+	if ( ! array( $all_sizes ) || empty( $all_sizes ) ) {
+		return $sources;
+	}
+
+	// Get only sizes and values we need.
+	$sizes = array_intersect_key( $all_sizes, array_flip( $picture_sizes ) );
+
+	// Bail if no sizes.
+	if ( ! array( $sizes ) || empty( $sizes ) ) {
+		return $sources;
+	}
+
+	// Loop through the sizes.
+	foreach( $sizes as $size => $values ) {
+		// Add the source.
+		$sources .= sprintf( '<source srcset="%s" media="(max-width: %spx)">', wp_get_attachment_image_url( $image_id, $size ), $values['width'] );
+	}
+
+	return $sources;
+}
+
+/**
+ * Get registered image sizes to be used for <sources> in <picture>.
+ *
+ * @since   1.11.0
+ *
+ * @param   string  The image size.
+ *
+ * @return  array  The registered image sizes.
+ */
+function mai_get_picture_sizes( $image_size ) {
+	switch ( $image_size ) {
+		case 'banner':
+		case 'section':
+		case 'full-width':
+			$picture_sizes = array( 'featured', 'one-half', 'one-third', 'one-fourth' );
+			break;
+		case 'featured':
+			$picture_sizes = array( 'one-half', 'one-third', 'one-fourth' );
+			break;
+		case 'one-half':
+			$picture_sizes = array( 'one-third', 'one-fourth' );
+			break;
+		case 'one-third':
+			$picture_sizes = array( 'one-fourth' );
+			break;
+		default:
+			$picture_sizes = array();
+	}
+	return apply_filters( 'mai_picture_sizes', $picture_sizes, $image_size );
+}
+
+/**
  * Get the site layout.
  *
  * @access  private
