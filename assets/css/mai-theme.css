@@ -4384,7 +4384,6 @@ p.entry-meta {
 .entry-comments .comment-meta {
 	display: inline-block; /* for edit button when logged in */
 	font-size: 0.8em;
-	margin-bottom: 0;
 }
 
 .entry-comments .comment-author {
@@ -4480,6 +4479,10 @@ ol.comment-list {
 
 	.comment-content {
 		margin-left: 96px;
+	}
+
+	.entry-comments:not(.has-avatars) .comment-content {
+		margin-left: 0;
 	}
 
 	.children .comment-content {
