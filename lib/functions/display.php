@@ -466,6 +466,7 @@ function mai_get_sections( $sections ) {
 		'bg',
 		'class',
 		'content_width',
+		'context',
 		'text_size',
 		'height',
 		'id',
@@ -492,6 +493,11 @@ function mai_get_sections( $sections ) {
 		// Set the args.
 		foreach ( $valid as $setting ) {
 			$args[ $setting ] = isset( $section[ $setting ] ) ? $section[ $setting ] : '';
+		}
+
+		// Unset context if empty, this allows the defaults to be set in the Mai_Section class.
+		if ( isset( $args['context'] ) && empty( $args['context'] ) ) {
+			unset( $args['context'] );
 		}
 
 		// Set the bg image.
