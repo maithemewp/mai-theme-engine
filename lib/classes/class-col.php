@@ -157,7 +157,7 @@ class Mai_Col {
 				$attributes['class'] .= ' has-bg-image';
 				// $image = wp_image_add_srcset_and_sizes( $image_html, wp_get_attachment_metadata( $image_id ), $image_id );
 				$sources = mai_get_picture_sources( $image_id, $this->args['image_size'] );
-				$image   = sprintf( '<picture>%s%s</picture>', $sources, $image );
+				$image   = sprintf( '<picture class="bg-picture">%s%s</picture>', $sources, $image );
 			}
 
 			// Get sizes.

@@ -1557,7 +1557,8 @@ body.has-boxed-site-container {
 	z-index: 0;
 }
 
-.has-bg-image .bg-image ~ * {
+.has-bg-image .bg-image ~ *,
+.has-bg-image .bg-picture ~ * {
 	z-index: 2;
 }
 

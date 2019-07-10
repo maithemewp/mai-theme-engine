@@ -278,7 +278,7 @@ class Mai_Section {
 		}
 
 		$sources = mai_get_picture_sources( $this->args['image'], $this->args['image_size'] );
-		return sprintf( '<picture>%s%s</picture>', $sources, $image );
+		return sprintf( '<picture class="bg-picture">%s%s</picture>', $sources, $image );
 	}
 
 	/**
