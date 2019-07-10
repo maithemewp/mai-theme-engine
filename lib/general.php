@@ -533,3 +533,14 @@ function mai_genesis_get_image_srcset( $output, $args, $id, $html, $url, $src ) 
 	}
 	return wp_image_add_srcset_and_sizes( $output, wp_get_attachment_metadata( $id ), $id );
 }
+
+/**
+ * Add srcset markup to images retreived via `genesis_get_image()` function.
+ *
+ * @since   1.11.0
+ *
+ * @return  string
+ */
+add_filter( 'genesis_markup_hidden_open',    '__return_empty_string' );
+add_filter( 'genesis_markup_hidden_content', '__return_empty_string' );
+add_filter( 'genesis_markup_hidden_close',   '__return_empty_string' );
