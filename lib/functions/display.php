@@ -96,7 +96,8 @@ function mai_do_featured_image( $size = 'featured' ) {
 	$image_id = get_post_thumbnail_id();
 
 	// Display image.
-	printf( '<div class="featured-image">%s</div>', $image );
+	$sources = $image_id ? mai_get_picture_sources( $image_id, $size ) : '';
+	printf( '<div class="featured-image"><picture>%s%s</picture></div>', $sources, $image );
 
 	// Bail if no featured image.
 	if ( ! $image_id ) {
