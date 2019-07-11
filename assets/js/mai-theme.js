@@ -398,7 +398,7 @@
 	var $header   = $( '.site-header' );
 	var hasSticky = $body.hasClass( 'has-sticky-header' );
 
-	$body.on( 'click', '.scroll-to', function(e) {
+	$body.on( 'click', maiVars.maiScrollTo, function(e) {
 		var target = $( this.getAttribute('href') );
 		// Bail if empty link.
 		if( ! target.length ) {
@@ -414,7 +414,7 @@
 			// Offset adds header height plus a little extra.
 			offset = offset - $header.outerHeight() - 16;
 		}
-		$( 'html, body' ).stop().animate({ scrollTop: offset }, 1000 );
+		$( 'html, body' ).stop().animate({ scrollTop: offset }, 500 );
 	});
 
 })( document, jQuery );
