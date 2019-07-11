@@ -8,23 +8,20 @@
  * The template for displaying product content within loops
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
- * @author  WooThemes
  * @package WooCommerce/Templates
- * @version 3.4.0
+ * @version 3.6.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+defined( 'ABSPATH' ) || exit;
 
 global $product;
 
-// Ensure visibility
+// Ensure visibility.
 if ( empty( $product ) || ! $product->is_visible() ) {
 	return;
 }
 ?>
-<div <?php post_class(); ?>>
+<div <?php wc_product_class( '', $product ); ?>>
 	<?php
 
 	/**
@@ -58,6 +55,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 		 * @hooked woocommerce_template_loop_price - 10
 		 */
 		do_action( 'woocommerce_after_shop_loop_item_title' );
+
 		/**
 		 * Hook: woocommerce_after_shop_loop_item.
 		 *
