@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.11.0 (TBD)
+* Added: New `mai_scroll_to_elements` filter to add elements by class/id/etc to allow slow scroll to anchor links.
 
 ## 1.10.4 (5/6/19)
 * Fixed: Forgot to update version number, sorry!

@@ -182,7 +182,7 @@ function mai_get_picture_sources( $image_id, $image_size ) {
 		return $sources;
 	}
 
-	$all_sizes = wp_list_sort( mai_get_available_image_sizes(), 'width', 'ASC', true );
+	$all_sizes = mai_get_available_image_sizes();
 
 	// Bail if no sizes.
 	if ( ! array( $all_sizes ) || empty( $all_sizes ) ) {
@@ -204,6 +204,9 @@ function mai_get_picture_sources( $image_id, $image_size ) {
 	if ( ! $sizes ) {
 		return $sources;
 	}
+
+	// Sort lowest to highest.
+	$sizes = wp_list_sort( $sizes, 'width', 'ASC', true );
 
 	// Loop through the sizes.
 	foreach( $sizes as $size => $values ) {
