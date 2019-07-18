@@ -535,7 +535,7 @@ function mai_genesis_get_image_srcset( $output, $args, $id, $html, $url, $src ) 
 }
 
 /**
- * Add srcset markup to images retreived via `genesis_get_image()` function.
+ * Disable/hide all the markup when using a "hidden" context.
  *
  * @since   1.11.0
  *
