@@ -1,7 +1,12 @@
 # Changelog
 
 ## 1.11.0 (TBD)
+* Added: Section/Grid/Col background images now use <picture> and <source> elements for much better mobile speed performance by loading smaller images on smaller window sizes.
+* Added: Now add a context of "hidden" (without quotes) to any Section in the Sections template to disable it from being displayed on the front end.
 * Added: New `mai_scroll_to_elements` filter to add elements by class/id/etc to allow slow scroll to anchor links.
+* Changed: Updated WooCommerce templates to latest version.
+* Fixed: Comment spacing when not displaying avatars in comments.
+* Fixed: Context setting in Sections template not working correctly.
 
 ## 1.10.4 (5/6/19)
 * Fixed: Forgot to update version number, sorry!
