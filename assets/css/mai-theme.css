@@ -1740,8 +1740,12 @@ body.has-boxed-site-container {
 	padding-bottom: calc( 100% / (var(--aspect-ratio)) );
 }
 
-/* we need outer because padding bottom on flex child element breaks in older Edge (<=16) (18 is current at this time) / FF (<=59) (66 is current at this time) */
-.aspect-outer,
+/* we need outer wrap because padding bottom on flex child element breaks in older Edge (<=16) (18 is current at this time) / FF (<=59) (66 is current at this time) */
+.aspect-outer {
+	width: 100%;
+	height: auto;
+}
+
 .aspect-inner {
 	width: 100%;
 	height: 100%;
