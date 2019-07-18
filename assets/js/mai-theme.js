@@ -201,7 +201,11 @@
 		if ( href.length <= 1 ) {
 			return;
 		}
-		// Bail if f link doesn't start with #.
+		/**
+		 * Bail if a link doesn't start with #.
+		 * We can't process hashes at the end of actual links
+		 * because they may be offsite.
+		 */
 		if ( ! /^#/.test( href ) ) {
 			return;
 		}
@@ -402,13 +406,28 @@
 	// On click of scroll-to elements.
 	$body.on( 'click', maiVars.maiScrollTo, function(e) {
 
-		// Bail if no hash.
-		if ( ! this.hash ) {
+		var href = $(this).attr('href');
+
+		/**
+		 * Bail if 1 or less characters.
+		 * We don't want to do anything on only # links.
+		 * And you shouldn't use those anyway.
+		 */
+		if ( href.length <= 1 ) {
+			return;
+		}
+
+		/**
+		 * Bail if a link doesn't start with #.
+		 * We can't process hashes at the end of actual links
+		 * because they may be offsite.
+		 */
+		if ( ! /^#/.test( href ) ) {
 			return;
 		}
 
 		// Get target element.
-		var $target = $( this.hash );
+		var $target = $( href );
 
 		// Bail if no target element.
 		if ( ! $target.length ) {
