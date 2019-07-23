@@ -62,6 +62,14 @@ document.addEventListener( 'DOMContentLoaded', function() {
 			previousPercentage = percentage;
 			scrollDowns        = storeItem( scrollDowns, scrollingDown, 4 );
 
+			/**
+			 * Make sure header doesn't get stuck concealed when quickly scrolling back to top.
+			 * @see  https://github.com/maithemewp/mai-theme-engine/issues/302
+			 */
+			if ( scrollingUp && headerConcealed && ( percentage <= 10 ) ) {
+				revealHeader();
+			}
+
 			// Bail if not scrolling the same direction.
 			if ( ! sameItems( scrollDowns ) ) {
 				// Reset the starting distance.
