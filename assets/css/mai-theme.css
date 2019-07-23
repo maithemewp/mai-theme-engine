@@ -4142,7 +4142,7 @@ p ~ .flex-grid:first-of-type {
 .flex-entry.column.boxed .entry-image-before-title + .entry-title,
 .flex-entry .entry-title + .entry-image-after-title,
 .flex-entry .entry-header + .entry-content {
-	margin-top: 16px;
+	margin-top: 18px;
 }
 
 .flex-entry .entry-content .entry-image-link {
