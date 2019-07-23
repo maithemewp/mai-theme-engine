@@ -534,6 +534,17 @@ function mai_genesis_get_image_srcset( $output, $args, $id, $html, $url, $src ) 
 	return wp_image_add_srcset_and_sizes( $output, wp_get_attachment_metadata( $id ), $id );
 }
 
+// Add more link in the image wrap.
+add_filter( 'genesis_markup_entry-image-link_content', function( $content, $args ) {
+	$image_id = get_post_thumbnail_id();
+	if ( ! $image_id ) {
+		return $content;
+	}
+	$image_size = mai_get_archive_setting( 'image_size', true, genesis_get_option( 'image_size' ) );
+	$sources    = $image_id ? mai_get_picture_sources( $image_id, $image_size ) : '';
+	return sprintf( '<picture>%s%s</picture>', $sources, $content );
+}, 8, 2 );
+
 /**
  * Disable/hide all the markup when using a "hidden" context.
  *

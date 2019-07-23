@@ -7,6 +7,7 @@
 * Changed: Updated WooCommerce templates to latest version.
 * Fixed: Comment spacing when not displaying avatars in comments.
 * Fixed: Context setting in Sections template not working correctly.
+* Fixed: Flex entry header spacing when displaying image without left or right alignment.
 
 ## 1.10.4 (5/6/19)
 * Fixed: Forgot to update version number, sorry!
