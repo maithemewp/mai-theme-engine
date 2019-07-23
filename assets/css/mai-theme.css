@@ -1364,6 +1364,7 @@ body.has-boxed-site-container {
 	margin-top: -25px;
 	margin-left: -25px;
 	margin-right: -25px;
+	margin-bottom: 0;
 }
 
 .comment-list .comment.boxed,
@@ -4141,7 +4142,7 @@ p ~ .flex-grid:first-of-type {
 .flex-entry.column.boxed .entry-image-before-title + .entry-title,
 .flex-entry .entry-title + .entry-image-after-title,
 .flex-entry .entry-header + .entry-content {
-	margin-top: 14px;
+	margin-top: 16px;
 }
 
 .flex-entry .entry-content .entry-image-link {

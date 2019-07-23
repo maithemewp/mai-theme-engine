@@ -895,12 +895,18 @@ function mai_flex_loop_post_class( $classes ) {
 
 	$classes = array_merge( $classes, mai_get_col_classes_by_breaks( $breaks, mai_get_size_by_columns( $columns ), $return = 'array' ) );
 
-	$img_location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
-	$img_alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
+	$location  = mai_get_archive_setting( 'image_location', true, genesis_get_option( 'image_location' ) );
+	$alignment = mai_get_archive_setting( 'image_alignment', true, genesis_get_option( 'image_alignment' ) );
 
 	// If not a background image.
-	if ( 'background' !== $img_location ) {
-		$classes[] = 'has-image-' . str_replace( 'align', '', $img_alignment );
+	if ( 'background' !== $location ) {
+		$location  = $location ? $location : 'none';
+		$classes[] = 'has-image-' . $location;
+	}
+
+	// Maybe add column class.
+	if ( ! $alignment || ( 'aligncenter' === $alignment ) ) {
+		$classes[] = 'column';
 	}
 
 	return $classes;
