@@ -125,8 +125,6 @@ function mai_do_banner_content() {
 	elseif ( is_singular() && ! is_front_page() && ! is_home() ) {
 
 		// Remove default post title.
-		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
-		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
 		$title = get_the_title();
