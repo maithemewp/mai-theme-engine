@@ -5,6 +5,8 @@
 * Added: Now add a context of "hidden" (without quotes) to any Section in the Sections template to disable it from being displayed on the front end.
 * Added: New `mai_scroll_to_elements` filter to add elements by class/id/etc to allow slow scroll to anchor links.
 * Changed: Updated WooCommerce templates to latest version.
+* Changed: Better "starts with" JS, without regex.
+* Fixed: Nav search button getting cut off in some edge cases.
 * Fixed: Comment spacing when not displaying avatars in comments.
 * Fixed: Context setting in Sections template not working correctly.
 * Fixed: Flex entry header spacing when displaying image without left or right alignment.
