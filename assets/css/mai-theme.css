@@ -4209,8 +4209,20 @@ p.entry-meta {
 	text-decoration: none;
 }
 
+.entry-header .entry-meta {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
 .entry-header .entry-meta > * {
 	display: inline-block;
+	margin-right: 8px;
 }
 
 .entry-header .entry-meta a {
@@ -4233,16 +4245,6 @@ p.entry-meta {
 .entry-author,
 .entry-comments-link {
 	display: inline-block;
-}
-
-.entry-time,
-.entry-author,
-.entry-author a,
-.entry-comments-link,
-.entry-comments-link a,
-.post-edit-link,
-.post-edit-link a {
-	margin-right: 4px;
 }
 
 .entry-categories,
