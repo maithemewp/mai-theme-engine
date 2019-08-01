@@ -206,7 +206,7 @@
 		 * We can't process hashes at the end of actual links
 		 * because they may be offsite.
 		 */
-		if ( ! /^#/.test( href ) ) {
+		if ( ! href.startsWith( '#' ) ) {
 			return;
 		}
 		_closeAll();
