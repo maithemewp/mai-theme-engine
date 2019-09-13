@@ -428,7 +428,7 @@ function mai_get_the_posts_meta( $post = '' ) {
 		$shortcodes .= '[post_terms taxonomy="' . $name . '" before="' . $taxonomy->labels->singular_name . ': "]';
 	}
 
-	return $shortcodes ? do_shortcode( $shortcodes ) : '';
+	return $shortcodes;
 }
 
 /**

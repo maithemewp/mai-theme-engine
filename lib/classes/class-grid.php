@@ -467,7 +467,7 @@ class Mai_Grid {
 
 					global $post;
 
-					$image_html = $entry_header = $date = $author = $entry_meta = $entry_content = $entry_footer = $image_id = '';
+					$image_html = $entry_header = $date = $author = $entry_info = $entry_content = $entry_footer = $entry_meta = $image_id = '';
 
 					// Get image vars.
 					$do_image = $has_bg_image = false;
@@ -541,13 +541,13 @@ class Mai_Grid {
 							$author = do_shortcode( $author_shortcode );
 						}
 
-						// Build entry meta.
-						if ( $date || $author ) {
-							$entry_meta .= sprintf( '<p %s>%s%s</p>', genesis_attr( 'entry-meta-before-content', array(), $this->args ), $date, $author );
-						}
+						// Build entry info.
+						$entry_info = $date . $author;
+						$entry_info = apply_filters( 'mai_flex_entry_info', $entry_info, $this->args, $this->original_args );
+						$entry_info = $entry_info ? sprintf( '<p %s>%s</p>', genesis_attr( 'entry-meta-before-content', array(), $this->args ), $entry_info ) : '';
 
 						// Build entry header.
-						if ( $this->is_entry_header_image() || in_array( 'title', $this->args['show'] ) || $entry_meta ) {
+						if ( $this->is_entry_header_image() || in_array( 'title', $this->args['show'] ) || $entry_info ) {
 
 							// Image.
 							if ( 'before_title' === $this->args['image_location'] ) {
@@ -570,8 +570,8 @@ class Mai_Grid {
 							}
 
 							// Entry Meta.
-							if ( $entry_meta ) {
-								$entry_header .= $entry_meta;
+							if ( $entry_info ) {
+								$entry_header .= $entry_info;
 							}
 
 						}
@@ -657,8 +657,9 @@ class Mai_Grid {
 
 						// Meta.
 						if ( in_array( 'meta', $this->args['show'] ) ) {
-							$post_info    = mai_get_the_posts_meta( get_the_ID() );
-							$entry_footer = $post_info ? sprintf( '<p class="entry-meta">%s</p>', $post_info ) : '';
+							$entry_meta   = mai_get_the_posts_meta( get_the_ID() );
+							$entry_meta   = apply_filters( 'mai_flex_entry_meta', $entry_meta, $this->args, $this->original_args );
+							$entry_footer = $entry_meta ? sprintf( '<p class="entry-meta">%s</p>', do_shortcode( $entry_meta ) ) : '';
 						}
 
 						// Add filter to the entry footer.
