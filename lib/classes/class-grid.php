@@ -657,7 +657,8 @@ class Mai_Grid {
 
 						// Meta.
 						if ( in_array( 'meta', $this->args['show'] ) ) {
-							$entry_footer = mai_get_the_posts_meta( get_the_ID() );
+							$post_info    = mai_get_the_posts_meta( get_the_ID() );
+							$entry_footer = $post_info ? sprintf( '<p class="entry-meta">%s</p>', $post_info ) : '';
 						}
 
 						// Add filter to the entry footer.

@@ -51,25 +51,7 @@ function mai_post_info( $post_info ) {
 // Add all public taxonomies to post meta.
 add_filter( 'genesis_post_meta', 'mai_post_meta', 11 );
 function mai_post_meta( $post_meta ) {
-	global $post;
-
-	$taxos = get_object_taxonomies( $post, 'objects' );
-
-	if ( $taxos ) {
-
-		$taxos = apply_filters( 'mai_post_meta_taxos', $taxos );
-
-		$post_meta = $shortcodes = '';
-		foreach ( $taxos as $taxonomy ) {
-			// Skip if not a public taxonomy.
-			if ( ! $taxonomy->public ) {
-				continue;
-			}
-			$shortcodes .= '[post_terms taxonomy="' . $taxonomy->name . '" before="' . $taxonomy->labels->singular_name . ': "]';
-		}
-		$post_meta = $shortcodes;
-	}
-	return $post_meta;
+	return mai_get_the_posts_meta( get_the_ID() );
 }
 
 // Modify the size of the Gravatar in the author box.

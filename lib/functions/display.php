@@ -392,29 +392,43 @@ function mai_get_read_more_link( $object_or_id = '', $text = '', $type = 'post',
  */
 function mai_get_the_posts_meta( $post = '' ) {
 
+	// Get the post.
 	if ( ! empty( $post ) ) {
 		$post = get_post( $post );
 	} else {
 		global $post;
 	}
 
+	// Empty variables.
 	$post_meta = $shortcodes = '';
+	$taxos = array();
 
-	$taxos = get_post_taxonomies($post);
-	if ( $taxos ) {
+	// Get all the taxos.
+	$taxonomies = get_object_taxonomies( $post, 'objects' );
 
-		// Skip if Post Formats and Yoast prominent keyworks
-		$taxos = array_diff( $taxos, array( 'post_format', 'yst_prominent_words' ) );
-
-		$taxos = apply_filters( 'mai_post_meta_taxos', $taxos );
-
-		foreach ( $taxos as $tax ) {
-			$taxonomy = get_taxonomy($tax);
-			$shortcodes .= '[post_terms taxonomy="' . $tax . '" before="' . $taxonomy->labels->singular_name . ': "]';
-		}
-		$post_meta = sprintf( '<p class="entry-meta">%s</p>', do_shortcode( $shortcodes ) );
+	// If we have taxonomies..
+	if ( $taxonomies ) {
+		// Get only public taxonomies.
+		$taxos = wp_list_filter( $taxonomies, array( 'public' => true ) );
+		// Remove Post Formats and Yoast prominent keyworks
+		unset( $taxos['post_format'] );
+		unset( $taxos['yst_prominent_words'] );
 	}
-	return $post_meta;
+
+	// Filter.
+	$taxos = apply_filters( 'mai_post_meta_taxos', $taxos );
+
+	// Bail if none.
+	if ( ! $taxos ) {
+		return $post_meta;
+	}
+
+	// Loop through em.
+	foreach ( $taxos as $name => $taxonomy ) {
+		$shortcodes .= '[post_terms taxonomy="' . $name . '" before="' . $taxonomy->labels->singular_name . ': "]';
+	}
+
+	return $shortcodes ? do_shortcode( $shortcodes ) : '';
 }
 
 /**
