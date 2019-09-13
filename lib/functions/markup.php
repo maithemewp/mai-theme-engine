@@ -900,13 +900,14 @@ function mai_flex_loop_post_class( $classes ) {
 
 	// If not a background image.
 	if ( 'background' !== $location ) {
+
 		$location  = $location ? $location : 'none';
 		$classes[] = 'has-image-' . $location;
-	}
 
-	// Maybe add column class.
-	if ( ! $alignment || ( 'aligncenter' === $alignment ) ) {
-		$classes[] = 'column';
+		// Maybe add column class.
+		if ( ! $alignment || ( 'aligncenter' === $alignment ) ) {
+			$classes[] = 'column';
+		}
 	}
 
 	return $classes;
