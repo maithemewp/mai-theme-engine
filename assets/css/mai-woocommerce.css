@@ -102,6 +102,7 @@
 	-webkit-box-flex: 1;
 	-ms-flex: 1 1 auto;
 	flex: 1 1 auto;
+	text-decoration: none;
 }
 
 .flex-entry.entry .entry-content .price,
@@ -342,6 +343,7 @@ body.woocommerce #reviews h3 {
 }
 
 .related.products .product.boxed > .woocommerce-LoopProduct-link {
+	text-decoration: none;
 	margin: -13px -13px 12px;
 }
 
