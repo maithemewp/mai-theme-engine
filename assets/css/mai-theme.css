@@ -4540,36 +4540,16 @@ ol.comment-list {
 	margin-bottom: 0;
 }
 
-.sidebar .widget p:last-child,
-.sidebar .widget ul > li:last-of-type,
-.sidebar .widget-area .widget:last-of-type {
-	margin-bottom: 0;
-}
-
-.sidebar .widget ol,
-.sidebar .widget ul {
-	margin-left: 20px;
-}
-
-.sidebar ul.product_list_widget {
-	margin-left: 0;
-}
-
-.sidebar .widget ul > li {
-	margin-bottom: 6px;
-}
-
-.sidebar .widget ol > li {
-	list-style-position: inside;
-	list-style-type: decimal;
-	padding-left: 20px;
-	text-indent: -20px;
-}
-
 .sidebar .widget li li {
 	border: 0;
 	margin: 0 0 0 20px;
 	padding: 0;
+}
+
+.sidebar .widget p:last-child,
+.sidebar .widget ul > li:last-of-type,
+.sidebar .widget-area .widget:last-of-type {
+	margin-bottom: 0;
 }
 
 /* # Footer Widgets
