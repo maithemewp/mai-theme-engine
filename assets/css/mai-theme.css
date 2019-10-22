@@ -225,8 +225,8 @@ p:empty {
 
 ol,
 ul {
-	list-style-position: inside;
-	margin: 0;
+	list-style-position: outside;
+	margin: 0 0 0 20px;
 	padding: 0;
 }
 
@@ -3038,6 +3038,7 @@ ul.wp-block-gallery {
 	display: flex;
 	line-height: 1; /* Fix IE bug, line-height added back on span[itemprop="name"] */
 	list-style: none;
+	margin: 0;
 }
 
 .genesis-nav-menu .menu-item {
@@ -5029,7 +5030,6 @@ ol.comment-list {
 		page-break-inside: avoid;
 		widows: 3;
 	}
-
 
 	img {
 		page-break-after: avoid;
