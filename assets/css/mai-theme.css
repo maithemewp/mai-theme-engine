@@ -225,8 +225,13 @@ p:empty {
 
 ol,
 ul {
+	list-style-position: inside;
 	margin: 0;
 	padding: 0;
+}
+
+li {
+	margin-bottom: 8px;
 }
 
 li.icon-left .fa {
@@ -3032,7 +3037,7 @@ ul.wp-block-gallery {
 	display: -webkit-box;
 	display: flex;
 	line-height: 1; /* Fix IE bug, line-height added back on span[itemprop="name"] */
-	list-style-type: none;
+	list-style: none;
 }
 
 .genesis-nav-menu .menu-item {
@@ -3043,6 +3048,8 @@ ul.wp-block-gallery {
 	-ms-flex: 0 0 auto;
 	-webkit-box-flex: 0;
 	flex: 0 0 auto;
+	margin: 0;
+	padding: 0;
 }
 
 .genesis-nav-menu a {
@@ -4062,29 +4069,29 @@ body.mai-menu-activated {
 
 .content ol,
 .content ul:not([class]) {
-	margin-left: 32px;
+	/* margin-left: 32px; */
 }
 
 .content ol {
-	list-style-type: decimal;
+	/* list-style-type: decimal; */
 }
 
 .content ul:not([class]) {
-	list-style-type: disc;
+	/* list-style-type: disc; */
 }
 
 .content ol > li {
-	margin-bottom: 8px;
+	/* margin-bottom: 8px; */
 }
 
 .content ul > li {
-	margin-bottom: 8px;
+	/* margin-bottom: 8px; */
 }
 
 .content ol ol,
 .content ul ul {
-	margin-top: 12px;
-	margin-bottom: 0;
+	/* margin-top: 12px;   */
+	/* margin-bottom: 0; */
 }
 
 .entry-content code {
