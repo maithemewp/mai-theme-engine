@@ -4062,7 +4062,7 @@ body.mai-menu-activated {
 
 .content ol:not([class]),
 .content ul:not([class]) {
-	margin-left: 32px;
+	margin-left: 20px;
 }
 
 .content ol ol,
