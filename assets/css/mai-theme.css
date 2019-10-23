@@ -223,6 +223,11 @@ p:empty {
 	display: none;
 }
 
+ol,
+ul {
+	padding: 0;
+}
+
 li {
 	margin-bottom: 8px;
 }
@@ -4054,19 +4059,17 @@ body.mai-menu-activated {
 }
 
 .entry-content p,
-.content ol,
-.content ul,
 .quote-caption {
 	margin-bottom: 24px;
 }
 
-.content ol:not([class]),
-.content ul:not([class]) {
-	margin-left: 20px;
+.entry-content ol:not([class]),
+.entry-content ul:not([class]) {
+	margin: 0 0 24px 20px;
 }
 
-.content ol ol,
-.content ul ul {
+.entry-content ol ol,
+.entry-content ul ul {
 	margin-top: 12px;
 	margin-bottom: 0;
 }
