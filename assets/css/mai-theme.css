@@ -3073,6 +3073,10 @@ ul.wp-block-gallery {
 /* ## General Navigation
 --------------------------------------------- */
 
+ul.genesis-nav-menu {
+	margin: 0;
+}
+
 .genesis-nav-menu {
 	clear: both;
 	display: -ms-flexbox;
