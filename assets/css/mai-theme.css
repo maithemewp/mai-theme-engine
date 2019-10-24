@@ -1980,6 +1980,44 @@ input[name="post_password"] {
 	margin-bottom: 36px;
 }
 
+.entry-content ol > li,
+.widget ol > li {
+	list-style-type: decimal;
+}
+
+.entry-content ul > li,
+.widget ul > li {
+	list-style-type: disc;
+}
+
+.entry-content ol:not([class]),
+.entry-content ul:not([class]) {
+	margin: 0 0 24px 32px;
+}
+
+.widget ol:not([class]),
+.widget ul:not([class]) {
+	margin: 0 0 24px 20px;
+}
+
+.entry-content li,
+.widget li {
+	margin-bottom: 8px;
+}
+
+.entry-content ol ol,
+.entry-content ul ul,
+.widget ol ol,
+.widget ul ul {
+	margin-top: 12px;
+	margin-bottom: 0;
+}
+
+.entry-content ul > li:last-of-type,
+.widget ul > li:last-of-type {
+	margin-bottom: 0;
+}
+
 .author-box {
 	text-align: center;
 	overflow: hidden; /* fix avatar out of container with short bio */
@@ -2573,6 +2611,10 @@ ul.wp-block-gallery {
 	font-size: 1.25rem;
 	line-height: 1.2;
 	margin-bottom: 12px;
+}
+
+.widget p:last-child {
+	margin-bottom: 0;
 }
 
 .widget_calendar td,
@@ -4062,29 +4104,6 @@ body.mai-menu-activated {
 .entry-content p,
 .quote-caption {
 	margin-bottom: 24px;
-}
-
-.entry-content ol > li {
-	list-style-type: decimal;
-}
-
-.entry-content ul > li {
-	list-style-type: disc;
-}
-
-.entry-content ol:not([class]),
-.entry-content ul:not([class]) {
-	margin: 0 0 24px 20px;
-}
-
-.entry-content li {
-	margin-bottom: 8px;
-}
-
-.entry-content ol ol,
-.entry-content ul ul {
-	margin-top: 12px;
-	margin-bottom: 0;
 }
 
 .entry-content code {
