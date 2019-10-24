@@ -1980,23 +1980,15 @@ input[name="post_password"] {
 	margin-bottom: 36px;
 }
 
-.entry-content ol > li,
-.widget ol > li {
-	list-style-type: decimal;
-}
-
-.entry-content ul > li,
-.widget ul > li {
-	list-style-type: disc;
-}
-
 .entry-content ol:not([class]),
 .entry-content ul:not([class]) {
+	list-style-type: decimal;
 	margin: 0 0 24px 32px;
 }
 
 .widget ol:not([class]),
 .widget ul:not([class]) {
+	list-style-type: disc;
 	margin: 0 0 24px 20px;
 }
 
