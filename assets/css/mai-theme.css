@@ -226,10 +226,11 @@ p:empty {
 ol,
 ul {
 	padding: 0;
+	margin: 0;
 }
 
 li {
-	margin-bottom: 8px;
+	list-style-type: none;
 }
 
 li.icon-left .fa {
@@ -4063,9 +4064,21 @@ body.mai-menu-activated {
 	margin-bottom: 24px;
 }
 
+.entry-content ol > li {
+	list-style-type: decimal;
+}
+
+.entry-content ul > li {
+	list-style-type: disc;
+}
+
 .entry-content ol:not([class]),
 .entry-content ul:not([class]) {
 	margin: 0 0 24px 20px;
+}
+
+.entry-content li {
+	margin-bottom: 8px;
 }
 
 .entry-content ol ol,
