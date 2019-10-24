@@ -1980,11 +1980,13 @@ input[name="post_password"] {
 	margin-bottom: 36px;
 }
 
-.entry-content ol {
+.entry-content ol,
+.widget ol {
 	list-style-type: decimal;
 }
 
-.entry-content ul {
+.entry-content ul,
+.widget ul {
 	list-style-type: disc;
 }
 
@@ -1995,7 +1997,6 @@ input[name="post_password"] {
 
 .widget ol,
 .widget ul {
-	list-style-type: disc;
 	margin: 0 0 24px 20px;
 }
 
