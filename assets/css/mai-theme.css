@@ -2107,7 +2107,7 @@ input[name="post_password"] {
 	-ms-flex: 0 1 auto;
 	-webkit-box-flex: 0;
 	flex: 0 1 auto;
-	height: 100%;
+	height: auto;
 }
 
 .mai-slider.slick-initialized .slick-slide:not(.aspect-ratio) {
@@ -2121,7 +2121,7 @@ input[name="post_password"] {
 }
 
 .mai-slider .slick-slide {
-	height: auto;
+	height: 100%;
 	float: none;
 }
 
