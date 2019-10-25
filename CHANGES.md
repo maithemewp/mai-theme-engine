@@ -15,6 +15,7 @@
 * Fixed: Flex entry header spacing when displaying image without left or right alignment.
 * Fixed: Reveal header being stuck concealed when scrolling back to top really fast in some instances.
 * Fixed: Simpler post meta helper function that fixes `mai_post_meta_taxos` filter when using in [grid].
+* Fixed: [grid] `adaptiveheight` parameter not working.
 
 ## 1.10.4 (5/6/19)
 * Fixed: Forgot to update version number, sorry!
