@@ -1054,8 +1054,14 @@ class Mai_Grid {
 
 			// Adaptive height requires align middle. Force it.
 			if ( $this->args['adaptiveheight'] ) {
-				// Add horizontal text align classes here since it doesn't work the typical way with adaptive height.
-				if ( $this->args['align_text'] ) {
+				// If align param, this takes precendence.
+				if ( $this->args['align'] ) {
+					$remove = array( 'top', 'bottom' );
+					$this->args['align'] = array_diff( $this->args['align'], $remove );
+				}
+				// No align param.
+				elseif ( $this->args['align_text'] ) {
+					// Add horizontal text align classes here since it doesn't work the typical way with adaptive height.
 					if ( in_array( 'left', $this->args['align_text'] ) ) {
 						$attributes['class'] = mai_add_classes( 'text-xs-left', $attributes['class'] );
 					} elseif ( in_array( 'center', $this->args['align_text'] ) ) {
@@ -1065,7 +1071,9 @@ class Mai_Grid {
 					}
 				}
 				// Force values.
-				$this->args['align']      = array( 'middle' );
+				if ( ! in_array( 'middle', $this->args['align'] ) ) {
+					$this->args['align'][] = 'middle';
+				}
 				$this->args['align_cols'] = array();
 				$this->args['align_text'] = array();
 			}
