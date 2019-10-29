@@ -1052,6 +1052,24 @@ class Mai_Grid {
 			wp_enqueue_script( 'mai-slick' );
 			wp_enqueue_script( 'mai-slick-init' );
 
+			// Adaptive height requires align middle. Force it.
+			if ( $this->args['adaptiveheight'] ) {
+				// Add horizontal text align classes here since it doesn't work the typical way with adaptive height.
+				if ( $this->args['align_text'] ) {
+					if ( in_array( 'left', $this->args['align_text'] ) ) {
+						$attributes['class'] = mai_add_classes( 'text-xs-left', $attributes['class'] );
+					} elseif ( in_array( 'center', $this->args['align_text'] ) ) {
+						$attributes['class'] = mai_add_classes( 'text-xs-center', $attributes['class'] );
+					} elseif ( in_array( 'right', $this->args['align_text'] ) ) {
+						$attributes['class'] = mai_add_classes( 'text-xs-right', $attributes['class'] );
+					}
+				}
+				// Force values.
+				$this->args['align']      = array( 'middle' );
+				$this->args['align_cols'] = array();
+				$this->args['align_text'] = array();
+			}
+
 			// Slider wrapper class.
 			$attributes['class'] = mai_add_classes( 'mai-slider', $attributes['class'] );
 
