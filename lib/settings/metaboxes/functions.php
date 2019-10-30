@@ -48,7 +48,7 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 
 		// Post/Page.
 		if ( in_array( $typenow, array( 'post', 'page' ) ) ) {
-			if ( in_array( $typenow, (array) genesis_get_option( 'banner_disable_post_types' ) ) ) {
+			if ( in_array( $typenow, (array) genesis_get_option( 'banner_disable_post_types' ) ) && ( (int) get_the_ID() !== (int) get_option( 'page_for_posts' ) ) ) {
 				return false;
 			}
 			if ( class_exists( 'WooCommerce' ) && ( get_the_ID() === (int) get_option( 'woocommerce_shop_page_id' ) ) ) {
