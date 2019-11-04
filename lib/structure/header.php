@@ -145,8 +145,8 @@ function mai_do_header() {
 	// These are basically do_action() hooks you can use, with filters (via mai_get_do_action helper) so we can easily remove elements from templates
 	$left       = mai_get_do_action( 'mai_header_left' );
 	$right      = mai_get_do_action( 'mai_header_right' );
+	$has_mobile = apply_filters( '_mai_mobile_menu', true ); // Mobile menu kill switch. In landing.php also.
 	$mobile     = ! mai_is_side_menu_enabled() ? mai_get_mobile_menu() : '';
-	$has_mobile = apply_filters( '_mai_mobile_menu', true );
 
 	/**
 	 * Add classes to know when the header has left or right header content.

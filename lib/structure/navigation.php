@@ -169,6 +169,14 @@ add_action( 'genesis_before', function() {
  */
 function mai_get_mobile_menu() {
 
+	// Mobile menu kill switch.
+	$has_mobile = apply_filters( '_mai_mobile_menu', true );
+
+	// Bail if not showing mobile menu.
+	if ( ! $has_mobile ) {
+		return;
+	}
+
 	// Widget areas.
 	$widget_mobile       = is_active_sidebar( 'mobile_menu' );
 	$widget_header_left  = is_active_sidebar( 'header_left' );

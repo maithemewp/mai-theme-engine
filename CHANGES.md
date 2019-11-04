@@ -9,6 +9,7 @@
 * Changed: Updated WooCommerce templates to latest version.
 * Changed: Better "starts with" JS, without regex.
 * Changed: Much less aggressive list styling.
+* Fixed: Mobile menu should not display on Landing page template.
 * Fixed: Nav search button getting cut off in some edge cases.
 * Fixed: Comment spacing when not displaying avatars in comments.
 * Fixed: Context setting in Sections template not working correctly.
