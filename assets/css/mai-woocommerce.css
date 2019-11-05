@@ -86,6 +86,10 @@
 	margin-bottom: 30px;
 }
 
+.product-category.flex-entry > a {
+	text-decoration: none;
+}
+
 .flex-entry.entry.boxed > .woocommerce-LoopProduct-link {
 	font-size: 0;
 	margin: -25px -25px 12px;
