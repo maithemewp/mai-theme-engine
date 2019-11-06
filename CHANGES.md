@@ -18,6 +18,7 @@
 * Fixed: Simpler post meta helper function that fixes `mai_post_meta_taxos` filter when using in [grid].
 * Fixed: [grid] `adaptiveheight` parameter not working.
 * Fixed: Banner settings was not available on page for posts (blog page) when banner is hidden on Pages.
+* Fixed: Lists are now styled correctly in comments.
 
 ## 1.10.4 (5/6/19)
 * Fixed: Forgot to update version number, sorry!
