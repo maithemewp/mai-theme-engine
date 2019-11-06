@@ -4477,16 +4477,16 @@ ol.comment-list {
 	margin-left: 0;
 }
 
-.comment-list li,
+.comment-list li.comment,
 .ping-list li {
 	list-style-type: none;
 }
 
-.comment-list li {
+.comment-list li.comment {
 	margin-top: 24px;
 }
 
-.comment-list li li {
+.comment-list .comment .comment {
 	margin-top: 48px;
 }
 
@@ -4514,6 +4514,10 @@ ol.comment-list {
 
 .comment-meta a:hover {
 	color: #323232;
+}
+
+.comment-content ol > li {
+	list-style-type: decimal;
 }
 
 .comment-content ul > li {
