@@ -30,7 +30,7 @@ function mai_enqueue_scripts() {
 	$shrink_bottom = get_theme_mod( 'custom_logo_shrink_bottom', 4 );
 
 	// Enqueue scroll js.
-	wp_enqueue_script( 'basic-scroll', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/basic-scroll{$suffix}.js", array(), '3.0.1', true );
+	wp_enqueue_script( 'basic-scroll', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/basic-scroll{$suffix}.js", array(), '3.0.2', true );
 	wp_enqueue_script( 'mai-scroll', MAI_THEME_ENGINE_PLUGIN_URL . "assets/js/mai-scroll{$suffix}.js", array( 'basic-scroll' ), MAI_THEME_ENGINE_VERSION, true );
 	wp_localize_script( 'mai-scroll', 'maiScroll', array(
 		'logoWidth'        => get_theme_mod( 'custom_logo_width', 180 ),
