@@ -1,24 +1,7 @@
 # Changelog
 
-## 1.11.0 (TBD)
-* Added: Section/Grid/Col background images and archive/featured images now use <picture> and <source> elements for much better mobile speed performance by loading smaller images on smaller window sizes.
-* Added: Now add a context of "hidden" (without quotes) to any Section in the Sections template to disable it from being displayed on the front end.
-* Added: New `mai_scroll_to_elements` filter to add elements by class/id/etc to allow slow scroll to anchor links.
-* Added: New `mai_flex_entry_info` and `mai_flex_entry_meta` filter to specifically filter info/meta in [grid],
-* Changed: No longer remove entry-header element when banner area is displayed.
-* Changed: Updated WooCommerce templates to latest version.
-* Changed: Better "starts with" JS, without regex.
-* Changed: Much less aggressive list styling.
-* Fixed: Mobile menu should not display on Landing page template.
-* Fixed: Nav search button getting cut off in some edge cases.
-* Fixed: Comment spacing when not displaying avatars in comments.
-* Fixed: Context setting in Sections template not working correctly.
-* Fixed: Flex entry header spacing when displaying image without left or right alignment.
-* Fixed: Reveal header being stuck concealed when scrolling back to top really fast in some instances.
-* Fixed: Simpler post meta helper function that fixes `mai_post_meta_taxos` filter when using in [grid].
-* Fixed: [grid] `adaptiveheight` parameter not working.
-* Fixed: Banner settings was not available on page for posts (blog page) when banner is hidden on Pages.
-* Fixed: Lists are now styled correctly in comments.
+## 1.10.4.1 (11/13/19)
+* Fixed: Hotfix for WPDI_Plugin_Installer_Skin dependency installer incompatibility with WordPress 5.3.
 
 ## 1.10.4 (5/6/19)
 * Fixed: Forgot to update version number, sorry!
