@@ -20,6 +20,9 @@
 * Fixed: Banner settings was not available on page for posts (blog page) when banner is hidden on Pages.
 * Fixed: Lists are now styled correctly in comments.
 
+## 1.10.4.1 (11/13/19)
+* Fixed: Hotfix for WPDI_Plugin_Installer_Skin dependency installer incompatibility with WordPress 5.3.
+
 ## 1.10.4 (5/6/19)
 * Fixed: Forgot to update version number, sorry!
 

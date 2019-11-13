@@ -32,28 +32,59 @@ add_action( 'admin_init', 'mai_update_database_version', 20 );
 function mai_update_database_version() {
 
 	// Get the version number saved in the db.
-	$option_db_version = get_option( 'mai_db_version' );
+	$option_db_version = (int) get_option( 'mai_db_version' );
 
 	// Bail if the saved version is the version is greater than or equal to the current version.
-	if ( $option_db_version >= MAI_THEME_ENGINE_DB_VERSION ) {
+	if ( $option_db_version >= (int) MAI_THEME_ENGINE_DB_VERSION ) {
 		return;
 	}
 
-	if ( $option_db_version < '1100' ) {
+	if ( $option_db_version < 1100 ) {
 		mai_upgrade_1100();
 	}
 
-	if ( $option_db_version < '1161' ) {
+	if ( $option_db_version < 1161 ) {
 		mai_upgrade_1161();
 	}
 
-	if ( $option_db_version < '1400' ) {
+	if ( $option_db_version < 1400 ) {
 		mai_upgrade_1400();
+	}
+
+	if ( $option_db_version < 1500 ) {
+		mai_upgrade_1500();
 	}
 
 	// Update the version number option.
 	update_option( 'mai_db_version', MAI_THEME_ENGINE_DB_VERSION );
 
+}
+
+/**
+ * Fix the WPDI_Plugin_Installer_Skin error in Mai Theme.
+ *
+ * @since  1.10.4.1
+ */
+function mai_upgrade_1500() {
+	// Our files with an incompatible method in WP 5.3.
+	$files = array(
+		get_stylesheet_directory() . '/includes/dependencies/wp-dependency-installer.php',
+		get_stylesheet_directory() . '/vendor/afragen/wp-dependency-installer/wp-dependency-installer.php',
+	);
+	foreach( $files as $file ) {
+		if ( ! file_exists( $file ) ) {
+			continue;
+		}
+		$contents = file_get_contents( $file );
+		// If $contents does not contain the incompatible method.
+		if ( false === strpos ( $contents, 'public function feedback( $string ) {}' ) ) {
+			return;
+		}
+		// Replace the method in the contents.
+		$contents = str_replace( 'public function feedback( $string ) {}', 'public function feedback( $string, ...$args ) {}', $contents );
+		// Update the file.
+		file_put_contents( $file, $contents );
+	}
 }
 
 /**
@@ -236,7 +267,6 @@ function mai_upgrade_1100() {
 			}
 		}
 	}
-
 
 	// Maybe update.
 	if ( ! empty( $settings ) ) {
