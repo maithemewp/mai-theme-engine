@@ -1851,9 +1851,10 @@ body.has-boxed-site-container {
 	overflow: hidden;
 }
 
+.entry-content .wp-block-search,
 .entry-content .search-form {
 	max-width: 240px;
-	margin-bottom: 40px;
+	margin-bottom: 24px;
 }
 
 .post-password-form input[type="submit"],
@@ -1868,6 +1869,8 @@ body.has-boxed-site-container {
 	color: transparent;
 }
 
+.site-inner .wp-block-search__label,
+.site-inner .wp-block-search__button,
 .site-inner .search-form input[type="submit"],
 .mai-menu .search-form input[type="submit"],
 .widget_search input[type="submit"],
@@ -1968,6 +1971,7 @@ img.alignnone,
 	margin-top: 8px;
 }
 
+figcaption,
 .wp-caption-text,
 .gallery-caption {
 	font-size: 0.8rem;
