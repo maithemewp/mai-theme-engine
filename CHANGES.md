@@ -6,6 +6,7 @@
 * Added: New `mai_scroll_to_elements` filter to add elements by class/id/etc to allow slow scroll to anchor links.
 * Added: New `mai_flex_entry_info` and `mai_flex_entry_meta` filter to specifically filter info/meta in [grid],
 * Added: Styling for the search block.
+* Added: Styling for captions on image block.
 * Changed: No longer remove entry-header element when banner area is displayed.
 * Changed: Updated WooCommerce templates to latest version.
 * Changed: Better "starts with" JS, without regex.
