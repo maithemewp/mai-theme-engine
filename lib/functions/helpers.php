@@ -174,18 +174,29 @@ function mai_get_available_image_sizes() {
  */
 function mai_get_picture_sources( $image_id, $image_size ) {
 
-	$sources       = '';
-	$picture_sizes = mai_get_picture_sizes( $image_size );
-
-	// Bail if no picture sizes.
-	if ( ! array( $picture_sizes ) || empty( $picture_sizes ) ) {
-		return $sources;
-	}
-
+	$sources   = '';
 	$all_sizes = mai_get_available_image_sizes();
 
 	// Bail if no sizes.
 	if ( ! array( $all_sizes ) || empty( $all_sizes ) ) {
+		return $sources;
+	}
+
+	// Bail if the registered size is not found.
+	if ( ! isset( $all_sizes[ $image_size ] ) ) {
+		return $sources;
+	}
+
+	// Bail if not a cropped image size.
+	if ( ! $all_sizes[ $image_size ]['crop'] ) {
+		return $sources;
+	}
+
+	// Get picture sizes.
+	$picture_sizes = mai_get_picture_sizes( $image_size );
+
+	// Bail if no picture sizes.
+	if ( ! array( $picture_sizes ) || empty( $picture_sizes ) ) {
 		return $sources;
 	}
 
