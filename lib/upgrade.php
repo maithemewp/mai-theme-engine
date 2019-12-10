@@ -55,9 +55,49 @@ function mai_update_database_version() {
 		mai_upgrade_1500();
 	}
 
+	/**
+	 * Bail if not at least Genesis 3.2 (entry meta Customizer settings added here).
+	 * This update won't run until 3.2+ is installed.
+	 */
+	if ( version_compare( genesis_get_option( 'theme_version' ), '3.2', '<' ) ) {
+		return;
+	}
+
+	if ( $option_db_version < 1600 ) {
+		mai_upgrade_1600();
+	}
+
 	// Update the version number option.
 	update_option( 'mai_db_version', MAI_THEME_ENGINE_DB_VERSION );
+}
 
+/**
+ * Fix the WPDI_Plugin_Installer_Skin error in Mai Theme.
+ *
+ * @since  1.11.0
+ */
+function mai_upgrade_1600() {
+
+	$update_array      = array();
+	$entry_meta_before = genesis_get_option( 'entry_meta_before_content' );
+	$entry_meta_after  = genesis_get_option( 'entry_meta_after_content' );
+
+	// Remove the setting value if using defaults.
+	if ( '[post_date] by [post_author_posts_link] [post_comments] [post_edit]' == $entry_meta_before ) {
+		$update_array['entry_meta_before_content'] = '';
+	}
+
+	// Remove the setting value if using defaults.
+	if ( '[post_categories] [post_tags]' == $entry_meta_after ) {
+		$update_array['entry_meta_after_content'] = '';
+	}
+
+	// Bail if not using defaults. This means the user already edited these settings.
+	if ( empty( $update_array ) ) {
+		return;
+	}
+
+	genesis_update_settings( $update_array );
 }
 
 /**
