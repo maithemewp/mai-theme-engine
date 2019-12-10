@@ -165,12 +165,13 @@ function mai_get_available_image_sizes() {
 /**
  * Get <picture> <sources> HTML.
  *
- * @since   1.11.0
+ * @version  0.2.0
+ * @since    1.11.0
  *
- * @param   int     The image ID.
- * @param   string  The image size.
+ * @param    int     The image ID.
+ * @param    string  The image size.
  *
- * @return  string  The <sources> HTML.
+ * @return   string  The <sources> HTML.
  */
 function mai_get_picture_sources( $image_id, $image_size ) {
 
