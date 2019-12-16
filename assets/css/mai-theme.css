@@ -569,6 +569,7 @@ textarea:focus {
 
 input[type="checkbox"],
 input[type="radio"] {
+	display: inline-block;
 	width: auto;
 	margin: 0 12px 6px 0;
 	vertical-align: middle;
