@@ -81,7 +81,7 @@ function mai_site_title_wrap( $wrap ) {
 
 	// Bail if banner area is enabled since this should have the h1.
 	if ( mai_is_banner_area_enabled() ) {
-		return $wrap;
+		return 'p';
 	}
 
 	// If section content has an h1.
@@ -94,12 +94,15 @@ function mai_site_title_wrap( $wrap ) {
 
 		// If no title, use h1 on title.
 		if ( ! $has_title ) {
-			$wrap = 'h1';
+			return 'h1';
+		} else {
+			return 'p';
 		}
 
 	}
 
-	return $wrap;
+	// Alreadh has h1.
+	return 'p';
 }
 
 /**

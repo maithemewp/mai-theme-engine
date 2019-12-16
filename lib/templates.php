@@ -155,15 +155,17 @@ function mai_do_sections_template() {
 	add_action( 'genesis_entry_content', 'mai_do_sections_loop' );
 	function mai_do_sections_loop() {
 
+		$post_id = get_the_ID();
+
 		// Get the sections.
-		$sections = get_post_meta( get_the_ID(), 'mai_sections', true );
+		$sections = get_post_meta( $post_id, 'mai_sections', true );
 
 		// Bail if no sections.
 		if ( ! $sections ) {
 			return;
 		}
 
-		echo mai_get_sections( $sections );
+		echo mai_get_sections( $sections, $post_id );
 	}
 }
 

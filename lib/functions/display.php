@@ -468,11 +468,15 @@ function mai_get_section( $content, $args = array() ) {
  *
  * @return  string|HTML  The sections HTML
  */
-function mai_get_sections( $sections ) {
+function mai_get_sections( $sections, $post_id = '' ) {
+
+	if ( ! $post_id ) {
+		$post_id = get_the_ID();
+	}
 
 	$html       = '';
 	$has_banner = mai_is_banner_area_enabled();
-	$has_h1     = false;
+	$has_h1     = mai_sections_has_h1( $post_id );
 
 	$valid = array(
 		'align',
