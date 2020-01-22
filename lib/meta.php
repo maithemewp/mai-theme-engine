@@ -66,9 +66,7 @@ function mai_post_meta( $post_meta ) {
  * This is a bit of a mess since Genesis added the Customizer settings.
  * We don't need our filters anymore but can't break existing sites.
  *
- * The following scenario will stop this filter from running:
- * 1. Is singular.
- * Or all 3 of these.
+ * The following scenario will allow customizer entry meta:
  * 1. Genesis is at least versions 3.2 (entry meta Customizer settings added here)
  * 2. Mai DB version is at least 1600
  * 3. Entry meta customizer setting is empty.
@@ -80,8 +78,7 @@ function mai_post_meta( $post_meta ) {
  * @return  bool
  */
 function _mai_use_customizer_entry_meta_content( $before_or_after ) {
-	if ( is_singular()
-		&& version_compare( genesis_get_option( 'theme_version' ), 3.2, '>=' )
+	if ( version_compare( genesis_get_option( 'theme_version' ), 3.2, '>=' )
 		&& version_compare( get_option( 'mai_db_version' ), 1600, '>=' )
 		&& ! empty( genesis_get_option( "entry_meta_{$before_or_after}_content" ) )
 		) {
