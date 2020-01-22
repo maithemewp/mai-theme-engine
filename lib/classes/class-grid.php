@@ -452,16 +452,6 @@ class Mai_Grid {
 		// If posts.
 		if ( $query->have_posts() ) {
 
-			// Add filter to set the max width allowed for srcset. We were seeing much larger images being added to srcset, which makes no sense.
-			if ( in_array( 'image', $this->args['show'] ) ) {
-				$all_sizes          = mai_get_available_image_sizes();
-				$srcset_max         = isset( $all_sizes[ $this->args['image_size'] ]['width'] ) ? $all_sizes[ $this->args['image_size'] ]['width'] : 1600;
-				$srcset_image_width = function( $size, $size_array ) use ( $srcset_max ) {
-					return $srcset_max + 1;
-				};
-				add_filter( 'max_srcset_image_width', $srcset_image_width, 10, 2 );
-			}
-
 			// Get it started.
 			$html = '';
 
@@ -700,11 +690,6 @@ class Mai_Grid {
 				$this::$existing_post_ids = array_unique( $this::$existing_post_ids );
 
 			$html .= $this->get_row_wrap_close();
-
-			// Remove srcset filter so other images aren't affected.
-			if ( in_array( 'image', $this->args['show'] ) ) {
-				remove_filter( 'max_srcset_image_width', $srcset_image_width, 10, 2 );
-			}
 		}
 
 		// No posts.
@@ -1525,9 +1510,9 @@ class Mai_Grid {
 		$has_bg_image  = ( 'bg' === $this->args['image_location'] );
 		$image_classes = 'wp-post-image';
 		$image_classes = $has_bg_image ? $image_classes . ' bg-image' : $image_classes;
-		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
+		// add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 		$image         = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => $image_classes ) );
-		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
+		// remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 		// $image         = wp_image_add_srcset_and_sizes( $image, wp_get_attachment_metadata( $image_id ), $image_id );
 		$sources       = mai_get_picture_sources( $image_id, $this->args['image_size'] );
 		$picture_atts  = $has_bg_image ? ' class="bg-picture"' : '';

@@ -517,6 +517,18 @@ function mai_boxed_comment_form() {
 }
 
 /**
+ * Set max srcset width to the size of the actual image being displayed.
+ *
+ * @since   1.11.0
+ *
+ * @return  integer
+ */
+add_filter( 'max_srcset_image_width', 'mai_srcset_image_width', 10, 2 );
+function mai_srcset_image_width( $size, $size_array ) {
+	return isset( $size_array[0] ) && ! empty( $size_array[0] ) ? $size_array[0] : $size;
+}
+
+/**
  * Add srcset markup to images retreived via `genesis_get_image()` function.
  *
  * @since   1.8.0

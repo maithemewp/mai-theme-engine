@@ -267,12 +267,8 @@ class Mai_Section {
 		$image_id   = $this->args['image'];
 		$image_size = $this->args['image_size'];
 
-		// Build image and add srcset.
-		// add_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
-		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
+		// Build image.
 		$image = wp_get_attachment_image( $this->args['image'], $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
-		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
-		// remove_filter( 'wp_calculate_image_srcset', array( $this, 'calculate_srcset' ), 10, 5 );
 
 		// Bail if no image.
 		if ( ! $image ) {
