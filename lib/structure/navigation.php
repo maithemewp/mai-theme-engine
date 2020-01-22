@@ -139,7 +139,9 @@ function mai_adjacent_post_link_thumbnail( $output, $format, $link, $post, $adja
 function _mai_get_adjacent_post_output( $output, $post ) {
 	$image_id = get_post_thumbnail_id( $post );
 	if ( $image_id ) {
+		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 		$image = wp_get_attachment_image( $image_id, 'tiny' );
+		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 		if ( $image ) {
 			// G < 2.7
 			$output = str_replace( '&#x000AB;', '&#x000AB;' . $image, $output );

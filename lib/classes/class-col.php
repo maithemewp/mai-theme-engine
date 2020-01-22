@@ -152,7 +152,9 @@ class Mai_Col {
 			}
 
 			// Do the image.
+			add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 			$image = wp_get_attachment_image( $image_id, $this->args['image_size'], false, array( 'class' => 'bg-image' ) );
+			remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 			if ( $image ) {
 				$attributes['class'] .= ' has-bg-image';
 				// $image = wp_image_add_srcset_and_sizes( $image_html, wp_get_attachment_metadata( $image_id ), $image_id );
