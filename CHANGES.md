@@ -7,6 +7,7 @@
 * Added: New `mai_flex_entry_info` and `mai_flex_entry_meta` filter to specifically filter info/meta in [grid],
 * Added: Styling for the search block.
 * Added: Styling for captions on image block.
+* Added: Support for new Genesis entry meta customizer settings.
 * Changed: No longer remove entry-header element when banner area is displayed.
 * Changed: Updated WooCommerce templates to latest version.
 * Changed: Better "starts with" JS, without regex.
