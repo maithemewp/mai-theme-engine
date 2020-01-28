@@ -12,6 +12,7 @@
 * Changed: Updated WooCommerce templates to latest version.
 * Changed: Better "starts with" JS, without regex.
 * Changed: Much less aggressive list styling.
+* Changed: Much better .scroll-to anchor link handling for slow scrolling to elements.
 * Fixed: Mobile menu should not display on Landing page template.
 * Fixed: Mobile menu now closes when using anchor links to the same page in a menu item. Example: `https://example.com/#some-element`
 * Fixed: Nav search button getting cut off in some edge cases.
