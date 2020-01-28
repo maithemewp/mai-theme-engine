@@ -191,22 +191,12 @@
 		$(this)._toggleSubMenu();
 	}
 
+	/**
+	 * Handle scroll-to anchor links in mobile menu.
+	 */
 	function _doAnchorLinkClicked() {
-		var href = $(this).attr('href');
-		/**
-		 * Bail if 1 or less characters.
-		 * We don't want to do anything on only # links.
-		 * And you shouldn't use those anyway.
-		 */
-		if ( href.length <= 1 ) {
-			return;
-		}
-		/**
-		 * Bail if a link doesn't start with #.
-		 * We can't process hashes at the end of actual links
-		 * because they may be offsite.
-		 */
-		if ( ! href.startsWith( '#' ) ) {
+		var $target = _maiGetHashElement( $(this) );
+		if ( ! $target ) {
 			return;
 		}
 		_closeAll();
@@ -392,6 +382,8 @@
  * Link
  * <a class="scroll-to" href="#element-id">Text</a>
  *
+ * Or Custom Link in menu, just add scroll-to class.
+ *
  * Target
  * <div id="element-id">Content</div>
  */
@@ -403,34 +395,27 @@
 	var hasReveal   = $body.hasClass( 'has-reveal-header' );
 	var needsOffset = false;
 
+	// _maiGlobalFunctions();
+
 	// On click of scroll-to elements.
 	$body.on( 'click', maiVars.maiScrollTo, function(e) {
 
-		var href = $(this).attr('href');
+		// Get the link element.
+		var $link = $(this);
+		if ( $link.hasClass( 'menu-item' ) ) {
+			$link = $link.find( 'a' );
+		}
 
-		/**
-		 * Bail if 1 or less characters.
-		 * We don't want to do anything on only # links.
-		 * And you shouldn't use those anyway.
-		 */
-		if ( href.length <= 1 ) {
+		// Bail if no link.
+		if ( ! $link.length ) {
 			return;
 		}
 
-		/**
-		 * Bail if a link doesn't start with #.
-		 * We can't process hashes at the end of actual links
-		 * because they may be offsite.
-		 */
-		if ( ! /^#/.test( href ) ) {
-			return;
-		}
-
-		// Get target element.
-		var $target = $( href );
+		// Get the target element.
+		var $target = _maiGetHashElement( $link );
 
 		// Bail if no target element.
-		if ( ! $target.length ) {
+		if ( ! $target ) {
 			return;
 		}
 
@@ -439,20 +424,94 @@
 		// Build initial offset.
 		var offset = $target.offset().top - parseInt( $html.css( 'marginTop' ) ) - 16;
 
-		// If sticky header or reveal header and scrolling up.
-		if ( hasSticky || ( hasReveal && ( $(this).offset().top > $target.offset().top ) ) ) {
+		// Handle header offset if sticky or reveal.
+		if ( hasSticky ) {
 			// Offset includes header height if we have a header.
 			var $header = $( '.site-header' );
 			var $height = $header.length ? $header.outerHeight() : 0;
 			offset = offset - $height;
+		} else if ( hasReveal ) {
+			var $header = $( '.site-header' );
+			var $height = $header.length ? $header.outerHeight() : 0;
+			// Scrolling down.
+			if ( $(this).offset().top < $target.offset().top ) {
+				var distance = $target.offset().top - $(this).offset().top;
+				// If scrolling enough. This is the same distance in scrolledDownEnough() in mai-scroll.js.
+				if ( distance < 320 ) {
+					offset = offset - $height;
+				}
+			}
+			// Srolling up.
+			else {
+				var distance = $(this).offset().top - $target.offset().top;
+				// If scrolling enough. This is the same distance in scrolledUpEnough() in mai-scroll.js.
+				if ( distance > 160 ) {
+					offset = offset - $height;
+				}
+			}
 		}
 
 		// Animate scroll to offset.
 		$( 'html, body' ).stop().animate({ scrollTop: offset }, 500 );
+
 	});
 
 })( document, jQuery );
 
+
+/**
+ * Get the element from a link's hash.
+ *
+ * @return  false|Object  false or the target element.
+ */
+function _maiGetHashElement( $link ) {
+
+	var $ = jQuery;
+
+	// Get the href.
+	var href = $link.attr( 'href' );
+
+	// Bail if no href.
+	if ( 'undefined' == typeof href || href.length <= 1 ) {
+		return false;
+	}
+
+	// Get the hash.
+	var hash = href.substring( href.indexOf('#') );
+
+	// Bail if no hash.
+	if ( ! hash.length ) {
+		return false;
+	}
+
+	/**
+	 * Bail if the link is external.
+	 *
+	 * @link  https://stackoverflow.com/questions/2910946/test-if-links-are-external-with-jquery-javascript/18660968#18660968
+	 */
+	if ( $link.prop( 'host' ) !== window.location.host ) {
+		return false;
+	}
+
+	/**
+	 * Bail if the link is not on the same page.
+	 *
+	 * @link  https://stackoverflow.com/questions/33818702/jquery-how-to-test-if-link-goes-to-anchor-on-same-page
+	 */
+	if ( href.indexOf( window.location.href ) > -1 ) {
+		return false;
+	}
+
+	// Get target element.
+	var $target = $( hash );
+
+	// Bail if no target element.
+	if ( ! $target.length ) {
+		return false;
+	}
+
+	return $target;
+}
 
 /**
  * Initialise Superfish with custom arguments.
@@ -523,6 +582,11 @@ function _maiGlobalFunctions() {
 			'aria-expanded': false,
 			'aria-pressed': false,
 		});
+		return $this;
+	};
+
+	$.fn._linkContainsValidScrollToHash = function(){
+		var $this = $(this);
 		return $this;
 	};
 

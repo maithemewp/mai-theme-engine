@@ -13,6 +13,7 @@
 * Changed: Better "starts with" JS, without regex.
 * Changed: Much less aggressive list styling.
 * Fixed: Mobile menu should not display on Landing page template.
+* Fixed: Mobile menu now closes when using anchor links to the same page in a menu item. Example: `https://example.com/#some-element`
 * Fixed: Nav search button getting cut off in some edge cases.
 * Fixed: Comment spacing when not displaying avatars in comments.
 * Fixed: Context setting in Sections template not working correctly.
@@ -22,6 +23,7 @@
 * Fixed: [grid] `adaptiveheight` parameter not working.
 * Fixed: Banner settings was not available on page for posts (blog page) when banner is hidden on Pages.
 * Fixed: Lists are now styled correctly in comments.
+* Fixed: Better aspect ratio boxes in Firefox.
 
 ## 1.10.4.1 (11/13/19)
 * Fixed: Hotfix for WPDI_Plugin_Installer_Skin dependency installer incompatibility with WordPress 5.3.
