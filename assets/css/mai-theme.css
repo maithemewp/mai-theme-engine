@@ -1792,7 +1792,8 @@ body.has-boxed-site-container {
 	width: 1px;
 	height: 0;
 	margin-left: -1px;
-	padding-bottom: calc( 100% / (var(--aspect-ratio)) );
+	/* switched to margin-bottom cause padding-bottom was causing issues in FF */
+	margin-bottom: calc( 100% / (var(--aspect-ratio)) );
 }
 
 /* we need outer wrap because padding bottom on flex child element breaks in older Edge (<=16) (18 is current at this time) / FF (<=59) (66 is current at this time) */
