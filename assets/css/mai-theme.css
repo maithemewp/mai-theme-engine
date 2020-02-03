@@ -3081,6 +3081,7 @@ ul.genesis-nav-menu {
 	flex: 0 0 auto;
 	margin: 0;
 	padding: 0;
+	list-style: none;
 }
 
 .genesis-nav-menu a {

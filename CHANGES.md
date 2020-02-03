@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.2 (2/3/20)
+* Fixed: Bullet showing when using Navigation Menu widget in Header widget areas.
+
 ## 1.11.1 (2/3/20)
 * Fixed: Hotfix for CMB2 filename change not reflected via git.
 
