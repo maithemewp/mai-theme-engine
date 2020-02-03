@@ -1,10 +1,13 @@
 # Changelog
 
+## 1.11.1 (2/3/20)
+* Fixed: Hotfix for CMB2 filename change not reflected via git.
+
 ## 1.11.0 (2/3/20)
-* Added: Section/Grid/Col background images and archive/featured images now use <picture> and <source> elements for much better mobile speed performance by loading smaller images on smaller window sizes.
+* Added: Section/Grid/Col background images and archive/featured images now use `<picture>` and `<source>` elements for much better mobile speed performance by loading smaller images on smaller window sizes.
 * Added: Now add a context of "hidden" (without quotes) to any Section in the Sections template to disable it from being displayed on the front end.
 * Added: New `mai_scroll_to_elements` filter to add elements by class/id/etc to allow slow scroll to anchor links.
-* Added: New `mai_flex_entry_info` and `mai_flex_entry_meta` filter to specifically filter info/meta in [grid],
+* Added: New `mai_flex_entry_info` and `mai_flex_entry_meta` filter to specifically filter info/meta in [grid].
 * Added: Styling for the search block.
 * Added: Styling for captions on image block.
 * Added: Support for new Genesis entry meta customizer settings.
