@@ -1,17 +1,17 @@
 [
     {
         "name": "cmb2/cmb2",
-        "version": "v2.6.0",
-        "version_normalized": "2.6.0.0",
+        "version": "v2.7.0",
+        "version_normalized": "2.7.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/CMB2/CMB2.git",
-            "reference": "008d9b83263d971d6bd41c27e31113db852d5ef3"
+            "reference": "438c26dda7ac110d0741448d65614b3ec6379034"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/CMB2/CMB2/zipball/008d9b83263d971d6bd41c27e31113db852d5ef3",
-            "reference": "008d9b83263d971d6bd41c27e31113db852d5ef3",
+            "url": "https://api.github.com/repos/CMB2/CMB2/zipball/438c26dda7ac110d0741448d65614b3ec6379034",
+            "reference": "438c26dda7ac110d0741448d65614b3ec6379034",
             "shasum": ""
         },
         "require": {
@@ -25,7 +25,7 @@
         "suggest": {
             "composer/installers": "~1.0"
         },
-        "time": "2019-01-21T04:30:08+00:00",
+        "time": "2020-01-21T17:49:50+00:00",
         "type": "wordpress-plugin",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -34,15 +34,15 @@
         ],
         "authors": [
             {
-                "name": "WebDevStudios",
-                "email": "contact@webdevstudios.com",
-                "homepage": "https://github.com/WebDevStudios",
-                "role": "Developer"
-            },
-            {
                 "name": "Justin Sternberg",
                 "email": "justin@dsgnwrks.pro",
                 "homepage": "https://dsgnwrks.pro",
+                "role": "Developer"
+            },
+            {
+                "name": "WebDevStudios",
+                "email": "contact@webdevstudios.com",
+                "homepage": "https://github.com/WebDevStudios",
                 "role": "Developer"
             }
         ],
