@@ -361,13 +361,6 @@ h6 {
 /* ## Titles
 --------------------------------------------- */
 
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
 .site-title a,
 .entry-title a,
 .sidebar .widgettitle a,
@@ -620,7 +613,6 @@ input::placeholder {
 	background-color: #323232;
 	color: #fff;
 }
-
 ::selection {
 	background-color: #323232;
 	color: #fff;
@@ -2014,6 +2006,13 @@ figcaption,
 .gallery-caption {
 	margin: 8px 0 0;
 	line-height: initial;
+}
+
+.entry-content ul.blocks-gallery-grid {
+	margin: 0;
+}
+.entry-content li.blocks-gallery-item {
+	margin-bottom: 0;
 }
 
 input[name="post_password"] {
