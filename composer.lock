@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f314518b90d81583b5bbb2b4462708ee",
+    "content-hash": "89c576272a1405258ce0b3064c21346f",
     "packages": [
         {
             "name": "cmb2/cmb2",
@@ -61,25 +61,26 @@
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
-            "version": "v4.8.1",
+            "version": "v4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-                "reference": "908249c92e81c46cb66e4d81632c5e917dc879ae"
+                "reference": "28f29c940cc22754aff85a99645e3c0a51c097e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/908249c92e81c46cb66e4d81632c5e917dc879ae",
-                "reference": "908249c92e81c46cb66e4d81632c5e917dc879ae",
+                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/28f29c940cc22754aff85a99645e3c0a51c097e8",
+                "reference": "28f29c940cc22754aff85a99645e3c0a51c097e8",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "php": ">=5.2.0"
             },
             "type": "library",
             "autoload": {
                 "files": [
-                    "load-v4p8.php"
+                    "load-v4p9.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -102,7 +103,7 @@
                 "theme updates",
                 "wordpress"
             ],
-            "time": "2019-10-08T12:15:30+00:00"
+            "time": "2020-02-07T11:07:19+00:00"
         }
     ],
     "packages-dev": [],
