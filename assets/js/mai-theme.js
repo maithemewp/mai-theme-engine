@@ -395,8 +395,6 @@
 	var hasReveal   = $body.hasClass( 'has-reveal-header' );
 	var needsOffset = false;
 
-	// _maiGlobalFunctions();
-
 	// On click of scroll-to elements.
 	$body.on( 'click', maiVars.maiScrollTo, function(e) {
 
