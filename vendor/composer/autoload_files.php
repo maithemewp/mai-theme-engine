@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'eb560c198217526cfde8ceb63ae508de' => $vendorDir . '/yahnis-elsts/plugin-update-checker/load-v4p8.php',
+    '241d2b5b9c1e680c0770b006b0271156' => $vendorDir . '/yahnis-elsts/plugin-update-checker/load-v4p9.php',
     'eb0e248b25b656ba76af120dff1e9323' => $vendorDir . '/cmb2/cmb2/init.php',
 );
