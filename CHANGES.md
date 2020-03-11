@@ -1,7 +1,10 @@
 # Changelog
 
+## 1.11.4 (2/11/20)
+* Fixed: Even better alignment on gallery block items.
+
 ## 1.11.3 (2/6/20)
-* Fixed: Alignment on gallery blocks.
+* Fixed: Alignment on gallery block items.
 
 ## 1.11.2 (2/3/20)
 * Fixed: Bullet showing when using Navigation Menu widget in Header widget areas.
