@@ -2009,10 +2009,10 @@ figcaption,
 }
 
 .entry-content ul.blocks-gallery-grid {
-	margin: 0;
+	margin: 0 0 24px;
 }
 .entry-content li.blocks-gallery-item {
-	margin-bottom: 0;
+	margin-bottom: 16px;
 }
 
 input[name="post_password"] {
