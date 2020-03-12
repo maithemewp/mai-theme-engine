@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.5 (2/12/20)
+* Fixed: Gallery alignment again again.
+
 ## 1.11.4 (2/11/20)
 * Fixed: Even better alignment on gallery block items.
 
