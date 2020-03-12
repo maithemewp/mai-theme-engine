@@ -2011,7 +2011,9 @@ figcaption,
 .entry-content ul.blocks-gallery-grid {
 	margin: 0 0 24px;
 }
-.entry-content li.blocks-gallery-item {
+.entry-content li.blocks-gallery-item,
+.entry-content li.blocks-gallery-item:first-of-type,
+.entry-content li.blocks-gallery-item:last-of-type {
 	margin-bottom: 16px;
 }
 
