@@ -471,7 +471,9 @@ class Mai_Section {
 		$html = '';
 		$html .= $this->get_section_title();
 		if ( $this->full_width_image ) {
-			$html .= wp_kses_post( wp_make_content_images_responsive( trim( $this->content ) ) );
+			$content = trim( $this->content );
+			$content = function_exists( 'wp_filter_content_tags' ) ? wp_filter_content_tags( $content ) : wp_make_content_images_responsive( $content ); // WP runs priority 10. WP 5.5 with fallback.
+			$html   .= wp_kses_post( $content );
 		} else {
 			$html .= mai_get_processed_content( $this->content );
 		}
