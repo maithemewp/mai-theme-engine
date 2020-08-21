@@ -19,7 +19,7 @@ function mai_get_processed_content( $content ) {
 	$content = wpautop( $content );                           // WP runs priority 10.
 	$content = mai_content_filter_shortcodes( $content );     // after wpautop, before shortcodes are parsed.
 	$content = shortcode_unautop( $content );                 // WP runs priority 10.
-	$content = wp_make_content_images_responsive( $content ); // WP runs priority 10.
+	$content = function_exists( 'wp_filter_content_tags' ) ? wp_filter_content_tags( $content ) : wp_make_content_images_responsive( $content ); // WP runs priority 10. WP 5.5 with fallback.
 	$content = do_shortcode( $content );                      // WP runs priority 11.
 	$content = convert_smilies( $content );                   // WP runs priority 20.
 	return $content;

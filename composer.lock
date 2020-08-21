@@ -61,16 +61,16 @@
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
-            "version": "v4.9",
+            "version": "v4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-                "reference": "28f29c940cc22754aff85a99645e3c0a51c097e8"
+                "reference": "0edd15f67822464af8a23285ce367b30d515a855"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/28f29c940cc22754aff85a99645e3c0a51c097e8",
-                "reference": "28f29c940cc22754aff85a99645e3c0a51c097e8",
+                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/0edd15f67822464af8a23285ce367b30d515a855",
+                "reference": "0edd15f67822464af8a23285ce367b30d515a855",
                 "shasum": ""
             },
             "require": {
@@ -80,7 +80,7 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "load-v4p9.php"
+                    "load-v4p10.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -103,7 +103,7 @@
                 "theme updates",
                 "wordpress"
             ],
-            "time": "2020-02-07T11:07:19+00:00"
+            "time": "2020-08-21T11:36:45+00:00"
         }
     ],
     "packages-dev": [],
