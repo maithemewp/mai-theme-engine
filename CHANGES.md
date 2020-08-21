@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.6 (8/21/20)
+* Fixed: Compatibility with WP 5.5, deprecated `wp_make_content_images_responsive()` in favor of `wp_filter_content_tags()` when available.
+* Changed: Update updater.
+
 ## 1.11.5 (2/12/20)
 * Fixed: Gallery alignment again again.
 

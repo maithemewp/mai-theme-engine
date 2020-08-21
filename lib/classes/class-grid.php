@@ -1614,7 +1614,7 @@ class Mai_Grid {
 		$content = convert_smilies( $content );
 		$content = wpautop( $content );
 		$content = shortcode_unautop( $content );
-		$content = wp_make_content_images_responsive( $content );
+		$content = function_exists( 'wp_filter_content_tags' ) ? wp_filter_content_tags( $content ) : wp_make_content_images_responsive( $content ); // WP runs priority 10. WP 5.5 with fallback.
 		return $content;
 	}
 

@@ -159,6 +159,7 @@ function mai_do_banner_content() {
 
 	// Term archives.
 	elseif ( is_category() || is_tag() || is_tax() ) {
+		// This is from genesis_do_taxonomy_title_description().
 		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
 		if ( $term ) {
 			$title = get_term_meta( $term->term_id, 'headline', true );
