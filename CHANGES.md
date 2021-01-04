@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.11.8 (TBD)
+## 1.11.8 (1/4/21)
 * Fixed: Deprecated jQuery load() functions.
 * Fixed: Updated WooCommerce template versions.
 
