@@ -504,8 +504,8 @@ function mai_change_from_sections_template_warning( $object_id, $cmb ) {
 	$alert = __( 'Warning! Changing to another page template will delete Sections template settings and data. Your content will be moved to the regular editor, but there is no going back!', 'mai-theme-engine' );
 
 	printf( "<script>
-		jQuery(window).load( function() {
-			$( '#pageparentdiv' ).on( 'change', 'select#page_template', function() {
+		jQuery(document).ready( function($) {
+			$('#pageparentdiv').on('change', 'select#page_template', function() {
 				if ( 'sections.php' !== $(this).val() ) {
 					alert( '%s' );
 				}
