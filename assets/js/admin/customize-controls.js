@@ -1,7 +1,4 @@
-jQuery(window).load( function($) {
-
-	var $ = jQuery;
-
+jQuery( document ).ready( function( $ ) {
 	/**
 	 * Slider multicheck.
 	 */
