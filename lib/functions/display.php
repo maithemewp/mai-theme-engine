@@ -608,26 +608,38 @@ function mai_get_sitemap() {
 
 	$post_counts = wp_count_posts();
 	if ( $post_counts->publish > 0 ) {
-		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Categories:', 'mai-theme-engine' ), $heading );
-		$sitemap .= sprintf( '<ul>%s</ul>', wp_list_categories( array(
-			'number'      => $number,
-			'sort_column' => 'name',
-			'title_li'    => '',
-			'echo'        => false,
-		) ) );
-		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Authors:', 'mai-theme-engine' ), $heading );
-		$sitemap .= sprintf( '<ul>%s</ul>', wp_list_authors( array(
-			'number'        => $number,
-			'exclude_admin' => false,
-			'optioncount'   => true,
-			'echo'          => false,
-		) ) );
-		$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Monthly:', 'mai-theme-engine' ), $heading );
-		$sitemap .= sprintf( '<ul>%s</ul>', wp_get_archives( array(
-			'number' => $number,
-			'type'   => 'monthly',
-			'echo'   => false,
-		) ) );
+
+		if ( apply_filters( 'mai_sitemap_show_categories', true ) ) {
+
+			$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Categories:', 'mai-theme-engine' ), $heading );
+			$sitemap .= sprintf( '<ul>%s</ul>', wp_list_categories( array(
+				'number'      => $number,
+				'sort_column' => 'name',
+				'title_li'    => '',
+				'echo'        => false,
+			) ) );
+		}
+
+		if ( apply_filters( 'mai_sitemap_show_authors', true ) ) {
+
+			$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Authors:', 'mai-theme-engine' ), $heading );
+			$sitemap .= sprintf( '<ul>%s</ul>', wp_list_authors( array(
+				'number'        => $number,
+				'exclude_admin' => false,
+				'optioncount'   => true,
+				'echo'          => false,
+			) ) );
+		}
+
+		if ( apply_filters( 'mai_sitemap_show_monthly', true ) ) {
+
+			$sitemap .= sprintf( '<%2$s>%1$s</%2$s>', __( 'Monthly:', 'mai-theme-engine' ), $heading );
+			$sitemap .= sprintf( '<ul>%s</ul>', wp_get_archives( array(
+				'number' => $number,
+				'type'   => 'monthly',
+				'echo'   => false,
+			) ) );
+		}
 	}
 
 	return $sitemap;

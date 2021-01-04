@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.8 (1/4/21)
+* Fixed: Deprecated jQuery load() functions.
+* Fixed: Updated WooCommerce template versions.
+
+## 1.11.7 (9/3/20)
+* Changed: Added sitemap content type PHP filters.
+
 ## 1.11.6 (8/21/20)
 * Fixed: Compatibility with WP 5.5, deprecated `wp_make_content_images_responsive()` in favor of `wp_filter_content_tags()` when available.
 * Changed: Update updater.
