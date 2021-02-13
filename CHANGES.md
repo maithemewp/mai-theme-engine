@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.9 (2/13/21)
+* Changed: Update CMB2 to 2.8.0.
+
 ## 1.11.8 (1/4/21)
 * Fixed: Deprecated jQuery load() functions.
 * Fixed: Updated WooCommerce template versions.
