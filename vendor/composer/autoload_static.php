@@ -7,13 +7,18 @@ namespace Composer\Autoload;
 class ComposerStaticInit29cbfa4c66a87652b0a20a26f9238cc1
 {
     public static $files = array (
-        '689b08b7620712b04324ecd7ed167c6b' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v4p10.php',
+        '49a1299791c25c6fd83542c6fedacddd' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v4p11.php',
         'eb0e248b25b656ba76af120dff1e9323' => __DIR__ . '/..' . '/cmb2/cmb2/init.php',
+    );
+
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->classMap = ComposerStaticInit29cbfa4c66a87652b0a20a26f9238cc1::$classMap;
 
         }, null, ClassLoader::class);
     }
