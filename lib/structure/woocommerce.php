@@ -274,9 +274,9 @@ function mai_woo_before_related( $template_name, $template_path, $located, $args
 		return;
 	}
 	add_filter( 'mai_get_columns', 'mai_woo_related_columns' );
-	function mai_woo_related_columns( $columns ) {
-		return 3;
-	}
+}
+function mai_woo_related_columns( $columns ) {
+	return 3;
 }
 
 /**
@@ -309,9 +309,9 @@ function mai_woo_before_crosssells( $template_name, $template_path, $located, $a
 		return;
 	}
 	add_filter( 'mai_get_columns', 'mai_woo_crosssells_columns' );
-	function mai_woo_crosssells_columns( $columns ) {
-		return 2;
-	}
+}
+function mai_woo_crosssells_columns( $columns ) {
+	return 2;
 }
 
 /**
