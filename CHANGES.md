@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.0 (6/25/21)
+* Changed: Update CMB2 to 2.9.0
+* Changed: Update updater.
+* Fixed: Duplicate function error in WooCommerce if another plugin calls a template a second time.
+
 ## 1.11.9 (2/13/21)
 * Changed: Update CMB2 to 2.8.0.
 
