@@ -1,6 +1,77 @@
 <?php
 
 /**
+ * Add dismissible upgrade notice.
+ *
+ * @since TBD
+ *
+ * @return void
+ */
+add_action( 'admin_notices', 'mai_upgrade_notice', 4 );
+function mai_upgrade_notice() {
+	$days        = 14;
+	$dismissible = sprintf( 'mai_upgrade_notice-%s', $days );
+
+	if ( class_exists( 'PAnD' ) && ! PAnD::is_admin_notice_active( $dismissible ) ) {
+		return;
+	}
+
+	printf( '<div class="notice is-dismissible mai-upgrade-notice" data-dismissible="%s">', $dismissible );
+	?>
+		<style>
+			.mai-upgrade-notice {
+				--bizbudding-green: #bcda83;
+				--bizbudding-green-dark: #a5ce5a;
+				display: grid;
+				gap: 24px;
+				grid-template-columns: 36px 1fr auto;
+				padding: 12px 18px;
+				border-left: 8px solid var(--bizbudding-green);
+				border-radius: 4px;
+				box-shadow: 0px 14px 20px -8px rgba(0,0,0,0.1);
+			}
+			.mai-upgrade-notice img {
+				display: block;
+				max-width: 36px;
+				margin-top: 6px;
+			}
+			.mai-upgrade-notice .button {
+				padding: 16px 24px !important;
+				background: var(--bizbudding-green) !important;
+				color: #181f09 !important;
+				line-height: 1.2;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				border: 0;
+				transition: all 150ms ease-in-out;
+				transform: translateY(0);
+			}
+			.mai-upgrade-notice .button:hover,
+			.mai-upgrade-notice .button:focus {
+				background: var(--bizbudding-green-dark) !important;
+				color: #181f09 !important;
+				transform: translateY(-1px);
+			}
+			.mai-notice-button {
+				display: grid;
+				place-items: center;
+			}
+		</style>
+		<div class="mai-notice-col">
+			<?php printf( '<img width="36" height="36" src="%s">', MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png' ); ?>
+		</div>
+		<div class="mai-notice-col">
+			<p class="notice-title"><strong>Mai Theme</strong> - Support for the <strong>Classic Editor</strong> is ending!</p>
+			<p><href="https://bizbudding.com/">BizBudding</a> has completely rebuilt Mai Theme v2 from the ground up to support the block editor. It's even more powerful, more flexible, easier to customize, and much faster. Most of all, it's built for use with blocks. Interested to <a href="#">learn how to upgrade</a>?</p>
+		</div>
+		<div class="mai-notice-col mai-notice-button">
+			<a href="#" class="button">Learn More</a>
+		</div>
+	</div>
+	<?php
+}
+
+/**
  * Enqueue an admin script, for custom editor styles and other stuff.
  *
  * @return void

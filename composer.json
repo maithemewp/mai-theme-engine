@@ -1,10 +1,10 @@
-
 {
     "name": "maithemewp/mai-theme-engine",
     "description": "The required plugin to power Mai Theme child themes",
     "require": {
         "cmb2/cmb2": "^2.7",
-        "yahnis-elsts/plugin-update-checker": "^4.8.1"
+        "yahnis-elsts/plugin-update-checker": "^4.8.1",
+        "collizo4sky/persist-admin-notices-dismissal": "^1.4"
     },
     "autoload"    : {
         "files": [

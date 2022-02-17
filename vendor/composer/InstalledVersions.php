@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '1916e69df87e89715069e4fecdaa95737b3f7261',
+    'reference' => '050c8d98666ddfa7ddba64d4e1136c8d18b8f02c',
     'name' => 'maithemewp/mai-theme-engine',
   ),
   'versions' => 
@@ -46,6 +46,15 @@ private static $installed = array (
       ),
       'reference' => '4ff77d6181d3b5b8313091c50b7cffdbbfff3b32',
     ),
+    'collizo4sky/persist-admin-notices-dismissal' => 
+    array (
+      'pretty_version' => '1.4.4',
+      'version' => '1.4.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '900739eb6b0ec0210465f5983a6d4e0e420289e4',
+    ),
     'maithemewp/mai-theme-engine' => 
     array (
       'pretty_version' => 'dev-develop',
@@ -53,7 +62,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '1916e69df87e89715069e4fecdaa95737b3f7261',
+      'reference' => '050c8d98666ddfa7ddba64d4e1136c8d18b8f02c',
     ),
     'yahnis-elsts/plugin-update-checker' => 
     array (
