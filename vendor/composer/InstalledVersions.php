@@ -32,19 +32,19 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd886e1e7346a86fd513256d8a3b103abdaa8116f',
+    'reference' => '1916e69df87e89715069e4fecdaa95737b3f7261',
     'name' => 'maithemewp/mai-theme-engine',
   ),
   'versions' => 
   array (
     'cmb2/cmb2' => 
     array (
-      'pretty_version' => 'v2.9.0',
-      'version' => '2.9.0.0',
+      'pretty_version' => 'v2.10.0',
+      'version' => '2.10.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'cacbc8cedbfdf8ffe0e840858e6860f9333c33f2',
+      'reference' => '4ff77d6181d3b5b8313091c50b7cffdbbfff3b32',
     ),
     'maithemewp/mai-theme-engine' => 
     array (
@@ -53,7 +53,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd886e1e7346a86fd513256d8a3b103abdaa8116f',
+      'reference' => '1916e69df87e89715069e4fecdaa95737b3f7261',
     ),
     'yahnis-elsts/plugin-update-checker' => 
     array (
