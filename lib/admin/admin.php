@@ -11,6 +11,7 @@ add_action( 'admin_notices', 'mai_upgrade_notice', 4 );
 function mai_upgrade_notice() {
 	$days        = 14;
 	$dismissible = sprintf( 'mai_upgrade_notice-%s', $days );
+	$url         = 'https://help.bizbudding.com/article/209-upgrade?utm_source=mai-theme-engine&utm_medium=link&utm_campaign=v1';
 
 	if ( class_exists( 'PAnD' ) && ! PAnD::is_admin_notice_active( $dismissible ) ) {
 		return;
@@ -62,10 +63,10 @@ function mai_upgrade_notice() {
 		</div>
 		<div class="mai-notice-col">
 			<p class="notice-title"><strong>Mai Theme</strong> - Support for the <strong>Classic Editor</strong> is ending!</p>
-			<p><href="https://bizbudding.com/">BizBudding</a> has completely rebuilt Mai Theme v2 from the ground up to support the block editor. It's even more powerful, more flexible, easier to customize, and much faster. Most of all, it's built for use with blocks. Interested to <a href="#">learn how to upgrade</a>?</p>
+			<p><a target="_blank" href="<?php echo $url ?>">BizBudding</a> has completely rebuilt Mai Theme from the ground up, not only to support the block editor, but to fully leverage it. Mai Theme v2 is now even more powerful and flexible, easier to customize, and much faster. Interested in <a target="_blank" href="<?php echo $url ?>">learning how to upgrade</a>?</p>
 		</div>
 		<div class="mai-notice-col mai-notice-button">
-			<a href="#" class="button">Learn More</a>
+			<a target="_blank" href="<?php echo $url ?>" class="button">Learn More</a>
 		</div>
 	</div>
 	<?php

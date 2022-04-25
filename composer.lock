@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "cmb2/cmb2",
-            "version": "v2.10.0",
+            "version": "v2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CMB2/CMB2.git",
-                "reference": "4ff77d6181d3b5b8313091c50b7cffdbbfff3b32"
+                "reference": "4afc4bb7b92ab6d93aac2247c9a84af773e42532"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/4ff77d6181d3b5b8313091c50b7cffdbbfff3b32",
-                "reference": "4ff77d6181d3b5b8313091c50b7cffdbbfff3b32",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/4afc4bb7b92ab6d93aac2247c9a84af773e42532",
+                "reference": "4afc4bb7b92ab6d93aac2247c9a84af773e42532",
                 "shasum": ""
             },
             "require": {
@@ -63,7 +63,7 @@
                 "issues": "https://github.com/CMB2/CMB2/issues",
                 "source": "http://wordpress.org/support/plugin/cmb2"
             },
-            "time": "2022-02-15T17:14:24+00:00"
+            "time": "2022-02-22T14:15:16+00:00"
         },
         {
             "name": "collizo4sky/persist-admin-notices-dismissal",
