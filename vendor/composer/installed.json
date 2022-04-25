@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "cmb2/cmb2",
-            "version": "v2.9.0",
-            "version_normalized": "2.9.0.0",
+            "version": "v2.10.1",
+            "version_normalized": "2.10.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CMB2/CMB2.git",
-                "reference": "cacbc8cedbfdf8ffe0e840858e6860f9333c33f2"
+                "reference": "4afc4bb7b92ab6d93aac2247c9a84af773e42532"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/cacbc8cedbfdf8ffe0e840858e6860f9333c33f2",
-                "reference": "cacbc8cedbfdf8ffe0e840858e6860f9333c33f2",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/4afc4bb7b92ab6d93aac2247c9a84af773e42532",
+                "reference": "4afc4bb7b92ab6d93aac2247c9a84af773e42532",
                 "shasum": ""
             },
             "require": {
@@ -22,12 +22,13 @@
                 "apigen/apigen": "4.1.2",
                 "awesomemotive/am-cli-tools": ">=1.3.1",
                 "nette/utils": "2.5.3",
-                "phpunit/phpunit": "6.5.13"
+                "phpunit/phpunit": "^6.5",
+                "yoast/phpunit-polyfills": "^1.0"
             },
             "suggest": {
                 "composer/installers": "~1.0"
             },
-            "time": "2021-03-04T02:18:53+00:00",
+            "time": "2022-02-22T14:15:16+00:00",
             "type": "wordpress-plugin",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -60,6 +61,50 @@
                 "source": "http://wordpress.org/support/plugin/cmb2"
             },
             "install-path": "../cmb2/cmb2"
+        },
+        {
+            "name": "collizo4sky/persist-admin-notices-dismissal",
+            "version": "1.4.4",
+            "version_normalized": "1.4.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/w3guy/persist-admin-notices-dismissal.git",
+                "reference": "900739eb6b0ec0210465f5983a6d4e0e420289e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/w3guy/persist-admin-notices-dismissal/zipball/900739eb6b0ec0210465f5983a6d4e0e420289e4",
+                "reference": "900739eb6b0ec0210465f5983a6d4e0e420289e4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "time": "2020-12-31T17:12:37+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "persist-admin-notices-dismissal.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Collins Agbonghama",
+                    "email": "me@w3guy.com",
+                    "role": "developer"
+                }
+            ],
+            "description": "Simple library to persist dismissal of admin notices across pages in WordPress dashboard.",
+            "support": {
+                "issues": "https://github.com/w3guy/persist-admin-notices-dismissal/issues",
+                "source": "https://github.com/w3guy/persist-admin-notices-dismissal"
+            },
+            "install-path": "../collizo4sky/persist-admin-notices-dismissal"
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
