@@ -1,7 +1,11 @@
 # Changelog
 
+## 1.13.0 (4/25/22)
+* Added: Admin notice about WordPress ending support for the classic editor and upgrading to Mai Theme v2.
+* Changed: Update CMB2 to 2.10.1.
+
 ## 1.12.0 (6/25/21)
-* Changed: Update CMB2 to 2.9.0
+* Changed: Update CMB2 to 2.9.0.
 * Changed: Update updater.
 * Fixed: Duplicate function error in WooCommerce if another plugin calls a template a second time.
 
