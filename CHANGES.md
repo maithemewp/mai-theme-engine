@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.13.1 (4/27/22)
+* Fixed: Admin notice not staying dismissed after Dashboard page refresh in some scenarios.
+
 ## 1.13.0 (4/25/22)
 * Added: Admin notice about WordPress ending support for the classic editor and upgrading to Mai Theme v2.
 * Changed: Update CMB2 to 2.10.1.
