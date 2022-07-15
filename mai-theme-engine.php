@@ -5,7 +5,7 @@
  * Plugin URI:      https://bizbudding.com/mai-theme/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.13.0
+ * Version:         1.13.2
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -89,7 +89,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.13.0' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.13.1' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1600' );
@@ -179,10 +179,7 @@ final class Mai_Theme_Engine {
 			add_filter( 'genesis_load_deprecated', '__return_false' );
 
 			// Add HTML5 markup structure.
-			add_theme_support( 'html5' );
-
-			// Add HTML5 gallery and caption support.
-			add_theme_support( 'html5', array( 'gallery', 'caption' ) );
+			add_theme_support( 'html5', array( 'caption', 'comment-form', 'comment-list', 'gallery', 'search-form' ) );
 
 			// Add title tag support.
 			add_theme_support( 'title-tag' );

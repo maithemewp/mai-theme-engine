@@ -1,51 +1,50 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => 'dev-develop',
-    'version' => 'dev-develop',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => 'c81c272dece649cc00a95f758d6891aa2a9cbc0e',
+        'name' => 'maithemewp/mai-theme-engine',
+        'dev' => true,
     ),
-    'reference' => '7a1cbefc401eeaba84eb01268bb3ea5c8ade13f6',
-    'name' => 'maithemewp/mai-theme-engine',
-  ),
-  'versions' => 
-  array (
-    'cmb2/cmb2' => 
-    array (
-      'pretty_version' => 'v2.10.1',
-      'version' => '2.10.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '4afc4bb7b92ab6d93aac2247c9a84af773e42532',
+    'versions' => array(
+        'cmb2/cmb2' => array(
+            'pretty_version' => 'v2.10.1',
+            'version' => '2.10.1.0',
+            'type' => 'wordpress-plugin',
+            'install_path' => __DIR__ . '/../cmb2/cmb2',
+            'aliases' => array(),
+            'reference' => '4afc4bb7b92ab6d93aac2247c9a84af773e42532',
+            'dev_requirement' => false,
+        ),
+        'collizo4sky/persist-admin-notices-dismissal' => array(
+            'pretty_version' => '1.4.4',
+            'version' => '1.4.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../collizo4sky/persist-admin-notices-dismissal',
+            'aliases' => array(),
+            'reference' => '900739eb6b0ec0210465f5983a6d4e0e420289e4',
+            'dev_requirement' => false,
+        ),
+        'maithemewp/mai-theme-engine' => array(
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => 'c81c272dece649cc00a95f758d6891aa2a9cbc0e',
+            'dev_requirement' => false,
+        ),
+        'yahnis-elsts/plugin-update-checker' => array(
+            'pretty_version' => 'v4.11',
+            'version' => '4.11.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../yahnis-elsts/plugin-update-checker',
+            'aliases' => array(),
+            'reference' => '3155f2d3f1ca5e7ed3f25b256f020e370515af43',
+            'dev_requirement' => false,
+        ),
     ),
-    'collizo4sky/persist-admin-notices-dismissal' => 
-    array (
-      'pretty_version' => '1.4.4',
-      'version' => '1.4.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '900739eb6b0ec0210465f5983a6d4e0e420289e4',
-    ),
-    'maithemewp/mai-theme-engine' => 
-    array (
-      'pretty_version' => 'dev-develop',
-      'version' => 'dev-develop',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '7a1cbefc401eeaba84eb01268bb3ea5c8ade13f6',
-    ),
-    'yahnis-elsts/plugin-update-checker' => 
-    array (
-      'pretty_version' => 'v4.11',
-      'version' => '4.11.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '3155f2d3f1ca5e7ed3f25b256f020e370515af43',
-    ),
-  ),
 );

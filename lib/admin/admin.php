@@ -3,33 +3,61 @@
 /**
  * Add dismissible upgrade notice.
  *
- * @since TBD
+ * @since 1.13.0
  *
  * @return void
  */
 add_action( 'admin_notices', 'mai_upgrade_notice', 4 );
 function mai_upgrade_notice() {
-	$days        = 14;
-	$dismissible = sprintf( 'mai_upgrade_notice-%s', $days );
-	$url         = 'https://help.bizbudding.com/article/209-upgrade?utm_source=mai-theme-engine&utm_medium=link&utm_campaign=v1';
-
-	if ( class_exists( 'PAnD' ) && ! PAnD::is_admin_notice_active( $dismissible ) ) {
+	if ( ! current_user_can( 'switch_themes' ) ) {
 		return;
 	}
 
-	printf( '<div class="notice is-dismissible mai-upgrade-notice" data-dismissible="%s">', $dismissible );
+	$url       = 'https://help.bizbudding.com/article/209-upgrade?utm_source=mai-theme-engine&utm_medium=link&utm_campaign=v1';
+	$timestamp = get_user_option( 'mai_upgrade_notice', get_current_user_id() );
+
+	// Bail if already dismissed.
+	if ( $timestamp && current_time( 'timestamp' ) < $timestamp ) {
+		return;
+	}
 	?>
+	<div class="notice mai-upgrade-notice">
 		<style>
 			.mai-upgrade-notice {
 				--bizbudding-green: #bcda83;
 				--bizbudding-green-dark: #a5ce5a;
+				position: relative;
 				display: grid;
-				gap: 24px;
+				gap: 16px;
 				grid-template-columns: 36px 1fr auto;
-				padding: 12px 18px;
+				padding: 24px 18px;
 				border-left: 8px solid var(--bizbudding-green);
 				border-radius: 4px;
 				box-shadow: 0px 14px 20px -8px rgba(0,0,0,0.1);
+			}
+			.mai-upgrade-actions {
+				position: absolute;
+				top: 8px;
+				right: 16px;
+				margin: 0 !important;
+				color rgba(0, 0, 0, 0.5);
+			}
+			.mai-upgrade-notice .mai-upgrade-dismiss {
+				color: currentColor;
+				font-variant: all-small-caps;
+				text-decoration: none;
+				transition: all 0.1s ease-in-out;
+			}
+			.mai-upgrade-notice .mai-upgrade-dismiss:hover,
+			.mai-upgrade-notice .mai-upgrade-dismiss:focus {
+				opacity: 1 !important;
+			}
+			.mai-upgrade-notice .mai-upgrade-dismiss-later:hover,
+			.mai-upgrade-notice .mai-upgrade-dismiss-later:focus {
+				color: var(--bizbudding-green-dark) !important;
+			}
+			.mai-upgrade-notice .mai-upgrade-dismiss::before {
+				display: none !important;
 			}
 			.mai-upgrade-notice img {
 				display: block;
@@ -58,6 +86,11 @@ function mai_upgrade_notice() {
 				place-items: center;
 			}
 		</style>
+		<p class="mai-upgrade-actions">
+			<a class="mai-upgrade-dismiss" data-weeks="9999" role="button" href="#" style="opacity:0.5;"><?php echo __( 'Do not ask again', 'mai-theme-engine' ); ?></a>
+			<span style="margin:0 8px;opacity:0.5;">|</span>
+			<a class="mai-upgrade-dismiss mai-upgrade-dismiss-later" data-weeks="4" role="button" href="#"><?php echo __( 'Remind me later', 'mai-theme-engine' ); ?>&nbsp;<span class="dashicons dashicons-no-alt"></span></a>
+		</p>
 		<div class="mai-notice-col">
 			<?php printf( '<img width="36" height="36" src="%s">', MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png' ); ?>
 		</div>
@@ -70,6 +103,61 @@ function mai_upgrade_notice() {
 		</div>
 	</div>
 	<?php
+	/**
+	 * Adds ajax script to the footer.
+	 *
+	 * @return void
+	 */
+	add_action( 'admin_footer', function() {
+		$ajaxurl = admin_url( 'admin-ajax.php' );
+		?>
+		<script>
+			jQuery(document).ready(function($) {
+				$( '.mai-upgrade-notice' ).on( 'click', '.mai-upgrade-dismiss', function(e) {
+					e.preventDefault();
+					jQuery.ajax({
+						type: 'post',
+						url: '<?php echo $ajaxurl; ?>',
+						data: {
+							action: 'mai_dismiss_upgrade_notice',
+							weeks: $(this).data( 'weeks' ),
+						},
+						success: function( response ) {
+							$( '.mai-upgrade-notice' ).fadeOut();
+						},
+					});
+				});
+			});
+		</script>
+		<?php
+	});
+}
+
+/**
+ * Adds user option to dismiss upgrade notice for set amount of time.
+ *
+ * @since 1.13.1
+ *
+ * @return void
+ */
+add_action( 'wp_ajax_mai_dismiss_upgrade_notice', 'mai_dismiss_upgrade_notice' );
+function mai_dismiss_upgrade_notice() {
+	if ( ! current_user_can( 'switch_themes' ) ) {
+		wp_die(
+			__( 'You do not have permission.', 'mai-theme-engine' ),
+			__( 'Error', 'mai-theme-engine' ),
+			[
+				'response' 	=> 403,
+			]
+		);
+	}
+
+	$weeks = filter_input( INPUT_POST, 'weeks', FILTER_SANITIZE_NUMBER_INT );
+	$weeks = $weeks ?: 4;
+	$now   = current_time( 'timestamp' );
+	$again = strtotime( sprintf( '+%s weeks', $weeks ), $now );
+
+	update_user_option( get_current_user_id(), 'mai_upgrade_notice', $again );
 }
 
 /**
