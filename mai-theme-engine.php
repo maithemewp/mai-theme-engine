@@ -5,7 +5,7 @@
  * Plugin URI:      https://bizbudding.com/mai-theme/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.13.1
+ * Version:         1.13.2
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.13.2 (7/15/22)
+* Fixed: Function `add_theme_support( 'html' )` as called incorrectly warning.
+
 ## 1.13.1 (4/27/22)
 * Fixed: Admin notice not staying dismissed after Dashboard page refresh in some scenarios.
 
