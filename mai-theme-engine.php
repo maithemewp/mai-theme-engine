@@ -179,10 +179,7 @@ final class Mai_Theme_Engine {
 			add_filter( 'genesis_load_deprecated', '__return_false' );
 
 			// Add HTML5 markup structure.
-			add_theme_support( 'html5' );
-
-			// Add HTML5 gallery and caption support.
-			add_theme_support( 'html5', array( 'gallery', 'caption' ) );
+			add_theme_support( 'html5', array( 'caption', 'comment-form', 'comment-list', 'gallery', 'search-form' ) );
 
 			// Add title tag support.
 			add_theme_support( 'title-tag' );
