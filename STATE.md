@@ -5,7 +5,7 @@ Updated: 2026-11-11 by Claude
 Legacy plugin, security fixes only (plus easy wins). 1.14.0 is a security and PHP 8 release: banner shortcode injection from search and user names, raw $_POST into genesis-settings, grid/section tag and class XSS, grid status and post type leaks, PHP 8 fatals and deprecations, WP 6.7 textdomain notice, restyled security-only upgrade notice.
 
 ## Next
-Nothing planned. Possible later: move plugin-update-checker to 5.x (4.13 still logs PHP 8.4 implicit-nullable deprecations; 5.x renames classes, so test updates end to end).
+Nothing planned.
 
 ## Blocked / waiting on
 Nothing.

@@ -11,7 +11,7 @@
 * Security: Added nonces to admin notice dismissals.
 * Security: Updated CMB2 to 2.13.5, which includes several security fixes.
 * Changed: Now requires PHP 7.4, to match CMB2.
-* Changed: Updated plugin-update-checker to 4.13 and persist-admin-notices-dismissal to 1.4.5.
+* Changed: Updated plugin-update-checker to 6.0 and persist-admin-notices-dismissal to 1.4.5.
 * Changed: Restyled the upgrade notice. Mai Theme v1 now only gets security updates.
 * Fixed: "Translation loading was triggered too early" notice in WordPress 6.7+.
 * Fixed: Fatal error in PHP 8 when using grid `exclude_displayed` or `exclude_current` with other exclusions.
