@@ -8,6 +8,8 @@
 class Mai_Section {
 
 	private $args;
+	private $original_args;
+	private $image_sizes = array();
 	private $content;
 	private $full_width_image;
 	private $has_content;
@@ -67,8 +69,8 @@ class Mai_Section {
 			'style'         => sanitize_text_field( $this->args['style'] ), // HTML inline style
 			'text_size'     => sanitize_key( $this->args['text_size'] ),
 			'title'         => sanitize_text_field( $this->args['title'] ),
-			'title_wrap'    => sanitize_key( $this->args['title_wrap'] ),
-			'wrapper'       => sanitize_key( $this->args['wrapper'] ),
+			'title_wrap'    => mai_sanitize_tag( $this->args['title_wrap'], 'h2' ),
+			'wrapper'       => mai_sanitize_tag( $this->args['wrapper'], 'section', array( 'section', 'div', 'aside', 'header', 'footer', 'article', 'main', 'nav' ) ),
 			'wrap_class'    => mai_sanitize_html_classes( $this->args['wrap_class'] ),
 		), $this->args );
 
@@ -455,7 +457,7 @@ class Mai_Section {
 	function get_section_title() {
 		$html = '';
 		if ( $this->args['title'] ) {
-			$html = sprintf( '<%s class="heading">%s</%s>', $this->args['title_wrap'], $this->args['title'], $this->args['title_wrap'] );
+			$html = sprintf( '<%s class="heading">%s</%s>', $this->args['title_wrap'], esc_html( $this->args['title'] ), $this->args['title_wrap'] );
 		}
 		return $html;
 	}

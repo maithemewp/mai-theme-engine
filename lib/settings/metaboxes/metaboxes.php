@@ -112,7 +112,7 @@ function mai_cmb2_add_metaboxes() {
 		'title'        => $metabox_title,
 		'object_types' => array( 'user' ),
 		'context'      => 'normal',
-		'show_on_cb'   => 'mai_cmb_show_if_user_is_author_or_above',
+		'show_on_cb'   => '_mai_cmb_show_if_user_is_author_or_above',
 		'classes'      => 'mai-metabox mai-content-archive-metabox',
 	) );
 	$user->add_field( _mai_cmb_banner_visibility_config() );

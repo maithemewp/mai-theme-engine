@@ -134,8 +134,8 @@ class Mai_Grid {
 			'exclude_displayed'    => filter_var( $this->args['exclude_displayed'], FILTER_VALIDATE_BOOLEAN ),
 			'facetwp'              => filter_var( $this->args['facetwp'], FILTER_VALIDATE_BOOLEAN ),
 			'grid_title'           => sanitize_text_field( $this->args['grid_title'] ),
-			'grid_title_class'     => sanitize_text_field( $this->args['grid_title_class'] ),
-			'grid_title_wrap'      => sanitize_key( $this->args['grid_title_wrap'] ),
+			'grid_title_class'     => mai_sanitize_html_classes( $this->args['grid_title_class'] ),
+			'grid_title_wrap'      => mai_sanitize_tag( $this->args['grid_title_wrap'], 'h2' ),
 			'gutter'               => mai_is_valid_gutter( sanitize_key( $this->args['gutter'] ) ) ? sanitize_key( $this->args['gutter'] ) : 'md',
 			'hide_empty'           => filter_var( $this->args['hide_empty'], FILTER_VALIDATE_BOOLEAN ),
 			'ids'                  => array_filter( array_map( 'absint', explode( ',', sanitize_text_field( $this->args['ids'] ) ) ) ),
@@ -165,7 +165,7 @@ class Mai_Grid {
 			'tax_field'            => sanitize_key( $this->args['tax_field'] ),
 			'taxonomy'             => sanitize_key( $this->args['taxonomy'] ),
 			'terms'                => $this->args['terms'], // Validated later, after check for 'current'
-			'title_wrap'           => sanitize_key( $this->args['title_wrap'] ),
+			'title_wrap'           => mai_sanitize_tag( $this->args['title_wrap'], 'h3' ),
 			'top'                  => sanitize_key( $this->args['top'] ),
 			'class'                => mai_sanitize_html_classes( $this->args['class'] ),
 			'id'                   => sanitize_html_class( $this->args['id'] ),
@@ -306,7 +306,7 @@ class Mai_Grid {
 		// Exclude existing.
 		if ( $this->args['exclude_displayed'] && ! empty( $this::$existing_post_ids ) ) {
 			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], $this::$existing_post_ids );
+				$query_args['post__not_in'] = array_merge( (array) $query_args['post__not_in'], $this::$existing_post_ids );
 			} else {
 				$query_args['post__not_in'] = $this::$existing_post_ids;
 			}
@@ -321,7 +321,7 @@ class Mai_Grid {
 		if ( is_singular() && $this->args['exclude_current'] ) {
 			// If this query_args is already set.
 			if ( isset( $query_args['post__not_in'] ) ) {
-				$query_args['post__not_in'] = array_push( $query_args['post__not_in'], get_the_ID() );
+				$query_args['post__not_in'][] = get_the_ID();
 			} else {
 				$query_args['post__not_in'] = array( get_the_ID() );
 			}
@@ -380,9 +380,23 @@ class Mai_Grid {
 			}
 		}
 
-		// Status.
+		// Status. Only public statuses, unless the user can already see others' drafts and private posts.
 		if ( ! empty( $this->args['status'] ) ) {
-			$query_args['post_status'] = $this->args['status'];
+			if ( current_user_can( 'edit_others_posts' ) ) {
+				$allowed_status = array_merge( get_post_stati(), array( 'any' ) );
+			} else {
+				// Inherit is for attachments. Revisions are blocked as a post type.
+				$allowed_status = array_merge( get_post_stati( array( 'public' => true ) ), array( 'inherit' ) );
+				// Private, for users like members who can read private posts.
+				if ( current_user_can( 'read_private_posts' ) ) {
+					$allowed_status[]   = 'private';
+					$query_args['perm'] = 'readable';
+				}
+			}
+			$status = array_values( array_intersect( array_map( 'sanitize_key', $this->args['status'] ), $allowed_status ) );
+			if ( $status ) {
+				$query_args['post_status'] = $status;
+			}
 		}
 
 		// Tags.
@@ -734,7 +748,7 @@ class Mai_Grid {
 		// Exclude existing.
 		if ( $this->args['exclude_displayed'] && ! empty( $this::$existing_term_ids ) ) {
 			if ( isset( $query_args['exclude_tree'] ) ) {
-				$query_args['exclude_tree'] = array_push( $query_args['exclude_tree'], $this::$existing_term_ids );
+				$query_args['exclude_tree'] = array_merge( (array) $query_args['exclude_tree'], $this::$existing_term_ids );
 			} else {
 				$query_args['exclude_tree'] = $this::$existing_term_ids;
 			}
@@ -1003,7 +1017,7 @@ class Mai_Grid {
 		}
 		$classes = 'heading';
 		$classes = mai_add_classes( $this->args['grid_title_class'], $classes );
-		return sprintf( '<%s class="%s">%s</%s>', $this->args['grid_title_wrap'], trim($classes), $this->args['grid_title'], $this->args['grid_title_wrap'] );
+		return sprintf( '<%s class="%s">%s</%s>', $this->args['grid_title_wrap'], esc_attr( trim( $classes ) ), esc_html( $this->args['grid_title'] ), $this->args['grid_title_wrap'] );
 	}
 
 	/**
@@ -1016,8 +1030,11 @@ class Mai_Grid {
 		if ( ! empty( $this->args['content_type'] ) ) {
 			return $this->args['content_type'];
 		}
-		// If types are all post types. get_post_type() gets all built in and custom post types.
-		if ( array_intersect( $this->args['content'], get_post_types() ) == $this->args['content'] ) {
+		// If types are all post types. Allows custom post types even if not public, like testimonials.
+		// Excludes WP internal post types like revisions, changesets and privacy requests.
+		$internal_types = get_post_types( array( 'public' => false, '_builtin' => true ) );
+		$post_types     = array_diff( get_post_types(), $internal_types );
+		if ( array_intersect( $this->args['content'], $post_types ) == $this->args['content'] ) {
 			return 'post'; // Means any post_type
 		}
 		// Get public taxonomies.

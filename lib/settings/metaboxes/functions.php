@@ -67,7 +67,7 @@ function _mai_cmb_banner_show_on_cb( $field ) {
 	elseif ( 'term.php' === $pagenow ) {
 
 		// Get taxonomy.
-		$taxonomy = filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING );
+		$taxonomy = sanitize_key( (string) filter_input( INPUT_GET, 'taxonomy' ) );
 
 		// If Woo default taxo.
 		if ( class_exists( 'WooCommerce' ) && in_array( $taxonomy, array( 'product_cat', 'product_tag' ) ) ) {
