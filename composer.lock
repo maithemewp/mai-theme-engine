@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f594faeefc08158a7d37d43b4277bf22",
+    "content-hash": "473e92d4982e35dc89fc215f3be35b53",
     "packages": [
         {
             "name": "cmb2/cmb2",
@@ -105,26 +105,26 @@
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
-            "version": "v4.13",
+            "version": "v6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-                "reference": "6eb27a6911e0e0880d09e5b11f577d3f688f7da7"
+                "reference": "bb71d4eaf1e83b645d5ae368eb4f2f6986752b5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/6eb27a6911e0e0880d09e5b11f577d3f688f7da7",
-                "reference": "6eb27a6911e0e0880d09e5b11f577d3f688f7da7",
+                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/bb71d4eaf1e83b645d5ae368eb4f2f6986752b5d",
+                "reference": "bb71d4eaf1e83b645d5ae368eb4f2f6986752b5d",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": ">=5.2.0"
+                "php": ">=7.4"
             },
             "type": "library",
             "autoload": {
                 "files": [
-                    "load-v4p13.php"
+                    "load-v6p0.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -135,7 +135,7 @@
                 {
                     "name": "Yahnis Elsts",
                     "email": "whiteshadow@w-shadow.com",
-                    "homepage": "http://w-shadow.com/",
+                    "homepage": "https://w-shadow.com/",
                     "role": "Developer"
                 }
             ],
@@ -149,9 +149,9 @@
             ],
             "support": {
                 "issues": "https://github.com/YahnisElsts/plugin-update-checker/issues",
-                "source": "https://github.com/YahnisElsts/plugin-update-checker/tree/v4.13"
+                "source": "https://github.com/YahnisElsts/plugin-update-checker/tree/v6.0"
             },
-            "time": "2022-07-29T12:36:25+00:00"
+            "time": "2026-11-06T15:04:15+00:00"
         }
     ],
     "packages-dev": [],

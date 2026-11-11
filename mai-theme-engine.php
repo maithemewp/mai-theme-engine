@@ -118,8 +118,8 @@ final class Mai_Theme_Engine {
 	 * composer require yahnis-elsts/plugin-update-checker
 	 * composer require cmb2/cmb2
 	 *
-	 * v2.6.0   CBM2
-	 * v4.5.1   Plugin Update Checker
+	 * v2.13.5  CMB2
+	 * v6.0     Plugin Update Checker
 	 *
 	 * @access  private
 	 * @since   1.0.0
@@ -139,12 +139,12 @@ final class Mai_Theme_Engine {
 			}
 
 			// Bail if plugin updater is not loaded.
-			if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+			if ( ! class_exists( 'YahnisElsts\PluginUpdateChecker\v6\PucFactory' ) ) {
 				return;
 			}
 
 			// Setup the updater.
-			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
+			$updater = \YahnisElsts\PluginUpdateChecker\v6\PucFactory::buildUpdateChecker( 'https://github.com/maithemewp/mai-theme-engine/', __FILE__, 'mai-theme-engine' );
 
 			// Get the branch. If checking for beta releases.
 			$tester = function_exists( 'genesis_get_option' ) && genesis_get_option( 'mai_tester' );
