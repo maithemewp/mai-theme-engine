@@ -14,7 +14,9 @@ function mai_upgrade_notice() {
 		return;
 	}
 
-	$url       = 'https://help.bizbudding.com/article/209-upgrade?utm_source=mai-theme-engine&utm_medium=link&utm_campaign=v1';
+	$utm       = 'utm_source=mai-theme-engine&utm_medium=notice&utm_campaign=v1-security-only';
+	$url       = 'https://bizbudding.com/mai-theme/?' . $utm;
+	$docs_url  = 'https://help.bizbudding.com/article/209-upgrade?' . $utm;
 	$timestamp = get_user_option( 'mai_upgrade_notice', get_current_user_id() );
 
 	// Bail if already dismissed.
@@ -35,6 +37,13 @@ function mai_upgrade_notice() {
 
 			ul {
 				margin-left: 0;
+			}
+
+			.mai-upgrade-links {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 1rem;
 			}
 
 			.mai-dismissers {
@@ -83,7 +92,10 @@ function mai_upgrade_notice() {
 			<li>✅&nbsp;&nbsp;<?php esc_html_e( 'Faster, lighter pages.', 'mai-theme-engine' ); ?></li>
 			<li>✅&nbsp;&nbsp;<?php esc_html_e( 'Easier to customize, with no code needed.', 'mai-theme-engine' ); ?></li>
 		</ul>
-		<p><a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url( $url ); ?>" class="button button-primary"><?php esc_html_e( 'Learn how to upgrade', 'mai-theme-engine' ); ?></a></p>
+		<p class="mai-upgrade-links">
+			<a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url( $url ); ?>" class="button button-primary"><?php esc_html_e( 'See Mai Theme v2', 'mai-theme-engine' ); ?></a>
+			<a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url( $docs_url ); ?>"><?php esc_html_e( 'What to expect when upgrading', 'mai-theme-engine' ); ?></a>
+		</p>
 		<div class="mai-dismissers">
 			<a href="#" role="button" class="mai-upgrade-dismiss" data-weeks="9999"><?php esc_html_e( "Don't show again", 'mai-theme-engine' ); ?></a>
 			<span>·</span>
