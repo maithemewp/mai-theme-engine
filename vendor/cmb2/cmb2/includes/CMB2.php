@@ -21,6 +21,14 @@
 class CMB2 extends CMB2_Base {
 
 	/**
+	 * Supported CMB2 object types
+	 *
+	 * @var array
+	 * @since 2.11.0
+	 */
+	protected $core_object_types = array( 'post', 'user', 'comment', 'term', 'options-page' );
+
+	/**
 	 * The object properties name.
 	 *
 	 * @var   string
@@ -93,6 +101,45 @@ class CMB2 extends CMB2_Base {
 		'new_user_section'        => 'add-new-user', // or 'add-existing-user'.
 		'new_term_section'        => true,
 		'show_in_rest'            => false,
+
+		/*
+		 * Declares who may read this box via the REST API (only applicable when
+		 * 'show_in_rest' is readable). Accepts:
+		 *
+		 * - false            No one may read it, administrators included.
+		 * - true             Everyone may read it, logged-out visitors included.
+		 * - 'box-capability' Only holders of this box's 'capability' may read it
+		 *                    (falling back to 'manage_options').
+		 * - 'a_capability'   Only holders of the named capability may read it,
+		 *                    e.g. 'edit_posts'.
+		 * - null             (default) CMB2's current behavior: reads are public, unless
+		 *                    the box is an options page and the site-wide
+		 *                    `cmb2_rest_enforce_options_page_read_permissions` filter is
+		 *                    enabled.
+		 *
+		 * The same property may be set on an individual field, where it takes precedence
+		 * over the box's for reads of that field.
+		 *
+		 * The `cmb2_api_get_box_permissions_check`/`cmb2_api_get_field_permissions_check`
+		 * filters still run afterward and have the final say.
+		 */
+		'rest_read_capability'    => null,
+
+		/*
+		 * Whether REST field reads of a user follow WordPress core's user read
+		 * permissions: core's REST API shows a user only to that user, to holders of
+		 * 'edit_user' or 'list_users', or when the user has published posts.
+		 *
+		 * - true  Reads of users core does not show are denied.
+		 * - false Reads stay as they are, whatever the default.
+		 * - null  (default) Follows the site-wide `cmb2_rest_enforce_user_read_permissions`
+		 *         filter, which defaults to false. The default changes to true in a
+		 *         future version.
+		 *
+		 * The `cmb2_api_get_field_permissions_check`/`cmb2_api_get_fields_permissions_check`
+		 * filters still run afterward and have the final say.
+		 */
+		'rest_enforce_user_read_permissions' => null,
 		'classes'                 => null, // Optionally add classes to the CMB2 wrapper.
 		'classes_cb'              => '', // Optionally add classes to the CMB2 wrapper (via a callback).
 
@@ -242,6 +289,9 @@ class CMB2 extends CMB2_Base {
 
 		// Hook in the rest api functionality.
 		add_action( "cmb2_init_hookup_{$this->cmb_id}", array( 'CMB2_REST', 'maybe_init_and_hookup' ) );
+
+		// Hook in the notice about the upcoming REST read-permissions alignment.
+		add_action( "cmb2_init_hookup_{$this->cmb_id}", array( 'CMB2_Rest_Read_Permissions_Notice', 'maybe_init_and_hookup' ) );
 	}
 
 	/**
@@ -374,7 +424,7 @@ class CMB2 extends CMB2_Base {
 		foreach ( array_filter( $classes ) as $class ) {
 			foreach ( explode( ' ', $class ) as $_class ) {
 				// Clean up & sanitize.
-				$split[] = sanitize_html_class( strip_tags( $_class ) );
+				$split[] = sanitize_html_class( wp_strip_all_tags( $_class ) );
 			}
 		}
 		$classes = $split;
@@ -532,7 +582,8 @@ class CMB2 extends CMB2_Base {
 		}
 
 		if ( ! empty( $group_val ) ) {
-			foreach ( $group_val as $group_key => $field_id ) {
+			$group_val_count = count( $group_val );
+			for ( $i = 0; $i < $group_val_count; $i++ ) {
 				$this->render_group_row( $field_group );
 				$field_group->index++;
 			}
@@ -583,7 +634,7 @@ class CMB2 extends CMB2_Base {
 		$atts = array();
 		foreach ( $group_wrap_attributes as $att => $att_value ) {
 			if ( ! CMB2_Utils::is_data_attribute( $att ) ) {
-				$att_value = htmlspecialchars( $att_value );
+				$att_value = htmlspecialchars( $att_value, ENT_COMPAT );
 			}
 
 			$atts[ sanitize_html_class( $att ) ] = sanitize_text_field( $att_value );
@@ -615,7 +666,7 @@ class CMB2 extends CMB2_Base {
 		}
 
 			echo '
-			<div class="cmbhandle" title="' , esc_attr__( 'Click to toggle', 'cmb2' ), '"><br></div>
+			<div class="cmbhandle" title="', esc_attr__( 'Click to toggle', 'cmb2' ), '"><br></div>
 			<h3 class="cmb-group-title cmbhandle-title"><span>', $field_group->replace_hash( $field_group->options( 'group_title' ) ), '</span></h3>
 
 			<div class="inside cmb-td cmb-nested cmb-field-list">';
@@ -927,7 +978,7 @@ class CMB2 extends CMB2_Base {
 			return;
 		}
 
-		$old        = $field_group->get_data();
+		$old = $field_group->get_data();
 		// Check if group field has sanitization_cb.
 		$group_vals = $field_group->sanitization_cb( $this->data_to_save[ $base_id ] );
 		$saved      = array();
@@ -1023,17 +1074,17 @@ class CMB2 extends CMB2_Base {
 		// Try to get our object ID from the global space.
 		switch ( $this->object_type() ) {
 			case 'user':
-				$object_id = isset( $_REQUEST['user_id'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['user_id'] ) ) : $object_id;
+				$object_id = isset( $_REQUEST['user_id'] ) ? $this->request_object_id( 'user_id' ) : $object_id;
 				$object_id = ! $object_id && 'user-new.php' !== $pagenow && isset( $GLOBALS['user_ID'] ) ? $GLOBALS['user_ID'] : $object_id;
 				break;
 
 			case 'comment':
-				$object_id = isset( $_REQUEST['c'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['c'] ) ) : $object_id;
+				$object_id = isset( $_REQUEST['c'] ) ? $this->request_object_id( 'c' ) : $object_id;
 				$object_id = ! $object_id && isset( $GLOBALS['comments']->comment_ID ) ? $GLOBALS['comments']->comment_ID : $object_id;
 				break;
 
 			case 'term':
-				$object_id = isset( $_REQUEST['tag_ID'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tag_ID'] ) ) : $object_id;
+				$object_id = isset( $_REQUEST['tag_ID'] ) ? $this->request_object_id( 'tag_ID' ) : $object_id;
 				break;
 
 			case 'options-page':
@@ -1045,14 +1096,37 @@ class CMB2 extends CMB2_Base {
 
 			default:
 				$object_id = isset( $GLOBALS['post']->ID ) ? $GLOBALS['post']->ID : $object_id;
-				$object_id = isset( $_REQUEST['post'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post'] ) ) : $object_id;
+				$object_id = isset( $_REQUEST['post'] ) ? $this->request_object_id( 'post' ) : $object_id;
 				break;
 		}
 
+		/**
+		 * Filter the object id.
+		 *
+		 * @since 2.11.0
+		 *
+		 * @param  integer|string $object_id Object ID.
+		 * @param  CMB2           $cmb       This CMB2 object.
+		 */
+		$object_id = apply_filters( 'cmb2_set_object_id', $object_id, $this );
+
 		// reset to id or 0.
-		$this->object_id = $object_id ? $object_id : 0;
+		$this->object_id = ! empty( $object_id ) ? $object_id : 0;
 
 		return $this->object_id;
+	}
+
+	/**
+	 * Get an object ID from the request as an integer, the way WordPress core
+	 * reads the same request keys on its edit screens.
+	 *
+	 * @since  2.13.4
+	 * @param  string $key Request key.
+	 * @return integer     Object ID, or 0.
+	 */
+	private function request_object_id( $key ) {
+		// absint() of an array (e.g. edit.php's bulk-action post[]) would be 1.
+		return is_scalar( $_REQUEST[ $key ] ) ? absint( wp_unslash( $_REQUEST[ $key ] ) ) : 0;
 	}
 
 	/**
@@ -1066,38 +1140,42 @@ class CMB2 extends CMB2_Base {
 			return $this->mb_object_type;
 		}
 
+		$found_type = '';
+
 		if ( $this->is_options_page_mb() ) {
-			$this->mb_object_type = 'options-page';
-			return $this->mb_object_type;
-		}
+			$found_type = 'options-page';
+		} else {
+			$registered_types = $this->box_types();
 
-		$registered_types = $this->box_types();
-
-		$type = '';
-
-		// if it's an array of one, extract it.
-		if ( 1 === count( $registered_types ) ) {
-			$last = end( $registered_types );
-			if ( is_string( $last ) ) {
-				$type = $last;
+			// if it's an array of one, extract it.
+			if ( 1 === count( $registered_types ) ) {
+				$last = end( $registered_types );
+				if ( is_string( $last ) ) {
+					$found_type = $last;
+				}
+			} else {
+				$current_object_type = $this->current_object_type();
+				if ( in_array( $current_object_type, $registered_types, true ) ) {
+					$found_type = $current_object_type;
+				}
 			}
-		} elseif ( ( $curr_type = $this->current_object_type() ) && in_array( $curr_type, $registered_types, true ) ) {
-			$type = $curr_type;
 		}
 
 		// Get our object type.
-		switch ( $type ) {
+		$mb_object_type = $this->is_supported_core_object_type( $found_type )
+			? $found_type
+			: 'post';
 
-			case 'user':
-			case 'comment':
-			case 'term':
-				$this->mb_object_type = $type;
-				break;
-
-			default:
-				$this->mb_object_type = 'post';
-				break;
-		}
+		/**
+		 * Filter the metabox object type.
+		 *
+		 * @since 2.11.0
+		 *
+		 * @param string $mb_object_type The metabox object type.
+		 * @param string $found_type     The found object type.
+		 * @param CMB2   $cmb            This CMB2 object.
+		 */
+		$this->mb_object_type = apply_filters( 'cmb2_set_box_object_type', $mb_object_type, $found_type, $this );
 
 		return $this->mb_object_type;
 	}
@@ -1550,32 +1628,7 @@ class CMB2 extends CMB2_Base {
 	 * @return void
 	 */
 	protected function field_actions( $field ) {
-		switch ( $field['type'] ) {
-			case 'file':
-			case 'file_list':
-
-				// Initiate attachment JS hooks.
-				add_filter( 'wp_prepare_attachment_for_js', array( 'CMB2_Type_File_Base', 'prepare_image_sizes_for_js' ), 10, 3 );
-				break;
-
-			case 'oembed':
-				// Initiate oembed Ajax hooks.
-				cmb2_ajax();
-				break;
-
-			case 'group':
-				if ( empty( $field['render_row_cb'] ) ) {
-					$field['render_row_cb'] = array( $this, 'render_group_callback' );
-				}
-				break;
-			case 'colorpicker':
-
-				// https://github.com/JayWood/CMB2_RGBa_Picker
-				// Dequeue the rgba_colorpicker custom field script if it is used,
-				// since we now enqueue our own more current version.
-				add_action( 'admin_enqueue_scripts', array( 'CMB2_Type_Colorpicker', 'dequeue_rgba_colorpicker_script' ), 99 );
-				break;
-		}
+		$field = CMB2_Hookup_Field::init( $field, $this );
 
 		if ( isset( $field['column'] ) && false !== $field['column'] ) {
 			$field = $this->define_field_column( $field );
@@ -1797,6 +1850,16 @@ class CMB2 extends CMB2_Base {
 	}
 
 	/**
+	 * Whether given object type is one of the core supported object types.
+	 *
+	 * @since  2.11.0
+	 * @return bool
+	 */
+	public function is_supported_core_object_type( $object_type ) {
+		return in_array( $object_type, $this->core_object_types, true );
+	}
+
+	/**
 	 * Magic getter for our object.
 	 *
 	 * @param  string $property Object property.
@@ -1808,6 +1871,7 @@ class CMB2 extends CMB2_Base {
 			case 'updated':
 			case 'has_columns':
 			case 'tax_metaboxes_to_remove':
+			case 'core_object_types':
 				return $this->{$property};
 			default:
 				return parent::__get( $property );

@@ -1,6 +1,6 @@
 <?php
 /**
- * CMB2 objects/fields endpoint for WordPres REST API.
+ * CMB2 objects/fields endpoint for WordPress REST API.
  * Allows access to fields registered to a specific box.
  *
  * @todo  Add better documentation.
@@ -88,7 +88,9 @@ class CMB2_REST_Controller_Fields extends CMB2_REST_Controller_Boxes {
 	 */
 	public function get_items_permissions_check( $request ) {
 		$this->initiate_rest_read_box( $request, 'fields_read' );
-		$can_access = true;
+
+		// Gated once here for the object, so get_items() does not re-gate each field.
+		$can_access = $this->maybe_gate_read_by_object( true );
 
 		/**
 		 * By default, no special permissions needed.
@@ -125,7 +127,7 @@ class CMB2_REST_Controller_Fields extends CMB2_REST_Controller_Boxes {
 			$this->field = $this->rest_box->field_can_read( $field['id'], true );
 
 			// And make sure current user can view this box.
-			if ( $this->field && $this->get_item_permissions_check_filter() ) {
+			if ( $this->field && $this->get_item_permissions_check_filter( true, false ) ) {
 				$fields[ $field['id'] ] = $this->server->response_to_data(
 					$this->prepare_field_response(),
 					isset( $this->request['_embed'] )
@@ -160,10 +162,27 @@ class CMB2_REST_Controller_Fields extends CMB2_REST_Controller_Boxes {
 	 *
 	 * @since 2.2.3
 	 *
-	 * @param  bool $can_access Whether the current request has access to view the field by default.
+	 * @param  bool $can_access   Whether the current request has access to view the field by default.
+	 * @param  bool $check_object Whether to apply the object read gate. The fields
+	 *                            collection applies it once, before this.
 	 * @return WP_Error|boolean
 	 */
-	public function get_item_permissions_check_filter( $can_access = true ) {
+	public function get_item_permissions_check_filter( $can_access = true, $check_object = true ) {
+		/*
+		 * Optionally gate the read behind a capability, per the field's declaration,
+		 * falling back to the box's. Passing the field is what makes this per-field:
+		 * the fields collection sets $this->field before each call, so a field the
+		 * current user cannot read is left out of the collection.
+		 */
+		$can_access = $this->maybe_gate_read_by_capability(
+			$can_access,
+			$this->field instanceof CMB2_Field ? $this->field : null
+		);
+
+		if ( $check_object ) {
+			$can_access = $this->maybe_gate_read_by_object( $can_access );
+		}
+
 		/**
 		 * By default, no special permissions needed.
 		 *
@@ -318,9 +337,9 @@ class CMB2_REST_Controller_Fields extends CMB2_REST_Controller_Boxes {
 			? $this->field->remove_data()
 			: $this->field->save_field( $this->request['value'] );
 
-		// If options page, save the $activity options
-		if ( 'options-page' == $this->request['object_type'] ) {
-			$this->field->args[ "value_{$activity}" ] = cmb2_options( $this->request['object_id'] )->set();
+		// If options page, save the $activity options to the validated option key.
+		if ( 'options-page' === $this->rest_box->cmb->object_type() ) {
+			$this->field->args[ "value_{$activity}" ] = cmb2_options( $this->rest_box->cmb->object_id() )->set();
 		}
 
 		return $this->prepare_read_field( $this->field );
@@ -381,7 +400,8 @@ class CMB2_REST_Controller_Fields extends CMB2_REST_Controller_Boxes {
 		);
 
 		// Run this first so the js_dependencies arg is populated.
-		$rendered = ( $cb = $field->maybe_callback( 'render_row_cb' ) )
+		$cb = $field->maybe_callback( 'render_row_cb' );
+		$rendered = $cb
 			// Ok, callback is good, let's run it.
 			? $this->get_cb_results( $cb, $field->args(), $field )
 			: false;
@@ -412,6 +432,7 @@ class CMB2_REST_Controller_Fields extends CMB2_REST_Controller_Boxes {
 			if ( empty( $value ) || is_scalar( $value ) || is_array( $value ) ) {
 				$field_data[ $key ] = $value;
 			} else {
+				// translators: %s: field key.
 				$field_data[ $key ] = sprintf( __( 'Value Error for %s', 'cmb2' ), $key );
 			}
 		}

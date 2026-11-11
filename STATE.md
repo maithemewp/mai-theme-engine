@@ -5,7 +5,7 @@ Updated: 2026-11-11 by Claude
 Legacy plugin, security fixes only (plus easy wins). 1.14.0 is a security and PHP 8 release: banner shortcode injection from search and user names, raw $_POST into genesis-settings, grid/section tag and class XSS, grid status and post type leaks, PHP 8 fatals and deprecations, WP 6.7 textdomain notice, restyled security-only upgrade notice.
 
 ## Next
-Nothing planned. Possible later: upgrade the bundled plugin-update-checker (v4p11 logs PHP 8.4 implicit-nullable deprecations).
+Nothing planned. Possible later: move plugin-update-checker to 5.x (4.13 still logs PHP 8.4 implicit-nullable deprecations; 5.x renames classes, so test updates end to end).
 
 ## Blocked / waiting on
 Nothing.
@@ -21,3 +21,5 @@ Local test site: ~/Herd/mailifestyle (https://mailifestyle.test), Genesis symlin
 - Releases use git-flow: release/x.y.z from develop, merge to master and develop, tag on master.
 - Tags publish updates to client sites through the GitHub updater. Ask before pushing or tagging.
 - Leftover debug helper on the test site: wp-content/mu-plugins/zz-trace-textdomain.php.
+- The test site blocks outside HTTP. To test the updater: `wp --exec='define("WP_ACCESSIBLE_HOSTS","api.github.com,github.com,codeload.github.com");' eval ...`
+- PAnD (persist-admin-notices-dismissal) is used by Mai child themes' dependency installer. The theme's own copy wins, because Composer prepends autoloaders and the theme registers last.
