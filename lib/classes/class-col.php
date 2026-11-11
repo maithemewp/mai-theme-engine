@@ -17,7 +17,7 @@ class Mai_Col {
 
 		$this->size    = $size;
 		$this->args    = $args;
-		$this->content = trim( $content );
+		$this->content = null === $content ? null : trim( $content );
 
 		// Parse defaults and args.
 		$this->args = shortcode_atts( array(
@@ -111,13 +111,20 @@ class Mai_Col {
 		$bg_link = $bg_link_title = '';
 		if ( ! empty( $this->args['link'] ) ) {
 			if ( is_numeric( $this->args['link'] ) ) {
-				$bg_link_url   = get_permalink( (int) $this->args['link'] );
-				$bg_link_title = get_the_title( (int) $this->args['link'] );
+				// Only link to published posts, so private and draft titles don't show.
+				if ( 'publish' === get_post_status( (int) $this->args['link'] ) ) {
+					$bg_link_url   = get_permalink( (int) $this->args['link'] );
+					$bg_link_title = get_the_title( (int) $this->args['link'] );
+				} else {
+					$bg_link_url = '';
+				}
 			} else {
 				$bg_link_url   = esc_url( $this->args['link'] );
 			}
-			$bg_link             = mai_get_bg_image_link( $bg_link_url, $bg_link_title );
-			$attributes['class'] = mai_add_classes( 'has-bg-link', $attributes['class'] );
+			if ( $bg_link_url ) {
+				$bg_link             = mai_get_bg_image_link( $bg_link_url, $bg_link_title );
+				$attributes['class'] = mai_add_classes( 'has-bg-link', $attributes['class'] );
+			}
 		}
 
 		$light_content = false;

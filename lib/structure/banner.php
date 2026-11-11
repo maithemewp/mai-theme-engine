@@ -111,13 +111,13 @@ function mai_do_banner_content() {
 		remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
-		$title = get_the_title();
+		$title = mai_esc_shortcodes( get_the_title() );
 		$desc  = has_excerpt( $front_page_id ) ? get_the_excerpt( $front_page_id ) : '';
 	}
 
 	// Static blog.
 	elseif ( is_home() && $posts_page_id = get_option( 'page_for_posts' ) ) {
-		$title = get_the_title( $posts_page_id );
+		$title = mai_esc_shortcodes( get_the_title( $posts_page_id ) );
 		$desc  = has_excerpt( $posts_page_id ) ? get_the_excerpt( $posts_page_id ) : '';
 	}
 
@@ -127,7 +127,7 @@ function mai_do_banner_content() {
 		// Remove default post title.
 		remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
-		$title = get_the_title();
+		$title = mai_esc_shortcodes( get_the_title() );
 
 		// Woo single product.
 		if ( class_exists( 'WooCommerce' ) && is_product() ) {
@@ -143,7 +143,7 @@ function mai_do_banner_content() {
 	elseif ( is_post_type_archive() ) {
 		// Woo shop page.
 		if ( class_exists( 'WooCommerce' ) && is_shop() && ( $shop_page_id = get_option( 'woocommerce_shop_page_id' ) ) ) {
-				$title = get_the_title( $shop_page_id );
+				$title = mai_esc_shortcodes( get_the_title( $shop_page_id ) );
 				$desc  = has_excerpt( $shop_page_id ) ? get_the_excerpt( $shop_page_id ) : '';
 		} else {
 			if ( genesis_has_post_type_archive_support( get_post_type() ) ) {
@@ -164,7 +164,7 @@ function mai_do_banner_content() {
 		if ( $term ) {
 			$title = get_term_meta( $term->term_id, 'headline', true );
 			if ( empty( $title ) && genesis_a11y( 'headings' ) ) {
-				$title = $term->name;
+				$title = mai_esc_shortcodes( $term->name );
 			}
 		}
 		$desc = get_term_meta( $term->term_id, 'intro_text', true );
@@ -180,14 +180,14 @@ function mai_do_banner_content() {
 			$authordata    = is_object( $authordata ) ? $authordata : get_userdata( get_query_var( 'author' ) );
 			$gravatar_size = apply_filters( 'genesis_author_box_gravatar_size', 70, 'archive' );
 			$before_title  = get_avatar( get_the_author_meta( 'email' ), $gravatar_size );
-			$title         = get_the_author();
-			$desc          = wpautop( get_the_author_meta( 'description' ) );
+			$title         = mai_esc_shortcodes( get_the_author() );
+			$desc          = wpautop( mai_esc_shortcodes( get_the_author_meta( 'description' ) ) );
  		}
 		// Otherwise show the G author archive settings title.
 		else {
 			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
 			if ( empty( $title ) && genesis_a11y( 'headings' ) ) {
-				$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
+				$title = mai_esc_shortcodes( get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) ) );
 			}
 			$desc = get_the_author_meta( 'intro_text', (int) get_query_var( 'author' ) );
 			$desc = apply_filters( 'genesis_author_intro_text_output', $desc ? $desc : '' );
@@ -207,7 +207,7 @@ function mai_do_banner_content() {
 
 	// Search results.
 	elseif ( is_search() ) {
-		$title = sprintf( '%s %s', apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'mai-theme-engine' ) ), get_search_query() );
+		$title = sprintf( '%s %s', apply_filters( 'genesis_search_title_text', __( 'Search Results for:', 'mai-theme-engine' ) ), mai_esc_shortcodes( get_search_query() ) );
 	}
 
 	// 404.

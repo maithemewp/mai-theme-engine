@@ -31,6 +31,11 @@ function mai_update_first_version() {
 add_action( 'admin_init', 'mai_update_database_version', 20 );
 function mai_update_database_version() {
 
+	// Bail if the current user cannot manage options. admin_init also fires for logged-out admin-ajax.php requests.
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
 	// Get the version number saved in the db.
 	$option_db_version = (int) get_option( 'mai_db_version' );
 

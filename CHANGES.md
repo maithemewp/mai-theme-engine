@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.14.0 (11/11/26)
+* Security: Search queries, author names, author bios, term names and post titles no longer run shortcodes in the banner.
+* Security: Removed code that saved raw form data to Genesis settings during database upgrades.
+* Security: Mai database upgrades now only run for users who can manage options.
+* Security: Grid and section `title_wrap`, `grid_title_wrap` and `wrapper` now only accept safe HTML tags.
+* Security: Grid `grid_title_class` and titles are now escaped.
+* Security: Grids only show public post statuses to visitors. Private posts show to users who can read them, and drafts and scheduled posts show to editors and admins. WordPress internal post types like revisions are no longer allowed.
+* Security: Column links by post ID only work for published posts.
+* Security: Added nonces to admin notice dismissals.
+* Changed: Restyled the upgrade notice. Mai Theme v1 now only gets security updates.
+* Fixed: "Translation loading was triggered too early" notice in WordPress 6.7+.
+* Fixed: Fatal error in PHP 8 when using grid `exclude_displayed` or `exclude_current` with other exclusions.
+* Fixed: Term grid `exclude_displayed` excluding the wrong terms.
+* Fixed: User profile Mai settings showing for subscribers.
+* Fixed: PHP 8.1 and 8.2 deprecation notices.
+
 ## 1.13.2 (7/15/22)
 * Fixed: Function `add_theme_support( 'html' )` as called incorrectly warning.
 

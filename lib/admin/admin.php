@@ -4,6 +4,7 @@
  * Add dismissible upgrade notice.
  *
  * @since 1.13.0
+ * @since 1.14.0 Restyled to match Mai Engine notices. Security-only messaging.
  *
  * @return void
  */
@@ -21,85 +22,72 @@ function mai_upgrade_notice() {
 		return;
 	}
 	?>
-	<div class="notice mai-upgrade-notice">
-		<style>
-			.mai-upgrade-notice {
-				--bizbudding-green: #bcda83;
-				--bizbudding-green-dark: #a5ce5a;
-				position: relative;
-				display: grid;
-				gap: 16px;
-				grid-template-columns: 36px 1fr auto;
-				padding: 24px 18px;
-				border-left: 8px solid var(--bizbudding-green);
-				border-radius: 4px;
-				box-shadow: 0px 14px 20px -8px rgba(0,0,0,0.1);
+	<style>
+		.mai-upgrade-notice {
+			position: relative;
+			padding: 1rem;
+			border-left-color: #bcda83;
+
+			/* Core's `.update-core-php h2 { margin-top: 4em }` on the Updates screen shoves this title down. */
+			h2 {
+				margin: 0;
 			}
-			.mai-upgrade-actions {
+
+			ul {
+				margin-left: 0;
+			}
+
+			.mai-dismissers {
 				position: absolute;
-				top: 8px;
-				right: 16px;
-				margin: 0 !important;
-				color rgba(0, 0, 0, 0.5);
+				top: 0;
+				right: 0;
+				display: flex;
+				gap: .5rem;
+				padding: 8px;
+				color: #787c82;
 			}
-			.mai-upgrade-notice .mai-upgrade-dismiss {
-				color: currentColor;
-				font-variant: all-small-caps;
+
+			.mai-upgrade-dismiss {
+				color: #787c82;
 				text-decoration: none;
-				transition: all 0.1s ease-in-out;
 			}
-			.mai-upgrade-notice .mai-upgrade-dismiss:hover,
-			.mai-upgrade-notice .mai-upgrade-dismiss:focus {
-				opacity: 1 !important;
+
+			.mai-upgrade-dismiss:hover,
+			.mai-upgrade-dismiss:focus-visible {
+				color: #bcda83;
+				text-decoration: underline;
 			}
-			.mai-upgrade-notice .mai-upgrade-dismiss-later:hover,
-			.mai-upgrade-notice .mai-upgrade-dismiss-later:focus {
-				color: var(--bizbudding-green-dark) !important;
+
+			.button {
+				color: #181f09;
+				background: #bcda83;
+				border-color: #bcda83;
 			}
-			.mai-upgrade-notice .mai-upgrade-dismiss::before {
-				display: none !important;
+
+			.button:hover,
+			.button:focus {
+				color: #181f09;
+				background: #a0b96f;
+				border-color: #a0b96f;
 			}
-			.mai-upgrade-notice img {
-				display: block;
-				max-width: 36px;
-				margin-top: 6px;
-			}
-			.mai-upgrade-notice .button {
-				padding: 16px 24px !important;
-				background: var(--bizbudding-green) !important;
-				color: #181f09 !important;
-				line-height: 1.2;
-				text-transform: uppercase;
-				letter-spacing: 1px;
-				border: 0;
-				transition: all 150ms ease-in-out;
-				transform: translateY(0);
-			}
-			.mai-upgrade-notice .button:hover,
-			.mai-upgrade-notice .button:focus {
-				background: var(--bizbudding-green-dark) !important;
-				color: #181f09 !important;
-				transform: translateY(-1px);
-			}
-			.mai-notice-button {
-				display: grid;
-				place-items: center;
-			}
-		</style>
-		<p class="mai-upgrade-actions">
-			<a class="mai-upgrade-dismiss" data-weeks="9999" role="button" href="#" style="opacity:0.5;"><?php echo __( 'Do not ask again', 'mai-theme-engine' ); ?></a>
-			<span style="margin:0 8px;opacity:0.5;">|</span>
-			<a class="mai-upgrade-dismiss mai-upgrade-dismiss-later" data-weeks="4" role="button" href="#"><?php echo __( 'Remind me later', 'mai-theme-engine' ); ?>&nbsp;<span class="dashicons dashicons-no-alt"></span></a>
-		</p>
-		<div class="mai-notice-col">
-			<?php printf( '<img width="36" height="36" src="%s">', MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png' ); ?>
+		}
+	</style>
+	<div class="notice mai-upgrade-notice">
+		<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:nowrap;">
+			<img width="24" height="24" src="<?php echo esc_url( MAI_THEME_ENGINE_PLUGIN_URL . 'assets/images/icon-128x128.png' ); ?>" alt="Mai" style="flex-shrink:0">
+			<h2><?php esc_html_e( 'Mai Theme v1 now only gets security updates.', 'mai-theme-engine' ); ?></h2>
 		</div>
-		<div class="mai-notice-col">
-			<p class="notice-title"><strong>Mai Theme</strong> - Support for the <strong>Classic Editor</strong> is ending!</p>
-			<p><a target="_blank" href="<?php echo $url ?>">BizBudding</a> has completely rebuilt Mai Theme from the ground up, not only to support the block editor, but to fully leverage it. Mai Theme v2 is now even more powerful and flexible, easier to customize, and much faster. Interested in <a target="_blank" href="<?php echo $url ?>">learning how to upgrade</a>?</p>
-		</div>
-		<div class="mai-notice-col mai-notice-button">
-			<a target="_blank" href="<?php echo $url ?>" class="button">Learn More</a>
+		<p><strong><?php esc_html_e( 'Future versions will only fix security issues, so new features are going into Mai Theme v2.', 'mai-theme-engine' ); ?></strong></p>
+		<ul>
+			<li>✅&nbsp;&nbsp;<?php esc_html_e( 'Built for the block editor, not the Classic Editor.', 'mai-theme-engine' ); ?></li>
+			<li>✅&nbsp;&nbsp;<?php esc_html_e( 'Faster, lighter pages.', 'mai-theme-engine' ); ?></li>
+			<li>✅&nbsp;&nbsp;<?php esc_html_e( 'Easier to customize, with no code needed.', 'mai-theme-engine' ); ?></li>
+		</ul>
+		<p><a target="_blank" rel="noopener noreferrer" href="<?php echo esc_url( $url ); ?>" class="button button-primary"><?php esc_html_e( 'Learn how to upgrade', 'mai-theme-engine' ); ?></a></p>
+		<div class="mai-dismissers">
+			<a href="#" role="button" class="mai-upgrade-dismiss" data-weeks="9999"><?php esc_html_e( "Don't show again", 'mai-theme-engine' ); ?></a>
+			<span>·</span>
+			<a href="#" role="button" class="mai-upgrade-dismiss" data-weeks="4"><?php esc_html_e( 'Remind me later', 'mai-theme-engine' ); ?></a>
 		</div>
 	</div>
 	<?php
@@ -120,6 +108,7 @@ function mai_upgrade_notice() {
 						url: '<?php echo $ajaxurl; ?>',
 						data: {
 							action: 'mai_dismiss_upgrade_notice',
+							nonce: '<?php echo esc_js( wp_create_nonce( 'mai_dismiss_upgrade_notice' ) ); ?>',
 							weeks: $(this).data( 'weeks' ),
 						},
 						success: function( response ) {
@@ -142,6 +131,8 @@ function mai_upgrade_notice() {
  */
 add_action( 'wp_ajax_mai_dismiss_upgrade_notice', 'mai_dismiss_upgrade_notice' );
 function mai_dismiss_upgrade_notice() {
+	check_ajax_referer( 'mai_dismiss_upgrade_notice', 'nonce' );
+
 	if ( ! current_user_can( 'switch_themes' ) ) {
 		wp_die(
 			__( 'You do not have permission.', 'mai-theme-engine' ),

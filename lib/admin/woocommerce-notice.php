@@ -44,7 +44,8 @@ function mai_notice_script() {
 			jQuery.ajax({
 				url: ajaxurl,
 				data: {
-					action: "mai_dismiss_woocommerce_notice"
+					action: "mai_dismiss_woocommerce_notice",
+					nonce: "' . esc_js( wp_create_nonce( 'mai_dismiss_woocommerce_notice' ) ) . '"
 				}
 			});
 		});'
@@ -92,6 +93,7 @@ function mai_woocommerce_theme_notice() {
  */
 add_action( 'wp_ajax_mai_dismiss_woocommerce_notice', 'mai_dismiss_woocommerce_notice' );
 function mai_dismiss_woocommerce_notice() {
+	check_ajax_referer( 'mai_dismiss_woocommerce_notice', 'nonce' );
 	update_user_option( get_current_user_id(), 'mai_woocommerce_message_dismissed', 1 );
 }
 
