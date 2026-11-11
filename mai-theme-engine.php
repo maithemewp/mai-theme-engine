@@ -6,6 +6,7 @@
  * Description:     The Mai Theme Engine plugin
  *
  * Version:         1.14.0
+ * Requires PHP:    7.4
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
