@@ -356,7 +356,7 @@ function mai_import_section_data( $object_id, $updated, $cmb ) {
 	}
 
 	// Whether to import images.
-	$import_images = filter_var( $_POST['mai_sections_json_import_images'], FILTER_VALIDATE_BOOLEAN );
+	$import_images = filter_var( $_POST['mai_sections_json_import_images'] ?? false, FILTER_VALIDATE_BOOLEAN );
 
 	// Remove these functions so it doesn't cause infinite loop error.
 	remove_action( 'cmb2_save_post_fields_mai_sections', 'mai_import_section_data', 8, 3 );
@@ -411,7 +411,7 @@ function mai_save_sections_to_the_content( $post_id, $updated, $cmb ) {
 	$content = '';
 	foreach ( $sections as $section ) {
 		$content .= ! empty( $section['title'] ) ? sprintf( '<h2>%s</h2>', $section['title'] ) . "\r\n" : '';
-		$content .= $section['content'] . "\r\n";
+		$content .= ( $section['content'] ?? '' ) . "\r\n";
 	}
 
 	// Remove these functions so it doesn't cause infinite loop error.

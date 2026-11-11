@@ -5,7 +5,7 @@
  * Plugin URI:      https://bizbudding.com/mai-theme/
  * Description:     The Mai Theme Engine plugin
  *
- * Version:         1.13.2
+ * Version:         1.14.0
  *
  * GitHub URI:      maithemewp/mai-theme-engine
  *
@@ -89,7 +89,7 @@ final class Mai_Theme_Engine {
 	private function setup_constants() {
 
 		// Plugin version.
-		define( 'MAI_THEME_ENGINE_VERSION', '1.13.1' );
+		define( 'MAI_THEME_ENGINE_VERSION', '1.14.0' );
 
 		// DB version.
 		define( 'MAI_THEME_ENGINE_DB_VERSION', '1600' );
@@ -187,14 +187,24 @@ final class Mai_Theme_Engine {
 			// Add viewport meta tag for mobile browsers.
 			add_theme_support( 'genesis-responsive-viewport' );
 
-			// Add support for Genesis menus.
-			add_theme_support( 'genesis-menus', array(
-				'primary'      => __( 'Primary Menu', 'mai-theme-engine' ),
-				'header_left'  => __( 'Header Left Menu', 'mai-theme-engine' ),
-				'header_right' => __( 'Header Right Menu', 'mai-theme-engine' ),
-				'secondary'    => __( 'Footer Menu', 'mai-theme-engine' ),
-				'mobile'       => __( 'Mobile Menu', 'mai-theme-engine' ),
-			) );
+			/**
+			 * Add support for Genesis menus.
+			 *
+			 * Genesis fires genesis_setup while its functions.php loads, which is
+			 * before after_setup_theme. Translating the labels then triggers the
+			 * WP 6.7+ "translation loading triggered too early" notice, so wait.
+			 * Priority 9 runs before genesis_maybe_add_genesis_menus() (Genesis 3.6+),
+			 * which bails if menus are already supported.
+			 */
+			add_action( 'after_setup_theme', function() {
+				add_theme_support( 'genesis-menus', array(
+					'primary'      => __( 'Primary Menu', 'mai-theme-engine' ),
+					'header_left'  => __( 'Header Left Menu', 'mai-theme-engine' ),
+					'header_right' => __( 'Header Right Menu', 'mai-theme-engine' ),
+					'secondary'    => __( 'Footer Menu', 'mai-theme-engine' ),
+					'mobile'       => __( 'Mobile Menu', 'mai-theme-engine' ),
+				) );
+			}, 9 );
 
 			// Add support for Genesis structural wraps.
 			add_theme_support( 'genesis-structural-wraps', array(

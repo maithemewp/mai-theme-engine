@@ -8,27 +8,13 @@
  * This also prevents custom Mai settings from getting lost anytime 'genesis-settings' option is updated elsewhere.
  *
  * @since   1.1.3
+ * @since   1.14.0 No longer reads $_POST. Any request could inject settings while an upgrade was pending.
  *
  * @return  array
  */
 add_filter( 'pre_update_option_genesis-settings', 'mai_enforce_custom_genesis_settings', 10, 2 );
 function mai_enforce_custom_genesis_settings( $new_value, $old_value ) {
 
-	// If this is happening from a form submission page.
-	if ( isset( $_POST ) || ! empty( $_POST ) ) {
-		// If this is happening on a page that's submitting a 'genesis-settings' form.
-		if ( isset( $_POST[ 'genesis-settings' ] ) || ! empty( $_POST[ 'genesis-settings' ] ) ) {
-			// New value is the only genesis settings left in the form.
-			$new_value = $_POST[ 'genesis-settings' ];
-			// Fix slashes getting added to scripts. Argh.
-			if ( isset( $new_value['header_scripts'] ) ) {
-				$new_value['header_scripts'] = stripslashes( $new_value['header_scripts'] );
-			}
-			if ( isset( $new_value['footer_scripts'] ) ) {
-				$new_value['footer_scripts'] = stripslashes( $new_value['footer_scripts'] );
-			}
-		}
-	}
 	// Make sure we don't lose old settings that don't exist in the $new_value array.
 	$new_value = wp_parse_args( $new_value, $old_value );
 
@@ -49,6 +35,11 @@ function mai_genesis_options_defaults( $options, $setting ) {
 
 	if ( GENESIS_SETTINGS_FIELD !== $setting ) {
 		return $options;
+	}
+
+	// The option doesn't exist yet on new installs.
+	if ( ! is_array( $options ) ) {
+		$options = array();
 	}
 
 	// Default options.

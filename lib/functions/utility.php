@@ -42,7 +42,7 @@ function mai_get_the_archive_setting( $key ) {
 	}
 
 	// Option has not been previously been cached, so cache now.
-	$settings_cache[ $key ] = is_array( $setting ) ? stripslashes_deep( $setting ) : stripslashes( wp_kses_decode_entities( $setting ) );
+	$settings_cache[ $key ] = is_array( $setting ) ? stripslashes_deep( $setting ) : stripslashes( wp_kses_decode_entities( (string) $setting ) );
 	return $settings_cache[ $key ];
 }
 
@@ -76,7 +76,7 @@ function mai_get_archive_setting( $key, $check_for_archive_setting = true, $fall
 	$setting = mai_get_archive_setting_by_template( $key, $check_for_archive_setting, $fallback );
 
 	// Option has not been previously been cached, so cache now.
-	$settings_cache[ $key ] = is_array( $setting ) ? stripslashes_deep( $setting ) : stripslashes( wp_kses_decode_entities( $setting ) );
+	$settings_cache[ $key ] = is_array( $setting ) ? stripslashes_deep( $setting ) : stripslashes( wp_kses_decode_entities( (string) $setting ) );
 
 	return $settings_cache[ $key ];
 
@@ -415,6 +415,39 @@ function mai_sanitize_html_classes( $classes ) {
 		$classes = explode( ' ', $classes );
 	}
 	return implode( ' ', array_unique( array_map( 'sanitize_html_class', array_map( 'trim', $classes ) ) ) );
+}
+
+/**
+ * Sanitize an HTML tag name against an allowed list.
+ * Keeps shortcode attributes like title_wrap from outputting tags like script or style.
+ *
+ * @since   1.14.0
+ *
+ * @param   string  $tag      The tag name.
+ * @param   string  $default  The tag to use when $tag is not allowed.
+ * @param   array   $allowed  The allowed tag names. Defaults to text tags.
+ *
+ * @return  string  The tag name.
+ */
+function mai_sanitize_tag( $tag, $default, $allowed = array() ) {
+	$allowed = $allowed ? $allowed : array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span', 'strong', 'header' );
+	$tag     = sanitize_key( (string) $tag );
+	return in_array( $tag, $allowed, true ) ? $tag : $default;
+}
+
+/**
+ * Make shortcode brackets inert in text that users or visitors control,
+ * like search queries, display names and term names.
+ * The banner runs shortcodes on its content, so this text must not.
+ *
+ * @since   1.14.0
+ *
+ * @param   string  $text  The text.
+ *
+ * @return  string  The text with [ and ] as HTML entities.
+ */
+function mai_esc_shortcodes( $text ) {
+	return str_replace( array( '[', ']' ), array( '&#91;', '&#93;' ), (string) $text );
 }
 
 /**
