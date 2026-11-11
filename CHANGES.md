@@ -9,6 +9,9 @@
 * Security: Grids only show public post statuses to visitors. Private posts show to users who can read them, and drafts and scheduled posts show to editors and admins. WordPress internal post types like revisions are no longer allowed.
 * Security: Column links by post ID only work for published posts.
 * Security: Added nonces to admin notice dismissals.
+* Security: Updated CMB2 to 2.13.5, which includes several security fixes.
+* Changed: Now requires PHP 7.4, to match CMB2.
+* Changed: Updated plugin-update-checker to 4.13 and persist-admin-notices-dismissal to 1.4.5.
 * Changed: Restyled the upgrade notice. Mai Theme v1 now only gets security updates.
 * Fixed: "Translation loading was triggered too early" notice in WordPress 6.7+.
 * Fixed: Fatal error in PHP 8 when using grid `exclude_displayed` or `exclude_current` with other exclusions.

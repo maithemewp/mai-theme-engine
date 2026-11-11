@@ -45,6 +45,10 @@ class CMB2_Type_Wysiwyg extends CMB2_Type_Textarea {
 		// Character counter not currently working for grouped WYSIWYG
 		$this->field->args['char_counter'] = false;
 
+		// escaped_value() caches its first result whatever $func is requested, so drop
+		// the 'stripslashes' value above to let the placeholder apply esc_textarea.
+		$field->escaped_value = null;
+
 		// wysiwyg fields in a group need some special handling.
 		$field->add_js_dependencies( array( 'wp-util', 'cmb2-wysiwyg' ) );
 
@@ -83,15 +87,19 @@ class CMB2_Type_Wysiwyg extends CMB2_Type_Textarea {
 		) );
 
 		// Then replace the special id/value/name with underscore placeholders.
-		$editor = str_replace( array(
-			'cmb2_n_' . $group_id . $field_id,
-			'cmb2_v_' . $group_id . $field_id,
-			'cmb2_i_' . $group_id . $field_id,
+		$editor = str_replace(
+			array(
+				'cmb2_n_' . $group_id . $field_id,
+				'cmb2_v_' . $group_id . $field_id,
+				'cmb2_i_' . $group_id . $field_id,
 			), array(
-			'{{ data.name }}',
-			'{{{ data.value }}}',
-			'{{ data.id }}',
-		), $editor );
+				'{{ data.name }}',
+				// The JS reads data.value with .val(), so it holds decoded markup.
+				'{{ data.value }}',
+				'{{ data.id }}',
+			),
+			$editor
+		);
 
 		// And put the editor instance in a JS template wrapper.
 		echo '<script type="text/template" id="tmpl-cmb2-wysiwyg-' . $group_id . '-' . $field_id . '">';

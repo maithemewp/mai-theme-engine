@@ -97,10 +97,23 @@ class CMB2_Sanitize {
 				break;
 			case 'multicheck':
 			case 'multicheck_inline':
-			case 'file_list':
 			case 'group':
 				// no filtering
 				$sanitized_value = $this->value;
+				break;
+			case 'file_list':
+				$sanitized_value = array();
+				$protocols       = $this->field->args( 'protocols' );
+				foreach ( (array) $this->value as $attachment_id => $url ) {
+					if ( ! is_int( $attachment_id ) || $attachment_id < 1 || ! is_scalar( $url ) ) {
+						continue;
+					}
+
+					$url = self::sanitize_and_secure_url( $url, $protocols, '' );
+					if ( '' !== $url ) {
+						$sanitized_value[ $attachment_id ] = $url;
+					}
+				}
 				break;
 			default:
 				// Handle repeatable fields array
@@ -243,6 +256,8 @@ class CMB2_Sanitize {
 	 * @return string Empty string or sanitized money value
 	 */
 	public function text_money() {
+		// A lone 0 is removed like an empty value, not saved as 0.00 (#457, #577).
+		// Repeatable entries keep 0; see C14.
 		if ( ! $this->value ) {
 			return '';
 		}
@@ -259,7 +274,7 @@ class CMB2_Sanitize {
 		// for repeatable.
 		if ( is_array( $this->value ) ) {
 			foreach ( $this->value as $key => $val ) {
-				if ( $val ) {
+				if ( CMB2_Utils::notempty( $val ) ) {
 					$this->value[ $key ] = number_format_i18n( (float) str_ireplace( $search, $replace, $val ), 2 );
 				}
 			}
@@ -399,7 +414,7 @@ class CMB2_Sanitize {
 			} else {
 				$datetime->setTimezone( new DateTimeZone( $tzstring ) );
 				$utc_stamp   = date_timestamp_get( $datetime ) - $offset;
-				$this->value = serialize( $datetime );
+				$this->value = json_encode( $datetime );
 			}
 
 			if ( $this->field->group ) {
@@ -431,7 +446,7 @@ class CMB2_Sanitize {
 	 * @return string       Sanitized data
 	 */
 	public function textarea() {
-		return is_array( $this->value ) ? array_map( 'wp_kses_post', $this->value ) : wp_kses_post( $this->value );
+		return is_array( $this->value ) ? array_map( 'wp_kses_post', $this->value ) : ( $this->value !== null ? wp_kses_post( $this->value ) : '' );
 	}
 
 	/**
@@ -448,7 +463,11 @@ class CMB2_Sanitize {
 			return $repeat_value;
 		}
 
-		return htmlspecialchars_decode( stripslashes( $this->value ) );
+		if ( ! is_scalar( $this->value ) ) {
+			return '';
+		}
+
+		return htmlspecialchars_decode( stripslashes( (string) $this->value ), ENT_COMPAT );
 	}
 
 	/**
@@ -485,7 +504,7 @@ class CMB2_Sanitize {
 		$i       = $this->field->group->index;
 
 		// Check group $alldata data.
-		$id_val  = isset( $alldata[ $base_id ][ $i ][ $id_key ] )
+		$id_val = isset( $alldata[ $base_id ][ $i ][ $id_key ] )
 			? absint( $alldata[ $base_id ][ $i ][ $id_key ] )
 			: '';
 
@@ -521,7 +540,7 @@ class CMB2_Sanitize {
 		if ( $this->value && ! $id_val ) {
 			$id_val = CMB2_Utils::image_id_from_url( $this->value );
 
-		// If there is an ID but user emptied the input value, remove the ID.
+			// If there is an ID but user emptied the input value, remove the ID.
 		} elseif ( ! $this->value && $id_val ) {
 			$id_val = null;
 		}
@@ -573,10 +592,10 @@ class CMB2_Sanitize {
 		$values_array = $this->value;
 
 		$new_value = array();
-		foreach ( $values_array as $iterator => $this->value ) {
-			if ( $this->value ) {
+		foreach ( $values_array as $this->value ) {
+			if ( CMB2_Utils::notempty( $this->value ) ) {
 				$val = $this->$method( true );
-				if ( ! empty( $val ) ) {
+				if ( CMB2_Utils::notempty( $val ) ) {
 					$new_value[] = $val;
 				}
 			}
@@ -596,7 +615,8 @@ class CMB2_Sanitize {
 	 */
 	public function _is_empty_array( $to_check ) {
 		if ( is_array( $to_check ) ) {
-			$cleaned_up = array_filter( $to_check );
+			// Keep 0 and '0'. They can be real values, like a multicheck option key.
+			$cleaned_up = CMB2_Utils::filter_empty( $to_check );
 			return empty( $cleaned_up );
 		}
 		return false;

@@ -335,13 +335,13 @@ class CMB2_Types {
 		$this->_desc( true, true, true );
 		?>
 
-		<div id="<?php echo $table_id; ?>" class="cmb-repeat-table cmb-nested">
+		<div id="<?php echo esc_attr( $table_id ); ?>" class="cmb-repeat-table cmb-nested">
 			<div class="cmb-tbody cmb-field-list">
 				<?php $this->repeatable_rows(); ?>
 			</div>
 		</div>
 		<p class="cmb-add-row">
-			<button type="button" data-selector="<?php echo $table_id; ?>" class="cmb-add-row-button button-secondary"><?php echo esc_html( $this->_text( 'add_row_text', esc_html__( 'Add Row', 'cmb2' ) ) ); ?></button>
+			<button type="button" data-selector="<?php echo esc_attr( $table_id ); ?>" class="cmb-add-row-button button-secondary"><?php echo esc_html( $this->_text( 'add_row_text', esc_html__( 'Add Row', 'cmb2' ) ) ); ?></button>
 		</p>
 
 		<?php
@@ -355,13 +355,14 @@ class CMB2_Types {
 	 * @since  1.1.0
 	 */
 	public function repeatable_rows() {
-		$meta_value = array_filter( (array) $this->field->escaped_value() );
+		// Skip empty rows, but keep 0/'0' rows.
+		$meta_value = CMB2_Utils::filter_empty( (array) $this->field->escaped_value() );
 		// check for default content
-		$default    = $this->field->get_default();
+		$default = $this->field->get_default();
 
 		// check for saved data
 		if ( ! empty( $meta_value ) ) {
-			$meta_value = is_array( $meta_value ) ? array_filter( $meta_value ) : $meta_value;
+			$meta_value = is_array( $meta_value ) ? CMB2_Utils::filter_empty( $meta_value ) : $meta_value;
 			$meta_value = ! empty( $meta_value ) ? $meta_value : $default;
 		} else {
 			$meta_value = $default;
@@ -383,10 +384,21 @@ class CMB2_Types {
 			$this->repeat_row();
 		}
 
-		// Then add an empty row
+		// Then add an empty row. Its inputs are disabled so the hidden template is
+		// not saved as a row. JS enables them when the row is added.
+		$attributes = $this->field->args( 'attributes' );
+		if ( empty( $attributes['disabled'] ) ) {
+			$this->field->args['attributes'] = array_merge( (array) $attributes, array(
+				'disabled'           => 'disabled',
+				'data-cmb2-template' => '1',
+			) );
+		}
+
 		$this->field->escaped_value = $default;
 		$this->iterator = $this->iterator ? $this->iterator : 1;
 		$this->repeat_row( 'empty-row hidden' );
+
+		$this->field->args['attributes'] = $attributes;
 	}
 
 	/**
